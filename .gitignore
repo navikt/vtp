@@ -1,0 +1,14 @@
+.settings
+target
+.project
+.classpath
+*.iml
+.idea
+_*.sh
+*.local
+*.localz
+es.properties
+*.zip
+*.versionsBackup
+bin
+
