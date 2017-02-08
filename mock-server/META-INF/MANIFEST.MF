@@ -1,0 +1,1 @@
+Main-Class: no.nav.engangsstønad.mock.MockServer
