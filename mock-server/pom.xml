@@ -68,7 +68,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/lib/</outputDirectory>
+                            <outputDirectory>${project.basedir}/lib/</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -79,12 +79,9 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspath>false</addClasspath>
+                            <addClasspath>true</addClasspath>
                             <mainClass>no.nav.engangsstønad.mock.MockServer</mainClass>
                         </manifest>
-                        <manifestEntries>
-                            <Class-Path>${project.build.directory}/lib/*</Class-Path>
-                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
