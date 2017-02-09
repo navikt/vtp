@@ -38,12 +38,17 @@
 		<dependencies>
 			<dependency>
 				<groupId>no.nav.vedtak.engangsstonad</groupId>
-				<artifactId>aktoer</artifactId>
+				<artifactId>tps-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.engangsstonad</groupId>
-				<artifactId>person</artifactId>
+				<artifactId>aktoer-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<artifactId>person-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

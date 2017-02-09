@@ -7,6 +7,9 @@ import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import no.nav.tjeneste.virksomhet.aktoer.v2.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +31,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.IdentDetaljer;
 public class AktoerServiceMockImpl implements AktoerV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
+    private static final TpsRepo TPS_REPO = TpsRepo.init();
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/aktoer/v2/Aktoer_v2/hentIdentForAktoerIdRequest")
@@ -36,11 +40,15 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     @ResponseWrapper(localName = "hentIdentForAktoerIdResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2", className = "no.nav.tjeneste.virksomhet.aktoer.v2.HentIdentForAktoerIdResponse")
     public HentIdentForAktoerIdResponse hentIdentForAktoerId(
             @WebParam(name = "hentIdentForAktoerIdRequest", targetNamespace = "")
-            HentIdentForAktoerIdRequest hentIdentForAktoerIdRequest)
+            HentIdentForAktoerIdRequest request)
             throws HentIdentForAktoerIdPersonIkkeFunnet {
-        LOG.info("hentIdentForAktoerId: " + hentIdentForAktoerIdRequest.getAktoerId());
+        LOG.info("hentIdentForAktoerId: " + request.getAktoerId());
+        String ident = TPS_REPO.finnIdent(Long.valueOf(request.getAktoerId()));
+        if(ident == null) {
+            throw new HentIdentForAktoerIdPersonIkkeFunnet("Fant ingen ident for aktoerid: " + request.getAktoerId(), new PersonIkkeFunnet());
+        }
         HentIdentForAktoerIdResponse response = new HentIdentForAktoerIdResponse();
-        response.setIdent("123");
+        response.setIdent(ident);
         return response;
     }
 
@@ -51,11 +59,15 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     @ResponseWrapper(localName = "hentAktoerIdForIdentResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2", className = "no.nav.tjeneste.virksomhet.aktoer.v2.HentAktoerIdForIdentResponse")
     public HentAktoerIdForIdentResponse hentAktoerIdForIdent(
         @WebParam(name = "hentAktoerIdForIdentRequest", targetNamespace = "")
-        HentAktoerIdForIdentRequest hentAktoerIdForIdentRequest)
+        HentAktoerIdForIdentRequest request)
         throws HentAktoerIdForIdentPersonIkkeFunnet {
-        LOG.info("hentIdentForAktoerId: " + hentAktoerIdForIdentRequest.getIdent());
+        LOG.info("hentIdentForAktoerId: " + request.getIdent());
+        Long aktoerId = TPS_REPO.finnAktoerId(request.getIdent());
+        if(aktoerId == null) {
+            throw new HentAktoerIdForIdentPersonIkkeFunnet("Fant ingen aktoerid for ident: " + request.getIdent(), new PersonIkkeFunnet());
+        }
         HentAktoerIdForIdentResponse response = new HentAktoerIdForIdentResponse();
-        response.setAktoerId("456");
+        response.setAktoerId(String.valueOf(aktoerId));
         return response;
     }
 

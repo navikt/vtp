@@ -9,12 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>person</artifactId>
+    <artifactId>person-mock</artifactId>
     <packaging>jar</packaging>
     <name>Vedtak Engangsstønad person-mock</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->
+        <dependency>
+            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <artifactId>tps-mock-modell</artifactId>
+        </dependency>
 
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>

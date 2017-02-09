@@ -1,4 +1,4 @@
-package no.nav.tjeneste.virksomhet.person.v2;
+package no.nav.tjeneste.virksomhet.person.v2.modell;
 
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
 
@@ -12,10 +12,10 @@ import java.util.*;
 import static java.time.LocalDate.of;
 import static java.time.Month.JANUARY;
 import static java.time.Month.OCTOBER;
-import static no.nav.tjeneste.virksomhet.person.v2.TpsRepo.Kjønn.KVINNE;
-import static no.nav.tjeneste.virksomhet.person.v2.TpsRepo.Kjønn.MANN;
+import static no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo.Kjønn.KVINNE;
+import static no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo.Kjønn.MANN;
 
-class TpsRepo {
+public class TpsRepo {
 
     private static TpsRepo instance;
     // Simulering av Tps sin datamodell
@@ -25,8 +25,9 @@ class TpsRepo {
 
     // Svarteliste
     private static final String FNR_TRIGGER_SERVICE_UNAVAILABLE = "1111111111l";
+    private static final long AKTOER_ID_SERVICE_UNAVAILABLE = 2L;
 
-    static synchronized TpsRepo init() {
+    public static synchronized TpsRepo init() {
         if(instance == null) {
             instance = new TpsRepo();
         }
@@ -36,8 +37,8 @@ class TpsRepo {
     private TpsRepo() {
         List<TpsPerson> tpspersoner = new ArrayList<>();
         tpspersoner.add(new TpsPersonBygger(1L, "13107221234", of(1972, OCTOBER, 13), "ANNE-BERIT", "HJARTDAL", KVINNE).bygg());
-        tpspersoner.add(new TpsPersonBygger(2L, "01017912345", of(1979, JANUARY, 1), "LIV HENRIETTE", "LARSEN ULLMANN", KVINNE).bygg());
-        tpspersoner.add(new TpsPersonBygger(3L, "01018012345", of(1980, JANUARY, 1), "ANDERS", "ANDERSEN", MANN).bygg());
+        tpspersoner.add(new TpsPersonBygger(3L, "01017912345", of(1979, JANUARY, 1), "LIV HENRIETTE", "LARSEN ULLMANN", KVINNE).bygg());
+        tpspersoner.add(new TpsPersonBygger(4L, "01018012345", of(1980, JANUARY, 1), "ANDERS", "ANDERSEN", MANN).bygg());
 
         for (TpsPerson tpsPerson : tpspersoner) {
             FNR_VED_AKTØR_ID.put(tpsPerson.aktørId, tpsPerson.fnr);
@@ -46,12 +47,28 @@ class TpsRepo {
         }
     }
 
-    Person finnPerson(String fnr) {
-        sjekkSvarteliste(fnr);
+    public String finnIdent(long aktoerId) {
+        sjekkSvartelistedeAktører(aktoerId);
+        return FNR_VED_AKTØR_ID.get(aktoerId);
+    }
+
+    public Long finnAktoerId(String fnr) {
+        sjekkSvartelistedeFødselsnummere(fnr);
+        return AKTØR_ID_VED_FNR.get(fnr);
+    }
+
+    public Person finnPerson(String fnr) {
+        sjekkSvartelistedeFødselsnummere(fnr);
         return PERSON_VED_FNR.get(fnr);
     }
 
-    private void sjekkSvarteliste(String fnr) {
+    private void sjekkSvartelistedeAktører(long aktoerId) {
+        if (AKTOER_ID_SERVICE_UNAVAILABLE == aktoerId) {
+            throw new IllegalStateException("Simulerer exception for aktoerId: " + aktoerId);
+        }
+    }
+
+    private void sjekkSvartelistedeFødselsnummere(String fnr) {
         if (FNR_TRIGGER_SERVICE_UNAVAILABLE.equals(fnr)) {
             throw new IllegalStateException("Simulerer exception for fnr: " + fnr);
         }
@@ -145,8 +162,6 @@ class TpsRepo {
 
             return new TpsPerson(aktørId, fnr, person);
         }
-
-
     }
 
 }

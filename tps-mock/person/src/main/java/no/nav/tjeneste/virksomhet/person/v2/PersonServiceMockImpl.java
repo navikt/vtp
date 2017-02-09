@@ -10,6 +10,7 @@ import no.nav.tjeneste.virksomhet.person.v2.meldinger.*;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentPersonnavnBolkResponse;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakResponse;
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

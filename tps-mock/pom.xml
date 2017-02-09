@@ -15,6 +15,7 @@
     <modules>
         <module>person</module>
         <module>aktoer</module>
+        <module>modell</module>
     </modules>
 
 

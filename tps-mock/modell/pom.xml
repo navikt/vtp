@@ -9,40 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aktoer-mock</artifactId>
+    <artifactId>tps-mock-modell</artifactId>
     <packaging>jar</packaging>
-    <name>Vedtak Engangsstønad aktoer-mock</name>
+    <name>Vedtak Engangsstønad tps-mock-modell</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->
-        <dependency>
-            <groupId>no.nav.vedtak.engangsstonad</groupId>
-            <artifactId>tps-mock-modell</artifactId>
-        </dependency>
 
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
             <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
+            <artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
 
-        <!-- Eksterne avhengigheter -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!-- 3dje parts biblioteker -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -63,6 +44,24 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http-spi</artifactId>
         </dependency>
+
+        <!-- Testavhengigheter -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!--
                 <dependency>
                     <groupId>org.apache.cxf</groupId>
@@ -138,5 +137,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
