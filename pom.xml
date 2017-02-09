@@ -16,8 +16,8 @@
 	</scm>
 
 	<modules>
-        <module>mock-server</module>
         <module>aktoer-mock</module>
+		<module>mock-server</module>
 	</modules>
 
 	<properties>
