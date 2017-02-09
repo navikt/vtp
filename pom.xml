@@ -17,6 +17,7 @@
 
 	<modules>
         <module>aktoer-mock</module>
+		<module>person-mock</module>
 		<module>mock-server</module>
 	</modules>
 
@@ -24,6 +25,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.jdk.version>1.8</java.jdk.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
+        <tps.person.version>2.0.0</tps.person.version>
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <assertj.version>3.6.2</assertj.version>
@@ -33,6 +35,7 @@
 	</properties>
 
 	<dependencyManagement>
+		<!-- Prosjektavhengigheter -->
 		<dependencies>
 			<dependency>
 				<groupId>no.nav.vedtak.engangsstonad</groupId>
@@ -40,11 +43,32 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<artifactId>person-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- Kontraktsavhengigheter -->
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
+				<version>${tps.aktoer.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
+				<version>${tps.person.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+
+			<!-- Eksterne bibliotek -->
+			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-plus</artifactId>
 				<version>${jetty.version}</version>
 			</dependency>
-            <dependency>
+			<dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-http-spi</artifactId>
                 <version>${jetty.version}</version>
@@ -54,10 +78,10 @@
 				<artifactId>jetty-annotations</artifactId>
 				<version>${jetty.version}</version>
 			</dependency>
-			<dependency> 
-				<groupId>org.threeten</groupId> 
-				<artifactId>threeten-extra</artifactId> 
-				<version>1.0</version> 
+			<dependency>
+				<groupId>org.threeten</groupId>
+				<artifactId>threeten-extra</artifactId>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
@@ -69,12 +93,8 @@
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
-            <dependency>
-                <groupId>no.nav.tjenester.fim</groupId>
-                <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
-                <version>${tps.aktoer.version}</version>
-                <classifier>jaxws</classifier>
-            </dependency>
+
+			<!-- Testavhengigheter -->
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>

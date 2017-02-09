@@ -24,6 +24,8 @@ public class MockServer {
         context = buildHttpContext(server, "/ws");
         publishService("no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl");
         // access wsdl on http://localhost:7779/ws/Aktoer_v2?wsdl
+        publishService("no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl");
+        // access wsdl on http://localhost:7779/ws/Person_v2?wsdl
     }
 
     public static void publishService(String classname) {

@@ -19,6 +19,11 @@
             <artifactId>aktoer-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <artifactId>person-mock</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 		<!-- Eksterne avhengigheter -->
         <dependency>
