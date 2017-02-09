@@ -73,18 +73,10 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>no.nav.engangsstønad.mock.MockServer</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+          <plugin>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>3.0.0</version>
+          </plugin>
         </plugins>
     </build>
 </project>
