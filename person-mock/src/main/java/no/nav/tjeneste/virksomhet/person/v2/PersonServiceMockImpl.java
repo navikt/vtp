@@ -4,7 +4,8 @@ import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonPersonI
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentSikkerhetstiltakPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v2.binding.PersonV2;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
+import no.nav.tjeneste.virksomhet.person.v2.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.*;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentPersonnavnBolkResponse;
@@ -16,20 +17,14 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
-import java.util.GregorianCalendar;
 
 @WebService(name = "Person_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v2")
 public class PersonServiceMockImpl implements PersonV2 {
 
-    private static final Logger log = LoggerFactory.getLogger(PersonServiceMockImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
+    private static final TpsRepo TPS_REPO = TpsRepo.init();
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v2/Person_v2/hentKjerneinformasjonRequest")
     @WebResult(name = "response", targetNamespace = "")
@@ -37,41 +32,12 @@ public class PersonServiceMockImpl implements PersonV2 {
     @ResponseWrapper(localName = "hentKjerneinformasjonResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v2", className = "no.nav.tjeneste.virksomhet.person.v2.HentKjerneinformasjonResponse")
     @Override
     public no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse hentKjerneinformasjon(@WebParam(name = "request",targetNamespace = "") HentKjerneinformasjonRequest request) throws HentKjerneinformasjonPersonIkkeFunnet, HentKjerneinformasjonSikkerhetsbegrensning {
-        log.info("hentIdentForAktoerId: " + request.getIdent());
-        no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse response = new HentKjerneinformasjonResponse();
-        Person person = new Person();
-
-        NorskIdent norskIdent = new NorskIdent();
-        norskIdent.setIdent(request.getIdent());
-        Personidenter personidenter = new Personidenter();
-        personidenter.setValue("fnr");
-        norskIdent.setType(personidenter);
-        person.setIdent(norskIdent);
-
-        Kjoenn kjonn = new Kjoenn();
-        Kjoennstyper kjonnstype = new Kjoennstyper();
-        kjonnstype.setValue("M");
-        kjonn.setKjoenn(kjonnstype);
-        person.setKjoenn(kjonn);
-
-        Foedselsdato fodselsdato = new Foedselsdato();
-        XMLGregorianCalendar xcal = null;
-        try {
-            LocalDate fødselsdato = LocalDate.of(1992, Month.OCTOBER, 13);
-            GregorianCalendar gcal = GregorianCalendar.from(fødselsdato.atStartOfDay(ZoneId.systemDefault()));
-            xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
+        LOG.info("hentIdentForAktoerId: " + request.getIdent());
+        Person person = TPS_REPO.finnPerson(request.getIdent());
+        if(person == null) {
+            throw new HentKjerneinformasjonPersonIkkeFunnet("Fant ingen bruker for ident: " + request.getIdent(), new PersonIkkeFunnet());
         }
-        fodselsdato.setFoedselsdato(xcal);
-        person.setFoedselsdato(fodselsdato);
-
-        Personnavn personnavn   = new Personnavn();
-        personnavn.setEtternavn("HJARTDAL");
-        personnavn.setFornavn("ANNE-BERIT");
-        personnavn.setSammensattNavn("HJARTDAL ANNE-BERIT");
-        person.setPersonnavn(personnavn);
-
+        HentKjerneinformasjonResponse response = new HentKjerneinformasjonResponse();
         response.setPerson(person);
         return response;
     }
@@ -81,7 +47,7 @@ public class PersonServiceMockImpl implements PersonV2 {
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v2", className = "no.nav.tjeneste.virksomhet.person.v2.PingResponse")
     @Override
     public void ping() {
-        log.info("Ping mottatt og besvart");
+        LOG.info("Ping mottatt og besvart");
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v2/Person_v2/hentPersonnavnBolkRequest")
