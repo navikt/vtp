@@ -27,7 +27,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.IdentDetaljer;
 @WebService(name = "Aktoer_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2")
 public class AktoerServiceMockImpl implements AktoerV2 {
 
-    private static final Logger log = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/aktoer/v2/Aktoer_v2/hentIdentForAktoerIdRequest")
@@ -38,7 +38,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
             @WebParam(name = "hentIdentForAktoerIdRequest", targetNamespace = "")
             HentIdentForAktoerIdRequest hentIdentForAktoerIdRequest)
             throws HentIdentForAktoerIdPersonIkkeFunnet {
-        log.info("hentIdentForAktoerId: " + hentIdentForAktoerIdRequest.getAktoerId());
+        LOG.info("hentIdentForAktoerId: " + hentIdentForAktoerIdRequest.getAktoerId());
         HentIdentForAktoerIdResponse response = new HentIdentForAktoerIdResponse();
         response.setIdent("123");
         return response;
@@ -53,7 +53,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         @WebParam(name = "hentAktoerIdForIdentRequest", targetNamespace = "")
         HentAktoerIdForIdentRequest hentAktoerIdForIdentRequest)
         throws HentAktoerIdForIdentPersonIkkeFunnet {
-        log.info("hentIdentForAktoerId: " + hentAktoerIdForIdentRequest.getIdent());
+        LOG.info("hentIdentForAktoerId: " + hentAktoerIdForIdentRequest.getIdent());
         HentAktoerIdForIdentResponse response = new HentAktoerIdForIdentResponse();
         response.setAktoerId("456");
         return response;
@@ -67,7 +67,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     public HentAktoerIdForIdentListeResponse hentAktoerIdForIdentListe(
         @WebParam(name = "hentAktoerIdForIdentListeRequest", targetNamespace = "")
         HentAktoerIdForIdentListeRequest hentAktoerIdForIdentListeRequest) {
-        log.info("hentIdentForAktoerId");
+        LOG.info("hentIdentForAktoerId");
         HentAktoerIdForIdentListeResponse response = new HentAktoerIdForIdentListeResponse();
         AktoerIder aktoerIder = new AktoerIder();
         aktoerIder.setAktoerId("789");
@@ -85,7 +85,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     public HentIdentForAktoerIdListeResponse hentIdentForAktoerIdListe(
         @WebParam(name = "hentIdentForAktoerIdListeRequest", targetNamespace = "")
         HentIdentForAktoerIdListeRequest hentIdentForAktoerIdListeRequest) {
-        log.info("hentIdentForAktoerId");
+        LOG.info("hentIdentForAktoerId");
         HentIdentForAktoerIdListeResponse response = new HentIdentForAktoerIdListeResponse();
         return response;
     }
@@ -95,6 +95,6 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     @RequestWrapper(localName = "ping", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2", className = "no.nav.tjeneste.virksomhet.aktoer.v2.Ping")
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2", className = "no.nav.tjeneste.virksomhet.aktoer.v2.PingResponse")
     public void ping() {
-        log.info("Ping mottatt og besvart");
+        LOG.info("Ping mottatt og besvart");
     }
 }

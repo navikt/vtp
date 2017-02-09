@@ -2,14 +2,12 @@ package no.nav.tjeneste.virksomhet.person.v2;
 
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
 
-import javax.naming.ServiceUnavailableException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.concurrent.TimeoutException;
 
 import static java.time.LocalDate.of;
 import static java.time.Month.JANUARY;
@@ -20,6 +18,7 @@ import static no.nav.tjeneste.virksomhet.person.v2.TpsRepo.Kjønn.MANN;
 class TpsRepo {
 
     private static TpsRepo instance;
+    // Simulering av Tps sin datamodell
     private static Map<Long, String> FNR_VED_AKTØR_ID = new HashMap<>();
     private static Map<String, Long> AKTØR_ID_VED_FNR = new HashMap<>();
     private static Map<String, Person> PERSON_VED_FNR = new HashMap<>();

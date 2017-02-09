@@ -3,27 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>mock</artifactId>
+        <artifactId>tps-mock</artifactId>
         <groupId>no.nav.vedtak.engangsstonad</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>person-mock</artifactId>
+    <artifactId>aktoer</artifactId>
     <packaging>jar</packaging>
-    <name>Vedtak Engangsstønad person-mock</name>
+    <name>Vedtak Engangsstønad aktoer-mock</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->
 
-        <!-- Kontraktsavhengigheter -->
+        <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
             <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
+            <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
 
-        <!-- Testavhengigheter -->
+        <!-- Eksterne avhengigheter -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
