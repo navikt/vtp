@@ -5,13 +5,12 @@ import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.time.LocalDate.of;
-import static java.time.Month.JANUARY;
-import static java.time.Month.OCTOBER;
 import static no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo.Kjønn.KVINNE;
 import static no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo.Kjønn.MANN;
 
@@ -36,9 +35,9 @@ public class TpsRepo {
 
     private TpsRepo() {
         List<TpsPerson> tpspersoner = new ArrayList<>();
-        tpspersoner.add(new TpsPersonBygger(1L, "13107221234", of(1972, OCTOBER, 13), "ANNE-BERIT", "HJARTDAL", KVINNE).bygg());
-        tpspersoner.add(new TpsPersonBygger(3L, "01017912345", of(1979, JANUARY, 1), "LIV HENRIETTE", "LARSEN ULLMANN", KVINNE).bygg());
-        tpspersoner.add(new TpsPersonBygger(4L, "01018012345", of(1980, JANUARY, 1), "ANDERS", "ANDERSEN", MANN).bygg());
+        tpspersoner.add(new TpsPersonBygger(1L, "13107221234", "ANNE-BERIT", "HJARTDAL", KVINNE).bygg());
+        tpspersoner.add(new TpsPersonBygger(3L, "01017912345", "LIV HENRIETTE", "LARSEN ULLMANN", KVINNE).bygg());
+        tpspersoner.add(new TpsPersonBygger(4L, "01018012345", "ANDERS", "ANDERSEN", MANN).bygg());
 
         for (TpsPerson tpsPerson : tpspersoner) {
             FNR_VED_AKTØR_ID.put(tpsPerson.aktørId, tpsPerson.fnr);
@@ -103,19 +102,16 @@ public class TpsRepo {
         private String fnr;
         private String fornavn;
         private String etternavn;
-        private LocalDate fødselsdato;
         private long aktørId;
         private final Kjønn kjønn;
 
-        TpsPersonBygger(long aktørId, String fnr, LocalDate fødselsdato, String fornavn, String etternavn, Kjønn kjønn) {
+        TpsPersonBygger(long aktørId, String fnr, String fornavn, String etternavn, Kjønn kjønn) {
             Objects.requireNonNull(fnr, "Fødselsnummer er obligatorisk");
-            Objects.requireNonNull(fødselsdato, "Fødselsdato er obligatorisk");
             Objects.requireNonNull(kjønn, "Kjønn er obligatorisk");
             Objects.requireNonNull(fornavn, "Fornavn er obligatorisk");
             Objects.requireNonNull(etternavn, "Etternavn er obligatorisk");
             this.aktørId = aktørId;
             this.fnr = fnr;
-            this.fødselsdato = fødselsdato;
             this.kjønn = kjønn;
             this.fornavn = fornavn;
             this.etternavn = etternavn;
@@ -143,9 +139,13 @@ public class TpsRepo {
             Foedselsdato fodselsdato = new Foedselsdato();
             XMLGregorianCalendar xcal;
             try {
-                GregorianCalendar gcal = GregorianCalendar.from(fødselsdato.atStartOfDay(ZoneId.systemDefault()));
+                // Simpel algoritme for å konvertere fnr. Må utbedres ved behov.
+                DateFormat format = new SimpleDateFormat("ddmmyy");
+                Date dato = format.parse(fnr.substring(0, 6));
+                GregorianCalendar gcal = new GregorianCalendar();
+                gcal.setTime(dato);
                 xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-            } catch (DatatypeConfigurationException e) {
+            } catch (DatatypeConfigurationException | ParseException e) {
                 throw new IllegalStateException("Kunne ikke konvertere dato", e);
             }
             fodselsdato.setFoedselsdato(xcal);
