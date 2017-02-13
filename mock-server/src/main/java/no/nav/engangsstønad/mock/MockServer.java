@@ -12,6 +12,10 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 import com.sun.net.httpserver.HttpContext;
 
+import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
+import no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl;
+import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
+
 public class MockServer {
 
     private static Server server;
@@ -21,24 +25,21 @@ public class MockServer {
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
         server.start();
-        publishService("no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl", "/aktoer");
-        // access wsdl on http://localhost:7779/ws/Aktoer_v2?wsdl
-        publishService("no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl", "/sak");
-
-        publishService("no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl", "/person");
-        // access wsdl on http://localhost:7779/ws/Person_v2?wsdl
+        publishService(AktoerServiceMockImpl.class, "/aktoer");
+        // access wsdl on http://localhost:7779/aktoer?wsdl
+        publishService(SakServiceMockImpl.class, "/sak");
+        // access wsdl on http://localhost:7779/sak?wsdl
+        publishService(PersonServiceMockImpl.class, "/person");
+        // access wsdl on http://localhost:7779/person?wsdl
 
     }
 
-    public static void publishService(String classname, String path) {
+    private static void publishService(Class<?> clazz, String path) {
         HttpContext context = buildHttpContext(server, path);
         try {
-            Class<?> cl = Class.forName(classname);
-            Object ws = cl.newInstance();
+            Object ws = clazz.newInstance();
             Endpoint endpoint = Endpoint.create(ws);
             endpoint.publish(context);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
