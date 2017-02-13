@@ -14,29 +14,24 @@ import com.sun.net.httpserver.HttpContext;
 
 public class MockServer {
 
-    private static HttpContext context;
+    private static Server server;
 
     public static void main(String[] args) throws Exception {
-        Server server = new Server(7779);
+        server = new Server(7779);
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
         server.start();
-        context = buildHttpContext(server, "/ws");
-        publishService("no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl");
+        publishService("no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl", "/aktoer");
         // access wsdl on http://localhost:7779/ws/Aktoer_v2?wsdl
+        publishService("no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl", "/sak");
 
-        // Hack for å få til 2 endepunkter. BTS, hjelp meg gjerne her.
-        server = new Server(7780);
-        contextHandlerCollection = new ContextHandlerCollection();
-        server.setHandler(contextHandlerCollection);
-        server.start();
-        context = buildHttpContext(server, "/ws");
-        publishService("no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl");
+        publishService("no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl", "/person");
         // access wsdl on http://localhost:7779/ws/Person_v2?wsdl
 
     }
 
-    public static void publishService(String classname) {
+    public static void publishService(String classname, String path) {
+        HttpContext context = buildHttpContext(server, path);
         try {
             Class<?> cl = Class.forName(classname);
             Object ws = cl.newInstance();
