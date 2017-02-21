@@ -1,10 +1,13 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.KVINNE;
 import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.MANN;
