@@ -32,7 +32,7 @@ public class PersonBygger {
         }
     }
 
-    PersonBygger(String fnr, String fornavn, String etternavn, Kjønn kjønn) {
+    public PersonBygger(String fnr, String fornavn, String etternavn, Kjønn kjønn) {
         Objects.requireNonNull(fnr, "Fødselsnummer er obligatorisk");
         Objects.requireNonNull(kjønn, "Kjønn er obligatorisk");
         Objects.requireNonNull(fornavn, "Fornavn er obligatorisk");
