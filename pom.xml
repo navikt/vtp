@@ -6,13 +6,13 @@
 	<artifactId>mock</artifactId>
 	<packaging>pom</packaging>
 	<name>Vedtak Engangsstønad mock root pom</name>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</connection>
 		<developerConnection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</developerConnection>
 		<url>http://stash.devillo.no/projects/VEDFP/repos/vl-mock/browse</url>
-		<tag>mock-1.0.0</tag>
+		<tag>vl-mock-1.0.0</tag>
 	</scm>
 
 	<modules>
