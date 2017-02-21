@@ -21,6 +21,17 @@ public class PersonBygger {
     private final Kjønn kjønn;
     private LocalDate fødselsdato;
 
+    public enum Kjønn {
+        MANN("M"),
+        KVINNE("K");
+
+        String verdi;
+
+        Kjønn(String verdi) {
+            this.verdi = verdi;
+        }
+    }
+
     PersonBygger(String fnr, String fornavn, String etternavn, Kjønn kjønn) {
         Objects.requireNonNull(fnr, "Fødselsnummer er obligatorisk");
         Objects.requireNonNull(kjønn, "Kjønn er obligatorisk");
@@ -109,16 +120,4 @@ public class PersonBygger {
     }
 
 
-
-
-    enum Kjønn {
-        MANN("M"),
-        KVINNE("K");
-
-        String verdi;
-
-        Kjønn(String verdi) {
-            this.verdi = verdi;
-        }
-    }
 }
