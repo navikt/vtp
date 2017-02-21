@@ -26,6 +26,10 @@ public class TpsRepo {
     public static final int STD_KVINNE_FØDT_DAG_MND = 01;
     public static final int STD_KVINNE_FØDT_DAG_ÅR = 1969;
 
+    public static final String STD_BARN_FNR = "07111183524";
+    public static final String STD_BARN_FORNAVN = "EMIL";
+    public static final String STD_BARN_ETTERNAVN = "MALVIK";
+
     // Svarteliste
     public static final String FNR_TRIGGER_SERVICE_UNAVAILABLE = "1111111111l";
     public static final long AKTOER_ID_SERVICE_UNAVAILABLE = 2L;
@@ -39,7 +43,8 @@ public class TpsRepo {
 
     private TpsRepo() {
         List<TpsPerson> tpspersoner = new ArrayList<>();
-        tpspersoner.add(new TpsPerson(STD_KVINNE_AKTØR_ID, new PersonBygger(STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN, KVINNE)));
+        tpspersoner.add(new TpsPerson(STD_KVINNE_AKTØR_ID, new PersonBygger(STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN, KVINNE)
+                .medBarn(STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
         tpspersoner.add(new TpsPerson(1000021543419L, new PersonBygger("06016518156", "AL-HAMIDI", "KHADIM MUJULY H", MANN)));
         tpspersoner.add(new TpsPerson(1000076788465L, new PersonBygger("41014100138", "BALLARIN", "AYORA MANUEL", MANN)
                 .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));

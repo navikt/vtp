@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Objects;
 
 public class PersonBygger {
@@ -20,6 +21,9 @@ public class PersonBygger {
     private String etternavn;
     private final Kjønn kjønn;
     private LocalDate fødselsdato;
+    private String barnetsFnr;
+    private String barnFornavn;
+    private String barnEtternavn;
 
     public enum Kjønn {
         MANN("M"),
@@ -49,6 +53,13 @@ public class PersonBygger {
 
     public PersonBygger medFødseldato(LocalDate fødselsdato) {
         this.fødselsdato = fødselsdato;
+        return this;
+    }
+
+    public PersonBygger medBarn(String barnetsFnr, String barnetsFornavn, String barnetsEtternavn) {
+        this.barnetsFnr = barnetsFnr;
+        this.barnFornavn = barnetsFornavn;
+        this.barnEtternavn = barnetsEtternavn;
         return this;
     }
 
@@ -82,13 +93,46 @@ public class PersonBygger {
         person.setFoedselsdato(fodselsdato);
 
         // Navn
-        Personnavn personnavn   = new Personnavn();
+        Personnavn personnavn  = new Personnavn();
         personnavn.setEtternavn(etternavn.toUpperCase());
         personnavn.setFornavn(fornavn.toUpperCase());
         personnavn.setSammensattNavn(etternavn.toUpperCase() + " " + fornavn.toUpperCase());
         person.setPersonnavn(personnavn);
 
-        // I fremtiden: Legge til flere felter, som barn osv
+        // Barn
+        if(barnFornavn != null) {
+            Familierelasjon familierelasjon = new Familierelasjon();
+            familierelasjon.setHarSammeBosted(true);
+            Familierelasjoner familierelasjoner = new Familierelasjoner();
+            familierelasjoner.setValue("BARN");
+            familierelasjon.setTilRolle(familierelasjoner);
+
+            Person barn = new Person();
+            // Barnets ident
+            NorskIdent barnIdent = new NorskIdent();
+            barnIdent.setIdent(fnr);
+            Personidenter barnidenter = new Personidenter();
+            barnidenter.setValue("fnr");
+            barnIdent.setType(barnidenter);
+            barn.setIdent(barnIdent);
+
+            // Barnets fødselsdato
+            if(barnetsFnr != null) {
+                Foedselsdato barnetsFodselsdato = new Foedselsdato();
+                barnetsFodselsdato.setFoedselsdato(tilXmlGregorian(fnr));
+                barn.setFoedselsdato(barnetsFodselsdato);
+            }
+
+            // Barnets navn
+            Personnavn barnnavn  = new Personnavn();
+            barnnavn.setEtternavn(barnEtternavn.toUpperCase());
+            barnnavn.setFornavn(barnFornavn.toUpperCase());
+            barnnavn.setSammensattNavn(barnEtternavn.toUpperCase() + " " + barnFornavn.toUpperCase());
+            barn.setPersonnavn(barnnavn);
+
+            familierelasjon.setTilPerson(barn);
+            person.getHarFraRolleI().add(familierelasjon);
+        }
 
         return person;
     }
