@@ -118,7 +118,7 @@ public class PersonBygger {
             // Barnets fødselsdato
             if(barnetsFnr != null) {
                 Foedselsdato barnetsFodselsdato = new Foedselsdato();
-                barnetsFodselsdato.setFoedselsdato(tilXmlGregorian(fnr));
+                barnetsFodselsdato.setFoedselsdato(tilXmlGregorian(barnetsFnr));
                 barn.setFoedselsdato(barnetsFodselsdato);
             }
 
