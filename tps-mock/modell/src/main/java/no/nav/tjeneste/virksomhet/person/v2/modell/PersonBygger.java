@@ -20,9 +20,13 @@ public class PersonBygger {
     private String etternavn;
     private final Kjønn kjønn;
     private LocalDate fødselsdato;
-    private String barnetsFnr;
-    private String barnFornavn;
-    private String barnEtternavn;
+    private String relasjonFnr;
+    private String relasjonFornavn;
+    private String relasjonEtternavn;
+    private String forelderFnr;
+    private String forelderFornavn;
+    private String forelderEtternavn;
+    private String relasjon;
 
     public enum Kjønn {
         MANN("M"),
@@ -55,10 +59,11 @@ public class PersonBygger {
         return this;
     }
 
-    public PersonBygger medBarn(String barnetsFnr, String barnetsFornavn, String barnetsEtternavn) {
-        this.barnetsFnr = barnetsFnr;
-        this.barnFornavn = barnetsFornavn;
-        this.barnEtternavn = barnetsEtternavn;
+    public PersonBygger medRelasjon(String relasjon, String relasjonFnr, String relasjonFornavn, String relasjonEtternavn) {
+        this.relasjon = relasjon;
+        this.relasjonFnr = relasjonFnr;
+        this.relasjonFornavn = relasjonFornavn;
+        this.relasjonEtternavn = relasjonEtternavn;
         return this;
     }
 
@@ -99,37 +104,38 @@ public class PersonBygger {
         person.setPersonnavn(personnavn);
 
         // Barn
-        if(barnFornavn != null) {
+        if(relasjon != null) {
             Familierelasjon familierelasjon = new Familierelasjon();
             familierelasjon.setHarSammeBosted(true);
             Familierelasjoner familierelasjoner = new Familierelasjoner();
-            familierelasjoner.setValue("BARN");
+            familierelasjoner.setValue(relasjon);
             familierelasjon.setTilRolle(familierelasjoner);
 
-            Person barn = new Person();
-            // Barnets ident
-            NorskIdent barnIdent = new NorskIdent();
-            barnIdent.setIdent(fnr);
-            Personidenter barnidenter = new Personidenter();
-            barnidenter.setValue("fnr");
-            barnIdent.setType(barnidenter);
-            barn.setIdent(barnIdent);
+            Person relatertPersjon = new Person();
+            // Relasjonens ident
+            NorskIdent relasjonIdent = new NorskIdent();
+            relasjonIdent.setIdent(relasjonFnr);
+            Personidenter relasjonIdenter = new Personidenter();
+            relasjonIdenter.setValue("fnr");
+            relasjonIdent.setType(relasjonIdenter);
+            relatertPersjon.setIdent(relasjonIdent);
 
-            // Barnets fødselsdato
-            if(barnetsFnr != null) {
-                Foedselsdato barnetsFodselsdato = new Foedselsdato();
-                barnetsFodselsdato.setFoedselsdato(tilXmlGregorian(fnr));
-                barn.setFoedselsdato(barnetsFodselsdato);
+            // Relasjonens fødselsdato
+            if(relasjonFnr != null) {
+                Foedselsdato relasjonFodselsdato = new Foedselsdato();
+                relasjonFodselsdato.setFoedselsdato(tilXmlGregorian(relasjonFnr));
+                relatertPersjon.setFoedselsdato(relasjonFodselsdato);
             }
 
-            // Barnets navn
-            Personnavn barnnavn  = new Personnavn();
-            barnnavn.setEtternavn(barnEtternavn.toUpperCase());
-            barnnavn.setFornavn(barnFornavn.toUpperCase());
-            barnnavn.setSammensattNavn(barnEtternavn.toUpperCase() + " " + barnFornavn.toUpperCase());
-            barn.setPersonnavn(barnnavn);
+            // Relasjonens navn
+            Personnavn relasjonPersonnavn  = new Personnavn();
+            relasjonPersonnavn.setEtternavn(relasjonEtternavn.toUpperCase());
+            relasjonPersonnavn.setFornavn(relasjonFornavn.toUpperCase());
+            relasjonPersonnavn.setSammensattNavn(relasjonEtternavn.toUpperCase() + " " + relasjonFornavn.toUpperCase());
+            relatertPersjon.setPersonnavn(relasjonPersonnavn);
 
-            familierelasjon.setTilPerson(barn);
+            // Relasjon settes på personen
+            familierelasjon.setTilPerson(relatertPersjon);
             person.getHarFraRolleI().add(familierelasjon);
         }
 
