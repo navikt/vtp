@@ -19,20 +19,23 @@
 		<module>mock-server</module>
 		<module>tps-mock</module>
         <module>gsak-mock</module>
+        <module>joark-mock</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.jdk.version>1.8</java.jdk.version>
-        <tps.aktoer.version>2.0.1</tps.aktoer.version>
-        <tps.person.version>2.0.0</tps.person.version>
-        <gsak.sak.version>1.0.0</gsak.sak.version>
-        <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <assertj.version>3.6.2</assertj.version>
         <logback.version>1.1.9</logback.version>
         <slf4j.version>1.7.22</slf4j.version>
         <jetty.version>9.4.1.v20170120</jetty.version>
+        <junit.version>4.12</junit.version>
+
+        <gsak.sak.version>1.0.0</gsak.sak.version>
+        <joark.journal.version>1.0.3</joark.journal.version>
+        <tps.aktoer.version>2.0.1</tps.aktoer.version>
+        <tps.person.version>2.0.0</tps.person.version>
 	</properties>
 
 	<dependencyManagement>
@@ -77,6 +80,12 @@
                 <artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
                 <classifier>jaxws</classifier>
                 <version>${gsak.sak.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>${joark.journal.version}</version>
             </dependency>
 
 			<!-- Eksterne bibliotek -->
