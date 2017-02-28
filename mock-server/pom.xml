@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.engangsstonad</groupId>
-            <artifactId>gsak-mock</artifactId>
+            <artifactId>sak-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
