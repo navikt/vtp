@@ -14,6 +14,10 @@ import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.MA
 
 public class TpsRepo {
 
+    public static final long STD_MANN_AKTØR_ID = 1000021543419L;
+    public static final String STD_MANN_FNR = "06016518156";
+    public static final String STD_MANN_FORNAVN = "AL-HAMIDI";
+    public static final String STD_MANN_ETTERNAVN = "KHADIM MUJULY H";
     private static TpsRepo instance;
     // Simulering av Tps sin datamodell
     private static Map<Long, String> FNR_VED_AKTØR_ID = new HashMap<>();
@@ -51,7 +55,9 @@ public class TpsRepo {
                 .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
         tpspersoner.add(new TpsPerson(STD_BARN_AKTØR_ID, new PersonBygger(STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN, MANN)
                 .medRelasjon("MORA", STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN)));
-        tpspersoner.add(new TpsPerson(1000021543419L, new PersonBygger("06016518156", "AL-HAMIDI", "KHADIM MUJULY H", MANN)));
+        tpspersoner.add(new TpsPerson(STD_MANN_AKTØR_ID, new PersonBygger(STD_MANN_FNR, STD_MANN_FORNAVN, STD_MANN_ETTERNAVN, MANN)
+                .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
+
         tpspersoner.add(new TpsPerson(1000076788465L, new PersonBygger("41014100138", "BALLARIN", "AYORA MANUEL", MANN)
                 .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));
 
