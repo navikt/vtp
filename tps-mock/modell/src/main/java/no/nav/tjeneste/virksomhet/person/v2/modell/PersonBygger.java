@@ -1,10 +1,5 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +8,20 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjon;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjoner;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Kjoenn;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Kjoennstyper;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.NorskIdent;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personidenter;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personnavn;
 
 public class PersonBygger {
     private String fnr;
