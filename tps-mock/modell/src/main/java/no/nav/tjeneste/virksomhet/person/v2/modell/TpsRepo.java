@@ -13,6 +13,7 @@ import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.KV
 import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.MANN;
 
 public class TpsRepo {
+    public static LocalDate sistOppdatert = null;
 
     public static final long STD_MANN_AKTØR_ID = 1000021543419L;
     public static final String STD_MANN_FNR = "06016518156";
@@ -50,6 +51,11 @@ public class TpsRepo {
     }
 
     private TpsRepo() {
+        opprettTpsData();
+    }
+
+    private void opprettTpsData() {
+        // Må oppdateres etter datoskift, ettersom noen datoer i testsettet er relative i tid, ikke statiske.
         List<TpsPerson> tpspersoner = new ArrayList<>();
         tpspersoner.add(new TpsPerson(STD_KVINNE_AKTØR_ID, new PersonBygger(STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN, KVINNE)
                 .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
@@ -61,6 +67,10 @@ public class TpsRepo {
         tpspersoner.add(new TpsPerson(1000076788465L, new PersonBygger("41014100138", "BALLARIN", "AYORA MANUEL", MANN)
                 .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));
 
+        FNR_VED_AKTØR_ID.clear();
+        AKTØR_ID_VED_FNR.clear();
+        PERSON_VED_FNR.clear();
+
         for (TpsPerson tpsPerson : tpspersoner) {
             FNR_VED_AKTØR_ID.put(tpsPerson.aktørId, tpsPerson.fnr);
             AKTØR_ID_VED_FNR.put(tpsPerson.fnr, tpsPerson.aktørId);
@@ -69,18 +79,28 @@ public class TpsRepo {
     }
 
     public String finnIdent(long aktoerId) {
+        oppfriskVedDatoskift();
         sjekkSvartelistedeAktører(aktoerId);
         return FNR_VED_AKTØR_ID.get(aktoerId);
     }
 
     public Long finnAktoerId(String fnr) {
+        oppfriskVedDatoskift();
         sjekkSvartelistedeFødselsnummere(fnr);
         return AKTØR_ID_VED_FNR.get(fnr);
     }
 
     public Person finnPerson(String fnr) {
+        oppfriskVedDatoskift();
         sjekkSvartelistedeFødselsnummere(fnr);
         return PERSON_VED_FNR.get(fnr);
+    }
+
+    private void oppfriskVedDatoskift() {
+        if(sistOppdatert == null || !sistOppdatert.equals(LocalDate.now())) {
+            opprettTpsData();
+            sistOppdatert = LocalDate.now();
+        }
     }
 
     private void sjekkSvartelistedeAktører(long aktoerId) {
