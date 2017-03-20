@@ -1,31 +1,34 @@
 package no.nav.tjeneste.virksomhet.journal.v2;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.JournalV2;
+import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentURLRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentURLResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
 public class JournalServiceMockImpl implements JournalV2 {
-
     private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentJournalpostListeRequest")
@@ -35,7 +38,7 @@ public class JournalServiceMockImpl implements JournalV2 {
     @Override
     public HentJournalpostListeResponse hentJournalpostListe(
             @WebParam(name = "Request", targetNamespace = "")
-            HentJournalpostListeRequest request)
+                    HentJournalpostListeRequest request)
             throws HentJournalpostListeSikkerhetsbegrensning {
         throw new UnsupportedOperationException("Ikke implementert");
     }
@@ -47,11 +50,25 @@ public class JournalServiceMockImpl implements JournalV2 {
     @Override
     public HentDokumentResponse hentDokument(
             @WebParam(name = "Request", targetNamespace = "")
-            HentDokumentRequest request)
+                    HentDokumentRequest request)
             throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning {
         LOG.info("hentDokument: " + request.toString());
-        // TODO Auto-generated method stub
-        return null;
+        HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
+        if (request.getJournalpostId() == null || request.getDokumentId() == null || request.getJournalpostId().isEmpty() || request.getDokumentId().isEmpty()) {
+            throw new HentDokumentDokumentIkkeFunnet("DoumentId eller JournalpostId er null.", new DokumentIkkeFunnet());
+        } else {
+            Path pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources");
+            LOG.info("HentDokument: File found at path= " + pdfPath);
+            byte[] pdf = new byte[0];
+            try {
+                pdf = Files.readAllBytes(pdfPath);
+                LOG.info("HentDokument: Binary pdf file = " + pdf.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            hentDokumentResponse.setDokument(pdf);
+        }
+        return hentDokumentResponse;
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentDokumentURLRequest")
@@ -61,7 +78,7 @@ public class JournalServiceMockImpl implements JournalV2 {
     @Override
     public HentDokumentURLResponse hentDokumentURL(
             @WebParam(name = "Request", targetNamespace = "")
-            HentDokumentURLRequest request)
+                    HentDokumentURLRequest request)
             throws HentDokumentURLDokumentIkkeFunnet, HentDokumentURLSikkerhetsbegrensning {
         throw new UnsupportedOperationException("Ikke implementert");
     }
