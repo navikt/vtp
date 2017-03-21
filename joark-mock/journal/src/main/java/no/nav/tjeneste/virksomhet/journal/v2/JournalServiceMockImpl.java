@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
 public class JournalServiceMockImpl implements JournalV2 {
@@ -52,20 +53,19 @@ public class JournalServiceMockImpl implements JournalV2 {
             @WebParam(name = "Request", targetNamespace = "")
                     HentDokumentRequest request)
             throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning {
-        LOG.info("hentDokument: " + request.toString());
         HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
         if (request.getJournalpostId() == null || request.getDokumentId() == null || request.getJournalpostId().isEmpty() || request.getDokumentId().isEmpty()) {
             throw new HentDokumentDokumentIkkeFunnet("DoumentId eller JournalpostId er null.", new DokumentIkkeFunnet());
         } else {
-            Path pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources");
+            Path pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/termin_bekreftelse.pdf");
             LOG.info("HentDokument: File found at path= " + pdfPath);
             byte[] pdf = new byte[0];
             try {
                 pdf = Files.readAllBytes(pdfPath);
-                LOG.info("HentDokument: Binary pdf file = " + pdf.toString());
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Error reading pdf file.", e);
             }
+            LOG.info("HentDokument: Binary pdf file = " + Arrays.toString(pdf));
             hentDokumentResponse.setDokument(pdf);
         }
         return hentDokumentResponse;
