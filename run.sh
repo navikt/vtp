@@ -1,2 +1,2 @@
 #!/bin/bash
-java -cp mock-server/target/mock-server-1.0.1-SNAPSHOT.jar:mock-server/lib/* no.nav.engangsstønad.mock.MockServer &
+java -cp mock-server/target/mock-server-1.0.2-SNAPSHOT.jar:mock-server/lib/* no.nav.engangsstønad.mock.MockServer &
