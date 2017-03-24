@@ -51,25 +51,22 @@ public class JournalServiceMockImpl implements JournalV2 {
     private static final LocalDateTime NOW = LocalDateTime.now();
     private static final String VARIANTFORMAT_ARKIV = "ARKIV";
     private static final String FILTYPE_PDF = "PDF";
-    private static final String JOURNAL_ID = "42";
-    private static final String DOKUMENT_ID = "66";
+    private static final String JOURNAL_ID = "389425811";
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentJournalpostListeRequest")
     @WebResult(name = "Response", targetNamespace = "")
     @RequestWrapper(localName = "hentJournalpostListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2", className = "no.nav.tjeneste.virksomhet.journal.v2.HentJournalpostListe")
     @ResponseWrapper(localName = "hentJournalpostListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2", className = "no.nav.tjeneste.virksomhet.journal.v2.HentJournalpostListeResponse")
     @Override
-    public HentJournalpostListeResponse hentJournalpostListe(
-            @WebParam(name = "Request", targetNamespace = "")
-                    HentJournalpostListeRequest request)
+    public HentJournalpostListeResponse hentJournalpostListe(@WebParam(name = "Request", targetNamespace = "") HentJournalpostListeRequest request)
             throws HentJournalpostListeSikkerhetsbegrensning {
         HentJournalpostListeResponse hentJournalpostListeResponse = new HentJournalpostListeResponse();
         hentJournalpostListeResponse.getJournalpostListe().addAll(Arrays.asList(
-                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1"),
-                createJournalpost(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument 2"),
-                createJournalpost(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3"),
-                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4"),
-                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5")));
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "389425827", "393893532"),
+                createJournalpost(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument 2", "389425835", "393893544"),
+                createJournalpost(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3", "389425828", "393893534"),
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", "389425811", "393893509"),
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", JOURNAL_ID, "393893509")));
         LOG.info("Sender HentJournalpostListeResponse med 5 Journalpost.");
         return hentJournalpostListeResponse;
     }
@@ -79,13 +76,13 @@ public class JournalServiceMockImpl implements JournalV2 {
     @RequestWrapper(localName = "hentDokument", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2", className = "no.nav.tjeneste.virksomhet.journal.v2.HentDokument")
     @ResponseWrapper(localName = "hentDokumentResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2", className = "no.nav.tjeneste.virksomhet.journal.v2.HentDokumentResponse")
     @Override
-    public HentDokumentResponse hentDokument(
-            @WebParam(name = "Request", targetNamespace = "")
-                    HentDokumentRequest request)
+    public HentDokumentResponse hentDokument(@WebParam(name = "Request", targetNamespace = "") HentDokumentRequest request)
             throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning {
         HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
         if (request.getJournalpostId() == null || request.getDokumentId() == null || request.getJournalpostId().isEmpty() || request.getDokumentId().isEmpty()) {
             throw new HentDokumentDokumentIkkeFunnet("DoumentId eller JournalpostId er null.", new DokumentIkkeFunnet());
+        } else if (JOURNAL_ID.equals(request.getJournalpostId())) {
+            throw new HentDokumentDokumentIkkeFunnet("Dokument ikke funnet for journalpostId :389425811", new DokumentIkkeFunnet());
         } else {
             Path pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/termin_bekreftelse.pdf");
             LOG.info("HentDokument: File found at path=%s ", pdfPath);
@@ -106,9 +103,7 @@ public class JournalServiceMockImpl implements JournalV2 {
     @RequestWrapper(localName = "hentDokumentURL", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2", className = "no.nav.tjeneste.virksomhet.journal.v2.HentDokumentURL")
     @ResponseWrapper(localName = "hentDokumentURLResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2", className = "no.nav.tjeneste.virksomhet.journal.v2.HentDokumentURLResponse")
     @Override
-    public HentDokumentURLResponse hentDokumentURL(
-            @WebParam(name = "Request", targetNamespace = "")
-                    HentDokumentURLRequest request)
+    public HentDokumentURLResponse hentDokumentURL(@WebParam(name = "Request", targetNamespace = "") HentDokumentURLRequest request)
             throws HentDokumentURLDokumentIkkeFunnet, HentDokumentURLSikkerhetsbegrensning {
         throw new UnsupportedOperationException("Ikke implementert");
     }
@@ -121,19 +116,19 @@ public class JournalServiceMockImpl implements JournalV2 {
         LOG.info("Ping mottatt og besvart");
     }
 
-    private Journalpost createJournalpost(String filtype, String variantformat, String tittel) {
+    private Journalpost createJournalpost(String filtype, String variantformat, String tittel, String journalpostId, String dokumentId) {
         Journalpost journalpostMedEttDokument = new Journalpost();
-        journalpostMedEttDokument.setJournalpostId(JOURNAL_ID);
-        journalpostMedEttDokument.getDokumentinfoRelasjonListe().add(createDokumentinfoRelasjon(filtype, variantformat, tittel));
+        journalpostMedEttDokument.setJournalpostId(journalpostId);
+        journalpostMedEttDokument.getDokumentinfoRelasjonListe().add(createDokumentinfoRelasjon(filtype, variantformat, tittel, dokumentId));
         journalpostMedEttDokument.setSendt(convertToXMLGregorianCalendar(NOW));
         journalpostMedEttDokument.setMottatt(convertToXMLGregorianCalendar(NOW));
         return journalpostMedEttDokument;
     }
 
-    private DokumentinfoRelasjon createDokumentinfoRelasjon(String filtype, String variantformat, String tittel) {
+    private DokumentinfoRelasjon createDokumentinfoRelasjon(String filtype, String variantformat, String tittel, String dokumentId) {
         DokumentinfoRelasjon dokumentinfoRelasjon = new DokumentinfoRelasjon();
         JournalfoertDokumentInfo journalfoertDokumentInfo = new JournalfoertDokumentInfo();
-        journalfoertDokumentInfo.setDokumentId(DOKUMENT_ID);
+        journalfoertDokumentInfo.setDokumentId(dokumentId);
         Dokumenttyper dokumenttyper = new Dokumenttyper();
         dokumenttyper.setValue(DOKUMENT_TYPE);
         journalfoertDokumentInfo.setDokumentType(dokumenttyper);
