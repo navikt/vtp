@@ -36,7 +36,6 @@
         <joark.journal.version>1.0.3</joark.journal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
         <tps.person.version>2.0.0</tps.person.version>
-		<cxf.version>3.1.9</cxf.version>
 	</properties>
 
 	<dependencyManagement>
@@ -119,16 +118,6 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-frontend-jaxws</artifactId>
-				<version>${cxf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-transports-http</artifactId>
-				<version>${cxf.version}</version>
 			</dependency>
 
 			<!-- Testavhengigheter -->
