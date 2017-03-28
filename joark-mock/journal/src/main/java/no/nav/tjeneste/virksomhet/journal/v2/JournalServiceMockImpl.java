@@ -68,7 +68,7 @@ public class JournalServiceMockImpl implements JournalV2 {
                 createJournalpost(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3", "389425828", "393893534"),
                 createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", "389425811", DOKUMENT_ID_393893509),
                 createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", "389425828", DOKUMENT_ID_393893509),
-                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 6", JOURNAL_ID_389425811, DOKUMENT_ID_393893509)));
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 6", JOURNAL_ID_389425811, "393893534")));
         LOG.info("Sender HentJournalpostListeResponse med 6 Journalpost.");
         return hentJournalpostListeResponse;
     }
