@@ -51,7 +51,8 @@ public class JournalServiceMockImpl implements JournalV2 {
     private static final LocalDateTime NOW = LocalDateTime.now();
     private static final String VARIANTFORMAT_ARKIV = "ARKIV";
     private static final String FILTYPE_PDF = "PDF";
-    private static final String JOURNAL_ID = "389425811";
+    private static final String JOURNAL_ID_389425811 = "389425811";
+    private static final String DOKUMENT_ID_393893509 = "393893509";
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentJournalpostListeRequest")
     @WebResult(name = "Response", targetNamespace = "")
@@ -65,9 +66,10 @@ public class JournalServiceMockImpl implements JournalV2 {
                 createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "389425827", "393893532"),
                 createJournalpost(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument 2", "389425835", "393893544"),
                 createJournalpost(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3", "389425828", "393893534"),
-                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", "389425811", "393893509"),
-                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", JOURNAL_ID, "393893509")));
-        LOG.info("Sender HentJournalpostListeResponse med 5 Journalpost.");
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", "389425811", DOKUMENT_ID_393893509),
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", "389425828", DOKUMENT_ID_393893509),
+                createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 6", JOURNAL_ID_389425811, DOKUMENT_ID_393893509)));
+        LOG.info("Sender HentJournalpostListeResponse med 6 Journalpost.");
         return hentJournalpostListeResponse;
     }
 
@@ -81,11 +83,15 @@ public class JournalServiceMockImpl implements JournalV2 {
         HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
         if (request.getJournalpostId() == null || request.getDokumentId() == null || request.getJournalpostId().isEmpty() || request.getDokumentId().isEmpty()) {
             throw new HentDokumentDokumentIkkeFunnet("DoumentId eller JournalpostId er null.", new DokumentIkkeFunnet());
-        } else if (JOURNAL_ID.equals(request.getJournalpostId())) {
+        } else if (JOURNAL_ID_389425811.equals(request.getJournalpostId())) {
             throw new HentDokumentDokumentIkkeFunnet("Dokument ikke funnet for journalpostId :389425811", new DokumentIkkeFunnet());
         } else {
-            Path pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/termin_bekreftelse.pdf");
-            LOG.info("HentDokument: File found at path=%s ", pdfPath);
+            Path pdfPath;
+            if (DOKUMENT_ID_393893509.equals(request.getDokumentId())) {
+                pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/foreldrepenger_soknad.pdf");
+            } else {
+                pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/termin_bekreftelse.pdf");
+            }
             byte[] pdf = new byte[0];
             try {
                 pdf = Files.readAllBytes(pdfPath);
@@ -116,6 +122,18 @@ public class JournalServiceMockImpl implements JournalV2 {
         LOG.info("Ping mottatt og besvart");
     }
 
+    private static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDateTime localDateTime) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.setTime(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        XMLGregorianCalendar xmlGregorianCalendar = null;
+        try {
+            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+        } catch (DatatypeConfigurationException e) {
+            LOG.error("", e);
+        }
+        return xmlGregorianCalendar;
+    }
+
     private Journalpost createJournalpost(String filtype, String variantformat, String tittel, String journalpostId, String dokumentId) {
         Journalpost journalpostMedEttDokument = new Journalpost();
         journalpostMedEttDokument.setJournalpostId(journalpostId);
@@ -143,17 +161,5 @@ public class JournalServiceMockImpl implements JournalV2 {
         journalfoertDokumentInfo.getBeskriverInnholdListe().add(dokumentInnhold);
         dokumentinfoRelasjon.setJournalfoertDokument(journalfoertDokumentInfo);
         return dokumentinfoRelasjon;
-    }
-
-    private static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDateTime localDateTime) {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.setTime(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
-        XMLGregorianCalendar xmlGregorianCalendar = null;
-        try {
-            xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
-        } catch (DatatypeConfigurationException e) {
-            LOG.error("", e);
-        }
-        return xmlGregorianCalendar;
     }
 }
