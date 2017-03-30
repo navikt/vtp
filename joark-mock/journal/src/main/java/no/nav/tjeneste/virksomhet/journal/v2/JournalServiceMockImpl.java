@@ -1,29 +1,5 @@
 package no.nav.tjeneste.virksomhet.journal.v2;
 
-import static java.lang.Long.parseLong;
-
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkkeFunnet;
@@ -37,6 +13,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentinfoRelasjon;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Dokumenttyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.JournalfoertDokumentInfo;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Kommunikasjonsretninger;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Variantformater;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
@@ -47,31 +24,55 @@ import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRespo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static java.lang.Long.parseLong;
+
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
 public class JournalServiceMockImpl implements JournalV2 {
     private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
     private static final String FILTYPE_XML = "XML";
     private static final String VARIANTFORMAT_ORIGINAL = "ORIGINAL";
     private static final String DOKUMENT_TYPE = "00001";
-    private static final LocalDateTime NOW = LocalDateTime.now();
     private static final String VARIANTFORMAT_ARKIV = "ARKIV";
     private static final String FILTYPE_PDF = "PDF";
     private static final String JOURNAL_ID_389425811 = "389425811";
     private static final String DOKUMENT_ID_393893509 = "393893509";
+    private static final LocalDateTime NOW = LocalDateTime.now();
+    private static final LocalDateTime YESTERDAY = LocalDateTime.now().minusDays(1);
 
     private static final Map<String, Journalpost> JOURNALPOSTER_PER_FAGSAK = new HashMap<>();
     private static final Map<String, Journalpost> JOURNALPOST_PER_JOURNAL_ID = new HashMap<>();
 
     static {
         // Fagsaksnr settes opp som fnr*100 av simulert Swagger-mottak
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("07078518434") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "389425827", "393893532"));
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("07078517802") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "389425827", "393893532"));
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("07078517055") * 100, createJournalpost(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument 2", "389425835", "393893544"));
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("05058807410") * 100, createJournalpost(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3", "389425828", "393893534"));
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("13128807300") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", "389425811", DOKUMENT_ID_393893509));
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("03039005009") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", "389425828", DOKUMENT_ID_393893509));
-        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("50099414682") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 6", JOURNAL_ID_389425811, "393893534"));
-        
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("07078518434") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "389425827", "393893532", "I"));
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("07078517802") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "389425827", "393893532", "U"));
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("07078517055") * 100, createJournalpost(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument 2", "389425835", "393893544", "I"));
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("05058807410") * 100, createJournalpost(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3", "389425828", "393893534", "N"));
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("13128807300") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", "389425811", DOKUMENT_ID_393893509, "U"));
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("03039005009") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", "389425828", DOKUMENT_ID_393893509, "U"));
+        JOURNALPOSTER_PER_FAGSAK.put("" + parseLong("50099414682") * 100, createJournalpost(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 6", JOURNAL_ID_389425811, "393893534", "U"));
+
         JOURNALPOSTER_PER_FAGSAK.forEach((saksnr, post) -> JOURNALPOST_PER_JOURNAL_ID.put(post.getJournalpostId(), post));
     }
 
@@ -85,7 +86,7 @@ public class JournalServiceMockImpl implements JournalV2 {
             throws HentJournalpostListeSikkerhetsbegrensning {
         HentJournalpostListeResponse response = new HentJournalpostListeResponse();
         Optional<String> funnetsaksnr = request.getSakListe().stream().map(sak -> sak.getSakId()).findFirst();
-        if(!funnetsaksnr.isPresent()) {
+        if (!funnetsaksnr.isPresent()) {
             LOG.info("Fant ingen saksnr i request.");
             return response;
         }
@@ -93,7 +94,7 @@ public class JournalServiceMockImpl implements JournalV2 {
         if (journalpost == null) {
             LOG.info("Fant ingen matchende journalpost for saksnr = " + funnetsaksnr.get());
             return response;
-        }        
+        }
         response.getJournalpostListe().add(journalpost);
         LOG.info("Sender HentJournalpostListeResponse med 1 Journalpost for saksnr = " + funnetsaksnr.get());
         return response;
@@ -163,13 +164,16 @@ public class JournalServiceMockImpl implements JournalV2 {
         return xmlGregorianCalendar;
     }
 
-    private static Journalpost createJournalpost(String filtype, String variantformat, String tittel, String journalpostId, String dokumentId) {
-        Journalpost journalpostMedEttDokument = new Journalpost();
-        journalpostMedEttDokument.setJournalpostId(journalpostId);
-        journalpostMedEttDokument.getDokumentinfoRelasjonListe().add(createDokumentinfoRelasjon(filtype, variantformat, tittel, dokumentId));
-        journalpostMedEttDokument.setSendt(convertToXMLGregorianCalendar(NOW));
-        journalpostMedEttDokument.setMottatt(convertToXMLGregorianCalendar(NOW));
-        return journalpostMedEttDokument;
+    private static Journalpost createJournalpost(String filtype, String variantformat, String tittel, String journalpostId, String dokumentId, String kommunikasjonsretning) {
+        Journalpost journalpost = new Journalpost();
+        journalpost.setJournalpostId(journalpostId);
+        journalpost.getDokumentinfoRelasjonListe().add(createDokumentinfoRelasjon(filtype, variantformat, tittel, dokumentId));
+        journalpost.setSendt(convertToXMLGregorianCalendar(NOW));
+        journalpost.setMottatt(convertToXMLGregorianCalendar(YESTERDAY));
+        Kommunikasjonsretninger kommunikasjonsretninger = new Kommunikasjonsretninger();
+        kommunikasjonsretninger.setValue(kommunikasjonsretning);
+        journalpost.setKommunikasjonsretning(kommunikasjonsretninger);
+        return journalpost;
     }
 
     private static DokumentinfoRelasjon createDokumentinfoRelasjon(String filtype, String variantformat, String tittel, String dokumentId) {
