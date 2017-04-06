@@ -1,18 +1,25 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.KVINNE;
 import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.Kjønn.MANN;
 
 public class TpsRepo {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TpsRepo.class);
+
     public static LocalDate sistOppdatert = null;
 
     public static final long STD_MANN_AKTØR_ID = 1000021543419L;
@@ -67,6 +74,17 @@ public class TpsRepo {
         tpspersoner.add(new TpsPerson(1000076788465L, new PersonBygger("41014100138", "BALLARIN", "AYORA MANUEL", MANN)
                 .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));
 
+        // Legg til personer og relasjoner fra csv
+        List<TpsPerson> personerFraFil = lesPersonerFraFil("personer.csv");
+        List<TpsRelasjon> relasjonerFraFil = lesRelasjonerFraFil("relasjoner.csv");
+        relasjonerFraFil.forEach(relasjon -> {
+            Optional<TpsPerson> funnetPerson = personerFraFil.stream()
+                    .filter(person -> person.fnr.equals(relasjon.fnr))
+                    .findFirst();
+            funnetPerson.ifPresent(tpsPerson -> new RelasjonBygger(relasjon).byggFor(tpsPerson.person));
+        });
+        tpspersoner.addAll(personerFraFil);
+
         FNR_VED_AKTØR_ID.clear();
         AKTØR_ID_VED_FNR.clear();
         PERSON_VED_FNR.clear();
@@ -75,6 +93,24 @@ public class TpsRepo {
             FNR_VED_AKTØR_ID.put(tpsPerson.aktørId, tpsPerson.fnr);
             AKTØR_ID_VED_FNR.put(tpsPerson.fnr, tpsPerson.aktørId);
             PERSON_VED_FNR.put(tpsPerson.fnr, tpsPerson.person);
+        }
+    }
+
+    private List<TpsPerson> lesPersonerFraFil(String csvFile) {
+        try {
+            return PersonCsvLeser.lesFil(csvFile);
+        } catch (Exception e) {
+            LOG.warn("Klarte ikke lese fil " + csvFile);
+            return Collections.emptyList();
+        }
+    }
+
+    private List<TpsRelasjon> lesRelasjonerFraFil(String csvFile) {
+        try {
+            return RelasjonCsvLeser.lesFil(csvFile);
+        } catch (Exception e) {
+            LOG.warn("Klarte ikke lese fil " + csvFile);
+            return Collections.emptyList();
         }
     }
 
@@ -112,19 +148,6 @@ public class TpsRepo {
     private void sjekkSvartelistedeFødselsnummere(String fnr) {
         if (FNR_TRIGGER_SERVICE_UNAVAILABLE.equals(fnr)) {
             throw new IllegalStateException("Simulerer exception for fnr: " + fnr);
-        }
-    }
-
-    // Hjelpeklasser
-    class TpsPerson {
-        private final long aktørId;
-        private final String fnr;
-        private final Person person;
-
-        TpsPerson(long aktørId, PersonBygger personBygger) {
-            this.aktørId = aktørId;
-            this.fnr = personBygger.getFnr();
-            this.person = personBygger.bygg();
         }
     }
 
