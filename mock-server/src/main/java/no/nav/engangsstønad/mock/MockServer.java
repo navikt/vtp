@@ -35,13 +35,13 @@ public class MockServer {
         server.setHandler(contextHandlerCollection);
         server.start();
         publishService(AktoerServiceMockImpl.class, "/aktoer");
-        // access wsdl on http://localhost:7779/aktoer?wsdl
+        // access wsdl on http://localhost:7999/aktoer?wsdl
         publishService(SakServiceMockImpl.class, "/sak");
-        // access wsdl on http://localhost:7779/sak?wsdl
+        // access wsdl on http://localhost:7999/sak?wsdl
         publishService(PersonServiceMockImpl.class, "/person");
-        // access wsdl on http://localhost:7779/person?wsdl
+        // access wsdl on http://localhost:7999/person?wsdl
         publishService(JournalServiceMockImpl.class, "/journal");
-        // access wsdl on http://localhost:7779/journal?wsdl
+        // access wsdl on http://localhost:7999/journal?wsdl
 
     }
 
