@@ -14,6 +14,11 @@
 
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
+        <dependency>
+            <artifactId>gsak-mock-modell</artifactId>
+            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <version>1.0.2-SNAPSHOT</version>
+        </dependency>
 
 		<!-- Eksterne avhengigheter -->
         <dependency>
