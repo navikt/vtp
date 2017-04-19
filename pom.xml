@@ -33,6 +33,7 @@
         <junit.version>4.12</junit.version>
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
+		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
         <joark.journal.version>1.0.3</joark.journal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
         <tps.person.version>2.0.0</tps.person.version>
@@ -61,6 +62,11 @@
 				<artifactId>sak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<artifactId>oppgavebehandling-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- Kontraktsavhengigheter -->
 			<dependency>
@@ -87,6 +93,12 @@
                 <classifier>jaxws</classifier>
                 <version>${joark.journal.version}</version>
             </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
+				<version>${gsak.oppgavebehandling.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
 
 			<!-- Eksterne bibliotek -->
 			<dependency>
