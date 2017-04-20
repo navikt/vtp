@@ -31,6 +31,8 @@
         <slf4j.version>1.7.22</slf4j.version>
         <jetty.version>9.4.1.v20170120</jetty.version>
         <junit.version>4.12</junit.version>
+		<ojdbc.version>12.2.0.1</ojdbc.version>
+		<hibernate.version>5.2.9.Final</hibernate.version>
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
@@ -130,6 +132,16 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>${ojdbc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
 			</dependency>
 
 			<!-- Testavhengigheter -->

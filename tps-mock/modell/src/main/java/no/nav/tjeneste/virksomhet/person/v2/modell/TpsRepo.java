@@ -4,6 +4,10 @@ import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -58,10 +62,17 @@ public class TpsRepo {
     }
 
     private TpsRepo() {
-        opprettTpsData();
+        opprettTpsData_db();
     }
 
-    private void opprettTpsData() {
+    private void opprettTpsData_db() {
+        EntityManagerFactory sessionFactory = Persistence.createEntityManagerFactory( "tps" );
+        EntityManager entityManager = sessionFactory.createEntityManager();
+        TpsPerson tpsPerson = entityManager.find(TpsPerson.class, new Long(1));
+        System.out.println("-------------------------------- " + tpsPerson);
+    }
+
+    private void opprettTpsData_csv() {
         // Må oppdateres etter datoskift, ettersom noen datoer i testsettet er relative i tid, ikke statiske.
         List<TpsPerson> tpspersoner = new ArrayList<>();
         tpspersoner.add(new TpsPerson(STD_KVINNE_AKTØR_ID, new PersonBygger(STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN, KVINNE)
@@ -134,7 +145,7 @@ public class TpsRepo {
 
     private void oppfriskVedDatoskift() {
         if(sistOppdatert == null || !sistOppdatert.equals(LocalDate.now())) {
-            opprettTpsData();
+            opprettTpsData_db();
             sistOppdatert = LocalDate.now();
         }
     }
