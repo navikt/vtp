@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
 
+import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
@@ -44,6 +45,8 @@ public class MockServer {
         publishService(JournalServiceMockImpl.class, "/journal");
         // access wsdl on http://localhost:7999/journal?wsdl
         publishService(OppgavebehandlingServiceMockImpl.class, "/oppgavebehandling");
+        // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
+        publishService(BehandleSakServiceMockImpl.class, "/behandlesak");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
 
     }
