@@ -31,6 +31,11 @@
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <artifactId>oppgavebehandling-mock</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.engangsstonad</groupId>
             <artifactId>journal-mock</artifactId>
             <version>${project.version}</version>
         </dependency>

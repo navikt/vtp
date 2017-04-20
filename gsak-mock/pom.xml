@@ -13,6 +13,7 @@
     <modules>
         <module>sak</module>
         <module>modell</module>
+        <module>oppgavebehandling</module>
     </modules>
 
 

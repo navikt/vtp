@@ -22,6 +22,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
+import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 public class MockServer {
@@ -42,6 +43,8 @@ public class MockServer {
         // access wsdl on http://localhost:7999/person?wsdl
         publishService(JournalServiceMockImpl.class, "/journal");
         // access wsdl on http://localhost:7999/journal?wsdl
+        publishService(OppgavebehandlingServiceMockImpl.class, "/oppgavebehandling");
+        // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
 
     }
 
