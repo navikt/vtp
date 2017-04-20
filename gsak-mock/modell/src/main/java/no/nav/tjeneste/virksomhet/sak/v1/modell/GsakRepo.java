@@ -2,16 +2,13 @@ package no.nav.tjeneste.virksomhet.sak.v1.modell;
 
 
 import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
-import no.nav.tjeneste.virksomhet.sak.v1.binding.FinnSakUgyldigInput;
 import no.nav.tjeneste.virksomhet.sak.v1.binding.HentSakSakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.feil.SakIkkeFunnet;
-import no.nav.tjeneste.virksomhet.sak.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Aktoer;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Fagomraader;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Fagsystemer;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Person;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak;
-import no.nav.tjeneste.virksomhet.sak.v1.meldinger.FinnSakRequest;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -19,16 +16,17 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class GsakRepo {
 
     public static final String FAGOMRÅDE_KODE = "FOR";
     public static final String FAGSYSTEM_KODE = "FS22";
+
+    private static GsakRepo instance;
 
     private Map<String, Sak> repository;
 
@@ -45,33 +43,17 @@ public class GsakRepo {
         }
     }
 
-    public List<Sak> finnSak(FinnSakRequest request) throws FinnSakUgyldigInput {
-
-        Aktoer bruker = request.getBruker();
-        Fagsystemer fagsystem = request.getFagsystem();
-        String fagsystemSakID = request.getFagsystemSakId();
-        List<Fagomraader> fagomraadeListe = request.getFagomraadeListe();
-
-        if (bruker == null && (request.getFagsystemSakId() == null || fagsystemSakID == null)) {
-            throw new FinnSakUgyldigInput("enten Bruker eller FagsystemSakID+Fagsystem må være satt", new UgyldigInput());
-        }
-
-        return repository.values().stream()
-                .filter(sak -> bruker == null || sakGjelderBruker(sak, bruker))
-                .filter(sak -> fagsystem == null || sak.getFagsystem().getValue().equals(fagsystem.getValue()))
-                .filter(sak -> fagsystemSakID == null || sak.getFagsystemSakId().equals(fagsystemSakID))
-                .filter(sak -> (fagomraadeListe == null || fagomraadeListe.isEmpty()) || fagomraadeListe.stream()
-                        .anyMatch(fagomraade -> fagomraade.getValue().equals(sak.getFagomraade().getValue())))
-                .collect(Collectors.toList());
+    public Collection<Sak> getAlleSaker() {
+        return repository.values();
     }
 
-    private boolean sakGjelderBruker(Sak sak, Aktoer bruker) {
-        for (Aktoer gjelderBruker : sak.getGjelderBrukerListe()) {
-            if (bruker.getIdent().equals(gjelderBruker.getIdent())) {
-                return true;
-            }
+    public static synchronized GsakRepo init() {
+
+        if (instance == null) {
+            instance = new GsakRepo();
         }
-        return false;
+        return instance;
+
     }
 
     private void loadRepoData() {
