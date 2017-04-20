@@ -62,7 +62,11 @@ public class TpsRepo {
     }
 
     private TpsRepo() {
-        opprettTpsData_db();
+        opprettTpsData();
+    }
+
+    private void opprettTpsData() {
+        opprettTpsData_csv();
     }
 
     private void opprettTpsData_db() {
@@ -145,7 +149,7 @@ public class TpsRepo {
 
     private void oppfriskVedDatoskift() {
         if(sistOppdatert == null || !sistOppdatert.equals(LocalDate.now())) {
-            opprettTpsData_db();
+            opprettTpsData();
             sistOppdatert = LocalDate.now();
         }
     }
