@@ -41,9 +41,9 @@ public class RelasjonCsvLeser {
         TpsRelasjon relasjon = new TpsRelasjon();
         relasjon.fnr = rad.FNR;
         relasjon.relasjonFnr = rad.FNR_relasjon;
-        relasjon.relasjon = rad.Relasjonstype;
-        relasjon.relasjonFornavn = rad.Fornavn;
-        relasjon.relasjonEtternavn = rad.Etternavn;
+        relasjon.relasjonsType = rad.Relasjonstype;
+        relasjon.fornavn = rad.Fornavn;
+        relasjon.etternavn = rad.Etternavn;
         return relasjon;
     }
 

@@ -66,14 +66,18 @@ public class TpsRepo {
     }
 
     private void opprettTpsData() {
-        opprettTpsData_csv();
+        opprettTpsData_db();
     }
 
     private void opprettTpsData_db() {
-        EntityManagerFactory sessionFactory = Persistence.createEntityManagerFactory( "tps" );
-        EntityManager entityManager = sessionFactory.createEntityManager();
-        TpsPerson tpsPerson = entityManager.find(TpsPerson.class, new Long(1));
-        System.out.println("-------------------------------- " + tpsPerson);
+        EntityManager entityManager = Persistence.createEntityManagerFactory( "tps" ).createEntityManager();
+
+        List<TpsPerson> tpsPersoner = entityManager.createNamedQuery("TpsPerson.findAll", TpsPerson.class).getResultList();
+        tpsPersoner.forEach(tpsPerson -> tpsPerson.person = new PersonBygger(tpsPerson).bygg());
+
+        List<TpsRelasjon> tpsRelasjoner = entityManager.createNamedQuery("TpsRelasjon.findAll", TpsRelasjon.class).getResultList();
+
+        relatePersoner(tpsPersoner, tpsRelasjoner);
     }
 
     private void opprettTpsData_csv() {
@@ -90,15 +94,11 @@ public class TpsRepo {
                 .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));
 
         // Legg til personer og relasjoner fra csv
-        List<TpsPerson> personerFraFil = lesPersonerFraFil("personer.csv");
-        List<TpsRelasjon> relasjonerFraFil = lesRelasjonerFraFil("relasjoner.csv");
-        relasjonerFraFil.forEach(relasjon -> {
-            Optional<TpsPerson> funnetPerson = personerFraFil.stream()
-                    .filter(person -> person.fnr.equals(relasjon.fnr))
-                    .findFirst();
-            funnetPerson.ifPresent(tpsPerson -> new RelasjonBygger(relasjon).byggFor(tpsPerson.person));
-        });
-        tpspersoner.addAll(personerFraFil);
+        List<TpsPerson> personer = lesPersonerFraFil("personer.csv");
+        List<TpsRelasjon> relasjoner = lesRelasjonerFraFil("relasjoner.csv");
+        tpspersoner.addAll(personer);
+
+        relatePersoner(personer, relasjoner);
 
         FNR_VED_AKTØR_ID.clear();
         AKTØR_ID_VED_FNR.clear();
@@ -109,6 +109,16 @@ public class TpsRepo {
             AKTØR_ID_VED_FNR.put(tpsPerson.fnr, tpsPerson.aktørId);
             PERSON_VED_FNR.put(tpsPerson.fnr, tpsPerson.person);
         }
+
+    }
+
+    private void relatePersoner(List<TpsPerson> personer, List<TpsRelasjon> relasjoner) {
+        relasjoner.forEach(relasjon -> {
+            Optional<TpsPerson> funnetPerson = personer.stream()
+                    .filter(person -> person.fnr.equals(relasjon.fnr))
+                    .findFirst();
+            funnetPerson.ifPresent(tpsPerson -> new RelasjonBygger(relasjon).byggFor(tpsPerson.person));
+        });
     }
 
     private List<TpsPerson> lesPersonerFraFil(String csvFile) {

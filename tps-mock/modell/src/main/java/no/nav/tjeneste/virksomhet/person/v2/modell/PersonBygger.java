@@ -42,6 +42,22 @@ public class PersonBygger {
         }
     }
 
+    public PersonBygger(TpsPerson tpsPerson) {
+        this.fnr = tpsPerson.fnr;
+        this.fornavn = tpsPerson.fornavn;
+        this.etternavn = tpsPerson.etternavn;
+
+        if (tpsPerson.kjønn.equals("MANN")) {
+            this.kjønn = Kjønn.MANN;
+
+        } else if (tpsPerson.kjønn.equals("KVINNE")) {
+            this.kjønn = Kjønn.KVINNE;
+
+        } else {
+            this.kjønn = null;
+        }
+    }
+
     public PersonBygger(String fnr, String fornavn, String etternavn, Kjønn kjønn) {
         Objects.requireNonNull(fnr, "Fødselsnummer er obligatorisk");
         Objects.requireNonNull(kjønn, "Kjønn er obligatorisk");
@@ -62,12 +78,12 @@ public class PersonBygger {
         return this;
     }
 
-    public PersonBygger medRelasjon(String relasjon, String relasjonFnr, String relasjonFornavn, String relasjonEtternavn) {
+    public PersonBygger medRelasjon(String relasjonsType, String relasjonFnr, String fornavn, String etternavn) {
         tpsRelasjon = new TpsRelasjon();
-        tpsRelasjon.relasjon = relasjon;
+        tpsRelasjon.relasjonsType = relasjonsType;
         tpsRelasjon.relasjonFnr = relasjonFnr;
-        tpsRelasjon.relasjonFornavn = relasjonFornavn;
-        tpsRelasjon.relasjonEtternavn = relasjonEtternavn;
+        tpsRelasjon.fornavn = fornavn;
+        tpsRelasjon.etternavn = etternavn;
         return this;
     }
 

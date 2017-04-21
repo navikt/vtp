@@ -33,7 +33,7 @@ public class RelasjonBygger {
         Familierelasjon familierelasjon = new Familierelasjon();
         familierelasjon.setHarSammeBosted(true);
         Familierelasjoner familierelasjoner = new Familierelasjoner();
-        familierelasjoner.setValue(tpsRelasjon.relasjon);
+        familierelasjoner.setValue(tpsRelasjon.relasjonsType);
         familierelasjon.setTilRolle(familierelasjoner);
 
         Person relatertPersjon = new Person();
@@ -54,10 +54,10 @@ public class RelasjonBygger {
 
         // Relasjonens navn
         Personnavn relasjonPersonnavn = new Personnavn();
-        relasjonPersonnavn.setEtternavn(tpsRelasjon.relasjonEtternavn.toUpperCase());
-        relasjonPersonnavn.setFornavn(tpsRelasjon.relasjonFornavn.toUpperCase());
-        relasjonPersonnavn.setSammensattNavn(tpsRelasjon.relasjonEtternavn.toUpperCase() + " "
-                + tpsRelasjon.relasjonFornavn.toUpperCase());
+        relasjonPersonnavn.setEtternavn(tpsRelasjon.etternavn.toUpperCase());
+        relasjonPersonnavn.setFornavn(tpsRelasjon.fornavn.toUpperCase());
+        relasjonPersonnavn.setSammensattNavn(tpsRelasjon.etternavn.toUpperCase() + " "
+                + tpsRelasjon.fornavn.toUpperCase());
         relatertPersjon.setPersonnavn(relasjonPersonnavn);
 
         // Relasjon settes på personen
