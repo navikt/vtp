@@ -83,16 +83,16 @@ public class JournalServiceMockImpl implements JournalV2 {
         saksnummere.forEach(saksnummer -> {
                     Journalpost journalpostInn = createJournalpost("journalpost-inn-" + saksnummer, "I");
                     List<DokumentinfoRelasjon> dokumentListeInn = journalpostInn.getDokumentinfoRelasjonListe();
-                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "393893532"));
-                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 1", "393893532"));
-                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument 2", "393893544"));
-                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument 3", "393893534"));
+                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_inn_1", "393893532"));
+                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_inn_2", "393893532"));
+                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument_inn_3", "393893544"));
+                    dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument_inn_4", "393893534"));
 
                     Journalpost journalpostUt = createJournalpost("journalpost-ut-" + saksnummer, "U");
-                    List<DokumentinfoRelasjon> dokumentListeUt = journalpostInn.getDokumentinfoRelasjonListe();
-                    dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument 4", DOKUMENT_ID_393893509));
-                    dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 5", DOKUMENT_ID_393893509));
-                    dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument 6", "393893534"));
+                    List<DokumentinfoRelasjon> dokumentListeUt = journalpostUt.getDokumentinfoRelasjonListe();
+                    dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument_ut_1", DOKUMENT_ID_393893509));
+                    dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_ut_2", DOKUMENT_ID_393893509));
+                    dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_ut_3", "393893534"));
 
                     List<Journalpost> journalposter = new ArrayList<>();
                     journalposter.add(journalpostInn);
