@@ -1,4 +1,7 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v2.data;
+
+import no.nav.tjeneste.virksomhet.person.v2.modell.RelasjonRad;
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
 
 import static no.nav.tjeneste.virksomhet.person.v2.modell.CSVUtils.parseLine;
 

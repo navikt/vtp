@@ -1,28 +1,28 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-class PersonRad {
+public class PersonRad {
 
-    String AktoerId;
-    String FNR;
-    String RegDato;
-    String Fornavn;
-    String Mellomnavn;
-    String Etternavn;
-    String PAdresse1;
-    String PAdresse2;
-    String PAdresse3;
-    String Postadr_land;
-    String Dato_postadresse;
-    String Statsborgerskap;
-    String BAdresse_gate;
-    String Bhusnr;
-    String Bgatekode;
-    String Bpostnr;
-    String Bflyttedato;
-    String Bkomnr;
-    String Spesreg;
-    String Dato_spesreg;
-    String Kjoenn;
+    public String AktoerId;
+    public String FNR;
+    public String RegDato;
+    public String Fornavn;
+    public String Mellomnavn;
+    public String Etternavn;
+    public String PAdresse1;
+    public String PAdresse2;
+    public String PAdresse3;
+    public String Postadr_land;
+    public String Dato_postadresse;
+    public String Statsborgerskap;
+    public String BAdresse_gate;
+    public String Bhusnr;
+    public String Bgatekode;
+    public String Bpostnr;
+    public String Bflyttedato;
+    public String Bkomnr;
+    public String Spesreg;
+    public String Dato_spesreg;
+    public String Kjoenn;
 
 
 

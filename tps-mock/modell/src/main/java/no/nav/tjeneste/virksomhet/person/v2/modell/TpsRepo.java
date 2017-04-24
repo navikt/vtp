@@ -1,5 +1,9 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
+import no.nav.tjeneste.virksomhet.person.v2.data.PersonCsvLeser;
+import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
+import no.nav.tjeneste.virksomhet.person.v2.data.RelasjonCsvLeser;
+import no.nav.tjeneste.virksomhet.person.v2.data.RelasjonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

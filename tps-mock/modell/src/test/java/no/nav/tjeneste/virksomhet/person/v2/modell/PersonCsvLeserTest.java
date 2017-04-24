@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import no.nav.tjeneste.virksomhet.person.v2.data.PersonCsvLeser;
 import org.junit.Test;
 
 public class PersonCsvLeserTest {

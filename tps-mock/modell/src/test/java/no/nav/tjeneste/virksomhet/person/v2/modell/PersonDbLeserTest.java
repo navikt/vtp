@@ -1,6 +1,7 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
 
+import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;

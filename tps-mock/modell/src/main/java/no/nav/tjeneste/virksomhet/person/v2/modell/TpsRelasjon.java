@@ -15,25 +15,30 @@ import javax.persistence.Table;
 
 @Entity(name = "TpsRelasjon")
 @Table(name = "MOCK_TPS_PERSONRELASJONER")
-class TpsRelasjon {
+public class TpsRelasjon {
 
     @Id
     @Column(name = "ID", nullable = false)
     long id;
 
     @Column(name = "FNR", nullable = false)
+    public
     String fnr;
 
     @Column(name = "FNR_RELASJON", nullable = false)
+    public
     String relasjonFnr;
 
     @Column(name = "RELASJONSTYPE", nullable = false)
+    public
     String relasjonsType;
 
     @Column(name = "FORNAVN", nullable = false)
+    public
     String fornavn;
 
     @Column(name = "ETTERNAVN", nullable = false)
+    public
     String etternavn;
 
     public TpsRelasjon() {

@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 
 @Entity(name = "TpsPerson")
 @Table(name = "MOCK_TPS_PERSONER")
-class TpsPerson {
+public class TpsPerson {
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -39,12 +39,12 @@ class TpsPerson {
     public String etternavn;
 
     @Transient
-    Person person;
+    public Person person;
 
     TpsPerson() {
     }
 
-    TpsPerson(long aktørId, PersonBygger personBygger) {
+    public TpsPerson(long aktørId, PersonBygger personBygger) {
         this.aktørId = aktørId;
         this.fnr = personBygger.getFnr();
         this.person = personBygger.bygg();

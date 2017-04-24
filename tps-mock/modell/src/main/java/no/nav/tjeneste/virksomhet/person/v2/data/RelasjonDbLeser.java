@@ -1,9 +1,11 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v2.data;
+
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-class RelasjonDbLeser {
+public class RelasjonDbLeser {
 
     private EntityManager entityManager;
 
@@ -11,7 +13,7 @@ class RelasjonDbLeser {
         this.entityManager = entityManager;
     }
 
-    List<TpsRelasjon> opprettTpsData() {
+    public List<TpsRelasjon> opprettTpsData() {
         List<TpsRelasjon> tpsRelasjoner = entityManager.createNamedQuery("TpsRelasjon.findAll", TpsRelasjon.class).getResultList();
         return tpsRelasjoner;
     }

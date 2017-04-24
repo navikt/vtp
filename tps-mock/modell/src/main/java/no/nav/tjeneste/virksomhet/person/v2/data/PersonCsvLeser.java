@@ -1,8 +1,11 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v2.data;
+
+import no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger;
+import no.nav.tjeneste.virksomhet.person.v2.modell.PersonRad;
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsPerson;
 
 import static java.lang.Long.parseLong;
 import static no.nav.tjeneste.virksomhet.person.v2.modell.CSVUtils.parseLine;
-import static no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo.*;
 
 import java.io.File;
 import java.util.ArrayList;

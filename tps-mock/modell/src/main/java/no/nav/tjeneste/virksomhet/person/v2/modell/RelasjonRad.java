@@ -1,11 +1,11 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-class RelasjonRad {
+public class RelasjonRad {
 
-    String FNR;
-    String FNR_relasjon;
-    String Relasjonstype;
-    String Fornavn;
-    String Etternavn;
+    public String FNR;
+    public String FNR_relasjon;
+    public String Relasjonstype;
+    public String Fornavn;
+    public String Etternavn;
 
 }
