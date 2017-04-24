@@ -70,8 +70,8 @@ public class TpsRepo {
     private void opprettTpsData_db() {
         EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
-        List<TpsPerson> tpsPersoner = new PersonDbLeser(entityManager).opprettTpsData_db();
-        List<TpsRelasjon> tpsRelasjoner = new RelasjonDbLeser(entityManager).opprettTpsData_db();
+        List<TpsPerson> tpsPersoner = new PersonDbLeser(entityManager).opprettTpsData();
+        List<TpsRelasjon> tpsRelasjoner = new RelasjonDbLeser(entityManager).opprettTpsData();
 
         relatePersoner(tpsPersoner, tpsRelasjoner);
     }

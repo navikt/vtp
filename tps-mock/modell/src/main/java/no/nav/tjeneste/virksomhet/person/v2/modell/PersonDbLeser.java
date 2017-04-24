@@ -11,7 +11,7 @@ public class PersonDbLeser {
         this.entityManager = entityManager;
     }
 
-    List<TpsPerson> opprettTpsData_db() {
+    List<TpsPerson> opprettTpsData() {
         List<TpsPerson> tpsPersoner = entityManager.createNamedQuery("TpsPerson.findAll", TpsPerson.class).getResultList();
         tpsPersoner.forEach(tpsPerson -> tpsPerson.person = new PersonBygger(tpsPerson).bygg());
 

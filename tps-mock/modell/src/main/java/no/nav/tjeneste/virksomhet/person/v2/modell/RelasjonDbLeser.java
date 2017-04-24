@@ -11,7 +11,7 @@ class RelasjonDbLeser {
         this.entityManager = entityManager;
     }
 
-    List<TpsRelasjon> opprettTpsData_db() {
+    List<TpsRelasjon> opprettTpsData() {
         List<TpsRelasjon> tpsRelasjoner = entityManager.createNamedQuery("TpsRelasjon.findAll", TpsRelasjon.class).getResultList();
         return tpsRelasjoner;
     }
