@@ -5,9 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -70,12 +68,10 @@ public class TpsRepo {
     }
 
     private void opprettTpsData_db() {
-        EntityManager entityManager = Persistence.createEntityManagerFactory( "tps" ).createEntityManager();
+        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
-        List<TpsPerson> tpsPersoner = entityManager.createNamedQuery("TpsPerson.findAll", TpsPerson.class).getResultList();
-        tpsPersoner.forEach(tpsPerson -> tpsPerson.person = new PersonBygger(tpsPerson).bygg());
-
-        List<TpsRelasjon> tpsRelasjoner = entityManager.createNamedQuery("TpsRelasjon.findAll", TpsRelasjon.class).getResultList();
+        List<TpsPerson> tpsPersoner = new PersonDbLeser(entityManager).opprettTpsData_db();
+        List<TpsRelasjon> tpsRelasjoner = new RelasjonDbLeser(entityManager).opprettTpsData_db();
 
         relatePersoner(tpsPersoner, tpsRelasjoner);
     }
