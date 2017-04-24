@@ -1,8 +1,6 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-import no.nav.tjeneste.virksomhet.person.v2.data.PersonCsvLeser;
 import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
-import no.nav.tjeneste.virksomhet.person.v2.data.RelasjonCsvLeser;
 import no.nav.tjeneste.virksomhet.person.v2.data.RelasjonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 import org.slf4j.Logger;
@@ -12,8 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,60 +55,47 @@ public class TpsRepo {
     public static synchronized TpsRepo init() {
         if(instance == null) {
             instance = new TpsRepo();
+            opprettTpsData();
         }
         return instance;
     }
 
-    private TpsRepo() {
-        opprettTpsData();
-    }
-
-    private void opprettTpsData() {
-        opprettTpsData_db();
-    }
-
-    private void opprettTpsData_db() {
+    private static void opprettTpsData() {
         EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
         List<TpsPerson> tpsPersoner = new PersonDbLeser(entityManager).opprettTpsData();
         List<TpsRelasjon> tpsRelasjoner = new RelasjonDbLeser(entityManager).opprettTpsData();
+        tpsPersoner = leggTilHardkodedePersoner(tpsPersoner);
+        knyttRelasjoner(tpsPersoner, tpsRelasjoner);
 
-        relatePersoner(tpsPersoner, tpsRelasjoner);
-    }
 
-    private void opprettTpsData_csv() {
-        // Må oppdateres etter datoskift, ettersom noen datoer i testsettet er relative i tid, ikke statiske.
-        List<TpsPerson> tpspersoner = new ArrayList<>();
-        tpspersoner.add(new TpsPerson(STD_KVINNE_AKTØR_ID, new PersonBygger(STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN, KVINNE)
-                .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
-        tpspersoner.add(new TpsPerson(STD_BARN_AKTØR_ID, new PersonBygger(STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN, MANN)
-                .medRelasjon("MORA", STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN)));
-        tpspersoner.add(new TpsPerson(STD_MANN_AKTØR_ID, new PersonBygger(STD_MANN_FNR, STD_MANN_FORNAVN, STD_MANN_ETTERNAVN, MANN)
-                .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
-
-        tpspersoner.add(new TpsPerson(1000076788465L, new PersonBygger("41014100138", "BALLARIN", "AYORA MANUEL", MANN)
-                .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));
-
-        // Legg til personer og relasjoner fra csv
-        List<TpsPerson> personer = lesPersonerFraFil("personer.csv");
-        List<TpsRelasjon> relasjoner = lesRelasjonerFraFil("relasjoner.csv");
-        tpspersoner.addAll(personer);
-
-        relatePersoner(personer, relasjoner);
-
+        // TODO (essv): Heller lese disse dataene fra database enn maps
         FNR_VED_AKTØR_ID.clear();
         AKTØR_ID_VED_FNR.clear();
         PERSON_VED_FNR.clear();
 
-        for (TpsPerson tpsPerson : tpspersoner) {
+        for (TpsPerson tpsPerson : tpsPersoner) {
             FNR_VED_AKTØR_ID.put(tpsPerson.aktørId, tpsPerson.fnr);
             AKTØR_ID_VED_FNR.put(tpsPerson.fnr, tpsPerson.aktørId);
             PERSON_VED_FNR.put(tpsPerson.fnr, tpsPerson.person);
         }
-
     }
 
-    private void relatePersoner(List<TpsPerson> personer, List<TpsRelasjon> relasjoner) {
+    private static List<TpsPerson> leggTilHardkodedePersoner(List<TpsPerson> tpsPersoner) {
+        // Legg til hardkodete data i etterkant (brukes for integrasjonstester i Vedtaksløsningen)
+        tpsPersoner.add(new TpsPerson(STD_KVINNE_AKTØR_ID, new PersonBygger(STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN, KVINNE)
+                .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
+        tpsPersoner.add(new TpsPerson(STD_BARN_AKTØR_ID, new PersonBygger(STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN, MANN)
+                .medRelasjon("MORA", STD_KVINNE_FNR, STD_KVINNE_FORNAVN, STD_KVINNE_ETTERNAVN)));
+        tpsPersoner.add(new TpsPerson(STD_MANN_AKTØR_ID, new PersonBygger(STD_MANN_FNR, STD_MANN_FORNAVN, STD_MANN_ETTERNAVN, MANN)
+                .medRelasjon("BARN", STD_BARN_FNR, STD_BARN_FORNAVN, STD_BARN_ETTERNAVN)));
+
+        tpsPersoner.add(new TpsPerson(1000076788465L, new PersonBygger("41014100138", "BALLARIN", "AYORA MANUEL", MANN)
+                .medFødseldato(LocalDate.of(1941, Month.JANUARY, 1))));
+        return tpsPersoner;
+    }
+
+    private static void knyttRelasjoner(List<TpsPerson> personer, List<TpsRelasjon> relasjoner) {
         relasjoner.forEach(relasjon -> {
             Optional<TpsPerson> funnetPerson = personer.stream()
                     .filter(person -> person.fnr.equals(relasjon.fnr))
@@ -121,47 +104,19 @@ public class TpsRepo {
         });
     }
 
-    private List<TpsPerson> lesPersonerFraFil(String csvFile) {
-        try {
-            return PersonCsvLeser.lesFil(csvFile);
-        } catch (Exception e) {
-            LOG.warn("Klarte ikke lese fil " + csvFile);
-            return Collections.emptyList();
-        }
-    }
-
-    private List<TpsRelasjon> lesRelasjonerFraFil(String csvFile) {
-        try {
-            return RelasjonCsvLeser.lesFil(csvFile);
-        } catch (Exception e) {
-            LOG.warn("Klarte ikke lese fil " + csvFile);
-            return Collections.emptyList();
-        }
-    }
-
     public String finnIdent(long aktoerId) {
-        oppfriskVedDatoskift();
         sjekkSvartelistedeAktører(aktoerId);
         return FNR_VED_AKTØR_ID.get(aktoerId);
     }
 
     public Long finnAktoerId(String fnr) {
-        oppfriskVedDatoskift();
         sjekkSvartelistedeFødselsnummere(fnr);
         return AKTØR_ID_VED_FNR.get(fnr);
     }
 
     public Person finnPerson(String fnr) {
-        oppfriskVedDatoskift();
         sjekkSvartelistedeFødselsnummere(fnr);
         return PERSON_VED_FNR.get(fnr);
-    }
-
-    private void oppfriskVedDatoskift() {
-        if(sistOppdatert == null || !sistOppdatert.equals(LocalDate.now())) {
-            opprettTpsData();
-            sistOppdatert = LocalDate.now();
-        }
     }
 
     private void sjekkSvartelistedeAktører(long aktoerId) {

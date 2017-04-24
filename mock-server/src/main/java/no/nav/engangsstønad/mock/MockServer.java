@@ -31,8 +31,8 @@ public class MockServer {
     private static Server server;
 
     public static void main(String[] args) throws Exception {
-        server = new Server();
-        setConnectors();
+        server = new Server(7779);
+        //setConnectors();
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
         server.start();

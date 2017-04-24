@@ -20,4 +20,10 @@ public class PersonDbLeser {
 
         return tpsPersoner;
     }
+
+    public List<TpsPerson> lesTpsData() {
+        List<TpsPerson> tpsPersoner = entityManager.createNamedQuery("TpsPerson.findAll", TpsPerson.class).getResultList();
+
+        return tpsPersoner;
+    }
 }
