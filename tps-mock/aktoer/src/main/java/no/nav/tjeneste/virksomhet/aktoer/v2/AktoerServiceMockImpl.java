@@ -1,20 +1,9 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.AktoerV2;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentIdentForAktoerIdPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.feil.PersonIkkeFunnet;
-import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.AktoerIder;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentListeRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentListeResponse;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentRequest;
@@ -23,14 +12,23 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeR
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeResponse;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdResponse;
-import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.IdentDetaljer;
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
+import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 
 @WebService(name = "Aktoer_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2")
 public class AktoerServiceMockImpl implements AktoerV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
-    private static final TpsRepo TPS_REPO = TpsRepo.init();
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/aktoer/v2/Aktoer_v2/hentIdentForAktoerIdRequest")
@@ -42,7 +40,10 @@ public class AktoerServiceMockImpl implements AktoerV2 {
             HentIdentForAktoerIdRequest request)
             throws HentIdentForAktoerIdPersonIkkeFunnet {
         LOG.info("hentIdentForAktoerId: " + request.getAktoerId());
-        String ident = TPS_REPO.finnIdent(Long.valueOf(request.getAktoerId()));
+
+        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+        String ident = new PersonDbLeser(entityManager).finnIdent(request.getAktoerId());
+
         if(ident == null) {
             throw new HentIdentForAktoerIdPersonIkkeFunnet("Fant ingen ident for aktoerid: " + request.getAktoerId(), new PersonIkkeFunnet());
         }
@@ -61,7 +62,10 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         HentAktoerIdForIdentRequest request)
         throws HentAktoerIdForIdentPersonIkkeFunnet {
         LOG.info("hentIdentForAktoerId: " + request.getIdent());
-        Long aktoerId = TPS_REPO.finnAktoerId(request.getIdent());
+
+        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+        Long aktoerId = new PersonDbLeser(entityManager).finnAktoerId(request.getIdent());
+
         if(aktoerId == null) {
             throw new HentAktoerIdForIdentPersonIkkeFunnet("Fant ingen aktoerid for ident: " + request.getIdent(), new PersonIkkeFunnet());
         }
@@ -78,14 +82,8 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     public HentAktoerIdForIdentListeResponse hentAktoerIdForIdentListe(
         @WebParam(name = "hentAktoerIdForIdentListeRequest", targetNamespace = "")
         HentAktoerIdForIdentListeRequest hentAktoerIdForIdentListeRequest) {
-        LOG.info("hentIdentForAktoerId");
-        HentAktoerIdForIdentListeResponse response = new HentAktoerIdForIdentListeResponse();
-        AktoerIder aktoerIder = new AktoerIder();
-        aktoerIder.setAktoerId("789");
-        IdentDetaljer identDetaljer = new IdentDetaljer();
-        aktoerIder.setGjeldendeIdent(identDetaljer);
-        response.getAktoerListe().add(aktoerIder);
-        return response;
+
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
     @Override
@@ -96,9 +94,8 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     public HentIdentForAktoerIdListeResponse hentIdentForAktoerIdListe(
         @WebParam(name = "hentIdentForAktoerIdListeRequest", targetNamespace = "")
         HentIdentForAktoerIdListeRequest hentIdentForAktoerIdListeRequest) {
-        LOG.info("hentIdentForAktoerId");
-        HentIdentForAktoerIdListeResponse response = new HentIdentForAktoerIdListeResponse();
-        return response;
+
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
     @Override

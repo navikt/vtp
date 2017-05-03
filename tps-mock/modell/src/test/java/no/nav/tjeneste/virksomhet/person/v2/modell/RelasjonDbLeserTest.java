@@ -16,7 +16,7 @@ public class RelasjonDbLeserTest {
     public void skal_lese_personer() throws Exception {
         EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
         List<TpsRelasjon> tpsRelasjoner = new RelasjonDbLeser(entityManager).opprettTpsData();
-        assertThat(tpsRelasjoner).hasSize(12);
+        assertThat(tpsRelasjoner).isNotEmpty();
     }
 
 }

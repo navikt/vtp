@@ -39,19 +39,4 @@ public class AktoerServiceMockTest {
         assertThat(response.getAktoerId()).isEqualTo("9000000000000");
     }
 
-    @Test
-    public void testHentAktoerIdForIdentListe() {
-        HentAktoerIdForIdentListeRequest request = new HentAktoerIdForIdentListeRequest();
-        AktoerServiceMockImpl aktoerServiceMock = new AktoerServiceMockImpl();
-        HentAktoerIdForIdentListeResponse response = aktoerServiceMock.hentAktoerIdForIdentListe(request);
-        assertThat(response).isNotNull();
-    }
-
-    @Test
-    public void testHentIdentForAktoerIdListe() {
-        HentIdentForAktoerIdListeRequest request = new HentIdentForAktoerIdListeRequest();
-        AktoerServiceMockImpl aktoerServiceMock = new AktoerServiceMockImpl();
-        HentIdentForAktoerIdListeResponse response = aktoerServiceMock.hentIdentForAktoerIdListe(request);
-        assertThat(response).isNotNull();
-    }
 }
