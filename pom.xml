@@ -2,7 +2,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>no.nav.vedtak.engangsstonad</groupId>
+	<groupId>no.nav.foreldrepenger</groupId>
 	<artifactId>mock</artifactId>
 	<packaging>pom</packaging>
 	<name>Vedtak Engangsstønad mock root pom</name>
@@ -46,32 +46,32 @@
 		<!-- Prosjektavhengigheter -->
 		<dependencies>
 			<dependency>
-				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>tps-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>aktoer-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>person-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>sak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>oppgavebehandling-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.engangsstonad</groupId>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>behandlesak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>

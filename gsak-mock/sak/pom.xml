@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>no.nav.vedtak.engangsstonad</groupId>
+		<groupId>no.nav.foreldrepenger</groupId>
 		<artifactId>gsak-mock</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
@@ -16,7 +16,7 @@
 		<!-- Prosjektavhengigheter -->
         <dependency>
             <artifactId>gsak-mock-modell</artifactId>
-            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <groupId>no.nav.foreldrepenger</groupId>
             <version>1.0.2-SNAPSHOT</version>
         </dependency>
 
