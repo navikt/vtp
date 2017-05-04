@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,13 +62,10 @@ public class TpsRepo {
     }
 
     private static void opprettTpsData() {
-        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
-
-        List<TpsPerson> tpsPersoner = new PersonDbLeser(entityManager).opprettTpsData();
-        List<TpsRelasjon> tpsRelasjoner = new RelasjonDbLeser(entityManager).opprettTpsData();
+        List<TpsPerson> tpsPersoner = new ArrayList<TpsPerson>();
+        List<TpsRelasjon> tpsRelasjoner = new ArrayList<TpsRelasjon>();
         tpsPersoner = leggTilHardkodedePersoner(tpsPersoner);
         knyttRelasjoner(tpsPersoner, tpsRelasjoner);
-
 
         // TODO (essv): Heller lese disse dataene fra database enn maps
         FNR_VED_AKTØR_ID.clear();

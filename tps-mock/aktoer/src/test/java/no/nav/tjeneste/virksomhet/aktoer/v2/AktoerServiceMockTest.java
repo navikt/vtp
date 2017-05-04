@@ -27,6 +27,16 @@ public class AktoerServiceMockTest {
         assertThat(response.getIdent()).isEqualTo("07078518434");
     }
 
+    @Test
+    public void testHentIdentForAktoerIdHardkodetVerdi() throws HentIdentForAktoerIdPersonIkkeFunnet {
+        HentIdentForAktoerIdRequest request = new HentIdentForAktoerIdRequest();
+        request.setAktoerId("1000021543419");
+        AktoerServiceMockImpl aktoerServiceMock = new AktoerServiceMockImpl();
+        HentIdentForAktoerIdResponse response = aktoerServiceMock.hentIdentForAktoerId(request);
+        assertThat(response).isNotNull();
+        assertThat(response.getIdent()).isNotNull();
+        assertThat(response.getIdent()).isEqualTo("06016518156");
+    }
 
     @Test
     public void testHentAktoerIdForIdent() throws HentAktoerIdForIdentPersonIkkeFunnet {

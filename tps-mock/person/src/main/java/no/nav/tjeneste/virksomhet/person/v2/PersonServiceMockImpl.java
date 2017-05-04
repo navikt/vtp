@@ -16,6 +16,7 @@ import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakReques
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakResponse;
 import no.nav.tjeneste.virksomhet.person.v2.modell.RelasjonBygger;
 import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,9 @@ import javax.xml.ws.ResponseWrapper;
 public class PersonServiceMockImpl implements PersonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
+    private static final TpsRepo TPS_REPO = TpsRepo.init();
+    private static final EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v2/Person_v2/hentKjerneinformasjonRequest")
     @WebResult(name = "response", targetNamespace = "")
@@ -41,10 +45,12 @@ public class PersonServiceMockImpl implements PersonV2 {
     public no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse hentKjerneinformasjon(@WebParam(name = "request",targetNamespace = "") HentKjerneinformasjonRequest request) throws HentKjerneinformasjonPersonIkkeFunnet, HentKjerneinformasjonSikkerhetsbegrensning {
         LOG.info("hentIdentForAktoerId: " + request.getIdent());
 
-        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
-        Person person = new PersonDbLeser(entityManager).finnPerson(request.getIdent());
-
+        Person person = TPS_REPO.finnPerson(request.getIdent());
         if(person == null) {
+            // Hvis ikke funnet i hardkodede verdier så slå opp i database
+            person = new PersonDbLeser(entityManager).finnPerson(request.getIdent());
+        }
+        if (person == null) {
             throw new HentKjerneinformasjonPersonIkkeFunnet("Fant ingen bruker for ident: " + request.getIdent(), new PersonIkkeFunnet());
         }
 
