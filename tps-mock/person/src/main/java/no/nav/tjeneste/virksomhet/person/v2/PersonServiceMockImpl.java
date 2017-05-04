@@ -4,13 +4,18 @@ import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonPersonI
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentSikkerhetstiltakPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v2.binding.PersonV2;
+import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
+import no.nav.tjeneste.virksomhet.person.v2.data.RelasjonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v2.feil.PersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
-import no.nav.tjeneste.virksomhet.person.v2.meldinger.*;
+import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonRequest;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse;
+import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentPersonnavnBolkRequest;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentPersonnavnBolkResponse;
+import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakRequest;
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakResponse;
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
+import no.nav.tjeneste.virksomhet.person.v2.modell.RelasjonBygger;
+import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +23,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
@@ -25,7 +32,6 @@ import javax.xml.ws.ResponseWrapper;
 public class PersonServiceMockImpl implements PersonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
-    private static final TpsRepo TPS_REPO = TpsRepo.init();
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v2/Person_v2/hentKjerneinformasjonRequest")
     @WebResult(name = "response", targetNamespace = "")
@@ -34,10 +40,19 @@ public class PersonServiceMockImpl implements PersonV2 {
     @Override
     public no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse hentKjerneinformasjon(@WebParam(name = "request",targetNamespace = "") HentKjerneinformasjonRequest request) throws HentKjerneinformasjonPersonIkkeFunnet, HentKjerneinformasjonSikkerhetsbegrensning {
         LOG.info("hentIdentForAktoerId: " + request.getIdent());
-        Person person = TPS_REPO.finnPerson(request.getIdent());
+
+        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+        Person person = new PersonDbLeser(entityManager).finnPerson(request.getIdent());
+
         if(person == null) {
             throw new HentKjerneinformasjonPersonIkkeFunnet("Fant ingen bruker for ident: " + request.getIdent(), new PersonIkkeFunnet());
         }
+
+        TpsRelasjon relasjon = new RelasjonDbLeser(entityManager).finnRelasjon(request.getIdent());
+        if (relasjon != null){
+            new RelasjonBygger(relasjon).byggFor(person);
+        }
+
         HentKjerneinformasjonResponse response = new HentKjerneinformasjonResponse();
         response.setPerson(person);
         return response;

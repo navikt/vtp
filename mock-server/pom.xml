@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>no.nav.vedtak.engangsstonad</groupId>
+		<groupId>no.nav.foreldrepenger</groupId>
 		<artifactId>mock</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mock-server</artifactId>
@@ -15,22 +15,32 @@
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
         <dependency>
-            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>person-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>aktoer-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.engangsstonad</groupId>
-            <artifactId>gsak-mock</artifactId>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>sak-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.engangsstonad</groupId>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>oppgavebehandling-mock</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>behandlesak-mock</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>journal-mock</artifactId>
             <version>${project.version}</version>
         </dependency>

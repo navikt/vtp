@@ -1,10 +1,5 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.*;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,19 +9,27 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjon;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjoner;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Kjoenn;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Kjoennstyper;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.NorskIdent;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personidenter;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personnavn;
+
 public class PersonBygger {
     private String fnr;
     private String fornavn;
     private String etternavn;
     private final Kjønn kjønn;
-    private LocalDate fødselsdato;
-    private String relasjonFnr;
-    private String relasjonFornavn;
-    private String relasjonEtternavn;
-    private String forelderFnr;
-    private String forelderFornavn;
-    private String forelderEtternavn;
-    private String relasjon;
+    private LocalDate fødselsdato;;
+    private TpsRelasjon tpsRelasjon;
 
     public enum Kjønn {
         MANN("M"),
@@ -36,6 +39,22 @@ public class PersonBygger {
 
         Kjønn(String verdi) {
             this.verdi = verdi;
+        }
+    }
+
+    public PersonBygger(TpsPerson tpsPerson) {
+        this.fnr = tpsPerson.fnr;
+        this.fornavn = tpsPerson.fornavn;
+        this.etternavn = tpsPerson.etternavn;
+
+        if (tpsPerson.kjønn.equals("MANN")) {
+            this.kjønn = Kjønn.MANN;
+
+        } else if (tpsPerson.kjønn.equals("KVINNE")) {
+            this.kjønn = Kjønn.KVINNE;
+
+        } else {
+            this.kjønn = null;
         }
     }
 
@@ -59,11 +78,12 @@ public class PersonBygger {
         return this;
     }
 
-    public PersonBygger medRelasjon(String relasjon, String relasjonFnr, String relasjonFornavn, String relasjonEtternavn) {
-        this.relasjon = relasjon;
-        this.relasjonFnr = relasjonFnr;
-        this.relasjonFornavn = relasjonFornavn;
-        this.relasjonEtternavn = relasjonEtternavn;
+    public PersonBygger medRelasjon(String relasjonsType, String relasjonFnr, String fornavn, String etternavn) {
+        tpsRelasjon = new TpsRelasjon();
+        tpsRelasjon.relasjonsType = relasjonsType;
+        tpsRelasjon.relasjonFnr = relasjonFnr;
+        tpsRelasjon.fornavn = fornavn;
+        tpsRelasjon.etternavn = etternavn;
         return this;
     }
 
@@ -103,40 +123,9 @@ public class PersonBygger {
         personnavn.setSammensattNavn(etternavn.toUpperCase() + " " + fornavn.toUpperCase());
         person.setPersonnavn(personnavn);
 
-        // Barn
-        if(relasjon != null) {
-            Familierelasjon familierelasjon = new Familierelasjon();
-            familierelasjon.setHarSammeBosted(true);
-            Familierelasjoner familierelasjoner = new Familierelasjoner();
-            familierelasjoner.setValue(relasjon);
-            familierelasjon.setTilRolle(familierelasjoner);
-
-            Person relatertPersjon = new Person();
-            // Relasjonens ident
-            NorskIdent relasjonIdent = new NorskIdent();
-            relasjonIdent.setIdent(relasjonFnr);
-            Personidenter relasjonIdenter = new Personidenter();
-            relasjonIdenter.setValue("fnr");
-            relasjonIdent.setType(relasjonIdenter);
-            relatertPersjon.setIdent(relasjonIdent);
-
-            // Relasjonens fødselsdato
-            if(relasjonFnr != null) {
-                Foedselsdato relasjonFodselsdato = new Foedselsdato();
-                relasjonFodselsdato.setFoedselsdato(tilXmlGregorian(relasjonFnr));
-                relatertPersjon.setFoedselsdato(relasjonFodselsdato);
-            }
-
-            // Relasjonens navn
-            Personnavn relasjonPersonnavn  = new Personnavn();
-            relasjonPersonnavn.setEtternavn(relasjonEtternavn.toUpperCase());
-            relasjonPersonnavn.setFornavn(relasjonFornavn.toUpperCase());
-            relasjonPersonnavn.setSammensattNavn(relasjonEtternavn.toUpperCase() + " " + relasjonFornavn.toUpperCase());
-            relatertPersjon.setPersonnavn(relasjonPersonnavn);
-
-            // Relasjon settes på personen
-            familierelasjon.setTilPerson(relatertPersjon);
-            person.getHarFraRolleI().add(familierelasjon);
+        // Relasjoner
+        if(tpsRelasjon != null) {
+            person = new RelasjonBygger(tpsRelasjon).byggFor(person);
         }
 
         return person;
@@ -153,7 +142,7 @@ public class PersonBygger {
         return xcal;
     }
 
-    private XMLGregorianCalendar tilXmlGregorian(String fødselsnummer) {
+    static XMLGregorianCalendar tilXmlGregorian(String fødselsnummer) {
         XMLGregorianCalendar xcal;
         try {
             // Simpel algoritme for å konvertere fnr. Må utbedres ved behov.
