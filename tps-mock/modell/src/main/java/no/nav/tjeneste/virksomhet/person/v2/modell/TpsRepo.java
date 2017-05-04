@@ -1,13 +1,9 @@
 package no.nav.tjeneste.virksomhet.person.v2.modell;
 
-import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
-import no.nav.tjeneste.virksomhet.person.v2.data.RelasjonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -25,10 +21,10 @@ public class TpsRepo {
 
     public static LocalDate sistOppdatert = null;
 
-    public static final long STD_MANN_AKTØR_ID = 9000000000000L;
-    public static final String STD_MANN_FNR = "07078518434";
-    public static final String STD_MANN_FORNAVN = "Syntetisk1";
-    public static final String STD_MANN_ETTERNAVN = "Andersen";
+    public static final long STD_MANN_AKTØR_ID = 1000021543419L;
+    public static final String STD_MANN_FNR = "06016518156";
+    public static final String STD_MANN_FORNAVN = "AL-HAMIDI";
+    public static final String STD_MANN_ETTERNAVN = "KHADIM MUJULY H";
     private static TpsRepo instance;
     // Simulering av Tps sin datamodell
     private static Map<Long, String> FNR_VED_AKTØR_ID = new HashMap<>();
@@ -36,18 +32,18 @@ public class TpsRepo {
     private static Map<String, Person> PERSON_VED_FNR = new HashMap<>();
 
     // Konstanter for standardbrukere (kan refereres eksternt)
-    public static final long STD_KVINNE_AKTØR_ID = 9000000000001L;
-    public static final String STD_KVINNE_FNR = "07078518272";
-    public static final String STD_KVINNE_FORNAVN = "Syntetisk2";
-    public static final String STD_KVINNE_ETTERNAVN = "Andersen";
-    public static final int STD_KVINNE_FØDT_DAG = 07;
-    public static final int STD_KVINNE_FØDT_DAG_MND = 07;
-    public static final int STD_KVINNE_FØDT_DAG_ÅR = 1985;
+    public static final long STD_KVINNE_AKTØR_ID = 1000021552067L;
+    public static final String STD_KVINNE_FNR = "06016921295";
+    public static final String STD_KVINNE_FORNAVN = "MARIA L BELANDRES";
+    public static final String STD_KVINNE_ETTERNAVN = "HOLMSEN";
+    public static final int STD_KVINNE_FØDT_DAG = 06;
+    public static final int STD_KVINNE_FØDT_DAG_MND = 01;
+    public static final int STD_KVINNE_FØDT_DAG_ÅR = 1969;
 
-    public static final String STD_BARN_FNR = "07078518000";
-    public static final long STD_BARN_AKTØR_ID = 9000000000002L;
-    public static final String STD_BARN_FORNAVN = "Syntetisk3";
-    public static final String STD_BARN_ETTERNAVN = "Andersen";
+    public static final String STD_BARN_FNR = "07111183524";
+    public static final long STD_BARN_AKTØR_ID = 666L;
+    public static final String STD_BARN_FORNAVN = "EMIL";
+    public static final String STD_BARN_ETTERNAVN = "MALVIK";
 
     // Svarteliste
     public static final String FNR_TRIGGER_SERVICE_UNAVAILABLE = "1111111111l";
