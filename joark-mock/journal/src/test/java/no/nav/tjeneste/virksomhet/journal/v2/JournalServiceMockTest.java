@@ -24,7 +24,7 @@ public class JournalServiceMockTest {
         SoekeFilter sf = new SoekeFilter();
         request.setSoekeFilter(sf);
         Sak saki = new Sak();
-        saki.setSakId("707851843400");
+        saki.setSakId("909861221900");
         request.getSakListe().add(saki);
         JournalServiceMockImpl callee = new JournalServiceMockImpl();
         HentJournalpostListeResponse response = callee.hentJournalpostListe(request);
@@ -36,13 +36,12 @@ public class JournalServiceMockTest {
     public void testHentDokument() throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning
     {
         HentDokumentRequest request = new HentDokumentRequest();
-        request.setDokumentId("393893532");
+        request.setDokumentId("393894185");
         request.setJournalpostId("journalpost-inn-707851843400");
         JournalServiceMockImpl callee = new JournalServiceMockImpl();
         HentDokumentResponse response = callee.hentDokument(request);
         assertThat(response).isNotNull();
-        //assertThat(response.getDokument()).isNotEmpty();
-
+        assertThat(response.getDokument()).isNotEmpty();
     }
 
 

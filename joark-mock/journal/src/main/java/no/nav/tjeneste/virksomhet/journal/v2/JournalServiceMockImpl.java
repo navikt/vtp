@@ -6,6 +6,9 @@ import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkke
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.JournalV2;
+import no.nav.tjeneste.virksomhet.journal.v2.data.JournalDbLeser;
+import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalpostBygger;
+import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalDokument;
 import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
@@ -23,6 +26,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeReque
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeResponse;
 import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v2.modell.TpsPerson;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +41,6 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -70,11 +73,13 @@ public class JournalServiceMockImpl implements JournalV2 {
     private static final Map<String, List<Journalpost>> JOURNALPOSTER_PER_FAGSAK = new HashMap<>();
     private static final Map<String, Journalpost> JOURNALPOST_PER_JOURNAL_ID = new HashMap<>();
 
+    private static final EntityManager tpsEntityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+    private static final EntityManager joarkEntityManager = Persistence.createEntityManagerFactory("joark").createEntityManager();
+
     static {
         // Fagsaksnr settes opp som fnr*100 av simulert Swagger-mottak
-        EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
-        List<TpsPerson> tpsPersoner = new PersonDbLeser(entityManager).lesTpsData();
+        List<TpsPerson> tpsPersoner = new PersonDbLeser(tpsEntityManager).lesTpsData();
         List<String> saksnummere = tpsPersoner.stream()
                 .map(TpsPerson::getFnr)
                 .map(fnr -> (parseLong(fnr) * 100) + "") //saksnr = fnr * 100
@@ -114,13 +119,25 @@ public class JournalServiceMockImpl implements JournalV2 {
             throws HentJournalpostListeSikkerhetsbegrensning {
         HentJournalpostListeResponse response = new HentJournalpostListeResponse();
         Optional<String> funnetsaksnr = request.getSakListe().stream().map(sak -> sak.getSakId()).findFirst();
+
         if (!funnetsaksnr.isPresent()) {
             LOG.info("Fant ingen saksnr i request.");
             return response;
         }
 
+        List<Journalpost> journalposter = null;
+
+        List<JournalDokument> journalpost = new JournalDbLeser(joarkEntityManager).finnJournalposterMedSakId(funnetsaksnr.get());
+        if (journalpost != null) {
+            for (JournalDokument jd : journalpost) {
+                JournalpostBygger jb = new JournalpostBygger(jd);
+                response.getJournalpostListe().add(jb.ByggJournalpost());
+            }
+            return response;
+        }
+
         String saksnr = funnetsaksnr.get();
-        List<Journalpost> journalposter = JOURNALPOSTER_PER_FAGSAK.get(saksnr);
+        journalposter = JOURNALPOSTER_PER_FAGSAK.get(saksnr);
         if (journalposter == null) {
             LOG.info("Fant ingen matchende journalpost for saksnr = " + saksnr);
             return response;
@@ -141,12 +158,30 @@ public class JournalServiceMockImpl implements JournalV2 {
         if (request.getJournalpostId() == null || request.getDokumentId() == null || request.getJournalpostId().isEmpty() || request.getDokumentId().isEmpty()) {
             throw new HentDokumentDokumentIkkeFunnet("DoumentId eller JournalpostId er null.", new DokumentIkkeFunnet());
         }
+
+        /**
+         * Henter dokument fra db dersom det finnes, hvis ikke hent statisk data(journalpost) fra prosjektfolder
+         */
+
+        JournalDokument journalDokument = null;
+
+        if (request.getDokumentId() != null || request.getDokumentId().isEmpty()){
+            journalDokument = new JournalDbLeser(joarkEntityManager).finnDokumentMedDokumentId(request.getDokumentId());            
+        } else if(request.getJournalpostId() == null || request.getJournalpostId().isEmpty() ){
+            journalDokument = new JournalDbLeser(joarkEntityManager).finnDokumentMedJournalId(request.getJournalpostId());
+        }
+        if(journalDokument != null) {
+            hentDokumentResponse.setDokument(journalDokument.getDokument());
+            return hentDokumentResponse;
+        }
+
         Journalpost journalpost = JOURNALPOST_PER_JOURNAL_ID.get(request.getJournalpostId());
 
         if (journalpost == null) {
             throw new HentDokumentDokumentIkkeFunnet("Dokument ikke funnet for journalpostId :389425811", new DokumentIkkeFunnet());
         } else {
             Path pdfPath;
+
             if (DOKUMENT_ID_393893509.equals(journalpost.getJournalpostId())) {
                 pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/foreldrepenger_soknad.pdf");
             } else {
@@ -156,6 +191,7 @@ public class JournalServiceMockImpl implements JournalV2 {
             try {
                 pdf = Files.readAllBytes(pdfPath);
             } catch (IOException e) {
+
                 LOG.error("Error reading pdf file.", e);
             }
             LOG.info("HentDokument: Binary pdf file = %s", pdf);

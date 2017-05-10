@@ -71,7 +71,11 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>tps-mock-modell</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>journal-mock-modell</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
