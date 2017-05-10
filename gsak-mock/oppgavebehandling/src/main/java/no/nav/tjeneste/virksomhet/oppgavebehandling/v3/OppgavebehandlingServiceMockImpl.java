@@ -46,7 +46,7 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @ResponseWrapper(localName = "opprettOppgaveResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OpprettOppgaveResponse")
     public OpprettOppgaveResponse opprettOppgave(@WebParam(name = "request",targetNamespace = "") OpprettOppgaveRequest opprettOppgaveRequest) {
         OpprettOppgaveResponse opprettOppgaveResponse = new OpprettOppgaveResponse();
-        opprettOppgaveResponse.setOppgaveId("1");
+        opprettOppgaveResponse.setOppgaveId(Long.toString(Long.parseLong(opprettOppgaveRequest.getOpprettOppgave().getSaksnummer()) * 10));
         return opprettOppgaveResponse;
     }
 

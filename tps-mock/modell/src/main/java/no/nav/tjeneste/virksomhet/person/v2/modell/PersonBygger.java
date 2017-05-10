@@ -47,10 +47,10 @@ public class PersonBygger {
         this.fornavn = tpsPerson.fornavn;
         this.etternavn = tpsPerson.etternavn;
 
-        if (tpsPerson.kjønn.equals("MANN")) {
+        if (tpsPerson.kjønn.equals("M")) {
             this.kjønn = Kjønn.MANN;
 
-        } else if (tpsPerson.kjønn.equals("KVINNE")) {
+        } else if (tpsPerson.kjønn.equals("K")) {
             this.kjønn = Kjønn.KVINNE;
 
         } else {
