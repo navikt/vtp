@@ -4,15 +4,10 @@ import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.*;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.JournalpostIkkeFunnet;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.UgyldigInput;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinformasjon;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.InngaaendeJournalpost;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Journaltilstand;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.*;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpostResponse;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovResponse;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.modell.DokumentinformasjonBuilder;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
-import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalpostBygger;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
@@ -143,21 +138,5 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             UtledJournalfoeringsbehovUgyldigInput {
 
         throw new UnsupportedOperationException("sorry - utledJournalfoeringsbehov ikke implementert");
-    }
-
-    /*TODO (rune) rm
-    private HentJournalpostResponse lagHentJournalpostResponse() {
-
-        //TODO (rune) adapt to builder:
-
-
-        HentJournalpostResponse response = new HentJournalpostResponse();
-        response.setInngaaendeJournalpost(inngaaendeJournalpost);
-
-        return response;
-    }*/
-
-    private boolean erHoveddokument(JournalDokument journalDok) {
-        return StaticModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(journalDok.getTilknJpSom());
     }
 }

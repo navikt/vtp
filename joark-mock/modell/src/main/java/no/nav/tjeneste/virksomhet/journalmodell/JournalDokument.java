@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 //import javax.persistence.Transient;
 //import java.io.FileNotFoundException;
 
@@ -34,6 +36,9 @@ public class JournalDokument {
     @Column(name = "ID", nullable = false)
     long id;
 
+    //TODO (rune) @Column(name = "BRUKER_FNR")
+    transient String brukerFnr;
+
     @Column(name = "DOKUMENT_ID")
     String dokumentId;
 
@@ -52,8 +57,17 @@ public class JournalDokument {
     @Column(name = "FILTYPE")
     String filType;
 
+    @Column(name = "KOMMUNIKASJONSKANAL")
+    String kommunikasjonskanal;
+
     @Column(name = "TILKNYTTET_JP_SOM")
     String tilknJpSom;
+
+    @Column(name = "DATO_JP_MOTTATT")
+    LocalDateTime datoMottatt;
+
+    @Column(name = "ARKIVTEMA")
+    String arkivtema;
 
     JournalDokument(){
     }
@@ -76,6 +90,16 @@ public class JournalDokument {
         //this.filType = filType;
 
     }*/
+
+    //TODO (rune) rydd opp det som evt ikke brukes:
+
+    public String getBrukerFnr() {
+        return brukerFnr;
+    }
+
+    public void setBrukerFnr(String brukerFnr) {
+        this.brukerFnr = brukerFnr;
+    }
 
     public long getId() {
         return id;
@@ -139,5 +163,29 @@ public class JournalDokument {
 
     public void setTilknJpSom(String tilknJpSom) {
         this.tilknJpSom = tilknJpSom;
+    }
+
+    public String getKommunikasjonskanal() {
+        return kommunikasjonskanal;
+    }
+
+    public void setKommunikasjonskanal(String kommunikasjonskanal) {
+        this.kommunikasjonskanal = kommunikasjonskanal;
+    }
+
+    public LocalDateTime getDatoMottatt() {
+        return datoMottatt;
+    }
+
+    public void setDatoMottatt(LocalDateTime datoMottatt) {
+        this.datoMottatt = datoMottatt;
+    }
+
+    public String getArkivtema() {
+        return arkivtema;
+    }
+
+    public void setArkivtema(String arkivtema) {
+        this.arkivtema = arkivtema;
     }
 }

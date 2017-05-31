@@ -66,6 +66,10 @@ public class StaticModelData {
                 poster.forEach(post -> JOURNALPOST_PER_JOURNAL_ID.put(post.getJournalpostId(), post)));
     }
 
+    private StaticModelData() {
+        // skjult
+    }
+
     public static List<Journalpost> getJournalposterForFagsak(String saksnr) {
         return JOURNALPOSTER_PER_FAGSAK.get(saksnr);
     }
