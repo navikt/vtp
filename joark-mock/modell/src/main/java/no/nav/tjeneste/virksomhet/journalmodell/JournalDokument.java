@@ -1,4 +1,4 @@
-package no.nav.tjeneste.virksomhet.journal.v2.modell;
+package no.nav.tjeneste.virksomhet.journalmodell;
 
 //import org.hibernate.annotationsNamedQueries;
 //import org.hibernate.annotations.NamedQuery;
@@ -52,9 +52,13 @@ public class JournalDokument {
     @Column(name = "FILTYPE")
     String filType;
 
+    @Column(name = "TILKNYTTET_JP_SOM")
+    String tilknJpSom;
+
     JournalDokument(){
     }
 
+    /*TODO (rune) rm:
     public JournalDokument(long id, String dokumentId,  String journalpostId, byte[] dokument)
     {
         this.id=id;
@@ -71,9 +75,69 @@ public class JournalDokument {
         }
         //this.filType = filType;
 
+    }*/
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDokumentId() {
+        return dokumentId;
+    }
+
+    public void setDokumentId(String dokumentId) {
+        this.dokumentId = dokumentId;
+    }
+
+    public String getJournalpostId() {
+        return journalpostId;
+    }
+
+    public void setJournalpostId(String journalpostId) {
+        this.journalpostId = journalpostId;
+    }
+
+    public String getSakId() {
+        return sakId;
+    }
+
+    public void setSakId(String sakId) {
+        this.sakId = sakId;
     }
 
     public byte[] getDokument() {
         return dokument;
+    }
+
+    public void setDokument(byte[] dokument) {
+        this.dokument = dokument;
+    }
+
+    public String getDokumentType() {
+        return dokumentType;
+    }
+
+    public void setDokumentType(String dokumentType) {
+        this.dokumentType = dokumentType;
+    }
+
+    public String getFilType() {
+        return filType;
+    }
+
+    public void setFilType(String filType) {
+        this.filType = filType;
+    }
+
+    public String getTilknJpSom() {
+        return tilknJpSom;
+    }
+
+    public void setTilknJpSom(String tilknJpSom) {
+        this.tilknJpSom = tilknJpSom;
     }
 }

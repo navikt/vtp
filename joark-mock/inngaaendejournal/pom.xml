@@ -5,26 +5,57 @@
         <groupId>no.nav.foreldrepenger</groupId>
         <version>1.0.4-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>journal-mock-modell</artifactId>
-    <name>Vedtak Engangsstønad modell-mock</name>
+
+    <artifactId>inngaaendejournal-mock</artifactId>
     <packaging>jar</packaging>
+    <name>Vedtak Engangsstønad joark-mock inngaaende journal</name>
 
     <dependencies>
-        <dependency>
-            <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>tps-mock-modell</artifactId>
-        </dependency>
+        <!-- Prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>mock-felles</artifactId>
         </dependency>
 
+        <!-- 3dje parts NAV felleskomponenter -->
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-inngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+        <!-- 3dje parts biblioteker -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc8</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
+
+        <!-- Testavhengigheter -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -40,21 +71,15 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
+		<!-- TODO (rune) ?
         <dependency>
-            <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>tps-mock-modell</artifactId>
         </dependency>
+		-->
         <dependency>
-            <groupId>no.nav.tjenester</groupId>
-            <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
-            <!--version>1.0.3</version-->
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tjenester</groupId>
-            <artifactId>nav-inngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>journal-mock-modell</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -74,18 +99,10 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <attachClasses>true</attachClasses>
                     <packagingExcludes>*app/**, *images/**, *.jar, *maven-archiver/**, *messages/**</packagingExcludes>
-                    <!--
-                    <webResources>
-                        <resource>
-                            <directory>../klient/src/client</directory>
-                        </resource>
-                        <resource>
-                            <directory>../klient/target</directory>
-                        </resource>
-                    </webResources>
-                     -->
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+
 </project>

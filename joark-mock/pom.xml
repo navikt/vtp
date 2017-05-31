@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>journal</module>
+        <module>inngaaendejournal</module>
         <module>modell</module>
     </modules>
 

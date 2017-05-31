@@ -1,6 +1,5 @@
-package no.nav.tjeneste.virksomhet.journal.v2.data;
+package no.nav.tjeneste.virksomhet.journalmodell;
 
-import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalDokument;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -27,7 +26,7 @@ public class JournalDbLeser {
     }
 
     /**
-     * Hent dokument på journal id
+     * Hent ett dokument på journal id
      * @param journalId
      * @return JournalDokument
      */
@@ -36,6 +35,18 @@ public class JournalDbLeser {
         query.setParameter("journalId", journalId);
         JournalDokument journal = query.getSingleResult();
         return journal;
+    }
+
+    /**
+     * Hent dokumenter på journal id
+     * @param journalId
+     * @return List<JournalDokument></JournalDokument>
+     */
+    public List<JournalDokument> finnDokumenterMedJournalId(String journalId) {
+        TypedQuery<JournalDokument> query = entityManager.createQuery("FROM JournalDokument t WHERE journalpost_id = :journalId", JournalDokument.class); //$NON-NLS-1$
+        query.setParameter("journalId", journalId);
+        List<JournalDokument> journalDokListe = query.getResultList();
+        return journalDokListe;
     }
 
     /**

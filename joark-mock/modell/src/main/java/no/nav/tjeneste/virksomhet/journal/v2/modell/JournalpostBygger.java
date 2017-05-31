@@ -1,6 +1,7 @@
 package no.nav.tjeneste.virksomhet.journal.v2.modell;
 
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
+import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 
 public class JournalpostBygger {
     protected long id;
@@ -10,11 +11,11 @@ public class JournalpostBygger {
     protected String sakId;
 
     public JournalpostBygger(JournalDokument journalDokument){
-        this.id = journalDokument.id;
+        this.id = journalDokument.getId();
         //this.dokumentId = journalDokument.dokumentId;
-        this.journalpostId = journalDokument.journalpostId;
-        this.innhold = journalDokument.dokument.toString();
-        this.sakId = journalDokument.sakId;
+        this.journalpostId = journalDokument.getJournalpostId();
+        this.innhold = journalDokument.getDokument().toString();
+        this.sakId = journalDokument.getSakId();
     }
 
     public JournalpostBygger(long id, String journalpostId, String innhold, String sakId) {

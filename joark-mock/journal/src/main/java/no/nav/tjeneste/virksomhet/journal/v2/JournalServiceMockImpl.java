@@ -6,26 +6,18 @@ import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkke
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.JournalV2;
-import no.nav.tjeneste.virksomhet.journal.v2.data.JournalDbLeser;
+import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalpostBygger;
-import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalDokument;
+import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentinfoRelasjon;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Dokumenttyper;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.JournalfoertDokumentInfo;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Kommunikasjonsretninger;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Variantformater;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentURLRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentURLResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeResponse;
-import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsPerson;
+import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,47 +28,41 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.Long.parseLong;
-import static java.util.stream.Collectors.toList;
 
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
 public class JournalServiceMockImpl implements JournalV2 {
     private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
-    private static final String FILTYPE_XML = "XML";
-    private static final String VARIANTFORMAT_ORIGINAL = "ORIGINAL";
-    private static final String DOKUMENT_TYPE = "00001";
-    private static final String VARIANTFORMAT_ARKIV = "ARKIV";
-    private static final String FILTYPE_PDF = "PDF";
-    private static final String DOKUMENT_ID_393893509 = "393893509";
-    private static final LocalDateTime NOW = LocalDateTime.now();
-    private static final LocalDateTime YESTERDAY = LocalDateTime.now().minusDays(1);
+    //TODO (rune) rm
+    //private static final String FILTYPE_XML = "XML";
+    //private static final String VARIANTFORMAT_ORIGINAL = "ORIGINAL";
+    //private static final String DOKUMENT_TYPE = "00001";
+    //private static final String VARIANTFORMAT_ARKIV = "ARKIV";
+    //private static final String FILTYPE_PDF = "PDF";
+    //private static final String DOKUMENT_ID_393893509 = "393893509";
+    //private static final LocalDateTime NOW = LocalDateTime.now();
+    //private static final LocalDateTime YESTERDAY = LocalDateTime.now().minusDays(1);
 
-    private static final Map<String, List<Journalpost>> JOURNALPOSTER_PER_FAGSAK = new HashMap<>();
-    private static final Map<String, Journalpost> JOURNALPOST_PER_JOURNAL_ID = new HashMap<>();
+    //TODO (rune) rm
+    //private static final Map<String, List<Journalpost>> JOURNALPOSTER_PER_FAGSAK = new HashMap<>();
+    //private static final Map<String, Journalpost> JOURNALPOST_PER_JOURNAL_ID = new HashMap<>();
 
-    private static final EntityManager tpsEntityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+    //TODO (rune) rm
+    //private static final EntityManager tpsEntityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+
     private static final EntityManager joarkEntityManager = Persistence.createEntityManagerFactory("joark").createEntityManager();
 
-    static {
+    //TODO (rune) rm
+    /*static {
         // Fagsaksnr settes opp som fnr*100 av simulert Swagger-mottak
 
         List<TpsPerson> tpsPersoner = new PersonDbLeser(tpsEntityManager).lesTpsData();
@@ -107,7 +93,7 @@ public class JournalServiceMockImpl implements JournalV2 {
         );
         JOURNALPOSTER_PER_FAGSAK.forEach((saksnr, poster) ->
                 poster.forEach(post -> JOURNALPOST_PER_JOURNAL_ID.put(post.getJournalpostId(), post)));
-    }
+    }*/
 
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentJournalpostListeRequest")
@@ -137,7 +123,7 @@ public class JournalServiceMockImpl implements JournalV2 {
         }
 
         String saksnr = funnetsaksnr.get();
-        journalposter = JOURNALPOSTER_PER_FAGSAK.get(saksnr);
+        journalposter = StaticModelData.getJournalposterForFagsak(saksnr);
         if (journalposter == null) {
             LOG.info("Fant ingen matchende journalpost for saksnr = " + saksnr);
             return response;
@@ -175,14 +161,14 @@ public class JournalServiceMockImpl implements JournalV2 {
             return hentDokumentResponse;
         }
 
-        Journalpost journalpost = JOURNALPOST_PER_JOURNAL_ID.get(request.getJournalpostId());
+        Journalpost journalpost = StaticModelData.getJournalpostForId(request.getJournalpostId());
 
         if (journalpost == null) {
             throw new HentDokumentDokumentIkkeFunnet("Dokument ikke funnet for journalpostId :389425811", new DokumentIkkeFunnet());
         } else {
             Path pdfPath;
 
-            if (DOKUMENT_ID_393893509.equals(journalpost.getJournalpostId())) {
+            if (StaticModelData.DOKUMENT_ID_393893509.equals(journalpost.getJournalpostId())) {
                 pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/foreldrepenger_soknad.pdf");
             } else {
                 pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/termin_bekreftelse.pdf");
@@ -218,6 +204,8 @@ public class JournalServiceMockImpl implements JournalV2 {
         LOG.info("Ping mottatt og besvart");
     }
 
+    //TODO (rune) rm
+    /*
     private static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDateTime localDateTime) {
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
@@ -228,8 +216,10 @@ public class JournalServiceMockImpl implements JournalV2 {
             LOG.error("", e);
         }
         return xmlGregorianCalendar;
-    }
+    }*/
 
+    //TODO (rune) rm
+    /*
     private static Journalpost createJournalpost(String journalpostId, String kommunikasjonsretning) {
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(journalpostId);
@@ -239,8 +229,10 @@ public class JournalServiceMockImpl implements JournalV2 {
         kommunikasjonsretninger.setValue(kommunikasjonsretning);
         journalpost.setKommunikasjonsretning(kommunikasjonsretninger);
         return journalpost;
-    }
+    }*/
 
+    //TODO (rune) rm
+    /*
     private static DokumentinfoRelasjon createDokumentinfoRelasjon(String filtype, String variantformat, String tittel, String dokumentId) {
         DokumentinfoRelasjon dokumentinfoRelasjon = new DokumentinfoRelasjon();
         JournalfoertDokumentInfo journalfoertDokumentInfo = new JournalfoertDokumentInfo();
@@ -259,5 +251,5 @@ public class JournalServiceMockImpl implements JournalV2 {
         journalfoertDokumentInfo.getBeskriverInnholdListe().add(dokumentInnhold);
         dokumentinfoRelasjon.setJournalfoertDokument(journalfoertDokumentInfo);
         return dokumentinfoRelasjon;
-    }
+    }*/
 }
