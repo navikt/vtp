@@ -81,32 +81,49 @@ public class StaticModelData {
 
     private static Journalpost createJournalpost(String journalpostId, String kommunikasjonsretning) {
         Journalpost journalpost = new Journalpost();
+
         journalpost.setJournalpostId(journalpostId);
         journalpost.setSendt(ConversionUtils.convertToXMLGregorianCalendar(NOW));
         journalpost.setMottatt(ConversionUtils.convertToXMLGregorianCalendar(YESTERDAY));
+
         Kommunikasjonsretninger kommunikasjonsretninger = new Kommunikasjonsretninger();
         kommunikasjonsretninger.setValue(kommunikasjonsretning);
         journalpost.setKommunikasjonsretning(kommunikasjonsretninger);
+
         return journalpost;
     }
 
     private static DokumentinfoRelasjon createDokumentinfoRelasjon(String filtype, String variantformat, String tittel, String dokumentId) {
         DokumentinfoRelasjon dokumentinfoRelasjon = new DokumentinfoRelasjon();
+
+        TilknyttetJournalpostSom tilknyttetJournalpostSom = new TilknyttetJournalpostSom();
+        tilknyttetJournalpostSom.setValue(TILKNYTTET_SOM_HOVEDDOKUMENT);
+        dokumentinfoRelasjon.setDokumentTilknyttetJournalpost(tilknyttetJournalpostSom);
+
         JournalfoertDokumentInfo journalfoertDokumentInfo = new JournalfoertDokumentInfo();
+
         journalfoertDokumentInfo.setDokumentId(dokumentId);
+
         Dokumenttyper dokumenttyper = new Dokumenttyper();
         dokumenttyper.setValue(DOKUMENT_TYPE);
         journalfoertDokumentInfo.setDokumentType(dokumenttyper);
+
         journalfoertDokumentInfo.setTittel(tittel);
+
         DokumentInnhold dokumentInnhold = new DokumentInnhold();
+
         Arkivfiltyper arkivfiltyper = new Arkivfiltyper();
         arkivfiltyper.setValue(filtype);
         dokumentInnhold.setFiltype(arkivfiltyper);
+
         Variantformater variantformater = new Variantformater();
         variantformater.setValue(variantformat);
         dokumentInnhold.setVariantformat(variantformater);
+
         journalfoertDokumentInfo.getBeskriverInnholdListe().add(dokumentInnhold);
+
         dokumentinfoRelasjon.setJournalfoertDokument(journalfoertDokumentInfo);
+
         return dokumentinfoRelasjon;
     }
 }
