@@ -75,10 +75,12 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             throws HentJournalpostJournalpostIkkeFunnet, HentJournalpostJournalpostIkkeInngaaende,
             HentJournalpostSikkerhetsbegrensning, HentJournalpostUgyldigInput {
 
+        // Sjekk input params:
+
         String journalpostId = request.getJournalpostId();
-        if (journalpostId == null) {
+        if (journalpostId == null || journalpostId.isEmpty()) {
             UgyldigInput faultInfo = new UgyldigInput();
-            faultInfo.setFeilmelding("journalpostId == null");
+            faultInfo.setFeilmelding("journalpostId == null eller tom streng");
             faultInfo.setFeilaarsak("brukerfeil");
             faultInfo.setFeilkilde("mock inngaaendejournal");
             faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));

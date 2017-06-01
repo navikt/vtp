@@ -17,32 +17,30 @@
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>person-mock</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>aktoer-mock</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>sak-mock</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>oppgavebehandling-mock</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>behandlesak-mock</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>journal-mock</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>inngaaendejournal-mock</artifactId>
         </dependency>
 
 		<!-- Eksterne avhengigheter -->

@@ -41,7 +41,7 @@ public class JournalDokument {
     @Column(name = "DOKUMENT_ID")
     String dokumentId;
 
-    @Column(name = "JORUNALPOST_ID")
+    @Column(name = "JOURNALPOST_ID")
     String journalpostId;
 
     @Column(name = "SAK_ID")

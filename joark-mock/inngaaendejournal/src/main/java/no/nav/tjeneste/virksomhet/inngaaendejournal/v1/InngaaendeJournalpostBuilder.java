@@ -43,16 +43,16 @@ class InngaaendeJournalpostBuilder {
 
         //TODO (rune) brukerListe ?
 
-        Dokumentinformasjon dokInfoHoved = finnDokumentinformasjonHoved(journalDokListe);
+        Dokumentinformasjon dokInfoHoved = lagDokumentinformasjonHoved(journalDokListe);
         inngJournalpost.setHoveddokument(dokInfoHoved);
 
-        List<Dokumentinformasjon> dokInfoVedleggListe = finnDokumentinformasjonVedlegg(journalDokListe);
+        List<Dokumentinformasjon> dokInfoVedleggListe = lagDokumentinformasjonVedlegg(journalDokListe);
         inngJournalpost.getVedleggListe().addAll(dokInfoVedleggListe);
 
         return inngJournalpost;
     }
 
-    private Dokumentinformasjon finnDokumentinformasjonHoved(List<JournalDokument> journalDokListe) {
+    private Dokumentinformasjon lagDokumentinformasjonHoved(List<JournalDokument> journalDokListe) {
 
         List<JournalDokument> hovedListe = journalDokListe.stream()
                 .filter(this::erHoveddokument)
@@ -62,7 +62,7 @@ class InngaaendeJournalpostBuilder {
         return dokinfo;
     }
 
-    private List<Dokumentinformasjon> finnDokumentinformasjonVedlegg(List<JournalDokument> journalDokListe) {
+    private List<Dokumentinformasjon> lagDokumentinformasjonVedlegg(List<JournalDokument> journalDokListe) {
 
         List<JournalDokument> vedleggListe = journalDokListe.stream()
                 .filter(this::erVedlegg)
@@ -103,17 +103,22 @@ class InngaaendeJournalpostBuilder {
             }
             for (JournalDokument journalDok : journalDokListe) {
                 Dokumentinnhold dokInnhold = new Dokumentinnhold();
+                boolean harVerdier = false;
                 if (journalDok.getFilType() != null) {
                     Arkivfiltyper arkivfiltype = new Arkivfiltyper();
                     arkivfiltype.setValue(journalDok.getFilType());
                     dokInnhold.setArkivfiltype(arkivfiltype);
+                    harVerdier = true;
                 }
                 if (journalDok.getVariantformat() != null) {
                     Variantformater variantformat = new Variantformater();
                     variantformat.setValue(journalDok.getVariantformat());
                     dokInnhold.setVariantformat(variantformat);
+                    harVerdier = true;
                 }
-                dokinfo.getDokumentInnholdListe().add(dokInnhold);
+                if (harVerdier) {
+                    dokinfo.getDokumentInnholdListe().add(dokInnhold);
+                }
             }
         }
 

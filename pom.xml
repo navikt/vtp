@@ -40,8 +40,7 @@
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
         <joark.journal.version>1.0.3</joark.journal.version>
-		<joark.inngaaendejournal.version>1.0.0-SNAPSHOT</joark.inngaaendejournal.version>
-			<!-- TODO (rune) stabil versjon -->
+		<joark.inngaaendejournal.version>1.0.0</joark.inngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
         <tps.person.version>2.0.0</tps.person.version>
 	</properties>
@@ -87,6 +86,16 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger</groupId>
                 <artifactId>journal-mock-modell</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>journal-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>inngaaendejournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
