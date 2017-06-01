@@ -30,6 +30,7 @@ public class StaticModelData {
     private static final LocalDateTime NOW = LocalDateTime.now();
     private static final LocalDateTime YESTERDAY = LocalDateTime.now().minusDays(1);
     public static final String TILKNYTTET_SOM_HOVEDDOKUMENT = "HOVEDDOKUMENT";
+    public static final String TILKNYTTET_SOM_VEDLEGG = "VEDLEGG";
 
     private static final EntityManager tpsEntityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 

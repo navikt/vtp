@@ -28,16 +28,15 @@ import java.time.LocalDateTime;
 */
 
 @Entity(name = "JournalDokument")
-@Table(name = "MOCK_JOARK_JOURNALDOKUMENTER")
-
+@Table(name = "JOURNALDOKUMENT")
 public class JournalDokument {
 
     @Id
     @Column(name = "ID", nullable = false)
     long id;
 
-    //TODO (rune) @Column(name = "BRUKER_FNR")
-    transient String brukerFnr;
+    @Column(name = "BRUKER_FNR")
+    String brukerFnr;
 
     @Column(name = "DOKUMENT_ID")
     String dokumentId;
@@ -57,6 +56,9 @@ public class JournalDokument {
     @Column(name = "FILTYPE")
     String filType;
 
+    @Column(name = "VARIANTFORMAT")
+    String variantformat;
+
     @Column(name = "KOMMUNIKASJONSKANAL")
     String kommunikasjonskanal;
 
@@ -69,27 +71,17 @@ public class JournalDokument {
     @Column(name = "ARKIVTEMA")
     String arkivtema;
 
+    @Column(name ="KATEGORI")
+    String kategori;
+
+    @Column(name = "JOURNALTILSTAND")
+    String journaltilstand;
+
+    @Column(name = "DOKUMENTTILSTAND")
+    String dokumenttilstand;
+
     JournalDokument(){
     }
-
-    /*TODO (rune) rm:
-    public JournalDokument(long id, String dokumentId,  String journalpostId, byte[] dokument)
-    {
-        this.id=id;
-        if (dokumentId != null)
-        {
-            this.dokumentId=dokumentId;
-        }
-        if (journalpostId != null)
-        {
-            this.journalpostId=journalpostId;
-        }
-        if(dokument != null) {
-          this.dokument=dokument;
-        }
-        //this.filType = filType;
-
-    }*/
 
     //TODO (rune) rydd opp det som evt ikke brukes:
 
@@ -157,6 +149,14 @@ public class JournalDokument {
         this.filType = filType;
     }
 
+    public String getVariantformat() {
+        return variantformat;
+    }
+
+    public void setVariantformat(String variantformat) {
+        this.variantformat = variantformat;
+    }
+
     public String getTilknJpSom() {
         return tilknJpSom;
     }
@@ -187,5 +187,29 @@ public class JournalDokument {
 
     public void setArkivtema(String arkivtema) {
         this.arkivtema = arkivtema;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
+
+    public String getJournaltilstand() {
+        return journaltilstand;
+    }
+
+    public void setJournaltilstand(String journaltilstand) {
+        this.journaltilstand = journaltilstand;
+    }
+
+    public String getDokumenttilstand() {
+        return dokumenttilstand;
+    }
+
+    public void setDokumenttilstand(String dokumenttilstand) {
+        this.dokumenttilstand = dokumenttilstand;
     }
 }

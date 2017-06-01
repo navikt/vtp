@@ -1,42 +1,23 @@
 package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.InngaaendeJournalpost;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Journaltilstand;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Mottakskanaler;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Tema;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.*;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 class InngaaendeJournalpostBuilder {
-
-    /*
-    OK: protected String avsenderId;
-    OK: protected XMLGregorianCalendar forsendelseMottatt;
-    OK: protected Mottakskanaler mottakskanal;
-    OK: protected Tema tema;
-    @XmlElement(
-        required = true
-    )
-    protected Journaltilstand journaltilstand;
-    protected ArkivSak arkivSak;
-    protected List<Aktoer> brukerListe;
-    @XmlElement(
-        required = true
-    )
-    protected Dokumentinformasjon hoveddokument;
-    protected List<Dokumentinformasjon> vedleggListe;
-     */
 
     InngaaendeJournalpost buildFrom(List<JournalDokument> journalDokListe) {
 
         InngaaendeJournalpost inngJournalpost = buildBasic();
 
         JournalDokument foersteDok = journalDokListe.get(0);
-            //TODO (rune) riktig å bare ta første og beste?
+            // første og beste - de skal være like på feltene vi setter her
         if (foersteDok.getBrukerFnr() != null) {
             inngJournalpost.setAvsenderId(foersteDok.getBrukerFnr());
         }
@@ -53,28 +34,93 @@ class InngaaendeJournalpostBuilder {
             tema.setValue(foersteDok.getArkivtema());
             inngJournalpost.setTema(tema);
         }
-        //TODO (rune) journaltilstand
+        if (foersteDok.getJournaltilstand() != null) {
+            Journaltilstand journaltilstand = Journaltilstand.fromValue(foersteDok.getJournaltilstand());
+            inngJournalpost.setJournaltilstand(journaltilstand);
+        }
 
         //TODO (rune) arkivSak ?
 
         //TODO (rune) brukerListe ?
 
-        //TODO (rune) hoveddokument
+        Dokumentinformasjon dokInfoHoved = finnDokumentinformasjonHoved(journalDokListe);
+        inngJournalpost.setHoveddokument(dokInfoHoved);
 
-        //TODO (rune) vedleggListe
-        /*
-        for (JournalDokument journalDok : journalDokListe) {
-            DokumentinformasjonBuilder dokinfoBuilder = new DokumentinformasjonBuilder(journalDok);
-            Dokumentinformasjon dokInfo = dokinfoBuilder.build();
-            if (erHoveddokument(journalDok)) {
-                response.getInngaaendeJournalpost().setHoveddokument(dokInfo);
-            } else {
-                response.getInngaaendeJournalpost().getVedleggListe().add(dokInfo);
-            }
-        }*/
+        List<Dokumentinformasjon> dokInfoVedleggListe = finnDokumentinformasjonVedlegg(journalDokListe);
+        inngJournalpost.getVedleggListe().addAll(dokInfoVedleggListe);
 
         return inngJournalpost;
     }
+
+    private Dokumentinformasjon finnDokumentinformasjonHoved(List<JournalDokument> journalDokListe) {
+
+        List<JournalDokument> hovedListe = journalDokListe.stream()
+                .filter(this::erHoveddokument)
+                .collect(Collectors.toList());
+
+        Dokumentinformasjon dokinfo = lagDokumentinformasjon(hovedListe);
+        return dokinfo;
+    }
+
+    private List<Dokumentinformasjon> finnDokumentinformasjonVedlegg(List<JournalDokument> journalDokListe) {
+
+        List<JournalDokument> vedleggListe = journalDokListe.stream()
+                .filter(this::erVedlegg)
+                .collect(Collectors.toList());
+
+        Map<String, List<JournalDokument>> vedleggPrDokumentId = vedleggListe.stream()
+                .collect(Collectors.groupingBy(JournalDokument::getDokumentId));
+
+        List<Dokumentinformasjon> dokInfoVedleggListe = vedleggPrDokumentId.entrySet().stream()
+                .map(entry -> lagDokumentinformasjon(entry.getValue()))
+                .collect(Collectors.toList());
+
+        return dokInfoVedleggListe;
+    }
+
+    private Dokumentinformasjon lagDokumentinformasjon(List<JournalDokument> journalDokListe) {
+
+        Dokumentinformasjon dokinfo = null;
+
+        if (! journalDokListe.isEmpty()) {
+            dokinfo = new Dokumentinformasjon();
+            JournalDokument journalDokFoerste = journalDokListe.get(0);
+                // første og beste - de skal være like på feltene vi setter her
+            if (journalDokFoerste.getKategori() != null) {
+                Dokumentkategorier dokumentkategori = new Dokumentkategorier();
+                dokumentkategori.setValue(journalDokFoerste.getKategori());
+                dokinfo.setDokumentkategori(dokumentkategori);
+            }
+            if (journalDokFoerste.getDokumentType() != null) {
+                DokumenttypeIder dokumenttypeId = new DokumenttypeIder();
+                dokumenttypeId.setValue(journalDokFoerste.getDokumentType());
+                dokinfo.setDokumenttypeId(dokumenttypeId);
+            }
+            dokinfo.setDokumentId(journalDokFoerste.getDokumentId());
+            if (journalDokFoerste.getDokumenttilstand() != null) {
+                Dokumenttilstand dokumenttilstand = Dokumenttilstand.fromValue(journalDokFoerste.getDokumenttilstand());
+                dokinfo.setDokumenttilstand(dokumenttilstand);
+            }
+            for (JournalDokument journalDok : journalDokListe) {
+                Dokumentinnhold dokInnhold = new Dokumentinnhold();
+                if (journalDok.getFilType() != null) {
+                    Arkivfiltyper arkivfiltype = new Arkivfiltyper();
+                    arkivfiltype.setValue(journalDok.getFilType());
+                    dokInnhold.setArkivfiltype(arkivfiltype);
+                }
+                if (journalDok.getVariantformat() != null) {
+                    Variantformater variantformat = new Variantformater();
+                    variantformat.setValue(journalDok.getVariantformat());
+                    dokInnhold.setVariantformat(variantformat);
+                }
+                dokinfo.getDokumentInnholdListe().add(dokInnhold);
+            }
+        }
+
+        return dokinfo;
+    }
+
+    //----------------------
 
     InngaaendeJournalpost buildFrom(Journalpost journalpost) {
 
@@ -87,14 +133,19 @@ class InngaaendeJournalpostBuilder {
         return inngaaendeJournalpost;
     }
 
+    //----------------------
+
     private InngaaendeJournalpost buildBasic() {
 
         InngaaendeJournalpost inngaaendeJournalpost = new InngaaendeJournalpost();
-        inngaaendeJournalpost.setJournaltilstand(Journaltilstand.ENDELIG);
         return inngaaendeJournalpost;
     }
 
     private boolean erHoveddokument(JournalDokument journalDok) {
         return StaticModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(journalDok.getTilknJpSom());
+    }
+
+    private boolean erVedlegg(JournalDokument journalDok) {
+        return StaticModelData.TILKNYTTET_SOM_VEDLEGG.equals(journalDok.getTilknJpSom());
     }
 }
