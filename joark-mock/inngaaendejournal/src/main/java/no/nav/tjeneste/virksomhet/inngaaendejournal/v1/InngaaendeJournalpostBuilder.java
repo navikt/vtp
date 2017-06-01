@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.*;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.RegistertSak;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 
@@ -18,6 +19,7 @@ class InngaaendeJournalpostBuilder {
 
         JournalDokument foersteDok = journalDokListe.get(0);
             // første og beste - de skal være like på feltene vi setter her
+
         if (foersteDok.getBrukerFnr() != null) {
             inngJournalpost.setAvsenderId(foersteDok.getBrukerFnr());
         }
@@ -39,9 +41,14 @@ class InngaaendeJournalpostBuilder {
             inngJournalpost.setJournaltilstand(journaltilstand);
         }
 
-        //TODO (rune) arkivSak ?
+        ArkivSak arkivSak = lagArkivSak(foersteDok);
+        inngJournalpost.setArkivSak(arkivSak);
 
-        //TODO (rune) brukerListe ?
+        if (foersteDok.getBrukerFnr() != null) {
+            Person bruker = new Person();
+            bruker.setIdent(foersteDok.getBrukerFnr());
+            inngJournalpost.getBrukerListe().add(bruker);
+        }
 
         Dokumentinformasjon dokInfoHoved = lagDokumentinformasjonHoved(journalDokListe);
         inngJournalpost.setHoveddokument(dokInfoHoved);
@@ -125,17 +132,62 @@ class InngaaendeJournalpostBuilder {
         return dokinfo;
     }
 
+    private ArkivSak lagArkivSak(JournalDokument journalDok) {
+        ArkivSak arkivSak = null;
+        if (journalDok.getSakId() != null || journalDok.getFagsystem() != null) {
+            arkivSak = new ArkivSak();
+            arkivSak.setArkivSakId(journalDok.getSakId());
+            arkivSak.setArkivSakSystem(journalDok.getFagsystem());
+        }
+        return arkivSak;
+    }
+
     //----------------------
 
     InngaaendeJournalpost buildFrom(Journalpost journalpost) {
 
         InngaaendeJournalpost inngaaendeJournalpost = buildBasic();
 
-        //TODO (rune) ...
+        // AvsenderId - har ikke data
+
+        inngaaendeJournalpost.setForsendelseMottatt(journalpost.getMottatt());
+
+        if (journalpost.getKommunikasjonskanal() != null) {
+            Mottakskanaler mottakskanal = new Mottakskanaler();
+            mottakskanal.setValue(journalpost.getKommunikasjonskanal().getValue());
+            inngaaendeJournalpost.setMottakskanal(mottakskanal);
+        }
+
+        if (journalpost.getArkivtema() != null) {
+            Tema tema = new Tema();
+            tema.setValue(journalpost.getArkivtema().getValue());
+            inngaaendeJournalpost.setTema(tema);
+        }
+
+        //TODO (rune) Journaltilstand
+
+        ArkivSak arkivSak = lagArkivSak(journalpost);
+        inngaaendeJournalpost.setArkivSak(arkivSak);
+
+        // brukerListe - har ikke data
+
         //TODO (rune) Dokumentinformasjon hoveddokument;
         //TODO (rune) List<Dokumentinformasjon> vedleggListe;
 
         return inngaaendeJournalpost;
+    }
+
+    private ArkivSak lagArkivSak(Journalpost journalpost) {
+        ArkivSak arkivSak = null;
+        RegistertSak registertSak = journalpost.getGjelderSak();
+        if (registertSak != null) {
+            if (registertSak.getSakId() != null || registertSak.getFagsystem() != null) {
+                arkivSak = new ArkivSak();
+                arkivSak.setArkivSakId(registertSak.getSakId());
+                arkivSak.setArkivSakSystem(registertSak.getFagsystem().getValue());
+            }
+        }
+        return arkivSak;
     }
 
     //----------------------

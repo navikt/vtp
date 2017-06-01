@@ -80,6 +80,9 @@ public class JournalDokument {
     @Column(name = "DOKUMENTTILSTAND")
     String dokumenttilstand;
 
+    @Column(name = "FAGSYSTEM")
+    String fagsystem;
+
     JournalDokument(){
     }
 
@@ -211,5 +214,13 @@ public class JournalDokument {
 
     public void setDokumenttilstand(String dokumenttilstand) {
         this.dokumenttilstand = dokumenttilstand;
+    }
+
+    public String getFagsystem() {
+        return fagsystem;
+    }
+
+    public void setFagsystem(String fagsystem) {
+        this.fagsystem = fagsystem;
     }
 }
