@@ -89,149 +89,75 @@ public class JournalDokument {
     JournalDokument(){
     }
 
-    //TODO (rune) rydd opp det som evt ikke brukes:
-
     public String getBrukerFnr() {
         return brukerFnr;
-    }
-
-    public void setBrukerFnr(String brukerFnr) {
-        this.brukerFnr = brukerFnr;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getDokumentId() {
         return dokumentId;
-    }
-
-    public void setDokumentId(String dokumentId) {
-        this.dokumentId = dokumentId;
     }
 
     public String getJournalpostId() {
         return journalpostId;
     }
 
-    public void setJournalpostId(String journalpostId) {
-        this.journalpostId = journalpostId;
-    }
-
     public String getSakId() {
         return sakId;
-    }
-
-    public void setSakId(String sakId) {
-        this.sakId = sakId;
     }
 
     public byte[] getDokument() {
         return dokument;
     }
 
-    public void setDokument(byte[] dokument) {
-        this.dokument = dokument;
-    }
-
     public String getDokumentType() {
         return dokumentType;
-    }
-
-    public void setDokumentType(String dokumentType) {
-        this.dokumentType = dokumentType;
     }
 
     public String getFilType() {
         return filType;
     }
 
-    public void setFilType(String filType) {
-        this.filType = filType;
-    }
-
     public String getVariantformat() {
         return variantformat;
-    }
-
-    public void setVariantformat(String variantformat) {
-        this.variantformat = variantformat;
     }
 
     public String getTilknJpSom() {
         return tilknJpSom;
     }
 
-    public void setTilknJpSom(String tilknJpSom) {
-        this.tilknJpSom = tilknJpSom;
-    }
-
     public String getKommunikasjonskanal() {
         return kommunikasjonskanal;
-    }
-
-    public void setKommunikasjonskanal(String kommunikasjonskanal) {
-        this.kommunikasjonskanal = kommunikasjonskanal;
     }
 
     public LocalDateTime getDatoMottatt() {
         return datoMottatt;
     }
 
-    public void setDatoMottatt(LocalDateTime datoMottatt) {
-        this.datoMottatt = datoMottatt;
-    }
-
     public String getArkivtema() {
         return arkivtema;
-    }
-
-    public void setArkivtema(String arkivtema) {
-        this.arkivtema = arkivtema;
     }
 
     public String getKategori() {
         return kategori;
     }
 
-    public void setKategori(String kategori) {
-        this.kategori = kategori;
-    }
-
     public String getJournaltilstand() {
         return journaltilstand;
-    }
-
-    public void setJournaltilstand(String journaltilstand) {
-        this.journaltilstand = journaltilstand;
     }
 
     public String getDokumenttilstand() {
         return dokumenttilstand;
     }
 
-    public void setDokumenttilstand(String dokumenttilstand) {
-        this.dokumenttilstand = dokumenttilstand;
-    }
-
     public String getFagsystem() {
         return fagsystem;
     }
 
-    public void setFagsystem(String fagsystem) {
-        this.fagsystem = fagsystem;
-    }
-
     public String getKommunikasjonsretning() {
         return kommunikasjonsretning;
-    }
-
-    public void setKommunikasjonsretning(String kommunikasjonsretning) {
-        this.kommunikasjonsretning = kommunikasjonsretning;
     }
 }
