@@ -71,12 +71,6 @@
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
-		<!-- TODO (rune) ?
-        <dependency>
-            <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>tps-mock-modell</artifactId>
-        </dependency>
-		-->
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>journal-mock-modell</artifactId>

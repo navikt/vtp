@@ -159,38 +159,56 @@ class InngaaendeJournalpostBuilder {
 
     InngaaendeJournalpost buildFrom(Journalpost journalpost) {
 
-        InngaaendeJournalpost innJournalpost = new InngaaendeJournalpost();
+        InngaaendeJournalpost inngJournalpost = new InngaaendeJournalpost();
 
         // AvsenderId - har ikke data
 
-        innJournalpost.setForsendelseMottatt(journalpost.getMottatt());
+        inngJournalpost.setForsendelseMottatt(journalpost.getMottatt());
 
         if (journalpost.getKommunikasjonskanal() != null) {
             Mottakskanaler mottakskanal = new Mottakskanaler();
             mottakskanal.setValue(journalpost.getKommunikasjonskanal().getValue());
-            innJournalpost.setMottakskanal(mottakskanal);
+            inngJournalpost.setMottakskanal(mottakskanal);
         }
 
         if (journalpost.getArkivtema() != null) {
             Tema tema = new Tema();
             tema.setValue(journalpost.getArkivtema().getValue());
-            innJournalpost.setTema(tema);
+            inngJournalpost.setTema(tema);
         }
 
-        //TODO (rune) Journaltilstand, når vi vet hva vi skal mappe fra
+        inngJournalpost.setJournaltilstand(lagJournaltilstand(journalpost.getJournalstatus()));
 
         ArkivSak arkivSak = lagArkivSak(journalpost);
-        innJournalpost.setArkivSak(arkivSak);
+        inngJournalpost.setArkivSak(arkivSak);
 
         // brukerListe - har ikke data
 
         Dokumentinformasjon dokInfoHoved = lagDokumentinformasjonHoved(journalpost);
-        innJournalpost.setHoveddokument(dokInfoHoved);
+        inngJournalpost.setHoveddokument(dokInfoHoved);
 
         List<Dokumentinformasjon> dokInfoVedleggListe = lagDokumentinformasjonVedlegg(journalpost);
-        innJournalpost.getVedleggListe().addAll(dokInfoVedleggListe);
+        inngJournalpost.getVedleggListe().addAll(dokInfoVedleggListe);
 
-        return innJournalpost;
+        return inngJournalpost;
+    }
+
+    private Journaltilstand lagJournaltilstand(Journalstatuser journalstatus) {
+        Journaltilstand journaltilstand = null;
+        if (journalstatus != null) {
+            switch (journalstatus.getValue()) {
+                case "M":
+                    journaltilstand = Journaltilstand.MIDLERTIDIG;
+                    break;
+                case "J":
+                    journaltilstand = Journaltilstand.ENDELIG;
+                    break;
+                case "U":
+                    journaltilstand = Journaltilstand.UTGAAR;
+                    break;
+            }
+        }
+        return journaltilstand;
     }
 
     private Dokumentinformasjon lagDokumentinformasjonHoved(Journalpost journalpost) {
@@ -236,12 +254,7 @@ class InngaaendeJournalpostBuilder {
                 dokinfo.setDokumenttypeId(dokumenttypeId);
             }
             dokinfo.setDokumentId(journalfoertDokInfo.getDokumentId());
-            /*TODO (rune) når vi vet hva vi skal mappe fra
-            if (journalDokFoerste.getDokumenttilstand() != null) {
-                Dokumenttilstand dokumenttilstand = Dokumenttilstand.fromValue(journalDokFoerste.getDokumenttilstand());
-                dokinfo.setDokumenttilstand(dokumenttilstand);
-            }
-             */
+            dokinfo.setDokumenttilstand(lagDokumenttilstand(journalfoertDokInfo.getStatus()));
             if (journalfoertDokInfo.getBeskriverInnholdListe() != null) {
                 List<Dokumentinnhold> dokInnholdListe = journalfoertDokInfo.getBeskriverInnholdListe().stream()
                         .map(journV2dokInnhold -> lagDokumentinnhold(journV2dokInnhold))
@@ -251,6 +264,24 @@ class InngaaendeJournalpostBuilder {
         }
 
         return dokinfo;
+    }
+
+    private Dokumenttilstand lagDokumenttilstand(Statuser status) {
+        Dokumenttilstand dokumenttilstand = null;
+        if (status != null) {
+            switch (status.getValue()) {
+                case "UNDER_REDIGERING":
+                    dokumenttilstand = Dokumenttilstand.UNDER_REDIGERING;
+                    break;
+                case "FERDIGSTILT":
+                    dokumenttilstand = Dokumenttilstand.FERDIGSTILT;
+                    break;
+                case "AVBRUTT":
+                    dokumenttilstand = Dokumenttilstand.AVBRUTT;
+                    break;
+            }
+        }
+        return dokumenttilstand;
     }
 
     private Dokumentinnhold lagDokumentinnhold(DokumentInnhold journV2dokInnhold) {

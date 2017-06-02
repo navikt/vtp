@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.*;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.JournalpostIkkeFunnet;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.JournalpostIkkeInngaeende;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.*;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpostResponse;
@@ -24,6 +25,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebService(
         name = "InngaaendeJournal_v1",
@@ -34,6 +36,9 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     private static final Logger LOG = LoggerFactory.getLogger(InngaaendeJournalServiceMockImpl.class);
 
     private static final EntityManager joarkEntityManager = Persistence.createEntityManagerFactory("joark").createEntityManager();
+
+    private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
+
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/inngaaendeJournal/v1/InngaaendeJournal_v1/pingRequest"
@@ -93,8 +98,11 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
         // Let i db og returner det som evt. funnet der:
 
         List<JournalDokument> journalDokListe = new JournalDbLeser(joarkEntityManager).finnDokumenterMedJournalId(journalpostId);
-        if (! journalDokListe.isEmpty()) {
-            response.setInngaaendeJournalpost(ijpBuilder.buildFrom(journalDokListe));
+        List<JournalDokument> inngaaendeJournalDokListe = journalDokListe.stream()
+                .filter(journalDokument -> KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalDokument.getKommunikasjonsretning()))
+                .collect(Collectors.toList());
+        if (! inngaaendeJournalDokListe.isEmpty()) {
+            response.setInngaaendeJournalpost(ijpBuilder.buildFrom(inngaaendeJournalDokListe));
             return response;
         }
 
@@ -102,8 +110,10 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
         Journalpost journalpost = StaticModelData.getJournalpostForId(journalpostId);
         if (journalpost != null) {
-            response.setInngaaendeJournalpost(ijpBuilder.buildFrom(journalpost));
-            return response;
+            if (KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalpost.getKommunikasjonsretning().getValue())) {
+                response.setInngaaendeJournalpost(ijpBuilder.buildFrom(journalpost));
+                return response;
+            }
         }
 
         // Fant ikke noe:

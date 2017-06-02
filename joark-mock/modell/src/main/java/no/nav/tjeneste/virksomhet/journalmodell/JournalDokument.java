@@ -83,6 +83,9 @@ public class JournalDokument {
     @Column(name = "FAGSYSTEM")
     String fagsystem;
 
+    @Column(name = "KOMMUNIKASJONSRETNING")
+    String kommunikasjonsretning;
+
     JournalDokument(){
     }
 
@@ -222,5 +225,13 @@ public class JournalDokument {
 
     public void setFagsystem(String fagsystem) {
         this.fagsystem = fagsystem;
+    }
+
+    public String getKommunikasjonsretning() {
+        return kommunikasjonsretning;
+    }
+
+    public void setKommunikasjonsretning(String kommunikasjonsretning) {
+        this.kommunikasjonsretning = kommunikasjonsretning;
     }
 }
