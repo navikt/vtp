@@ -41,6 +41,7 @@
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
         <joark.journal.version>1.0.3</joark.journal.version>
 		<joark.inngaaendejournal.version>1.0.0</joark.inngaaendejournal.version>
+        <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
         <tps.person.version>2.0.0</tps.person.version>
 	</properties>
@@ -98,6 +99,11 @@
                 <artifactId>inngaaendejournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>behandleinngaaendejournal-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 			<!-- Kontraktsavhengigheter -->
 			<dependency>
@@ -142,6 +148,12 @@
 				<version>${joark.inngaaendejournal.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+                <version>${joark.behandleinngaaendejournal.version}</version>
+                <classifier>jaxws</classifier>
+            </dependency>
 
 			<!-- Eksterne bibliotek -->
 			<dependency>

@@ -42,6 +42,10 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>inngaaendejournal-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>behandleinngaaendejournal-mock</artifactId>
+        </dependency>
 
 		<!-- Eksterne avhengigheter -->
         <dependency>

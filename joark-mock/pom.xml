@@ -13,6 +13,7 @@
     <modules>
         <module>journal</module>
         <module>inngaaendejournal</module>
+        <module>behandleinngaaendejournal</module>
         <module>modell</module>
     </modules>
 

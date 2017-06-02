@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
 
+import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
@@ -37,7 +38,7 @@ public class MockServer {
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
         server.start();
-        //TODO! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
+        //TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishService(AktoerServiceMockImpl.class, "/aktoer");
         // access wsdl on http://localhost:7999/aktoer?wsdl
         publishService(SakServiceMockImpl.class, "/sak");
@@ -45,8 +46,9 @@ public class MockServer {
         publishService(PersonServiceMockImpl.class, "/person");
         // access wsdl on http://localhost:7999/person?wsdl
         publishService(JournalServiceMockImpl.class, "/journal");
-        publishService(InngaaendeJournalServiceMockImpl.class, "/inngaaendejournal");
         // access wsdl on http://localhost:7999/journal?wsdl
+        publishService(InngaaendeJournalServiceMockImpl.class, "/inngaaendejournal");
+        publishService(BehandleInngaaendeJournalServiceMockImpl.class, "/behandleinngaaendejournal");
         publishService(OppgavebehandlingServiceMockImpl.class, "/oppgavebehandling");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishService(BehandleSakServiceMockImpl.class, "/behandlesak");
