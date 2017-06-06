@@ -33,7 +33,7 @@ public class JournalDokument {
 
     @Id
     @Column(name = "ID", nullable = false)
-    long id;
+    Long id;
 
     @Column(name = "BRUKER_FNR")
     String brukerFnr;
@@ -96,7 +96,7 @@ public class JournalDokument {
         return brukerFnr;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

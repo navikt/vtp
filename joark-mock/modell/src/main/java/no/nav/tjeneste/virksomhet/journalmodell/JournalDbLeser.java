@@ -1,6 +1,8 @@
 package no.nav.tjeneste.virksomhet.journalmodell;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.FlushModeType;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -73,6 +75,30 @@ public class JournalDbLeser {
     }
 
     public void oppdaterJournalpost(JournalDokument journalDok) {
-        //TODO (rune) ...
+        EntityTransaction tx = entityManager.getTransaction(); // db level tx
+        try {
+            tx.begin();
+
+            if (entityManager.contains(journalDok)) {
+                // Eksisterende og persistent - ikke gjør noe
+                @SuppressWarnings("unused")
+                int brkpt = 1; // NOSONAR
+                //entityManager.merge(journalDok); //TODO (rune) exp, rm
+            } else if (journalDok.getId() != null) {
+                // Eksisterende men detached - oppdater
+                entityManager.merge(journalDok);
+            } else {
+                // Ny - insert
+                entityManager.persist(journalDok);
+            }
+            //TODO (rune) rm: FlushModeType fmt = entityManager.getFlushMode();
+            //entityManager.flush();
+
+            tx.commit();
+        } finally {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 }
