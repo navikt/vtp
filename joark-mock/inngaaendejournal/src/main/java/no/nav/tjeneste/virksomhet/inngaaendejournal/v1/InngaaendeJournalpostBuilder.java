@@ -6,6 +6,7 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Person;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Variantformater;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.*;
+import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalV2Constants;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 
@@ -196,15 +197,14 @@ class InngaaendeJournalpostBuilder {
     private Journaltilstand lagJournaltilstand(Journalstatuser journalstatus) {
         Journaltilstand journaltilstand = null;
         if (journalstatus != null) {
-            //TODO (rune) bruke JournalV2Constants.*
             switch (journalstatus.getValue()) {
-                case "M":
+                case JournalV2Constants.JOURNALSTATUS_MIDLERTIDIG:
                     journaltilstand = Journaltilstand.MIDLERTIDIG;
                     break;
-                case "J":
+                case JournalV2Constants.JOURNALSTATUS_JOURNALFØRT:
                     journaltilstand = Journaltilstand.ENDELIG;
                     break;
-                case "U":
+                case JournalV2Constants.JOURNALSTATUS_UTGAAR:
                     journaltilstand = Journaltilstand.UTGAAR;
                     break;
             }

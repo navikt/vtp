@@ -92,6 +92,9 @@ public class JournalDokument {
     @Column(name = "KOMMUNIKASJONSRETNING")
     String kommunikasjonsretning;
 
+    @Column(name = "FEILKODE")
+    String feilkode;
+
     JournalDokument(){
     }
 
@@ -193,5 +196,9 @@ public class JournalDokument {
 
     public void setJournalStatus(String journalStatus) {
         this.journalStatus = journalStatus;
+    }
+
+    public String getFeilkode() {
+        return feilkode;
     }
 }
