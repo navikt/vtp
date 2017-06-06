@@ -196,6 +196,7 @@ class InngaaendeJournalpostBuilder {
     private Journaltilstand lagJournaltilstand(Journalstatuser journalstatus) {
         Journaltilstand journaltilstand = null;
         if (journalstatus != null) {
+            //TODO (rune) bruke JournalV2Constants.*
             switch (journalstatus.getValue()) {
                 case "M":
                     journaltilstand = Journaltilstand.MIDLERTIDIG;

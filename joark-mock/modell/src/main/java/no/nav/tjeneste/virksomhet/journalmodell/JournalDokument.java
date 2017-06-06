@@ -71,6 +71,9 @@ public class JournalDokument {
     @Column(name = "DATO_JP_FERDISTILT")
     LocalDateTime datoFerdigstillt;
 
+    @Column(name = "JOURNALSTATUS")
+    String journalStatus;
+
     @Column(name = "ARKIVTEMA")
     String arkivtema;
 
@@ -160,8 +163,16 @@ public class JournalDokument {
         return journaltilstand;
     }
 
+    public void setJournaltilstand(String journaltilstand) {
+        this.journaltilstand = journaltilstand;
+    }
+
     public String getDokumenttilstand() {
         return dokumenttilstand;
+    }
+
+    public void setDokumenttilstand(String dokumenttilstand) {
+        this.dokumenttilstand = dokumenttilstand;
     }
 
     public String getFagsystem() {
@@ -170,5 +181,13 @@ public class JournalDokument {
 
     public String getKommunikasjonsretning() {
         return kommunikasjonsretning;
+    }
+
+    public String getJournalStatus() {
+        return journalStatus;
+    }
+
+    public void setJournalStatus(String journalStatus) {
+        this.journalStatus = journalStatus;
     }
 }

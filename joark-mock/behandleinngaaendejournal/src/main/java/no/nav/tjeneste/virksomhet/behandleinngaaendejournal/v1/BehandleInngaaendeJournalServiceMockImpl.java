@@ -6,6 +6,9 @@ import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.feil.ObjektIkkeFu
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.meldinger.FerdigstillJournalfoeringRequest;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.meldinger.OppdaterJournalpostRequest;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumenttilstand;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Journaltilstand;
+import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalV2Constants;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 
@@ -110,11 +113,10 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
 
     private void ferdigstillJournalDokument(JournalDokument journalDok) {
 
-        //TODO (rune) oppdater felter:
-        //  * JOURNALSTATUS
-        //  * JOURNALTILSTAND
-        //  * TODO mer? på dokument-felter?
         journalDok.setDatoFerdigstillt(LocalDateTime.now());
+        journalDok.setJournalStatus(JournalV2Constants.JOURNALSTATUS_ENDELIG);
+        journalDok.setJournaltilstand(Journaltilstand.ENDELIG.value());
+        journalDok.setDokumenttilstand(Dokumenttilstand.FERDIGSTILT.value());
         new JournalDbLeser(joarkEntityManager).oppdaterJournalpost(journalDok);
     }
 
@@ -136,7 +138,9 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
             throws OppdaterJournalpostJournalpostIkkeInngaaende, OppdaterJournalpostObjektIkkeFunnet,
                 OppdaterJournalpostOppdateringIkkeMulig, OppdaterJournalpostSikkerhetsbegrensning, OppdaterJournalpostUgyldigInput {
 
-        //TODO (rune) ...
+        //TODO (rune) db-drevet exc...
+
+        //TODO støtte saksnr
     }
 }
 
