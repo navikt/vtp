@@ -71,4 +71,8 @@ public class JournalDbLeser {
         List<JournalDokument> journalDokumentList =  query.getResultList();
         return journalDokumentList;
     }
+
+    public void oppdaterJournalpost(JournalDokument journalDok) {
+        //TODO (rune) ...
+    }
 }

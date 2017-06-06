@@ -68,6 +68,9 @@ public class JournalDokument {
     @Column(name = "DATO_JP_MOTTATT")
     LocalDateTime datoMottatt;
 
+    @Column(name = "DATO_JP_FERDISTILT")
+    LocalDateTime datoFerdigstillt;
+
     @Column(name = "ARKIVTEMA")
     String arkivtema;
 
@@ -135,6 +138,14 @@ public class JournalDokument {
 
     public LocalDateTime getDatoMottatt() {
         return datoMottatt;
+    }
+
+    public LocalDateTime getDatoFerdigstillt() {
+        return datoFerdigstillt;
+    }
+
+    public void setDatoFerdigstillt(LocalDateTime datoFerdigstillt) {
+        this.datoFerdigstillt = datoFerdigstillt;
     }
 
     public String getArkivtema() {

@@ -1,20 +1,35 @@
 package no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1;
 
+import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.binding.*;
+import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.feil.ObjektIkkeFunnet;
+import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.meldinger.FerdigstillJournalfoeringRequest;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.meldinger.OppdaterJournalpostRequest;
+import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
+import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @WebService(
         name = "BehandleInngaaendeJournal_v1",
         targetNamespace = "http://nav.no/tjeneste/virksomhet/behandleInngaaendeJournal/v1"
 )
 public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaaendeJournalV1 {
+
+    private static final EntityManager joarkEntityManager = Persistence.createEntityManagerFactory("joark").createEntityManager();
+
+    private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/behandleInngaaendeJournal/v1/BehandleInngaaendeJournal_v1/pingRequest"
@@ -52,7 +67,55 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
             throws FerdigstillJournalfoeringFerdigstillingIkkeMulig, FerdigstillJournalfoeringJournalpostIkkeInngaaende,
                 FerdigstillJournalfoeringObjektIkkeFunnet, FerdigstillJournalfoeringSikkerhetsbegrensning, FerdigstillJournalfoeringUgyldigInput {
 
-        //TODO (rune) ...
+        // Sjekk input params:
+
+        String journalpostId = request.getJournalpostId();
+        if (journalpostId == null || journalpostId.isEmpty()) {
+            UgyldigInput faultInfo = new UgyldigInput();
+            faultInfo.setFeilmelding("journalpostId == null eller tom streng");
+            faultInfo.setFeilaarsak("brukerfeil");
+            faultInfo.setFeilkilde("mock behandleinngaaendejournal");
+            faultInfo.setTidspunkt(now());
+            throw new FerdigstillJournalfoeringUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
+        }
+
+        //String enhetId = request.getEnhetId();
+            //TODO (rune) skal den brukes?
+
+        // Les alle gitt id fra db:
+
+        List<JournalDokument> journalDokListe = new JournalDbLeser(joarkEntityManager).finnDokumenterMedJournalId(journalpostId);
+        List<JournalDokument> inngaaendeJournalDokListe = journalDokListe.stream()
+                .filter(journalDokument -> KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalDokument.getKommunikasjonsretning()))
+                .collect(Collectors.toList());
+
+        if (inngaaendeJournalDokListe.isEmpty()) {
+            ObjektIkkeFunnet faultInfo = new ObjektIkkeFunnet();
+            faultInfo.setFeilmelding("fant ikke journalpost med id \"" + journalpostId +  "\"");
+            faultInfo.setFeilaarsak("brukerfeil");
+            faultInfo.setFeilkilde("mock behandleinngaaendejournal");
+            faultInfo.setTidspunkt(now());
+            throw new FerdigstillJournalfoeringObjektIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
+        }
+
+        // Oppdater og lagre felter:
+
+        inngaaendeJournalDokListe
+                .forEach(journalDok -> ferdigstillJournalDokument(journalDok));
+    }
+
+    private XMLGregorianCalendar now() {
+        return ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now());
+    }
+
+    private void ferdigstillJournalDokument(JournalDokument journalDok) {
+
+        //TODO (rune) oppdater felter:
+        //  * JOURNALSTATUS
+        //  * JOURNALTILSTAND
+        //  * TODO mer? på dokument-felter?
+        journalDok.setDatoFerdigstillt(LocalDateTime.now());
+        new JournalDbLeser(joarkEntityManager).oppdaterJournalpost(journalDok);
     }
 
     @WebMethod(
