@@ -33,6 +33,8 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
     private static final EntityManager joarkEntityManager = Persistence.createEntityManagerFactory("joark").createEntityManager();
 
     private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
+    private static final String FAULTINFO_FEILAARSAK = "brukerfeil";
+    private static final String FAULTINFO_FEILKILDE = "mock behandleinngaaendejournal";
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/behandleInngaaendeJournal/v1/BehandleInngaaendeJournal_v1/pingRequest"
@@ -70,14 +72,12 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
             throws FerdigstillJournalfoeringFerdigstillingIkkeMulig, FerdigstillJournalfoeringJournalpostIkkeInngaaende,
                 FerdigstillJournalfoeringObjektIkkeFunnet, FerdigstillJournalfoeringSikkerhetsbegrensning, FerdigstillJournalfoeringUgyldigInput {
 
-        // Sjekk input params:
-
         String journalpostId = request.getJournalpostId();
         if (journalpostId == null || journalpostId.isEmpty()) {
             UgyldigInput faultInfo = new UgyldigInput();
             faultInfo.setFeilmelding("journalpostId == null eller tom streng");
-            faultInfo.setFeilaarsak("brukerfeil");
-            faultInfo.setFeilkilde("mock behandleinngaaendejournal");
+            faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
+            faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
             faultInfo.setTidspunkt(now());
             throw new FerdigstillJournalfoeringUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
@@ -85,23 +85,17 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
         //String enhetId = request.getEnhetId();
             //TODO (rune) skal den brukes?
 
-        // Les alle gitt id fra db:
-
-        List<JournalDokument> journalDokListe = new JournalDbLeser(joarkEntityManager).finnDokumenterMedJournalId(journalpostId);
-        List<JournalDokument> inngaaendeJournalDokListe = journalDokListe.stream()
-                .filter(journalDokument -> KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalDokument.getKommunikasjonsretning()))
-                .collect(Collectors.toList());
-
+        List<JournalDokument> inngaaendeJournalDokListe = getJournalDokuments(journalpostId);
         if (inngaaendeJournalDokListe.isEmpty()) {
             ObjektIkkeFunnet faultInfo = new ObjektIkkeFunnet();
             faultInfo.setFeilmelding("fant ikke journalpost med id \"" + journalpostId +  "\"");
-            faultInfo.setFeilaarsak("brukerfeil");
-            faultInfo.setFeilkilde("mock behandleinngaaendejournal");
+            faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
+            faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
             faultInfo.setTidspunkt(now());
             throw new FerdigstillJournalfoeringObjektIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
         }
 
-        // Oppdater og lagre felter:
+        haandterDatadrevneExceptions(inngaaendeJournalDokListe);
 
         inngaaendeJournalDokListe
                 .forEach(journalDok -> ferdigstillJournalDokument(journalDok));
@@ -119,6 +113,8 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
         journalDok.setDokumenttilstand(Dokumenttilstand.FERDIGSTILT.value());
         new JournalDbLeser(joarkEntityManager).oppdaterJournalpost(journalDok);
     }
+
+    //--------------------
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/behandleInngaaendeJournal/v1/BehandleInngaaendeJournal_v1/oppdaterJournalpostRequest"
@@ -138,9 +134,62 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
             throws OppdaterJournalpostJournalpostIkkeInngaaende, OppdaterJournalpostObjektIkkeFunnet,
                 OppdaterJournalpostOppdateringIkkeMulig, OppdaterJournalpostSikkerhetsbegrensning, OppdaterJournalpostUgyldigInput {
 
-        //TODO (rune) db-drevet exc...
+        String journalpostId = request.getInngaaendeJournalpost().getJournalpostId();
+        if (journalpostId == null || journalpostId.isEmpty()) {
+            UgyldigInput faultInfo = new UgyldigInput();
+            faultInfo.setFeilmelding("journalpostId == null eller tom streng");
+            faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
+            faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
+            faultInfo.setTidspunkt(now());
+            throw new OppdaterJournalpostUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
+        }
 
-        //TODO støtte saksnr
+        //String enhetId = request.getEnhetId();
+        //TODO (rune) skal den brukes?
+
+        List<JournalDokument> inngaaendeJournalDokListe = getJournalDokuments(journalpostId);
+        if (inngaaendeJournalDokListe.isEmpty()) {
+            ObjektIkkeFunnet faultInfo = new ObjektIkkeFunnet();
+            faultInfo.setFeilmelding("fant ikke journalpost med id \"" + journalpostId +  "\"");
+            faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
+            faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
+            faultInfo.setTidspunkt(now());
+            throw new OppdaterJournalpostObjektIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
+        }
+
+        haandterDatadrevneExceptions(inngaaendeJournalDokListe);
+
+        final String sakId;
+        if (request.getInngaaendeJournalpost().getArkivSak() != null) {
+            sakId = request.getInngaaendeJournalpost().getArkivSak().getArkivSakId();
+        } else {
+            sakId = null;
+        }
+        if (sakId != null) {
+            inngaaendeJournalDokListe
+                    .forEach(journalDok -> oppdaterSaksnr(journalDok, sakId));
+        }
+    }
+
+    private void oppdaterSaksnr(JournalDokument journalDok, String sakId) {
+
+        journalDok.setSakId(sakId);
+        new JournalDbLeser(joarkEntityManager).oppdaterJournalpost(journalDok);
+    }
+
+    //--------------------
+
+    private List<JournalDokument> getJournalDokuments(String journalpostId) {
+        List<JournalDokument> journalDokListe = new JournalDbLeser(joarkEntityManager).finnDokumenterMedJournalId(journalpostId);
+        List<JournalDokument> inngaaendeJournalDokListe = journalDokListe.stream()
+                .filter(journalDokument -> KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalDokument.getKommunikasjonsretning()))
+                .collect(Collectors.toList());
+
+        return inngaaendeJournalDokListe;
+    }
+
+    private void haandterDatadrevneExceptions(List<JournalDokument> inngaaendeJournalDokListe) {
+        //TODO (rune)
     }
 }
 

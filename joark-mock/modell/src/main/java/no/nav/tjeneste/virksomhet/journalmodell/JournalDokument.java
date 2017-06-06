@@ -115,6 +115,10 @@ public class JournalDokument {
         return sakId;
     }
 
+    public void setSakId(String sakId) {
+        this.sakId = sakId;
+    }
+
     public byte[] getDokument() {
         return dokument;
     }
