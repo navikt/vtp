@@ -22,7 +22,8 @@
 		<module>tps-mock</module>
         <module>gsak-mock</module>
         <module>joark-mock</module>
-  </modules>
+	    <module>pdp-mock</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
