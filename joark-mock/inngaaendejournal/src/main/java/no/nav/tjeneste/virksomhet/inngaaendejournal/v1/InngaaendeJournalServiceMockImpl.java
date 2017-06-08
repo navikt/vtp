@@ -127,12 +127,7 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
         }
 
         // Fant ikke noe:
-
-        JournalpostIkkeFunnet faultInfo = new JournalpostIkkeFunnet();
-        faultInfo.setFeilmelding("fant ikke journalpost med id " + journalpostId);
-        faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
-        faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
-        faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
+        JournalpostIkkeFunnet faultInfo = getJournalpostIkkeFunnet(journalpostId);
         throw new HentJournalpostJournalpostIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
     }
 
@@ -173,19 +168,19 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
         if (journalpost == null) {
             //Finnes ikke objekt i statisk data, utled fra db data
-            return utledFrajournalDokumentListe(journalDokListe);
+            return utledFrajournalDokumentListe(journalpostId, journalDokListe);
         } else {
-            return utledFraJournalpost(journalpost);
+            return utledFraJournalpost(journalpostId, journalpost);
         }
     }
 
-    private UtledJournalfoeringsbehovResponse utledFrajournalDokumentListe(List<JournalDokument> journalDokListe) throws UtledJournalfoeringsbehovJournalpostIkkeFunnet, UtledJournalfoeringsbehovJournalpostIkkeInngaaende,
+    private UtledJournalfoeringsbehovResponse utledFrajournalDokumentListe(String journalpostId, List<JournalDokument> journalDokListe) throws UtledJournalfoeringsbehovJournalpostIkkeFunnet, UtledJournalfoeringsbehovJournalpostIkkeInngaaende,
             UtledJournalfoeringsbehovJournalpostKanIkkeBehandles, UtledJournalfoeringsbehovSikkerhetsbegrensning,
             UtledJournalfoeringsbehovUgyldigInput {
 
         //Først finn ut om det er noe feil.
         if (journalDokListe == null || journalDokListe.isEmpty()) {
-            JournalpostIkkeFunnet journalpostIkkeFunnet = getJournalpostIkkeFunnet();
+            JournalpostIkkeFunnet journalpostIkkeFunnet = getJournalpostIkkeFunnet(journalpostId);
             throw new UtledJournalfoeringsbehovJournalpostIkkeFunnet(journalpostIkkeFunnet.getFeilmelding(), journalpostIkkeFunnet);
         }
 
@@ -194,38 +189,38 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
                 .collect(Collectors.toList());
 
         if (inngaaendeJournalDokListe.isEmpty()) {
-            JournalpostIkkeInngaeende journalpostIkkeInngaeende = getJournalpostIkkeInngaeende();
+            JournalpostIkkeInngaeende journalpostIkkeInngaeende = getJournalpostIkkeInngaeende(journalpostId);
             throw new UtledJournalfoeringsbehovJournalpostIkkeInngaaende(journalpostIkkeInngaeende.getFeilmelding(), journalpostIkkeInngaeende);
         }
 
         InngaaendeJournalpostBuilder ijpBuilder = new InngaaendeJournalpostBuilder();
         InngaaendeJournalpost inngaaendeJournalpost = ijpBuilder.buildFrom(inngaaendeJournalDokListe);
-        return utledJournalfoeringsbehovResponse(inngaaendeJournalpost);
+        return utledJournalfoeringsbehovResponse(journalpostId, inngaaendeJournalpost);
     }
 
-    private UtledJournalfoeringsbehovResponse utledFraJournalpost(Journalpost journalpost) throws UtledJournalfoeringsbehovJournalpostIkkeFunnet, UtledJournalfoeringsbehovJournalpostIkkeInngaaende,
+    private UtledJournalfoeringsbehovResponse utledFraJournalpost(String journalpostId, Journalpost journalpost) throws UtledJournalfoeringsbehovJournalpostIkkeFunnet, UtledJournalfoeringsbehovJournalpostIkkeInngaaende,
             UtledJournalfoeringsbehovJournalpostKanIkkeBehandles, UtledJournalfoeringsbehovSikkerhetsbegrensning,
             UtledJournalfoeringsbehovUgyldigInput {
 
         if (journalpost == null) {
-            JournalpostIkkeFunnet journalpostIkkeFunnet = getJournalpostIkkeFunnet();
+            JournalpostIkkeFunnet journalpostIkkeFunnet = getJournalpostIkkeFunnet(journalpostId);
             throw new UtledJournalfoeringsbehovJournalpostIkkeFunnet(journalpostIkkeFunnet.getFeilmelding(), journalpostIkkeFunnet);
         }
 
         if (!KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalpost.getKommunikasjonsretning().getValue())) {
-            JournalpostIkkeInngaeende journalpostIkkeInngaeende = getJournalpostIkkeInngaeende();
+            JournalpostIkkeInngaeende journalpostIkkeInngaeende = getJournalpostIkkeInngaeende(journalpostId);
             throw new UtledJournalfoeringsbehovJournalpostIkkeInngaaende(journalpostIkkeInngaeende.getFeilmelding(), journalpostIkkeInngaeende);
         }
 
         InngaaendeJournalpostBuilder ijpBuilder = new InngaaendeJournalpostBuilder();
         InngaaendeJournalpost inngaaendeJournalpost = ijpBuilder.buildFrom(journalpost);
-        return utledJournalfoeringsbehovResponse(inngaaendeJournalpost);
+        return utledJournalfoeringsbehovResponse(journalpostId, inngaaendeJournalpost);
     }
 
-    private UtledJournalfoeringsbehovResponse utledJournalfoeringsbehovResponse(InngaaendeJournalpost inngaaendeJournalpost) throws UtledJournalfoeringsbehovJournalpostKanIkkeBehandles {
+    private UtledJournalfoeringsbehovResponse utledJournalfoeringsbehovResponse(String journalpostId, InngaaendeJournalpost inngaaendeJournalpost) throws UtledJournalfoeringsbehovJournalpostKanIkkeBehandles {
 
         if ((inngaaendeJournalpost.getJournaltilstand() != null) && (!Journaltilstand.MIDLERTIDIG.equals(inngaaendeJournalpost.getJournaltilstand()))) {
-            JournalpostKanIkkeBehandles journalpostKanIkkeBehandles = getJournalpostKanIkkeBehandles();
+            JournalpostKanIkkeBehandles journalpostKanIkkeBehandles = getJournalpostKanIkkeBehandles(journalpostId);
             throw new UtledJournalfoeringsbehovJournalpostKanIkkeBehandles(journalpostKanIkkeBehandles.getFeilmelding(), journalpostKanIkkeBehandles);
         }
 
@@ -242,18 +237,18 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
         return response;
     }
 
-    private JournalpostKanIkkeBehandles getJournalpostKanIkkeBehandles() {
+    private JournalpostKanIkkeBehandles getJournalpostKanIkkeBehandles(String journalpostId) {
         JournalpostKanIkkeBehandles faultInfo = new JournalpostKanIkkeBehandles();
-        faultInfo.setFeilmelding("journalpost kan ikke behandles");
+        faultInfo.setFeilmelding(String.format("journalpostId %s kan ikke behandles", journalpostId));
         faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
         faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
         faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
         return faultInfo;
     }
 
-    private JournalpostIkkeInngaeende getJournalpostIkkeInngaeende() {
+    private JournalpostIkkeInngaeende getJournalpostIkkeInngaeende(String journalpostId) {
         JournalpostIkkeInngaeende faultInfo = new JournalpostIkkeInngaeende();
-        faultInfo.setFeilmelding("journalpost ikke inngående");
+        faultInfo.setFeilmelding(String.format("journalpostId %s ikke inngående", journalpostId));
         faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
         faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
         faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
@@ -269,9 +264,9 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
         return faultInfo;
     }
 
-    private JournalpostIkkeFunnet getJournalpostIkkeFunnet() {
+    private JournalpostIkkeFunnet getJournalpostIkkeFunnet(String journalpostId) {
         JournalpostIkkeFunnet faultInfo = new JournalpostIkkeFunnet();
-        faultInfo.setFeilmelding("journalpost ikke funnet");
+        faultInfo.setFeilmelding("Fant ikke journalpost med id " + journalpostId);
         faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
         faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
         faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
