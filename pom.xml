@@ -45,6 +45,7 @@
         <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
         <tps.person.version>2.0.0</tps.person.version>
+		<modig-testcertificates.version>1.2.2</modig-testcertificates.version>
 	</properties>
 
 	<dependencyManagement>
@@ -105,6 +106,13 @@
                 <artifactId>behandleinngaaendejournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+			<!-- NAV-biblioteker -->
+			<dependency>
+				<groupId>no.nav.modig</groupId>
+				<artifactId>modig-testcertificates</artifactId>
+				<version>${modig-testcertificates.version}</version>
+			</dependency>
 
 			<!-- Kontraktsavhengigheter -->
 			<dependency>

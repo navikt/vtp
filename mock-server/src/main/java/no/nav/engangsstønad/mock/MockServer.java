@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import javax.xml.ws.Endpoint;
 
 import no.nav.abac.pdp.PdpMock;
+import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
@@ -34,9 +35,11 @@ public class MockServer {
     private static Server server;
 
     public static void main(String[] args) throws Exception {
+
         server = new Server();
         setConnectors();
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
+
         server.setHandler(contextHandlerCollection);
         server.start();
         //TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
@@ -63,10 +66,15 @@ public class MockServer {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(7999);
         HttpConfiguration https = new HttpConfiguration();
+
+        TestCertificates.setupKeyAndTrustStore();
+
+        String keystoreURI = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
+
         https.addCustomizer(new SecureRequestCustomizer());
-        SslContextFactory sslContextFactory = new SslContextFactory("keystore.jks");
-        sslContextFactory.setKeyStorePassword("secret99");
-        sslContextFactory.setKeyManagerPassword("secret99");
+        SslContextFactory sslContextFactory = new SslContextFactory(keystoreURI);
+        sslContextFactory.setKeyStorePassword("devillokeystore1234");
+        sslContextFactory.setKeyManagerPassword("devillokeystore1234");
         ServerConnector sslConnector = new ServerConnector(server,
                 new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
         sslConnector.setPort(7998);
