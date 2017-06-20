@@ -74,7 +74,7 @@ public class MockServer {
         String keystoreURI = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
         //SslContextFactory sslContextFactory = new SslContextFactory(keystoreURI);
 
-        SslContextFactory sslContextFactory = new SslContextFactory("keystore.jks");
+        SslContextFactory sslContextFactory = new SslContextFactory("/home/deployer/keystore.jks");
         sslContextFactory.setKeyStorePassword("devillokeystore1234");
         sslContextFactory.setKeyManagerPassword("devillokeystore1234");
         ServerConnector sslConnector = new ServerConnector(server,
