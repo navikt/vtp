@@ -23,6 +23,7 @@
         <module>gsak-mock</module>
         <module>joark-mock</module>
 	    <module>pdp-mock</module>
+		<module>infotrygd-mock</module>
     </modules>
 
 	<properties>
@@ -38,6 +39,7 @@
 		<hibernate.version>5.2.9.Final</hibernate.version>
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
+		<infotrygd.sak.version>1.0.1</infotrygd.sak.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
         <joark.journal.version>1.0.3</joark.journal.version>
@@ -106,6 +108,16 @@
                 <artifactId>behandleinngaaendejournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>infotrygdsak-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>infotrygd-mock-modell</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- NAV-biblioteker -->
 			<dependency>
@@ -163,6 +175,12 @@
                 <version>${joark.behandleinngaaendejournal.version}</version>
                 <classifier>jaxws</classifier>
             </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
+				<version>${infotrygd.sak.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
 
 			<!-- Eksterne bibliotek -->
 			<dependency>

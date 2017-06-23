@@ -8,6 +8,7 @@ import no.nav.abac.pdp.PdpMock;
 import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
+import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -58,6 +59,7 @@ public class MockServer {
         publishService(BehandleSakServiceMockImpl.class, "/behandlesak");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishService(PdpMock.class,"/asm-pdp/authorize");
+        publishService(FinnSakListeMockImpl.class, "/infotrygdSak");
 
 
     }

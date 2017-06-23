@@ -98,6 +98,10 @@
             <artifactId>pdp-mock</artifactId>
             <version>1.0.4-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>infotrygdsak-mock</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
