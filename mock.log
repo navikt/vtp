@@ -1,67 +1,22 @@
-2017-06-23 10:00:21,124 [INFO ] [main] o.e.j.u.log - [, , ] - Logging initialized @1907ms to org.eclipse.jetty.util.log.Slf4jLog
-2017-06-23 10:00:22,897 [INFO ] [main] o.e.j.s.Server - [, , ] - jetty-9.4.1.v20170120
-2017-06-23 10:00:23,059 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@1877ab81{HTTP/1.1,[http/1.1]}{0.0.0.0:7999}
-2017-06-23 10:00:23,130 [INFO ] [main] o.e.j.u.s.SslContextFactory - [, , ] - x509=X509@3043fe0e(host-key,h=[e34jbsl01442.devillo.no],w=[]) for SslContextFactory@78e67e0a(jar:file:/C:/Users/K150642/.m2/repository/no/nav/modig/modig-testcertificates/1.2.0/modig-testcertificates-1.2.0.jar!/no/nav/modig/testcertificates/keystore.jks,null)
-2017-06-23 10:00:23,131 [INFO ] [main] o.e.j.u.s.SslContextFactory - [, , ] - x509=X509@bd8db5a(app-key,h=[],w=[]) for SslContextFactory@78e67e0a(jar:file:/C:/Users/K150642/.m2/repository/no/nav/modig/modig-testcertificates/1.2.0/modig-testcertificates-1.2.0.jar!/no/nav/modig/testcertificates/keystore.jks,null)
-2017-06-23 10:00:23,498 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@5e4c8041{SSL,[ssl, http/1.1]}{0.0.0.0:7998}
-2017-06-23 10:00:23,498 [INFO ] [main] o.e.j.s.Server - [, , ] - Started @4290ms
-2017-06-23 10:00:23,674 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@7fc2413d{/aktoer,null,AVAILABLE}
-2017-06-23 10:00:25,005 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 10:00:30,645 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@1cb37ee4{/sak,null,AVAILABLE}
-2017-06-23 10:00:30,740 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@1eb2d371{/person,null,AVAILABLE}
-2017-06-23 10:00:30,790 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 10:00:31,412 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@1416cf9f{/journal,null,AVAILABLE}
-2017-06-23 10:00:31,470 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 10:00:31,806 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@5bc7e78e{/inngaaendejournal,null,AVAILABLE}
-2017-06-23 10:00:31,842 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 10:00:32,022 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@2bc378f7{/behandleinngaaendejournal,null,AVAILABLE}
-2017-06-23 10:00:32,063 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 10:00:32,238 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@6a6f6c7e{/oppgavebehandling,null,AVAILABLE}
-2017-06-23 10:00:32,419 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@77c10a5f{/behandlesak,null,AVAILABLE}
-2017-06-23 10:00:32,463 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@7c0777b5{/asm-pdp/authorize,null,AVAILABLE}
-2017-06-23 10:00:32,499 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@777d191f{/infotrygdSak,null,AVAILABLE}
-2017-06-23 10:00:32,540 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:10:49,906 [INFO ] [main] o.e.j.u.log - [, , ] - Logging initialized @981ms to org.eclipse.jetty.util.log.Slf4jLog
-2017-06-23 14:10:50,341 [INFO ] [main] o.e.j.s.Server - [, , ] - jetty-9.4.1.v20170120
-2017-06-23 14:10:50,478 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@2781e022{HTTP/1.1,[http/1.1]}{0.0.0.0:7999}
-2017-06-23 14:10:50,552 [INFO ] [main] o.e.j.u.s.SslContextFactory - [, , ] - x509=X509@7a765367(host-key,h=[e34jbsl01442.devillo.no],w=[]) for SslContextFactory@76b0bfab(jar:file:/C:/Users/K150642/.m2/repository/no/nav/modig/modig-testcertificates/1.2.0/modig-testcertificates-1.2.0.jar!/no/nav/modig/testcertificates/keystore.jks,null)
-2017-06-23 14:10:50,554 [INFO ] [main] o.e.j.u.s.SslContextFactory - [, , ] - x509=X509@17d677df(app-key,h=[],w=[]) for SslContextFactory@76b0bfab(jar:file:/C:/Users/K150642/.m2/repository/no/nav/modig/modig-testcertificates/1.2.0/modig-testcertificates-1.2.0.jar!/no/nav/modig/testcertificates/keystore.jks,null)
-2017-06-23 14:10:51,333 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@327b636c{SSL,[ssl, http/1.1]}{0.0.0.0:7998}
-2017-06-23 14:10:51,333 [INFO ] [main] o.e.j.s.Server - [, , ] - Started @2419ms
-2017-06-23 14:10:51,364 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@6a01e23{/aktoer,null,AVAILABLE}
-2017-06-23 14:10:52,613 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:10:55,204 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@6482eef{/sak,null,AVAILABLE}
-2017-06-23 14:10:55,296 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@19058533{/person,null,AVAILABLE}
-2017-06-23 14:10:55,340 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:10:55,656 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@53a9fcfd{/journal,null,AVAILABLE}
-2017-06-23 14:10:55,698 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:10:55,999 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@6724cdec{/inngaaendejournal,null,AVAILABLE}
-2017-06-23 14:10:56,054 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:10:56,319 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@3a26ec8d{/behandleinngaaendejournal,null,AVAILABLE}
-2017-06-23 14:10:56,369 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:10:56,558 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@5b3bb1f7{/oppgavebehandling,null,AVAILABLE}
-2017-06-23 14:10:56,835 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@4086d8fb{/behandlesak,null,AVAILABLE}
-2017-06-23 14:10:56,905 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@254449bb{/asm-pdp/authorize,null,AVAILABLE}
-2017-06-23 14:10:56,937 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@1192b58e{/infotrygdSak,null,AVAILABLE}
-2017-06-23 14:10:56,984 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:22:12,888 [INFO ] [main] o.e.j.u.log - [, , ] - Logging initialized @1072ms to org.eclipse.jetty.util.log.Slf4jLog
-2017-06-23 14:22:13,297 [INFO ] [main] o.e.j.s.Server - [, , ] - jetty-9.4.1.v20170120
-2017-06-23 14:22:13,399 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@4d41cee{HTTP/1.1,[http/1.1]}{0.0.0.0:7999}
-2017-06-23 14:22:14,188 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@6b419da{SSL,[ssl, http/1.1]}{0.0.0.0:7998}
-2017-06-23 14:22:14,188 [INFO ] [main] o.e.j.s.Server - [, , ] - Started @2377ms
-2017-06-23 14:22:14,225 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@a4102b8{/aktoer,null,AVAILABLE}
-2017-06-23 14:22:15,596 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:22:17,757 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@f4cfd90{/sak,null,AVAILABLE}
-2017-06-23 14:22:17,858 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@100c567f{/person,null,AVAILABLE}
-2017-06-23 14:22:17,908 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:22:18,380 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@700f518a{/journal,null,AVAILABLE}
-2017-06-23 14:22:18,444 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:22:18,700 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@5292ceca{/inngaaendejournal,null,AVAILABLE}
-2017-06-23 14:22:18,734 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:22:18,909 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@2370ac7a{/behandleinngaaendejournal,null,AVAILABLE}
-2017-06-23 14:22:18,952 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2017-06-23 14:22:19,119 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@2a367e93{/oppgavebehandling,null,AVAILABLE}
-2017-06-23 14:22:19,279 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@29b40b3{/behandlesak,null,AVAILABLE}
-2017-06-23 14:22:19,351 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@7c51782d{/asm-pdp/authorize,null,AVAILABLE}
-2017-06-23 14:22:19,367 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@62b93086{/infotrygdSak,null,AVAILABLE}
-2017-06-23 14:22:19,406 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2017-06-26 14:13:22,532 [INFO ] [main] o.e.j.u.log - [, , ] - Logging initialized @1064ms to org.eclipse.jetty.util.log.Slf4jLog
+2017-06-26 14:13:23,376 [INFO ] [main] o.e.j.s.Server - [, , ] - jetty-9.4.1.v20170120
+2017-06-26 14:13:23,530 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@49c7b90e{HTTP/1.1,[http/1.1]}{0.0.0.0:7999}
+2017-06-26 14:13:23,577 [INFO ] [main] o.e.j.u.s.SslContextFactory - [, , ] - x509=X509@3a44431a(app-key,h=[],w=[]) for SslContextFactory@3c7f66c4(jar:file:/C:/Users/B144959/.m2/repository/no/nav/modig/modig-testcertificates/1.2.2/modig-testcertificates-1.2.2.jar!/no/nav/modig/testcertificates/keystore.jks,null)
+2017-06-26 14:13:23,911 [INFO ] [main] o.e.j.s.AbstractConnector - [, , ] - Started ServerConnector@48c76607{SSL,[ssl, http/1.1]}{0.0.0.0:7998}
+2017-06-26 14:13:23,914 [INFO ] [main] o.e.j.s.Server - [, , ] - Started @2450ms
+2017-06-26 14:13:23,971 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@58594a11{/aktoer,null,AVAILABLE}
+2017-06-26 14:13:25,210 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2017-06-26 14:13:28,468 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@5e905f2c{/sak,null,AVAILABLE}
+2017-06-26 14:13:28,584 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@d8835af{/person,null,AVAILABLE}
+2017-06-26 14:13:28,631 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2017-06-26 14:13:29,060 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@3ccb12d{/journal,null,AVAILABLE}
+2017-06-26 14:13:29,106 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2017-06-26 14:13:29,407 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@2b098563{/inngaaendejournal,null,AVAILABLE}
+2017-06-26 14:13:29,455 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2017-06-26 14:13:29,666 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@25470477{/behandleinngaaendejournal,null,AVAILABLE}
+2017-06-26 14:13:29,713 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2017-06-26 14:13:29,931 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@7eae55{/oppgavebehandling,null,AVAILABLE}
+2017-06-26 14:13:30,121 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@685e6a68{/behandlesak,null,AVAILABLE}
+2017-06-26 14:13:30,185 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@603d25db{/asm-pdp/authorize,null,AVAILABLE}
+2017-06-26 14:13:30,239 [INFO ] [main] o.e.j.s.h.ContextHandler - [, , ] - Started o.e.j.h.s.HttpSpiContextHandler@7d4d65f5{/infotrygdsak,null,AVAILABLE}
+2017-06-26 14:13:30,286 [WARN ] [main] o.h.o.c.pooling - [, , ] - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
