@@ -11,4 +11,5 @@ es.properties
 *.zip
 *.versionsBackup
 bin
-
+mock*.log
+mock.log.*
