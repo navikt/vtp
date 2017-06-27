@@ -11,10 +11,7 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeri
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeringsbehovJournalpostKanIkkeBehandles;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeringsbehovSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeringsbehovUgyldigInput;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.JournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.JournalpostIkkeInngaeende;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.JournalpostKanIkkeBehandles;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.UgyldigInput;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.feil.*;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.InngaaendeJournalpost;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Journalfoeringsbehov;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.JournalpostMangler;
@@ -54,6 +51,12 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     private static final String FAULTINFO_FEILKILDE = "mock inngaaendejournal";
 
     private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
+
+    private static final String FEILKODE_JOURNALPOST_IKKE_INNGÅENDE = "JournalpostIkkeInngående";
+    private static final String FEILKODE_OBJEKT_IKKE_FUNNET = "ObjektIkkeFunnet";
+    private static final String FEILKODE_SIKKERHETSBEGRENSNING = "Sikkerhetsbegrensning";
+    private static final String FEILKODE_UGYLDIG_INPUT = "UgyldigInput";
+    private static final String FEILKODE_KAN_IKKE_BEHANDLES = "JournalpostKanIkkeBehandles";
 
 
     @WebMethod(
@@ -110,6 +113,7 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
         // Let i db og returner det som evt. funnet der:
 
         List<JournalDokument> journalDokListe = new JournalDbLeser(joarkEntityManager).finnDokumenterMedJournalId(journalpostId);
+        haandterDatadrevneExceptionsForHent(journalDokListe);
         List<JournalDokument> inngaaendeJournalDokListe = journalDokListe.stream()
                 .filter(journalDokument -> KOMMUNIKASJONSRETNING_INNGAAENDE.equals(journalDokument.getKommunikasjonsretning()))
                 .collect(Collectors.toList());
@@ -129,6 +133,38 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
         // Fant ikke noe:
         JournalpostIkkeFunnet faultInfo = getJournalpostIkkeFunnet(journalpostId);
         throw new HentJournalpostJournalpostIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
+    }
+
+    private void haandterDatadrevneExceptionsForHent(List<JournalDokument> journalDokListe)
+            throws HentJournalpostJournalpostIkkeFunnet, HentJournalpostJournalpostIkkeInngaaende,
+            HentJournalpostSikkerhetsbegrensning, HentJournalpostUgyldigInput {
+
+        for (JournalDokument journalDok : journalDokListe) {
+            if (journalDok.getFeilkode() != null) {
+                String journalpostId = journalDok.getJournalpostId();
+                switch (journalDok.getFeilkode()) {
+                    case FEILKODE_JOURNALPOST_IKKE_INNGÅENDE: {
+                        JournalpostIkkeInngaeende faultInfo = getJournalpostIkkeInngaeende(journalpostId);
+                        throw new HentJournalpostJournalpostIkkeInngaaende(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_OBJEKT_IKKE_FUNNET: {
+                        JournalpostIkkeFunnet faultInfo = getJournalpostIkkeFunnet(journalpostId);
+                        throw new HentJournalpostJournalpostIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_SIKKERHETSBEGRENSNING: {
+                        Sikkerhetsbegrensning faultInfo = getSikkerhetsbegrensning(journalpostId);
+                        throw new HentJournalpostSikkerhetsbegrensning(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_UGYLDIG_INPUT: {
+                        UgyldigInput faultInfo = getUgyldigInput(journalpostId);
+                        throw new HentJournalpostUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    default:
+                        // ikke noe
+                        break;
+                }
+            }
+        }
     }
 
     @WebMethod(
@@ -163,6 +199,8 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
         // Let i db og returner det som evt. funnet der:
         List<JournalDokument> journalDokListe = new JournalDbLeser(joarkEntityManager).finnDokumenterMedJournalId(request.getJournalpostId());
+        haandterDatadrevneExceptionsForUtled(journalDokListe);
+
         // Let i statiske data og returner det som evt. funnet der:
         Journalpost journalpost = StaticModelData.getJournalpostForId(journalpostId);
 
@@ -171,6 +209,43 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             return utledFrajournalDokumentListe(journalpostId, journalDokListe);
         } else {
             return utledFraJournalpost(journalpostId, journalpost);
+        }
+    }
+
+    private void haandterDatadrevneExceptionsForUtled(List<JournalDokument> journalDokListe)
+            throws UtledJournalfoeringsbehovJournalpostIkkeFunnet, UtledJournalfoeringsbehovJournalpostIkkeInngaaende,
+            UtledJournalfoeringsbehovJournalpostKanIkkeBehandles, UtledJournalfoeringsbehovSikkerhetsbegrensning,
+            UtledJournalfoeringsbehovUgyldigInput {
+
+        for (JournalDokument journalDok : journalDokListe) {
+            if (journalDok.getFeilkode() != null) {
+                String journalpostId = journalDok.getJournalpostId();
+                switch (journalDok.getFeilkode()) {
+                    case FEILKODE_JOURNALPOST_IKKE_INNGÅENDE: {
+                        JournalpostIkkeInngaeende faultInfo = getJournalpostIkkeInngaeende(journalpostId);
+                        throw new UtledJournalfoeringsbehovJournalpostIkkeInngaaende(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_OBJEKT_IKKE_FUNNET: {
+                        JournalpostIkkeFunnet faultInfo = getJournalpostIkkeFunnet(journalpostId);
+                        throw new UtledJournalfoeringsbehovJournalpostIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_SIKKERHETSBEGRENSNING: {
+                        Sikkerhetsbegrensning faultInfo = getSikkerhetsbegrensning(journalpostId);
+                        throw new UtledJournalfoeringsbehovSikkerhetsbegrensning(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_UGYLDIG_INPUT: {
+                        UgyldigInput faultInfo = getUgyldigInput(journalpostId);
+                        throw new UtledJournalfoeringsbehovUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    case FEILKODE_KAN_IKKE_BEHANDLES: {
+                        JournalpostKanIkkeBehandles faultInfo = getJournalpostKanIkkeBehandles(journalpostId);
+                        throw new UtledJournalfoeringsbehovJournalpostKanIkkeBehandles(faultInfo.getFeilmelding(), faultInfo);
+                    }
+                    default:
+                        // ikke noe
+                        break;
+                }
+            }
         }
     }
 
@@ -239,37 +314,39 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
     private JournalpostKanIkkeBehandles getJournalpostKanIkkeBehandles(String journalpostId) {
         JournalpostKanIkkeBehandles faultInfo = new JournalpostKanIkkeBehandles();
-        faultInfo.setFeilmelding(String.format("journalpostId %s kan ikke behandles", journalpostId));
-        faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
-        faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
-        faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
+        fyllUtFaultInfo(faultInfo, String.format("journalpostId %s kan ikke behandles", journalpostId));
         return faultInfo;
     }
 
     private JournalpostIkkeInngaeende getJournalpostIkkeInngaeende(String journalpostId) {
         JournalpostIkkeInngaeende faultInfo = new JournalpostIkkeInngaeende();
-        faultInfo.setFeilmelding(String.format("journalpostId %s ikke inngående", journalpostId));
-        faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
-        faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
-        faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
+        fyllUtFaultInfo(faultInfo, String.format("journalpostId %s ikke inngående", journalpostId));
         return faultInfo;
     }
 
     private UgyldigInput getUgyldigInput(String journalpostId) {
         UgyldigInput faultInfo = new UgyldigInput();
-        faultInfo.setFeilmelding(String.format("journalpostId %s er ugyldig", journalpostId));
-        faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
-        faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
-        faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
+        fyllUtFaultInfo(faultInfo, String.format("journalpostId %s er ugyldig", journalpostId));
         return faultInfo;
     }
 
     private JournalpostIkkeFunnet getJournalpostIkkeFunnet(String journalpostId) {
         JournalpostIkkeFunnet faultInfo = new JournalpostIkkeFunnet();
-        faultInfo.setFeilmelding("Fant ikke journalpost med id " + journalpostId);
+        fyllUtFaultInfo(faultInfo, "Fant ikke journalpost med id " + journalpostId);
+        return faultInfo;
+    }
+
+    private Sikkerhetsbegrensning getSikkerhetsbegrensning(String journalpostId) {
+        Sikkerhetsbegrensning faultInfo = new Sikkerhetsbegrensning();
+        fyllUtFaultInfo(faultInfo, "Sikkerhetsbegrensning for journalpost med id " + journalpostId);
+        return faultInfo;
+    }
+
+    private void fyllUtFaultInfo(ForretningsmessigUnntak faultInfo, String feilmelding) {
+        faultInfo.setFeilmelding(feilmelding);
         faultInfo.setFeilaarsak(FAULTINFO_FEILAARSAK);
         faultInfo.setFeilkilde(FAULTINFO_FEILKILDE);
         faultInfo.setTidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDateTime.now()));
-        return faultInfo;
     }
+
 }

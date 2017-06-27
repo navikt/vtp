@@ -35,6 +35,7 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
 
     private static final String FAULTINFO_FEILAARSAK = "ja si det?";
     private static final String FAULTINFO_FEILKILDE = "mock behandleinngaaendejournal";
+
     private static final String FEILKODE_JOURNALPOST_IKKE_INNGÅENDE = "JournalpostIkkeInngående";
     private static final String FEILKODE_OBJEKT_IKKE_FUNNET = "ObjektIkkeFunnet";
     private static final String FEILKODE_SIKKERHETSBEGRENSNING = "Sikkerhetsbegrensning";
