@@ -24,6 +24,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
+import static no.nav.tjeneste.virksomhet.journalmodell.JournalDokumentKonstanter.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,12 +52,6 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     private static final String FAULTINFO_FEILKILDE = "mock inngaaendejournal";
 
     private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
-
-    private static final String FEILKODE_JOURNALPOST_IKKE_INNGÅENDE = "JournalpostIkkeInngående";
-    private static final String FEILKODE_OBJEKT_IKKE_FUNNET = "ObjektIkkeFunnet";
-    private static final String FEILKODE_SIKKERHETSBEGRENSNING = "Sikkerhetsbegrensning";
-    private static final String FEILKODE_UGYLDIG_INPUT = "UgyldigInput";
-    private static final String FEILKODE_KAN_IKKE_BEHANDLES = "JournalpostKanIkkeBehandles";
 
 
     @WebMethod(
@@ -140,9 +135,10 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             HentJournalpostSikkerhetsbegrensning, HentJournalpostUgyldigInput {
 
         for (JournalDokument journalDok : journalDokListe) {
-            if (journalDok.getFeilkode() != null) {
+            String feilkode = journalDok.getFeilkodeHentJournalpost();
+            if (feilkode != null) {
                 String journalpostId = journalDok.getJournalpostId();
-                switch (journalDok.getFeilkode()) {
+                switch (feilkode) {
                     case FEILKODE_JOURNALPOST_IKKE_INNGÅENDE: {
                         JournalpostIkkeInngaeende faultInfo = getJournalpostIkkeInngaeende(journalpostId);
                         throw new HentJournalpostJournalpostIkkeInngaaende(faultInfo.getFeilmelding(), faultInfo);
@@ -218,9 +214,10 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             UtledJournalfoeringsbehovUgyldigInput {
 
         for (JournalDokument journalDok : journalDokListe) {
-            if (journalDok.getFeilkode() != null) {
+            String feilkode = journalDok.getFeilkodeUtledJournalfoeringsbehov();
+            if (feilkode != null) {
                 String journalpostId = journalDok.getJournalpostId();
-                switch (journalDok.getFeilkode()) {
+                switch (feilkode) {
                     case FEILKODE_JOURNALPOST_IKKE_INNGÅENDE: {
                         JournalpostIkkeInngaeende faultInfo = getJournalpostIkkeInngaeende(journalpostId);
                         throw new UtledJournalfoeringsbehovJournalpostIkkeInngaaende(faultInfo.getFeilmelding(), faultInfo);

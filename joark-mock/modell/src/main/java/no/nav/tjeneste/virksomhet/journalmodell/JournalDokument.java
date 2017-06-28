@@ -92,8 +92,21 @@ public class JournalDokument {
     @Column(name = "KOMMUNIKASJONSRETNING")
     String kommunikasjonsretning;
 
+    //TODO (rune) skal fjernes
     @Column(name = "FEILKODE")
     String feilkode;
+
+    @Column(name = "FEILKODE_FERDIGSTILLJF")
+    String feilkodeFerdigstillJournalfoering;
+
+    @Column(name = "FEILKODE_OPPDATERJOURNALPOST")
+    String feilkodeOppdaterJournalpost;
+
+    @Column(name = "FEILKODE_HENTJOURNALPOST")
+    String feilkodeHentJournalpost;
+
+    @Column(name = "FEILKODE_UTLEDJFBEHOV")
+    String feilkodeUtledJournalfoeringsbehov;
 
     JournalDokument(){
     }
@@ -198,7 +211,19 @@ public class JournalDokument {
         this.journalStatus = journalStatus;
     }
 
-    public String getFeilkode() {
-        return feilkode;
+    public String getFeilkodeFerdigstillJournalfoering() {
+        return feilkodeFerdigstillJournalfoering;
+    }
+
+    public String getFeilkodeOppdaterJournalpost() {
+        return feilkodeOppdaterJournalpost;
+    }
+
+    public String getFeilkodeHentJournalpost() {
+        return feilkodeHentJournalpost;
+    }
+
+    public String getFeilkodeUtledJournalfoeringsbehov() {
+        return feilkodeUtledJournalfoeringsbehov;
     }
 }

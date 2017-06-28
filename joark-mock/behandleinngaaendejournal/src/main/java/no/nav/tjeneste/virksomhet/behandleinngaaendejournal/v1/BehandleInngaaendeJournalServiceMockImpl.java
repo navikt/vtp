@@ -10,6 +10,7 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Journaltilsta
 import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalV2Constants;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
+import static no.nav.tjeneste.virksomhet.journalmodell.JournalDokumentKonstanter.*;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -35,12 +36,6 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
 
     private static final String FAULTINFO_FEILAARSAK = "ja si det?";
     private static final String FAULTINFO_FEILKILDE = "mock behandleinngaaendejournal";
-
-    private static final String FEILKODE_JOURNALPOST_IKKE_INNGÅENDE = "JournalpostIkkeInngående";
-    private static final String FEILKODE_OBJEKT_IKKE_FUNNET = "ObjektIkkeFunnet";
-    private static final String FEILKODE_SIKKERHETSBEGRENSNING = "Sikkerhetsbegrensning";
-    private static final String FEILKODE_UGYLDIG_INPUT = "UgyldigInput";
-    private static final String FEILKODE_OPPDATERING_IKKE_MULIG = "OppdateringIkkeMulig";
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/behandleInngaaendeJournal/v1/BehandleInngaaendeJournal_v1/pingRequest"
@@ -113,9 +108,10 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
                 FerdigstillJournalfoeringObjektIkkeFunnet, FerdigstillJournalfoeringSikkerhetsbegrensning, FerdigstillJournalfoeringUgyldigInput {
 
         for (JournalDokument journalDok : journalDokListe) {
-            if (journalDok.getFeilkode() != null) {
+            String feilkode = journalDok.getFeilkodeFerdigstillJournalfoering();
+            if (feilkode != null) {
                 String journalpostId = journalDok.getJournalpostId();
-                switch (journalDok.getFeilkode()) {
+                switch (feilkode) {
                     case FEILKODE_JOURNALPOST_IKKE_INNGÅENDE: {
                         JournalpostIkkeInngaeende faultInfo = lagJournalpostIkkeInngaeende(journalpostId);
                         throw new FerdigstillJournalfoeringJournalpostIkkeInngaaende(faultInfo.getFeilmelding(), faultInfo);
@@ -204,9 +200,10 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
             OppdaterJournalpostOppdateringIkkeMulig, OppdaterJournalpostSikkerhetsbegrensning, OppdaterJournalpostUgyldigInput {
 
         for (JournalDokument journalDok : journalDokListe) {
-            if (journalDok.getFeilkode() != null) {
+            String feilkode = journalDok.getFeilkodeOppdaterJournalpost();
+            if (feilkode != null) {
                 String journalpostId = journalDok.getJournalpostId();
-                switch (journalDok.getFeilkode()) {
+                switch (feilkode) {
                     case FEILKODE_JOURNALPOST_IKKE_INNGÅENDE: {
                         JournalpostIkkeInngaeende faultInfo = lagJournalpostIkkeInngaeende(journalpostId);
                         throw new OppdaterJournalpostJournalpostIkkeInngaaende(faultInfo.getFeilmelding(), faultInfo);
