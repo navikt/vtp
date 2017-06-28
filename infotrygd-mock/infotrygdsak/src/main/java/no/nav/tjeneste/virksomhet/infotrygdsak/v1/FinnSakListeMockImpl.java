@@ -37,24 +37,33 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
     @RequestWrapper(localName = "finnSakListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/infotrygdSak/v1", className = "no.nav.tjeneste.virksomhet.infotrygdsak.v1.finnSakListe")
     @ResponseWrapper(localName = "finnSakListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/infotrygdSak/v1", className = "no.nav.tjeneste.virksomhet.infotrygdSak.v1.FinnSakListeResponse")
     public no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse finnSakListe(@WebParam(name = "request", targetNamespace = "") FinnSakListeRequest finnSakListeRequest) throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput {
+        try {
+            LOG.error("Starter finnSakListe");
+            no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = new FinnSakListeResponse();
+            LOG.error("FinnSakListeRequest " +finnSakListeRequest);
+            String ident = finnSakListeRequest.getPersonident();
+            LOG.info("Identen er" +finnSakListeRequest.getPersonident());
 
-        no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = new FinnSakListeResponse();
-        String ident = finnSakListeRequest.getPersonident();
-
-        if (ident == null){
-            throw new FinnSakListeUgyldigInput("Ident må være satt", new UgyldigInput());
-        }
-
-        InfotrygdDbLeser infotrygdDbLeser = new InfotrygdDbLeser(entityManager);
-        List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdDbLeser.finnInfotrygdYtelseMedFnr(ident);
-
-        if (infotrygdYtelseListe != null) {
-            for (InfotrygdYtelse ytelse : infotrygdYtelseListe) {
-                InfotrygdSakBygger ib = new InfotrygdSakBygger(ytelse);
-                response.getSakListe().add(ib.byggInfotrygdSak());
+            if (ident == null){
+                throw new FinnSakListeUgyldigInput("Ident må være satt", new UgyldigInput());
             }
 
-            return response;
+            InfotrygdDbLeser infotrygdDbLeser = new InfotrygdDbLeser(entityManager);
+            LOG.info("Se på tjeneste " +finnSakListeRequest.getPersonident());
+            List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdDbLeser.finnInfotrygdYtelseMedFnr(ident);
+            LOG.info("infotrygdYtelseListe "+infotrygdYtelseListe);
+            if (infotrygdYtelseListe != null) {
+                LOG.info("infotrygdYtelseListestørrelse "+infotrygdYtelseListe.size());
+
+                for (InfotrygdYtelse ytelse : infotrygdYtelseListe) {
+                    InfotrygdSakBygger ib = new InfotrygdSakBygger(ytelse);
+                    response.getSakListe().add(ib.byggInfotrygdSak());
+                }
+
+                return response;
+            }
+        }catch (Exception e){
+            LOG.info("Feil i finnSakListe",e);
         }
 
         return null;
