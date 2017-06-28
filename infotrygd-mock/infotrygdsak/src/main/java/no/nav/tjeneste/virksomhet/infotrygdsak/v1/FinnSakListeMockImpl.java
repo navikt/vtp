@@ -38,9 +38,9 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
     @ResponseWrapper(localName = "finnSakListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/infotrygdSak/v1", className = "no.nav.tjeneste.virksomhet.infotrygdSak.v1.FinnSakListeResponse")
     public no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse finnSakListe(@WebParam(name = "request", targetNamespace = "") FinnSakListeRequest finnSakListeRequest) throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput {
         try {
-            LOG.error("Starter finnSakListe");
+            LOG.info("Starter finnSakListe");
             no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = new FinnSakListeResponse();
-            LOG.error("FinnSakListeRequest " +finnSakListeRequest);
+            LOG.info("FinnSakListeRequest " +finnSakListeRequest);
             String ident = finnSakListeRequest.getPersonident();
             LOG.info("Identen er" +finnSakListeRequest.getPersonident());
 
