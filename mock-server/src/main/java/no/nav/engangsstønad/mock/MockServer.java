@@ -33,6 +33,8 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 public class MockServer {
 
+    private static final int HTTP_PORT = 7999;
+    private static final int HTTPS_PORT = 8443;
     private static Server server;
 
     public static void main(String[] args) throws Exception {
@@ -66,7 +68,7 @@ public class MockServer {
 
     private static void setConnectors() {
         ServerConnector connector = new ServerConnector(server);
-        connector.setPort(7999);
+        connector.setPort(HTTP_PORT);
         HttpConfiguration https = new HttpConfiguration();
 
         TestCertificates.setupKeyAndTrustStore();
@@ -87,7 +89,7 @@ public class MockServer {
         sslContextFactory.setKeyManagerPassword("devillokeystore1234");
         ServerConnector sslConnector = new ServerConnector(server,
                 new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
-        sslConnector.setPort(7998);
+        sslConnector.setPort(HTTPS_PORT);
         server.setConnectors(new Connector[] { connector, sslConnector });
     }
 
