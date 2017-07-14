@@ -19,6 +19,10 @@ import javax.persistence.Transient;
 @Table(name = "MOCK_TPS_PERSONER")
 public class TpsPerson {
 
+    // Konstanter for standardbrukere (kan refereres eksternt)
+    public static final long STD_KVINNE_AKTØR_ID = 9000000000036L;
+    public static final String STD_KVINNE_FNR = "03039004649";
+    
     @Id
     @Column(name = "ID", nullable = false)
     long id;

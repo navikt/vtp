@@ -1,5 +1,14 @@
 package no.nav.tjeneste.virksomhet.person.v2;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentSikkerhetstiltakPersonIkkeFunnet;
@@ -16,24 +25,13 @@ import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakReques
 import no.nav.tjeneste.virksomhet.person.v2.meldinger.HentSikkerhetstiltakResponse;
 import no.nav.tjeneste.virksomhet.person.v2.modell.RelasjonBygger;
 import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
 
 @WebService(name = "Person_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v2")
 public class PersonServiceMockImpl implements PersonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
-    private static final TpsRepo TPS_REPO = TpsRepo.init();
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
 
@@ -45,11 +43,7 @@ public class PersonServiceMockImpl implements PersonV2 {
     public no.nav.tjeneste.virksomhet.person.v2.meldinger.HentKjerneinformasjonResponse hentKjerneinformasjon(@WebParam(name = "request",targetNamespace = "") HentKjerneinformasjonRequest request) throws HentKjerneinformasjonPersonIkkeFunnet, HentKjerneinformasjonSikkerhetsbegrensning {
         LOG.info("hentIdentForAktoerId: " + request.getIdent());
 
-        Person person = TPS_REPO.finnPerson(request.getIdent());
-        if(person == null) {
-            // Hvis ikke funnet i hardkodede verdier så slå opp i database
-            person = new PersonDbLeser(entityManager).finnPerson(request.getIdent());
-        }
+        Person person = new PersonDbLeser(entityManager).finnPerson(request.getIdent());
         if (person == null) {
             throw new HentKjerneinformasjonPersonIkkeFunnet("Fant ingen bruker for ident: " + request.getIdent(), new PersonIkkeFunnet());
         }

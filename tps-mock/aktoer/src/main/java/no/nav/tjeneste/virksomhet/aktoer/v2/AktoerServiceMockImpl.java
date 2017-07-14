@@ -1,5 +1,14 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.AktoerV2;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentIdentForAktoerIdPersonIkkeFunnet;
@@ -13,24 +22,13 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeR
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdResponse;
 import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
 
 @WebService(name = "Aktoer_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2")
 public class AktoerServiceMockImpl implements AktoerV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
-    private static final TpsRepo TPS_REPO = TpsRepo.init();
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
 
@@ -45,11 +43,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
             throws HentIdentForAktoerIdPersonIkkeFunnet {
         LOG.info("hentIdentForAktoerId: " + request.getAktoerId());
 
-        String ident = TPS_REPO.finnIdent(Long.valueOf(request.getAktoerId()));
-        if(ident == null) {
-            // Hvis ikke funnet i hardkodede verdier så slå opp i database
-            ident = new PersonDbLeser(entityManager).finnIdent(request.getAktoerId());
-        }
+        String ident = new PersonDbLeser(entityManager).finnIdent(request.getAktoerId());
         if (ident == null) {
             throw new HentIdentForAktoerIdPersonIkkeFunnet("Fant ingen ident for aktoerid: " + request.getAktoerId(), new PersonIkkeFunnet());
         }
@@ -69,11 +63,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         throws HentAktoerIdForIdentPersonIkkeFunnet {
         LOG.info("hentIdentForAktoerId: " + request.getIdent());
 
-        Long aktoerId = TPS_REPO.finnAktoerId(request.getIdent());
-        if(aktoerId == null) {
-            // Hvis ikke funnet i hardkodede verdier så slå opp i database
-            aktoerId = new PersonDbLeser(entityManager).finnAktoerId(request.getIdent());
-        }
+        Long aktoerId = new PersonDbLeser(entityManager).finnAktoerId(request.getIdent());
         if (aktoerId == null) {
             throw new HentAktoerIdForIdentPersonIkkeFunnet("Fant ingen aktoerid for ident: " + request.getIdent(), new PersonIkkeFunnet());
         }
