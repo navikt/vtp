@@ -26,4 +26,14 @@ public class InfotrygdDbLeser {
         return null;
     }
 
+    public List<InfotrygdSvar> finnInfotrygdSvarMedFnr(String fnr) {
+        if (fnr != null) {
+            TypedQuery<InfotrygdSvar> query = entityManager.createQuery("FROM InfotrygdSvar t WHERE fnr = :fnr", InfotrygdSvar.class); //$NON-NLS-1$ //$NON-NLS-1$
+            query.setParameter("fnr", fnr);
+            List<InfotrygdSvar> infotrygdSvar = query.getResultList();
+
+            return infotrygdSvar;
+        }
+        return null;
+    }
 }
