@@ -54,18 +54,28 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
         String ident = finnSakListeRequest.getPersonident();
         LOG.info("Identen er" + finnSakListeRequest.getPersonident());
 
-        if (ident == null || ident.isEmpty()) {
-            UgyldigInput faultInfo = lagUgyldigInput(ident);
-            throw new FinnSakListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
-        }
+//        if (ident == null || ident.isEmpty()) {
+//            UgyldigInput faultInfo = lagUgyldigInput(ident);
+//            throw new FinnSakListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
+//        }
 
         InfotrygdDbLeser infotrygdDbLeser = new InfotrygdDbLeser(entityManager);
         LOG.info("Se på tjeneste " + finnSakListeRequest.getPersonident());
 
-        String feilkode = infotrygdDbLeser.finnInfotrygdSvarMedFnr(ident).get(0).getFeilkode();
-        if (feilkode != null) {
-            haandterExceptions(feilkode, ident);
+        try {
+            String feilkode = infotrygdDbLeser.finnInfotrygdSvarMedFnr(ident).get(0).getFeilkode();
+
+            if (feilkode != null) {
+                haandterExceptions(feilkode, ident);
+            }
         }
+        catch(NullPointerException e1){
+            e1.getMessage();
+        }
+        catch(IndexOutOfBoundsException e2){
+            e2.getMessage();
+        }
+
 
         List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdDbLeser.finnInfotrygdYtelseMedFnr(ident);
         LOG.info("infotrygdYtelseListe " + infotrygdYtelseListe);
