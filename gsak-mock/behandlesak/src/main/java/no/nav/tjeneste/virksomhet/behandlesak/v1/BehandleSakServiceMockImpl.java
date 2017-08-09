@@ -14,7 +14,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
+@Addressing
 @WebService(name = "BehandleSak_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandleSak/v1")
 public class BehandleSakServiceMockImpl implements BehandleSakV1 {
 

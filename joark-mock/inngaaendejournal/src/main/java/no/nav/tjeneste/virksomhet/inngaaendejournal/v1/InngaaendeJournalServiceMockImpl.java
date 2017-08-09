@@ -36,10 +36,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Addressing
 @WebService(
         name = "InngaaendeJournal_v1",
         targetNamespace = "http://nav.no/tjeneste/virksomhet/inngaaendeJournal/v1"

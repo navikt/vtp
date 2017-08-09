@@ -25,6 +25,7 @@ import javax.persistence.Persistence;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstant
 import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
 import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstanter.UGYLDIG_INPUT;
 
+@Addressing
 @WebService(name = "InfotrygdSak_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/infotrygdSak/v1")
 public class FinnSakListeMockImpl implements InfotrygdSakV1 {
 

@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v2.binding.HentKjerneinformasjonSikkerhetsbegrensning;
@@ -28,6 +29,7 @@ import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Addressing
 @WebService(name = "Person_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v2")
 public class PersonServiceMockImpl implements PersonV2 {
 

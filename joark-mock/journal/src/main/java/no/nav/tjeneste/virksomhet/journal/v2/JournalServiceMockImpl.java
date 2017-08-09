@@ -30,6 +30,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -39,6 +40,7 @@ import java.util.Optional;
 
 import static java.lang.Long.parseLong;
 
+@Addressing
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
 public class JournalServiceMockImpl implements JournalV2 {
     private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);

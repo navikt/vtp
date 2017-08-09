@@ -9,8 +9,10 @@ import javax.xml.ws.Provider;
 import javax.xml.ws.ServiceMode;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.http.HTTPBinding;
+import javax.xml.ws.soap.Addressing;
 import java.io.IOException;
 
+@Addressing
 @WebServiceProvider
 @ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
 @BindingType(value = HTTPBinding.HTTP_BINDING)

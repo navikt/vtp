@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.AktoerV2;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIkkeFunnet;
@@ -25,6 +26,7 @@ import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Addressing
 @WebService(name = "Aktoer_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2")
 public class AktoerServiceMockImpl implements AktoerV2 {
 

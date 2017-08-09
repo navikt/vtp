@@ -25,7 +25,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
+@Addressing
 @WebService(name = "Oppgavebehandling_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3")
 public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
 

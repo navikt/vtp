@@ -23,6 +23,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * JAX-WS RI 2.1.7-b01-
  * Generated source version: 2.1
  */
+@Addressing
 @WebService(name = "Sak_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/sak/v1")
 public class SakServiceMockImpl implements SakV1 {
 
