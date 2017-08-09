@@ -34,7 +34,7 @@ import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstant
 import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstanter.UGYLDIG_INPUT;
 
 @Addressing
-@WebService(name = "InfotrygdSak_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/infotrygdSak/v1")
+@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.InfotrygdSakV1")
 public class FinnSakListeMockImpl implements InfotrygdSakV1 {
 
     private static final Logger LOG = LoggerFactory.getLogger(FinnSakListeMockImpl.class);
