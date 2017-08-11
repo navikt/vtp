@@ -22,6 +22,8 @@ import no.nav.tjeneste.virksomhet.person.v2.informasjon.NorskIdent;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personidenter;
 import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personnavn;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personstatus;
+import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personstatuser;
 
 public class PersonBygger {
     private String fnr;
@@ -127,6 +129,13 @@ public class PersonBygger {
         if(tpsRelasjon != null) {
             person = new RelasjonBygger(tpsRelasjon).byggFor(person);
         }
+
+        // Personstatus
+        Personstatus personstatus = new Personstatus();
+        Personstatuser personstatuser = new Personstatuser();
+        personstatuser.setValue("BOSA");
+        personstatus.setPersonstatus(personstatuser);
+        person.setPersonstatus(personstatus);
 
         return person;
     }
