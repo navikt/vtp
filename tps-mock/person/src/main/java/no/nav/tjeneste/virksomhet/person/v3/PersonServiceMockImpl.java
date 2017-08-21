@@ -31,8 +31,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
-//@Addressing
+@Addressing
 @WebService(name = "Person_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3")
 public class PersonServiceMockImpl implements PersonV3 {
 

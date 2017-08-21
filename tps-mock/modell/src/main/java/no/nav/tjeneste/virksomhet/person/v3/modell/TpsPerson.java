@@ -42,9 +42,8 @@ public class TpsPerson {
     @Column(name = "ETTERNAVN", nullable = false)
     public String etternavn;
 
-    //TODO (jannilsen) Les verdi fra DB når tabell blir utvidet.
-    @Transient
-    public String maalform = "NO";
+    @Column(name = "SPRAAK", nullable = true)
+    public String maalform;
 
     @Transient
     public Bruker person;

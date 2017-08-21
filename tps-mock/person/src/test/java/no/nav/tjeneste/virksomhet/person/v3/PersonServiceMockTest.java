@@ -27,10 +27,31 @@ public class PersonServiceMockTest {
         assertThat(response).isNotNull();
         Bruker person = (Bruker) response.getPerson();
         assertThat(person).isNotNull();
-        assertThat(person.getMaalform().getValue()).isEqualTo("NO");
+        assertThat(person.getMaalform().getValue()).isNull();
         PersonIdent aktoer = (PersonIdent)person.getAktoer();
         assertThat(aktoer).isNotNull();
         assertThat(aktoer.getIdent().getIdent()).isEqualTo("07078518434");
+
+    }
+
+    @Test
+    public void testHentPersonMaalformSatt() throws HentPersonPersonIkkeFunnet, HentPersonSikkerhetsbegrensning {
+        PersonServiceMockImpl personServiceMock = new PersonServiceMockImpl();
+        HentPersonRequest request = new HentPersonRequest();
+        PersonIdent personIdent = new PersonIdent();
+        NorskIdent norskIdent = new NorskIdent();
+        norskIdent.setIdent("19069209028");
+        personIdent.setIdent(norskIdent);
+        request.setAktoer(personIdent);
+
+        HentPersonResponse response = personServiceMock.hentPerson(request);
+        assertThat(response).isNotNull();
+        Bruker person = (Bruker) response.getPerson();
+        assertThat(person).isNotNull();
+        assertThat(person.getMaalform().getValue()).isEqualTo("EN");
+        PersonIdent aktoer = (PersonIdent)person.getAktoer();
+        assertThat(aktoer).isNotNull();
+        assertThat(aktoer.getIdent().getIdent()).isEqualTo("19069209028");
 
     }
 
