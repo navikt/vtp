@@ -1,6 +1,6 @@
-package no.nav.tjeneste.virksomhet.person.v2.data;
+package no.nav.tjeneste.virksomhet.person.v3.data;
 
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRelasjon;
+import no.nav.tjeneste.virksomhet.person.v3.modell.TpsRelasjon;
 
 import javax.persistence.EntityManager;
 import java.util.List;

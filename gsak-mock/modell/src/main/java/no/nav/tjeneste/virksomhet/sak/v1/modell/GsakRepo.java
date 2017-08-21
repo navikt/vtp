@@ -1,7 +1,7 @@
 package no.nav.tjeneste.virksomhet.sak.v1.modell;
 
 
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsPerson;
+import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
 import no.nav.tjeneste.virksomhet.sak.v1.binding.HentSakSakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.feil.SakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Aktoer;

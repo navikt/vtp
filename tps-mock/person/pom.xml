@@ -20,8 +20,8 @@
 
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
-            <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
 

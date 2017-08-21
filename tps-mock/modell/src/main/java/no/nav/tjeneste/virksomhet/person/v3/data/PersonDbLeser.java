@@ -1,8 +1,8 @@
-package no.nav.tjeneste.virksomhet.person.v2.data;
+package no.nav.tjeneste.virksomhet.person.v3.data;
 
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
-import no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger;
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsPerson;
+import no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger;
+import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -28,11 +28,11 @@ public class PersonDbLeser {
         return tpsPersoner;
     }
 
-    public Person finnPerson(String fnr) {
+    public Bruker finnPerson(String fnr) {
         if (fnr != null) {
             List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE fnr = :fnr", TpsPerson.class).setParameter("fnr", fnr).getResultList();
-            if (!tpsPersoner.isEmpty()
-                    && tpsPersoner.get(0) != null){
+            if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null)
+            {
                 tpsPersoner.get(0).person = new PersonBygger(tpsPersoner.get(0)).bygg();
                 return tpsPersoner.get(0).person;
             }

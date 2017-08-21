@@ -1,6 +1,6 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v3.modell;
 
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -42,8 +42,12 @@ public class TpsPerson {
     @Column(name = "ETTERNAVN", nullable = false)
     public String etternavn;
 
+    //TODO (jannilsen) Les verdi fra DB når tabell blir utvidet.
     @Transient
-    public Person person;
+    public String maalform = "NO";
+
+    @Transient
+    public Bruker person;
 
     TpsPerson() {
     }

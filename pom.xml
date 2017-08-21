@@ -46,7 +46,7 @@
 		<joark.inngaaendejournal.version>1.0.0</joark.inngaaendejournal.version>
         <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
-        <tps.person.version>2.0.0</tps.person.version>
+		<tps.person.version>3.0.2</tps.person.version>
 		<modig-testcertificates.version>1.2.2</modig-testcertificates.version>
 	</properties>
 
@@ -134,8 +134,8 @@
 				<classifier>jaxws</classifier>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.tjenester.fim</groupId>
-				<artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
 				<version>${tps.person.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>

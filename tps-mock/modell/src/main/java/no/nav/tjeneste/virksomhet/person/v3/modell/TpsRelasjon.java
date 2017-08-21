@@ -1,4 +1,4 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v3.modell;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;

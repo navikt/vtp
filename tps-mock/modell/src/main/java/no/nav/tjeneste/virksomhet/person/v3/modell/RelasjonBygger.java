@@ -1,24 +1,15 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v3.modell;
 
-import static no.nav.tjeneste.virksomhet.person.v2.modell.PersonBygger.tilXmlGregorian;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjoner;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjon;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjoner;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Foedselsdato;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.NorskIdent;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personidenter;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personnavn;
+import static no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger.tilXmlGregorian;
 
 public class RelasjonBygger {
 
@@ -29,27 +20,32 @@ public class RelasjonBygger {
     }
 
 
-    public Person byggFor(Person person) {
+    public Bruker byggFor(Bruker person) {
         Familierelasjon familierelasjon = new Familierelasjon();
         familierelasjon.setHarSammeBosted(true);
         Familierelasjoner familierelasjoner = new Familierelasjoner();
         familierelasjoner.setValue(tpsRelasjon.relasjonsType);
         familierelasjon.setTilRolle(familierelasjoner);
 
-        Person relatertPersjon = new Person();
+        Bruker relatertPerson = new Bruker();
+
         // Relasjonens ident
         NorskIdent relasjonIdent = new NorskIdent();
         relasjonIdent.setIdent(tpsRelasjon.relasjonFnr);
+
         Personidenter relasjonIdenter = new Personidenter();
         relasjonIdenter.setValue("fnr");
         relasjonIdent.setType(relasjonIdenter);
-        relatertPersjon.setIdent(relasjonIdent);
+
+        PersonIdent personIdent = new PersonIdent();
+        personIdent.setIdent(relasjonIdent);
+        relatertPerson.setAktoer(personIdent);
 
         // Relasjonens fødselsdato
         if (tpsRelasjon.relasjonFnr != null) {
             Foedselsdato relasjonFodselsdato = new Foedselsdato();
             relasjonFodselsdato.setFoedselsdato(tilXmlGregorian(tpsRelasjon.relasjonFnr));
-            relatertPersjon.setFoedselsdato(relasjonFodselsdato);
+            relatertPerson.setFoedselsdato(relasjonFodselsdato);
         }
 
         // Relasjonens navn
@@ -58,10 +54,10 @@ public class RelasjonBygger {
         relasjonPersonnavn.setFornavn(tpsRelasjon.fornavn.toUpperCase());
         relasjonPersonnavn.setSammensattNavn(tpsRelasjon.etternavn.toUpperCase() + " "
                 + tpsRelasjon.fornavn.toUpperCase());
-        relatertPersjon.setPersonnavn(relasjonPersonnavn);
+        relatertPerson.setPersonnavn(relasjonPersonnavn);
 
         // Relasjon settes på personen
-        familierelasjon.setTilPerson(relatertPersjon);
+        familierelasjon.setTilPerson(relatertPerson);
         person.getHarFraRolleI().add(familierelasjon);
 
         return person;

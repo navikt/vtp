@@ -1,5 +1,20 @@
-package no.nav.tjeneste.virksomhet.person.v2.modell;
+package no.nav.tjeneste.virksomhet.person.v3.modell;
 
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,28 +24,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjon;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Familierelasjoner;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Foedselsdato;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Kjoenn;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Kjoennstyper;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.NorskIdent;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Person;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personidenter;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personnavn;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personstatus;
-import no.nav.tjeneste.virksomhet.person.v2.informasjon.Personstatuser;
-
 public class PersonBygger {
     private String fnr;
     private String fornavn;
     private String etternavn;
     private final Kjønn kjønn;
     private LocalDate fødselsdato;;
+    private String maalform;
     private TpsRelasjon tpsRelasjon;
 
     public enum Kjønn {
@@ -48,6 +48,7 @@ public class PersonBygger {
         this.fnr = tpsPerson.fnr;
         this.fornavn = tpsPerson.fornavn;
         this.etternavn = tpsPerson.etternavn;
+        this.maalform = tpsPerson.maalform;
 
         if ("M".equals(tpsPerson.kjønn)) {
             this.kjønn = Kjønn.MANN;
@@ -89,8 +90,8 @@ public class PersonBygger {
         return this;
     }
 
-    public Person bygg() {
-        Person person = new Person();
+    public Bruker bygg() {
+        Bruker bruker = new Bruker();
 
         // Ident
         NorskIdent norskIdent = new NorskIdent();
@@ -98,14 +99,17 @@ public class PersonBygger {
         Personidenter personidenter = new Personidenter();
         personidenter.setValue("fnr");
         norskIdent.setType(personidenter);
-        person.setIdent(norskIdent);
+
+        PersonIdent personIdent = new PersonIdent();
+        personIdent.setIdent(norskIdent);
+        bruker.setAktoer(personIdent);
 
         // Kjønn
         Kjoenn kjonn = new Kjoenn();
         Kjoennstyper kjonnstype = new Kjoennstyper();
         kjonnstype.setValue(kjønn.verdi);
         kjonn.setKjoenn(kjonnstype);
-        person.setKjoenn(kjonn);
+        bruker.setKjoenn(kjonn);
 
         // Fødselsdato
         Foedselsdato fodselsdato = new Foedselsdato();
@@ -116,18 +120,18 @@ public class PersonBygger {
             xcal = tilXmlGregorian(fødselsdato);
         }
         fodselsdato.setFoedselsdato(xcal);
-        person.setFoedselsdato(fodselsdato);
+        bruker.setFoedselsdato(fodselsdato);
 
         // Navn
         Personnavn personnavn  = new Personnavn();
         personnavn.setEtternavn(etternavn.toUpperCase());
         personnavn.setFornavn(fornavn.toUpperCase());
         personnavn.setSammensattNavn(etternavn.toUpperCase() + " " + fornavn.toUpperCase());
-        person.setPersonnavn(personnavn);
+        bruker.setPersonnavn(personnavn);
 
         // Relasjoner
         if(tpsRelasjon != null) {
-            person = new RelasjonBygger(tpsRelasjon).byggFor(person);
+            bruker = new RelasjonBygger(tpsRelasjon).byggFor(bruker);
         }
 
         // Personstatus
@@ -135,9 +139,14 @@ public class PersonBygger {
         Personstatuser personstatuser = new Personstatuser();
         personstatuser.setValue("BOSA");
         personstatus.setPersonstatus(personstatuser);
-        person.setPersonstatus(personstatus);
+        bruker.setPersonstatus(personstatus);
 
-        return person;
+        //Målform
+        Spraak spraak = new Spraak();
+        spraak.setValue(maalform);
+        bruker.setMaalform(spraak);
+
+        return bruker;
     }
 
     private XMLGregorianCalendar tilXmlGregorian(LocalDate fødselsdato) {

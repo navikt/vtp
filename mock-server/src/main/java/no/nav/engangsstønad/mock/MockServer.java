@@ -26,7 +26,7 @@ import com.sun.net.httpserver.HttpContext;
 
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
-import no.nav.tjeneste.virksomhet.person.v2.PersonServiceMockImpl;
+import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
 import org.eclipse.jetty.util.ssl.SslContextFactory;

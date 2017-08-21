@@ -22,7 +22,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeR
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeResponse;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdResponse;
-import no.nav.tjeneste.virksomhet.person.v2.data.PersonDbLeser;
+import no.nav.tjeneste.virksomhet.person.v3.data.PersonDbLeser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

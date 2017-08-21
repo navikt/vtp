@@ -41,11 +41,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
-        </dependency>
-        <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
