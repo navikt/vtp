@@ -13,7 +13,7 @@ while getopts "s:" option; do
     esac
 done
 
-if [[ ($SERVER == "") || !($SERVER == "jetty") || !($SERVER == "jboss") ]]; then
+if [[ ($SERVER == "") && (!($SERVER == "jetty") || !($SERVER == "jboss")) ]]; then
     usage
 fi
 
