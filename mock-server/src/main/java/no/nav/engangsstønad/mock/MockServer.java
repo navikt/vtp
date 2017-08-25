@@ -10,6 +10,7 @@ import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaend
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
+import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
@@ -62,6 +63,8 @@ public class MockServer {
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishService(PdpMock.class,"/asm-pdp/authorize");
         publishService(FinnSakListeMockImpl.class, "/infotrygdsak");
+        // access wsdl on http://localhost:7999/infotrygdsak?wsdl
+        publishService(HentYtelseskontraktListeMockImpl.class, "/virksomhet/Ytelseskontrakt_v3");
 
 
     }

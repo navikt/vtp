@@ -24,6 +24,7 @@
         <module>joark-mock</module>
 	    <module>pdp-mock</module>
 		<module>infotrygd-mock</module>
+		<module>arena-mock</module>
     </modules>
 
 	<properties>
@@ -40,6 +41,7 @@
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.0.1</infotrygd.sak.version>
+		<nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>3.0.1</nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
         <joark.journal.version>1.0.3</joark.journal.version>
@@ -118,6 +120,11 @@
 				<artifactId>infotrygd-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>ytelseskontrakt-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- NAV-biblioteker -->
 			<dependency>
@@ -179,6 +186,12 @@
 				<groupId>no.nav.tjenester</groupId>
 				<artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
 				<version>${infotrygd.sak.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
+				<version>${nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
 

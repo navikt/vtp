@@ -46,6 +46,15 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>behandleinngaaendejournal-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>pdp-mock</artifactId>
+            <version>1.0.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>infotrygdsak-mock</artifactId>
+        </dependency>
 
         <!-- NAV biblioteker -->
         <dependency>
@@ -91,16 +100,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>behandleinngaaendejournal-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>pdp-mock</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>infotrygdsak-mock</artifactId>
+            <artifactId>ytelseskontrakt-mock</artifactId>
         </dependency>
     </dependencies>
     <build>

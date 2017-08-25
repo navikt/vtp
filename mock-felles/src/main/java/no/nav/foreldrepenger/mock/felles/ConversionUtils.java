@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.mock.felles;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -24,6 +25,23 @@ public class ConversionUtils {
             LOG.error("", e);
         }
         return xmlGregorianCalendar;
+    }
+
+    public static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDate localDate) {
+
+        if (localDate == null) {
+            return null;
+        } else {
+            XMLGregorianCalendar xmlGregorianCalendar = null;
+            GregorianCalendar gregorianCalendar = GregorianCalendar.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+            try {
+                xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+            }
+            catch (DatatypeConfigurationException e) {
+                LOG.error("", e);
+            }
+            return xmlGregorianCalendar;
+        }
     }
 
 }
