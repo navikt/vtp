@@ -64,7 +64,8 @@ public class MockServer {
         publishService(PdpMock.class,"/asm-pdp/authorize");
         publishService(FinnSakListeMockImpl.class, "/infotrygdsak");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-        publishService(HentYtelseskontraktListeMockImpl.class, "/virksomhet/Ytelseskontrakt_v3");
+        publishService(HentYtelseskontraktListeMockImpl.class, "/ytelseskontrakt");
+        // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl
 
 
     }
