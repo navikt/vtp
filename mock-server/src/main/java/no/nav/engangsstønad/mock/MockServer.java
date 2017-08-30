@@ -6,6 +6,7 @@ import javax.xml.ws.Endpoint;
 
 import no.nav.abac.pdp.PdpMock;
 import no.nav.modig.testcertificates.TestCertificates;
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
@@ -68,7 +69,7 @@ public class MockServer {
         publishService(HentYtelseskontraktListeMockImpl.class, "/ytelseskontrakt");
         // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl
         publishService(MedlemServiceMockImpl.class, "/medlem");
-
+        publishService(ArbeidsfordelingMockImpl.class, "/arbeidsfordeling");
     }
 
     private static void setConnectors() {
