@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 })
 
 @Entity(name = "TpsPerson")
-@Table(name = "MOCK_TPS_PERSONER")
+@Table(name = "PERSON")
 public class TpsPerson {
 
     // Konstanter for standardbrukere (kan refereres eksternt)
@@ -44,6 +44,12 @@ public class TpsPerson {
 
     @Column(name = "SPRAAK", nullable = true)
     public String maalform;
+
+    @Column(name = "GEOTILKN", nullable = true)
+    public String geografiskTilknytning;
+
+    @Column(name = "BSPESREG", nullable = true)
+    public String diskresjonskode;
 
     @Column(name = "STATSBORGERSKAP", nullable = false)
     public String statsborgerskap;

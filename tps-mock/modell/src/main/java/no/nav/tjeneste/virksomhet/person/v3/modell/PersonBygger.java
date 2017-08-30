@@ -1,10 +1,15 @@
 package no.nav.tjeneste.virksomhet.person.v3.modell;
 
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.GeografiskTilknytning;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Land;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
@@ -33,6 +38,8 @@ public class PersonBygger {
     private final Kjønn kjønn;
     private LocalDate fødselsdato;;
     private String maalform;
+    private String geografiskTilknytning;
+    private String diskresjonskode;
     private String statsborgerskap;
     private TpsRelasjon tpsRelasjon;
 
@@ -52,6 +59,8 @@ public class PersonBygger {
         this.fornavn = tpsPerson.fornavn;
         this.etternavn = tpsPerson.etternavn;
         this.maalform = tpsPerson.maalform;
+        this.geografiskTilknytning = tpsPerson.geografiskTilknytning;
+        this.diskresjonskode = tpsPerson.diskresjonskode;
         this.statsborgerskap = tpsPerson.statsborgerskap;
 
         if ("M".equals(tpsPerson.kjønn)) {
@@ -150,6 +159,15 @@ public class PersonBygger {
         spraak.setValue(maalform);
         bruker.setMaalform(spraak);
 
+        //Geografisk tilknytning
+        GeografiskTilknytning tilknytning = opprettGeografiskTilknytning(geografiskTilknytning);
+        bruker.setGeografiskTilknytning(tilknytning);
+
+        //Diskresjonskode
+        Diskresjonskoder kode = new Diskresjonskoder();
+        kode.setValue(diskresjonskode);
+        bruker.setDiskresjonskode(kode);
+
         //statsborgerskap
         Statsborgerskap s = new Statsborgerskap();
         Landkoder landkoder = new Landkoder();
@@ -159,6 +177,31 @@ public class PersonBygger {
 
         return bruker;
     }
+
+    private GeografiskTilknytning opprettGeografiskTilknytning(String geoTilkn) {
+        //Regel fra tjenesten:
+        //geografisk tilknytning returners enten som bydelsnr (6-sifret), kommunenr (4-sifret), landkode (3-sifret) eller BLANK
+        if (geoTilkn == null) {
+            return null;
+        }
+
+        if (geoTilkn.length() == 3) {
+            Land land = new Land();
+            land.setGeografiskTilknytning(geoTilkn);
+            return land;
+        } else if (geoTilkn.length() == 4) {
+            Kommune kommune = new Kommune();
+            kommune.setGeografiskTilknytning(geoTilkn);
+            return kommune;
+        } else if (geoTilkn.length() == 6) {
+            Bydel bydel = new Bydel();
+            bydel.setGeografiskTilknytning(geoTilkn);
+            return bydel;
+        }
+
+        return null;
+    }
+
 
     private XMLGregorianCalendar tilXmlGregorian(LocalDate fødselsdato) {
         XMLGregorianCalendar xcal;
