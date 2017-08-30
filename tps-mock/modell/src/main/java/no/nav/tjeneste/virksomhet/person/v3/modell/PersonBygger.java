@@ -4,6 +4,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
@@ -11,6 +12,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -31,6 +33,7 @@ public class PersonBygger {
     private final Kjønn kjønn;
     private LocalDate fødselsdato;;
     private String maalform;
+    private String statsborgerskap;
     private TpsRelasjon tpsRelasjon;
 
     public enum Kjønn {
@@ -49,6 +52,7 @@ public class PersonBygger {
         this.fornavn = tpsPerson.fornavn;
         this.etternavn = tpsPerson.etternavn;
         this.maalform = tpsPerson.maalform;
+        this.statsborgerskap = tpsPerson.statsborgerskap;
 
         if ("M".equals(tpsPerson.kjønn)) {
             this.kjønn = Kjønn.MANN;
@@ -145,6 +149,13 @@ public class PersonBygger {
         Spraak spraak = new Spraak();
         spraak.setValue(maalform);
         bruker.setMaalform(spraak);
+
+        //statsborgerskap
+        Statsborgerskap s = new Statsborgerskap();
+        Landkoder landkoder = new Landkoder();
+        landkoder.setValue(statsborgerskap);
+        s.setLand(landkoder);
+        bruker.setStatsborgerskap(s);
 
         return bruker;
     }

@@ -45,6 +45,9 @@ public class TpsPerson {
     @Column(name = "SPRAAK", nullable = true)
     public String maalform;
 
+    @Column(name = "STATSBORGERSKAP", nullable = false)
+    public String statsborgerskap;
+
     @Transient
     public Bruker person;
 
