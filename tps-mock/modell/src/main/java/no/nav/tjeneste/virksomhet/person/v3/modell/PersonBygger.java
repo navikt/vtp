@@ -164,9 +164,11 @@ public class PersonBygger {
         bruker.setGeografiskTilknytning(tilknytning);
 
         //Diskresjonskode
-        Diskresjonskoder kode = new Diskresjonskoder();
-        kode.setValue(diskresjonskode);
-        bruker.setDiskresjonskode(kode);
+        if (diskresjonskode != null) {
+            Diskresjonskoder kode = new Diskresjonskoder();
+            kode.setValue(diskresjonskode);
+            bruker.setDiskresjonskode(kode);
+        }
 
         //statsborgerskap
         Statsborgerskap s = new Statsborgerskap();
