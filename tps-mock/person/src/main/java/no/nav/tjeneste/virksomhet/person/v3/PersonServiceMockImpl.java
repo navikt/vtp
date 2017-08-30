@@ -72,7 +72,18 @@ public class PersonServiceMockImpl implements PersonV3 {
     @ResponseWrapper(localName = "hentGeografiskTilknytningResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentGeografiskTilknytningResponse")
     @Override
     public HentGeografiskTilknytningResponse hentGeografiskTilknytning(@WebParam(name = "request", targetNamespace = "") HentGeografiskTilknytningRequest hentGeografiskTilknytningRequest) throws HentGeografiskTilknytningPersonIkkeFunnet, HentGeografiskTilknytningSikkerhetsbegrensing {
-        return null;
+        PersonIdent personIdent = (PersonIdent)hentGeografiskTilknytningRequest.getAktoer();
+        String ident = personIdent.getIdent().getIdent();
+
+        Bruker bruker = new PersonDbLeser(entityManager).finnPerson(ident);
+        if (bruker == null) {
+            throw new HentGeografiskTilknytningPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet());
+        }
+
+        HentGeografiskTilknytningResponse response = new HentGeografiskTilknytningResponse();
+        response.setGeografiskTilknytning(bruker.getGeografiskTilknytning());
+        response.setDiskresjonskode(bruker.getDiskresjonskode());
+        return response;
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/pingRequest")
