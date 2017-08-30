@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @NamedQueries({
-        @NamedQuery(name="TpsRelasjon.findAll",
-                    query="SELECT t FROM TpsRelasjon t")
+        @NamedQuery(name = "TpsRelasjon.findAll",
+                query = "SELECT t FROM TpsRelasjon t")
 })
 
 @Entity(name = "TpsRelasjon")
@@ -22,24 +22,20 @@ public class TpsRelasjon {
     long id;
 
     @Column(name = "FNR", nullable = false)
-    public
-    String fnr;
+    private String fnr;
 
     @Column(name = "FNR_RELASJON", nullable = false)
-    public
-    String relasjonFnr;
+
+    private String relasjonFnr;
 
     @Column(name = "RELASJONSTYPE", nullable = false)
-    public
-    String relasjonsType;
+    private String relasjonsType;
 
     @Column(name = "FORNAVN", nullable = false)
-    public
-    String fornavn;
+    private String fornavn;
 
     @Column(name = "ETTERNAVN", nullable = false)
-    public
-    String etternavn;
+    private String etternavn;
 
     public TpsRelasjon() {
     }

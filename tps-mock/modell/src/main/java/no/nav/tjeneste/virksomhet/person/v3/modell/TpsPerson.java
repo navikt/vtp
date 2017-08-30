@@ -11,8 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @NamedQueries({
-    @NamedQuery(name="TpsPerson.findAll",
-                query="SELECT t FROM TpsPerson t")
+        @NamedQuery(name = "TpsPerson.findAll",
+                query = "SELECT t FROM TpsPerson t")
 })
 
 @Entity(name = "TpsPerson")
@@ -22,48 +22,42 @@ public class TpsPerson {
     // Konstanter for standardbrukere (kan refereres eksternt)
     public static final long STD_KVINNE_AKTØR_ID = 9000000000036L;
     public static final String STD_KVINNE_FNR = "03039004649";
-    
+
     @Id
     @Column(name = "ID", nullable = false)
-    long id;
+    private long id;
 
     @Column(name = "AKTORID", nullable = false)
-    long aktørId;
+    private long aktørId;
 
     @Column(name = "FNR", nullable = false)
-    String fnr;
+    private String fnr;
 
     @Column(name = "KJONN")
-    public String kjønn;
+    private String kjønn;
 
     @Column(name = "FORNAVN", nullable = false)
-    public String fornavn;
+    private String fornavn;
 
     @Column(name = "ETTERNAVN", nullable = false)
-    public String etternavn;
+    private String etternavn;
 
     @Column(name = "SPRAAK", nullable = true)
-    public String maalform;
+    private String maalform;
 
     @Column(name = "GEOTILKN", nullable = true)
-    public String geografiskTilknytning;
+    private String geografiskTilknytning;
 
     @Column(name = "BSPESREG", nullable = true)
-    public String diskresjonskode;
+    private String diskresjonskode;
 
     @Column(name = "STATSBORGERSKAP", nullable = false)
-    public String statsborgerskap;
+    private String statsborgerskap;
 
     @Transient
-    public Bruker person;
+    private Bruker person;
 
     TpsPerson() {
-    }
-
-    public TpsPerson(long aktørId, PersonBygger personBygger) {
-        this.aktørId = aktørId;
-        this.fnr = personBygger.getFnr();
-        this.person = personBygger.bygg();
     }
 
     public long getId() {
@@ -85,5 +79,41 @@ public class TpsPerson {
                 ", fnr='" + fnr + '\'' +
                 ", person=" + person +
                 '}';
+    }
+
+    public Bruker getPerson() {
+        return person;
+    }
+
+    public void setPerson(Bruker person) {
+        this.person = person;
+    }
+
+    public String getFornavn() {
+        return fornavn;
+    }
+
+    public String getEtternavn() {
+        return etternavn;
+    }
+
+    public String getMaalform() {
+        return maalform;
+    }
+
+    public String getGeografiskTilknytning() {
+        return geografiskTilknytning;
+    }
+
+    public String getDiskresjonskode() {
+        return diskresjonskode;
+    }
+
+    public String getStatsborgerskap() {
+        return statsborgerskap;
+    }
+
+    public String getKjønn() {
+        return kjønn;
     }
 }

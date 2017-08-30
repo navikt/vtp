@@ -14,15 +14,13 @@ public class RelasjonDbLeser {
     }
 
     public List<TpsRelasjon> opprettTpsData() {
-        List<TpsRelasjon> tpsRelasjoner = entityManager.createNamedQuery("TpsRelasjon.findAll", TpsRelasjon.class).getResultList();
-        return tpsRelasjoner;
+        return entityManager.createNamedQuery("TpsRelasjon.findAll", TpsRelasjon.class).getResultList();
     }
 
-    public TpsRelasjon finnRelasjon(String fnr){
-        if (fnr != null){
+    public TpsRelasjon finnRelasjon(String fnr) {
+        if (fnr != null) {
             List<TpsRelasjon> tpsRelasjoner = entityManager.createQuery("SELECT t FROM TpsRelasjon t WHERE fnr = :fnr", TpsRelasjon.class).setParameter("fnr", fnr).getResultList();
-            if (!tpsRelasjoner.isEmpty()
-                    && tpsRelasjoner.get(0) != null){
+            if (!tpsRelasjoner.isEmpty() && tpsRelasjoner.get(0) != null) {
                 return tpsRelasjoner.get(0);
             }
         }

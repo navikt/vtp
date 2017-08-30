@@ -24,14 +24,14 @@ public class RelasjonBygger {
         Familierelasjon familierelasjon = new Familierelasjon();
         familierelasjon.setHarSammeBosted(true);
         Familierelasjoner familierelasjoner = new Familierelasjoner();
-        familierelasjoner.setValue(tpsRelasjon.relasjonsType);
+        familierelasjoner.setValue(tpsRelasjon.getRelasjonsType());
         familierelasjon.setTilRolle(familierelasjoner);
 
         Bruker relatertPerson = new Bruker();
 
         // Relasjonens ident
         NorskIdent relasjonIdent = new NorskIdent();
-        relasjonIdent.setIdent(tpsRelasjon.relasjonFnr);
+        relasjonIdent.setIdent(tpsRelasjon.getRelasjonFnr());
 
         Personidenter relasjonIdenter = new Personidenter();
         relasjonIdenter.setValue("fnr");
@@ -42,18 +42,17 @@ public class RelasjonBygger {
         relatertPerson.setAktoer(personIdent);
 
         // Relasjonens fødselsdato
-        if (tpsRelasjon.relasjonFnr != null) {
+        if (tpsRelasjon.getRelasjonFnr() != null) {
             Foedselsdato relasjonFodselsdato = new Foedselsdato();
-            relasjonFodselsdato.setFoedselsdato(tilXmlGregorian(tpsRelasjon.relasjonFnr));
+            relasjonFodselsdato.setFoedselsdato(tilXmlGregorian(tpsRelasjon.getRelasjonFnr()));
             relatertPerson.setFoedselsdato(relasjonFodselsdato);
         }
 
         // Relasjonens navn
         Personnavn relasjonPersonnavn = new Personnavn();
-        relasjonPersonnavn.setEtternavn(tpsRelasjon.etternavn.toUpperCase());
-        relasjonPersonnavn.setFornavn(tpsRelasjon.fornavn.toUpperCase());
-        relasjonPersonnavn.setSammensattNavn(tpsRelasjon.etternavn.toUpperCase() + " "
-                + tpsRelasjon.fornavn.toUpperCase());
+        relasjonPersonnavn.setEtternavn(tpsRelasjon.getEtternavn().toUpperCase());
+        relasjonPersonnavn.setFornavn(tpsRelasjon.getFornavn().toUpperCase());
+        relasjonPersonnavn.setSammensattNavn(tpsRelasjon.getEtternavn().toUpperCase() + " " + tpsRelasjon.getFornavn().toUpperCase());
         relatertPerson.setPersonnavn(relasjonPersonnavn);
 
         // Relasjon settes på personen

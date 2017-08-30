@@ -1,8 +1,8 @@
 package no.nav.tjeneste.virksomhet.person.v3.data;
 
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,7 +17,7 @@ public class PersonDbLeser {
 
     public List<TpsPerson> opprettTpsData() {
         List<TpsPerson> tpsPersoner = entityManager.createNamedQuery("TpsPerson.findAll", TpsPerson.class).getResultList();
-        tpsPersoner.forEach(tpsPerson -> tpsPerson.person = new PersonBygger(tpsPerson).bygg());
+        tpsPersoner.forEach(tpsPerson -> tpsPerson.setPerson(new PersonBygger(tpsPerson).bygg()));
 
         return tpsPersoner;
     }
@@ -31,10 +31,9 @@ public class PersonDbLeser {
     public Bruker finnPerson(String fnr) {
         if (fnr != null) {
             List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE fnr = :fnr", TpsPerson.class).setParameter("fnr", fnr).getResultList();
-            if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null)
-            {
-                tpsPersoner.get(0).person = new PersonBygger(tpsPersoner.get(0)).bygg();
-                return tpsPersoner.get(0).person;
+            if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null) {
+                tpsPersoner.get(0).setPerson(new PersonBygger(tpsPersoner.get(0)).bygg());
+                return tpsPersoner.get(0).getPerson();
             }
         }
         return null;
@@ -42,8 +41,7 @@ public class PersonDbLeser {
 
     public String finnIdent(String aktoerId) {
         List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE aktorid = :aktorid", TpsPerson.class).setParameter("aktorid", aktoerId).getResultList();
-        if (!tpsPersoner.isEmpty()
-                && tpsPersoner.get(0) != null) {
+        if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null) {
             return tpsPersoner.get(0).getFnr();
         }
 
@@ -51,10 +49,9 @@ public class PersonDbLeser {
     }
 
     public Long finnAktoerId(String fnr) {
-        if (fnr != null){
+        if (fnr != null) {
             List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE fnr = :fnr", TpsPerson.class).setParameter("fnr", fnr).getResultList();
-            if (!tpsPersoner.isEmpty()
-                    && tpsPersoner.get(0) != null){
+            if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null) {
                 return tpsPersoner.get(0).getAktørId();
             }
         }

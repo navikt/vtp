@@ -7,9 +7,9 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.GeografiskTilknytning;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Land;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
@@ -25,82 +25,32 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Objects;
 
 public class PersonBygger {
-    private String fnr;
-    private String fornavn;
-    private String etternavn;
-    private final Kjønn kjønn;
-    private LocalDate fødselsdato;;
-    private String maalform;
-    private String geografiskTilknytning;
-    private String diskresjonskode;
-    private String statsborgerskap;
-    private TpsRelasjon tpsRelasjon;
-
-    public enum Kjønn {
-        MANN("M"),
-        KVINNE("K");
-
-        String verdi;
-
-        Kjønn(String verdi) {
-            this.verdi = verdi;
-        }
-    }
+    private final String fnr;
+    private final String fornavn;
+    private final String etternavn;
+    private final String kjønn;
+    private final String maalform;
+    private final String geografiskTilknytning;
+    private final String diskresjonskode;
+    private final String statsborgerskap;
 
     public PersonBygger(TpsPerson tpsPerson) {
-        this.fnr = tpsPerson.fnr;
-        this.fornavn = tpsPerson.fornavn;
-        this.etternavn = tpsPerson.etternavn;
-        this.maalform = tpsPerson.maalform;
-        this.geografiskTilknytning = tpsPerson.geografiskTilknytning;
-        this.diskresjonskode = tpsPerson.diskresjonskode;
-        this.statsborgerskap = tpsPerson.statsborgerskap;
-
-        if ("M".equals(tpsPerson.kjønn)) {
-            this.kjønn = Kjønn.MANN;
-
-        } else if ("K".equals(tpsPerson.kjønn)) {
-            this.kjønn = Kjønn.KVINNE;
-
-        } else {
-            this.kjønn = null;
-        }
-    }
-
-    public PersonBygger(String fnr, String fornavn, String etternavn, Kjønn kjønn) {
-        Objects.requireNonNull(fnr, "Fødselsnummer er obligatorisk");
-        Objects.requireNonNull(kjønn, "Kjønn er obligatorisk");
-        Objects.requireNonNull(fornavn, "Fornavn er obligatorisk");
-        Objects.requireNonNull(etternavn, "Etternavn er obligatorisk");
-        this.fnr = fnr;
-        this.kjønn = kjønn;
-        this.fornavn = fornavn;
-        this.etternavn = etternavn;
+        this.fnr = tpsPerson.getFnr();
+        this.fornavn = tpsPerson.getFornavn();
+        this.etternavn = tpsPerson.getEtternavn();
+        this.maalform = tpsPerson.getMaalform();
+        this.geografiskTilknytning = tpsPerson.getGeografiskTilknytning();
+        this.diskresjonskode = tpsPerson.getDiskresjonskode();
+        this.statsborgerskap = tpsPerson.getStatsborgerskap();
+        this.kjønn = tpsPerson.getKjønn();
     }
 
     public String getFnr() {
         return fnr;
-    }
-
-    public PersonBygger medFødseldato(LocalDate fødselsdato) {
-        this.fødselsdato = fødselsdato;
-        return this;
-    }
-
-    public PersonBygger medRelasjon(String relasjonsType, String relasjonFnr, String fornavn, String etternavn) {
-        tpsRelasjon = new TpsRelasjon();
-        tpsRelasjon.relasjonsType = relasjonsType;
-        tpsRelasjon.relasjonFnr = relasjonFnr;
-        tpsRelasjon.fornavn = fornavn;
-        tpsRelasjon.etternavn = etternavn;
-        return this;
     }
 
     public Bruker bygg() {
@@ -120,32 +70,22 @@ public class PersonBygger {
         // Kjønn
         Kjoenn kjonn = new Kjoenn();
         Kjoennstyper kjonnstype = new Kjoennstyper();
-        kjonnstype.setValue(kjønn.verdi);
+        kjonnstype.setValue(kjønn);
         kjonn.setKjoenn(kjonnstype);
         bruker.setKjoenn(kjonn);
 
         // Fødselsdato
         Foedselsdato fodselsdato = new Foedselsdato();
-        XMLGregorianCalendar xcal;
-        if (fødselsdato == null) {
-            xcal = tilXmlGregorian(fnr);
-        } else {
-            xcal = tilXmlGregorian(fødselsdato);
-        }
+        XMLGregorianCalendar xcal = tilXmlGregorian(fnr);
         fodselsdato.setFoedselsdato(xcal);
         bruker.setFoedselsdato(fodselsdato);
 
         // Navn
-        Personnavn personnavn  = new Personnavn();
+        Personnavn personnavn = new Personnavn();
         personnavn.setEtternavn(etternavn.toUpperCase());
         personnavn.setFornavn(fornavn.toUpperCase());
         personnavn.setSammensattNavn(etternavn.toUpperCase() + " " + fornavn.toUpperCase());
         bruker.setPersonnavn(personnavn);
-
-        // Relasjoner
-        if(tpsRelasjon != null) {
-            bruker = new RelasjonBygger(tpsRelasjon).byggFor(bruker);
-        }
 
         // Personstatus
         Personstatus personstatus = new Personstatus();
@@ -180,41 +120,30 @@ public class PersonBygger {
         return bruker;
     }
 
-    private GeografiskTilknytning opprettGeografiskTilknytning(String geoTilkn) {
+    private GeografiskTilknytning opprettGeografiskTilknytning(String geografiskTilknytning) {
         //Regel fra tjenesten:
         //geografisk tilknytning returners enten som bydelsnr (6-sifret), kommunenr (4-sifret), landkode (3-sifret) eller BLANK
-        if (geoTilkn == null) {
+        if (geografiskTilknytning == null) {
             return null;
         }
 
-        if (geoTilkn.length() == 3) {
+        if (geografiskTilknytning.length() == 3) {
             Land land = new Land();
-            land.setGeografiskTilknytning(geoTilkn);
+            land.setGeografiskTilknytning(geografiskTilknytning);
             return land;
-        } else if (geoTilkn.length() == 4) {
+        } else if (geografiskTilknytning.length() == 4) {
             Kommune kommune = new Kommune();
-            kommune.setGeografiskTilknytning(geoTilkn);
+            kommune.setGeografiskTilknytning(geografiskTilknytning);
             return kommune;
-        } else if (geoTilkn.length() == 6) {
+        } else if (geografiskTilknytning.length() == 6) {
             Bydel bydel = new Bydel();
-            bydel.setGeografiskTilknytning(geoTilkn);
+            bydel.setGeografiskTilknytning(geografiskTilknytning);
             return bydel;
+        } else {
+            throw new IllegalArgumentException("Ukjent geografisk tilknytning. MÅ være 3,4 eller 6 sifre, men var '" + geografiskTilknytning + "'");
         }
-
-        return null;
     }
 
-
-    private XMLGregorianCalendar tilXmlGregorian(LocalDate fødselsdato) {
-        XMLGregorianCalendar xcal;
-        try {
-            GregorianCalendar gcal = GregorianCalendar.from(fødselsdato.atStartOfDay(ZoneId.systemDefault()));
-            xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-        } catch (DatatypeConfigurationException e) {
-            throw new IllegalStateException("Kunne ikke konvertere dato", e);
-        }
-        return xcal;
-    }
 
     static XMLGregorianCalendar tilXmlGregorian(String fødselsnummer) {
         XMLGregorianCalendar xcal;
