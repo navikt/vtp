@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.person.v3.modell;
 
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
@@ -17,8 +18,10 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.StedsadresseNorge;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -120,10 +123,19 @@ public class PersonBygger {
         s.setLand(landkoder);
         bruker.setStatsborgerskap(s);
 
-        //Gjeldende adressetype:
+        //Gjeldende adressetype: VI hardkoder en adresse inntil videre så mock kan benyttes. Utvid gjerne til å lese adresse info fra DB for forskjellige adressetyper.
         Postadressetyper postadressetyper = new Postadressetyper();
-        postadressetyper.setValue(gjeldendeAdresseType);
+        postadressetyper.setValue("BOSTEDSADRESSE");
         bruker.setGjeldendePostadressetype(postadressetyper);
+        //Bostedsadresse krever følgende felter:
+        Bostedsadresse adresse = new Bostedsadresse();
+        StedsadresseNorge stedsadresseNorge = new StedsadresseNorge();
+        Postnummer postnummer = new Postnummer();
+        postnummer.setValue("2040");
+        stedsadresseNorge.setPoststed(postnummer);
+        adresse.setStrukturertAdresse(stedsadresseNorge);
+        bruker.setBostedsadresse(adresse);
+
 
         return bruker;
     }

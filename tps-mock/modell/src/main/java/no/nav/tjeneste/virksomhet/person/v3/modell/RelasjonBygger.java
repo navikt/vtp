@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.person.v3.modell;
 
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjoner;
@@ -8,6 +9,9 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.StedsadresseNorge;
 
 import static no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger.tilXmlGregorian;
 
@@ -54,6 +58,20 @@ public class RelasjonBygger {
         relasjonPersonnavn.setFornavn(tpsRelasjon.getFornavn().toUpperCase());
         relasjonPersonnavn.setSammensattNavn(tpsRelasjon.getEtternavn().toUpperCase() + " " + tpsRelasjon.getFornavn().toUpperCase());
         relatertPerson.setPersonnavn(relasjonPersonnavn);
+
+        //Gjeldende adressetype: VI hardkoder en adresse inntil videre så mock kan benyttes. Utvid gjerne til å lese adresse info fra DB for forskjellige adressetyper.
+        //TODO (jannilsen): RelatertPerson bør vel opprettes vha personbygger, men inntil videre så legger vi på adresseinfo her og.
+        Postadressetyper postadressetyper = new Postadressetyper();
+        postadressetyper.setValue("BOSTEDSADRESSE");
+        relatertPerson.setGjeldendePostadressetype(postadressetyper);
+        //Bostedsadresse krever følgende felter:
+        Bostedsadresse adresse = new Bostedsadresse();
+        StedsadresseNorge stedsadresseNorge = new StedsadresseNorge();
+        Postnummer postnummer = new Postnummer();
+        postnummer.setValue("2040");
+        stedsadresseNorge.setPoststed(postnummer);
+        adresse.setStrukturertAdresse(stedsadresseNorge);
+        relatertPerson.setBostedsadresse(adresse);
 
         // Relasjon settes på personen
         familierelasjon.setTilPerson(relatertPerson);
