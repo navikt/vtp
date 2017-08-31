@@ -12,8 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>arbeidsfordeling</module>
-        <!-- module>modell</module -->
+        <module>modell</module>
     </modules>
-
 
 </project>

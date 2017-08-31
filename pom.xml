@@ -25,11 +25,8 @@
 	    <module>pdp-mock</module>
 		<module>infotrygd-mock</module>
 		<module>arena-mock</module>
-<<<<<<< HEAD
 		<module>medl-mock</module>
-=======
 		<module>norg2-mock</module>
->>>>>>> PK-41609_PKHUMLE-202 startet
     </modules>
 
 	<properties>
@@ -54,11 +51,8 @@
         <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
 		<tps.person.version>3.0.2</tps.person.version>
-<<<<<<< HEAD
 		<medlem.version>2.0.6</medlem.version>
-=======
         <norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
->>>>>>> PK-41609_PKHUMLE-202 startet
 		<modig-testcertificates.version>1.2.2</modig-testcertificates.version>
 	</properties>
 
@@ -145,6 +139,11 @@
                 <artifactId>arbeidsfordeling-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>norg2-mock-modell</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 			<!-- NAV-biblioteker -->
 			<dependency>
@@ -216,15 +215,15 @@
 			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester</groupId>
-<<<<<<< HEAD
 				<artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
 				<version>${medlem.version}</version>
-=======
-				<artifactId>nav-arbeidsfordeling-v1-tjenestespesifikasjon</artifactId>
-				<version>${norg2.arbeidsfordeling.version}</version>
-				<classifier>jaxws</classifier>
->>>>>>> PK-41609_PKHUMLE-202 startet
 			</dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-arbeidsfordeling-v1-tjenestespesifikasjon</artifactId>
+                <version>${norg2.arbeidsfordeling.version}</version>
+                <classifier>jaxws</classifier>
+            </dependency>
 
 			<!-- Eksterne bibliotek -->
 			<dependency>
