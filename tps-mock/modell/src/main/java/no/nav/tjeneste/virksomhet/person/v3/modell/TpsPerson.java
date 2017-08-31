@@ -54,6 +54,9 @@ public class TpsPerson {
     @Column(name = "STATSBORGERSKAP", nullable = false)
     private String statsborgerskap;
 
+    @Column(name = "GJELDENDEPADRESSETYPE", nullable = false)
+    private String gjeldendeAdresseType;
+
     @Transient
     private Bruker person;
 
@@ -111,6 +114,10 @@ public class TpsPerson {
 
     public String getStatsborgerskap() {
         return statsborgerskap;
+    }
+
+    public String getGjeldendeAdresseType() {
+        return gjeldendeAdresseType;
     }
 
     public String getKjønn() {

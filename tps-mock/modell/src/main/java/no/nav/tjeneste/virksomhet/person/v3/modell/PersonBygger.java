@@ -16,6 +16,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
 
@@ -37,6 +38,7 @@ public class PersonBygger {
     private final String geografiskTilknytning;
     private final String diskresjonskode;
     private final String statsborgerskap;
+    private final String gjeldendeAdresseType;
 
     public PersonBygger(TpsPerson tpsPerson) {
         this.fnr = tpsPerson.getFnr();
@@ -46,6 +48,7 @@ public class PersonBygger {
         this.geografiskTilknytning = tpsPerson.getGeografiskTilknytning();
         this.diskresjonskode = tpsPerson.getDiskresjonskode();
         this.statsborgerskap = tpsPerson.getStatsborgerskap();
+        this.gjeldendeAdresseType = tpsPerson.getGjeldendeAdresseType();
         this.kjønn = tpsPerson.getKjønn();
     }
 
@@ -116,6 +119,11 @@ public class PersonBygger {
         landkoder.setValue(statsborgerskap);
         s.setLand(landkoder);
         bruker.setStatsborgerskap(s);
+
+        //Gjeldende adressetype:
+        Postadressetyper postadressetyper = new Postadressetyper();
+        postadressetyper.setValue(gjeldendeAdresseType);
+        bruker.setGjeldendePostadressetype(postadressetyper);
 
         return bruker;
     }
