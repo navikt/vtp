@@ -55,6 +55,10 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>infotrygdsak-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>medl-mock-medlem</artifactId>
+        </dependency>
 
         <!-- NAV biblioteker -->
         <dependency>

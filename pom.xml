@@ -25,6 +25,7 @@
 	    <module>pdp-mock</module>
 		<module>infotrygd-mock</module>
 		<module>arena-mock</module>
+		<module>medl-mock</module>
     </modules>
 
 	<properties>
@@ -49,6 +50,7 @@
         <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
 		<tps.person.version>3.0.2</tps.person.version>
+		<medlem.version>2.0.6</medlem.version>
 		<modig-testcertificates.version>1.2.2</modig-testcertificates.version>
 	</properties>
 
@@ -125,6 +127,11 @@
 				<artifactId>ytelseskontrakt-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>medl-mock-medlem</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- NAV-biblioteker -->
 			<dependency>
@@ -193,6 +200,11 @@
 				<artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
 				<version>${nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version}</version>
 				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
+				<version>${medlem.version}</version>
 			</dependency>
 
 			<!-- Eksterne bibliotek -->

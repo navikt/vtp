@@ -10,6 +10,7 @@ import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaend
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
+import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -66,7 +67,7 @@ public class MockServer {
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
         publishService(HentYtelseskontraktListeMockImpl.class, "/ytelseskontrakt");
         // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl
-
+        publishService(MedlemServiceMockImpl.class, "/medlem");
 
     }
 
