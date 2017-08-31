@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
@@ -40,7 +41,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
             @FaultAction(className = Sikkerhetsbegrensning.class, value = "http://nav.no/tjeneste/virksomhet/medlemskap/v2/Medlemskap_v2/hentPeriode/Fault/Sikkerhetsbegrensning")
     })
     @Override
-    public HentPeriodeResponse hentPeriode(HentPeriodeRequest request) throws Sikkerhetsbegrensning {
+    public HentPeriodeResponse hentPeriode(@WebParam(name = "request",targetNamespace = "") HentPeriodeRequest request) throws Sikkerhetsbegrensning {
         return null;
     }
 
@@ -62,7 +63,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
             @FaultAction(className = Sikkerhetsbegrensning.class, value = "http://nav.no/tjeneste/virksomhet/medlemskap/v2/Medlemskap_v2/hentPeriodeListe/Fault/Sikkerhetsbegrensning")
     })
     @Override
-    public HentPeriodeListeResponse hentPeriodeListe(HentPeriodeListeRequest request) throws PersonIkkeFunnet, Sikkerhetsbegrensning {
+    public HentPeriodeListeResponse hentPeriodeListe(@WebParam(name = "request",targetNamespace = "") HentPeriodeListeRequest request) throws PersonIkkeFunnet, Sikkerhetsbegrensning {
 
         if (request != null && request.getIdent() != null) {
             String fnr = request.getIdent().getValue();
