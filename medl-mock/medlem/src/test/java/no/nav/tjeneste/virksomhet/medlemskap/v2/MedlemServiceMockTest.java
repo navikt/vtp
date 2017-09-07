@@ -10,9 +10,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MedlemServiceMockTest {
 
+    private static final String FNR = "08088049846";
+
     @Test
     public void skal_hente_periodeliste() throws Exception {
-        HentPeriodeListeRequest request = new HentPeriodeListeRequest().withIdent(new Foedselsnummer().withValue("08088049846"));
+        HentPeriodeListeRequest request = new HentPeriodeListeRequest().withIdent(new Foedselsnummer().withValue(FNR));
         HentPeriodeListeResponse response = new MedlemServiceMockImpl().hentPeriodeListe(request);
         assertThat(response).isNotNull();
         assertThat(response.getPeriodeListe()).isNotEmpty();

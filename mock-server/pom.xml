@@ -63,6 +63,10 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>arbeidsfordeling-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>inntekt-mock-inntekt</artifactId>
+        </dependency>
 
         <!-- NAV biblioteker -->
         <dependency>
