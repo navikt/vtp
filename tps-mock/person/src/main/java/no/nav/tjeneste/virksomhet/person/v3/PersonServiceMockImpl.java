@@ -32,6 +32,7 @@ import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
+import java.util.List;
 
 @Addressing
 @WebService(name = "Person_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3")
@@ -56,8 +57,8 @@ public class PersonServiceMockImpl implements PersonV3 {
             throw new HentPersonPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet());
         }
 
-        TpsRelasjon relasjon = new RelasjonDbLeser(entityManager).finnRelasjon(ident);
-        if (relasjon != null){
+        List<TpsRelasjon> relasjoner = new RelasjonDbLeser(entityManager).finnRelasjon(ident);
+        for (TpsRelasjon relasjon : relasjoner) {
             new RelasjonBygger(relasjon).byggFor(bruker);
         }
 
