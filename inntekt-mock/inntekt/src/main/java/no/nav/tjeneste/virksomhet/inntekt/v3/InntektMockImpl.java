@@ -36,9 +36,7 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeSikkerhetsb
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.InntektV3;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkRequest;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkResponse;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentDetaljerteAbonnerteInntekterRequest;
@@ -59,43 +57,43 @@ public class InntektMockImpl implements InntektV3 {
     private static final Logger LOG = LoggerFactory.getLogger(InntektMockImpl.class);
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("inntekt").createEntityManager();
 
-
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentForventetInntektRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentForventetInntekt", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentForventetInntekt")
     @ResponseWrapper(localName = "hentForventetInntektResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentForventetInntektResponse")
-    @Override
     public HentForventetInntektResponse hentForventetInntekt(@WebParam(name = "request",targetNamespace = "") HentForventetInntektRequest hentForventetInntektRequest) throws HentForventetInntektPersonIkkeFunnet, HentForventetInntektSikkerhetsbegrensning, HentForventetInntektUgyldigInput {
-        return null;
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/pingRequest")
     @RequestWrapper(localName = "ping", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3", className = "no.nav.tjeneste.virksomhet.inntekt.v3.Ping")
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3", className = "no.nav.tjeneste.virksomhet.inntekt.v3.PingResponse")
-    @Override
     public void ping() {
+        LOG.info("Ping mottatt og besvart");
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentInntektListeRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentInntektListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListe")
     @ResponseWrapper(localName = "hentInntektListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeResponse")
-    @Override
     public HentInntektListeResponse hentInntektListe(@WebParam(name = "request",targetNamespace = "") HentInntektListeRequest hentInntektListeRequest) throws HentInntektListeHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeSikkerhetsbegrensning, HentInntektListeUgyldigInput {
-        return null;
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentInntektListeBolkRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentInntektListeBolk", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeBolk")
     @ResponseWrapper(localName = "hentInntektListeBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeBolkResponse")
-    @Override
     public HentInntektListeBolkResponse hentInntektListeBolk(@WebParam(name = "request",targetNamespace = "") HentInntektListeBolkRequest request) throws HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeBolkUgyldigInput {
 
         if (request != null && request.getIdentListe() != null
@@ -117,36 +115,36 @@ public class InntektMockImpl implements InntektV3 {
         return null;
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentInntektListeForOpplysningspliktigRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentInntektListeForOpplysningspliktig", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeForOpplysningspliktig")
     @ResponseWrapper(localName = "hentInntektListeForOpplysningspliktigResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeForOpplysningspliktigResponse")
-    @Override
     public HentInntektListeForOpplysningspliktigResponse hentInntektListeForOpplysningspliktig(@WebParam(name = "request",targetNamespace = "") HentInntektListeForOpplysningspliktigRequest hentInntektListeForOpplysningspliktigRequest) throws HentInntektListeForOpplysningspliktigHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeForOpplysningspliktigUgyldigInput {
-        return null;
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentAbonnerteInntekterBolkRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentAbonnerteInntekterBolk", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentAbonnerteInntekterBolk")
     @ResponseWrapper(localName = "hentAbonnerteInntekterBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentAbonnerteInntekterBolkResponse")
-    @Override
     public HentAbonnerteInntekterBolkResponse hentAbonnerteInntekterBolk(@WebParam(name = "request",targetNamespace = "") HentAbonnerteInntekterBolkRequest hentAbonnerteInntekterBolkRequest) throws HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter, HentAbonnerteInntekterBolkUgyldigInput {
-        return null;
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentDetaljerteAbonnerteInntekterRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentDetaljerteAbonnerteInntekter", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentDetaljerteAbonnerteInntekter")
     @ResponseWrapper(localName = "hentDetaljerteAbonnerteInntekterResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentDetaljerteAbonnerteInntekterResponse")
-    @Override
     public HentDetaljerteAbonnerteInntekterResponse hentDetaljerteAbonnerteInntekter(@WebParam(name = "request",targetNamespace = "") HentDetaljerteAbonnerteInntekterRequest hentDetaljerteAbonnerteInntekterRequest) throws HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter, HentDetaljerteAbonnerteInntekterManglendeAbonnent, HentDetaljerteAbonnerteInntekterPersonIkkeFunnet, HentDetaljerteAbonnerteInntekterSikkerhetsbegrensning, HentDetaljerteAbonnerteInntekterUgyldigInput {
-        return null;
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 }

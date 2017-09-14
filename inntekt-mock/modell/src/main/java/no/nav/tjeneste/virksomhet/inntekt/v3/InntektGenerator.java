@@ -44,19 +44,20 @@ public class InntektGenerator {
     private ArbeidsInntektMaaned lagarbeidsInntektMaaned(LocalDate fom) {
         ArbeidsInntektMaaned arbeidsInntektMaaned = objectFactory.createArbeidsInntektMaaned();
         arbeidsInntektMaaned.setAarMaaned(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        arbeidsInntektMaaned.setArbeidsInntektInformasjon(lagArbeidsinntektInformasjon());
+        arbeidsInntektMaaned.setArbeidsInntektInformasjon(lagArbeidsinntektInformasjon(fom));
         return arbeidsInntektMaaned;
     }
 
-    private ArbeidsInntektInformasjon lagArbeidsinntektInformasjon() {
+    private ArbeidsInntektInformasjon lagArbeidsinntektInformasjon(LocalDate fom) {
         ArbeidsInntektInformasjon arbeidsInntektInformasjon = objectFactory.createArbeidsInntektInformasjon();
-        arbeidsInntektInformasjon.getInntektListe().add(lagInntekt());
+        arbeidsInntektInformasjon.getInntektListe().add(lagInntekt(fom));
         return arbeidsInntektInformasjon;
     }
 
-    private Inntekt lagInntekt() {
+    private Inntekt lagInntekt(LocalDate fom) {
         Inntekt inntekt = objectFactory.createInntekt();
         inntekt.setBeloep(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(MIN_INNTEKT, MAX_INNTEKT)));
+        inntekt.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(fom));
         return inntekt;
     }
 }
