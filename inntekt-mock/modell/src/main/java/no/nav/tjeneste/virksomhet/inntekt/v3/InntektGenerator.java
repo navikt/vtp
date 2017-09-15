@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektInformasjon;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
@@ -37,27 +38,28 @@ public class InntektGenerator {
     private ArbeidsInntektIdent lagArbeidsinntektIdent(Aktoer aktoer, LocalDate fom) {
         ArbeidsInntektIdent arbeidsInntektIdent = objectFactory.createArbeidsInntektIdent();
         arbeidsInntektIdent.setIdent(aktoer);
-        arbeidsInntektIdent.getArbeidsInntektMaaned().add(lagarbeidsInntektMaaned(fom));
+        arbeidsInntektIdent.getArbeidsInntektMaaned().add(lagarbeidsInntektMaaned(fom, aktoer));
         return arbeidsInntektIdent;
     }
 
-    private ArbeidsInntektMaaned lagarbeidsInntektMaaned(LocalDate fom) {
+    private ArbeidsInntektMaaned lagarbeidsInntektMaaned(LocalDate fom, Aktoer aktoer) {
         ArbeidsInntektMaaned arbeidsInntektMaaned = objectFactory.createArbeidsInntektMaaned();
         arbeidsInntektMaaned.setAarMaaned(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        arbeidsInntektMaaned.setArbeidsInntektInformasjon(lagArbeidsinntektInformasjon(fom));
+        arbeidsInntektMaaned.setArbeidsInntektInformasjon(lagArbeidsinntektInformasjon(fom, aktoer));
         return arbeidsInntektMaaned;
     }
 
-    private ArbeidsInntektInformasjon lagArbeidsinntektInformasjon(LocalDate fom) {
+    private ArbeidsInntektInformasjon lagArbeidsinntektInformasjon(LocalDate fom, Aktoer aktoer) {
         ArbeidsInntektInformasjon arbeidsInntektInformasjon = objectFactory.createArbeidsInntektInformasjon();
-        arbeidsInntektInformasjon.getInntektListe().add(lagInntekt(fom));
+        arbeidsInntektInformasjon.getInntektListe().add(lagInntekt(fom, aktoer));
         return arbeidsInntektInformasjon;
     }
 
-    private Inntekt lagInntekt(LocalDate fom) {
+    private Inntekt lagInntekt(LocalDate fom, Aktoer aktoer) {
         Inntekt inntekt = objectFactory.createInntekt();
         inntekt.setBeloep(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(MIN_INNTEKT, MAX_INNTEKT)));
         inntekt.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(fom));
+        inntekt.setVirksomhet(aktoer);
         return inntekt;
     }
 }
