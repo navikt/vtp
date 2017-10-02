@@ -57,6 +57,12 @@ public class TpsPerson {
     @Column(name = "GJELDENDEPADRESSETYPE", nullable = false)
     private String gjeldendeAdresseType;
 
+    @Column(name = "PERSONSTATUS", nullable = false)
+    private String personstatus;
+
+    @Column(name = "SIVILSTAND", nullable = false)
+    private String sivilstand;
+
     @Transient
     private Bruker person;
 
@@ -123,4 +129,8 @@ public class TpsPerson {
     public String getKjønn() {
         return kjønn;
     }
+
+    public String getPersonstatus() { return personstatus; }
+
+    public String getSivilstand() { return sivilstand; }
 }

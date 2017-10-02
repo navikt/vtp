@@ -19,6 +19,8 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstand;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstander;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.StedsadresseNorge;
@@ -42,6 +44,8 @@ public class PersonBygger {
     private final String diskresjonskode;
     private final String statsborgerskap;
     private final String gjeldendeAdresseType;
+    private final String tpsPersonstatus;
+    private final String tpsSivilstand;
 
     public PersonBygger(TpsPerson tpsPerson) {
         this.fnr = tpsPerson.getFnr();
@@ -53,6 +57,8 @@ public class PersonBygger {
         this.statsborgerskap = tpsPerson.getStatsborgerskap();
         this.gjeldendeAdresseType = tpsPerson.getGjeldendeAdresseType();
         this.kjønn = tpsPerson.getKjønn();
+        this.tpsPersonstatus = tpsPerson.getPersonstatus();
+        this.tpsSivilstand = tpsPerson.getSivilstand();
     }
 
     public String getFnr() {
@@ -96,7 +102,7 @@ public class PersonBygger {
         // Personstatus
         Personstatus personstatus = new Personstatus();
         Personstatuser personstatuser = new Personstatuser();
-        personstatuser.setValue("BOSA");
+        personstatuser.setValue(tpsPersonstatus);
         personstatus.setPersonstatus(personstatuser);
         bruker.setPersonstatus(personstatus);
 
@@ -108,6 +114,13 @@ public class PersonBygger {
         //Geografisk tilknytning
         GeografiskTilknytning tilknytning = opprettGeografiskTilknytning(geografiskTilknytning);
         bruker.setGeografiskTilknytning(tilknytning);
+
+        //Sivilstand
+        Sivilstand sivilstand = new Sivilstand();
+        Sivilstander sivilstander = new Sivilstander();
+        sivilstander.setValue(tpsSivilstand);
+        sivilstand.setSivilstand(sivilstander);
+        bruker.setSivilstand(sivilstand);
 
         //Diskresjonskode
         if (diskresjonskode != null) {
