@@ -71,7 +71,7 @@ public class HentYtelseskontraktListeMockImpl implements YtelseskontraktV3 {
            }
        }
        catch (Exception e) {
-           //
+           LOG.error("Exception {}", e.getStackTrace());
        }
         return response;
     }
@@ -81,6 +81,6 @@ public class HentYtelseskontraktListeMockImpl implements YtelseskontraktV3 {
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/ytelseskontrakt/v3", className = "no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.PingResponse")
     @Override
     public void ping() {
-        //
+        LOG.info("Returned ping");
     }
 }
