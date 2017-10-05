@@ -18,6 +18,9 @@
             <property name="hibernate.connection.autocommit" value="false" />
             <property name="hibernate.jdbc.use_get_generated_keys" value="true" />
             <property name="org.hibernate.flushMode" value="COMMIT" />
+            <property name="hibernate.cache.use_query_cache" value="false" />
+            <property name="hibernate.cache.use_secondary_level_cache" value="false" />
+
         </properties>
     </persistence-unit>
 
