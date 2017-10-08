@@ -13,6 +13,7 @@ public class PersonDbLeser {
 
     public PersonDbLeser(EntityManager entityManager) {
         this.entityManager = entityManager;
+        entityManager.clear();
     }
 
     public List<TpsPerson> opprettTpsData() {
