@@ -5,25 +5,32 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Gateadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.GeografiskTilknytning;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Land;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseNorge;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUtland;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postboksadresse;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostboksadresseNorsk;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstand;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstander;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.StedsadresseNorge;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse;
+import oracle.jdbc.proxy.annotation.Post;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -33,6 +40,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Logger;
 
 public class PersonBygger {
     private final String fnr;
@@ -136,21 +144,60 @@ public class PersonBygger {
         s.setLand(landkoder);
         bruker.setStatsborgerskap(s);
 
-        //Gjeldende adressetype: VI hardkoder en adresse inntil videre så mock kan benyttes. Utvid gjerne til å lese adresse info fra DB for forskjellige adressetyper.
-        Postadressetyper postadressetyper = new Postadressetyper();
-        postadressetyper.setValue("BOSTEDSADRESSE");
-        bruker.setGjeldendePostadressetype(postadressetyper);
-        //Bostedsadresse krever følgende felter:
-        Bostedsadresse adresse = new Bostedsadresse();
-        StedsadresseNorge stedsadresseNorge = new StedsadresseNorge();
-        Postnummer postnummer = new Postnummer();
-        postnummer.setValue("2040");
-        stedsadresseNorge.setPoststed(postnummer);
-        adresse.setStrukturertAdresse(stedsadresseNorge);
-        bruker.setBostedsadresse(adresse);
 
+        Postadressetyper postadressetyper = new Postadressetyper();
+        postadressetyper.setValue(this.gjeldendeAdresseType);
+        bruker.setGjeldendePostadressetype(postadressetyper);
+
+
+        if(this.gjeldendeAdresseType.equalsIgnoreCase("UKJENT_ADRESSE")){
+
+        } else if(this.gjeldendeAdresseType.equalsIgnoreCase("BOSTEDSADRESSE")) {
+            Bostedsadresse adresse = new Bostedsadresse();
+            Gateadresse gateadresse = new Gateadresse();
+            gateadresse.setGatenavn("Fjordlandet");
+            gateadresse.setGatenummer(15);
+            gateadresse.setHusbokstav("B");
+            gateadresse.setHusnummer(10);
+            adresse.setStrukturertAdresse(gateadresse);
+            bruker.setBostedsadresse(adresse);
+        } else if (gjeldendeAdresseType.equalsIgnoreCase("POSTADRESSE") || gjeldendeAdresseType.toLowerCase().contains("midlertidig")){
+            Postadresse postadresse = new Postadresse();
+            UstrukturertAdresse ustrukturertAdresse = new UstrukturertAdresse();
+            ustrukturertAdresse.setAdresselinje1("Allé skal med 12");
+            ustrukturertAdresse.setAdresselinje2("Gateadresse 2");
+            ustrukturertAdresse.setAdresselinje3("Rislunch");
+            ustrukturertAdresse.setAdresselinje4("2500 Tynset");
+            postadresse.setUstrukturertAdresse(ustrukturertAdresse);
+            bruker.setPostadresse(postadresse);
+        }
+
+        if(gjeldendeAdresseType.equalsIgnoreCase("MIDLERTIDIG_POSTADRESSE_UTLAND")){
+            MidlertidigPostadresseUtland postadresse = new MidlertidigPostadresseUtland();
+            UstrukturertAdresse ustrukturertAdresse = new UstrukturertAdresse();
+            ustrukturertAdresse.setAdresselinje1("President Avenue");
+            ustrukturertAdresse.setAdresselinje2("Central district");
+            ustrukturertAdresse.setAdresselinje3("Washington DC");
+            ustrukturertAdresse.setAdresselinje4("USA");
+            postadresse.setUstrukturertAdresse(ustrukturertAdresse);
+            bruker.setMidlertidigPostadresse(postadresse);
+        }
+
+         if (gjeldendeAdresseType.equalsIgnoreCase("MIDLERTIDIG_POSTADRESSE_NORGE")){
+             MidlertidigPostadresseNorge postadresseNorge = new MidlertidigPostadresseNorge();
+             PostboksadresseNorsk strukturertAdresse = new PostboksadresseNorsk();
+             strukturertAdresse.setPostboksanlegg("Vinsjan ved kaia");
+             strukturertAdresse.setPostboksnummer("1337");
+             Postnummer postnummer = new Postnummer();
+             postnummer.setValue("2500");
+             strukturertAdresse.setPoststed(postnummer);
+             postadresseNorge.setStrukturertAdresse(strukturertAdresse);
+             bruker.setMidlertidigPostadresse(postadresseNorge);
+
+         }
 
         return bruker;
+
     }
 
     private GeografiskTilknytning opprettGeografiskTilknytning(String geografiskTilknytning) {
@@ -192,6 +239,9 @@ public class PersonBygger {
         }
         return xcal;
     }
+
+
+
 
 
 }
