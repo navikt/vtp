@@ -12,6 +12,7 @@ public class RelasjonDbLeser {
 
     public RelasjonDbLeser(EntityManager entityManager) {
         this.entityManager = entityManager;
+        entityManager.clear();
     }
 
     public List<TpsRelasjon> opprettTpsData() {

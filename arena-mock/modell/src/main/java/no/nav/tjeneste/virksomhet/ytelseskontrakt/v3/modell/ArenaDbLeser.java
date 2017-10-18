@@ -12,6 +12,7 @@ public class ArenaDbLeser {
 
     public ArenaDbLeser(EntityManager entityManager) {
         this.entityManager = entityManager;
+        entityManager.clear();
     }
 
     public List<ArenaYtelseskontrakt> finnArenaYtelseskontraktMedFnr(String fnr) {

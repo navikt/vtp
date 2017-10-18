@@ -11,6 +11,7 @@ public class InfotrygdDbLeser {
 
     public InfotrygdDbLeser(EntityManager entityManager) {
         this.entityManager = entityManager;
+        entityManager.clear();
     }
 
     public List<InfotrygdYtelse> finnInfotrygdYtelseMedFnr(String fnr) {
