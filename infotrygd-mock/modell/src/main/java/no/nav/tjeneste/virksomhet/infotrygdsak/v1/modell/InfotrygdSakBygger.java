@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
 
+import java.time.LocalDateTime;
+
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Behandlingstema;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.InfotrygdSak;
@@ -9,11 +11,7 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Sakstyper;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Status;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Tema;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDateTime;
-
 public class InfotrygdSakBygger {
-
     protected Long id;
     protected String sakId;
     protected LocalDateTime registrert;
@@ -26,11 +24,8 @@ public class InfotrygdSakBygger {
     protected LocalDateTime vedtatt;
     protected LocalDateTime iverksatt;
     protected LocalDateTime endret;
-    protected LocalDateTime opphoerFom;
 
-
-    public InfotrygdSakBygger(InfotrygdYtelse infotrygdYtelse){
-
+    public InfotrygdSakBygger(InfotrygdYtelse infotrygdYtelse) {
         this.id = infotrygdYtelse.getId();
         this.sakId = infotrygdYtelse.getSakId();
         this.registrert = infotrygdYtelse.getRegistrert();
@@ -43,11 +38,9 @@ public class InfotrygdSakBygger {
         this.vedtatt = infotrygdYtelse.getVedtatt();
         this.iverksatt = infotrygdYtelse.getIverksatt();
         this.endret = infotrygdYtelse.getEndret();
-        this.opphoerFom = infotrygdYtelse.getOpphoerFom();
     }
 
-
-    public InfotrygdSak byggInfotrygdSak(){
+    public InfotrygdSak byggInfotrygdSak() {
         InfotrygdSak infotrygdSak = new InfotrygdSak();
         infotrygdSak.setSakId(sakId);
         infotrygdSak.setRegistrert(ConversionUtils.convertToXMLGregorianCalendar(this.registrert));
@@ -62,7 +55,7 @@ public class InfotrygdSakBygger {
         bt.setValue(behandlingstema);
         infotrygdSak.setBehandlingstema(bt);
         //Type
-        Sakstyper st =of.createSakstyper();
+        Sakstyper st = of.createSakstyper();
         st.setValue(type);
         infotrygdSak.setType(st);
         //Status
@@ -76,35 +69,16 @@ public class InfotrygdSakBygger {
 
         infotrygdSak.setSaksbehandlerId(this.saksbehandlerId);
 
-        try{
-            if(vedtatt != null){
-                infotrygdSak.setVedtatt(ConversionUtils.convertToXMLGregorianCalendar(vedtatt));
-            }
-        } catch(NullPointerException npe){
+        if (vedtatt != null) {
+            infotrygdSak.setVedtatt(ConversionUtils.convertToXMLGregorianCalendar(vedtatt));
         }
-
-        try{
-            if(iverksatt != null){
-                infotrygdSak.setIverksatt(ConversionUtils.convertToXMLGregorianCalendar(iverksatt));
-            }
-        } catch(NullPointerException npe){
+        if (iverksatt != null) {
+            infotrygdSak.setIverksatt(ConversionUtils.convertToXMLGregorianCalendar(iverksatt));
         }
-
-        try{
-            if(endret != null){
-                infotrygdSak.setEndret(ConversionUtils.convertToXMLGregorianCalendar(endret));
-            }
-        } catch(NullPointerException npe){
-        }
-
-        try{
-            if(opphoerFom != null){
-                infotrygdSak.setOpphoerFom(ConversionUtils.convertToXMLGregorianCalendar(opphoerFom));
-            }
-        } catch(NullPointerException npe){
+        if (endret != null) {
+            infotrygdSak.setEndret(ConversionUtils.convertToXMLGregorianCalendar(endret));
         }
 
         return infotrygdSak;
     }
-
 }

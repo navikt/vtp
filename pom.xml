@@ -43,7 +43,7 @@
 		<hibernate.version>5.2.9.Final</hibernate.version>
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
-		<infotrygd.sak.version>1.0.1</infotrygd.sak.version>
+		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
 		<nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>3.0.1</nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
