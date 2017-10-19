@@ -14,7 +14,7 @@ import javax.persistence.Table;
 })
 
 @Entity(name = "TpsRelasjon")
-@Table(name = "MOCK_TPS_PERSONRELASJONER")
+@Table(name = "PERSONRELASJON")
 public class TpsRelasjon {
 
     @Id
