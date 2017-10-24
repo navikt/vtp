@@ -1,10 +1,6 @@
 package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
 
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Behandlingstema;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Resultat;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Sakstyper;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Status;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Tema;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity(name = "InfotrygdYtelse")
 @Table(name = "INFOTRYGDYTELSE")
@@ -175,6 +169,4 @@ public class InfotrygdYtelse {
     public void setOpphoerFom(LocalDateTime opphoerFom) {
         this.opphoerFom = opphoerFom;
     }
-
-
 }
