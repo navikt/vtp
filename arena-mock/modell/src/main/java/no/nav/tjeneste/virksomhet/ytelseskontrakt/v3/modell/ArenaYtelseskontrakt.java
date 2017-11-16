@@ -8,10 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity(name = "ArenaYtelseskontrakt")
@@ -28,6 +26,12 @@ public class ArenaYtelseskontrakt {
 
     @Column(name = "DATO_KRAV_MOTATT")
     LocalDateTime datoKravMottatt;
+
+    @Column(name = "GYLDIGHETSPERIODE_FOM")
+    LocalDateTime fomGyldighetsperiode;
+
+    @Column(name = "GYLDIGHETSPERIODE_TOM")
+    LocalDateTime tomGyldighetsperiode;
 
     @Column(name = "FAGSYSTEM_SAK_ID")
     Long fagsystemSakId;
@@ -73,6 +77,22 @@ public class ArenaYtelseskontrakt {
 
     public void setDatoKravMottatt(LocalDateTime datoKravMottatt) {
         this.datoKravMottatt = datoKravMottatt;
+    }
+
+    public LocalDateTime getFomGyldighetsperiode() {
+        return fomGyldighetsperiode;
+    }
+
+    public void setFomGyldighetsperiode(LocalDateTime fomGyldighetsperiode) {
+        this.fomGyldighetsperiode = fomGyldighetsperiode;
+    }
+
+    public LocalDateTime getTomGyldighetsperiode() {
+        return tomGyldighetsperiode;
+    }
+
+    public void setTomGyldighetsperiode(LocalDateTime tomGyldighetsperiode) {
+        this.tomGyldighetsperiode = tomGyldighetsperiode;
     }
 
     public Long getFagsystemSakId() {
