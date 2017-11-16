@@ -5,7 +5,6 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Periode;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Vedtak;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class VedtakBygger {
@@ -50,36 +49,24 @@ public class VedtakBygger {
             if (vedtaksperiodeFom != null) {
                 periode.setFom(ConversionUtils.convertToXMLGregorianCalendar(vedtaksperiodeFom));
             }
-        } catch (Exception e) {
-        }
-
-        try {
             if (vedtaksperiodeTom != null) {
                 periode.setTom(ConversionUtils.convertToXMLGregorianCalendar(vedtaksperiodeTom));
             }
-        } catch (Exception e) {
-        }
-
-        try {
             if (beslutningsdato != null) {
                 vedtak.setBeslutningsdato(ConversionUtils.convertToXMLGregorianCalendar(beslutningsdato));
             }
-        } catch (Exception e) {
-        }
-
-        try {
             vedtak.setPeriodetypeForYtelse(periodetypeForYtelse);
-            vedtak.setUttaksgrad(Integer.valueOf(uttaksgrad.intValue()));
-            vedtak.setVedtakBruttoBeloep(Integer.valueOf(vedtakBruttoBeloep.intValue()));
-            vedtak.setVedtakNettoBeloep(Integer.valueOf(vedtakNettoBeloep.intValue()));
+            vedtak.setUttaksgrad(uttaksgrad.intValue());
+            vedtak.setVedtakBruttoBeloep(vedtakBruttoBeloep.intValue());
+            vedtak.setVedtakNettoBeloep(vedtakNettoBeloep.intValue());
             vedtak.setVedtaksperiode(periode);
             vedtak.setStatus(status);
             vedtak.setVedtakstype(vedtakstype);
             vedtak.setAktivitetsfase(aktivitetsfase);
             vedtak.setDagsats(dagsats.intValue());
-        }
-        catch(NullPointerException npe){
-            npe.getMessage();
+
+        } catch (Exception e) {
+            e.getMessage();
         }
 
         return vedtak;

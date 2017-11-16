@@ -3,7 +3,6 @@ package no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell;
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,6 +10,8 @@ public class YtelseskontraktBygger {
 
     protected Long id;
     protected LocalDateTime datoKravMottatt;
+    protected LocalDateTime fomGyldighetsperiode;
+    protected LocalDateTime tomGyldighetsperiode;
     protected Long fagsystemSakId;
     protected String status;
     protected String ytelsestype;
@@ -23,6 +24,8 @@ public class YtelseskontraktBygger {
 
         this.id = ytelseskontrakt.getId();
         this.datoKravMottatt = ytelseskontrakt.getDatoKravMottatt();
+        this.fomGyldighetsperiode = ytelseskontrakt.getFomGyldighetsperiode();
+        this.tomGyldighetsperiode = ytelseskontrakt.getTomGyldighetsperiode();
         this.fagsystemSakId = ytelseskontrakt.getFagsystemSakId();
         this.status = ytelseskontrakt.getStatus();
         this.ytelsestype = ytelseskontrakt.getYtelsestype();
@@ -44,35 +47,12 @@ public class YtelseskontraktBygger {
 
         try {
             ytelseskontrakt.setDatoKravMottatt(ConversionUtils.convertToXMLGregorianCalendar(datoKravMottatt));
-        }
-        catch (Exception e) {
-            e.getMessage();
-        }
-        try {
+            ytelseskontrakt.setFomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(fomGyldighetsperiode));
+            ytelseskontrakt.setTomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(tomGyldighetsperiode));
             ytelseskontrakt.setFagsystemSakId(fagsystemSakId.intValue());
-        }
-        catch (NullPointerException ne) {
-            ne.getMessage();
-        }
-        try {
             ytelseskontrakt.setStatus(status);
-        }
-        catch (NullPointerException n) {
-            n.getMessage();
-        }
-        try {
             ytelseskontrakt.setYtelsestype(ytelsestype);
-        }
-        catch (NullPointerException ne) {
-            ne.getMessage();
-        }
-        try {
             ytelseskontrakt.setBortfallsprosentDagerIgjen(bortfallsprosentDagerIgjen.intValue());
-        }
-        catch (Exception e) {
-            e.getMessage();
-        }
-        try {
             ytelseskontrakt.setBortfallsprosentUkerIgjen(bortfallsprosentUkerIgjen.intValue());
         }
         catch (Exception e) {
