@@ -50,7 +50,7 @@ public class JournalDokument {
     @Column(name = "DOKUMENT", nullable = false)
     byte[] dokument;
 
-    @Column(name = "DOKUMENTTYPE")
+    @Column(name = "DOKUMENTTYPEID")
     String dokumentType;
 
     @Column(name = "FILTYPE")
@@ -91,6 +91,7 @@ public class JournalDokument {
 
     @Column(name = "KOMMUNIKASJONSRETNING")
     String kommunikasjonsretning;
+
 
     //TODO (rune) skal fjernes
     @Column(name = "FEILKODE")
