@@ -1,5 +1,8 @@
 package no.nav.tjeneste.virksomhet.behandlesak.v1;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.BehandleSakV1;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.OpprettSakSakEksistererAllerede;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.OpprettSakUgyldigInput;
@@ -29,7 +32,7 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
     public OpprettSakResponse opprettSak(@WebParam(name = "request", targetNamespace = "") OpprettSakRequest opprettSakRequest) throws OpprettSakSakEksistererAllerede, OpprettSakUgyldigInput {
         LOG.info("Oppretter Sak: {}", opprettSakRequest);
         OpprettSakResponse response = new OpprettSakResponse();
-        response.setSakId("1");
+        response.setSakId(lagSakId());
         return response;
     }
 
@@ -39,4 +42,14 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
     public void ping() {
         LOG.info("Ping mottatt og besvart");
     }
+
+    private String lagSakId() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
+        Date now = new Date();
+        String timeStr = sdf.format(now);
+
+        return "1337" + timeStr.substring(0, timeStr.length() - 1);
+    }
+
 }
