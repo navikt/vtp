@@ -1,20 +1,17 @@
 package no.nav.tjeneste.virksomhet.journalmodell;
 
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 import no.nav.foreldrepenger.mock.felles.DbUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class JournalDbLeser {
-    private EntityManager entityManager;
-    //protected byte[] dokument;
-    //protected JournalDokument journal;
-    public JournalDbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+public class JournalDbLeser extends DbLeser {
 
+    public JournalDbLeser(EntityManager entityManager) {
+        super(entityManager);
+    }
 
     /**
      * Hent dokument på dokument id

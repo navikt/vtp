@@ -1,18 +1,15 @@
 package no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell;
 
-import org.hibernate.criterion.DetachedCriteria;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class ArenaDbLeser {
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 
-    private EntityManager entityManager;
+public class ArenaDbLeser extends DbLeser {
 
     public ArenaDbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        entityManager.clear();
+        super(entityManager);
     }
 
     public List<ArenaYtelseskontrakt> finnArenaYtelseskontraktMedFnr(String fnr) {

@@ -1,18 +1,16 @@
 package no.nav.tjeneste.virksomhet.person.v3.data;
 
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsRelasjon;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-public class RelasjonDbLeser {
-
-    private EntityManager entityManager;
+public class RelasjonDbLeser extends DbLeser {
 
     public RelasjonDbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        entityManager.clear();
+        super(entityManager);
     }
 
     public List<TpsRelasjon> opprettTpsData() {
