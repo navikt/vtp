@@ -1,17 +1,15 @@
 package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class InfotrygdDbLeser {
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 
-    private EntityManager entityManager;
+public class InfotrygdDbLeser extends DbLeser {
 
     public InfotrygdDbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        entityManager.clear();
+        super(entityManager);
     }
 
     public List<InfotrygdYtelse> finnInfotrygdYtelseMedFnr(String fnr) {

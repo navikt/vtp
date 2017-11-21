@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Studieinformasjon;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.GrunnlagstypeMedTerm;
@@ -17,11 +18,10 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.StatuskodeM
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.TrygdedekningMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.modell.Medlemsskapsperiode;
 
-public class MedlemDbLeser {
-    private EntityManager entityManager;
+public class MedlemDbLeser extends DbLeser {
 
     public MedlemDbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        super(entityManager);
     }
 
     public List<Medlemsperiode> finnMedlemsperioder(String fnr) {

@@ -6,12 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class Norg2DbLeser {
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 
-    private EntityManager entityManager;
+public class Norg2DbLeser extends DbLeser {
 
     public Norg2DbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        super(entityManager);
     }
 
     public List<Norg2Entitet> lesAlle() {

@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.person.v3.data;
 
+import no.nav.foreldrepenger.mock.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
@@ -7,13 +8,10 @@ import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class PersonDbLeser {
-
-    private EntityManager entityManager;
+public class PersonDbLeser extends DbLeser {
 
     public PersonDbLeser(EntityManager entityManager) {
-        this.entityManager = entityManager;
-        entityManager.clear();
+        super(entityManager);
     }
 
     public List<TpsPerson> opprettTpsData() {
