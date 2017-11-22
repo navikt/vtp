@@ -41,6 +41,7 @@
         <junit.version>4.12</junit.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.2.9.Final</hibernate.version>
+		<oppgave.version>3.0.0</oppgave.version>
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
@@ -235,6 +236,13 @@
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
 				<version>${inntekt.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-oppgave-v3-tjenestespesifikasjon</artifactId>
+				<version>${oppgave.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
 

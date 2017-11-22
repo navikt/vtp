@@ -13,6 +13,7 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
+import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -72,6 +73,7 @@ public class MockServer {
         publishService(MedlemServiceMockImpl.class, "/medlem");
         publishService(ArbeidsfordelingMockImpl.class, "/arbeidsfordeling");
         publishService(InntektMockImpl.class, "/inntekt");
+        publishService(OppgaveServiceMockImpl.class,"/oppgave");
     }
 
     private static void setConnectors() {
