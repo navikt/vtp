@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import no.nav.tjeneste.virksomhet.oppgave.v3.binding.HentOppgaveOppgaveIkkeFunnet;
 import no.nav.tjeneste.virksomhet.oppgave.v3.binding.OppgaveV3;
+import no.nav.tjeneste.virksomhet.oppgave.v3.informasjon.oppgave.Fagomrade;
+import no.nav.tjeneste.virksomhet.oppgave.v3.informasjon.oppgave.Oppgave;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.*;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnFeilregistrertOppgaveListeResponse;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnFerdigstiltOppgaveListeResponse;
@@ -35,7 +37,14 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "hentOppgave", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.HentOppgave")
     @ResponseWrapper(localName = "hentOppgaveResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.HentOppgaveResponse")
     public HentOppgaveResponse hentOppgave(@WebParam(name = "request", targetNamespace = "") HentOppgaveRequest hentOppgaveRequest) throws HentOppgaveOppgaveIkkeFunnet {
-        return new HentOppgaveResponse();
+        HentOppgaveResponse hentOppgaveResponse = new HentOppgaveResponse();
+        Oppgave oppgave = new Oppgave();
+        oppgave.setBeskrivelse("Liksomoppgave");
+        Fagomrade fagomrade = new Fagomrade();
+        fagomrade.setKode("FOR");
+        oppgave.setFagomrade(fagomrade);
+        hentOppgaveResponse.setOppgave(oppgave);
+        return hentOppgaveResponse;
     }
 
     @Override
@@ -44,7 +53,9 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnOppgaveListe")
     @ResponseWrapper(localName = "finnOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnOppgaveListeResponse")
     public FinnOppgaveListeResponse finnOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnOppgaveListeRequest finnOppgaveListeRequest) {
-        return new FinnOppgaveListeResponse();
+        FinnOppgaveListeResponse finnOppgaveListeResponse = new FinnOppgaveListeResponse();
+        finnOppgaveListeResponse.setTotaltAntallTreff(0);
+        return finnOppgaveListeResponse;
     }
 
     @Override
