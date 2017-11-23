@@ -87,12 +87,7 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     public FerdigstillOppgaveBolkResponse ferdigstillOppgaveBolk(@WebParam(name = "request",targetNamespace = "") FerdigstillOppgaveBolkRequest ferdigstillOppgaveBolkRequest) {
 //        throw new UnsupportedOperationException("Ikke implementert");
         FerdigstillOppgaveBolkResponse response = new FerdigstillOppgaveBolkResponse();
-        Bolkfeil bolkfeil = new Bolkfeil();
-        bolkfeil.setOppgaveId(123);
-        bolkfeil.setFeilKode("FeilKode");
-        bolkfeil.setFeilBeskrivelse("Beskrivelse");
         response.setTransaksjonOk(true);
-        response.getFeilListe().add(bolkfeil);
         return response;
     }
 
