@@ -18,10 +18,10 @@ public class JournalDbLeser extends DbLeser {
      * @param dokumentId
      * @return JournalDokument
      */
-    public JournalDokument finnDokumentMedDokumentId(String dokumentId) {
+    public List<JournalDokument> finnDokumentMedDokumentId(String dokumentId) {
         TypedQuery<JournalDokument> query = entityManager.createQuery("FROM JournalDokument t WHERE dokument_id = :dokumentId", JournalDokument.class); //$NON-NLS-1$
         query.setParameter("dokumentId", dokumentId);
-        JournalDokument journal = query.getSingleResult();
+        List<JournalDokument> journal = query.getResultList();
         return journal;
     }
 
