@@ -3,8 +3,8 @@ package no.nav.tjeneste.virksomhet.journal.v2;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Sak;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.SoekeFilter;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.*;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.ObjectFactory;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
@@ -35,9 +35,13 @@ public class JournalServiceMockTest {
     @Test
     public void testHentDokument() throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning
     {
+        Variantformater variantformat = new Variantformater();
+        variantformat.setValue("ARKIV");
+
         HentDokumentRequest request = new HentDokumentRequest();
-        request.setDokumentId("393894185");
+        request.setDokumentId("393896839");
         request.setJournalpostId("journalpost-inn-707851843400");
+        request.setVariantformat(variantformat);
         JournalServiceMockImpl callee = new JournalServiceMockImpl();
         HentDokumentResponse response = callee.hentDokument(request);
         assertThat(response).isNotNull();
