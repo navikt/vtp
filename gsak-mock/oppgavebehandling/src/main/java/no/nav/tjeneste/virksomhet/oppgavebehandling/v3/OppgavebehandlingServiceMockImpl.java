@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.oppgavebehandling.v3;
 
+import java.util.List;
+
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.FeilregistrerOppgaveOppgaveIkkeFunnet;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.FeilregistrerOppgaveUlovligStatusOvergang;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.LagreMappeMappeIkkeFunnet;
@@ -83,7 +85,10 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @RequestWrapper(localName = "ferdigstillOppgaveBolk", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.FerdigstillOppgaveBolk")
     @ResponseWrapper(localName = "ferdigstillOppgaveBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.FerdigstillOppgaveBolkResponse")
     public FerdigstillOppgaveBolkResponse ferdigstillOppgaveBolk(@WebParam(name = "request",targetNamespace = "") FerdigstillOppgaveBolkRequest ferdigstillOppgaveBolkRequest) {
-        throw new UnsupportedOperationException("Ikke implementert");
+//        throw new UnsupportedOperationException("Ikke implementert");
+        FerdigstillOppgaveBolkResponse response = new FerdigstillOppgaveBolkResponse();
+        response.setTransaksjonOk(true);
+        return response;
     }
 
     @Override

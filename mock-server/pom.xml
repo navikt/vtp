@@ -67,6 +67,11 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>inntekt-mock-inntekt</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>oppgave-mock</artifactId>
+            <version>1.0.5-SNAPSHOT</version>
+        </dependency>
 
         <!-- NAV biblioteker -->
         <dependency>

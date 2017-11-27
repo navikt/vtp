@@ -31,6 +31,7 @@ import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
+
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -102,12 +103,13 @@ public class JournalServiceMockImpl implements JournalV2 {
 
         JournalDokument journalDokument = null;
 
-        if (request.getDokumentId() != null || request.getDokumentId().isEmpty()){
-            journalDokument = new JournalDbLeser(joarkEntityManager).finnDokumentMedDokumentId(request.getDokumentId());            
-        } else if(request.getJournalpostId() == null || request.getJournalpostId().isEmpty() ){
+        if (request.getDokumentId() != null || request.getDokumentId().isEmpty()) {
+            journalDokument = new JournalDbLeser(joarkEntityManager).finnDokumentMedDokumentId(request.getDokumentId()).
+                    stream().filter(d -> d.getVariantformat().equals(request.getVariantformat().getValue())).findFirst().get();
+        } else if (request.getJournalpostId() == null || request.getJournalpostId().isEmpty()) {
             journalDokument = new JournalDbLeser(joarkEntityManager).finnDokumentMedJournalId(request.getJournalpostId());
         }
-        if(journalDokument != null) {
+        if (journalDokument != null) {
             hentDokumentResponse.setDokument(journalDokument.getDokument());
             return hentDokumentResponse;
         }

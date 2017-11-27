@@ -45,11 +45,11 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
 
     private String lagSakId() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmmssSSS");
         Date now = new Date();
         String timeStr = sdf.format(now);
 
-        return "1337" + timeStr.substring(0, timeStr.length() - 1);
+        return "13" + timeStr.substring(0, timeStr.length() - 2);
     }
 
 }

@@ -15,6 +15,7 @@
         <module>modell</module>
         <module>oppgavebehandling</module>
         <module>behandlesak</module>
+        <module>oppgave</module>
     </modules>
 
 
