@@ -27,6 +27,7 @@
 		<module>arena-mock</module>
 		<module>medl-mock</module>
 		<module>inntekt-mock</module>
+		<module>arbeidsforhold-mock</module>
 		<module>norg2-mock</module>
     </modules>
 
@@ -55,6 +56,7 @@
 		<tps.person.version>3.0.2</tps.person.version>
 		<medlem.version>2.0.6</medlem.version>
 		<inntekt.version>2.0.0</inntekt.version>
+		<arbeidsforhold.version>3.0.0</arbeidsforhold.version>
         <norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
 		<modig-testcertificates.version>1.2.2</modig-testcertificates.version>
 	</properties>
@@ -142,6 +144,12 @@
 				<artifactId>inntekt-mock-inntekt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
             <dependency>
                 <groupId>no.nav.foreldrepenger</groupId>
                 <artifactId>arbeidsfordeling-mock</artifactId>
@@ -238,6 +246,13 @@
 				<version>${inntekt.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-arbeidsforhold-v3-tjenestespesifikasjon</artifactId>
+				<version>${arbeidsforhold.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+
 
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
