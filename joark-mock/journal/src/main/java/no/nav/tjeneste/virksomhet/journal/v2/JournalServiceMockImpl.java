@@ -6,6 +6,9 @@ import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkke
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.JournalV2;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentinfoRelasjon;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.JournalfoertDokumentInfo;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journal.v2.modell.JournalpostBygger;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
@@ -36,10 +39,13 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
-import static java.lang.Long.parseLong;
+import java.util.stream.Collectors;
 
 @Addressing
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
@@ -63,13 +69,54 @@ public class JournalServiceMockImpl implements JournalV2 {
             return response;
         }
 
-        List<Journalpost> journalposter = null;
+        List<Journalpost> journalposter;
 
         List<JournalDokument> journalpost = new JournalDbLeser(joarkEntityManager).finnJournalposterMedSakId(funnetsaksnr.get());
+        Map<String, List<JournalDokument>> journalDokumenterPerJpId = new HashMap<>();
+        Map<String, List<JournalDokument>> journalDokumenterPerDokType = new HashMap<>();
+
         if (journalpost != null) {
-            for (JournalDokument jd : journalpost) {
-                JournalpostBygger jb = new JournalpostBygger(jd);
-                response.getJournalpostListe().add(jb.ByggJournalpost());
+
+            lagJournalDokumentMapMedJpIdSomKey(journalpost, journalDokumenterPerJpId);
+
+            int j = 0;
+            for (String key : journalDokumenterPerJpId.keySet()) {
+                JournalpostBygger journalpostBygger = null;
+
+                for (int i = 0; i < journalDokumenterPerJpId.get(key).size(); i++) {
+                    String keyForType = journalDokumenterPerJpId.get(key).get(i).getDokumentType();
+                    if (journalDokumenterPerDokType.containsKey(keyForType)) {
+                        List<JournalDokument> jdList = journalDokumenterPerDokType.get(keyForType);
+                        jdList.add(journalDokumenterPerJpId.get(key).get(i));
+
+                    } else {
+                        List<JournalDokument> jdokList = new ArrayList<>();
+                        jdokList.add(journalDokumenterPerJpId.get(key).get(i));
+                        journalDokumenterPerDokType.put(keyForType, jdokList);
+                    }
+                }
+
+                try {
+
+                    Object keyJd = journalDokumenterPerDokType.keySet().toArray()[0];
+                    journalpostBygger = new JournalpostBygger(journalDokumenterPerDokType.get(keyJd).get(0));
+                    response.getJournalpostListe().add(journalpostBygger.byggJournalpost());
+
+                    for (String st : journalDokumenterPerDokType.keySet()) {
+                        Object[] keyValues = journalDokumenterPerDokType.keySet().toArray();
+                        int index = Arrays.asList(keyValues).indexOf(st);
+                        List<DokumentInnhold> dokumentInnholdList = journalDokumenterPerDokType.get(st).stream().map(e-> new JournalpostBygger(e).byggDokumentInnhold()).collect(Collectors.toList());
+                        List<DokumentinfoRelasjon> dokumentinfoRelasjonList = journalDokumenterPerDokType.get(st).stream().map(e-> new JournalpostBygger(e).byggDokumentinfoRelasjon()).collect(Collectors.toList());
+                        List<JournalfoertDokumentInfo> journalfoertDokumentInfo = journalDokumenterPerDokType.get(st).stream().map(e-> new JournalpostBygger(e).byggJournalfoertDokumentInfo()).collect(Collectors.toList());
+                        response.getJournalpostListe().get(j).getDokumentinfoRelasjonListe().add(dokumentinfoRelasjonList.get(0));
+                        response.getJournalpostListe().get(j).getDokumentinfoRelasjonListe().get(index).setJournalfoertDokument(journalfoertDokumentInfo.get(0));
+                        response.getJournalpostListe().get(j).getDokumentinfoRelasjonListe().get(index).getJournalfoertDokument().getBeskriverInnholdListe().addAll(dokumentInnholdList);
+
+                    }
+                } catch (NullPointerException npe) {
+                    npe.printStackTrace();
+                }
+                j++;
             }
             return response;
         }
@@ -155,6 +202,21 @@ public class JournalServiceMockImpl implements JournalV2 {
     @Override
     public void ping() {
         LOG.info("Ping mottatt og besvart");
+    }
+
+    private void lagJournalDokumentMapMedJpIdSomKey (List<JournalDokument> journalpost, Map<String, List<JournalDokument>> journalDokumenterPerJpId) {
+        for (JournalDokument jd : journalpost) {
+            String key = jd.getJournalpostId();
+
+            if (journalDokumenterPerJpId.containsKey(key)) {
+                List<JournalDokument> list = journalDokumenterPerJpId.get(key);
+                list.add(jd);
+            } else {
+                List<JournalDokument> list = new ArrayList<>();
+                list.add(jd);
+                journalDokumenterPerJpId.put(key, list);
+            }
+        }
     }
 
 }

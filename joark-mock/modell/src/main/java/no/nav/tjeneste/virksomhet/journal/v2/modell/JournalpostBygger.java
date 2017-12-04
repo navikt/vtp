@@ -18,7 +18,7 @@ public class JournalpostBygger {
     protected long id;
     protected String dokumentId;
     protected String journalpostId;
-    protected String innhold;
+//    protected String innhold;
     protected String sakId;
     protected String dokumentTyper;
     protected String kategori;
@@ -29,11 +29,12 @@ public class JournalpostBygger {
     protected String variantFormat;
     protected String arkivTema;
 
+
     public JournalpostBygger(JournalDokument journalDokument){
         this.id = journalDokument.getId();
-        //this.dokumentId = journalDokument.dokumentId;
+        this.dokumentId = journalDokument.getDokumentId();
         this.journalpostId = journalDokument.getJournalpostId();
-        this.innhold = journalDokument.getDokument().toString();
+//        this.innhold = journalDokument.getDokument().toString();
         this.sakId = journalDokument.getSakId();
         this.dokumentTyper = journalDokument.getDokumentType();
         this.kategori = journalDokument.getKategori();
@@ -48,57 +49,73 @@ public class JournalpostBygger {
     public JournalpostBygger(long id, String journalpostId, String innhold, String sakId) {
         this.id = id;
         this.journalpostId = journalpostId;
-        this.innhold = innhold;
+//        this.innhold = innhold;
         this.sakId = sakId;
     }
 
-    public Journalpost ByggJournalpost(){
-        Journalpost j = new Journalpost();
-        j.setJournalpostId(this.journalpostId);
-        j.setInnhold(this.innhold);
-        //Dokumenttyper
-        Dokumenttyper dt = new Dokumenttyper();
-        dt.setValue(dokumentTyper);
-        //Katagorier
-        Katagorier k = new Katagorier();
-        k.setValue(kategori);
-        //TilknyttetJournalPostSom
-        TilknyttetJournalpostSom tj = new TilknyttetJournalpostSom();
-        tj.setValue(tilknyttetJpSom);
+    public Journalpost byggJournalpost(){
+        Journalpost journalpost = new Journalpost();
+        journalpost.setJournalpostId(this.journalpostId);
         //Kommunikasjonskanaler
         Kommunikasjonskanaler kk = new Kommunikasjonskanaler();
         kk.setValue(kommskanaler);
         //Kommunikasjonsretninger
         Kommunikasjonsretninger kr = new Kommunikasjonsretninger();
         kr.setValue(kommsretninger);
+        //Arkivtemaer
+        Arkivtemaer at = new Arkivtemaer();
+        at.setValue(arkivTema);
+
+        journalpost.setArkivtema(at);
+        journalpost.setKommunikasjonskanal(kk);
+        journalpost.setKommunikasjonsretning(kr);
+
+        return journalpost;
+    }
+
+    public DokumentinfoRelasjon byggDokumentinfoRelasjon() {
+        DokumentinfoRelasjon dokumentinfoRelasjon = new DokumentinfoRelasjon();
+        //TilknyttetJournalPostSom
+        TilknyttetJournalpostSom tj = new TilknyttetJournalpostSom();
+        tj.setValue(tilknyttetJpSom);
+
+        dokumentinfoRelasjon.setDokumentTilknyttetJournalpost(tj);
+
+        return dokumentinfoRelasjon;
+
+    }
+
+    public DokumentInnhold byggDokumentInnhold() {
         //Arkivfiltyper
         Arkivfiltyper a = new Arkivfiltyper();
         a.setValue(arkivFiltype);
         //Variantformater
         Variantformater v = new Variantformater();
         v.setValue(variantFormat);
-        //Arkivtemaer
-        Arkivtemaer at = new Arkivtemaer();
-        at.setValue(arkivTema);
         //DokumentInnhold
         DokumentInnhold dokumentInnhold = new DokumentInnhold();
         dokumentInnhold.setFiltype(a);
         dokumentInnhold.setVariantformat(v);
+
+        return dokumentInnhold;
+    }
+
+    public JournalfoertDokumentInfo byggJournalfoertDokumentInfo() {
+        //Dokumenttyper
+        Dokumenttyper dt = new Dokumenttyper();
+        dt.setValue(dokumentTyper);
+        //Katagorier
+        Katagorier k = new Katagorier();
+        k.setValue(kategori);
+
         //JournalfoertDokument
         JournalfoertDokumentInfo jd = new JournalfoertDokumentInfo();
         jd.setDokumentType(dt);
         jd.setKategori(k);
-        jd.getBeskriverInnholdListe().add(dokumentInnhold);
-        //DokumentinfoRelasjon
-        DokumentinfoRelasjon dr = new DokumentinfoRelasjon();
-        dr.setJournalfoertDokument(jd);
-        dr.setDokumentTilknyttetJournalpost(tj);
-        j.getDokumentinfoRelasjonListe().add(dr);
+        jd.setDokumentId(dokumentId);
 
-        j.setArkivtema(at);
-        j.setKommunikasjonskanal(kk);
-        j.setKommunikasjonsretning(kr);
+        return jd;
 
-        return j;
     }
+
 }
