@@ -129,5 +129,5 @@ Class-Path: activation-1.1.jar
  tps-mock-modell-1.0.5-SNAPSHOT.jar
  ytelseskontrakt-mock-1.0.5-SNAPSHOT.jar
 Created-By: Apache Maven 3.3.9
-Build-Jdk: 1.8.0_101
 Main-Class: no.nav.engangsstønad.mock.MockServer
+Build-Jdk: 1.8.0_101
