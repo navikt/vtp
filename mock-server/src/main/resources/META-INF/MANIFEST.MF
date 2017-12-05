@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: *.jar
+Main-Class: no.nav.engangsstønad.mock.MockServer
