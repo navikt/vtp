@@ -1,5 +1,50 @@
 Manifest-Version: 1.0
-Class-Path: activation-1.1.jar aktoer-mock-1.0.2-SNAPSHOT.jar aktoer-mock-1.0.2.jar aktoer-mock-1.0.3.jar aktoer-mock-1.0.4-SNAPSHOT.jar aktoer-mock-1.0.5-SNAPSHOT.jar antlr-2.7.7.jar arbeidsfordeling-mock-1.0.5-SNAPSHOT.jar arena-mock-modell-1.0.5-SNAPSHOT.jar asm-5.1.jar asm-commons-5.1.jar asm-tree-5.1.jar assertj-core-3.6.2.jar behandleinngaaendejournal-mock-1.0.4-SNAPSHOT.jar behandleinngaaendejournal-mock-1.0.5-SNAPSHOT.jar behandlesak-mock-1.0.2-SNAPSHOT.jar behandlesak-mock-1.0.2.jar behandlesak-mock-1.0.3.jar behandlesak-mock-1.0.4-SNAPSHOT.jar behandlesak-mock-1.0.5-SNAPSHOT.jar classmate-1.3.0.jar commons-codec-1.6.jar commons-io-2.1.jar commons-io-2.4.jar commons-logging-1.1.1.jar dom4j-1.6.1.jar gsak-mock-modell-1.0.2-SNAPSHOT.jar gsak-mock-modell-1.0.2.jar gsak-mock-modell-1.0.3.jar gsak-mock-modell-1.0.4-SNAPSHOT.jar gsak-mock-modell-1.0.5-SNAPSHOT.jar hamcrest-core-1.3.jar hibernate-commons-annotations-5.0.1.Final.jar hibernate-core-5.2.9.Final.jar hibernate-jpa-2.1-api-1.0.0.Draft-16.jar hibernate-jpa-2.1-api-1.0.0.Final.jar httpclient-4.2.6.jar httpcore-4.2.5.jar infotrygd-mock-modell-1.0.5-SNAPSHOT.jar infotrygdsak-mock-1.0.5-SNAPSHOT.jar inngaaendejournal-mock-1.0.4-SNAPSHOT.jar inngaaendejournal-mock-1.0.5-SNAPSHOT.jar inntekt-mock-inntekt-1.0.5-SNAPSHOT.jar inntekt-mock-modell-1.0.5-SNAPSHOT.jar jandex-2.0.3.Final.jar javassist-3.20.0-GA.jar javax.annotation-api-1.2.jar javax.mail-api-1.5.6.jar javax.servlet-api-3.1.0.jar jaxrs-api-3.0.9.Final.jar jboss-annotations-api_1.1_spec-1.0.1.Final.jar jboss-logging-3.3.0.Final.jar jboss-transaction-api_1.2_spec-1.0.1.Final.jar jcip-annotations-1.0.jar jetty-annotations-9.4.1.v20170120.jar jetty-http-9.4.1.v20170120.jar jetty-http-spi-9.4.1.v20170120.jar jetty-io-9.4.1.v20170120.jar jetty-jndi-9.4.1.v20170120.jar jetty-plus-9.4.1.v20170120.jar jetty-security-9.4.1.v20170120.jar jetty-server-9.4.1.v20170120.jar jetty-servlet-9.4.1.v20170120.jar jetty-util-9.4.1.v20170120.jar jetty-webapp-9.4.1.v20170120.jar jetty-xml-9.4.1.v20170120.jar journal-mock-1.0.2-SNAPSHOT.jar journal-mock-1.0.2.jar journal-mock-1.0.3.jar journal-mock-1.0.4-SNAPSHOT.jar journal-mock-1.0.5-SNAPSHOT.jar journal-mock-modell-1.0.4-SNAPSHOT.jar journal-mock-modell-1.0.5-SNAPSHOT.jar jul-to-slf4j-1.7.5.jar junit-4.12.jar logback-classic-1.1.9.jar logback-core-1.1.9.jar medl-mock-medlem-1.0.5-SNAPSHOT.jar medl-mock-modell-1.0.5-SNAPSHOT.jar mock-felles-1.0.4-SNAPSHOT.jar mock-felles-1.0.5-SNAPSHOT.jar mockito-all-1.10.19.jar modig-core-test-1.0.0.jar modig-testcertificates-1.2.2.jar nav-arbeidsfordeling-v1-tjenestespesifikasjon-1.1.0-jaxws.jar nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon-1.0.0-jaxws.jar nav-fim-aktoer-v2-tjenestespesifikasjon-2.0.1-jaxws.jar nav-fim-behandleSak-v1-tjenestespesifikasjon-1.0.0-jaxws.jar nav-fim-inntekt-v3-tjenestespesifikasjon-2.0.0-jaxws.jar nav-fim-oppgave-v3-tjenestespesifikasjon-3.0.0-jaxws.jar nav-fim-oppgavebehandling-v3-tjenestespesifikasjon-3.1.1-jaxws.jar nav-fim-person-v2-tjenestespesifikasjon-2.0.0-jaxws.jar nav-fim-sak-v1-tjenestespesifikasjon-1.0.0-jaxws.jar nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon-3.0.1-jaxws.jar nav-infotrygdSak-v1-tjenestespesifikasjon-1.0.1-jaxws.jar nav-infotrygdSak-v1-tjenestespesifikasjon-1.1.2-jaxws.jar nav-inngaaendeJournal-v1-tjenestespesifikasjon-1.0.0-jaxws.jar nav-journal-v2-tjenestespesifikasjon-1.0.3-jaxws.jar nav-medlemskap-v2-tjenestespesifikasjon-2.0.6.jar nav-person-v3-tjenestespesifikasjon-3.0.2-jaxws.jar nav-tjenestespesifikasjoner-felles-adapter-0.1.3.jar norg2-mock-modell-1.0.5-SNAPSHOT.jar ojdbc8-12.2.0.1.jar oppgave-mock-1.0.5-SNAPSHOT.jar oppgavebehandling-mock-1.0.2-SNAPSHOT.jar oppgavebehandling-mock-1.0.2.jar oppgavebehandling-mock-1.0.3.jar oppgavebehandling-mock-1.0.4-SNAPSHOT.jar oppgavebehandling-mock-1.0.5-SNAPSHOT.jar pdp-mock-1.0.4-SNAPSHOT.jar pdp-mock-1.0.5-SNAPSHOT.jar person-mock-1.0.2-SNAPSHOT.jar person-mock-1.0.2.jar person-mock-1.0.3.jar person-mock-1.0.4-SNAPSHOT.jar person-mock-1.0.5-SNAPSHOT.jar resteasy-jaxrs-3.0.9.Final.jar sak-mock-1.0.2-SNAPSHOT.jar sak-mock-1.0.2.jar sak-mock-1.0.3.jar sak-mock-1.0.4-SNAPSHOT.jar sak-mock-1.0.5-SNAPSHOT.jar slf4j-api-1.7.22.jar tps-mock-modell-1.0.2-SNAPSHOT.jar tps-mock-modell-1.0.2.jar tps-mock-modell-1.0.3.jar tps-mock-modell-1.0.4-SNAPSHOT.jar tps-mock-modell-1.0.5-SNAPSHOT.jar ytelseskontrakt-mock-1.0.5-SNAPSHOT.jar
+Class-Path: activation-1.1.jar aktoer-mock-1.0.2-SNAPSHOT.jar aktoer-mock-1.0.2.jar
+aktoer-mock-1.0.3.jar aktoer-mock-1.0.4-SNAPSHOT.jar aktoer-mock-1.0.5-SNAPSHOT.jar
+antlr-2.7.7.jar arbeidsfordeling-mock-1.0.5-SNAPSHOT.jar arena-mock-modell-1.0.5-SNAPSHOT.jar
+asm-5.1.jar asm-commons-5.1.jar asm-tree-5.1.jar assertj-core-3.6.2.jar
+behandleinngaaendejournal-mock-1.0.4-SNAPSHOT.jar behandleinngaaendejournal-mock-1.0.5-SNAPSHOT.jar
+behandlesak-mock-1.0.2-SNAPSHOT.jar behandlesak-mock-1.0.2.jar behandlesak-mock-1.0.3.jar
+behandlesak-mock-1.0.4-SNAPSHOT.jar behandlesak-mock-1.0.5-SNAPSHOT.jar classmate-1.3.0.jar
+commons-codec-1.6.jar commons-io-2.1.jar commons-io-2.4.jar commons-logging-1.1.1.jar dom4j-1.6.1.jar
+gsak-mock-modell-1.0.2-SNAPSHOT.jar gsak-mock-modell-1.0.2.jar gsak-mock-modell-1.0.3.jar
+gsak-mock-modell-1.0.4-SNAPSHOT.jar gsak-mock-modell-1.0.5-SNAPSHOT.jar hamcrest-core-1.3.jar
+hibernate-commons-annotations-5.0.1.Final.jar hibernate-core-5.2.9.Final.jar
+hibernate-jpa-2.1-api-1.0.0.Draft-16.jar hibernate-jpa-2.1-api-1.0.0.Final.jar httpclient-4.2.6.jar
+httpcore-4.2.5.jar infotrygd-mock-modell-1.0.5-SNAPSHOT.jar infotrygdsak-mock-1.0.5-SNAPSHOT.jar
+inngaaendejournal-mock-1.0.4-SNAPSHOT.jar inngaaendejournal-mock-1.0.5-SNAPSHOT.jar
+inntekt-mock-inntekt-1.0.5-SNAPSHOT.jar inntekt-mock-modell-1.0.5-SNAPSHOT.jar jandex-2.0.3.Final.jar
+javassist-3.20.0-GA.jar javax.annotation-api-1.2.jar javax.mail-api-1.5.6.jar javax.servlet-api-3.1.0.jar
+jaxrs-api-3.0.9.Final.jar jboss-annotations-api_1.1_spec-1.0.1.Final.jar jboss-logging-3.3.0.Final.jar
+jboss-transaction-api_1.2_spec-1.0.1.Final.jar jcip-annotations-1.0.jar jetty-annotations-9.4.1.v20170120.jar
+jetty-http-9.4.1.v20170120.jar jetty-http-spi-9.4.1.v20170120.jar jetty-io-9.4.1.v20170120.jar
+jetty-jndi-9.4.1.v20170120.jar jetty-plus-9.4.1.v20170120.jar jetty-security-9.4.1.v20170120.jar
+jetty-server-9.4.1.v20170120.jar jetty-servlet-9.4.1.v20170120.jar jetty-util-9.4.1.v20170120.jar
+jetty-webapp-9.4.1.v20170120.jar jetty-xml-9.4.1.v20170120.jar journal-mock-1.0.2-SNAPSHOT.jar
+journal-mock-1.0.2.jar journal-mock-1.0.3.jar journal-mock-1.0.4-SNAPSHOT.jar journal-mock-1.0.5-SNAPSHOT.jar
+journal-mock-modell-1.0.4-SNAPSHOT.jar journal-mock-modell-1.0.5-SNAPSHOT.jar jul-to-slf4j-1.7.5.jar
+junit-4.12.jar logback-classic-1.1.9.jar logback-core-1.1.9.jar medl-mock-medlem-1.0.5-SNAPSHOT.jar
+medl-mock-modell-1.0.5-SNAPSHOT.jar mock-felles-1.0.4-SNAPSHOT.jar mock-felles-1.0.5-SNAPSHOT.jar
+mockito-all-1.10.19.jar modig-core-test-1.0.0.jar modig-testcertificates-1.2.2.jar
+nav-arbeidsfordeling-v1-tjenestespesifikasjon-1.1.0-jaxws.jar
+nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon-1.0.0-jaxws.jar
+nav-fim-aktoer-v2-tjenestespesifikasjon-2.0.1-jaxws.jar nav-fim-behandleSak-v1-tjenestespesifikasjon-1.0.0-jaxws.jar
+nav-fim-inntekt-v3-tjenestespesifikasjon-2.0.0-jaxws.jar
+nav-fim-oppgave-v3-tjenestespesifikasjon-3.0.0-jaxws.jar
+nav-fim-oppgavebehandling-v3-tjenestespesifikasjon-3.1.1-jaxws.jar
+nav-fim-person-v2-tjenestespesifikasjon-2.0.0-jaxws.jar
+nav-fim-sak-v1-tjenestespesifikasjon-1.0.0-jaxws.jar nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon-3.0.1-jaxws.jar
+nav-infotrygdSak-v1-tjenestespesifikasjon-1.0.1-jaxws.jar nav-infotrygdSak-v1-tjenestespesifikasjon-1.1.2-jaxws.jar
+nav-inngaaendeJournal-v1-tjenestespesifikasjon-1.0.0-jaxws.jar nav-journal-v2-tjenestespesifikasjon-1.0.3-jaxws.jar
+nav-medlemskap-v2-tjenestespesifikasjon-2.0.6.jar nav-person-v3-tjenestespesifikasjon-3.0.2-jaxws.jar
+nav-tjenestespesifikasjoner-felles-adapter-0.1.3.jar norg2-mock-modell-1.0.5-SNAPSHOT.jar ojdbc8-12.2.0.1.jar
+oppgave-mock-1.0.5-SNAPSHOT.jar oppgavebehandling-mock-1.0.2-SNAPSHOT.jar oppgavebehandling-mock-1.0.2.jar
+oppgavebehandling-mock-1.0.3.jar oppgavebehandling-mock-1.0.4-SNAPSHOT.jar oppgavebehandling-mock-1.0.5-SNAPSHOT.jar
+pdp-mock-1.0.4-SNAPSHOT.jar pdp-mock-1.0.5-SNAPSHOT.jar person-mock-1.0.2-SNAPSHOT.jar person-mock-1.0.2.jar
+person-mock-1.0.3.jar person-mock-1.0.4-SNAPSHOT.jar person-mock-1.0.5-SNAPSHOT.jar resteasy-jaxrs-3.0.9.Final.jar
+sak-mock-1.0.2-SNAPSHOT.jar sak-mock-1.0.2.jar sak-mock-1.0.3.jar sak-mock-1.0.4-SNAPSHOT.jar sak-mock-1.0.5-SNAPSHOT.jar
+slf4j-api-1.7.22.jar tps-mock-modell-1.0.2-SNAPSHOT.jar tps-mock-modell-1.0.2.jar tps-mock-modell-1.0.3.jar
+tps-mock-modell-1.0.4-SNAPSHOT.jar tps-mock-modell-1.0.5-SNAPSHOT.jar ytelseskontrakt-mock-1.0.5-SNAPSHOT.jar
 Created-By: Apache Maven 3.3.9
 Build-Jdk: 1.8.0_101
 Main-Class: no.nav.engangsstønad.mock.MockServer
