@@ -3,7 +3,7 @@
     <parent>
         <artifactId>infotrygd-mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.5-SNAPSHOT</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -28,7 +28,7 @@
         <dependency>
             <artifactId>tps-mock-modell</artifactId>
             <groupId>no.nav.foreldrepenger</groupId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.5</version>
         </dependency>
 
         <!-- 3dje parts biblioteker -->
