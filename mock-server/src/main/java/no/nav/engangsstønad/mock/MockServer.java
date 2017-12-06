@@ -43,6 +43,7 @@ public class MockServer {
 
     private static final int HTTP_PORT = 7999;
     private static final int HTTPS_PORT = 8443;
+    private static final String HTTP_HOST = "0.0.0.0";
     private static Server server;
 
     public static void main(String[] args) throws Exception {
@@ -91,6 +92,7 @@ public class MockServer {
     private static void setConnectors() {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(HTTP_PORT);
+        connector.setHost(HTTP_HOST);
         HttpConfiguration https = new HttpConfiguration();
 
         TestCertificates.setupKeyAndTrustStore();
