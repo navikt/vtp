@@ -1,11 +1,11 @@
 package no.nav.engangsstønad.mock;
 
-import java.lang.reflect.Method;
-
-import javax.xml.ws.Endpoint;
-
+import com.sun.net.httpserver.HttpContext;
 import no.nav.abac.pdp.PdpMock;
+import no.nav.engangsstønad.mock.checks.IsAliveImpl;
+import no.nav.engangsstønad.mock.checks.IsReadyImpl;
 import no.nav.modig.testcertificates.TestCertificates;
+import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
@@ -15,9 +15,13 @@ import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
+import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
+import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
+import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
+import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -30,15 +34,10 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-
-import com.sun.net.httpserver.HttpContext;
-
-import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
-import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
-import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
-import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
-import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+
+import javax.xml.ws.Endpoint;
+import java.lang.reflect.Method;
 
 public class MockServer {
 
@@ -85,6 +84,8 @@ public class MockServer {
         publishService(ArbeidsforholdMockImpl.class,"/arbeidsforhold");
         publishService(OrganisasjonMockImpl.class,"/organisasjon");
 
+        publishService(IsAliveImpl.class,"/isAlive");
+        publishService(IsReadyImpl.class,"/isReady");
     }
 
     private static void setConnectors() {
