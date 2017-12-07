@@ -42,7 +42,7 @@ import java.lang.reflect.Method;
 public class MockServer {
 
     private static final int HTTP_PORT = 8080;
-    private static final int HTTPS_PORT = 8443;
+    private static final int HTTPS_PORT = 8088;
     private static final String HTTP_HOST = "0.0.0.0";
     private static Server server;
 
@@ -102,13 +102,13 @@ public class MockServer {
         boolean useModigCerts = "true".equalsIgnoreCase(System.getenv("modigcerts"));
         String keystorePath;
         SslContextFactory sslContextFactory;
-        if (useModigCerts) {
+        if (true) {
             keystorePath = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
         } else {
             keystorePath = System.getenv("mock_keystore");
         }
         sslContextFactory = new SslContextFactory(keystorePath);
-
+        sslContextFactory.setTrustAll(true);
         sslContextFactory.setKeyStorePassword("devillokeystore1234");
         sslContextFactory.setKeyManagerPassword("devillokeystore1234");
         ServerConnector sslConnector = new ServerConnector(server,
