@@ -18,7 +18,7 @@ timestamps {
         stage("Init") {
             printStage("Init")
             env.JAVA_HOME = "${tool 'jdk-1.8'}"
-            env.PATH = "${tool 'maven-3.5.0'}/bin:${env.PATH}"
+            env.PATH = "${tool 'maven-3.3.9'}/bin:${env.PATH}"
             step([$class: 'WsCleanup'])
             checkout scm
         }
