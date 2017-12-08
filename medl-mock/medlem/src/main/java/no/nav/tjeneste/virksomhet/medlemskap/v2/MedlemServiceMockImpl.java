@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.medlemskap.v2;
 import java.util.List;
 import java.util.Optional;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -28,6 +29,7 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeResponse;
 
 @Addressing
 @WebService(name = "Medlemskap_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/medlemskap/v2")
+@HandlerChain(file="Handler-chain.xml")
 public class MedlemServiceMockImpl implements MedlemskapV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(MedlemServiceMockImpl.class);

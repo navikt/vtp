@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 @Addressing
 @WebService(name = "Aktoer_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/aktoer/v2")
+@HandlerChain(file="Handler-chain.xml")
 public class AktoerServiceMockImpl implements AktoerV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
