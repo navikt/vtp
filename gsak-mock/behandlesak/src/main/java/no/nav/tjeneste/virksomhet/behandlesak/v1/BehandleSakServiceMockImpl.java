@@ -11,6 +11,7 @@ import no.nav.tjeneste.virksomhet.behandlesak.v1.meldinger.OpprettSakResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -21,6 +22,7 @@ import javax.xml.ws.soap.Addressing;
 
 @Addressing
 @WebService(name = "BehandleSak_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandleSak/v1")
+@HandlerChain(file="Handler-chain.xml")
 public class BehandleSakServiceMockImpl implements BehandleSakV1 {
 
     private static final Logger LOG = LoggerFactory.getLogger(BehandleSakServiceMockImpl.class);

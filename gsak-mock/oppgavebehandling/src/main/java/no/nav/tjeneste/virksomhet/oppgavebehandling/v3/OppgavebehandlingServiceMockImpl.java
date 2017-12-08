@@ -21,6 +21,7 @@ import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.TildelOppgaveRe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -31,6 +32,7 @@ import javax.xml.ws.soap.Addressing;
 
 @Addressing
 @WebService(name = "Oppgavebehandling_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3")
+@HandlerChain(file="Handler-chain.xml")
 public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(OppgavebehandlingServiceMockImpl.class);

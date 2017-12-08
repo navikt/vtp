@@ -17,6 +17,7 @@ import no.nav.tjeneste.virksomhet.sak.v1.modell.GsakRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
  */
 @Addressing
 @WebService(name = "Sak_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/sak/v1")
+@HandlerChain(file="Handler-chain.xml")
 public class SakServiceMockImpl implements SakV1 {
 
 

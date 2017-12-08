@@ -8,6 +8,7 @@ import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstant
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -41,6 +42,7 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdYtelse;
 
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.InfotrygdSakV1")
+@HandlerChain(file="Handler-chain.xml")
 public class FinnSakListeMockImpl implements InfotrygdSakV1 {
 
     private static final Logger LOG = LoggerFactory.getLogger(FinnSakListeMockImpl.class);
