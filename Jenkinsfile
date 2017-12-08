@@ -37,7 +37,16 @@ timestamps {
             configFileProvider(
                     [configFile(fileId: 'navMavenSettingsUtenProxy', variable: 'MAVEN_SETTINGS')]) {
                 mavenProps=" -Dfile.encoding=UTF-8 -Djava.security.egd=file:///dev/urandom "
-                sh 'mvn -U -B -s $MAVEN_SETTINGS ' + mavenProps + ' clean deploy -Dmaven.test.skip=true'
+                sh 'mvn -U -B -s $MAVEN_SETTINGS ' + mavenProps + ' clean install -Dmaven.test.skip=true'
+            }
+        }
+
+        stage("DEPLOY") {
+            printStage("Build")
+            configFileProvider(
+                    [configFile(fileId: 'navMavenSettingsUtenProxy', variable: 'MAVEN_SETTINGS')]) {
+                mavenProps=" -Dfile.encoding=UTF-8 -Djava.security.egd=file:///dev/urandom "
+                sh 'mvn -U -B -s $MAVEN_SETTINGS ' + mavenProps + ' deploy -Dmaven.test.skip=true'
             }
         }
 
