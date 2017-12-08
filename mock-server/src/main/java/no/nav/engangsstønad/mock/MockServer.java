@@ -37,7 +37,9 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import javax.xml.ws.Endpoint;
+import java.io.File;
 import java.lang.reflect.Method;
+import java.security.KeyStore;
 
 public class MockServer {
 
@@ -102,6 +104,7 @@ public class MockServer {
         boolean useModigCerts = "true".equalsIgnoreCase(System.getenv("modigcerts"));
         String keystorePath;
         SslContextFactory sslContextFactory;
+
         if (true) {
             keystorePath = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
         } else {
@@ -111,6 +114,7 @@ public class MockServer {
         sslContextFactory.setTrustAll(true);
         sslContextFactory.setKeyStorePassword("devillokeystore1234");
         sslContextFactory.setKeyManagerPassword("devillokeystore1234");
+
         ServerConnector sslConnector = new ServerConnector(server,
                 new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
         sslConnector.setPort(HTTPS_PORT);
