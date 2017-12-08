@@ -15,7 +15,7 @@ timestamps {
 
         env.LANG = "nb_NO.UTF-8"
 
-        stage("Init") {
+        stage("INIT") {
             printStage("Init")
             env.JAVA_HOME = "${tool 'jdk-1.8'}"
             env.PATH = "${tool 'maven-3.3.9'}/bin:${env.PATH}"
@@ -41,19 +41,19 @@ timestamps {
             }
         }
 
-        stage("UPLOAD") {
-            printStage("Validate");
+        stage("VALIDATE") {
+            printStage("Validate")
             sh 'naisd validate -o'
+        }
+
+        stage("UPLOAD") {
+            printStage("Upload");
             sh 'naisd upload -u deployment -p d3pl0y -a ' + artifactId + ' -v ' + deployVersion
         }
 
         stage('DEPLOY') {
             printStage("Deploy")
             //sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -p ' + fasitPassword + ' -v ' + deployVersion
-        }
-
-        stage("UPLOAD") {
-
         }
     }
 }
