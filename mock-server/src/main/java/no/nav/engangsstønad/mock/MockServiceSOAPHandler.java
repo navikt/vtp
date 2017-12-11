@@ -32,6 +32,5 @@ public class MockServiceSOAPHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public void close(MessageContext context) {
-        System.out.println("Mock : close()......");
     }
 }
