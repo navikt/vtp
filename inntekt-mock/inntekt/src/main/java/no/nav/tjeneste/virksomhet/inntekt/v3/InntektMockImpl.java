@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.inntekt.v3;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -52,6 +53,7 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeResponse;
 
 @Addressing
 @WebService(name = "Inntekt_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3")
+@HandlerChain(file="Handler-chain.xml")
 public class InntektMockImpl implements InntektV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(InntektMockImpl.class);

@@ -13,6 +13,7 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell.YtelseskontraktBygge
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -28,6 +29,7 @@ import java.util.List;
 
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.binding.YtelseskontraktV3")
+@HandlerChain(file="Handler-chain.xml")
 public class HentYtelseskontraktListeMockImpl implements YtelseskontraktV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(HentYtelseskontraktListeMockImpl.class);
