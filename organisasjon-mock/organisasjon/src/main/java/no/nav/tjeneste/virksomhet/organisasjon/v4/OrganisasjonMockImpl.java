@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.organisasjon.v4;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -47,6 +48,7 @@ import no.nav.tjeneste.virksomhet.organisasjon.v4.meldinger.FinnOrganisasjonsend
 
 @Addressing
 @WebService(name = "Organisasjon_v4", targetNamespace = "http://nav.no/tjeneste/virksomhet/organisasjon/v4")
+@HandlerChain(file="Handler-chain.xml")
 public class OrganisasjonMockImpl implements OrganisasjonV4 {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonMockImpl.class);
