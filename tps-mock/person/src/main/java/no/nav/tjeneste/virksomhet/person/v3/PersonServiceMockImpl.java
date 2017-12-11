@@ -23,6 +23,7 @@ import no.nav.tjeneste.virksomhet.person.v3.modell.TpsRelasjon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -36,6 +37,7 @@ import java.util.List;
 
 @Addressing
 @WebService(name = "Person_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3")
+@HandlerChain(file="Handler-chain.xml")
 public class PersonServiceMockImpl implements PersonV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);

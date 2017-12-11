@@ -28,6 +28,7 @@ import static no.nav.tjeneste.virksomhet.journalmodell.JournalDokumentKonstanter
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
         name = "InngaaendeJournal_v1",
         targetNamespace = "http://nav.no/tjeneste/virksomhet/inngaaendeJournal/v1"
 )
+@HandlerChain(file="Handler-chain.xml")
 public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
     private static final EntityManager joarkEntityManager = Persistence.createEntityManagerFactory("joark").createEntityManager();

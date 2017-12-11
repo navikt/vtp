@@ -22,6 +22,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -43,6 +44,7 @@ import static java.lang.Long.parseLong;
 
 @Addressing
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
+@HandlerChain(file="Handler-chain.xml")
 public class JournalServiceMockImpl implements JournalV2 {
     private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
 
