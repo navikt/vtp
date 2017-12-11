@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -41,6 +42,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidstakereP
 
 @Addressing
 @WebService(name = "Arbeidsforhold_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3")
+@HandlerChain(file="Handler-chain.xml")
 public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArbeidsforholdMockImpl.class);

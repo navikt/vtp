@@ -12,6 +12,7 @@ import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeE
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.modell.Norg2DbLeser;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.modell.Norg2Entitet;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -32,6 +33,7 @@ import java.util.Map;
         name = "Arbeidsfordeling_v1",
         targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/"
 )
+@HandlerChain(file="Handler-chain.xml")
 public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
 
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("norg2").createEntityManager();
