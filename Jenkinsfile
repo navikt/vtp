@@ -40,7 +40,7 @@ timestamps {
             }
         }
 
-        stage("DEPLOY") {
+        stage("UPLOAD") {
             printStage("Build")
             configFileProvider(
                     [configFile(fileId: 'navMavenSettingsUtenProxy', variable: 'MAVEN_SETTINGS')]) {
@@ -54,7 +54,7 @@ timestamps {
             sh 'naisd validate -o'
         }
 
-        stage("UPLOAD") {
+        stage("CONFIG") {
             printStage("Upload");
             sh 'naisd upload -u deployment -p d3pl0y -a ' + artifactId + ' -v ' + deployVersion
         }
