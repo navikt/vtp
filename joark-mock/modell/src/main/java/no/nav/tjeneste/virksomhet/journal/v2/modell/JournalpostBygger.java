@@ -1,5 +1,8 @@
 package no.nav.tjeneste.virksomhet.journal.v2.modell;
 
+import java.time.LocalDateTime;
+
+import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivtemaer;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
@@ -28,6 +31,7 @@ public class JournalpostBygger {
     protected String arkivFiltype;
     protected String variantFormat;
     protected String arkivTema;
+    protected LocalDateTime datoMottatt;
 
 
     public JournalpostBygger(JournalDokument journalDokument){
@@ -44,6 +48,7 @@ public class JournalpostBygger {
         this.arkivFiltype = journalDokument.getFilType();
         this.variantFormat = journalDokument.getVariantformat();
         this.arkivTema = journalDokument.getArkivtema();
+        this.datoMottatt = journalDokument.getDatoMottatt();
     }
 
     public JournalpostBygger(long id, String journalpostId, String innhold, String sakId) {
@@ -65,6 +70,10 @@ public class JournalpostBygger {
         //Arkivtemaer
         Arkivtemaer at = new Arkivtemaer();
         at.setValue(arkivTema);
+        //DatoMottatt
+        if(datoMottatt != null) {
+            journalpost.setMottatt(ConversionUtils.convertToXMLGregorianCalendar(datoMottatt));
+        }
 
         journalpost.setArkivtema(at);
         journalpost.setKommunikasjonskanal(kk);
