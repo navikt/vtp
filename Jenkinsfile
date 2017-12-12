@@ -23,8 +23,7 @@ timestamps {
             checkout scm
         }
 
-        artifactId = readFile('pom.xml') =~ '<artifactId>(.+)</artifactId>'
-        artifactId = artifactId[0][1]
+        artifactId = 'fpmock'
 
         if (deployVersion.isEmpty()) {
             def version = readFile('pom.xml') =~ '<version>(.+)</version>'
@@ -62,7 +61,7 @@ timestamps {
 
         stage('DEPLOY') {
             printStage("Deploy")
-            sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -p ' + fasitPassword + ' -v ' + deployVersion
+            sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -e ' + env.MILJO + ' -p ' + fasitPassword + ' -v ' + deployVersion
         }
     }
 }
