@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.10</version>
+        <version>1.0.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

@@ -62,7 +62,7 @@ timestamps {
 
         stage('DEPLOY') {
             printStage("Deploy")
-            //sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -p ' + fasitPassword + ' -v ' + deployVersion
+            sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -p ' + fasitPassword + ' -v ' + deployVersion
         }
     }
 }
