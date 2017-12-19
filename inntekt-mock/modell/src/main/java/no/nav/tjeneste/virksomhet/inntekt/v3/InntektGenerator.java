@@ -14,6 +14,7 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektI
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Inntekt;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ObjectFactory;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Organisasjon;
 
 /**
  * Genererer tilfeldige inntekter til testformål. Bruker random generator til
@@ -59,7 +60,10 @@ public class InntektGenerator {
         Inntekt inntekt = objectFactory.createInntekt();
         inntekt.setBeloep(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(MIN_INNTEKT, MAX_INNTEKT)));
         inntekt.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        inntekt.setVirksomhet(aktoer);
+        // Midlertidig løsning for å få et gyldig org.nummer som matcher AAREG-mock. Før brukte man ident/fnr.
+        Organisasjon utbetaler = objectFactory.createOrganisasjon();
+        utbetaler.setOrgnummer("976037286");
+        inntekt.setVirksomhet(utbetaler);
         return inntekt;
     }
 }

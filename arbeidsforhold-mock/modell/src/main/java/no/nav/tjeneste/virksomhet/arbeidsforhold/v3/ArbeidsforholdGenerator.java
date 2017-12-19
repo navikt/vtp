@@ -34,32 +34,10 @@ public class ArbeidsforholdGenerator {
     public List<Arbeidsforhold> hentArbeidsforhold(NorskIdent ident, LocalDate fom, LocalDate tom) {
         List<Arbeidsforhold> returliste = new ArrayList<>();
         returliste.add(lagEksempelFastArbeidsforhold(ident));
-        returliste.add(lagEksempelTimeArbeidsforhold(ident));
+        //returliste.add(lagEksempelTimeArbeidsforhold(ident));
 
         return returliste;
     }
-
-/*
-    private ArbeidsArbeidsforholdIdent lagArbeidsarbeidsforholdIdent(Aktoer aktoer, LocalDate fom) {
-        ArbeidsArbeidsforholdIdent arbeidsArbeidsforholdIdent = objectFactory.createArbeidsArbeidsforholdIdent();
-        arbeidsArbeidsforholdIdent.setIdent(aktoer);
-        arbeidsArbeidsforholdIdent.getArbeidsArbeidsforholdMaaned().add(lagarbeidsArbeidsforholdMaaned(fom, aktoer));
-        return arbeidsArbeidsforholdIdent;
-    }
-
-    private ArbeidsArbeidsforholdMaaned lagarbeidsArbeidsforholdMaaned(LocalDate fom, Aktoer aktoer) {
-        ArbeidsArbeidsforholdMaaned arbeidsArbeidsforholdMaaned = objectFactory.createArbeidsArbeidsforholdMaaned();
-        arbeidsArbeidsforholdMaaned.setAarMaaned(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        arbeidsArbeidsforholdMaaned.setArbeidsArbeidsforholdInformasjon(lagArbeidsarbeidsforholdInformasjon(fom, aktoer));
-        return arbeidsArbeidsforholdMaaned;
-    }
-
-    private ArbeidsArbeidsforholdInformasjon lagArbeidsarbeidsforholdInformasjon(LocalDate fom, Aktoer aktoer) {
-        ArbeidsArbeidsforholdInformasjon arbeidsArbeidsforholdInformasjon = objectFactory.createArbeidsArbeidsforholdInformasjon();
-        arbeidsArbeidsforholdInformasjon.getArbeidsforholdListe().add(lagArbeidsforhold(fom, aktoer));
-        return arbeidsArbeidsforholdInformasjon;
-    }
-*/
 
     private BigDecimal lagBD(String number) {
         BigDecimal bd = new BigDecimal(number);
