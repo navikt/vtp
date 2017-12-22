@@ -7,6 +7,7 @@ import javax.xml.ws.Endpoint;
 import no.nav.abac.pdp.PdpMock;
 import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
@@ -74,6 +75,8 @@ public class MockServer {
         publishService(ArbeidsfordelingMockImpl.class, "/arbeidsfordeling");
         publishService(InntektMockImpl.class, "/inntekt");
         publishService(OppgaveServiceMockImpl.class,"/oppgave");
+        publishService(ArbeidsforholdMockImpl.class,"/arbeidsforhold");
+
     }
 
     private static void setConnectors() {
