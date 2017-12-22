@@ -15,6 +15,7 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceM
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -76,6 +77,7 @@ public class MockServer {
         publishService(InntektMockImpl.class, "/inntekt");
         publishService(OppgaveServiceMockImpl.class,"/oppgave");
         publishService(ArbeidsforholdMockImpl.class,"/arbeidsforhold");
+        publishService(OrganisasjonMockImpl.class,"/organisasjon");
 
     }
 
