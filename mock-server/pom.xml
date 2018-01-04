@@ -72,6 +72,14 @@
             <artifactId>oppgave-mock</artifactId>
             <version>1.0.5-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>organisasjon-mock-organisasjon</artifactId>
+        </dependency>
 
         <!-- NAV biblioteker -->
         <dependency>

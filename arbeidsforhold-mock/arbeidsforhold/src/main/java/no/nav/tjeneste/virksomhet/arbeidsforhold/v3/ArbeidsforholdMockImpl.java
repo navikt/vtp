@@ -50,14 +50,15 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/finnArbeidsforholdPrArbeidsgiverRequest")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebResult(name = "parameters", targetNamespace = "")
     @RequestWrapper(localName = "finnArbeidsforholdPrArbeidsgiver", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidsgiver")
-    @ResponseWrapper(localName = "finnArbeidsforholdPrArbeidsgiverResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
+    @ResponseWrapper(localName = "FinnArbeidsforholdPrArbeidsgiverResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidsgiverResponse")
-    public FinnArbeidsforholdPrArbeidsgiverResponse finnArbeidsforholdPrArbeidsgiver(@WebParam(name = "request",targetNamespace = "") FinnArbeidsforholdPrArbeidsgiverRequest finnArbeidsforholdPrArbeidsgiverRequest) throws FinnArbeidsforholdPrArbeidsgiverForMangeForekomster, FinnArbeidsforholdPrArbeidsgiverSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidsgiverUgyldigInput {
+    public FinnArbeidsforholdPrArbeidsgiverResponse finnArbeidsforholdPrArbeidsgiver(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidsforholdPrArbeidsgiverRequest finnArbeidsforholdPrArbeidsgiverRequest) throws FinnArbeidsforholdPrArbeidsgiverForMangeForekomster, FinnArbeidsforholdPrArbeidsgiverSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidsgiverUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
+
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/pingRequest")
@@ -69,23 +70,23 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/finnArbeidstakerePrArbeidsgiverRequest")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebResult(name = "parameters", targetNamespace = "")
     @RequestWrapper(localName = "finnArbeidstakerePrArbeidsgiver", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
-            className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidstakerePrArbeidsgiver")
+            className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidstakerePrArbeidsgiverRequest")
     @ResponseWrapper(localName = "finnArbeidstakerePrArbeidsgiverResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidstakerePrArbeidsgiverResponse")
-    public FinnArbeidstakerePrArbeidsgiverResponse finnArbeidstakerePrArbeidsgiver(@WebParam(name = "request",targetNamespace = "") FinnArbeidstakerePrArbeidsgiverRequest finnArbeidstakerePrArbeidsgiverRequest) throws FinnArbeidstakerePrArbeidsgiverSikkerhetsbegrensning, FinnArbeidstakerePrArbeidsgiverUgyldigInput {
+    public FinnArbeidstakerePrArbeidsgiverResponse finnArbeidstakerePrArbeidsgiver(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidstakerePrArbeidsgiverRequest finnArbeidstakerePrArbeidsgiverRequest) throws FinnArbeidstakerePrArbeidsgiverSikkerhetsbegrensning, FinnArbeidstakerePrArbeidsgiverUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/finnArbeidsforholdPrArbeidstakerRequest")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebResult(name = "parameters", targetNamespace = "")
     @RequestWrapper(localName = "finnArbeidsforholdPrArbeidstaker", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstaker")
     @ResponseWrapper(localName = "finnArbeidsforholdPrArbeidstakerResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstakerResponse")
-    public FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstaker(@WebParam(name = "request",targetNamespace = "") FinnArbeidsforholdPrArbeidstakerRequest request) throws FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidstakerUgyldigInput {
+    public FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstaker(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidsforholdPrArbeidstakerRequest request) throws FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidstakerUgyldigInput {
 
         if (request != null && request.getIdent() != null
                 && request.getIdent().getIdent() != null
@@ -114,12 +115,12 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/hentArbeidsforholdHistorikkRequest")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebResult(name = "parameters", targetNamespace = "")
     @RequestWrapper(localName = "hentArbeidsforholdHistorikk", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
-            className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikk")
-    @ResponseWrapper(localName = "hentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
+            className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkRequest")
+    @ResponseWrapper(localName = "HentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkResponse")
-    public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "request",targetNamespace = "") HentArbeidsforholdHistorikkRequest hentArbeidsforholdHistorikkRequest) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
+    public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest hentArbeidsforholdHistorikkRequest) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
         throw new UnsupportedOperationException("Ikke implementert");
     }
 }
