@@ -32,6 +32,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>behandleoppgave-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>behandlesak-mock</artifactId>
         </dependency>
         <dependency>

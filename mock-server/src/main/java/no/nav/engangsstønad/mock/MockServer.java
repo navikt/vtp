@@ -9,6 +9,7 @@ import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
+import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
@@ -65,10 +66,13 @@ public class MockServer {
         publishService(InngaaendeJournalServiceMockImpl.class, "/inngaaendejournal");
         publishService(BehandleInngaaendeJournalServiceMockImpl.class, "/behandleinngaaendejournal");
         publishService(OppgavebehandlingServiceMockImpl.class, "/oppgavebehandling");
-        // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
+        //access wsdl on http://localhost:7999/oppgavebehandling?wsdl
+        publishService(BehandleOppgaveServiceMockImpl.class, "/behandleoppgave");
+        // access wsdl on http://localhost:7999/behandleoppgave?wsdl
         publishService(BehandleSakServiceMockImpl.class, "/behandlesak");
+        //access wsdl on http://localhost:7999/behandlesak?wsdl
         publishService(BehandleSak2ServiceMockImpl.class, "/behandlesakV2");
-        // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
+        //access wsdl on http://localhost:7999/behandlesakV2?wsdl
         publishService(PdpMock.class,"/asm-pdp/authorize");
         publishService(FinnSakListeMockImpl.class, "/infotrygdsak");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl

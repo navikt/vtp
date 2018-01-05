@@ -49,6 +49,7 @@
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
 		<nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>3.0.1</nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
+        <gsak.behandleoppgave.version>1.0.7</gsak.behandleoppgave.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
         <nav-fim-behandleSak-v2-tjenestespesifikasjon.version>2.0.0</nav-fim-behandleSak-v2-tjenestespesifikasjon.version>
         <joark.journal.version>1.0.3</joark.journal.version>
@@ -97,6 +98,11 @@
 				<artifactId>oppgavebehandling-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>behandleoppgave-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>behandlesak-mock</artifactId>
@@ -207,6 +213,11 @@
 				<version>${gsak.oppgavebehandling.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
+                <version>${gsak.behandleoppgave.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-fim-behandleSak-v1-tjenestespesifikasjon</artifactId>
