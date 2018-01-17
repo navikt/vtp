@@ -37,6 +37,7 @@ import java.util.Map;
 public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
 
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("norg2").createEntityManager();
+    private static final String RESPONSE_ENHETS_ID = "1234";
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/Arbeidsfordeling_v1/finnBehandlendeEnhetListeRequest"
@@ -171,6 +172,15 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
             @WebParam(name = "request",targetNamespace = "") FinnAlleBehandlendeEnheterListeRequest request)
             throws FinnAlleBehandlendeEnheterListeUgyldigInput {
 
-        throw new UnsupportedOperationException("finnAlleBehandlendeEnheterListe ikke implementert");
+        FinnAlleBehandlendeEnheterListeResponse response = new FinnAlleBehandlendeEnheterListeResponse();
+        Organisasjonsenhet enhet1 = new Organisasjonsenhet();
+        enhet1.setEnhetId(RESPONSE_ENHETS_ID);
+        enhet1.setEnhetNavn("Anne Lier");
+        enhet1.setOrganisasjonsnummer("5443");
+        enhet1.setStatus(Enhetsstatus.AKTIV);
+        response.getBehandlendeEnhetListe().add(enhet1);
+
+        return response;
     }
+
 }
