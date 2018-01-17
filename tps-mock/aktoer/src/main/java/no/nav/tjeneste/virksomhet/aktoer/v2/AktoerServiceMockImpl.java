@@ -1,5 +1,11 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -11,10 +17,12 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.AktoerV2;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentIdentForAktoerIdPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.AktoerIder;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentListeRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentListeResponse;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentRequest;
@@ -23,6 +31,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeR
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdListeResponse;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentIdentForAktoerIdResponse;
+import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.IdentDetaljer;
 import no.nav.tjeneste.virksomhet.person.v3.data.PersonDbLeser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +94,33 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         @WebParam(name = "hentAktoerIdForIdentListeRequest", targetNamespace = "")
         HentAktoerIdForIdentListeRequest hentAktoerIdForIdentListeRequest) {
 
-        throw new UnsupportedOperationException("Ikke implementert");
+        LOG.info("hentIdentForAktoerId: " + hentAktoerIdForIdentListeRequest.getIdentListe().stream().collect(Collectors.joining(",")));
+
+        Map<String, Long> aktørTilIdent = hentAktoerIdForIdentListeRequest.getIdentListe().stream()
+                .collect(Collectors.toMap(Function.identity(), ident -> new PersonDbLeser(entityManager).finnAktoerId(ident)));
+
+        aktørTilIdent.forEach((ident, aktørId) -> {
+            if (aktørId == null) {
+                throw new RuntimeException("Fant ingen aktoerid for ident: " + ident);
+            }
+        });
+
+
+        HentAktoerIdForIdentListeResponse response = new HentAktoerIdForIdentListeResponse();
+        List<AktoerIder> aktoerListe = response.getAktoerListe();
+        aktørTilIdent.forEach((ident, aktoerId) -> {
+            AktoerIder aktoerIder = new AktoerIder();
+            IdentDetaljer identDetaljer = new IdentDetaljer();
+            identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.MIN));
+            identDetaljer.setTpsId("Tullball, aner ikke hva dette brukes til");
+
+            aktoerIder.setGjeldendeIdent(identDetaljer);
+            aktoerIder.setAktoerId(aktoerId.toString());
+
+            aktoerListe.add(aktoerIder);
+        });
+
+        return response;
     }
 
     @Override
