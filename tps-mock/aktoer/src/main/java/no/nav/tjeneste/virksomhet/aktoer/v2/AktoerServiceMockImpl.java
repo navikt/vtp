@@ -1,6 +1,7 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -111,7 +112,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         aktørTilIdent.forEach((ident, aktoerId) -> {
             AktoerIder aktoerIder = new AktoerIder();
             IdentDetaljer identDetaljer = new IdentDetaljer();
-            identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.MIN));
+            identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2000, 1, 1)));
             identDetaljer.setTpsId("Tullball, aner ikke hva dette brukes til");
 
             aktoerIder.setGjeldendeIdent(identDetaljer);
