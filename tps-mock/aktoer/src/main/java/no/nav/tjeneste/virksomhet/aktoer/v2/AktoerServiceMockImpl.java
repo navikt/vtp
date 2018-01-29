@@ -1,7 +1,6 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
