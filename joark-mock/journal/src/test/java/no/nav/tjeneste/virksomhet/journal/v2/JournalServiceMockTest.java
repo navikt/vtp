@@ -10,7 +10,6 @@ import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeReque
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +33,6 @@ public class JournalServiceMockTest {
     }
 
     @Test
-    @Ignore
     public void testHentDokument() throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning
     {
         Variantformater variantformat = new Variantformater();

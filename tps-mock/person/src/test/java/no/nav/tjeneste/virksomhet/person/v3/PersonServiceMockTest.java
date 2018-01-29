@@ -61,7 +61,7 @@ public class PersonServiceMockTest {
         HentPersonRequest request = new HentPersonRequest();
         PersonIdent personIdent = new PersonIdent();
         NorskIdent norskIdent = new NorskIdent();
-        norskIdent.setIdent("19069220064");
+        norskIdent.setIdent("11111655830");
         personIdent.setIdent(norskIdent);
         request.setAktoer(personIdent);
 
@@ -70,7 +70,7 @@ public class PersonServiceMockTest {
         assertThat(response.getPerson()).isNotNull();
         PersonIdent aktoer = (PersonIdent)response.getPerson().getAktoer();
         assertThat(aktoer).isNotNull();
-        assertThat(aktoer.getIdent().getIdent()).isEqualTo("19069220064");
+        assertThat(aktoer.getIdent().getIdent()).isEqualTo("11111655830");
         assertThat(response.getPerson().getHarFraRolleI()).isNotNull();
         assertThat(response.getPerson().getHarFraRolleI()).isNotEmpty();
         assertThat(response.getPerson().getHarFraRolleI().get(0).getTilPerson()).isNotNull();

@@ -111,7 +111,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         aktørTilIdent.forEach((ident, aktoerId) -> {
             AktoerIder aktoerIder = new AktoerIder();
             IdentDetaljer identDetaljer = new IdentDetaljer();
-            identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2000, 1, 1)));
+            identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.MIN));
             identDetaljer.setTpsId("Tullball, aner ikke hva dette brukes til");
 
             aktoerIder.setGjeldendeIdent(identDetaljer);
