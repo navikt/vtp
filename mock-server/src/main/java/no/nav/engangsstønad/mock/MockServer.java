@@ -88,8 +88,6 @@ public class MockServer {
     }
 
     private static void setConnectors() {
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(HTTP_PORT);
         HttpConfiguration https = new HttpConfiguration();
 
         TestCertificates.setupKeyAndTrustStore();
@@ -104,14 +102,18 @@ public class MockServer {
         } else {
             keystorePath = System.getenv("mock_keystore");
         }
-        sslContextFactory = new SslContextFactory(keystorePath);
 
+        sslContextFactory = new SslContextFactory(keystorePath);
         sslContextFactory.setKeyStorePassword("devillokeystore1234");
         sslContextFactory.setKeyManagerPassword("devillokeystore1234");
-        ServerConnector sslConnector = new ServerConnector(server,
-                new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
-        sslConnector.setPort(HTTPS_PORT);
-        server.setConnectors(new Connector[] { connector, sslConnector });
+
+        try (ServerConnector connector = new ServerConnector(server);
+             ServerConnector sslConnector = new ServerConnector(server, new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https))
+        ) {
+            connector.setPort(HTTP_PORT);
+            sslConnector.setPort(HTTPS_PORT);
+            server.setConnectors(new Connector[]{connector, sslConnector});
+        }
     }
 
     private static void publishService(Class<?> clazz, String path) {
