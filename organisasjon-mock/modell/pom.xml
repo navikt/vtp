@@ -3,7 +3,7 @@
     <parent>
         <artifactId>organisasjon-mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.18</version>
+        <version>1.0.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
