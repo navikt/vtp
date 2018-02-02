@@ -2,14 +2,14 @@
 timestamps {
     def deployVersion = ''
     def artifactId = ''
-    def fasitUsername = ''
-    def fasitPassword = ''
+//    def fasitUsername = ''
+//    def fasitPassword = ''
 
-    withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'ade43d98-326c-41ad-9a61-aefbf933e5d2',
-                      usernameVariable: 'SAVEDUSERNAME', passwordVariable: 'SAVEDPASSWORD']]) {
-        fasitUsername = env.SAVEDUSERNAME
-        fasitPassword = env.SAVEDPASSWORD
-    }
+//    withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'ade43d98-326c-41ad-9a61-aefbf933e5d2',
+//                      usernameVariable: 'SAVEDUSERNAME', passwordVariable: 'SAVEDPASSWORD']]) {
+//        fasitUsername = env.SAVEDUSERNAME
+//        fasitPassword = env.SAVEDPASSWORD
+//    }
 
     node('DOCKER1') {
 
@@ -54,15 +54,15 @@ timestamps {
             sh 'naisd validate -o'
         }
 
-        stage("CONFIG") {
-            printStage("Upload");
-            sh 'naisd upload -u deployment -p d3pl0y -a ' + artifactId + ' -v ' + deployVersion
-        }
-
-        stage('DEPLOY') {
-            printStage("Deploy")
-            sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -e ' + env.MILJO + ' -p ' + fasitPassword + ' -v ' + deployVersion
-        }
+//        stage("CONFIG") {
+//            printStage("Upload");
+//            sh 'naisd upload -u deployment -p d3pl0y -a ' + artifactId + ' -v ' + deployVersion
+//        }
+//
+//        stage('DEPLOY') {
+//            printStage("Deploy")
+//            sh 'naisd deploy -u ' + fasitUsername + ' -a ' + artifactId + ' -e ' + env + ' -e ' + env.MILJO + ' -p ' + fasitPassword + ' -v ' + deployVersion
+//        }
     }
 }
 
