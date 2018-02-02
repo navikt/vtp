@@ -40,8 +40,8 @@ timestamps {
             }
         }
 
-        stage("UPLOAD") {
-            printStage("Build")
+        stage("DOCKER") {
+            printStage("Docker build")
             configFileProvider(
                     [configFile(fileId: 'navMavenSettingsUtenProxy', variable: 'MAVEN_SETTINGS')]) {
                 mavenProps=" -Dfile.encoding=UTF-8 -Djava.security.egd=file:///dev/urandom "
