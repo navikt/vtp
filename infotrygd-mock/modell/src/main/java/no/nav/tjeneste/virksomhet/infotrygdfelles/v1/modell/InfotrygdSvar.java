@@ -1,5 +1,6 @@
-package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
+package no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,17 +16,21 @@ import java.util.Objects;
 public class InfotrygdSvar {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     Long id;
 
-    @Column(name = "FNR")
+    @Column(name = "FNR", nullable = false, unique = true)
     String fnr;
 
     @Column(name = "FEILKODE")
     String feilkode;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "infotrygdSvar")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "infotrygdSvar", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<InfotrygdYtelse> infotrygdYtelseListe = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "infotrygdSvar", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<InfotrygdGrunnlag> infotrygdGrunnlagList = new ArrayList<>();
+
 
     InfotrygdSvar(){
     }
@@ -62,6 +67,17 @@ public class InfotrygdSvar {
         Objects.requireNonNull(infotrygdYtelse, "oppdrag110");
         if (!infotrygdYtelseListe.contains(infotrygdYtelse)) {
             infotrygdYtelseListe.add(infotrygdYtelse);
+        }
+    }
+
+    public List<InfotrygdGrunnlag> getInfotrygdGrunnlagList(){
+        return infotrygdGrunnlagList;
+    }
+
+    public void addInfotrygdGrunnlag(InfotrygdGrunnlag infotrygdGrunnlag){
+        Objects.requireNonNull(infotrygdGrunnlag, "oppdrag116");
+        if (!infotrygdGrunnlagList.contains(infotrygdGrunnlag)) {
+            infotrygdGrunnlagList.add(infotrygdGrunnlag);
         }
     }
 }

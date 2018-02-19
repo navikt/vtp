@@ -1,4 +1,4 @@
-package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
+package no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.InfotrygdSvar;
+
 @Entity(name = "InfotrygdYtelse")
 @Table(name = "INFOTRYGDYTELSE")
 public class InfotrygdYtelse {
@@ -18,7 +20,7 @@ public class InfotrygdYtelse {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "INFOTRYGDSVAR_ID")
+    @JoinColumn(name = "INFOTRYGDSVAR_ID", nullable = false)
     InfotrygdSvar infotrygdSvar;
 
     @Column(name = "SAK_ID")

@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>infotrygdsak</module>
+        <module>infotrygdberegningsgrunnlag</module>
         <module>modell</module>
     </modules>
 

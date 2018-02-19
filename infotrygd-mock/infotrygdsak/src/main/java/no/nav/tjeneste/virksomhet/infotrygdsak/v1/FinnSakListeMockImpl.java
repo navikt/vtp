@@ -1,12 +1,13 @@
 package no.nav.tjeneste.virksomhet.infotrygdsak.v1;
 
 
-import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstanter.PERSON_IKKE_FUNNET;
-import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
-import static no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.FeilKodeKonstanter.UGYLDIG_INPUT;
+import static no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.FeilKodeKonstanter.PERSON_IKKE_FUNNET;
+import static no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
+import static no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.FeilKodeKonstanter.UGYLDIG_INPUT;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -35,10 +36,10 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.feil.Sikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeRequest;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdDbLeser;
+import no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.InfotrygdDbLeser;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdSakBygger;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdVedtakBygger;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdYtelse;
+import no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.InfotrygdYtelse;
 
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.InfotrygdSakV1")
@@ -67,14 +68,12 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
         InfotrygdDbLeser infotrygdDbLeser = new InfotrygdDbLeser(entityManager);
         LOG.info("Se på tjeneste ", finnSakListeRequest.getPersonident());
 
+        Optional<String> feilkode = infotrygdDbLeser.finnInfotrygdSvarMedFnrOpt(ident);
         try {
-            String feilkode = infotrygdDbLeser.finnInfotrygdSvarMedFnr(ident).get(0).getFeilkode();
-
-            if (feilkode != null) {
-                haandterExceptions(feilkode, ident);
-            }
-        } catch (NullPointerException | IndexOutOfBoundsException e1) {
-            LOG.error("Error ", e1);
+            haandterExceptions(feilkode.orElse("--"), ident);
+        } catch (Exception e) {
+            LOG.error("Error ", e);
+            throw e;
         }
 
         List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdDbLeser.finnInfotrygdYtelseMedFnr(ident);

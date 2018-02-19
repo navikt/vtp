@@ -27,8 +27,8 @@ public class FinnSakListeMockTest {
 //        assertThat(response.getSakListe()).isNotNull();
 //        assertThat(response.getSakListe().get(0).getSakId()).isNotNull();
 //        assertThat(response.getSakListe().get(0).getRegistrert()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getTema()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getBehandlingstema()).isNotNull();
+        assertThat(response.getSakListe().get(0).getTema().getValue().equals("SP")).isTrue();
+        assertThat(response.getSakListe().get(0).getBehandlingstema().getValue().equals("SP")).isTrue();
 //        assertThat(response.getSakListe().get(0).getStatus()).isNotNull();
 //        assertThat(response.getSakListe().get(0).getType()).isNotNull();
 //        assertThat(response.getSakListe().get(0).getResultat()).isNotNull();

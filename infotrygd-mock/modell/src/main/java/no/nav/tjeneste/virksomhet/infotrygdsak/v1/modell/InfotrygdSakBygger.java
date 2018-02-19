@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
 import java.time.LocalDateTime;
 
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.InfotrygdYtelse;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Behandlingstema;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.InfotrygdSak;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.ObjectFactory;

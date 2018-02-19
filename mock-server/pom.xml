@@ -61,6 +61,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>medl-mock-medlem</artifactId>
         </dependency>
         <dependency>

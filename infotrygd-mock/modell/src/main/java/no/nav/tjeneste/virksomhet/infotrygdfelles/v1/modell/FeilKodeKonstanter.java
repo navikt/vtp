@@ -1,4 +1,4 @@
-package no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell;
+package no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell;
 
 public interface FeilKodeKonstanter {
 
