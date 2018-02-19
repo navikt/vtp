@@ -12,6 +12,7 @@ import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaend
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
+import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
@@ -77,6 +78,7 @@ public class MockServer {
         //access wsdl on http://localhost:7999/behandlesakV2?wsdl
         publishService(PdpMock.class,"/asm-pdp/authorize");
         publishService(FinnSakListeMockImpl.class, "/infotrygdsak");
+        publishService(FinnGrunnlagListeMockImpl.class, "/infotrygdberegningsgrunnlag");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
         publishService(HentYtelseskontraktListeMockImpl.class, "/ytelseskontrakt");
         // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl

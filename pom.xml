@@ -135,6 +135,11 @@
 			</dependency>
 			<dependency>
 				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>infotrygd-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
