@@ -24,31 +24,26 @@ import no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.InfotrygdVedtak;
 
 public class InfotrygdGrunnlagMapper {
     private ObjectFactory objectFactory = new ObjectFactory();
-    private static final String FORELDREPENGER_TEMA = "FP";
+    private static final String FORELDREPENGER_TEMA = "FA";
     private static final String SYKEPENGER_TEMA = "SP";
-    private static final String PAARORENDE_TEMA = "PS";
-    private static final String ENGSTONAD_TEMA = "ES";
+    private static final String PAARORENDE_TEMA = "BS";
+    private static final String ENGSTONAD_TEMA = "FE";
 
     public InfotrygdGrunnlagMapper() {
     }
 
     public FinnGrunnlagListeResponse mapInfotrygdGrunnlag(FinnGrunnlagListeResponse response, List<InfotrygdGrunnlag> igListe) {
         for (InfotrygdGrunnlag grunnlag : igListe) {
-            switch (grunnlag.getTema()) {
-                case FORELDREPENGER_TEMA:
-                    response.getForeldrepengerListe().add(mapFP(grunnlag));
-                    break;
-                case SYKEPENGER_TEMA:
-                    response.getSykepengerListe().add(mapSP(grunnlag));
-                    break;
-                case PAARORENDE_TEMA:
-                    response.getPaaroerendeSykdomListe().add(mapPS(grunnlag));
-                    break;
-                case ENGSTONAD_TEMA:
+            if (grunnlag.getTema().equals(FORELDREPENGER_TEMA)) {
+                if (grunnlag.getBehandlingstema().equals(ENGSTONAD_TEMA)) {
                     response.getEngangstoenadListe().add(mapES(grunnlag));
-                    break;
-                default:
-                    break;
+                } else {
+                    response.getForeldrepengerListe().add(mapFP(grunnlag));
+                }
+            } else if (grunnlag.getTema().equals(SYKEPENGER_TEMA)) {
+                response.getSykepengerListe().add(mapSP(grunnlag));
+            } else if (grunnlag.getTema().equals(PAARORENDE_TEMA)) {
+                response.getPaaroerendeSykdomListe().add(mapPS(grunnlag));
             }
         }
         return response;
@@ -58,23 +53,33 @@ public class InfotrygdGrunnlagMapper {
         Foreldrepenger foreldrepenger = objectFactory.createForeldrepenger();
         mapPeriodeYtelse(foreldrepenger, grunnlag);
         foreldrepenger.setOpprinneligIdentdato(ConversionUtils.convertToXMLGregorianCalendar(grunnlag.getOpprinneligStartDato()));
-        foreldrepenger.setDekningsgrad(grunnlag.getDekningProsent().intValue());
-        foreldrepenger.setDekningsgrad(grunnlag.getGradering().intValue());
-        foreldrepenger.setFoedselsdatoBarn(ConversionUtils.convertToXMLGregorianCalendar(grunnlag.getFoedselsDatoAnnenpart()));
+        if (grunnlag.getDekningProsent() != null) {
+            foreldrepenger.setDekningsgrad(grunnlag.getDekningProsent().intValue());
+        }
+        if (grunnlag.getGradering() != null) {
+            foreldrepenger.setGradering(grunnlag.getGradering().intValue());
+        }
+        if (grunnlag.getFoedselsDatoAnnenpart() != null) {
+            foreldrepenger.setFoedselsdatoBarn(ConversionUtils.convertToXMLGregorianCalendar(grunnlag.getFoedselsDatoAnnenpart()));
+        }
         return foreldrepenger;
     }
 
     private Sykepenger mapSP(InfotrygdGrunnlag grunnlag) {
         Sykepenger sykepenger = objectFactory.createSykepenger();
         mapPeriodeYtelse(sykepenger, grunnlag);
-        sykepenger.setInntektsgrunnlagProsent(grunnlag.getDekningProsent().intValue());
+        if (sykepenger.getInntektsgrunnlagProsent() != null) {
+            sykepenger.setInntektsgrunnlagProsent(grunnlag.getDekningProsent().intValue());
+        }
         return sykepenger;
     }
 
     private PaaroerendeSykdom  mapPS(InfotrygdGrunnlag grunnlag) {
         PaaroerendeSykdom psykdom = objectFactory.createPaaroerendeSykdom();
         mapPeriodeYtelse(psykdom, grunnlag);
-        psykdom.setFoedselsdatoPleietrengende(ConversionUtils.convertToXMLGregorianCalendar(grunnlag.getFoedselsDatoAnnenpart()));
+        if (psykdom.getFoedselsdatoPleietrengende() != null) {
+            psykdom.setFoedselsdatoPleietrengende(ConversionUtils.convertToXMLGregorianCalendar(grunnlag.getFoedselsDatoAnnenpart()));
+        }
         return psykdom;
     }
 
@@ -114,7 +119,9 @@ public class InfotrygdGrunnlagMapper {
         for (InfotrygdVedtak iVedtak : grunnlag.getInfotrygdVedtakList()) {
             Vedtak v = objectFactory.createVedtak();
             v.setAnvistPeriode(lagPeriode(iVedtak.getAnvistFom(), iVedtak.getAnvistTom()));
-            v.setUtbetalingsgrad(iVedtak.getUtbetalingGrad().intValue());
+            if (iVedtak.getUtbetalingGrad() != null) {
+                v.setUtbetalingsgrad(iVedtak.getUtbetalingGrad().intValue());
+            }
             resultat.add(v);
         }
         return resultat;

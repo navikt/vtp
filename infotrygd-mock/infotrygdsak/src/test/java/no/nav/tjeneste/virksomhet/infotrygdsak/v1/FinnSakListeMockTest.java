@@ -17,29 +17,18 @@ public class FinnSakListeMockTest {
     @Test
     public void testFinnSakListeResponse() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
     {
-        try {
-            FinnSakListeMockImpl finnSakListeMockImpl = new FinnSakListeMockImpl();
-            FinnSakListeRequest request = new FinnSakListeRequest();
-            request.setPersonident(IDENT);
-            no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = finnSakListeMockImpl.finnSakListe(request);
+        FinnSakListeMockImpl finnSakListeMockImpl = new FinnSakListeMockImpl();
+        FinnSakListeRequest request = new FinnSakListeRequest();
+        request.setPersonident(IDENT);
+        no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = finnSakListeMockImpl.finnSakListe(request);
 
-            assertThat(response).isNotNull();
-//        assertThat(response.getSakListe()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getSakId()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getRegistrert()).isNotNull();
-        assertThat(response.getSakListe().get(0).getTema().getValue().equals("SP")).isTrue();
-        assertThat(response.getSakListe().get(0).getBehandlingstema().getValue().equals("SP")).isTrue();
-//        assertThat(response.getSakListe().get(0).getStatus()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getType()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getResultat()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getEndret()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getIverksatt()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getVedtatt()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getOpphoerFom()).isNotNull();
-        }
-        catch (Exception e){
-            e.getMessage();
-        }
+        assertThat(response).isNotNull();
+        assertThat(response.getVedtakListe()).isNotNull();
+        assertThat(response.getVedtakListe()).isNotEmpty();
+        assertThat(response.getVedtakListe().get(0).getSakId()).isNotNull();
+        assertThat(response.getVedtakListe().get(0).getRegistrert()).isNotNull();
+        assertThat(response.getVedtakListe().get(0).getTema().getValue().equals("SP")).isTrue();
+        assertThat(response.getVedtakListe().get(0).getBehandlingstema().getValue().equals("SP")).isTrue();
 
     }
 }

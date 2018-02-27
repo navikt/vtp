@@ -17,30 +17,17 @@ public class FinnGrunnlagListeMockTest {
     @Test
     public void testFinnGrunnlagListeResponse() throws FinnGrunnlagListePersonIkkeFunnet, FinnGrunnlagListeSikkerhetsbegrensning, FinnGrunnlagListeUgyldigInput
     {
-        try {
-            FinnGrunnlagListeMockImpl finnGrunnlagListeMockImpl = new FinnGrunnlagListeMockImpl();
-            FinnGrunnlagListeRequest request = new FinnGrunnlagListeRequest();
-            request.setPersonident(IDENT);
-            no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.meldinger.FinnGrunnlagListeResponse response = finnGrunnlagListeMockImpl.finnGrunnlagListe(request);
 
-            assertThat(response).isNotNull();
-//        assertThat(response.getSakListe()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getSakId()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getRegistrert()).isNotNull();
+        FinnGrunnlagListeMockImpl finnGrunnlagListeMockImpl = new FinnGrunnlagListeMockImpl();
+        FinnGrunnlagListeRequest request = new FinnGrunnlagListeRequest();
+        request.setPersonident(IDENT);
+        no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.meldinger.FinnGrunnlagListeResponse response = finnGrunnlagListeMockImpl.finnGrunnlagListe(request);
+
+        assertThat(response).isNotNull();
         assertThat(response.getSykepengerListe().get(0).getBehandlingstema().getValue().equals("SP")).isTrue();
         assertThat(response.getSykepengerListe().get(0).getVedtakListe().isEmpty()).isFalse();
-//        assertThat(response.getSakListe().get(0).getBehandlingstema()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getStatus()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getType()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getResultat()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getEndret()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getIverksatt()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getVedtatt()).isNotNull();
-//        assertThat(response.getSakListe().get(0).getOpphoerFom()).isNotNull();
-        }
-        catch (Exception e){
-            e.getMessage();
-        }
+        //assertThat(response.getForeldrepengerListe()).isNotNull();
+        //assertThat(response.getForeldrepengerListe()).isNotEmpty();
 
     }
 }
