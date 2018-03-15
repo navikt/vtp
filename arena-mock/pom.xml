@@ -13,7 +13,7 @@
     <modules>
         <module>ytelseskontrakt</module>
         <module>modell</module>
+        <module>meldekortutbetalingsgrunnlag</module>
     </modules>
-
 
 </project>

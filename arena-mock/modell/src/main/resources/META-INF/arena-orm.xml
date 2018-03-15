@@ -6,6 +6,9 @@
      <entity class="no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell.ArenaSvar" />
      <entity class="no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell.ArenaYtelseskontrakt" />
      <entity class="no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell.ArenaVedtak" />
-
+     <entity class="no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUAktør" />
+     <entity class="no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUSak" />
+     <entity class="no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUVedtak" />
+     <entity class="no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUMeldekort" />
 
 </entity-mappings>
