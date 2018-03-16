@@ -18,6 +18,7 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceM
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
@@ -82,6 +83,7 @@ public class MockServer {
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
         publishService(HentYtelseskontraktListeMockImpl.class, "/ytelseskontrakt");
         // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl
+        publishService(MeldekortUtbetalingsgrunnlagMockImpl.class, "/meldekortutbetalingsgrunnlag");
         publishService(MedlemServiceMockImpl.class, "/medlem");
         publishService(ArbeidsfordelingMockImpl.class, "/arbeidsfordeling");
         publishService(InntektMockImpl.class, "/inntekt");
