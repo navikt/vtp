@@ -65,6 +65,11 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
+            <version>1.0.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>medl-mock-medlem</artifactId>
         </dependency>
         <dependency>
