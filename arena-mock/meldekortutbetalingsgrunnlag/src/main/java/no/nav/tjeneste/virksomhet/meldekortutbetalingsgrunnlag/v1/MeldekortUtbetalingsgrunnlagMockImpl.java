@@ -4,27 +4,9 @@ import static no.nav.tjeneste.virksomhet.arenafelles.v1.modell.FeilKodeKonstante
 import static no.nav.tjeneste.virksomhet.arenafelles.v1.modell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
 import static no.nav.tjeneste.virksomhet.arenafelles.v1.modell.FeilKodeKonstanter.UGYLDIG_INPUT;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Sak;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.ObjectFactory;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.AktoerIkkeFunnet;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.ForretningsmessigUnntak;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.Sikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.UgyldigInput;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Tema;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeRequest;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeResponse;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUAktør;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUDLeser;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.MeldekortUtbetalingsgrunnlagV1;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUMapper;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUSak;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -38,9 +20,26 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.MeldekortUtbetalingsgrunnlagV1;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.AktoerIkkeFunnet;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.ForretningsmessigUnntak;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.Sikkerhetsbegrensning;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.UgyldigInput;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.AktoerId;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Tema;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeRequest;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeResponse;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.ObjectFactory;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUAktør;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUDLeser;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.modell.ArenaMUMapper;
 
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.MeldekortUtbetalingsgrunnlagV1")
@@ -68,7 +67,8 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             throws FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet, FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning, FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput {
 
         FinnMeldekortUtbetalingsgrunnlagListeResponse response = of.createFinnMeldekortUtbetalingsgrunnlagListeResponse();
-        String ident = finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent().toString();
+        AktoerId aktoerId = (AktoerId)finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent();
+        String ident = aktoerId.getAktoerId();
         if (finnMeldekortUtbetalingsgrunnlagListeRequest.getPeriode() != null) {
             XMLGregorianCalendar fom = finnMeldekortUtbetalingsgrunnlagListeRequest.getPeriode().getFom();
             XMLGregorianCalendar tom = finnMeldekortUtbetalingsgrunnlagListeRequest.getPeriode().getTom();
@@ -81,6 +81,9 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
         ArenaMUAktør arenaAktør = arenaMUDLeser.finnArenaAktørId(ident);
+        if (arenaAktør == null) {
+            return response;
+        }
         Optional<String> feilkode = arenaMUDLeser.finnArenaAktørFeilkode(ident);
         try {
             haandterExceptions(feilkode.orElse("--"), ident);

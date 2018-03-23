@@ -14,10 +14,9 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MeldekortUtbetalingsgrunnlagMockImplTest {
-    private final String IDENT = "26048121054";
+    private final String IDENT = "9000000000803";
     private ObjectFactory objectFactory = new ObjectFactory();
 
-    @Ignore
     @Test
     public void testFinnMeldekortUtbetalingsgrunnlagListeResponse() throws FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning, FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet, FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput {
 

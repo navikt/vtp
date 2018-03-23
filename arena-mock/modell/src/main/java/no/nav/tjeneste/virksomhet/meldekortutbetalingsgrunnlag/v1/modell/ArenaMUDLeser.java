@@ -17,7 +17,7 @@ public class ArenaMUDLeser extends DbLeser {
 
     public ArenaMUAktør finnArenaAktørId(String bruker) {
         if (bruker != null) {
-            TypedQuery<ArenaMUAktør> query = entityManager.createQuery("FROM ARENAMU_AKTOER a WHERE IDENT = :ident", ArenaMUAktør.class); //$NON-NLS-1$ //$NON-NLS-1$
+            TypedQuery<ArenaMUAktør> query = entityManager.createQuery("FROM ArenaMUAktør WHERE IDENT = :ident", ArenaMUAktør.class); //$NON-NLS-1$ //$NON-NLS-1$
             query.setParameter("ident", bruker);
             List<ArenaMUAktør> arenaSvar = query.getResultList();
             if (arenaSvar != null && !arenaSvar.isEmpty()) {
@@ -31,8 +31,8 @@ public class ArenaMUDLeser extends DbLeser {
     public Optional<String> finnArenaAktørFeilkode(String bruker) {
         String feilkode;
         if (bruker != null) {
-            TypedQuery<ArenaMUAktør> query = entityManager.createQuery("FROM ARENAMU_AKTOER a WHERE IDENT = :ident", ArenaMUAktør.class); //$NON-NLS-1$ //$NON-NLS-1$
-            query.setParameter("fnr", bruker);
+            TypedQuery<ArenaMUAktør> query = entityManager.createQuery("FROM ArenaMUAktør WHERE IDENT = :ident", ArenaMUAktør.class); //$NON-NLS-1$ //$NON-NLS-1$
+            query.setParameter("ident", bruker);
             List<ArenaMUAktør> arenaSvar = query.getResultList();
             if (arenaSvar == null || arenaSvar.isEmpty()) {
                 feilkode = null;
