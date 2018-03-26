@@ -33,13 +33,45 @@ public class ArenaMUMapper {
             Tema tema = objectFactory.createTema();
             tema.setValue(arenaSak.getTema());
             sak.setTema(tema);
-            Saksstatuser status = objectFactory.createSaksstatuser();
-            status.setValue(arenaSak.getSakStatus());
-            sak.setSaksstatus(status);
+            sak.setSaksstatus(mapSakStatus(arenaSak.getSakStatus()));
             sak.getVedtakListe().addAll(mapArenaVedtakListe(arenaSak.getArenaVedtak()));
             response.getMeldekortUtbetalingsgrunnlagListe().add(sak);
         }
         return response;
+    }
+
+    private Saksstatuser mapSakStatus(String sakStatus) {
+        Saksstatuser status = objectFactory.createSaksstatuser();
+        status.setTermnavn(sakStatus);
+        if ("Aktiv".equals(sakStatus)) {
+            status.setValue("AKTIV");
+        } else if ("Inaktiv".equals(sakStatus)) {
+            status.setValue("INAKT");
+        } else {
+            status.setValue("AVSLU");
+            status.setTermnavn("Avsluttet");
+        }
+        return status;
+    }
+
+    private Vedtaksstatuser mapVedtakStatus(String vedtakStatus) {
+        Vedtaksstatuser status = objectFactory.createVedtaksstatuser();
+        status.setTermnavn(vedtakStatus);
+        if ("Iverksatt".equals(vedtakStatus)) {
+            status.setValue("IVERK");
+        } else if ("Avsluttet".equals(vedtakStatus)) {
+            status.setValue("AVSLU");
+        } else if ("Innstilt".equals(vedtakStatus)) {
+            status.setValue("INNST");
+        } else if ("Opprettet".equals(vedtakStatus)) {
+            status.setValue("OPPRE");
+        } else if ("Registrert".equals(vedtakStatus)) {
+            status.setValue("REGIS");
+        } else {
+            status.setValue("MOTAT");
+            status.setTermnavn("Mottatt");
+        }
+        return status;
     }
 
     private List<Vedtak> mapArenaVedtakListe(List<ArenaMUVedtak> arenaVedtakList) {
@@ -50,9 +82,7 @@ public class ArenaMUMapper {
         }
         for (ArenaMUVedtak aVedtak : arenaVedtakList) {
             Vedtak v = objectFactory.createVedtak();
-            Vedtaksstatuser status = objectFactory.createVedtaksstatuser();
-            status.setValue(aVedtak.getVedtakStatus());
-            v.setVedtaksstatus(status);
+            v.setVedtaksstatus(mapVedtakStatus(aVedtak.getVedtakStatus()));
             Periode periode = objectFactory.createPeriode();
             periode.setFom(datoFraString(aVedtak.getVedtakFom()));
             periode.setTom(datoFraString(aVedtak.getVedtakTom()));
