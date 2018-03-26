@@ -3,7 +3,7 @@
     <parent>
         <artifactId>mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,7 +14,9 @@
         <module>sak</module>
         <module>modell</module>
         <module>oppgavebehandling</module>
-        <module>behandlesak</module>
+        <module>behandleoppgave</module>
+	<module>behandlesak</module>
+        <module>oppgave</module>
     </modules>
 
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
+    <!-- Hibernate persistence unit. -->
+    <persistence-unit name="infotrygd" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <mapping-file>META-INF/infotrygd-orm.xml</mapping-file>
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect" />
+            <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
+            <property name="hibernate.default_schema" value="fpsak"/>
+            <property name="hibernate.connection.url" value="jdbc:oracle:thin:@d26dbfl023.test.local:1521/fpsak_u87"/>
+            <property name="hibernate.connection.username" value="fpsak"/>
+            <property name="hibernate.connection.password" value="QLnmkmkjbyUD12"/>
+            <property name="hibernate.connection.autocommit" value="false" />
+            <property name="hibernate.jdbc.use_get_generated_keys" value="true" />
+            <property name="org.hibernate.flushMode" value="COMMIT" />
+            <property name="hibernate.cache.use_query_cache" value="false" />
+            <property name="hibernate.cache.use_secondary_level_cache" value="false" />
+        </properties>
+    </persistence-unit>
+
+</persistence>

@@ -3,7 +3,7 @@
     <parent>
         <artifactId>tps-mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,8 +20,8 @@
 
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
-            <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
 

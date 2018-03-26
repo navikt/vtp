@@ -3,7 +3,7 @@
     <parent>
         <artifactId>joark-mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -71,7 +71,10 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>tps-mock-modell</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>journal-mock-modell</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

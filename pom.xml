@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -6,7 +7,7 @@
 	<artifactId>mock</artifactId>
 	<packaging>pom</packaging>
 	<name>Vedtak Engangsstønad mock root pom</name>
-	<version>1.0.3</version>
+	<version>1.0.5</version>
 
 	<scm>
 		<connection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</connection>
@@ -17,10 +18,19 @@
 
 	<modules>
 		<module>mock-server</module>
+        <module>mock-felles</module>
 		<module>tps-mock</module>
         <module>gsak-mock</module>
         <module>joark-mock</module>
-	</modules>
+	    <module>pdp-mock</module>
+		<module>infotrygd-mock</module>
+		<module>arena-mock</module>
+		<module>medl-mock</module>
+		<module>inntekt-mock</module>
+		<module>arbeidsforhold-mock</module>
+		<module>organisasjon-mock</module>
+		<module>norg2-mock</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,18 +43,36 @@
         <junit.version>4.12</junit.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.2.9.Final</hibernate.version>
+		<oppgave.version>3.0.0</oppgave.version>
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
+		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
+		<nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>3.0.1</nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
+        <gsak.behandleoppgave.version>1.0.7</gsak.behandleoppgave.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
+        <nav-fim-behandleSak-v2-tjenestespesifikasjon.version>2.0.0</nav-fim-behandleSak-v2-tjenestespesifikasjon.version>
         <joark.journal.version>1.0.3</joark.journal.version>
+		<joark.inngaaendejournal.version>1.0.0</joark.inngaaendejournal.version>
+        <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
-        <tps.person.version>2.0.0</tps.person.version>
+		<tps.person.version>3.0.2</tps.person.version>
+		<medlem.version>2.0.6</medlem.version>
+		<inntekt.version>2.0.0</inntekt.version>
+		<arbeidsforhold.version>3.0.0</arbeidsforhold.version>
+		<organisasjon.version>1.0.4</organisasjon.version>
+        <norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
+		<modig-testcertificates.version>1.2.5-vedfp-SNAPSHOT</modig-testcertificates.version>
 	</properties>
 
 	<dependencyManagement>
 		<!-- Prosjektavhengigheter -->
 		<dependencies>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>mock-felles</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>tps-mock-modell</artifactId>
@@ -70,10 +98,93 @@
 				<artifactId>oppgavebehandling-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>behandleoppgave-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>behandlesak-mock</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>journal-mock-modell</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>journal-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>inngaaendejournal-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>behandleinngaaendejournal-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>infotrygdsak-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>infotrygd-mock-modell</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>ytelseskontrakt-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>medl-mock-medlem</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>inntekt-mock-inntekt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>organisasjon-mock-organisasjon</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>arbeidsfordeling-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger</groupId>
+                <artifactId>norg2-mock-modell</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+			<!-- NAV-biblioteker -->
+			<dependency>
+				<groupId>no.nav.modig</groupId>
+				<artifactId>modig-testcertificates</artifactId>
+				<version>${modig-testcertificates.version}</version>
 			</dependency>
 
 			<!-- Kontraktsavhengigheter -->
@@ -84,8 +195,8 @@
 				<classifier>jaxws</classifier>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.tjenester.fim</groupId>
-				<artifactId>nav-fim-person-v2-tjenestespesifikasjon</artifactId>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
 				<version>${tps.person.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
@@ -107,10 +218,81 @@
 				<version>${gsak.oppgavebehandling.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
+                <version>${gsak.behandleoppgave.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-fim-behandleSak-v1-tjenestespesifikasjon</artifactId>
 				<version>${nav-fim-behandleSak-v1-tjenestespesifikasjon.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
+                <version>${nav-fim-behandleSak-v2-tjenestespesifikasjon.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-inngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+				<version>${joark.inngaaendejournal.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+                <version>${joark.behandleinngaaendejournal.version}</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
+				<version>${infotrygd.sak.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
+				<version>${nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
+				<version>${medlem.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-arbeidsfordeling-v1-tjenestespesifikasjon</artifactId>
+                <version>${norg2.arbeidsfordeling.version}</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
+				<version>${inntekt.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-organisasjon-v4-tjenestespesifikasjon</artifactId>
+				<version>${organisasjon.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-arbeidsforhold-v3-tjenestespesifikasjon</artifactId>
+				<version>${arbeidsforhold.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+
+
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-oppgave-v3-tjenestespesifikasjon</artifactId>
+				<version>${oppgave.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
 
@@ -204,6 +386,33 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<inherited>false</inherited>
+				<configuration>
+					<repository>docker.adeo.no:5000/fpmock</repository>
+					<tag>${project.version}</tag>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<distributionManagement>

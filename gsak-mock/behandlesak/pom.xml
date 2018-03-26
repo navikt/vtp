@@ -3,7 +3,7 @@
     <parent>
         <artifactId>gsak-mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,6 +19,11 @@
             <artifactId>nav-fim-behandleSak-v1-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
+
+        <dependency>
+            <groupId>no.nav.sbl.dialogarena</groupId>
+            <artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
+        </dependency> 
 
         <dependency>
             <groupId>org.slf4j</groupId>

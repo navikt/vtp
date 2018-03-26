@@ -11,13 +11,15 @@
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect" />
             <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
-            <property name="hibernate.default_schema" value="u87_engangsstonad"/>
-            <property name="hibernate.connection.url" value="jdbc:oracle:thin:@d26dbfl007.test.local:1521/u87engangsstonad"/>
-            <property name="hibernate.connection.username" value="u87_engangsstonad"/>
-            <property name="hibernate.connection.password" value="QLnmkmkjbyUD"/>
+            <property name="hibernate.default_schema" value="fpsak"/>
+            <property name="hibernate.connection.url" value="jdbc:oracle:thin:@d26dbfl023.test.local:1521/fpsak_u87"/>
+            <property name="hibernate.connection.username" value="fpsak"/>
+            <property name="hibernate.connection.password" value="QLnmkmkjbyUD12"/>
             <property name="hibernate.connection.autocommit" value="false" />
             <property name="hibernate.jdbc.use_get_generated_keys" value="true" />
             <property name="org.hibernate.flushMode" value="COMMIT" />
+            <property name="hibernate.cache.use_query_cache" value="false" />
+            <property name="hibernate.cache.use_secondary_level_cache" value="false" />
         </properties>
     </persistence-unit>
 

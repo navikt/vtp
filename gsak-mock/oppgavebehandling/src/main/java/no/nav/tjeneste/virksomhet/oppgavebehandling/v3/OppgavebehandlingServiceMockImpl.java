@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.oppgavebehandling.v3;
 
+import java.util.List;
+
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.FeilregistrerOppgaveOppgaveIkkeFunnet;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.FeilregistrerOppgaveUlovligStatusOvergang;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.LagreMappeMappeIkkeFunnet;
@@ -19,14 +21,18 @@ import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.TildelOppgaveRe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
+@Addressing
 @WebService(name = "Oppgavebehandling_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3")
+@HandlerChain(file="Handler-chain.xml")
 public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(OppgavebehandlingServiceMockImpl.class);
@@ -46,7 +52,7 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @ResponseWrapper(localName = "opprettOppgaveResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OpprettOppgaveResponse")
     public OpprettOppgaveResponse opprettOppgave(@WebParam(name = "request",targetNamespace = "") OpprettOppgaveRequest opprettOppgaveRequest) {
         OpprettOppgaveResponse opprettOppgaveResponse = new OpprettOppgaveResponse();
-        opprettOppgaveResponse.setOppgaveId("1");
+        opprettOppgaveResponse.setOppgaveId(Long.toString(Long.parseLong(opprettOppgaveRequest.getOpprettOppgave().getSaksnummer()) * 10));
         return opprettOppgaveResponse;
     }
 
@@ -81,7 +87,10 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @RequestWrapper(localName = "ferdigstillOppgaveBolk", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.FerdigstillOppgaveBolk")
     @ResponseWrapper(localName = "ferdigstillOppgaveBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.FerdigstillOppgaveBolkResponse")
     public FerdigstillOppgaveBolkResponse ferdigstillOppgaveBolk(@WebParam(name = "request",targetNamespace = "") FerdigstillOppgaveBolkRequest ferdigstillOppgaveBolkRequest) {
-        throw new UnsupportedOperationException("Ikke implementert");
+//        throw new UnsupportedOperationException("Ikke implementert");
+        FerdigstillOppgaveBolkResponse response = new FerdigstillOppgaveBolkResponse();
+        response.setTransaksjonOk(true);
+        return response;
     }
 
     @Override

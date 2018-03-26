@@ -1,7 +1,7 @@
 package no.nav.tjeneste.virksomhet.sak.v1.modell;
 
 
-import no.nav.tjeneste.virksomhet.person.v2.modell.TpsRepo;
+import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
 import no.nav.tjeneste.virksomhet.sak.v1.binding.HentSakSakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.feil.SakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Aktoer;
@@ -57,7 +57,7 @@ public class GsakRepo {
     }
 
     private void loadRepoData() {
-        String sakId = String.valueOf(TpsRepo.STD_KVINNE_FNR + "00");
+        String sakId = String.valueOf(TpsPerson.STD_KVINNE_FNR + "00");
         Sak sak = new Sak();
 
         sak.setSakId(sakId);
@@ -72,7 +72,7 @@ public class GsakRepo {
         sak.setFagsystem(fagsystemer);
 
         Aktoer aktoer = new Person();
-        aktoer.setIdent(String.valueOf(TpsRepo.STD_KVINNE_AKTØR_ID));
+        aktoer.setIdent(String.valueOf(TpsPerson.STD_KVINNE_AKTØR_ID));
         sak.getGjelderBrukerListe().add(aktoer);
 
         try {

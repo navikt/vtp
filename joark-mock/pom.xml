@@ -3,7 +3,7 @@
     <parent>
         <artifactId>mock</artifactId>
         <groupId>no.nav.foreldrepenger</groupId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,6 +12,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>journal</module>
+        <module>inngaaendejournal</module>
+        <module>behandleinngaaendejournal</module>
+        <module>modell</module>
     </modules>
 
 
