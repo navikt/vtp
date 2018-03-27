@@ -47,7 +47,9 @@
 
         <gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
-		<nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>3.0.1</nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version>
+		<infotrygd.beregningsgrunnlag.version>1.0.2</infotrygd.beregningsgrunnlag.version>
+		<arena.meldekortutbetalingsgrunnlag.version>1.0.1</arena.meldekortutbetalingsgrunnlag.version>
+		<arena.ytelseskontrakt.version>3.0.1</arena.ytelseskontrakt.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
         <gsak.behandleoppgave.version>1.0.7</gsak.behandleoppgave.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
@@ -146,6 +148,16 @@
 			<dependency>
 				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>ytelseskontrakt-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>arena-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -254,8 +266,20 @@
 			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-infotrygdBeregningsgrunnlag-v1-tjenestespesifikasjon</artifactId>
+				<version>${infotrygd.beregningsgrunnlag.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-meldekortUtbetalingsgrunnlag-v1-tjenestespesifikasjon</artifactId>
+				<version>${arena.meldekortutbetalingsgrunnlag.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
 				<artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
-				<version>${nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon.version}</version>
+				<version>${arena.ytelseskontrakt.version.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
 			<dependency>

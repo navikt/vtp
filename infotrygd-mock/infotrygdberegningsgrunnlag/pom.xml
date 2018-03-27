@@ -18,7 +18,6 @@
             <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-infotrygdBeregningsgrunnlag-v1-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
-            <version>1.0.2</version>
         </dependency>
 
         <dependency>

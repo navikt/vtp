@@ -17,7 +17,6 @@
         <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-meldekortUtbetalingsgrunnlag-v1-tjenestespesifikasjon</artifactId>
-            <version>1.0.1</version>
             <classifier>jaxws</classifier>
         </dependency>
 
