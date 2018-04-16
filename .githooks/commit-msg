@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# An example hook script to check the commit log message.
+# Called by "git commit" with one argument, the name of the file
+# that has the commit message.  The hook should exit with non-zero
+# status after issuing an appropriate message if it wants to stop the
+# commit.  The hook is allowed to edit the commit message file.
+#
+#
+# Tillater kun commit meldinger som starter med "PK-12345: ", "FPFEIL-12: ", "FIX: " eller "Merge "
+
+regex="^(PK-[0-9]{5}|FPFEIL-[0-9]{1,}|FIX|Merge|NOJIRA|RELEASE|PKMANTIS-[0-9]{1,}|updating poms)(:|,)? .*"
+commit_msg=$(cat $1)
+
+error_msg="Avbryter commit. Det er kun tillat med commit meldinger som begynne med \"PK-nnnnn \", \"FPFEIL-nn \", \"FIX \", \"NOJIRA\" eller \"Merge \"."
+
+if [[ ! $commit_msg =~ $regex ]]; then
+    echo "$error_msg" >&2
+    exit 1
+fi
