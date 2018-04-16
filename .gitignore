@@ -13,3 +13,5 @@ es.properties
 bin
 mock*.log
 mock.log.*
+.mvn/maven.config
+.flattened-pom.xml
