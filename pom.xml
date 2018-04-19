@@ -30,7 +30,7 @@
 		<module>arbeidsforhold-mock</module>
 		<module>organisasjon-mock</module>
 		<module>norg2-mock</module>
-    </modules>
+	</modules>
 
 	<properties>
 		<revision>0.0</revision>
@@ -61,7 +61,7 @@
 		<joark.inngaaendejournal.version>1.0.0</joark.inngaaendejournal.version>
         <joark.behandleinngaaendejournal.version>1.0.0</joark.behandleinngaaendejournal.version>
         <tps.aktoer.version>2.0.1</tps.aktoer.version>
-		<tps.person.version>3.0.2</tps.person.version>
+		<tps.person.version>pktermitt-121-kontrakter-gagan-SNAPSHOT</tps.person.version>
 		<medlem.version>2.0.6</medlem.version>
 		<inntekt.version>2.0.0</inntekt.version>
 		<arbeidsforhold.version>3.0.0</arbeidsforhold.version>
@@ -210,7 +210,7 @@
 				<classifier>jaxws</classifier>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.tjenester</groupId>
+				<groupId>no.nav.foreldrepenger.kontrakter</groupId>
 				<artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
 				<version>${tps.person.version}</version>
 				<classifier>jaxws</classifier>

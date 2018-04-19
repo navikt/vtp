@@ -58,6 +58,13 @@ public class MockServer {
 
         server.setHandler(contextHandlerCollection);
         server.start();
+
+        publishServices();
+
+
+    }
+
+    private static void publishServices() {
         //TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishService(AktoerServiceMockImpl.class, "/aktoer");
         // access wsdl on http://localhost:7999/aktoer?wsdl
