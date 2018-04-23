@@ -1,5 +1,23 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jws.HandlerChain;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkSikkerhetsbegrensning;
@@ -22,7 +40,6 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
@@ -52,24 +69,6 @@ import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentVergeResponse;
 import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
 import no.nav.tjeneste.virksomhet.person.v3.modell.RelasjonBygger;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsRelasjon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-import javax.xml.ws.soap.Addressing;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Addressing
 @WebService(name = "Person_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3")
@@ -78,15 +77,27 @@ public class PersonServiceMockImpl implements PersonV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
-    public static final String ENDRET_AV = "Testhub-gjengen";
 
 
-    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonRequest")
-    @WebResult(name = "response", targetNamespace = "")
-    @RequestWrapper(localName = "hentPerson", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPerson")
-    @ResponseWrapper(localName = "hentPersonResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonResponse")
+    @WebMethod(
+            action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonRequest"
+    )
+    @WebResult(
+            name = "response",
+            targetNamespace = ""
+    )
+    @RequestWrapper(
+            localName = "hentPerson",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentPerson"
+    )
+    @ResponseWrapper(
+            localName = "hentPersonResponse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonResponse"
+    )
     @Override
-    public HentPersonResponse hentPerson(@WebParam(name = "request", targetNamespace = "") HentPersonRequest hentPersonRequest) throws HentPersonPersonIkkeFunnet, HentPersonSikkerhetsbegrensning {
+    public HentPersonResponse hentPerson(@WebParam(name = "request",targetNamespace = "") HentPersonRequest hentPersonRequest) throws HentPersonPersonIkkeFunnet, HentPersonSikkerhetsbegrensning {
 
         PersonIdent personIdent = (PersonIdent)hentPersonRequest.getAktoer();
         String ident = personIdent.getIdent().getIdent();
@@ -106,12 +117,29 @@ public class PersonServiceMockImpl implements PersonV3 {
         return response;
     }
 
-    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentGeografiskTilknytningRequest")
-    @WebResult(name = "response", targetNamespace = "")
-    @RequestWrapper(localName = "hentGeografiskTilknytning", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentGeografiskTilknytning")
-    @ResponseWrapper(localName = "hentGeografiskTilknytningResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentGeografiskTilknytningResponse")
+
+    public static final String ENDRET_AV = "Testhub-gjengen";
+
+
+    @WebMethod(
+            action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentGeografiskTilknytningRequest"
+    )
+    @WebResult(
+            name = "response",
+            targetNamespace = ""
+    )
+    @RequestWrapper(
+            localName = "hentGeografiskTilknytning",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentGeografiskTilknytning"
+    )
+    @ResponseWrapper(
+            localName = "hentGeografiskTilknytningResponse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentGeografiskTilknytningResponse"
+    )
     @Override
-    public HentGeografiskTilknytningResponse hentGeografiskTilknytning(@WebParam(name = "request", targetNamespace = "") HentGeografiskTilknytningRequest hentGeografiskTilknytningRequest) throws HentGeografiskTilknytningPersonIkkeFunnet, HentGeografiskTilknytningSikkerhetsbegrensing {
+    public HentGeografiskTilknytningResponse hentGeografiskTilknytning(@WebParam(name = "request",targetNamespace = "") HentGeografiskTilknytningRequest hentGeografiskTilknytningRequest) throws HentGeografiskTilknytningPersonIkkeFunnet, HentGeografiskTilknytningSikkerhetsbegrensing {
         PersonIdent personIdent = (PersonIdent)hentGeografiskTilknytningRequest.getAktoer();
         String ident = personIdent.getIdent().getIdent();
 
@@ -126,39 +154,90 @@ public class PersonServiceMockImpl implements PersonV3 {
         return response;
     }
 
-    @WebMethod
-    @RequestWrapper(localName = "hentVerge", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentVerge")
-    @ResponseWrapper(localName = "hentVergeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentVergeResponse")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebMethod(
+            action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentVergeRequest"
+    )
+    @WebResult(
+            name = "response",
+            targetNamespace = ""
+    )
+    @RequestWrapper(
+            localName = "hentVerge",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentVerge"
+    )
+    @ResponseWrapper(
+            localName = "hentVergeResponse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentVergeResponse"
+    )
     @Override
-    public HentVergeResponse hentVerge(HentVergeRequest hentVergeRequest) throws HentVergePersonIkkeFunnet, HentVergeSikkerhetsbegrensning {
+    public HentVergeResponse hentVerge(@WebParam(name = "request",targetNamespace = "") HentVergeRequest var1) throws HentVergePersonIkkeFunnet, HentVergeSikkerhetsbegrensning {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
-    @WebMethod
-    @RequestWrapper(localName = "hentEkteskapshistorikk", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentEkteskapshistorikk")
-    @ResponseWrapper(localName = "hentEkteskapshistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentEkteskapshistorikkResponse")
-    @WebResult(name = "response", targetNamespace = "")
-    @Override
-    public HentEkteskapshistorikkResponse hentEkteskapshistorikk(HentEkteskapshistorikkRequest hentEkteskapshistorikkRequest) throws HentEkteskapshistorikkPersonIkkeFunnet, HentEkteskapshistorikkSikkerhetsbegrensning {
+    @WebMethod(
+            action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentEkteskapshistorikkRequest"
+    )
+    @WebResult(
+            name = "response",
+            targetNamespace = ""
+    )
+    @RequestWrapper(
+            localName = "hentEkteskapshistorikk",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentEkteskapshistorikk"
+    )
+    @ResponseWrapper(
+            localName = "hentEkteskapshistorikkResponse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentEkteskapshistorikkResponse"
+    )
+    public HentEkteskapshistorikkResponse hentEkteskapshistorikk(@WebParam(name = "request",targetNamespace = "") HentEkteskapshistorikkRequest hentEkteskapshistorikkRequest) throws HentEkteskapshistorikkPersonIkkeFunnet, HentEkteskapshistorikkSikkerhetsbegrensning {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
-    @WebMethod
-    @RequestWrapper(localName = "hentPersonerMedSammeAdresse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonerMedSammeAdresse")
-    @ResponseWrapper(localName = "hentPersonerMedSammeAdresseResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonerMedSammeAdresseResponse")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebMethod(
+            action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonerMedSammeAdresseRequest"
+    )
+    @WebResult(
+            name = "response",
+            targetNamespace = ""
+    )
+    @RequestWrapper(
+            localName = "hentPersonerMedSammeAdresse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonerMedSammeAdresse"
+    )
+    @ResponseWrapper(
+            localName = "hentPersonerMedSammeAdresseResponse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonerMedSammeAdresseResponse"
+    )
     @Override
-    public HentPersonerMedSammeAdresseResponse hentPersonerMedSammeAdresse(HentPersonerMedSammeAdresseRequest hentPersonerMedSammeAdresseRequest) throws HentPersonerMedSammeAdresseIkkeFunnet, HentPersonerMedSammeAdresseSikkerhetsbegrensning {
+    public HentPersonerMedSammeAdresseResponse hentPersonerMedSammeAdresse(@WebParam(name = "request",targetNamespace = "") HentPersonerMedSammeAdresseRequest var1) throws HentPersonerMedSammeAdresseIkkeFunnet, HentPersonerMedSammeAdresseSikkerhetsbegrensning{
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
-    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonhistorikkRequest")
-    @RequestWrapper(localName = "hentPersonhistorikk", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikk")
-    @ResponseWrapper(localName = "hentPersonhistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikkResponse")
-    @WebResult(name = "response", targetNamespace = "")
+    @WebMethod(
+            action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonhistorikkRequest"
+    )
+    @WebResult(
+            name = "response",
+            targetNamespace = ""
+    )
+    @RequestWrapper(
+            localName = "hentPersonhistorikk",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikk"
+    )
+    @ResponseWrapper(
+            localName = "hentPersonhistorikkResponse",
+            targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3",
+            className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikkResponse"
+    )
     @Override
-    public HentPersonhistorikkResponse hentPersonhistorikk(HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
+    public HentPersonhistorikkResponse hentPersonhistorikk(@WebParam(name = "request",targetNamespace = "") HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
 
         PersonIdent personIdent = (PersonIdent) hentPersonhistorikkRequest.getAktoer();
         String ident = personIdent.getIdent().getIdent();
