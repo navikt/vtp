@@ -63,9 +63,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+            <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>

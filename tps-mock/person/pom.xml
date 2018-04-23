@@ -20,9 +20,8 @@
 
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
-            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+            <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
-            <classifier>jaxws</classifier>
         </dependency>
 
         <!-- 3dje parts biblioteker -->
