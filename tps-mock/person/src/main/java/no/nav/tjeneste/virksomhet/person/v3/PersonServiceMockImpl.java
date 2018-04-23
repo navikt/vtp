@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
+import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet;
@@ -16,8 +17,22 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.HentVergeSikkerhetsbegrensni
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import no.nav.tjeneste.virksomhet.person.v3.data.PersonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.data.RelasjonDbLeser;
+import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonstatusPeriode;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostboksadresseNorsk;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.StatsborgerskapPeriode;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.StrukturertAdresse;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentEkteskapshistorikkRequest;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentEkteskapshistorikkResponse;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest;
@@ -34,6 +49,7 @@ import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentSikkerhetstiltakReques
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentSikkerhetstiltakResponse;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentVergeRequest;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentVergeResponse;
+import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
 import no.nav.tjeneste.virksomhet.person.v3.modell.RelasjonBygger;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsRelasjon;
 import org.slf4j.Logger;
@@ -49,6 +65,10 @@ import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Addressing
@@ -58,6 +78,7 @@ public class PersonServiceMockImpl implements PersonV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
+    public static final String ENDRET_AV = "Testhub-gjengen";
 
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonRequest")
@@ -72,7 +93,7 @@ public class PersonServiceMockImpl implements PersonV3 {
 
         Bruker bruker = new PersonDbLeser(entityManager).finnPerson(ident);
         if (bruker == null) {
-            throw new HentPersonPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet());
+            throw new HentPersonPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new PersonIkkeFunnet());
         }
 
         List<TpsRelasjon> relasjoner = new RelasjonDbLeser(entityManager).finnRelasjon(ident);
@@ -96,7 +117,7 @@ public class PersonServiceMockImpl implements PersonV3 {
 
         Bruker bruker = new PersonDbLeser(entityManager).finnPerson(ident);
         if (bruker == null) {
-            throw new HentGeografiskTilknytningPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet());
+            throw new HentGeografiskTilknytningPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new PersonIkkeFunnet());
         }
 
         HentGeografiskTilknytningResponse response = new HentGeografiskTilknytningResponse();
@@ -132,13 +153,159 @@ public class PersonServiceMockImpl implements PersonV3 {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
-    @WebMethod
+    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonhistorikkRequest")
     @RequestWrapper(localName = "hentPersonhistorikk", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikk")
     @ResponseWrapper(localName = "hentPersonhistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/person/v3", className = "no.nav.tjeneste.virksomhet.person.v3.HentPersonhistorikkResponse")
     @WebResult(name = "response", targetNamespace = "")
     @Override
     public HentPersonhistorikkResponse hentPersonhistorikk(HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
-        throw new UnsupportedOperationException("Ikke implementert, men skal implementeres i PK-49366 PKTERMITT-121");
+
+        PersonIdent personIdent = (PersonIdent) hentPersonhistorikkRequest.getAktoer();
+        String ident = personIdent.getIdent().getIdent();
+
+        Bruker bruker = new PersonDbLeser(entityManager).finnPerson(ident);
+        if (bruker == null) {
+            throw new HentPersonhistorikkPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new PersonIkkeFunnet());
+        }
+
+        HentPersonhistorikkResponse response = new HentPersonhistorikkResponse();
+        response.withAktoer(hentPersonhistorikkRequest.getAktoer());
+
+        response.withPersonstatusListe(hentPersonstatusPerioder(hentPersonhistorikkRequest.getAktoer()));
+        response.withBostedsadressePeriodeListe(hentBostedadressePerioder(hentPersonhistorikkRequest.getAktoer()));
+        response.withStatsborgerskapListe(hentStatsborgerskapPerioder(hentPersonhistorikkRequest.getAktoer()));
+
+        return response;
+    }
+
+    private List<StatsborgerskapPeriode> hentStatsborgerskapPerioder(Aktoer aktoer) {
+        List<StatsborgerskapPeriode> resultat = new ArrayList<>();
+
+        StatsborgerskapPeriode periode1 = new StatsborgerskapPeriode();
+        periode1.withEndretAv(ENDRET_AV);
+        periode1.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        periode1.withEndringstype(Endringstyper.NY);
+        periode1.withPeriode(lagPeriode(LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(1)));
+        periode1.withEndringstype(Endringstyper.NY);
+        periode1.withStatsborgerskap(lagStatsborgerskap());
+
+        StatsborgerskapPeriode periode2 = new StatsborgerskapPeriode();
+        periode2.withEndretAv(ENDRET_AV);
+        periode2.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        periode2.withEndringstype(Endringstyper.NY);
+        periode2.withPeriode(lagPeriode(LocalDate.now().minusMonths(1), LocalDate.now()));
+        periode2.withEndringstype(Endringstyper.NY);
+        periode2.withStatsborgerskap(lagStatsborgerskap());
+
+        resultat.add(periode1);
+        resultat.add(periode2);
+        return resultat;
+    }
+
+    private Statsborgerskap lagStatsborgerskap() {
+        Statsborgerskap statsborgerskap = new Statsborgerskap();
+        statsborgerskap.withEndretAv(ENDRET_AV);
+        statsborgerskap.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        statsborgerskap.withEndringstype(Endringstyper.NY);
+
+        Landkoder land = new Landkoder();
+        land.withKodeRef("Landkoder");
+        land.setValue("NOR");
+        land.setKodeRef("NOR");
+        statsborgerskap.withLand(land);
+        return statsborgerskap;
+    }
+
+    private List<BostedsadressePeriode> hentBostedadressePerioder(Aktoer aktoer) {
+        List<BostedsadressePeriode> resultat = new ArrayList<>();
+
+        BostedsadressePeriode adr1 = new BostedsadressePeriode();
+        adr1.withEndretAv(ENDRET_AV);
+        adr1.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        adr1.withEndringstype(Endringstyper.NY);
+        adr1.withBostedsadresse(lagBostedadresse());
+        adr1.withPeriode(lagPeriode(LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(1)));
+
+        BostedsadressePeriode adr2 = new BostedsadressePeriode();
+        adr2.withEndretAv(ENDRET_AV);
+        adr2.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        adr2.withEndringstype(Endringstyper.NY);
+        adr2.withBostedsadresse(lagBostedadresse());
+        adr2.withPeriode(lagPeriode(LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(1)));
+
+        resultat.add(adr1);
+        resultat.add(adr2);
+        return resultat;
+    }
+
+    private Bostedsadresse lagBostedadresse() {
+        Bostedsadresse bostedsadresse = new Bostedsadresse();
+        bostedsadresse.withEndretAv(ENDRET_AV);
+        bostedsadresse.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        bostedsadresse.withEndringstype(Endringstyper.ENDRET);
+        bostedsadresse.withStrukturertAdresse(lagStrukturertAdresse());
+
+        return bostedsadresse;
+    }
+
+    private StrukturertAdresse lagStrukturertAdresse() {
+        PostboksadresseNorsk postboksadresseNorsk = new PostboksadresseNorsk();
+
+        Landkoder landkoder = new Landkoder();
+        landkoder.setKodeverksRef("Landkoder");
+        landkoder.setKodeRef("NOR");
+        landkoder.setValue("NOR");
+
+        postboksadresseNorsk.withLandkode(landkoder);
+        postboksadresseNorsk.withPostboksanlegg("anglegg123");
+        postboksadresseNorsk.withPostboksnummer("0954");
+
+        Postnummer postnummer = new Postnummer();
+        postnummer.setKodeverksRef("Postnummer");
+        postnummer.setKodeRef("Oslo");
+        postnummer.setValue("Oslo");
+        postboksadresseNorsk.withPoststed(postnummer);
+        postboksadresseNorsk.withPostboksnummer("0103");
+
+        return postboksadresseNorsk;
+    }
+
+    private List<PersonstatusPeriode> hentPersonstatusPerioder(Aktoer aktoer) {
+        List<PersonstatusPeriode> resultat = new ArrayList<>();
+
+        PersonstatusPeriode personstatusPeriode = new PersonstatusPeriode();
+        personstatusPeriode.withEndretAv(ENDRET_AV);
+        personstatusPeriode.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        personstatusPeriode.withEndringstype(Endringstyper.NY);
+        personstatusPeriode.withPersonstatus(lagPersonstatuser("BOSA"));
+        personstatusPeriode.withPeriode(lagPeriode(LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(1)));
+
+        PersonstatusPeriode personstatusPeriode1 = new PersonstatusPeriode();
+        personstatusPeriode1.withEndretAv(ENDRET_AV);
+        personstatusPeriode1.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
+        personstatusPeriode1.withEndringstype(Endringstyper.NY);
+        personstatusPeriode1.withPersonstatus(lagPersonstatuser("ADNR "));
+        personstatusPeriode1.withPeriode(lagPeriode(LocalDate.now().minusMonths(1), LocalDate.now()));
+
+        resultat.add(personstatusPeriode);
+        resultat.add(personstatusPeriode1);
+
+        return resultat;
+    }
+
+    private Personstatuser lagPersonstatuser(String personstatus) {
+        Personstatuser personstatuser = new Personstatuser();
+        personstatuser.setKodeverksRef("Personstatuser");
+        personstatuser.setKodeRef(personstatus);
+        personstatuser.setValue(personstatus);
+        return personstatuser;
+    }
+
+    private Periode lagPeriode(LocalDate fom, LocalDate tom) {
+        Periode periode = new Periode();
+        periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(fom));
+        periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(tom));
+        return periode;
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/pingRequest")
