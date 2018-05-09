@@ -1,3 +1,3 @@
 @Library('vl-jenkins')_
 
-nais{}
+naisJira{}
