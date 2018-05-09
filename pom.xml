@@ -424,6 +424,7 @@
 				<artifactId>flatten-maven-plugin</artifactId>
 				<configuration>
 					<flattenMode>bom</flattenMode>
+					<flattenedPomFilename>.flattened.xml</flattenedPomFilename>
 				</configuration>
 				<executions>
 					<execution>
