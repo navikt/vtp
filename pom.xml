@@ -449,24 +449,6 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<inherited>false</inherited>
-				<configuration>
-					<repository>docker.adeo.no:5000/fpmock</repository>
-					<tag>${project.version}</tag>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>deploy</phase>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
