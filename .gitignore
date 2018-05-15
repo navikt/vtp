@@ -14,5 +14,4 @@ bin
 mock*.log
 mock.log.*
 .mvn/maven.config
-.flattened-pom.xml
-.flattened.xml
+.flattened
