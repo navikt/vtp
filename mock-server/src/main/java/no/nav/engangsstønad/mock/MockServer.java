@@ -1,10 +1,29 @@
 package no.nav.engangsstønad.mock;
 
+import java.lang.reflect.Method;
+
+import javax.xml.ws.Endpoint;
+
+import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
+import org.eclipse.jetty.http.spi.JettyHttpContext;
+import org.eclipse.jetty.http.spi.JettyHttpServer;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+
 import com.sun.net.httpserver.HttpContext;
+
 import no.nav.abac.pdp.PdpMock;
 import no.nav.engangsstønad.mock.checks.IsAliveImpl;
 import no.nav.engangsstønad.mock.checks.IsReadyImpl;
 import no.nav.modig.testcertificates.TestCertificates;
+import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
@@ -20,32 +39,15 @@ import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
-import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
-import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
-import org.eclipse.jetty.http.spi.JettyHttpContext;
-import org.eclipse.jetty.http.spi.JettyHttpServer;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-
-import javax.xml.ws.Endpoint;
-import java.io.File;
-import java.lang.reflect.Method;
-import java.security.KeyStore;
 
 public class MockServer {
 
-    private static final int HTTP_PORT = 8080;
+    private static final int HTTP_PORT = 7999;
     private static final int HTTPS_PORT = 8088;
     private static final String HTTP_HOST = "0.0.0.0";
     private static Server server;
@@ -60,8 +62,6 @@ public class MockServer {
         server.start();
 
         publishServices();
-
-
     }
 
     private static void publishServices() {
@@ -97,6 +97,7 @@ public class MockServer {
         publishService(OppgaveServiceMockImpl.class,"/oppgave");
         publishService(ArbeidsforholdMockImpl.class,"/arbeidsforhold");
         publishService(OrganisasjonMockImpl.class,"/organisasjon");
+        publishService(SigrunMock.class,"/api/beregnetskatt");
 
         publishService(IsAliveImpl.class,"/isAlive");
         publishService(IsReadyImpl.class,"/isReady");

@@ -92,6 +92,10 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>organisasjon-mock-organisasjon</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>sigrun-mock</artifactId>
+        </dependency>
 
         <!-- NAV biblioteker -->
         <dependency>

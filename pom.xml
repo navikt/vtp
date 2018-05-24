@@ -30,6 +30,7 @@
 		<module>arbeidsforhold-mock</module>
 		<module>organisasjon-mock</module>
 		<module>norg2-mock</module>
+		<module>sigrun-mock</module>
 	</modules>
 
 	<properties>
@@ -181,6 +182,12 @@
 			<dependency>
 				<groupId>no.nav.foreldrepenger</groupId>
 				<artifactId>organisasjon-mock-organisasjon</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>no.nav.foreldrepenger</groupId>
+				<artifactId>sigrun-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
