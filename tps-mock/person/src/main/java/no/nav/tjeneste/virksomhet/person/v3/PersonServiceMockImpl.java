@@ -363,7 +363,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         personstatusPeriode1.withEndretAv(ENDRET_AV);
         personstatusPeriode1.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
         personstatusPeriode1.withEndringstype(Endringstyper.NY);
-        personstatusPeriode1.withPersonstatus(lagPersonstatuser("ADNR "));
+        personstatusPeriode1.withPersonstatus(lagPersonstatuser("ADNR"));
         personstatusPeriode1.withPeriode(lagPeriode(LocalDate.now().minusMonths(1), LocalDate.now()));
 
         resultat.add(personstatusPeriode);
