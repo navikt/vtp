@@ -37,6 +37,7 @@ import no.nav.tjeneste.virksomhet.person.v3.data.PersonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.data.RelasjonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.AktoerId;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
@@ -239,12 +240,11 @@ public class PersonServiceMockImpl implements PersonV3 {
     @Override
     public HentPersonhistorikkResponse hentPersonhistorikk(@WebParam(name = "request",targetNamespace = "") HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
 
-        PersonIdent personIdent = (PersonIdent) hentPersonhistorikkRequest.getAktoer();
-        String ident = personIdent.getIdent().getIdent();
+        AktoerId aktoerId = (AktoerId) hentPersonhistorikkRequest.getAktoer();
 
-        Bruker bruker = new PersonDbLeser(entityManager).finnPerson(ident);
+        Bruker bruker = new PersonDbLeser(entityManager).finnPersonMedAktørId(aktoerId.getAktoerId());
         if (bruker == null) {
-            throw new HentPersonhistorikkPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new PersonIkkeFunnet());
+            throw new HentPersonhistorikkPersonIkkeFunnet("Fant ingen bruker for aktørId: " + aktoerId.getAktoerId(), new PersonIkkeFunnet());
         }
 
         HentPersonhistorikkResponse response = new HentPersonhistorikkResponse();

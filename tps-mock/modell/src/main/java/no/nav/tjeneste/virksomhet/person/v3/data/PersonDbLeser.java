@@ -38,6 +38,17 @@ public class PersonDbLeser extends DbLeser {
         return null;
     }
 
+    public Bruker finnPersonMedAktørId(String aktørId) {
+        if (aktørId != null) {
+            List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE aktørId = :aktørId", TpsPerson.class).setParameter("aktørId", aktørId).getResultList();
+            if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null) {
+                tpsPersoner.get(0).setPerson(new PersonBygger(tpsPersoner.get(0)).bygg());
+                return tpsPersoner.get(0).getPerson();
+            }
+        }
+        return null;
+    }
+
     public String finnIdent(String aktoerId) {
         List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE aktorid = :aktorid", TpsPerson.class).setParameter("aktorid", aktoerId).getResultList();
         if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null) {
