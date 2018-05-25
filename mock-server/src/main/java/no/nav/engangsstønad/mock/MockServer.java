@@ -47,7 +47,7 @@ import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMoc
 
 public class MockServer {
 
-    private static final int HTTP_PORT = 7999;
+    private static final int HTTP_PORT = 8080;
     private static final int HTTPS_PORT = 8088;
     private static final String HTTP_HOST = "0.0.0.0";
     private static Server server;
