@@ -258,12 +258,17 @@ public class PersonServiceMockImpl implements PersonV3 {
     @Override
     public HentPersonhistorikkResponse hentPersonhistorikk(@WebParam(name = "request",targetNamespace = "") HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
 
-        AktoerId aktoerId = (AktoerId) hentPersonhistorikkRequest.getAktoer();
-
-        Bruker bruker = new PersonDbLeser(entityManager).finnPersonMedAktørId(aktoerId.getAktoerId());
-        if (bruker == null) {
-            throw new HentPersonhistorikkPersonIkkeFunnet("Fant ingen bruker for aktørId: " + aktoerId.getAktoerId(), new PersonIkkeFunnet());
+        HentPersonRequest request = new HentPersonRequest();
+        request.setAktoer(hentPersonhistorikkRequest.getAktoer());
+        try {
+            hentPerson(request);
+        } catch (HentPersonPersonIkkeFunnet hentPersonPersonIkkeFunnet) {
+            throw new HentPersonhistorikkPersonIkkeFunnet(hentPersonPersonIkkeFunnet.getMessage(), new PersonIkkeFunnet());
+        } catch (HentPersonSikkerhetsbegrensning hentPersonSikkerhetsbegrensning) {
+            hentPersonSikkerhetsbegrensning.printStackTrace();
         }
+
+        AktoerId aktoerId = (AktoerId) hentPersonhistorikkRequest.getAktoer();
 
         HentPersonhistorikkResponse response = new HentPersonhistorikkResponse();
         response.withAktoer(hentPersonhistorikkRequest.getAktoer());
