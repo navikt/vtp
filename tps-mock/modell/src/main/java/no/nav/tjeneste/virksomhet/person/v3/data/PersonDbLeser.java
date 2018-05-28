@@ -1,12 +1,13 @@
 package no.nav.tjeneste.virksomhet.person.v3.data;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
 import no.nav.foreldrepenger.mock.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;
-
-import javax.persistence.EntityManager;
-import java.util.List;
 
 public class PersonDbLeser extends DbLeser {
 
@@ -40,7 +41,7 @@ public class PersonDbLeser extends DbLeser {
 
     public Bruker finnPersonMedAktørId(String aktørId) {
         if (aktørId != null) {
-            List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE aktørId = :aktørId", TpsPerson.class).setParameter("aktørId", aktørId).getResultList();
+            List<TpsPerson> tpsPersoner = entityManager.createQuery("SELECT t FROM TpsPerson t WHERE aktørId = :aktørId", TpsPerson.class).setParameter("aktørId", Long.valueOf(aktørId)).getResultList();
             if (!tpsPersoner.isEmpty() && tpsPersoner.get(0) != null) {
                 tpsPersoner.get(0).setPerson(new PersonBygger(tpsPersoner.get(0)).bygg());
                 return tpsPersoner.get(0).getPerson();
