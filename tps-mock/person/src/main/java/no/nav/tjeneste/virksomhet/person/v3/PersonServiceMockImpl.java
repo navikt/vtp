@@ -106,15 +106,16 @@ public class PersonServiceMockImpl implements PersonV3 {
     @Override
     public HentPersonResponse hentPerson(@WebParam(name = "request",targetNamespace = "") HentPersonRequest hentPersonRequest) throws HentPersonPersonIkkeFunnet, HentPersonSikkerhetsbegrensning {
 
-        PersonIdent personIdent = (PersonIdent)hentPersonRequest.getAktoer();
-        String ident = personIdent.getIdent().getIdent();
+        AktoerId aktoerId = (AktoerId) hentPersonRequest.getAktoer();
 
-        Bruker bruker = new PersonDbLeser(entityManager).finnPerson(ident);
+        Bruker bruker = new PersonDbLeser(entityManager).finnPersonMedAktørId(aktoerId.getAktoerId());
         if (bruker == null) {
-            throw new HentPersonPersonIkkeFunnet("Fant ingen bruker for ident: " + ident, new PersonIkkeFunnet());
+            throw new HentPersonPersonIkkeFunnet("Fant ingen bruker for aktørId: " + aktoerId.getAktoerId(), new PersonIkkeFunnet());
         }
 
-        List<TpsRelasjon> relasjoner = new RelasjonDbLeser(entityManager).finnRelasjon(ident);
+        String fnr = new PersonDbLeser(entityManager).finnIdent(aktoerId.getAktoerId());
+
+        List<TpsRelasjon> relasjoner = new RelasjonDbLeser(entityManager).finnRelasjon(fnr);
         for (TpsRelasjon relasjon : relasjoner) {
             new RelasjonBygger(relasjon).byggFor(bruker);
         }
@@ -250,7 +251,7 @@ public class PersonServiceMockImpl implements PersonV3 {
 
         Bruker bruker = new PersonDbLeser(entityManager).finnPersonMedAktørId(aktoerId.getAktoerId());
         if (bruker == null) {
-            //throw new HentPersonhistorikkPersonIkkeFunnet("Fant ingen bruker for aktørId: " + aktoerId.getAktoerId(), new PersonIkkeFunnet());
+            throw new HentPersonhistorikkPersonIkkeFunnet("Fant ingen bruker for aktørId: " + aktoerId.getAktoerId(), new PersonIkkeFunnet());
         }
 
         HentPersonhistorikkResponse response = new HentPersonhistorikkResponse();
