@@ -59,6 +59,8 @@ public class InfotrygdYtelse {
     @Column(name = "OPPHOER_FOM")
     LocalDateTime opphoerFom;
 
+    @Column(name = "FEEDELEMENT_TYPE")
+    String feedelementType;
 
     InfotrygdYtelse() {
     }
@@ -171,4 +173,13 @@ public class InfotrygdYtelse {
     public void setOpphoerFom(LocalDateTime opphoerFom) {
         this.opphoerFom = opphoerFom;
     }
+
+    public String getFeedelementType() {
+        return feedelementType;
+    }
+
+    public void setFeedelementType(String feedelementType) {
+        this.feedelementType = feedelementType;
+    }
+
 }
