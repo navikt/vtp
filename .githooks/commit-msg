@@ -9,7 +9,7 @@
 #
 # Tillater kun commit meldinger som starter med "PK-12345: ", "FPFEIL-12: ", "FIX: " eller "Merge "
 
-regex="^(PK-[0-9]{5}|FPFEIL-[0-9]{1,}|FIX|Merge|NOJIRA|RELEASE|PKMANTIS-[0-9]{1,}|updating poms)(:|,)? .*"
+regex="^(PK-[0-9]{5}|FPFEIL-[0-9]{1,}|FIX|Merge|NOJIRA|RELEASE|PKGYRINUS-[0-9]{1,}|PKMANTIS-[0-9]{1,}|updating poms)(:|,)? .*"
 commit_msg=$(cat $1)
 
 error_msg="Avbryter commit. Det er kun tillat med commit meldinger som begynne med \"PK-nnnnn \", \"FPFEIL-nn \", \"FIX \", \"NOJIRA\" eller \"Merge \"."
