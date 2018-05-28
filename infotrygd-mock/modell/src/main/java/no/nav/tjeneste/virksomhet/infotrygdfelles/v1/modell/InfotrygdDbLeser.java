@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.mock.felles.DbLeser;
 
@@ -23,7 +24,11 @@ public class InfotrygdDbLeser extends DbLeser {
             List<InfotrygdSvar> infotrygdSvar = query.getResultList();
 
             if(infotrygdSvar != null && !infotrygdSvar.isEmpty()) {
-                return infotrygdSvar.get(0).getInfotrygdYtelseListe();
+                List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
+
+                return infotrygdYtelseListe.stream()
+                        .filter(ytelse -> ytelse.feedelementType.isEmpty())
+                        .collect(Collectors.toList());
             }
         }
         return null;
