@@ -5,6 +5,8 @@ import static no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.FeilKodeKonst
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,11 +26,12 @@ public class InfotrygdDbLeser extends DbLeser {
             List<InfotrygdSvar> infotrygdSvar = query.getResultList();
 
             List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
-            if(infotrygdSvar != null && !infotrygdSvar.isEmpty()) {
+            if(!infotrygdSvar.isEmpty()) {
                 return infotrygdYtelseListe.stream()
-                        .filter(ytelse -> ytelse.feedelementType.isEmpty())
+                        .filter(ytelse -> ytelse.feedelementType == null)
                         .collect(Collectors.toList());
             } else {
+//                return new ArrayList<>();
                 return infotrygdYtelseListe;
             }
         }
