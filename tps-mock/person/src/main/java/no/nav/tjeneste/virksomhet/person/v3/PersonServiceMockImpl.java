@@ -304,23 +304,23 @@ public class PersonServiceMockImpl implements PersonV3 {
         response.withAktoer(hentPersonhistorikkRequest.getAktoer());
 
         // case {1,2,5,6,7}, ref https://jira.adeo.no/browse/REG-296
-        if (aktørerCase1.contains(aktoerId.getAktoerId())) {
+        if (aktørerCase1.contains(Long.valueOf(aktoerId.getAktoerId()))) {
             return new PersonhistorikkMockCase1().mockedPerson(aktoerId);
         }
 
-        if (aktørerCase2.contains(aktoerId.getAktoerId())) {
+        if (aktørerCase2.contains(Long.valueOf(aktoerId.getAktoerId()))) {
             return new PersonhistorikkMockCase2().mockedPerson(aktoerId);
         }
 
-        if (aktørerCase5.contains(aktoerId.getAktoerId())) {
+        if (aktørerCase5.contains(Long.valueOf(aktoerId.getAktoerId()))) {
             return new PersonhistorikkMockCase5().mockedPerson(aktoerId);
         }
 
-        if (aktørerCase6.contains(aktoerId.getAktoerId())) {
+        if (aktørerCase6.contains(Long.valueOf(aktoerId.getAktoerId()))) {
             return new PersonhistorikkMockCase6().mockedPerson(aktoerId);
         }
 
-        if (aktørerCase7.contains(aktoerId.getAktoerId())) {
+        if (aktørerCase7.contains(Long.valueOf(aktoerId.getAktoerId()))) {
             return new PersonhistorikkMockCase7().mockedPerson(aktoerId);
         }
 

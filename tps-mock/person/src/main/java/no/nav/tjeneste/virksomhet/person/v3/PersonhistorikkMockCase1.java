@@ -88,14 +88,13 @@ class PersonhistorikkMockCase1 {
         StatsborgerskapPeriode periode2 = new StatsborgerskapPeriode();
         periode2.withEndretAv(ENDRET_AV);
         periode2.withEndringstidspunkt(lagDato(2018, 4, 17));
-        periode2.withEndringstype(Endringstyper.NY);
         periode2.withPeriode(lagPeriode(lagDato(2018, 4, 17), ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now())));
-        periode2.withEndringstype(Endringstyper.NY);
+        periode2.withEndringstype(Endringstyper.ENDRET);
 
         Statsborgerskap britisk = new Statsborgerskap();
         britisk.withEndretAv(ENDRET_AV);
         britisk.withEndringstidspunkt(TIDENES_MORGEN);
-        britisk.withEndringstype(Endringstyper.NY);
+        britisk.withEndringstype(Endringstyper.ENDRET);
         Landkoder england = new Landkoder();
         england.withKodeRef("Landkoder");
         england.setValue("NOR");
