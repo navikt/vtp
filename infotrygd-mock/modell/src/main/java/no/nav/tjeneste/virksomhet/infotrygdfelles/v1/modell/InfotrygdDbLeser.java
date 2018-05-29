@@ -27,12 +27,16 @@ public class InfotrygdDbLeser extends DbLeser {
 
             List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
             if(!infotrygdSvar.isEmpty()) {
-                return infotrygdYtelseListe.stream()
+                List<InfotrygdYtelse> filtrertInfotrygdYtelseListe = infotrygdYtelseListe.stream()
                         .filter(ytelse -> ytelse.feedelementType == null)
                         .collect(Collectors.toList());
+                if (filtrertInfotrygdYtelseListe.size() > 0) {
+                    return filtrertInfotrygdYtelseListe;
+                } else {
+                    return null;
+                }
             } else {
-//                return new ArrayList<>();
-                return infotrygdYtelseListe;
+                return null;
             }
         }
         return null;
