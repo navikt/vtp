@@ -23,12 +23,13 @@ public class InfotrygdDbLeser extends DbLeser {
             query.setParameter("fnr", fnr);
             List<InfotrygdSvar> infotrygdSvar = query.getResultList();
 
+            List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
             if(infotrygdSvar != null && !infotrygdSvar.isEmpty()) {
-                List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
-
                 return infotrygdYtelseListe.stream()
                         .filter(ytelse -> ytelse.feedelementType.isEmpty())
                         .collect(Collectors.toList());
+            } else {
+                return infotrygdYtelseListe;
             }
         }
         return null;
