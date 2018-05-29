@@ -38,8 +38,9 @@ public class InfotrygdDbLeser extends DbLeser {
             } else {
                 return null;
             }
+        } else {
+            return null;
         }
-        return null;
     }
 
     public List<InfotrygdGrunnlag> finnInfotrygdGrunnlagMedFnr(String fnr) {
