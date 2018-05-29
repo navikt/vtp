@@ -68,7 +68,7 @@ public class InfotrygdGrunnlagMapper {
     private Sykepenger mapSP(InfotrygdGrunnlag grunnlag) {
         Sykepenger sykepenger = objectFactory.createSykepenger();
         mapPeriodeYtelse(sykepenger, grunnlag);
-        if (sykepenger.getInntektsgrunnlagProsent() != null) {
+        if (grunnlag.getDekningProsent() != null) {
             sykepenger.setInntektsgrunnlagProsent(grunnlag.getDekningProsent().intValue());
         }
         return sykepenger;
@@ -77,7 +77,7 @@ public class InfotrygdGrunnlagMapper {
     private PaaroerendeSykdom  mapPS(InfotrygdGrunnlag grunnlag) {
         PaaroerendeSykdom psykdom = objectFactory.createPaaroerendeSykdom();
         mapPeriodeYtelse(psykdom, grunnlag);
-        if (psykdom.getFoedselsdatoPleietrengende() != null) {
+        if (grunnlag.getFoedselsDatoAnnenpart() != null) {
             psykdom.setFoedselsdatoPleietrengende(ConversionUtils.convertToXMLGregorianCalendar(grunnlag.getFoedselsDatoAnnenpart()));
         }
         return psykdom;
