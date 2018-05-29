@@ -96,18 +96,18 @@ class PersonhistorikkMockCase2 {
         periode2.withPeriode(lagPeriode(SYTTENDE_MAI, ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now())));
         periode2.withEndringstype(Endringstyper.ENDRET);
 
-        Statsborgerskap britisk = new Statsborgerskap();
-        britisk.withEndretAv(ENDRET_AV);
-        britisk.withEndringstidspunkt(TIDENES_MORGEN);
-        britisk.withEndringstype(Endringstyper.ENDRET);
-        Landkoder england = new Landkoder();
-        england.withKodeRef("Landkoder");
-        england.setValue("NOR");
-        england.setKodeRef("NOR");
-        britisk.withLand(england);
+        Statsborgerskap amerikansk = new Statsborgerskap();
+        amerikansk.withEndretAv(ENDRET_AV);
+        amerikansk.withEndringstidspunkt(TIDENES_MORGEN);
+        amerikansk.withEndringstype(Endringstyper.ENDRET);
+        Landkoder usa = new Landkoder();
+        usa.withKodeRef("Landkoder");
+        usa.setValue("USA");
+        usa.setKodeRef("USA");
+        amerikansk.withLand(usa);
 
         periode1.withStatsborgerskap(norsk);
-        periode2.withStatsborgerskap(britisk);
+        periode2.withStatsborgerskap(amerikansk);
 
         resultat.add(periode1);
         resultat.add(periode2);

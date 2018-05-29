@@ -97,8 +97,8 @@ class PersonhistorikkMockCase1 {
         britisk.withEndringstype(Endringstyper.ENDRET);
         Landkoder england = new Landkoder();
         england.withKodeRef("Landkoder");
-        england.setValue("NOR");
-        england.setKodeRef("NOR");
+        england.setValue("GBR");
+        england.setKodeRef("GBR");
         britisk.withLand(england);
 
         periode1.withStatsborgerskap(norsk);
