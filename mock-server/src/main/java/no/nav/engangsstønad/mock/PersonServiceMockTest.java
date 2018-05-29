@@ -45,7 +45,7 @@ public class PersonServiceMockTest {
         request.setPeriode(periode);
 
         AktoerId aktoer = new AktoerId();
-        aktoer.setAktoerId("9000000030670");
+        aktoer.setAktoerId("9000000030673");
         request.setAktoer(aktoer);
 
         return request;

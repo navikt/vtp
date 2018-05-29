@@ -2,8 +2,10 @@ package no.nav.tjeneste.virksomhet.person.v3;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -49,7 +51,6 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonstatusPeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadresse;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostboksadresseNorsk;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
@@ -84,7 +85,44 @@ public class PersonServiceMockImpl implements PersonV3 {
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
     private static final EntityManager entityManager = Persistence.createEntityManagerFactory("tps").createEntityManager();
 
-    private XMLGregorianCalendar TIDENES_MORGEN = ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(1900, 1, 1));
+    public static XMLGregorianCalendar TIDENES_MORGEN = ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(1900, 1, 1));
+
+    private static Set<Long> aktørerCase1 = new HashSet<>();
+    private static Set<Long> aktørerCase2 = new HashSet<>();
+    private static Set<Long> aktørerCase5 = new HashSet<>();
+    private static Set<Long> aktørerCase6 = new HashSet<>();
+    private static Set<Long> aktørerCase7 = new HashSet<>();
+
+    static {
+        aktørerCase1.add(9000000030670L);
+        aktørerCase1.add(9000000030671L);
+        aktørerCase1.add(9000000030672L);
+        aktørerCase1.add(9000000030673L);
+
+        aktørerCase2.add(9000000030674L);
+        aktørerCase2.add(9000000030677L);
+        aktørerCase2.add(9000000030678L);
+        aktørerCase2.add(9000000030675L);
+        aktørerCase2.add(9000000030676L);
+
+        aktørerCase5.add(9000000030679L);
+        aktørerCase5.add(9000000030680L);
+        aktørerCase5.add(9000000030681L);
+        aktørerCase5.add(9000000030682L);
+        aktørerCase5.add(9000000030683L);
+
+        aktørerCase6.add(9000000030684L);
+        aktørerCase6.add(9000000030685L);
+        aktørerCase6.add(9000000030686L);
+        aktørerCase6.add(9000000030687L);
+        aktørerCase6.add(9000000030688L);
+
+        aktørerCase7.add(9000000030689L);
+        aktørerCase7.add(9000000030690L);
+        aktørerCase7.add(9000000030691L);
+        aktørerCase7.add(9000000030692L);
+        aktørerCase7.add(9000000030693L);
+    }
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentPersonRequest"
@@ -258,6 +296,41 @@ public class PersonServiceMockImpl implements PersonV3 {
     @Override
     public HentPersonhistorikkResponse hentPersonhistorikk(@WebParam(name = "request",targetNamespace = "") HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
 
+        sjekkAtPersonErImportertITesthub(hentPersonhistorikkRequest);
+
+        AktoerId aktoerId = (AktoerId) hentPersonhistorikkRequest.getAktoer();
+
+        HentPersonhistorikkResponse response = new HentPersonhistorikkResponse();
+        response.withAktoer(hentPersonhistorikkRequest.getAktoer());
+
+        // case {1,2,5,6,7}, ref https://jira.adeo.no/browse/REG-296
+        if (aktørerCase1.contains(aktoerId.getAktoerId())) {
+            return new PersonhistorikkMockCase1().mockedPerson(aktoerId);
+        }
+
+        if (aktørerCase2.contains(aktoerId.getAktoerId())) {
+            return new PersonhistorikkMockCase2().mockedPerson(aktoerId);
+        }
+
+        if (aktørerCase5.contains(aktoerId.getAktoerId())) {
+            return new PersonhistorikkMockCase5().mockedPerson(aktoerId);
+        }
+
+        if (aktørerCase6.contains(aktoerId.getAktoerId())) {
+            return new PersonhistorikkMockCase6().mockedPerson(aktoerId);
+        }
+
+        if (aktørerCase7.contains(aktoerId.getAktoerId())) {
+            return new PersonhistorikkMockCase7().mockedPerson(aktoerId);
+        }
+
+        response.withPersonstatusListe(hentPersonstatusPerioder(hentPersonhistorikkRequest.getAktoer()));
+        response.withBostedsadressePeriodeListe(hentBostedadressePerioder(hentPersonhistorikkRequest.getAktoer()));
+        response.withStatsborgerskapListe(hentStatsborgerskapPerioder(hentPersonhistorikkRequest.getAktoer()));
+        return response;
+    }
+
+    private void sjekkAtPersonErImportertITesthub(@WebParam(name = "request", targetNamespace = "") HentPersonhistorikkRequest hentPersonhistorikkRequest) throws HentPersonhistorikkPersonIkkeFunnet {
         HentPersonRequest request = new HentPersonRequest();
         request.setAktoer(hentPersonhistorikkRequest.getAktoer());
         try {
@@ -267,129 +340,10 @@ public class PersonServiceMockImpl implements PersonV3 {
         } catch (HentPersonSikkerhetsbegrensning hentPersonSikkerhetsbegrensning) {
             hentPersonSikkerhetsbegrensning.printStackTrace();
         }
-
-        AktoerId aktoerId = (AktoerId) hentPersonhistorikkRequest.getAktoer();
-
-        HentPersonhistorikkResponse response = new HentPersonhistorikkResponse();
-        response.withAktoer(hentPersonhistorikkRequest.getAktoer());
-
-        // person 1
-        if (aktoerId.getAktoerId().equals("9000000030670")) {
-            return person1(response);
-        }
-
-        response.withPersonstatusListe(hentPersonstatusPerioder(hentPersonhistorikkRequest.getAktoer()));
-        response.withBostedsadressePeriodeListe(hentBostedadressePerioder(hentPersonhistorikkRequest.getAktoer()));
-        response.withStatsborgerskapListe(hentStatsborgerskapPerioder(hentPersonhistorikkRequest.getAktoer()));
-        return response;
     }
 
-    private HentPersonhistorikkResponse person1(HentPersonhistorikkResponse response) {
-        response.withPersonstatusListe(personstatusPerson1());
-        response.withStatsborgerskapListe(personStatsborgerskapPerson1());
-        response.withBostedsadressePeriodeListe(personNorskAdresserPerson1());
-        response.withPostadressePeriodeListe(personUtenlandsadresserPerson1());
 
-        return response;
-    }
-
-    private List<BostedsadressePeriode> personNorskAdresserPerson1() {
-        List<BostedsadressePeriode> resultat = new ArrayList<>();
-
-        BostedsadressePeriode norskAdresse = new BostedsadressePeriode();
-        norskAdresse.withEndretAv(ENDRET_AV);
-        norskAdresse.withEndringstidspunkt(TIDENES_MORGEN);
-        norskAdresse.withEndringstype(Endringstyper.NY);
-        norskAdresse.withPeriode(lagPeriode(TIDENES_MORGEN, lagDato(2018, 4, 16)));
-        norskAdresse.withBostedsadresse(lagBostedadresse(TIDENES_MORGEN, Endringstyper.NY));
-
-        resultat.add(norskAdresse);
-
-        return resultat;
-    }
-
-    private List<PostadressePeriode> personUtenlandsadresserPerson1() {
-        List<PostadressePeriode> resultat = new ArrayList<>();
-
-        PostadressePeriode annenAdresse = new PostadressePeriode();
-        annenAdresse.withEndretAv(ENDRET_AV);
-        annenAdresse.withEndringstidspunkt(lagDato(2018, 4, 17));
-        annenAdresse.withEndringstype(Endringstyper.ENDRET);
-        annenAdresse.withPostadresse(lagUtenlandsAdresse(lagDato(2018, 4, 17), Endringstyper.ENDRET, "GBR"));
-        annenAdresse.withPeriode(lagPeriode(lagDato(2018, 4, 17), ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now())));
-
-        resultat.add(annenAdresse);
-        return resultat;
-    }
-
-    private List<StatsborgerskapPeriode> personStatsborgerskapPerson1() {
-        List<StatsborgerskapPeriode> resultat = new ArrayList<>();
-
-        StatsborgerskapPeriode periode1 = new StatsborgerskapPeriode();
-        periode1.withEndretAv(ENDRET_AV);
-        periode1.withEndringstidspunkt(TIDENES_MORGEN);
-        periode1.withPeriode(lagPeriode(TIDENES_MORGEN, lagDato(2018, 4, 16)));
-        periode1.withEndringstype(Endringstyper.NY);
-
-        Statsborgerskap norsk = new Statsborgerskap();
-        norsk.withEndretAv(ENDRET_AV);
-        norsk.withEndringstidspunkt(TIDENES_MORGEN);
-        norsk.withEndringstype(Endringstyper.NY);
-        Landkoder norge = new Landkoder();
-        norge.withKodeRef("Landkoder");
-        norge.setValue("NOR");
-        norge.setKodeRef("NOR");
-        norsk.withLand(norge);
-
-        StatsborgerskapPeriode periode2 = new StatsborgerskapPeriode();
-        periode2.withEndretAv(ENDRET_AV);
-        periode2.withEndringstidspunkt(lagDato(2018, 4, 17));
-        periode2.withEndringstype(Endringstyper.NY);
-        periode2.withPeriode(lagPeriode(lagDato(2018, 4, 17), ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now())));
-        periode2.withEndringstype(Endringstyper.NY);
-
-        Statsborgerskap britisk = new Statsborgerskap();
-        britisk.withEndretAv(ENDRET_AV);
-        britisk.withEndringstidspunkt(TIDENES_MORGEN);
-        britisk.withEndringstype(Endringstyper.NY);
-        Landkoder england = new Landkoder();
-        england.withKodeRef("Landkoder");
-        england.setValue("NOR");
-        england.setKodeRef("NOR");
-        britisk.withLand(england);
-
-        periode1.withStatsborgerskap(norsk);
-        periode2.withStatsborgerskap(britisk);
-
-        resultat.add(periode1);
-        resultat.add(periode2);
-
-        return resultat;
-    }
-
-    private List<PersonstatusPeriode> personstatusPerson1() {
-        List<PersonstatusPeriode> resultat = new ArrayList<>();
-
-        PersonstatusPeriode bosa = new PersonstatusPeriode();
-        bosa.withEndretAv(ENDRET_AV);
-        bosa.withEndringstidspunkt(TIDENES_MORGEN);
-        bosa.withEndringstype(Endringstyper.NY);
-        bosa.withPersonstatus(lagPersonstatuser("BOSA"));
-        bosa.withPeriode(lagPeriode(TIDENES_MORGEN, lagDato(2018, 4, 16)));
-
-        PersonstatusPeriode utva = new PersonstatusPeriode();
-        utva.withEndretAv(ENDRET_AV);
-        utva.withEndringstidspunkt(lagDato(2018, 4, 17));
-        utva.withEndringstype(Endringstyper.ENDRET);
-        utva.withPersonstatus(lagPersonstatuser("UTVA"));
-        utva.withPeriode(lagPeriode(lagDato(2018, 4, 17), ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now())));
-        resultat.add(bosa);
-        resultat.add(utva);
-
-        return resultat;
-    }
-
-    private XMLGregorianCalendar lagDato(int year, int month, int day) {
+    public static XMLGregorianCalendar lagDato(int year, int month, int day) {
         return ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(year, month, day));
     }
 
@@ -453,7 +407,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         return resultat;
     }
 
-    private Bostedsadresse lagBostedadresse() {
+    public static Bostedsadresse lagBostedadresse() {
         Bostedsadresse bostedsadresse = new Bostedsadresse();
         bostedsadresse.withEndretAv(ENDRET_AV);
         bostedsadresse.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now()));
@@ -463,7 +417,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         return bostedsadresse;
     }
 
-    private Bostedsadresse lagBostedadresse(XMLGregorianCalendar endringstidspunkt, Endringstyper endringstyper) {
+    public static Bostedsadresse lagBostedadresse(XMLGregorianCalendar endringstidspunkt, Endringstyper endringstyper) {
         Bostedsadresse bostedsadresse = new Bostedsadresse();
         bostedsadresse.withEndretAv(ENDRET_AV);
         bostedsadresse.withEndringstidspunkt(endringstidspunkt);
@@ -472,7 +426,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         return bostedsadresse;
     }
 
-    private Postadresse lagUtenlandsAdresse(XMLGregorianCalendar endringstidspunkt, Endringstyper endringstyper, String landkode) {
+    public static Postadresse lagUtenlandsAdresse(XMLGregorianCalendar endringstidspunkt, Endringstyper endringstyper, String landkode) {
 
         UstrukturertAdresse adresse = new UstrukturertAdresse();
         Landkoder landkoder = new Landkoder();
@@ -495,7 +449,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         return postadresse;
     }
 
-    private StrukturertAdresse lagStrukturertAdresse() {
+    public static StrukturertAdresse lagStrukturertAdresse() {
         PostboksadresseNorsk postboksadresseNorsk = new PostboksadresseNorsk();
 
         Landkoder landkoder = new Landkoder();
@@ -540,7 +494,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         return resultat;
     }
 
-    private Personstatuser lagPersonstatuser(String personstatus) {
+    public static Personstatuser lagPersonstatuser(String personstatus) {
         Personstatuser personstatuser = new Personstatuser();
         personstatuser.setKodeverksRef("Personstatuser");
         personstatuser.setKodeRef(personstatus);
@@ -548,14 +502,14 @@ public class PersonServiceMockImpl implements PersonV3 {
         return personstatuser;
     }
 
-    private Periode lagPeriode(LocalDate fom, LocalDate tom) {
+    public static Periode lagPeriode(LocalDate fom, LocalDate tom) {
         Periode periode = new Periode();
         periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(fom));
         periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(tom));
         return periode;
     }
 
-    private Periode lagPeriode(XMLGregorianCalendar fom, XMLGregorianCalendar tom) {
+    public static Periode lagPeriode(XMLGregorianCalendar fom, XMLGregorianCalendar tom) {
         Periode periode = new Periode();
         periode.withFom(fom);
         periode.withTom(tom);
