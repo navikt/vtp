@@ -24,27 +24,27 @@ public class SigrunMock implements Provider<DataSource> {
         return "[\n" +
                 "  {\n" +
                 "    \"tekniskNavn\": \"personinntektFiskeFangstFamiliebarnehage\",\n" +
-                "    \"verdi\": \"814952\"\n" +
+                "    \"verdi\": \"50000\"\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"tekniskNavn\": \"personinntektNaering\",\n" +
-                "    \"verdi\": \"785896\"\n" +
+                "    \"verdi\": \"50000\"\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"tekniskNavn\": \"personinntektBarePensjonsdel\",\n" +
-                "    \"verdi\": \"844157\"\n" +
+                "    \"verdi\": \"50000\"\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"tekniskNavn\": \"svalbardLoennLoennstrekkordningen\",\n" +
-                "    \"verdi\": \"874869\"\n" +
+                "    \"verdi\": \"5000\"\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"tekniskNavn\": \"personinntektLoenn\",\n" +
-                "    \"verdi\": \"746315\"\n" +
+                "    \"verdi\": \"50000\"\n" +
                 "  },\n" +
                 "  {\n" +
                 "    \"tekniskNavn\": \"svalbardPersoninntektNaering\",\n" +
-                "    \"verdi\": \"696009\"\n" +
+                "    \"verdi\": \"50000\"\n" +
                 "  }\n" +
                 "]";
     }
