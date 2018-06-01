@@ -10,16 +10,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 
-public class FinnSakListeMockTest {
+public class FinnSakListeMockImplTest {
 
-    private final String IDENT = "19069011368";
+    private final String IDENT_MED_SVAR_YTELSE_OG_VEDTAK = "19069011368";
+    private final String IDENT_UTEN_TABELLINNSLAG = "19069011369";
 
     @Test
-    public void testFinnSakListeResponse() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
+    public void finnSakListeResponseGrunnleggendeTest() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
     {
         FinnSakListeMockImpl finnSakListeMockImpl = new FinnSakListeMockImpl();
         FinnSakListeRequest request = new FinnSakListeRequest();
-        request.setPersonident(IDENT);
+        request.setPersonident(IDENT_MED_SVAR_YTELSE_OG_VEDTAK);
         no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = finnSakListeMockImpl.finnSakListe(request);
 
         assertThat(response).isNotNull();
@@ -29,6 +30,18 @@ public class FinnSakListeMockTest {
         assertThat(response.getVedtakListe().get(0).getRegistrert()).isNotNull();
         assertThat(response.getVedtakListe().get(0).getTema().getValue().equals("SP")).isTrue();
         assertThat(response.getVedtakListe().get(0).getBehandlingstema().getValue().equals("SP")).isTrue();
+
+    }
+
+    @Test
+    public void finnSakListeResponseHaandtererFnrMedSakSomIkkeFinnes() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
+    {
+        FinnSakListeMockImpl finnSakListeMockImpl = new FinnSakListeMockImpl();
+        FinnSakListeRequest request = new FinnSakListeRequest();
+        request.setPersonident(IDENT_UTEN_TABELLINNSLAG);
+        no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = finnSakListeMockImpl.finnSakListe(request);
+
+        assertThat(response).isNull();
 
     }
 }

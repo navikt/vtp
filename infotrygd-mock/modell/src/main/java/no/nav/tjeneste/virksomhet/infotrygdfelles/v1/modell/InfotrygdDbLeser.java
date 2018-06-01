@@ -20,21 +20,21 @@ public class InfotrygdDbLeser extends DbLeser {
     }
 
     public List<InfotrygdYtelse> finnInfotrygdYtelseMedFnr(String fnr) {
-        if(fnr !=null){
-            TypedQuery<InfotrygdSvar> query = entityManager.createQuery("FROM InfotrygdSvar t WHERE fnr = :fnr", InfotrygdSvar.class); //$NON-NLS-1$ //$NON-NLS-1$
-            query.setParameter("fnr", fnr);
-            List<InfotrygdSvar> infotrygdSvar = query.getResultList();
+        if(fnr == null){ return null;}
 
-            List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
-            if(!infotrygdSvar.isEmpty()) {
-                List<InfotrygdYtelse> filtrertInfotrygdYtelseListe = infotrygdYtelseListe.stream()
-                        .filter(ytelse -> ytelse.feedelementType == null)
-                        .collect(Collectors.toList());
-                if (filtrertInfotrygdYtelseListe.size() > 0) {
-                    return filtrertInfotrygdYtelseListe;
-                } else {
-                    return null;
-                }
+        TypedQuery<InfotrygdSvar> query = entityManager.createQuery("FROM InfotrygdSvar t WHERE fnr = :fnr", InfotrygdSvar.class); //$NON-NLS-1$ //$NON-NLS-1$
+        query.setParameter("fnr", fnr);
+        List<InfotrygdSvar> infotrygdSvar = query.getResultList();
+        if(infotrygdSvar == null || infotrygdSvar.size() == 0) { return null;}
+
+        List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdSvar.get(0).getInfotrygdYtelseListe();
+        if(!infotrygdYtelseListe.isEmpty()) {
+            //NOTE: filtrerer bort såkalte Infotrygdhendelser, da testhub har lånt Infotrygdytelse-tabellen til å også lage slike, og slike indikeres med feltet feedelement_type
+            List<InfotrygdYtelse> filtrertInfotrygdYtelseListe = infotrygdYtelseListe.stream()
+                    .filter(ytelse -> ytelse.feedelementType == null)
+                    .collect(Collectors.toList());
+            if (!filtrertInfotrygdYtelseListe.isEmpty()) {
+                return filtrertInfotrygdYtelseListe;
             } else {
                 return null;
             }
@@ -42,6 +42,7 @@ public class InfotrygdDbLeser extends DbLeser {
             return null;
         }
     }
+
 
     public List<InfotrygdGrunnlag> finnInfotrygdGrunnlagMedFnr(String fnr) {
         if(fnr !=null){
