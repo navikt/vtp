@@ -4,10 +4,14 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListePersonIkke
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 public class FinnSakListeMockImplTest {
@@ -16,7 +20,7 @@ public class FinnSakListeMockImplTest {
     private final String IDENT_UTEN_TABELLINNSLAG = "19069011369";
 
     @Test
-    public void finnSakListeResponseGrunnleggendeTest() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
+    public void finnSakListeGrunnleggendeResponseTest() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
     {
         FinnSakListeMockImpl finnSakListeMockImpl = new FinnSakListeMockImpl();
         FinnSakListeRequest request = new FinnSakListeRequest();
@@ -33,14 +37,21 @@ public class FinnSakListeMockImplTest {
 
     }
 
+    @Ignore("TODO: Implementer test som viser hvordan man skal håndtere at det eventuelt finnes innslag i INFOTRYGDSVAR men ikke i INFOTRYGDYTELSE, krever at man går mot en annen base enn prod, feks inmembase")
     @Test
-    public void finnSakListeResponseHaandtererFnrMedSakSomIkkeFinnes() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
+    public void finnSakListeHaandtererInfotrygdsvarUtenInfotrygdytelse() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput, NotImplementedException {
+        throw new NotImplementedException();
+    }
+
+    @Test
+    public void finnSakListeUtenInnslagIInfotrygdsvarGirNullIResponse() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput
     {
         FinnSakListeMockImpl finnSakListeMockImpl = new FinnSakListeMockImpl();
         FinnSakListeRequest request = new FinnSakListeRequest();
         request.setPersonident(IDENT_UTEN_TABELLINNSLAG);
         no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = finnSakListeMockImpl.finnSakListe(request);
 
+        //NOTE: forventningen er godt mulig feil, det er ikke usannsynlig at Infotrygd returnerer et korrekt formatert Soapsvar med tomme lister
         assertThat(response).isNull();
 
     }
