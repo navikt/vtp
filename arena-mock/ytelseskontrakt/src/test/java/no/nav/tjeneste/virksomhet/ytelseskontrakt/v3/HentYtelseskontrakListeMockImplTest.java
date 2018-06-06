@@ -3,7 +3,6 @@ package no.nav.tjeneste.virksomhet.ytelseskontrakt.v3;
 
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.binding.HentYtelseskontraktListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.meldinger.*;
-import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.meldinger.HentYtelseskontraktListeResponse;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

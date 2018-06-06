@@ -2,7 +2,6 @@ package no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell;
 
 
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Bruker;
-import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.ObjectFactory;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Rettighetsgruppe;
 
 public class BrukerBygger {

@@ -1,4 +1,4 @@
-package no.nav.engangsstønad.mock.checks;
+package no.nav.vedtak.mock.local.checks;
 
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;

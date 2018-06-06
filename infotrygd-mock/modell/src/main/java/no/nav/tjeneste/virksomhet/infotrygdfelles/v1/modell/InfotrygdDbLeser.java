@@ -1,12 +1,8 @@
 package no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell;
 
-import static no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.FeilKodeKonstanter.PERSON_IKKE_FUNNET;
-import static no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.FeilKodeKonstanter.UGYLDIG_INPUT;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -7,7 +7,6 @@ import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.meldinger.*;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
 
 public class FinnGrunnlagListeMockTest {

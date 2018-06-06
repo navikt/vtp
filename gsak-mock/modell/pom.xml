@@ -8,6 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gsak-mock-modell</artifactId>
+	<name>VL Mock :: gsak-mock-modell</name>
 
     <dependencies>
         <dependency>
@@ -18,8 +19,7 @@
         <dependency>
             <artifactId>tps-mock-modell</artifactId>
             <groupId>no.nav.foreldrepenger</groupId>
-            <version>${revision}${sha1}${changelist}</version>
-        </dependency>
+            </dependency>
     </dependencies>
 
 

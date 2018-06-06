@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>pdp-mock</artifactId>
-
+	<name>VL Mock :: pdp-mock</name>
     <dependencies>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>

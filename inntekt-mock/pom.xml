@@ -8,10 +8,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>inntekt-mock</artifactId>
-    <name>Vedtak Engangsstønad inntekt-mock</name>
+    <name>VL Mock :: inntekt-mock</name>
     <packaging>pom</packaging>
     <modules>
         <module>inntekt</module>
         <module>modell</module>
     </modules>
+	
+	<dependencies>
+		<dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>mock-felles</artifactId>
+        </dependency>
+	</dependencies>
 </project>

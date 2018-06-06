@@ -1,4 +1,4 @@
-package no.nav.engangsstønad.mock;
+package no.nav.vedtak.mock.local;
 
 import java.util.HashSet;
 import java.util.Set;

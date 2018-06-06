@@ -22,7 +22,8 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
 
 	private static final Logger LOG = LoggerFactory.getLogger(BehandleSak2ServiceMockImpl.class);
 
-	@WebResult(name = "response", targetNamespace = "")
+	@Override
+    @WebResult(name = "response", targetNamespace = "")
 	@RequestWrapper(localName = "opprettSak", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandlesak/v2", className = "no.nav.tjeneste.virksomhet.behandlesak.v2.OpprettSak")
 	@WebMethod(action = "http://nav.no/tjeneste/virksomhet/behandlesak/v2/BehandleSak_v2/opprettSakRequest")
 	@ResponseWrapper(localName = "opprettSakResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandlesak/v2", className = "no.nav.tjeneste.virksomhet.behandlesak.v2.OpprettSakResponse")
@@ -35,7 +36,8 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
 		return response;
 	}
 
-	@RequestWrapper(localName = "ping", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandlesak/v2", className = "no.nav.tjeneste.virksomhet.behandlesak.v2.Ping")
+	@Override
+    @RequestWrapper(localName = "ping", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandlesak/v2", className = "no.nav.tjeneste.virksomhet.behandlesak.v2.Ping")
 	@WebMethod(action = "http://nav.no/tjeneste/virksomhet/behandlesak/v2/BehandleSak_v2/pingRequest")
 	@ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandlesak/v2", className = "no.nav.tjeneste.virksomhet.behandlesak.v2.PingResponse")
 	public void ping() {

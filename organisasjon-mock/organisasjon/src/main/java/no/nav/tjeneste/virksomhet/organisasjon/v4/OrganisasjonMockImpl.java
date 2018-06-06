@@ -1,8 +1,5 @@
 package no.nav.tjeneste.virksomhet.organisasjon.v4;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -17,7 +14,6 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.binding.FinnOrganisasjonForMangeForekomster;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.binding.FinnOrganisasjonUgyldigInput;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.binding.HentOrganisasjonOrganisasjonIkkeFunnet;

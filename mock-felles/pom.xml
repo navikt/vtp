@@ -12,7 +12,7 @@
 
     <artifactId>mock-felles</artifactId>
     <packaging>jar</packaging>
-    <name>Vedtak Engangsstønad joark-mock journal</name>
+    <name>VL Mock :: Felles</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

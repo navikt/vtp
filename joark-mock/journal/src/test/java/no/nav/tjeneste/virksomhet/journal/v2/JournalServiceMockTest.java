@@ -4,7 +4,6 @@ import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerh
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.*;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.ObjectFactory;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;

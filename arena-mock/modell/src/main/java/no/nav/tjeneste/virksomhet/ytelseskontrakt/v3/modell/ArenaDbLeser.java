@@ -18,7 +18,7 @@ public class ArenaDbLeser extends DbLeser {
             query.setParameter("fnr", fnr);
             List<ArenaSvar> arenaSvar = query.getResultList();
 
-            if(!arenaSvar.isEmpty() && arenaSvar != null) {
+            if(arenaSvar != null && !arenaSvar.isEmpty()) {
                 return arenaSvar.get(0).getYtelseskontraktListe();
             }
         }
@@ -31,7 +31,7 @@ public class ArenaDbLeser extends DbLeser {
             query.setParameter("idYtelse", idYtelse);
             List<ArenaVedtak> arenaVedtak = query.getResultList();
 
-            if(!arenaVedtak.isEmpty() && arenaVedtak != null) {
+            if(arenaVedtak != null && !arenaVedtak.isEmpty()) {
                 return arenaVedtak;
             }
         }

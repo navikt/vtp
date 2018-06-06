@@ -8,11 +8,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>norg2-mock</artifactId>
-    <name>Vedtak Engangsstønad norg2-mock</name>
+    <name>VL Mock :: norg2-mock</name>
     <packaging>pom</packaging>
     <modules>
         <module>arbeidsfordeling</module>
         <module>modell</module>
     </modules>
+	
+	<dependencies>
+		<dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>mock-felles</artifactId>
+        </dependency>
+	</dependencies>
 
 </project>

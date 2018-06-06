@@ -20,11 +20,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
-import java.util.ArrayList;
 import java.util.List;
 
 @Addressing
@@ -56,7 +54,7 @@ public class HentYtelseskontraktListeMockImpl implements YtelseskontraktV3 {
 //        XMLGregorianCalendar fom = hentYtelseskontraktListeRequest.getPeriode().getFom();
 //        XMLGregorianCalendar tom = hentYtelseskontraktListeRequest.getPeriode().getTom();
 
-           if (ident != null || !ident.isEmpty()) {
+           if (ident != null && !ident.isEmpty()) {
                arenaSvar = arenaDbLeser.finnArenaSvarMedFnr(ident);
                arenaYtelseskontraktListe = arenaSvar.getYtelseskontraktListe();
 

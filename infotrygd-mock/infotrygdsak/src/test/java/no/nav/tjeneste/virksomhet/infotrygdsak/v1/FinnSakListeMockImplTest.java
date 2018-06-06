@@ -4,15 +4,11 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListePersonIkke
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 
 public class FinnSakListeMockImplTest {
 
@@ -39,8 +35,8 @@ public class FinnSakListeMockImplTest {
 
     @Ignore("TODO: Implementer test som viser hvordan man skal håndtere at det eventuelt finnes innslag i INFOTRYGDSVAR men ikke i INFOTRYGDYTELSE, krever at man går mot en annen base enn prod, feks inmembase")
     @Test
-    public void finnSakListeHaandtererInfotrygdsvarUtenInfotrygdytelse() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput, NotImplementedException {
-        throw new NotImplementedException();
+    public void finnSakListeHaandtererInfotrygdsvarUtenInfotrygdytelse() throws FinnSakListePersonIkkeFunnet, FinnSakListeSikkerhetsbegrensning, FinnSakListeUgyldigInput {
+        throw new UnsupportedOperationException();
     }
 
     @Test

@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>arena-mock</artifactId>
-    <name>Vedtak Engangsstønad arena-mock</name>
+    <name>VL Mock :: arena-mock</name>
     <packaging>pom</packaging>
     <modules>
         <module>ytelseskontrakt</module>
@@ -16,4 +16,10 @@
         <module>meldekortutbetalingsgrunnlag</module>
     </modules>
 
+	<dependencies>
+		<dependency>
+			<groupId>no.nav.foreldrepenger</groupId>
+			<artifactId>mock-felles</artifactId>
+		</dependency>
+	</dependencies>
 </project>

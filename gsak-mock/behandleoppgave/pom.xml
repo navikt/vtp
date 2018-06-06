@@ -9,7 +9,7 @@
 
     <artifactId>behandleoppgave-mock</artifactId>
     <packaging>jar</packaging>
-    <name>Vedtak Engangsstønad gsak-mock behandleoppgave</name>
+    <name>VL Mock :: gsak-mock behandleoppgave</name>
 
     <dependencies>
 
@@ -19,60 +19,7 @@
             <artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <!-- Test avhengigheter -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                    <packagingExcludes>*app/**, *images/**, *.jar, *maven-archiver/**, *messages/**</packagingExcludes>
-                    <!--
-                    <webResources>
-                        <resource>
-                            <directory>../klient/src/client</directory>
-                        </resource>
-                        <resource>
-                            <directory>../klient/target</directory>
-                        </resource>
-                    </webResources>
-                     -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
+   
 </project>

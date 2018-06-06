@@ -6,7 +6,7 @@
 	<groupId>no.nav.foreldrepenger</groupId>
 	<artifactId>fpmock</artifactId>
 	<packaging>pom</packaging>
-	<name>Vedtak Engangsstønad mock root pom</name>
+	<name>VL Mock :: Root</name>
 	<version>${revision}${sha1}${changelist}</version>
 
 	<scm>
@@ -38,6 +38,8 @@
 		<sha1></sha1>
 		<changelist>-SNAPSHOT</changelist>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
         <java.jdk.version>1.8</java.jdk.version>
         <mockito.version>1.10.19</mockito.version>
         <assertj.version>3.6.2</assertj.version>
@@ -46,9 +48,10 @@
         <jetty.version>9.4.1.v20170120</jetty.version>
         <junit.version>4.12</junit.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
-		<hibernate.version>5.2.9.Final</hibernate.version>
+		<hibernate.version>5.3.1.Final</hibernate.version>
+		<hibernate.jpa.version>1.0.2.Final</hibernate.jpa.version>
+		
 		<oppgave.version>3.0.0</oppgave.version>
-
         <gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
 		<infotrygd.beregningsgrunnlag.version>1.0.2</infotrygd.beregningsgrunnlag.version>
@@ -370,6 +373,11 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${hibernate.jpa.version}</version>
+			</dependency>
 
 			<!-- Testavhengigheter -->
 			<dependency>
@@ -392,9 +400,49 @@
 			</dependency>
 		</dependencies>
     </dependencyManagement>
+	
+	<dependencies>
+         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-plus</artifactId>
+        </dependency>
+		<dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+	
 	<build>
 		<pluginManagement>
 			<plugins>
+			    <plugin>
+				     <artifactId>maven-deploy-plugin</artifactId>
+				     <version>2.8.2</version>
+				</plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.5.1</version>
@@ -422,6 +470,95 @@
 					<artifactId>flatten-maven-plugin</artifactId>
 					<version>1.0.0</version>
 				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>failsafe-integration-test</id>
+							<goals>
+								<goal>integration-test</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>failsafe-verify</id>
+							<goals>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<forkCount>1</forkCount>
+						<reuseForks>true</reuseForks>
+						<useFile>true</useFile>
+						<argLine> -Xms256m -Dfile.encoding=UTF-8 -Dsurefire.forkNumber=${surefire.forkNumber} -Dlog.level.no.nav=WARN</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.jboss.jandex</groupId>
+					<artifactId>jandex-maven-plugin</artifactId>
+					<version>1.0.5</version>
+					<executions>
+						<execution>
+							<id>make-index</id>
+							<goals>
+								<goal>jandex</goal>
+							</goals>
+							<configuration>
+								<!-- Nothing needed here for simple cases -->
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jboss.jandex</groupId>
+                                        <artifactId>jandex-maven-plugin</artifactId>
+                                        <versionRange>[1.0,)</versionRange>
+                                        <goals>
+                                            <goal>jandex</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            org.codehaus.mojo
+                                        </groupId>
+                                        <artifactId>
+                                            flatten-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.0.0,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>flatten</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 

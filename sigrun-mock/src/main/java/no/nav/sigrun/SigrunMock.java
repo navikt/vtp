@@ -16,6 +16,7 @@ import javax.xml.ws.soap.Addressing;
 @BindingType(value = HTTPBinding.HTTP_BINDING)
 public class SigrunMock implements Provider<DataSource> {
 
+    @Override
     public DataSource invoke(DataSource request) {
         return new ByteArrayDataSource(buildPermitResponse().getBytes(),"application/json");
     }

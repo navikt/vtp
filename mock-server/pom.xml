@@ -10,7 +10,7 @@
 
 	<artifactId>mock-server</artifactId>
 	<packaging>jar</packaging>
-	<name>Vedtak Engangsstønad mock server</name>
+	<name>VL Mock :: mock server</name>
 
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
@@ -159,10 +159,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.0</version>
             </plugin>
         </plugins>
     </build>

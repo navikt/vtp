@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tps-mock</artifactId>
-    <name>Vedtak Engangsstønad tps-mock</name>
+    <name>VL Mock :: tps-mock</name>
     <packaging>pom</packaging>
     <modules>
         <module>person</module>
@@ -16,5 +16,11 @@
         <module>modell</module>
     </modules>
 
+	<dependencies>
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>mock-felles</artifactId>
+        </dependency>
 
+	</dependencies>
 </project>

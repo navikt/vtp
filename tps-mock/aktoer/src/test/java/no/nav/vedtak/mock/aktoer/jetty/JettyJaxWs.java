@@ -1,4 +1,4 @@
-package no.nav.engangsstønad.mock.jetty;
+package no.nav.vedtak.mock.aktoer.jetty;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
@@ -15,6 +15,7 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 import com.sun.net.httpserver.HttpContext;
 
+@SuppressWarnings("restriction")
 public class JettyJaxWs {
 
     public static void main(String[] args) throws Exception {

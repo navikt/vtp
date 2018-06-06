@@ -1,4 +1,4 @@
-package no.nav.engangsstønad.mock;
+package no.nav.vedtak.mock.local;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -1,5 +1,6 @@
-package no.nav.engangsstønad.mock;
+package no.nav.vedtak.mock.local;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
@@ -20,8 +21,6 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import com.sun.net.httpserver.HttpContext;
 
 import no.nav.abac.pdp.PdpMock;
-import no.nav.engangsstønad.mock.checks.IsAliveImpl;
-import no.nav.engangsstønad.mock.checks.IsReadyImpl;
 import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
@@ -44,7 +43,10 @@ import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
+import no.nav.vedtak.mock.local.checks.IsAliveImpl;
+import no.nav.vedtak.mock.local.checks.IsReadyImpl;
 
+@SuppressWarnings("restriction")
 public class MockServer {
 
     private static final int HTTP_PORT = 8080;
@@ -53,7 +55,10 @@ public class MockServer {
     private static Server server;
 
     public static void main(String[] args) throws Exception {
-
+        File logDir =new File("logs");
+        logDir.mkdirs();
+        System.setProperty("APP_LOG_HOME", logDir.getPath());
+        
         server = new Server();
         setConnectors();
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
@@ -65,7 +70,7 @@ public class MockServer {
     }
 
     private static void publishServices() {
-        //TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
+        // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishService(AktoerServiceMockImpl.class, "/aktoer");
         // access wsdl on http://localhost:7999/aktoer?wsdl
         publishService(SakServiceMockImpl.class, "/sak");
@@ -77,14 +82,14 @@ public class MockServer {
         publishService(InngaaendeJournalServiceMockImpl.class, "/inngaaendejournal");
         publishService(BehandleInngaaendeJournalServiceMockImpl.class, "/behandleinngaaendejournal");
         publishService(OppgavebehandlingServiceMockImpl.class, "/oppgavebehandling");
-        //access wsdl on http://localhost:7999/oppgavebehandling?wsdl
+        // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishService(BehandleOppgaveServiceMockImpl.class, "/behandleoppgave");
         // access wsdl on http://localhost:7999/behandleoppgave?wsdl
         publishService(BehandleSakServiceMockImpl.class, "/behandlesak");
-        //access wsdl on http://localhost:7999/behandlesak?wsdl
+        // access wsdl on http://localhost:7999/behandlesak?wsdl
         publishService(BehandleSak2ServiceMockImpl.class, "/behandlesakV2");
-        //access wsdl on http://localhost:7999/behandlesakV2?wsdl
-        publishService(PdpMock.class,"/asm-pdp/authorize");
+        // access wsdl on http://localhost:7999/behandlesakV2?wsdl
+        publishService(PdpMock.class, "/asm-pdp/authorize");
         publishService(FinnSakListeMockImpl.class, "/infotrygdsak");
         publishService(FinnGrunnlagListeMockImpl.class, "/infotrygdberegningsgrunnlag");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
@@ -94,44 +99,46 @@ public class MockServer {
         publishService(MedlemServiceMockImpl.class, "/medlem");
         publishService(ArbeidsfordelingMockImpl.class, "/arbeidsfordeling");
         publishService(InntektMockImpl.class, "/inntekt");
-        publishService(OppgaveServiceMockImpl.class,"/oppgave");
-        publishService(ArbeidsforholdMockImpl.class,"/arbeidsforhold");
-        publishService(OrganisasjonMockImpl.class,"/organisasjon");
-        publishService(SigrunMock.class,"/api/beregnetskatt");
+        publishService(OppgaveServiceMockImpl.class, "/oppgave");
+        publishService(ArbeidsforholdMockImpl.class, "/arbeidsforhold");
+        publishService(OrganisasjonMockImpl.class, "/organisasjon");
+        publishService(SigrunMock.class, "/api/beregnetskatt");
 
-        publishService(IsAliveImpl.class,"/isAlive");
-        publishService(IsReadyImpl.class,"/isReady");
+        publishService(IsAliveImpl.class, "/isAlive");
+        publishService(IsReadyImpl.class, "/isReady");
     }
 
     private static void setConnectors() {
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(HTTP_PORT);
-        connector.setHost(HTTP_HOST);
-        HttpConfiguration https = new HttpConfiguration();
+        try (ServerConnector connector = new ServerConnector(server)) {
+            connector.setPort(HTTP_PORT);
+            connector.setHost(HTTP_HOST);
+            HttpConfiguration https = new HttpConfiguration();
 
-        TestCertificates.setupKeyAndTrustStore();
+            TestCertificates.setupKeyAndTrustStore();
 
-        https.addCustomizer(new SecureRequestCustomizer());
+            https.addCustomizer(new SecureRequestCustomizer());
 
-        boolean useModigCerts = "true".equalsIgnoreCase(System.getenv("modigcerts"));
-        String keystorePath;
-        SslContextFactory sslContextFactory;
+            boolean useModigCerts = "true".equalsIgnoreCase(System.getenv("modigcerts"));
+            String keystorePath;
+            SslContextFactory sslContextFactory;
 
-        if (true) {
-            keystorePath = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
-        } else {
-            keystorePath = System.getenv("mock_keystore");
+            if (true) {
+                keystorePath = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
+            } else {
+                keystorePath = System.getenv("mock_keystore");
+            }
+            sslContextFactory = new SslContextFactory(keystorePath);
+            sslContextFactory.setTrustAll(true);
+            sslContextFactory.setKeyStorePassword("devillokeystore1234");
+            sslContextFactory.setKeyManagerPassword("devillokeystore1234");
+
+            try (ServerConnector sslConnector = new ServerConnector(server,
+                new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https))) {
+                sslConnector.setPort(HTTPS_PORT);
+                sslConnector.setHost(HTTP_HOST);
+                server.setConnectors(new Connector[] { connector, sslConnector });
+            }
         }
-        sslContextFactory = new SslContextFactory(keystorePath);
-        sslContextFactory.setTrustAll(true);
-        sslContextFactory.setKeyStorePassword("devillokeystore1234");
-        sslContextFactory.setKeyManagerPassword("devillokeystore1234");
-
-        ServerConnector sslConnector = new ServerConnector(server,
-                new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https));
-        sslConnector.setPort(HTTPS_PORT);
-        sslConnector.setHost(HTTP_HOST);
-        server.setConnectors(new Connector[] { connector, sslConnector });
     }
 
     private static void publishService(Class<?> clazz, String path) {
@@ -157,4 +164,5 @@ public class MockServer {
             e.printStackTrace();
         }
         return ctx;
-    }}
+    }
+}

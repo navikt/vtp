@@ -27,6 +27,7 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
 
     private static final Logger LOG = LoggerFactory.getLogger(BehandleSakServiceMockImpl.class);
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/behandleSak/v1/BehandleSak_v1/opprettSakRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "opprettSak", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandleSak/v1", className = "no.nav.tjeneste.virksomhet.behandlesak.v1.OpprettSak")
@@ -38,6 +39,7 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
         return response;
     }
 
+    @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/behandleSak/v1/BehandleSak_v1/pingRequest")
     @RequestWrapper(localName = "ping", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandleSak/v1", className = "no.nav.tjeneste.virksomhet.behandlesak.v1.Ping")
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/behandleSak/v1", className = "no.nav.tjeneste.virksomhet.behandlesak.v1.PingResponse")

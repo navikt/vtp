@@ -1,7 +1,5 @@
 package no.nav.tjeneste.virksomhet.oppgavebehandling.v3;
 
-import java.util.List;
-
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.FeilregistrerOppgaveOppgaveIkkeFunnet;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.FeilregistrerOppgaveUlovligStatusOvergang;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.binding.LagreMappeMappeIkkeFunnet;

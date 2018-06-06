@@ -233,6 +233,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
+    @Override
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/person/v3/Person_v3/hentEkteskapshistorikkRequest"
     )

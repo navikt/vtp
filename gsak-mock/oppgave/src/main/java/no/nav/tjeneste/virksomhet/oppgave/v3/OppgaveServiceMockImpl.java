@@ -13,7 +13,6 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.LoggerFactory;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import no.nav.tjeneste.virksomhet.oppgave.v3.binding.HentOppgaveOppgaveIkkeFunnet;
 import no.nav.tjeneste.virksomhet.oppgave.v3.binding.OppgaveV3;
 import no.nav.tjeneste.virksomhet.oppgave.v3.informasjon.oppgave.Fagomrade;

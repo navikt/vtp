@@ -8,7 +8,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>journal-mock-modell</artifactId>
-    <name>Vedtak Engangsstønad modell-mock</name>
+    <name>VL Mock :: modell-mock</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -16,30 +16,12 @@
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>tps-mock-modell</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>mock-felles</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
@@ -52,35 +34,5 @@
             <classifier>jaxws</classifier>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                    <packagingExcludes>*app/**, *images/**, *.jar, *maven-archiver/**, *messages/**</packagingExcludes>
-                    <!--
-                    <webResources>
-                        <resource>
-                            <directory>../klient/src/client</directory>
-                        </resource>
-                        <resource>
-                            <directory>../klient/target</directory>
-                        </resource>
-                    </webResources>
-                     -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+   
 </project>

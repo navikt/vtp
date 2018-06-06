@@ -22,7 +22,6 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postboksadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostboksadresseNorsk;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstand;
@@ -30,8 +29,6 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstander;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse;
-import oracle.jdbc.proxy.annotation.Post;
-
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -40,7 +37,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Logger;
 
 public class PersonBygger {
     private final String fnr;

@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gsak-mock</artifactId>
-    <name>Vedtak Engangsstønad gsak-mock</name>
+    <name>VL Mock :: gsak-mock</name>
     <packaging>pom</packaging>
     <modules>
         <module>sak</module>
@@ -19,5 +19,13 @@
         <module>oppgave</module>
     </modules>
 
+	<dependencies>
+		
+        <dependency>
+            <groupId>no.nav.foreldrepenger</groupId>
+            <artifactId>mock-felles</artifactId>
+        </dependency>
+		
+	</dependencies>
 
 </project>

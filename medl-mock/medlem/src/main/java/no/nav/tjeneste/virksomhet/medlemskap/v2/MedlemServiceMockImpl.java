@@ -1,8 +1,6 @@
 package no.nav.tjeneste.virksomhet.medlemskap.v2;
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -21,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.tjeneste.virksomhet.medlemskap.v2.data.MedlemDbLeser;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Personidentifikator;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeRequest;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeResponse;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeRequest;

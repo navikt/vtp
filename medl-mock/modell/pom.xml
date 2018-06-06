@@ -9,34 +9,14 @@
 
     <artifactId>medl-mock-modell</artifactId>
     <packaging>jar</packaging>
-    <name>Vedtak Engangsstønad medl-mock-modell</name>
+    <name>VL Mock :: medl-mock-modell</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->
-        <dependency>
-            <groupId>no.nav.foreldrepenger</groupId>
-            <artifactId>mock-felles</artifactId>
-        </dependency>
 
         <!-- 3dje parts NAV felleskomponenter -->
 
         <!-- 3dje parts biblioteker -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-plus</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-annotations</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http-spi</artifactId>
@@ -51,59 +31,12 @@
         </dependency>
 
         <!-- Testavhengigheter -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
+     
         <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
-            <version>${medlem.version}</version>
-        </dependency>
+            </dependency>
 
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                    <packagingExcludes>*app/**, *images/**, *.jar, *maven-archiver/**, *messages/**</packagingExcludes>
-                    <!--
-                    <webResources>
-                        <resource>
-                            <directory>../klient/src/client</directory>
-                        </resource>
-                        <resource>
-                            <directory>../klient/target</directory>
-                        </resource>
-                    </webResources>
-                     -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-
+  
 </project>

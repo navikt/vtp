@@ -9,7 +9,7 @@
 
     <artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
     <packaging>jar</packaging>
-    <name>Vedtak Engangsstønad infotrygd-mock infotrygdberegningsgrunnlag</name>
+    <name>VL Mock :: infotrygd-mock infotrygdberegningsgrunnlag</name>
 
     <dependencies>
 
@@ -21,59 +21,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>RELEASE</version>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger</groupId>
             <artifactId>infotrygd-mock-modell</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-        </dependency>
+
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <attachClasses>true</attachClasses>
-                    <packagingExcludes>*app/**, *images/**, *.jar, *maven-archiver/**, *messages/**</packagingExcludes>
-                    <!--
-                    <webResources>
-                        <resource>
-                            <directory>../klient/src/client</directory>
-                        </resource>
-                        <resource>
-                            <directory>../klient/target</directory>
-                        </resource>
-                    </webResources>
-                     -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 
 </project>

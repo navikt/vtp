@@ -25,9 +25,6 @@ import no.nav.tjeneste.virksomhet.journal.v2.modell.StaticModelData;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDbLeser;
 import no.nav.tjeneste.virksomhet.journalmodell.JournalDokument;
 import static no.nav.tjeneste.virksomhet.journalmodell.JournalDokumentKonstanter.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

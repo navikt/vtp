@@ -1,4 +1,4 @@
-package no.nav.engangsstønad.mock;
+package no.nav.vedtak.mock.local;
 
 /**
  * @author schrepfler
@@ -181,6 +181,7 @@ public final class SSLUtilities {
          * @return the true boolean value
          * indicating the host name is trusted.
          */
+        @Override
         public boolean verify(String hostname, SSLSession session) {
             return (true);
         }
@@ -235,14 +236,17 @@ public final class SSLUtilities {
          *
          * @return a empty array of issuer certificates.
          */
+        @Override
         public X509Certificate[] getAcceptedIssuers() {
             return (_AcceptedIssuers);
         } // getAcceptedIssuers
 
+        @Override
         public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        @Override
         public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
             throw new UnsupportedOperationException("Not supported yet.");
         }
@@ -266,6 +270,7 @@ public final class SSLUtilities {
          * @return the true boolean value
          * indicating the host name is trusted.
          */
+        @Override
         public boolean verify(String hostname,
                               SSLSession session) {
             return (true);
@@ -294,6 +299,7 @@ public final class SSLUtilities {
          * @param authType        the authentication type based on the client
          * certificate.
          */
+        @Override
         public void checkClientTrusted(X509Certificate[] chain,
                                        String authType) {
         } // checkClientTrusted
@@ -305,6 +311,7 @@ public final class SSLUtilities {
          * @param chain           the peer certificate chain.
          * @param authType        the key exchange algorithm used.
          */
+        @Override
         public void checkServerTrusted(X509Certificate[] chain,
                                        String authType) {
         } // checkServerTrusted
@@ -315,6 +322,7 @@ public final class SSLUtilities {
          *
          * @return a empty array of issuer certificates.
          */
+        @Override
         public X509Certificate[] getAcceptedIssuers() {
             return (_AcceptedIssuers);
         } // getAcceptedIssuers
