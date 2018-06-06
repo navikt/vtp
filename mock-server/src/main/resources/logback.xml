@@ -16,7 +16,7 @@
             <host>audit.nais</host>
             <!-- remote port to log to -->
             <port>6514</port>
-            <ident>vlmock</ident>
+            <ident>fpmock</ident>
             <!-- max log message length in bytes -->
             <maxMessageLength>128000</maxMessageLength>
         </syslogConfig>
