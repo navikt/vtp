@@ -45,6 +45,8 @@
         <assertj.version>3.6.2</assertj.version>
         <logback.version>1.1.9</logback.version>
         <slf4j.version>1.7.22</slf4j.version>
+		<logstash.version>4.10</logstash.version>
+		<syslog4j.version>1.0.0</syslog4j.version>
         <jetty.version>9.4.1.v20170120</jetty.version>
         <junit.version>4.12</junit.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
@@ -378,6 +380,18 @@
 				<artifactId>hibernate-jpa-2.1-api</artifactId>
                 <version>${hibernate.jpa.version}</version>
 			</dependency>
+			
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.papertrailapp</groupId>
+                <artifactId>logback-syslog4j</artifactId>
+                <version>${syslog4j.version}</version>
+            </dependency>
 
 			<!-- Testavhengigheter -->
 			<dependency>

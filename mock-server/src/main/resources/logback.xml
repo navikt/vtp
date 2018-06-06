@@ -1,68 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xml>
-<configuration scan="true" scanPeriod="60 seconds">
+<configuration>
 
-    <!-- Application log -->
-    <appender name="APP_FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <File>mock.log</File>
-            <encoder>
-                <pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}] - %m%n</pattern>
-                <!--
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %class %mdc %m\n</pattern>
-                -->
-            </encoder>
-            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-                    <level>INFO</level>
-            </filter>
-            <prudent>false</prudent>
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <!-- Daily rollover, (%d gir filnavn med default pattern yyyy-MM-dd) -->
-                    <fileNamePattern>mock.log.%d{yyyy-MM-dd}</fileNamePattern>
-                    <!-- Keep 30 days of history: -->
-                    <maxHistory>30</maxHistory>
-            </rollingPolicy>
+	<appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+		</encoder>
+	</appender>
+    
+    <appender name="SPORING_LOG" class="com.papertrailapp.logback.Syslog4jAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%m%n%xEx</pattern>
+        </layout>
+
+        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig">
+            <!-- remote system to log to -->
+            <host>audit.nais</host>
+            <!-- remote port to log to -->
+            <port>6514</port>
+            <ident>vlmock</ident>
+            <!-- max log message length in bytes -->
+            <maxMessageLength>128000</maxMessageLength>
+        </syslogConfig>
     </appender>
+	<logger name="no.nav" level="${log.level.no.nav:-INFO}" />
 
-    <!-- Error log -->
-    <appender name="ERROR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>mock_error.log</File>
-        <encoder>
-            <pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}] - %m%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-        <prudent>false</prudent>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Daily rollover, (%d gir filnavn med default pattern yyyy-MM-dd) -->
-            <fileNamePattern>mock_error.log.%d{yyyy-MM-dd}</fileNamePattern>
-            <!-- Keep 30 days of history: -->
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-    </appender>
+	<!-- skru paa for aa logge all sql statements med parametere -->
+	<logger name="jdbc.sql" level="${log.level.jdbc.sql:-ERROR}" />
+	<logger name="org.hibernate.SQL" level="${log.level.org.hibernate.SQL:-WARN}" />
+	<logger name="com.zaxxer.hikari" level="${log.level.com.zaxxer.hikari:-WARN}" />
+	<logger name="org.hibernate.type" level="${log.level.org.hibernate.type:-WARN}" />
+	<logger name="org.hibernate" level="${log.level.org.hibernate:-WARN}" />
+	<logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-WARN}" />
+	<logger name="org.flywaydb" level="${log.level.org.flywaydb:-INFO}" />
+	<logger name="org.apache" level="${log.level.org.apache:-ERROR}" />
+	<!-- ESSV: genererer en del støy for webservice -->
+	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
+	<logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
 
-    <logger name="no.nav" level="${log.level.no.nav:-INFO}" />
+	<logger name="no.nav.modig" level="${log.level.no.nav.modig:-WARN}" />
+	<!-- denne logger passord på INFO nivå! -->
+	<logger name="no.nav.modig.core.test.PropertySetter"
+		level="${log.level.no.nav.modig.core.test.PropertySetter:-WARN}" />
 
-    <!-- skru paa for aa logge all sql statements med parametere -->
-    <logger name="jdbc.sql" level="${log.level.jdbc.sql:-ERROR}" />
-    <logger name="org.hibernate.SQL" level="${log.level.org.hibernate.SQL:-WARN}" />
-    <logger name="com.zaxxer.hikari" level="${log.level.com.zaxxer.hikari:-WARN}" />
-    <logger name="org.hibernate.type" level="${log.level.org.hibernate.type:-WARN}" />
-    <logger name="org.hibernate" level="${log.level.org.hibernate:-WARN}" />
-    <logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-WARN}" />
-    <logger name="org.flywaydb" level="${log.level.org.flywaydb:-INFO}" />
-    <logger name="org.apache" level="${log.level.org.apache:-ERROR}" />
-
-    <logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
-    <logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
-
-    <logger name="no.nav.modig" level="${log.level.no.nav.modig:-WARN}" />
-
-    <!-- denne logger passord på INFO nivå!-->
-    <logger name="no.nav.modig.core.test.PropertySetter" level="${log.level.no.nav.modig.core.test.PropertySetter:-WARN}" />
-
-    <root level="${log.level.root:-INFO}">
-        <appender-ref ref="APP_FILE_LOG" />
-        <appender-ref ref="ERROR_LOG" />
-    </root>
+	<root level="${log.level.root:-WARN}">
+		<appender-ref ref="STDOUT_JSON" />
+	</root>
+    
+    <logger level="INFO" name="sporing" additivity="false">
+        <appender-ref ref="SPORING_LOG" />
+    </logger>
 </configuration>
