@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>no.nav.vedtak.fpmock</groupId>
+		<artifactId>fpmock</artifactId>
+		<version>${revision}${sha1}${changelist}</version>
+	</parent>
+
+	<artifactId>server</artifactId>
+	<packaging>jar</packaging>
+	<name>VL Mock :: mock server</name>
+
+	<dependencies>
+		<!-- Prosjektavhengigheter -->
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>person-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>aktoer-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>sak-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>oppgavebehandling-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>behandleoppgave-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>behandlesak-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>journal-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>inngaaendejournal-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>behandleinngaaendejournal-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>pdp-mock</artifactId>
+            <version>${revision}${sha1}${changelist}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>infotrygdsak-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>medl-mock-medlem</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>arbeidsfordeling-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>inntekt-mock-inntekt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>oppgave-mock</artifactId>
+            <version>${revision}${sha1}${changelist}</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>organisasjon-mock-organisasjon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>sigrun-mock</artifactId>
+        </dependency>
+
+        <!-- NAV biblioteker -->
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-testcertificates</artifactId>
+        </dependency>
+
+		<!-- Eksterne avhengigheter -->
+			
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.papertrailapp</groupId>
+			<artifactId>logback-syslog4j</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <artifactId>ytelseskontrakt-mock</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/lib/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

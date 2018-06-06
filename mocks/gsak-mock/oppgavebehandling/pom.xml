@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>gsak-mock</artifactId>
+        <groupId>no.nav.vedtak.fpmock</groupId>
+        <version>${revision}${sha1}${changelist}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>oppgavebehandling-mock</artifactId>
+    <packaging>jar</packaging>
+    <name>VL Mock :: gsak-mock oppgavebehandling</name>
+
+    <dependencies>
+
+        <!-- Eksterne avhengigheter -->
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>no.nav.vedtak.fpmock</groupId>
+		<artifactId>gsak-mock</artifactId>
+		<version>${revision}${sha1}${changelist}</version>
+	</parent>
+
+	<artifactId>sak-mock</artifactId>
+	<packaging>jar</packaging>
+	<name>VL Mock :: gsak-mock sak</name>
+
+	<dependencies>
+		<!-- Prosjektavhengigheter -->
+        <dependency>
+            <artifactId>gsak-mock-modell</artifactId>
+            <groupId>no.nav.vedtak.fpmock</groupId>
+            <version>${revision}${sha1}${changelist}</version>
+        </dependency>
+
+		<!-- Eksterne avhengigheter -->
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-annotations</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
+
+	</dependencies>
+   
+</project>

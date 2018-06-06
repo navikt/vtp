@@ -25,4 +25,4 @@ export mock_keystore=/home/deployer/keystore.jks
 export modigcerts=$IS_JETTY
 cd /var/log/apps/mock
 
-java -cp  /home/deployer/mock-server/target/mock-server-1.0.5-SNAPSHOT.jar:/home/deployer/mock-server/lib/* no.nav.vedtak.mock.local.MockServer >> console.log &
+java -cp  /home/deployer/server/target/server-1.0.5-SNAPSHOT.jar:/home/deployer/server/lib/* no.nav.foreldrepenger.fpmock.server.MockServer >> console.log &
