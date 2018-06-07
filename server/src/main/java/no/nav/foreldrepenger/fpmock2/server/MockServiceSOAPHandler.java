@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server;
+package no.nav.foreldrepenger.fpmock2.server;
 
 import java.util.HashSet;
 import java.util.Set;

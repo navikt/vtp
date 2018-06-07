@@ -2,11 +2,11 @@ package no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.modell;
 
 import org.hibernate.jpa.QueryHints;
 
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
-
-import no.nav.foreldrepenger.mock.felles.DbLeser;
 
 public class Norg2DbLeser extends DbLeser {
 

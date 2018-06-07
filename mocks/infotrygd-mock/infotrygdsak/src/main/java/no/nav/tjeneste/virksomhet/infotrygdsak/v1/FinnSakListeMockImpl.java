@@ -24,7 +24,6 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListePersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListeUgyldigInput;
@@ -36,6 +35,7 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.feil.Sikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeRequest;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell.InfotrygdDbLeser;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdSakBygger;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.modell.InfotrygdVedtakBygger;

@@ -17,7 +17,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.AktoerV2;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentIdentForAktoerIdPersonIkkeFunnet;

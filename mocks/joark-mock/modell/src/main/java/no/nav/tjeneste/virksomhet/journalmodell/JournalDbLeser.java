@@ -1,10 +1,11 @@
 package no.nav.tjeneste.virksomhet.journalmodell;
 
-import no.nav.foreldrepenger.mock.felles.DbLeser;
-import no.nav.foreldrepenger.mock.felles.DbUtils;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
+import no.nav.foreldrepenger.fpmock2.felles.DbUtils;
+
 import java.util.List;
 
 public class JournalDbLeser extends DbLeser {

@@ -1,6 +1,6 @@
 package no.nav.tjeneste.virksomhet.arbeidsfordeling.v1;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.ArbeidsfordelingV1;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnAlleBehandlendeEnheterListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnBehandlendeEnhetListeUgyldigInput;

@@ -7,7 +7,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import no.nav.foreldrepenger.mock.felles.DbLeser;
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
 
 public class ArenaMUDLeser extends DbLeser {
 

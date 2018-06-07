@@ -1,6 +1,6 @@
 package no.nav.tjeneste.virksomhet.person.v3.data;
 
-import no.nav.foreldrepenger.mock.felles.DbLeser;
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsRelasjon;
 
 import javax.persistence.EntityManager;

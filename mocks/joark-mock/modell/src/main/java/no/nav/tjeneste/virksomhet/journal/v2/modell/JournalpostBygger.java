@@ -2,7 +2,7 @@ package no.nav.tjeneste.virksomhet.journal.v2.modell;
 
 import java.time.LocalDateTime;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivtemaer;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;

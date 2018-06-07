@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server.checks;
+package no.nav.foreldrepenger.fpmock2.server.checks;
 
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;
@@ -13,7 +13,7 @@ import javax.xml.ws.soap.Addressing;
 @WebServiceProvider
 @ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
 @BindingType(value = HTTPBinding.HTTP_BINDING)
-public class IsAliveImpl implements Provider<DataSource> {
+public class IsReadyImpl implements Provider<DataSource> {
 
     @Override
     public DataSource invoke(DataSource request) {

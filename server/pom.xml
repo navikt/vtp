@@ -3,95 +3,95 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>no.nav.vedtak.fpmock</groupId>
-		<artifactId>fpmock</artifactId>
-		<version>${revision}${sha1}${changelist}</version>
+		<groupId>no.nav.vedtak.fpmock2</groupId>
+		<artifactId>fpmock2</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>server</artifactId>
 	<packaging>jar</packaging>
-	<name>VL Mock :: mock server</name>
+	<name>FPMock2 :: mock server</name>
 
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>person-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>aktoer-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>sak-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>oppgavebehandling-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>behandleoppgave-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>behandlesak-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>journal-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>inngaaendejournal-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>behandleinngaaendejournal-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>pdp-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>infotrygdsak-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>medl-mock-medlem</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>arbeidsfordeling-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>inntekt-mock-inntekt</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>oppgave-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>organisasjon-mock-organisasjon</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>sigrun-mock</artifactId>
         </dependency>
 
@@ -119,7 +119,7 @@
             <artifactId>jetty-http-spi</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>ytelseskontrakt-mock</artifactId>
         </dependency>
     </dependencies>

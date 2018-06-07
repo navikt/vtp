@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.AktoerId;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;

@@ -17,7 +17,6 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidsforholdPrArbeidsgiverForMangeForekomster;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidsforholdPrArbeidsgiverSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidsforholdPrArbeidsgiverUgyldigInput;
@@ -27,6 +26,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHi
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHistorikkSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidstakerePrArbeidsgiverSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidstakerePrArbeidsgiverUgyldigInput;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.ArbeidsforholdV3;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold;

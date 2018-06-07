@@ -3,20 +3,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>no.nav.vedtak.fpmock</groupId>
+		<groupId>no.nav.vedtak.fpmock2</groupId>
 		<artifactId>gsak-mock</artifactId>
-		<version>${revision}${sha1}${changelist}</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>sak-mock</artifactId>
 	<packaging>jar</packaging>
-	<name>VL Mock :: gsak-mock sak</name>
+	<name>FPMock2 :: gsak-mock sak</name>
 
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
         <dependency>
             <artifactId>gsak-mock-modell</artifactId>
-            <groupId>no.nav.vedtak.fpmock</groupId>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
         </dependency>
 
 		<!-- Eksterne avhengigheter -->

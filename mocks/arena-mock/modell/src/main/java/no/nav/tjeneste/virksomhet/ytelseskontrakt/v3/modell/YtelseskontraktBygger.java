@@ -1,6 +1,6 @@
 package no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.informasjon.ytelseskontrakt.Ytelseskontrakt;
 
 import java.time.LocalDateTime;

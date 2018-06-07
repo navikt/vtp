@@ -3,11 +3,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>no.nav.vedtak.fpmock</groupId>
-	<artifactId>fpmock</artifactId>
+	<groupId>no.nav.vedtak.fpmock2</groupId>
+	<artifactId>fpmock2</artifactId>
 	<packaging>pom</packaging>
-	<name>VL Mock :: Root</name>
-	<version>${revision}${sha1}${changelist}</version>
+	<name>FPMock2 :: Root</name>
+	<version>1.0-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</connection>
@@ -70,144 +70,144 @@
 		<!-- Prosjektavhengigheter -->
 		<dependencies>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>tps-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>aktoer-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>person-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			 <dependency>
 				<artifactId>gsak-mock-modell</artifactId>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>sak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			 <dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>pdp-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>oppgavebehandling-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>behandleoppgave-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>oppgave-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>behandlesak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>journal-mock-modell</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>journal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>inngaaendejournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>behandleinngaaendejournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>infotrygdsak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>infotrygd-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>ytelseskontrakt-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>arena-mock-modell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>medl-mock-medlem</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>inntekt-mock-inntekt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>organisasjon-mock-organisasjon</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock</groupId>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>sigrun-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>arbeidsfordeling-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock</groupId>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
                 <artifactId>norg2-mock-modell</artifactId>
                 <version>${project.version}</version>
             </dependency>

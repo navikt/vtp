@@ -2,9 +2,10 @@ package no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.modell;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.List;
 
-import no.nav.foreldrepenger.mock.felles.DbLeser;
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
+
+import java.util.List;
 
 public class ArenaDbLeser extends DbLeser {
 

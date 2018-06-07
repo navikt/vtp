@@ -1,6 +1,6 @@
 package no.nav.tjeneste.virksomhet.journal.v2.modell;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.*;
 import no.nav.tjeneste.virksomhet.person.v3.data.PersonDbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;

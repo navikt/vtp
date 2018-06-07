@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ObjectFactory;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Uttrekksperiode;

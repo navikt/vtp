@@ -1,6 +1,6 @@
 package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.*;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Person;

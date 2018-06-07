@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.mock.felles;
+package no.nav.foreldrepenger.fpmock2.felles;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

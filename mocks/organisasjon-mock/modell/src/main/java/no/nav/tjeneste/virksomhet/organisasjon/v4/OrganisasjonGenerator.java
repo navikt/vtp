@@ -2,7 +2,7 @@ package no.nav.tjeneste.virksomhet.organisasjon.v4;
 
 import java.time.LocalDate;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Enhetstyper;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Naering;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.OrganisasjonsDetaljer;

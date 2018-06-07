@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server;
+package no.nav.foreldrepenger.fpmock2.server;
 
 import java.lang.reflect.Method;
 
@@ -15,8 +15,8 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 import no.nav.abac.pdp.PdpMock;
-import no.nav.foreldrepenger.fpmock.server.checks.IsAliveImpl;
-import no.nav.foreldrepenger.fpmock.server.checks.IsReadyImpl;
+import no.nav.foreldrepenger.fpmock2.server.checks.IsAliveImpl;
+import no.nav.foreldrepenger.fpmock2.server.checks.IsReadyImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;

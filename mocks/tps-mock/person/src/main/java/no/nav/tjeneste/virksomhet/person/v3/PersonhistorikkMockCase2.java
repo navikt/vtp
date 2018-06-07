@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.AktoerId;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;

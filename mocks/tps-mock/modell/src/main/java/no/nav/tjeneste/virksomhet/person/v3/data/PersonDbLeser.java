@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import no.nav.foreldrepenger.mock.felles.DbLeser;
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.modell.PersonBygger;
 import no.nav.tjeneste.virksomhet.person.v3.modell.TpsPerson;

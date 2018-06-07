@@ -4,7 +4,7 @@
         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <javaee:handler-chain>
         <javaee:handler>
-            <javaee:handler-class>no.nav.foreldrepenger.fpmock.server.MockServiceSOAPHandler</javaee:handler-class>
+            <javaee:handler-class>no.nav.foreldrepenger.fpmock2.server.MockServiceSOAPHandler</javaee:handler-class>
         </javaee:handler>
     </javaee:handler-chain>
 </javaee:handler-chains>

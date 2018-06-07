@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>gsak-mock</artifactId>
-        <groupId>no.nav.vedtak.fpmock</groupId>
-        <version>${revision}${sha1}${changelist}</version>
+        <groupId>no.nav.vedtak.fpmock2</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>oppgavebehandling-mock</artifactId>
     <packaging>jar</packaging>
-    <name>VL Mock :: gsak-mock oppgavebehandling</name>
+    <name>FPMock2 :: gsak-mock oppgavebehandling</name>
 
     <dependencies>
 

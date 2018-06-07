@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import no.nav.foreldrepenger.mock.felles.ConversionUtils;
-import no.nav.foreldrepenger.mock.felles.DbLeser;
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Studieinformasjon;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.GrunnlagstypeMedTerm;

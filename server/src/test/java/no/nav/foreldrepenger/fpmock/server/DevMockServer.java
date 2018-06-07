@@ -10,6 +10,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
+import no.nav.foreldrepenger.fpmock2.server.MockServer;
 import no.nav.modig.testcertificates.TestCertificates;
 
 public class DevMockServer extends MockServer {

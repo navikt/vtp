@@ -3,11 +3,11 @@ package no.nav.tjeneste.virksomhet.infotrygdfelles.v1.modell;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import no.nav.foreldrepenger.fpmock2.felles.DbLeser;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import no.nav.foreldrepenger.mock.felles.DbLeser;
 
 public class InfotrygdDbLeser extends DbLeser {
 
