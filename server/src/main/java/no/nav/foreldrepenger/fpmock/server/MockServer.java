@@ -1,29 +1,22 @@
 package no.nav.foreldrepenger.fpmock.server;
 
-import java.io.File;
 import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
+import com.sun.net.httpserver.HttpContext;
 
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
+import org.eclipse.jetty.http.spi.JettyHttpServerProvider;
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
-
-import com.sun.net.httpserver.HttpContext;
 
 import no.nav.abac.pdp.PdpMock;
 import no.nav.foreldrepenger.fpmock.server.checks.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock.server.checks.IsReadyImpl;
-import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
@@ -46,30 +39,35 @@ import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 
-@SuppressWarnings("restriction")
 public class MockServer {
 
-    private static final int HTTP_PORT = 8080;
-    private static final int HTTPS_PORT = 8088;
     private static final String HTTP_HOST = "0.0.0.0";
-    private static Server server;
+    private Server server;
+    private JettyHttpServer jettyHttpServer;
+    private int port;
+    private String host = HTTP_HOST;
 
     public static void main(String[] args) throws Exception {
-        File logDir =new File("logs");
-        logDir.mkdirs();
-        System.setProperty("APP_LOG_HOME", logDir.getPath());
-        
-        server = new Server();
-        setConnectors();
-        ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
+        System.setProperty("com.sun.net.httpserver.HttpServerProvider", JettyHttpServerProvider.class.getName());
+        MockServer mockServer = new MockServer(8080);
+        mockServer.start();
+    }
+    
+    public MockServer(int port) {
+        this.port = port;
+    }
 
+    protected void start() throws Exception {
+        server = new Server();
+        setConnectors(server);
+        ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
         server.start();
-
+        jettyHttpServer = new JettyHttpServer(server, true);
         publishServices();
     }
 
-    private static void publishServices() {
+    protected void publishServices() {
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishService(AktoerServiceMockImpl.class, "/aktoer");
         // access wsdl on http://localhost:7999/aktoer?wsdl
@@ -108,41 +106,16 @@ public class MockServer {
         publishService(IsReadyImpl.class, "/isReady");
     }
 
-    private static void setConnectors() {
+    protected void setConnectors(Server server) {
         try (ServerConnector connector = new ServerConnector(server)) {
-            connector.setPort(HTTP_PORT);
-            connector.setHost(HTTP_HOST);
-            HttpConfiguration https = new HttpConfiguration();
-
-            TestCertificates.setupKeyAndTrustStore();
-
-            https.addCustomizer(new SecureRequestCustomizer());
-
-            boolean useModigCerts = "true".equalsIgnoreCase(System.getenv("modigcerts"));
-            String keystorePath;
-            SslContextFactory sslContextFactory;
-
-            if (true) {
-                keystorePath = MockServer.class.getClassLoader().getResource("no/nav/modig/testcertificates/keystore.jks").toExternalForm();
-            } else {
-                keystorePath = System.getenv("mock_keystore");
-            }
-            sslContextFactory = new SslContextFactory(keystorePath);
-            sslContextFactory.setTrustAll(true);
-            sslContextFactory.setKeyStorePassword("devillokeystore1234");
-            sslContextFactory.setKeyManagerPassword("devillokeystore1234");
-
-            try (ServerConnector sslConnector = new ServerConnector(server,
-                new SslConnectionFactory(sslContextFactory, "http/1.1"), new HttpConnectionFactory(https))) {
-                sslConnector.setPort(HTTPS_PORT);
-                sslConnector.setHost(HTTP_HOST);
-                server.setConnectors(new Connector[] { connector, sslConnector });
-            }
+            connector.setPort(port);
+            connector.setHost(host);
+            server.setConnectors(new Connector[] { connector});
         }
     }
 
-    private static void publishService(Class<?> clazz, String path) {
-        HttpContext context = buildHttpContext(server, path);
+    private void publishService(Class<?> clazz, String path) {
+        HttpContext context = buildHttpContext(path);
         try {
             Object ws = clazz.newInstance();
             Endpoint endpoint = Endpoint.create(ws);
@@ -152,8 +125,7 @@ public class MockServer {
         }
     }
 
-    private static HttpContext buildHttpContext(Server server, String contextString) {
-        JettyHttpServer jettyHttpServer = new JettyHttpServer(server, true);
+    private HttpContext buildHttpContext(String contextString) {
         JettyHttpContext ctx = (JettyHttpContext) jettyHttpServer.createContext(contextString);
         try {
             Method method = JettyHttpContext.class.getDeclaredMethod("getJettyContextHandler");
@@ -165,4 +137,12 @@ public class MockServer {
         }
         return ctx;
     }
+    
+    public int getPort() {
+        return port;
+    }
+    public String getHost() {
+        return host;
+    }
+
 }
