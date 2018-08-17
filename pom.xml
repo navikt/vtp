@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -17,7 +18,8 @@
 	</scm>
 
 	<modules>
-        <module>core</module>
+		<module>core</module>
+		<module>model</module>
 		<module>mocks</module>
 		<module>server</module>
 	</modules>
@@ -28,170 +30,109 @@
 		<changelist>-SNAPSHOT</changelist>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
-        <java.jdk.version>1.8</java.jdk.version>
-        <mockito.version>1.10.19</mockito.version>
-        <assertj.version>3.10.0</assertj.version>
-        <logback.version>1.2.3</logback.version>
-        <slf4j.version>1.7.25</slf4j.version>
+
+		<java.jdk.version>1.8</java.jdk.version>
+		<mockito.version>1.10.19</mockito.version>
+		<assertj.version>3.10.0</assertj.version>
+		<logback.version>1.2.3</logback.version>
+		<slf4j.version>1.7.25</slf4j.version>
 		<logstash.version>5.1</logstash.version>
 		<syslog4j.version>1.0.0</syslog4j.version>
-        <jetty.version>9.4.10.v20180503</jetty.version>
-        <junit.version>4.12</junit.version>
+		<jetty.version>9.4.10.v20180503</jetty.version>
+		<junit.version>4.12</junit.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.3.1.Final</hibernate.version>
 		<hibernate.jpa.version>1.0.2.Final</hibernate.jpa.version>
 		<threeten.version>1.3.2</threeten.version>
-		
+        <jackson.version>2.9.5</jackson.version>
+        
 		<oppgave.version>3.0.0</oppgave.version>
-        <gsak.sak.version>1.0.0</gsak.sak.version>
+		<gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
 		<infotrygd.beregningsgrunnlag.version>1.0.2</infotrygd.beregningsgrunnlag.version>
 		<arena.meldekortutbetalingsgrunnlag.version>1.0.1</arena.meldekortutbetalingsgrunnlag.version>
 		<arena.ytelseskontrakt.version>3.0.1</arena.ytelseskontrakt.version>
 		<gsak.oppgavebehandling.version>3.1.1</gsak.oppgavebehandling.version>
-        <gsak.behandleoppgave.version>1.0.7</gsak.behandleoppgave.version>
+		<gsak.behandleoppgave.version>1.0.7</gsak.behandleoppgave.version>
 		<nav-fim-behandleSak-v1-tjenestespesifikasjon.version>1.0.0</nav-fim-behandleSak-v1-tjenestespesifikasjon.version>
-        <nav-fim-behandleSak-v2-tjenestespesifikasjon.version>2.0.0</nav-fim-behandleSak-v2-tjenestespesifikasjon.version>
-        <joark.journal.version>1.0.3</joark.journal.version>
+		<nav-fim-behandleSak-v2-tjenestespesifikasjon.version>2.0.0</nav-fim-behandleSak-v2-tjenestespesifikasjon.version>
+		<joark.journal.version>1.0.3</joark.journal.version>
 		<joark.inngaaendejournal.version>1.1.3</joark.inngaaendejournal.version>
-        <joark.behandleinngaaendejournal.version>1.0.1</joark.behandleinngaaendejournal.version>
-        <tps.aktoer.version>2.0.1</tps.aktoer.version>
+		<joark.behandleinngaaendejournal.version>1.0.1</joark.behandleinngaaendejournal.version>
+		<tps.aktoer.version>2.0.1</tps.aktoer.version>
 		<tps.person.version>3.4.1</tps.person.version>
 		<medlem.version>2.0.6</medlem.version>
 		<inntekt.version>2.0.0</inntekt.version>
 		<arbeidsforhold.version>3.0.0</arbeidsforhold.version>
 		<organisasjon.version>1.0.4</organisasjon.version>
-        <norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
+		<norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
 		<modig-testcertificates.version>1.2.5-vedfp-SNAPSHOT</modig-testcertificates.version>
 	</properties>
 
 	<dependencyManagement>
 		<!-- Prosjektavhengigheter -->
 		<dependencies>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>tps-mock-modell</artifactId>
+				<artifactId>core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>aktoer-mock</artifactId>
+				<artifactId>testmodell</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+
+
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>tps-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>person-mock</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			 <dependency>
-				<artifactId>gsak-mock-modell</artifactId>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>gsak-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>sak-mock</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			 <dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>pdp-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>oppgavebehandling-mock</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>behandleoppgave-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>oppgave-mock</artifactId>
+				<artifactId>joark-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>behandlesak-mock</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>journal-mock-modell</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>journal-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>inngaaendejournal-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>behandleinngaaendejournal-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>infotrygdsak-mock</artifactId>
+				<artifactId>infotrygd-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
+				<artifactId>arena-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>infotrygd-mock-modell</artifactId>
+				<artifactId>medl-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>ytelseskontrakt-mock</artifactId>
+				<artifactId>inntekt-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
+				<artifactId>arbeidsforhold-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>arena-mock-modell</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>medl-mock-medlem</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>inntekt-mock-inntekt</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>organisasjon-mock-organisasjon</artifactId>
+				<artifactId>organisasjon-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -201,17 +142,12 @@
 				<version>${project.version}</version>
 			</dependency>
 
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>arbeidsfordeling-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>norg2-mock-modell</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>norg2-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
 			<!-- NAV-biblioteker -->
 			<dependency>
 				<groupId>no.nav.modig</groupId>
@@ -231,52 +167,52 @@
 				<artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
 				<version>${tps.person.version}</version>
 			</dependency>
-            <dependency>
-                <groupId>no.nav.tjenester.fim</groupId>
-                <artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
-                <classifier>jaxws</classifier>
-                <version>${gsak.sak.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
-                <classifier>jaxws</classifier>
-                <version>${joark.journal.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
+				<classifier>jaxws</classifier>
+				<version>${gsak.sak.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
+				<classifier>jaxws</classifier>
+				<version>${joark.journal.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
 				<version>${gsak.oppgavebehandling.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
-                <version>${gsak.behandleoppgave.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>no.nav.sbl.dialogarena</groupId>
+				<artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
+				<version>${gsak.behandleoppgave.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-fim-behandleSak-v1-tjenestespesifikasjon</artifactId>
 				<version>${nav-fim-behandleSak-v1-tjenestespesifikasjon.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
-            <dependency>
-                <groupId>no.nav.sbl.dialogarena</groupId>
-                <artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
-                <version>${nav-fim-behandleSak-v2-tjenestespesifikasjon.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>no.nav.sbl.dialogarena</groupId>
+				<artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
+				<version>${nav-fim-behandleSak-v2-tjenestespesifikasjon.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester</groupId>
 				<artifactId>nav-inngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
 				<version>${joark.inngaaendejournal.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
-                <version>${joark.behandleinngaaendejournal.version}</version>
-                <classifier>jaxws</classifier>
-            </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+				<version>${joark.behandleinngaaendejournal.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester</groupId>
 				<artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
@@ -306,12 +242,12 @@
 				<artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
 				<version>${medlem.version}</version>
 			</dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>nav-arbeidsfordeling-v1-tjenestespesifikasjon</artifactId>
-                <version>${norg2.arbeidsfordeling.version}</version>
-                <classifier>jaxws</classifier>
-            </dependency>
+			<dependency>
+				<groupId>no.nav.tjenester</groupId>
+				<artifactId>nav-arbeidsfordeling-v1-tjenestespesifikasjon</artifactId>
+				<version>${norg2.arbeidsfordeling.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
@@ -346,10 +282,10 @@
 				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-http-spi</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-http-spi</artifactId>
+				<version>${jetty.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-annotations</artifactId>
@@ -383,20 +319,29 @@
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${hibernate.jpa.version}</version>
+				<version>${hibernate.jpa.version}</version>
 			</dependency>
-			
-            <dependency>
-                <groupId>net.logstash.logback</groupId>
-                <artifactId>logstash-logback-encoder</artifactId>
-                <version>${logstash.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>com.papertrailapp</groupId>
-                <artifactId>logback-syslog4j</artifactId>
-                <version>${syslog4j.version}</version>
-            </dependency>
+
+        	<dependency>
+	            <groupId>com.fasterxml.jackson</groupId>
+	            <artifactId>jackson-bom</artifactId>
+	            <version>${jackson.version}</version>
+	            <scope>import</scope>
+	            <type>pom</type>
+	        </dependency>   
+
+			<dependency>
+				<groupId>net.logstash.logback</groupId>
+				<artifactId>logstash-logback-encoder</artifactId>
+				<version>${logstash.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.papertrailapp</groupId>
+				<artifactId>logback-syslog4j</artifactId>
+				<version>${syslog4j.version}</version>
+			</dependency>
 
 			<!-- Testavhengigheter -->
 			<dependency>
@@ -418,25 +363,25 @@
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
-    </dependencyManagement>
-	
+	</dependencyManagement>
+
 	<dependencies>
-         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-plus</artifactId>
-        </dependency>
 		<dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-annotations</artifactId>
-        </dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-plus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-annotations</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -452,15 +397,15 @@
 			<artifactId>mockito-all</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
-			    <plugin>
-				     <artifactId>maven-deploy-plugin</artifactId>
-				     <version>2.8.2</version>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -472,7 +417,7 @@
 					</configuration>
 				</plugin>
 				<plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.0</version>
 				</plugin>
@@ -536,48 +481,48 @@
 					</executions>
 				</plugin>
 				<plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>1.0.0</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.jboss.jandex</groupId>
-                                        <artifactId>jandex-maven-plugin</artifactId>
-                                        <versionRange>[1.0,)</versionRange>
-                                        <goals>
-                                            <goal>jandex</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore/>
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
-                                            org.codehaus.mojo
-                                        </groupId>
-                                        <artifactId>
-                                            flatten-maven-plugin
-                                        </artifactId>
-                                        <versionRange>
-                                            [1.0.0,)
-                                        </versionRange>
-                                        <goals>
-                                            <goal>flatten</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore></ignore>
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jboss.jandex</groupId>
+										<artifactId>jandex-maven-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>jandex</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											flatten-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.0,)
+										</versionRange>
+										<goals>
+											<goal>flatten</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -607,9 +552,9 @@
 				</executions>
 			</plugin>
 			<plugin>
-                    <groupId>org.jboss.jandex</groupId>
-                    <artifactId>jandex-maven-plugin</artifactId>
-            </plugin>
+				<groupId>org.jboss.jandex</groupId>
+				<artifactId>jandex-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<configuration>

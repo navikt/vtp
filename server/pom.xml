@@ -16,39 +16,15 @@
 		<!-- Prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>person-mock</artifactId>
+            <artifactId>tps-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>aktoer-mock</artifactId>
+            <artifactId>gsak-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>sak-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>oppgavebehandling-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>behandleoppgave-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>behandlesak-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>journal-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>inngaaendejournal-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>behandleinngaaendejournal-mock</artifactId>
+            <artifactId>joark-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -56,39 +32,27 @@
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>infotrygdsak-mock</artifactId>
+            <artifactId>infotrygd-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>infotrygdberegningsgrunnlag-mock</artifactId>
+            <artifactId>medl-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>meldekortutbetalingsgrunnlag-mock</artifactId>
+            <artifactId>norg2-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>medl-mock-medlem</artifactId>
+            <artifactId>inntekt-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>arbeidsfordeling-mock</artifactId>
+            <artifactId>arbeidsforhold-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>inntekt-mock-inntekt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>oppgave-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>arbeidsforhold-mock-arbeidsforhold</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>organisasjon-mock-organisasjon</artifactId>
+            <artifactId>organisasjon-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -120,7 +84,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>ytelseskontrakt-mock</artifactId>
+            <artifactId>arena-mock</artifactId>
         </dependency>
     </dependencies>
     <build>

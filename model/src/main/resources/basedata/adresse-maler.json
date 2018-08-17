@@ -1,0 +1,30 @@
+[ {
+  "@type" : "gateadresse",
+  "adresseType" : "BOSTEDSADRESSE",
+  "landkode" : "NOR",
+  "gatenavn" : "Fjordlandet",
+  "gatenummer" : 15,
+  "husbokstav" : "B",
+  "husnummer" : 10,
+  "postnummer" : "2500"
+}, {
+  "@type" : "ustrukturert",
+  "adresseType" : "POSTADRESSE",
+  "landkode" : "NOR",
+  "adresseLinje1" : "Allé skal med 12",
+  "adresseLinje2" : "Gateadresse 2",
+  "adresseLinje3" : "2500 Tynset"
+}, {
+  "@type" : "ustrukturert",
+  "adresseType" : "MIDLERTIDIG_POSTADRESSE",
+  "landkode" : "NOR",
+  "adresseLinje1" : "Vinsjan ved kaia",
+  "adresseLinje2" : "1336"
+}, {
+  "@type" : "ustrukturert",
+  "adresseType" : "MIDLERTIDIG_POSTADRESSE",
+  "landkode" : "USA",
+  "adresseLinje1" : "President Avenue",
+  "adresseLinje2" : "Central district",
+  "adresseLinje3" : "USA"
+} ]

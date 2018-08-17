@@ -14,24 +14,12 @@
     <packaging>jar</packaging>
     <name>FPMock2 :: Felles</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
-        <!-- 3dje parts biblioteker -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>testmodell</artifactId>
+		</dependency>
 		
+        <!-- 3dje parts biblioteker -->
     </dependencies>
 </project>

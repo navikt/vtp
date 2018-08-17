@@ -9,13 +9,20 @@
 
     <artifactId>inntekt-mock</artifactId>
     <name>FPMock2 :: inntekt-mock</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>inntekt</module>
-        <module>modell</module>
-    </modules>
+    <packaging>jar</packaging>
 	
 	<dependencies>
+	           <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+	   
 		<dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>core</artifactId>

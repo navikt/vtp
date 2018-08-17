@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.fpmock2.server;
 import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
-import com.sun.net.httpserver.HttpContext;
 
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -17,6 +16,8 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import no.nav.abac.pdp.PdpMock;
 import no.nav.foreldrepenger.fpmock2.server.checks.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.checks.IsReadyImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
+import no.nav.foreldrepenger.fpmock2.testmodell.Scenarios;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
@@ -36,6 +37,7 @@ import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 
@@ -52,7 +54,7 @@ public class MockServer {
         MockServer mockServer = new MockServer(8080);
         mockServer.start();
     }
-    
+
     public MockServer(int port) {
         this.port = port;
     }
@@ -68,64 +70,62 @@ public class MockServer {
     }
 
     protected void publishServices() {
+        Repository repo = Scenarios.getRepository();
+        GsakRepo gsakRepo = new GsakRepo();
+        
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
-        publishService(AktoerServiceMockImpl.class, "/aktoer");
+        publishService(new AktoerServiceMockImpl(repo), "/aktoer");
         // access wsdl on http://localhost:7999/aktoer?wsdl
-        publishService(SakServiceMockImpl.class, "/sak");
+        publishService(new SakServiceMockImpl(gsakRepo), "/sak");
         // access wsdl on http://localhost:7999/sak?wsdl
-        publishService(PersonServiceMockImpl.class, "/person");
+        publishService(new PersonServiceMockImpl(repo), "/person");
         // access wsdl on http://localhost:7999/person?wsdl
-        publishService(JournalServiceMockImpl.class, "/journal");
+        publishService(new JournalServiceMockImpl(repo), "/journal");
         // access wsdl on http://localhost:7999/journal?wsdl
-        publishService(InngaaendeJournalServiceMockImpl.class, "/inngaaendejournal");
-        publishService(BehandleInngaaendeJournalServiceMockImpl.class, "/behandleinngaaendejournal");
-        publishService(OppgavebehandlingServiceMockImpl.class, "/oppgavebehandling");
+        publishService(new InngaaendeJournalServiceMockImpl(repo), "/inngaaendejournal");
+        publishService(new BehandleInngaaendeJournalServiceMockImpl(repo), "/behandleinngaaendejournal");
+        publishService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/oppgavebehandling");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
-        publishService(BehandleOppgaveServiceMockImpl.class, "/behandleoppgave");
+        publishService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/behandleoppgave");
         // access wsdl on http://localhost:7999/behandleoppgave?wsdl
-        publishService(BehandleSakServiceMockImpl.class, "/behandlesak");
+        publishService(new BehandleSakServiceMockImpl(gsakRepo, repo), "/behandlesak");
         // access wsdl on http://localhost:7999/behandlesak?wsdl
-        publishService(BehandleSak2ServiceMockImpl.class, "/behandlesakV2");
+        publishService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/behandlesakV2");
         // access wsdl on http://localhost:7999/behandlesakV2?wsdl
-        publishService(PdpMock.class, "/asm-pdp/authorize");
-        publishService(FinnSakListeMockImpl.class, "/infotrygdsak");
-        publishService(FinnGrunnlagListeMockImpl.class, "/infotrygdberegningsgrunnlag");
+        publishService(new PdpMock(), "/asm-pdp/authorize");
+        publishService(new FinnSakListeMockImpl(), "/infotrygdsak");
+        publishService(new FinnGrunnlagListeMockImpl(), "/infotrygdberegningsgrunnlag");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-        publishService(HentYtelseskontraktListeMockImpl.class, "/ytelseskontrakt");
+        publishService(new HentYtelseskontraktListeMockImpl(), "/ytelseskontrakt");
         // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl
-        publishService(MeldekortUtbetalingsgrunnlagMockImpl.class, "/meldekortutbetalingsgrunnlag");
-        publishService(MedlemServiceMockImpl.class, "/medlem");
-        publishService(ArbeidsfordelingMockImpl.class, "/arbeidsfordeling");
-        publishService(InntektMockImpl.class, "/inntekt");
-        publishService(OppgaveServiceMockImpl.class, "/oppgave");
-        publishService(ArbeidsforholdMockImpl.class, "/arbeidsforhold");
-        publishService(OrganisasjonMockImpl.class, "/organisasjon");
-        publishService(SigrunMock.class, "/api/beregnetskatt");
+        publishService(new MeldekortUtbetalingsgrunnlagMockImpl(), "/meldekortutbetalingsgrunnlag");
+        publishService(new MedlemServiceMockImpl(repo), "/medlem");
+        publishService(new ArbeidsfordelingMockImpl(repo), "/arbeidsfordeling");
+        publishService(new InntektMockImpl(), "/inntekt");
+        publishService(new OppgaveServiceMockImpl(), "/oppgave");
+        publishService(new ArbeidsforholdMockImpl(), "/arbeidsforhold");
+        publishService(new OrganisasjonMockImpl(), "/organisasjon");
+        publishService(new SigrunMock(), "/api/beregnetskatt");
 
-        publishService(IsAliveImpl.class, "/isAlive");
-        publishService(IsReadyImpl.class, "/isReady");
+        publishService(new IsAliveImpl(), "/isAlive");
+        publishService(new IsReadyImpl(), "/isReady");
     }
 
     protected void setConnectors(Server server) {
         try (ServerConnector connector = new ServerConnector(server)) {
             connector.setPort(port);
             connector.setHost(host);
-            server.setConnectors(new Connector[] { connector});
+            server.setConnectors(new Connector[] { connector });
         }
     }
 
-    private void publishService(Class<?> clazz, String path) {
-        HttpContext context = buildHttpContext(path);
-        try {
-            Object ws = clazz.newInstance();
-            Endpoint endpoint = Endpoint.create(ws);
-            endpoint.publish(context);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    private void publishService(Object ws, String path) {
+        JettyHttpContext context = buildHttpContext(path);
+        Endpoint endpoint = Endpoint.create(ws);
+        endpoint.publish(context);
     }
 
-    private HttpContext buildHttpContext(String contextString) {
+    private JettyHttpContext buildHttpContext(String contextString) {
         JettyHttpContext ctx = (JettyHttpContext) jettyHttpServer.createContext(contextString);
         try {
             Method method = JettyHttpContext.class.getDeclaredMethod("getJettyContextHandler");
@@ -137,10 +137,11 @@ public class MockServer {
         }
         return ctx;
     }
-    
+
     public int getPort() {
         return port;
     }
+
     public String getHost() {
         return host;
     }

@@ -9,14 +9,31 @@
 
     <artifactId>infotrygd-mock</artifactId>
     <name>FPMock2 :: infotrygd-mock</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>infotrygdsak</module>
-        <module>infotrygdberegningsgrunnlag</module>
-        <module>modell</module>
-    </modules>
+    <packaging>jar</packaging>
 
 	<dependencies>
+	       <!-- Eksterne avhengigheter -->
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-infotrygdBeregningsgrunnlag-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+            </dependency>
+        
+        <!-- 3dje parts biblioteker -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>core</artifactId>

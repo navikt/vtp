@@ -8,17 +8,28 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>medl-mock</artifactId>
+    <packaging>jar</packaging>
     <name>FPMock2 :: medl-mock</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>medlem</module>
-        <module>modell</module>
-    </modules>
-	
-	<dependencies>
-		<dependency>
+
+    <dependencies>
+        <!-- Prosjektavhengigheter -->
+        <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>core</artifactId>
         </dependency>
-	</dependencies>
+        
+        <!-- 3dje parts NAV felleskomponenter -->
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
+            </dependency>
+
+        <!-- 3dje parts biblioteker -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
+   
+    </dependencies>
+   
 </project>
