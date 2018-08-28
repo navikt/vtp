@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.ScenarioIdenter;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 
 public class Personopplysninger {
@@ -28,10 +29,10 @@ public class Personopplysninger {
 
     /**
      * identity cache for dette scenario. Medfører at identer kan genereres dynamisk basert på lokal id referanse i scenarioet.
-     * Deler Identer for et helt scenario for å veksle lokale identer inn i fnr el.
+     * Deler VirksomhetIndeks for et helt scenario for å veksle lokale identer inn i fnr el.
      */
     @JacksonInject
-    private Identer identer;
+    private ScenarioIdenter identer;
 
     public Personopplysninger(SøkerModell søker) {
         this.søker = søker;
@@ -74,7 +75,7 @@ public class Personopplysninger {
         this.familierelasjoner.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
     }
 
-    public void setIdenter(Identer identer) {
+    public void setIdenter(ScenarioIdenter identer) {
         this.identer = identer;
         this.søker.setIdenter(identer);
         if (this.annenPart != null) {

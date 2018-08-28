@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.ScenarioIdenter;
+
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY)
 @JsonSubTypes({ @Type(BarnModell.class), @Type(SøkerModell.class), @Type(AnnenPartModell.class), @Type(BrukerIdent.class) })
 public abstract class BrukerModell {
@@ -16,9 +18,9 @@ public abstract class BrukerModell {
     @JsonProperty("ident")
     private String lokalIdent;
 
-    /** Deler Identer for et helt scenario for å veksle lokale identer inn i fnr el. */
+    /** Deler VirksomhetIndeks for et helt scenario for å veksle lokale identer inn i fnr el. */
     @JacksonInject
-    private Identer identer;
+    private ScenarioIdenter identer;
 
     public BrukerModell() {
         // default ctor.
@@ -32,7 +34,7 @@ public abstract class BrukerModell {
         this.lokalIdent = lokalIdent;
     }
 
-    protected Identer getIdenter() {
+    protected ScenarioIdenter getIdenter() {
         return identer;
     }
 
@@ -46,7 +48,7 @@ public abstract class BrukerModell {
         M, K;
     }
 
-    public void setIdenter(Identer identer) {
+    public void setIdenter(ScenarioIdenter identer) {
         if (this.identer != null && identer != this.identer /* merk System.identy brukes her med vilje */) { // NOSONAR
             throw new IllegalStateException("identer allerede satt");
         }

@@ -19,7 +19,6 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeReques
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeResponse;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeRequest;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeResponse;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.modell.MedlemDbLeser;
 
 @Addressing
 @WebService(name = "Medlemskap_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/medlemskap/v2")
@@ -66,7 +65,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
 
         if (request != null && request.getIdent() != null) {
             String fnr = request.getIdent().getValue();
-            List<Medlemsperiode> medlemsperiodeListe = new MedlemDbLeser(scenarioRepository).finnMedlemsperioder(fnr);
+            List<Medlemsperiode> medlemsperiodeListe = new MedlemskapperioderAdapter(scenarioRepository).finnMedlemsperioder(fnr);
             HentPeriodeListeResponse response = new HentPeriodeListeResponse().withPeriodeListe(medlemsperiodeListe);
             return response;
         }

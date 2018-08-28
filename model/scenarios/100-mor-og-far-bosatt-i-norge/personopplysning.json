@@ -1,7 +1,7 @@
 {
 	"søker": {
 		"@type": "søker",
-		"ident": "${id1}",
+		"ident": "${for1}",
 		"fornavn": "Donald",
 		"fødselsdato": "now()-P50Y",
 		"kjønn": "M",
@@ -14,18 +14,37 @@
 				"@type": "ref",
 				"fom": "now() - P1Y",
 				"adresseType": "BOSTEDSADRESSE",
-				"landkode": "NOR"
+				"land": "NOR"
 			}
 		],
 		"personstatus": [
 			{
 				"kode": "UREG"
 			}
-		]
+		],
+		"sivilstand": [
+			{
+				"kode": "GIFT"
+			}
+		],
+		"medlemskap": {
+			"perioder": [
+				{
+					"fom": "now() - P1Y",
+					"tom": "now() + P3Y",
+					"besluttetDato": "now() - P1Y",
+					"land": "DEU",
+					"trygdedekning": "IHT_Avtale",
+					"kilde": "ANNEN",
+					"medlemskapType": "ENDL",
+					"status": "GYLD"
+				}
+			]
+		}
 	},
 	"annenPart": {
 		"@type": "annenPart",
-		"ident": "#id3#",
+		"ident": "${for2}",
 		"fornavn": "Dolly",
 		"fødselsdato": "now()-P50Y",
 		"kjønn": "K",
@@ -40,7 +59,7 @@
 			"rolle": "BARN",
 			"til": {
 				"@type": "barn",
-				"ident": "#id2#",
+				"ident": "${barn1}",
 				"fornavn": "${nevø1}",
 				"etternavn": "Duck",
 				"fødselsdato": "now()-P2D"
@@ -50,7 +69,7 @@
 			"rolle": "EKTE",
 			"til": {
 				"@type": "ident",
-				"ident": "#id3#"
+				"ident": "${for2}"
 			}
 		}
 	]

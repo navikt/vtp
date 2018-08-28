@@ -1,13 +1,15 @@
 package no.nav.foreldrepenger.fpmock2.felles;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,9 @@ public class ConversionUtils {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionUtils.class);
 
     public static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDateTime localDateTime) {
+        if(localDateTime==null) {
+            return null;
+        }
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
         XMLGregorianCalendar xmlGregorianCalendar = null;

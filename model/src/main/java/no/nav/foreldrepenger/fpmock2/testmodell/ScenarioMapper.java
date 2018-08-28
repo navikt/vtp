@@ -14,24 +14,42 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.enheter.Norg2Modell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Identer;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
+import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetIndeks;
+import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetModell;
 
 class ScenarioMapper {
 
-    private final Indeks indeks = new Indeks();
+    private static VirksomhetIndeks virksomhetIndeks;
 
+    private final Indeks indeks = new Indeks();
     private final JsonMapper jsonMapper = new JsonMapper();
+    private final ObjectMapper jsonObjectMapper = jsonMapper.getObjectMapper();
+
+    private final ObjectWriter jsonWriter = jsonObjectMapper.writerWithDefaultPrettyPrinter();
 
     private EnheterIndeks enheterIndeks;
 
     private AdresseIndeks adresseIndeks;
+
+    public ScenarioMapper() {
+        try {
+            init();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Kunne ikke initialiseres med felles data", e);
+        }
+
+    }
 
     public AdresseIndeks getAdresseIndeks() {
         return adresseIndeks;
@@ -40,18 +58,30 @@ class ScenarioMapper {
     public EnheterIndeks getEnheterIndeks() {
         return enheterIndeks;
     }
-    
+
     public Indeks getIndeks() {
         return indeks;
     }
 
-    public void load() {
+    public VirksomhetIndeks getVirksomheter() {
         try {
-            init();
+            return loadVirksomheter();
         } catch (IOException e) {
-            throw new IllegalArgumentException("Kunne ikke initialiseres med felles data", e);
+            throw new IllegalStateException("Kunne ikke laste VirksomhetIndeks", e);
         }
+    }
 
+    /** @deprecated ScenarioMapper skal ikke brukes til mer enn et scenario. */
+    public void load() {
+        load(null);
+    }
+
+    /**
+     * Inject egne variable.
+     * 
+     * @deprecated ScenarioMapper skal ikke brukes til mer enn et scenario.
+     */
+    public void load(Map<String, String> vars) {
         File start = new File("scenarios");
         File scDir = start;
         while (scDir != null && !scDir.exists()) {
@@ -63,7 +93,7 @@ class ScenarioMapper {
         } else {
             for (File dir : scDir.listFiles()) {
                 try {
-                    loadScenario(dir);
+                    loadScenario(dir, vars == null ? Collections.emptyMap() : vars);
                 } catch (IOException e) {
                     throw new IllegalArgumentException("Kunne ikke lese scenario: " + dir, e);
                 }
@@ -72,41 +102,13 @@ class ScenarioMapper {
 
     }
 
-    public void load(Scenario scenario, File dir) throws IOException {
-        if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("Er ikke directory: " + dir);
-        }
-
-        Map<String, String> vars = initLoad(scenario, dir);
-
-        File persFile = new File(dir, "personopplysning.json");
-        if (persFile.exists()) {
-            try (InputStream is = new FileInputStream(persFile)) {
-                load(scenario, is, vars);
-            }
-        }
-    }
-
-    public void load(Scenario scenario, InputStream is) {
-        load(scenario, is, Collections.emptyMap());
-    }
-
-    public void load(Scenario scenario, InputStream is, Map<String, String> vars) {
-        initJsonMapper(scenario, vars);
-        try {
-            Personopplysninger personopplysninger = jsonMapper.getObjectMapper().readValue(is, Personopplysninger.class);
-            scenario.setPersonopplysninger(personopplysninger);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Kunne ikke lese json for scenario:" + scenario.getNavn(), e);
-        }
-    }
-
     public void load(Scenario scenario, Reader reader) {
         load(scenario, reader, Collections.emptyMap());
     }
 
     public void load(Scenario scenario, Reader reader, Map<String, String> vars) {
-        initJsonMapper(scenario, vars);
+        jsonMapper.addVars(vars);
+        initJsonMapper(scenario);
         try {
             // detaljer
             Personopplysninger personopplysninger = jsonMapper.getObjectMapper().readValue(reader, Personopplysninger.class);
@@ -118,25 +120,78 @@ class ScenarioMapper {
         }
     }
 
+    public void loadInntektytelse(Scenario scenario, InputStream is, Map<String, String> vars) {
+        jsonMapper.addVars(vars);
+        initJsonMapper(scenario);
+        try {
+            InntektYtelse inntektYtelse = jsonMapper.getObjectMapper().readValue(is, InntektYtelse.class);
+            for (InntektYtelseModell iym : inntektYtelse.getModeller()) {
+                scenario.leggTil(iym);
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Kunne ikke lese json for scenario:" + scenario.getNavn(), e);
+        }
+    }
+
+    public void loadPersonopplysninger(Scenario scenario, InputStream is, Map<String, String> vars) {
+        jsonMapper.addVars(vars);
+        initJsonMapper(scenario);
+        try {
+            Personopplysninger personopplysninger = jsonMapper.getObjectMapper().readValue(is, Personopplysninger.class);
+            scenario.setPersonopplysninger(personopplysninger);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Kunne ikke lese json for scenario:" + scenario.getNavn(), e);
+        }
+    }
+
+    public void loadScenario(File scenarioDir, Map<String, String> vars) throws IOException {
+        String scenarioNavn = scenarioDir.getName();
+        Scenario scenario = new Scenario(scenarioNavn, indeks.getIdenter(scenarioNavn), getVirksomheter());
+        load(scenario, scenarioDir, vars);
+        addScenario(scenario);
+    }
+
     public Collection<Scenario> scenarios() {
         return Collections.unmodifiableCollection(indeks.getScenarios());
     }
 
-    public void write(Scenario scenario, File dir) throws IOException {
-        if (!dir.isDirectory()) {
-            throw new IllegalArgumentException("Er ikke directory: " + dir);
-        }
-        File søkerFile = new File(dir, "personopplysning.json");
-        try (OutputStream out = new FileOutputStream(søkerFile)) {
-            writeTo(out, scenario);
+    public void skrivInntektYtelse(OutputStream out, Scenario scenario, boolean canonical) {
+        try {
+            if (!canonical) {
+                jsonWriter.writeValue(out, scenario.getInntektYtelse());
+            } else {
+                jsonMapper.canonicalObjectMapper().writerWithDefaultPrettyPrinter().writeValue(out, scenario.getInntektYtelse());
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Kunne ikke skrive json for scenario: " + scenario.getNavn(), e);
         }
     }
 
-    public void writeTo(OutputStream out, Scenario scenario) {
+    public void skrivPersonopplysninger(OutputStream out, Scenario scenario, boolean canonical) {
         try {
-            jsonMapper.getObjectMapper().writerWithDefaultPrettyPrinter().writeValue(out, scenario.getPersonopplysninger());
+            if (!canonical) {
+                jsonWriter.writeValue(out, scenario.getPersonopplysninger());
+            } else {
+                jsonMapper.canonicalObjectMapper().writerWithDefaultPrettyPrinter().writeValue(out, scenario.getPersonopplysninger());
+            }
         } catch (IOException e) {
             throw new IllegalArgumentException("Kunne ikke skrive json for scenario: " + scenario.getNavn(), e);
+        }
+    }
+
+    public void write(Scenario scenario, File dir, boolean canonical) throws IOException {
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException("Er ikke directory: " + dir);
+        }
+
+        File søkerFile = new File(dir, "personopplysning.json");
+        try (OutputStream out = new FileOutputStream(søkerFile)) {
+            skrivPersonopplysninger(out, scenario, canonical);
+        }
+
+        File inntektYtelseFile = new File(dir, "inntektytelse.json");
+        try (OutputStream out = new FileOutputStream(inntektYtelseFile)) {
+            skrivInntektYtelse(out, scenario, canonical);
         }
     }
 
@@ -145,14 +200,19 @@ class ScenarioMapper {
     }
 
     private void init() throws IOException {
-        this.enheterIndeks = loadEnheter();
-        this.adresseIndeks = loadAdresser();
+        if (enheterIndeks == null) {
+            this.enheterIndeks = loadEnheter();
+        }
+        if (adresseIndeks == null) {
+            this.adresseIndeks = loadAdresser();
+        }
     }
 
-    private void initJsonMapper(Scenario scenario, Map<String, String> vars) {
-        jsonMapper.addVars(vars);
-        jsonMapper.addInjectable(Identer.class, scenario.getIdenter());
+    /** Setter opp indekser som kan injiseres i modellen. */
+    private void initJsonMapper(Scenario scenario) {
+        jsonMapper.addInjectable(ScenarioIdenter.class, scenario.getIdenter());
         jsonMapper.addInjectable(AdresseIndeks.class, scenario.getAdresseIndeks());
+        jsonMapper.addInjectable(ScenarioVirksomheter.class, scenario.getVirksomheter());
     }
 
     private Map<String, String> initLoad(Scenario scenario, File dir) throws IOException {
@@ -165,11 +225,35 @@ class ScenarioMapper {
         return vars;
     }
 
+    private void load(Scenario scenario, File dir, Map<String, String> vars) throws IOException {
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException("Er ikke directory: " + dir);
+        }
+
+        initLoad(scenario, dir);
+        jsonMapper.addVars(vars);
+
+        File persFile = new File(dir, "personopplysning.json");
+        if (persFile.exists()) {
+            try (InputStream is = new FileInputStream(persFile)) {
+                loadPersonopplysninger(scenario, is, vars);
+            }
+        }
+
+        File inntektYtelseFile = new File(dir, "inntektytelse.json");
+        if (inntektYtelseFile.exists()) {
+            try (InputStream is = new FileInputStream(inntektYtelseFile)) {
+                loadInntektytelse(scenario, is, vars);
+            }
+        }
+
+    }
+
     private AdresseIndeks loadAdresser() throws IOException {
         try (InputStream is = getClass().getResourceAsStream("/basedata/adresse-maler.json")) {
             TypeReference<List<AdresseModell>> typeRef = new TypeReference<List<AdresseModell>>() {
             };
-            List<AdresseModell> adresser = jsonMapper.getObjectMapper().readValue(is, typeRef);
+            List<AdresseModell> adresser = jsonObjectMapper.readValue(is, typeRef);
             AdresseIndeks ai = new AdresseIndeks();
             adresser.forEach(a -> ai.leggTil(a));
             return ai;
@@ -187,13 +271,6 @@ class ScenarioMapper {
         }
     }
 
-    private void loadScenario(File dir) throws IOException {
-        String scenarioNavn = dir.getName();
-        Scenario scenario = new Scenario(scenarioNavn, indeks.getIdenter(scenarioNavn));
-        load(scenario, dir);
-        addScenario(scenario);
-    }
-
     private Map<String, String> loadVars(Scenario scenario, File dir) throws IOException {
         File varsFile = new File(dir, "vars.json");
         if (varsFile.exists()) {
@@ -207,6 +284,20 @@ class ScenarioMapper {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    private VirksomhetIndeks loadVirksomheter() throws IOException {
+        if (virksomhetIndeks == null) {
+            try (InputStream is = getClass().getResourceAsStream("/basedata/virksomheter.json")) {
+                TypeReference<List<VirksomhetModell>> typeRef = new TypeReference<List<VirksomhetModell>>() {
+                };
+                List<VirksomhetModell> virksomheter = jsonMapper.getObjectMapper().readValue(is, typeRef);
+                VirksomhetIndeks ai = new VirksomhetIndeks();
+                ai.leggTil(virksomheter);
+                return ai;
+            }
+        }
+        return virksomhetIndeks;
     }
 
 }

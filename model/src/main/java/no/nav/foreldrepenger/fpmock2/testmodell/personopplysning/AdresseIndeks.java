@@ -7,8 +7,15 @@ public class AdresseIndeks {
 
     private List<AdresseModell> adresser = new ArrayList<>();
 
+    public AdresseIndeks() {
+    }
+
     public void leggTil(AdresseModell adresse) {
         adresser.add(adresse);
+    }
+
+    public AdresseModell finn(AdresseType adresseType, Landkode landkode) {
+        return finn(adresseType, landkode == null ? null : landkode.getKode());
     }
 
     public AdresseModell finn(AdresseType adresseType, String landkode) {

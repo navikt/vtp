@@ -77,7 +77,7 @@ public class ArbeidsforholdGenerator {
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
         aftype.setKodeRef("ordinaertArbeidsforhold");
-        aftype.setValue("Ordinært Arbeidsforhold");
+        aftype.setValue("Ordinært InfotrygdArbeidsforhold");
         arbeidsforhold.setArbeidsforholdstype(aftype);
 
         Gyldighetsperiode enansperiode = objectFactory.createGyldighetsperiode();
@@ -117,7 +117,7 @@ public class ArbeidsforholdGenerator {
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
         aftype.setKodeRef("ordinaertArbeidsforhold");
-        aftype.setValue("Ordinært Arbeidsforhold");
+        aftype.setValue("Ordinært InfotrygdArbeidsforhold");
         arbeidsforhold.setArbeidsforholdstype(aftype);
 
         arbeidsforhold.getAntallTimerForTimeloennet().add(lagTimePostering("140", ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2017, 5, 2))));

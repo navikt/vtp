@@ -32,8 +32,8 @@ public class PersonServiceMockTest {
         Service service = Service.create(wsdlUrl, serviceName);
         PersonV3 port = service.getPort(PersonV3.class);
 
+        @SuppressWarnings("unused")
         HentPersonhistorikkResponse response = port.hentPersonhistorikk(personhistorikkRequest());
-        String s = "";
     }
 
     private static HentPersonhistorikkRequest personhistorikkRequest() {

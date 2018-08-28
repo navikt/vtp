@@ -8,8 +8,6 @@ import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.http.HTTPBinding;
 import javax.xml.ws.soap.Addressing;
 
-import com.sun.xml.internal.ws.util.ByteArrayDataSource;
-
 @Addressing
 @WebServiceProvider
 @ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
@@ -23,13 +21,13 @@ public class PdpMock implements Provider<DataSource> {
 
     @SuppressWarnings("unused")
     private String buildDenyResponse() {
-        return " { \"Response\" : {\"Decision\" : \"Deny\",\"Status\" : {\"StatusCode\" : {\"Value\" : " +
+        return " { \"Response\" : {\"Decision\" : \"Deny\",\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
             "\"urn:oasis:names:tc:xacml:1.0:status:ok\",\"StatusCode\" : {\"Value\" : " +
             "\"urn:oasis:names:tc:xacml:1.0:status:ok\"}}}}}";
     }
 
     private String buildPermitResponse() {
-        return " { \"Response\" : {\"Decision\" : \"Permit\",\"Status\" : {\"StatusCode\" : {\"Value\" : " +
+        return " { \"Response\" : {\"Decision\" : \"Permit\",\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
             "\"urn:oasis:names:tc:xacml:1.0:status:ok\",\"StatusCode\" : {\"Value\" : " +
             "\"urn:oasis:names:tc:xacml:1.0:status:ok\"}}}}}";
     }

@@ -1,0 +1,37 @@
+{
+	"modeller": [
+		{
+			"ident": {
+				"@type": "ident",
+				"ident": "${for1}"
+			},
+			"arena": {
+				"saker": [
+					{
+						"saksnummer": "${arenasak1}",
+						"tema": "AAP",
+						"status": "AKTIV",
+						"vedtak": [
+							{
+								"fom": "now() - P1M",
+								"tom": "now() + P2M",
+								"vedtakDato": "now() - P1M1D",
+								"kravMottattDato": "now() - P1M5D",
+								"status": "IVERK",
+								"meldekort": [
+									{
+										"fom": "now() - P1M",
+										"tom": "now() + P2M",
+										"dagsats": 10000,
+										"beløp": 10,
+										"utbetalingsgrad": 1
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	]
+}

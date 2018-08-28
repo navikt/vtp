@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.medlemskap.MedlemskapModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.medlemskap.MedlemskapperiodeModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonstatusModell.Personstatuser;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SivilstandModell.Sivilstander;
 
@@ -20,7 +22,7 @@ public abstract class PersonModell extends BrukerModell {
 
     /** NAV kodeverk: http://nav.no/kodeverk/Kodeverk/Diskresjonskoder. */
     public enum Diskresjonskoder {
-        KLIE, MILI, PEND, SPFO(7), SPSF(6), SVAL, UFB, URIK, UDEF;
+    KLIE, MILI, PEND, SPFO(7), SPSF(6), SVAL, UFB, URIK, UDEF;
         int kode;
 
         private Diskresjonskoder() {
@@ -80,7 +82,11 @@ public abstract class PersonModell extends BrukerModell {
     @JsonProperty("adresser")
     private List<AdresseModell> adresser = new ArrayList<>();
 
-    /** Deler Identer for et helt scenario for å veksle lokale identer inn i fnr el. */
+    @JsonInclude(Include.NON_EMPTY)
+    @JsonProperty("medlemskap")
+    private MedlemskapModell medlemskap;
+
+    /** Deler VirksomhetIndeks for et helt scenario for å veksle lokale identer inn i fnr el. */
     @JacksonInject
     private AdresseIndeks adresseIndeks;
 
@@ -154,11 +160,11 @@ public abstract class PersonModell extends BrukerModell {
     public String getGjeldendeadresseType() {
         if (gjeldendeAdresseType != null && getAdresse(gjeldendeAdresseType).isPresent()) {
             // hvis satt bruk det
-            return gjeldendeAdresseType.getTpsKode(getAdresse(gjeldendeAdresseType).get().getLandkode());
+            return gjeldendeAdresseType.getTpsKode(getAdresse(gjeldendeAdresseType).get().getLand());
         } else if (!getAdresser().isEmpty()) {
             // plukk første hvis finnes
             AdresseModell adresseModell = getAdresser().get(0);
-            return adresseModell.getAdresseType().getTpsKode(adresseModell.getLandkode());
+            return adresseModell.getAdresseType().getTpsKode(adresseModell.getLand());
         } else {
             // ellers ukjent
             return AdresseType.UKJENT_ADRESSE.getTpsKode(null);
@@ -176,6 +182,10 @@ public abstract class PersonModell extends BrukerModell {
 
     public String getKjønnKode() {
         return getKjønn().name();
+    }
+
+    public MedlemskapModell getMedlemskap() {
+        return medlemskap;
     }
 
     public PersonstatusModell getPersonstatus() {
@@ -199,7 +209,7 @@ public abstract class PersonModell extends BrukerModell {
     }
 
     public StatsborgerskapModell getStatsborgerskap() {
-        return statsborgerskap.isEmpty() ? new StatsborgerskapModell("NOR") : statsborgerskap.get(0);
+        return statsborgerskap.isEmpty() ? new StatsborgerskapModell(Landkode.NOR) : statsborgerskap.get(0);
     }
 
     public void leggTil(AdresseModell adresse) {
@@ -216,6 +226,17 @@ public abstract class PersonModell extends BrukerModell {
 
     public void leggTil(StatsborgerskapModell statsborgerskap) {
         this.statsborgerskap.add(statsborgerskap);
+    }
+
+    public void setMedlemskap(MedlemskapModell medlemskapModell) {
+        this.medlemskap = medlemskapModell;
+    }
+
+    public void leggTil(MedlemskapperiodeModell medlemskapperiode) {
+        if (this.medlemskap == null) {
+            setMedlemskap(new MedlemskapModell());
+        }
+        this.medlemskap.leggTil(medlemskapperiode);
     }
 
     public void setAdresse(AdresseModell adresse) {

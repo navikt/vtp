@@ -22,24 +22,23 @@ import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
+import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
-import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
-import no.nav.tjeneste.virksomhet.infotrygdsak.v1.FinnSakListeMockImpl;
+import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
+import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
-import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
-import no.nav.tjeneste.virksomhet.ytelseskontrakt.v3.HentYtelseskontraktListeMockImpl;
 
 public class MockServer {
 
@@ -93,12 +92,10 @@ public class MockServer {
         publishService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/behandlesakV2");
         // access wsdl on http://localhost:7999/behandlesakV2?wsdl
         publishService(new PdpMock(), "/asm-pdp/authorize");
-        publishService(new FinnSakListeMockImpl(), "/infotrygdsak");
-        publishService(new FinnGrunnlagListeMockImpl(), "/infotrygdberegningsgrunnlag");
+        publishService(new FinnSakListeMockImpl(repo), "/infotrygdsak");
+        publishService(new FinnGrunnlagListeMockImpl(repo), "/infotrygdberegningsgrunnlag");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-        publishService(new HentYtelseskontraktListeMockImpl(), "/ytelseskontrakt");
-        // access wsdl on http://localhost:7999/ytelseskontrakt?wsdl
-        publishService(new MeldekortUtbetalingsgrunnlagMockImpl(), "/meldekortutbetalingsgrunnlag");
+        publishService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/meldekortutbetalingsgrunnlag");
         publishService(new MedlemServiceMockImpl(repo), "/medlem");
         publishService(new ArbeidsfordelingMockImpl(repo), "/arbeidsfordeling");
         publishService(new InntektMockImpl(), "/inntekt");

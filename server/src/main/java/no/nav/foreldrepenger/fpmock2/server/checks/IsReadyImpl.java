@@ -8,7 +8,7 @@ import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.http.HTTPBinding;
 import javax.xml.ws.soap.Addressing;
 
-import com.sun.xml.internal.ws.util.ByteArrayDataSource;
+import no.nav.foreldrepenger.fpmock2.server.ByteArrayDataSource;
 
 @Addressing
 @WebServiceProvider
@@ -22,7 +22,7 @@ public class IsReadyImpl implements Provider<DataSource> {
     }
 
     private String buildPermitResponse() {
-        return " { \"Response\" : {\"Status\" : {\"StatusCode\" : {\"Value\" : " +
+        return " { \"Response\" : {\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
                 "\"status:ok\"}}}}";
     }
 }

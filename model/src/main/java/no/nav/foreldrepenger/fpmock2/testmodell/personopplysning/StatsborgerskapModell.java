@@ -1,33 +1,34 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.personopplysning;
 
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StatsborgerskapModell extends Periodisert {
     
-    private static final Pattern LANDKODE = Pattern.compile("^[A-Z]{3}$");
-    
-    @JsonProperty("landkode")
-    private String landkode;
+    @JsonProperty("land")
+    private Landkode land;
 
     StatsborgerskapModell() {
     }
 
-    public StatsborgerskapModell(String landkode) {
+    public StatsborgerskapModell(Landkode landkode) {
         this(landkode, null, null);
     }
 
-    public StatsborgerskapModell(String landkode, LocalDate fom, LocalDate tom) {
+    public StatsborgerskapModell(Landkode landkode, LocalDate fom, LocalDate tom) {
         super(fom, tom);
-        if(!LANDKODE.matcher(landkode).matches()) {
-            throw new IllegalArgumentException("Landkode er ikke gyldig 3-bokstav ISO landkode: "+ landkode);
-        }
-        this.landkode = landkode;
+        this.land = landkode;
     }
 
     public String getLandkode() {
-        return landkode;
+        return land==null?null:land.getKode();
+    }
+    
+    public void setLand(Landkode land) {
+        this.land = land;
+    }
+    public Landkode getLand() {
+        return land;
     }
 }

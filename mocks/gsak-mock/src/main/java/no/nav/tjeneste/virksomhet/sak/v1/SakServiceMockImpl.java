@@ -14,9 +14,6 @@ import no.nav.tjeneste.virksomhet.sak.v1.meldinger.FinnSakResponse;
 import no.nav.tjeneste.virksomhet.sak.v1.meldinger.HentSakRequest;
 import no.nav.tjeneste.virksomhet.sak.v1.meldinger.HentSakResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

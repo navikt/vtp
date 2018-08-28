@@ -8,8 +8,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
@@ -57,7 +55,6 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeResponse;
 public class InntektMockImpl implements InntektV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(InntektMockImpl.class);
-    private static final EntityManager entityManager = Persistence.createEntityManagerFactory("inntekt").createEntityManager();
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentForventetInntektRequest")
