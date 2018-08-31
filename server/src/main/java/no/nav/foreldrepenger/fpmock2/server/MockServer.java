@@ -21,7 +21,11 @@ public class MockServer {
     private String host = HTTP_HOST;
 
     public static void main(String[] args) throws Exception {
+        PropertiesUtils.lagPropertiesFilFraTemplate();
+        PropertiesUtils.initProperties();
+
         System.setProperty("com.sun.net.httpserver.HttpServerProvider", JettyHttpServerProvider.class.getName());
+
         MockServer mockServer = new MockServer(8080);
         mockServer.start();
     }
