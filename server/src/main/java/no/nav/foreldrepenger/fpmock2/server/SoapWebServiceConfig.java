@@ -11,7 +11,6 @@ import org.eclipse.jetty.http.spi.JettyHttpServer;
 import no.nav.abac.pdp.PdpMock;
 import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.Scenarios;
-import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.foreldrepenger.fpmock2.server.checks.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.checks.IsReadyImpl;
+import no.nav.sigrun.SigrunMock;
 
 public class ApplicationConfig extends Application {
 
@@ -35,7 +36,7 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
-        
+        classes.add(SigrunMock.class);
         
         // tekniske ting
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);

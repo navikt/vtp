@@ -9,13 +9,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 //TODO, bytt til jaxrs
-@Api(tags = { "beregnetskatt" })
+@Api(tags = { "Sigrun/beregnetskatt" })
 @Path("/beregnetskatt")
 public class SigrunMock {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "isAlive", notes = ("Sjekker om systemet er alive for NAIS"))
+    @ApiOperation(value = "beregnetskatt", notes = ("Returnerer beregnetskatt fra Sigrun"))
     public String buildPermitResponse() {
         return "[\n" +
             "  {\n" +
