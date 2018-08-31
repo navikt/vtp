@@ -3,9 +3,14 @@ Oppsett og konfigurasjon
 
 Starte server
 ----
-* Start mock serveren ved å kjøre DevMockServer (lokalt).
-  På NAIS brukes MockServer.
-* Ingen konfigurering av selve mock er nødvendig.
+* Start mock serveren ved å kjøre MockServer (lokalt).
+* Trenger parameter -Dscenarios.dir=<path til scenarios> dersom denne ikke ligger under working dir (dvs. i IDE)
+* Swagger UI: http://localhost:8080/web/swagger/
+
+TODO
+----
+1. HTTPS?
+2. Se https://jira.adeo.no/browse/PFP-439
 
 Utvikling, wsdl
 ----
