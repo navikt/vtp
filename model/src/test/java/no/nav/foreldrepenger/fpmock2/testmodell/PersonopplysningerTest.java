@@ -57,8 +57,7 @@ public class PersonopplysningerTest {
         SøkerModell søker2 = scenario2.getPersonopplysninger().getSøker();
         assertThat(søker2).isNotNull();
         assertThat(søker2.getEtternavn()).isEqualTo("Donald");
-        assertThat(søker2.getIdent()).isEqualTo(søker.getIdent()).isNotEqualTo(lokalIdent);
-
+ 
         SøkerModell søkerFraIndeks = mapper.getIndeks().getPersonIndeks().finnByIdent(søker2.getIdent());
         assertThat(søkerFraIndeks).isEqualTo(søker2);
     }
