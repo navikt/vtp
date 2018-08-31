@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.threeten.extra.PeriodDuration;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
@@ -26,6 +28,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class DeserializerModule extends SimpleModule {
 
     private final Map<String, String> vars;
+
+    private LocalDate baseLocalDate = LocalDate.now();
+    private LocalDateTime baseLocalDateTime = LocalDateTime.now();
 
     public DeserializerModule(Map<String, String> vars) {
         super("FPMOCK2-DESERIALIZER", new Version(1, 0, 0, null, null, null));
@@ -101,22 +106,27 @@ public class DeserializerModule extends SimpleModule {
                 reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
             }
 
-            Pattern regex = Pattern.compile("^now\\(\\)\\s*(([+-])\\s*(P[0-9TDMYT].*))?$");
-            Matcher matcher = regex.matcher(reformatted);
+            Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))?$");
+            Matcher matcher = testRegexp.matcher(reformatted);
             if (matcher.matches()) {
-                String op = matcher.group(2);
+                LocalDate base = baseLocalDate;
+                if("basedate".equals(matcher.group(2))) {
+                     base = LocalDate.now();
+                }
+                String op = matcher.group(3);
                 if (op != null) {
-                    Period period = Period.parse(matcher.group(3));
+                    Period period = Period.parse(matcher.group(4));
                     if ("-".equals(op)) {
-                        return LocalDate.now().minus(period);
+                        return base.minus(period);
                     } else {
-                        return LocalDate.now().plus(period);
+                        return base.plus(period);
                     }
                 } else {
-                    return LocalDate.now();
+                    return base;
                 }
+            } else {
+                return LocalDate.parse(reformatted);
             }
-            return LocalDate.parse(reformatted);
 
         }
     }
@@ -135,16 +145,24 @@ public class DeserializerModule extends SimpleModule {
             for (Map.Entry<String, String> v : vars.entrySet()) {
                 reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
             }
-
-            Pattern regex = Pattern.compile("^now\\(\\)\\s*([+-])\\s*(P[0-9TDMYT].*)$");
-            Matcher matcher = regex.matcher(reformatted);
+            Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))?$");
+            Matcher matcher = testRegexp.matcher(reformatted);
             if (matcher.matches()) {
-                String op = matcher.group(1);
-                Period period = Period.parse(matcher.group(2));
-                if ("-".equals(op)) {
-                    return LocalDateTime.now().minus(period);
+                LocalDateTime base = baseLocalDateTime;
+                if("basedate".equals(matcher.group(2))) {
+                     base = LocalDateTime.now();
+                }
+                String op = matcher.group(3);
+                if (op != null) {
+                    String per = matcher.group(4);
+                    PeriodDuration period = PeriodDuration.parse(per);
+                    if ("-".equals(op)) {
+                        return base.minus(period);
+                    } else {
+                        return base.plus(period);
+                    }
                 } else {
-                    return LocalDateTime.now().plus(period);
+                    return base;
                 }
             } else {
                 return LocalDateTime.parse(reformatted);

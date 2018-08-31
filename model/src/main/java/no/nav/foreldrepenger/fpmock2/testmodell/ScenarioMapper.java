@@ -82,16 +82,21 @@ class ScenarioMapper {
      * @deprecated ScenarioMapper skal ikke brukes til mer enn et scenario.
      */
     public void load(Map<String, String> vars) {
-        File start = new File("scenarios");
+        File start = new File(System.getProperty("scenarios.dir", "scenarios"));
         File scDir = start;
-        while (scDir != null && !scDir.exists()) {
+        File scenariosDir = new File(scDir, "scenarios");
+        while (scDir != null && !scenariosDir.exists()) {
+            scenariosDir = new File(scDir, "scenarios");
             scDir = scDir.getParentFile();
         }
 
         if (scDir == null) {
-            throw new IllegalArgumentException("Fant ikke scenarios, fra start dir " + start);
+            throw new IllegalArgumentException("Fant ikke scenarios dir, fra property scenarios.dir=" + start + ", workdir="+new File(".").getAbsolutePath());
         } else {
-            for (File dir : scDir.listFiles()) {
+            for (File dir : scenariosDir.listFiles()) {
+                if(!dir.isDirectory()) {
+                    continue;
+                }
                 try {
                     loadScenario(dir, vars == null ? Collections.emptyMap() : vars);
                 } catch (IOException e) {

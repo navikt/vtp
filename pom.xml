@@ -43,9 +43,11 @@
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.3.1.Final</hibernate.version>
 		<hibernate.jpa.version>1.0.2.Final</hibernate.jpa.version>
-		<threeten.version>1.3.2</threeten.version>
-        <jackson.version>2.9.5</jackson.version>
-        
+		<threeten.version>1.4</threeten.version>
+		<jackson.version>2.9.5</jackson.version>
+		<swagger.version>1.5.21</swagger.version>
+		<resteasy.version>3.6.1.Final</resteasy.version>
+
 		<oppgave.version>3.0.0</oppgave.version>
 		<gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
@@ -147,7 +149,7 @@
 				<artifactId>norg2-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- NAV-biblioteker -->
 			<dependency>
 				<groupId>no.nav.modig</groupId>
@@ -277,6 +279,14 @@
 
 			<!-- Eksterne bibliotek -->
 			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-bom</artifactId>
+				<version>${resteasy.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-plus</artifactId>
 				<version>${jetty.version}</version>
@@ -296,6 +306,19 @@
 				<artifactId>threeten-extra</artifactId>
 				<version>${threeten.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-jaxrs</artifactId>
+				<version>${swagger.version}</version>
+				<exclusions>
+					<exclusion>
+						<!-- gammel 1.1 versjon eksluderes -->
+						<groupId>javax.ws.rs</groupId>
+						<artifactId>jsr311-api</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
@@ -322,14 +345,13 @@
 				<version>${hibernate.jpa.version}</version>
 			</dependency>
 
-
-        	<dependency>
-	            <groupId>com.fasterxml.jackson</groupId>
-	            <artifactId>jackson-bom</artifactId>
-	            <version>${jackson.version}</version>
-	            <scope>import</scope>
-	            <type>pom</type>
-	        </dependency>   
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
 
 			<dependency>
 				<groupId>net.logstash.logback</groupId>

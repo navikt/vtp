@@ -53,7 +53,7 @@ public class JsonMapper {
 
     public ObjectMapper canonicalObjectMapper() {
         ObjectMapper canonicalObjectMapper = objectMapper.copy();
-        canonicalObjectMapper.registerModule(new CanonicalSerializerModule(vars));
+        canonicalObjectMapper.registerModule(new CanonicalSerializerModule());
         return canonicalObjectMapper;
     }
 

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -14,60 +15,60 @@
 
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>tps-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>gsak-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>joark-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>pdp-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>infotrygd-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>medl-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>norg2-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>inntekt-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>arbeidsforhold-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>organisasjon-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>sigrun-mock</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>tps-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>gsak-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>joark-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>pdp-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>infotrygd-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>medl-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>norg2-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>inntekt-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>arbeidsforhold-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>organisasjon-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>sigrun-mock</artifactId>
+		</dependency>
 
-        <!-- NAV biblioteker -->
-        <dependency>
-            <groupId>no.nav.modig</groupId>
-            <artifactId>modig-testcertificates</artifactId>
-            <scope>test</scope>
-        </dependency>
+		<!-- NAV biblioteker -->
+		<dependency>
+			<groupId>no.nav.modig</groupId>
+			<artifactId>modig-testcertificates</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Eksterne avhengigheter -->
-			
+
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
@@ -78,31 +79,49 @@
 			<artifactId>logback-syslog4j</artifactId>
 		</dependency>
 
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-http-spi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>arena-mock</artifactId>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.basedir}/lib/</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-http-spi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>arena-mock</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

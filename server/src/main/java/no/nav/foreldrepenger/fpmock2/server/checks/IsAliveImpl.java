@@ -1,28 +1,22 @@
 package no.nav.foreldrepenger.fpmock2.server.checks;
 
-import javax.activation.DataSource;
-import javax.xml.ws.BindingType;
-import javax.xml.ws.Provider;
-import javax.xml.ws.ServiceMode;
-import javax.xml.ws.WebServiceProvider;
-import javax.xml.ws.http.HTTPBinding;
-import javax.xml.ws.soap.Addressing;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-import no.nav.foreldrepenger.fpmock2.server.ByteArrayDataSource;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
-@Addressing
-@WebServiceProvider
-@ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
-@BindingType(value = HTTPBinding.HTTP_BINDING)
-public class IsAliveImpl implements Provider<DataSource> {
+@Api(tags = { "isAlive" })
+@Path("/isAlive")
+public class IsAliveImpl {
 
-    @Override
-    public DataSource invoke(DataSource request) {
-        return new ByteArrayDataSource(buildPermitResponse().getBytes(),"application/json");
-    }
-
-    private String buildPermitResponse() {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "isAlive", notes = ("Sjekker om systemet er alive for NAIS"))
+    public String buildPermitResponse() {
         return " { \"Response\" : {\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
-                "\"status:ok\"}}}}";
+            "\"status:ok\"}}}}";
     }
 }

@@ -40,7 +40,7 @@ import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.Finn
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.ObjectFactory;
 
 @Addressing
-@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.arena.meldekort.binding.MeldekortUtbetalingsgrunnlagV1")
+@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.MeldekortUtbetalingsgrunnlagV1")
 @HandlerChain(file = "Handler-chain.xml")
 public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetalingsgrunnlagV1 {
 

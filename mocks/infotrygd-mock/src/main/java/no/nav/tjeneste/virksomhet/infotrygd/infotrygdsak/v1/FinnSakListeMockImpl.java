@@ -39,7 +39,7 @@ import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeRequest;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse;
 
 @Addressing
-@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.binding.InfotrygdSakV1")
+@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.InfotrygdSakV1")
 @HandlerChain(file = "Handler-chain.xml")
 public class FinnSakListeMockImpl implements InfotrygdSakV1 {
 
@@ -65,7 +65,7 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
         no.nav.tjeneste.virksomhet.infotrygdsak.v1.meldinger.FinnSakListeResponse response = new FinnSakListeResponse();
         String ident = finnSakListeRequest.getPersonident();
         LOG.info("FinnSakListeRequest, ident={}", ident);
-        
+
         Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getIndeks().getInntektYtelseModell(ident);
         if (!iyIndeksOpt.isPresent()) {
             return response;
@@ -82,8 +82,7 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
                 throw e;
             }
         }
-        
-        
+
         List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdModell.getYtelser();
         LOG.info("infotrygdYtelseListe ", infotrygdYtelseListe);
         if (infotrygdYtelseListe != null) {

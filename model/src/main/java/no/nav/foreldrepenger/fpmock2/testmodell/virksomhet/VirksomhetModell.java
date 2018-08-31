@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VirksomhetModell {
 
-    @JsonProperty("organisasjonsnummer")
+    @JsonProperty("orgnr")
     private String orgnr;
     
     @JsonProperty("navn")

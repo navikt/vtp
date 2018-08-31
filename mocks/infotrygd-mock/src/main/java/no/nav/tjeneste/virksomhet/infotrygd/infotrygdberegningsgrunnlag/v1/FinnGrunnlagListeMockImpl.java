@@ -38,7 +38,7 @@ import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.meldinger.FinnG
 import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.meldinger.ObjectFactory;
 
 @Addressing
-@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.binding.InfotrygdBeregningsgrunnlagV1")
+@WebService(endpointInterface = "no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.binding.InfotrygdBeregningsgrunnlagV1")
 @HandlerChain(file = "Handler-chain.xml")
 public class FinnGrunnlagListeMockImpl implements InfotrygdBeregningsgrunnlagV1 {
 

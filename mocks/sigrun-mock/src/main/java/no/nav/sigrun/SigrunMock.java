@@ -1,25 +1,22 @@
 package no.nav.sigrun;
 
-import javax.activation.DataSource;
-import javax.xml.ws.BindingType;
-import javax.xml.ws.Provider;
-import javax.xml.ws.ServiceMode;
-import javax.xml.ws.WebServiceProvider;
-import javax.xml.ws.http.HTTPBinding;
-import javax.xml.ws.soap.Addressing;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-@Addressing
-@WebServiceProvider
-@ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
-@BindingType(value = HTTPBinding.HTTP_BINDING)
-public class SigrunMock implements Provider<DataSource> {
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
-    @Override
-    public DataSource invoke(DataSource request) {
-        return new ByteArrayDataSource(buildPermitResponse().getBytes(), "application/json");
-    }
+//TODO, bytt til jaxrs
+@Api(tags = { "beregnetskatt" })
+@Path("/beregnetskatt")
+public class SigrunMock {
 
-    private String buildPermitResponse() {
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "isAlive", notes = ("Sjekker om systemet er alive for NAIS"))
+    public String buildPermitResponse() {
         return "[\n" +
             "  {\n" +
             "    \"tekniskNavn\": \"personinntektFiskeFangstFamiliebarnehage\",\n" +

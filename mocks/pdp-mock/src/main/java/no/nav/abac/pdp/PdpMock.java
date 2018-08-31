@@ -8,6 +8,7 @@ import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.http.HTTPBinding;
 import javax.xml.ws.soap.Addressing;
 
+//TODO, bytt til jaxrs
 @Addressing
 @WebServiceProvider
 @ServiceMode(value = javax.xml.ws.Service.Mode.MESSAGE)
