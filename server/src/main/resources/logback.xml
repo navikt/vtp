@@ -1,26 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-	<appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}, %X{prosess}] - %replace(%msg){'[\r\n]+', '\\n'}%n</pattern>
 		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 	</appender>
-    
-    <appender name="SPORING_LOG" class="com.papertrailapp.logback.Syslog4jAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%m%n%xEx</pattern>
-        </layout>
 
-        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig">
-            <!-- remote system to log to -->
-            <host>audit.nais</host>
-            <!-- remote port to log to -->
-            <port>6514</port>
-            <ident>fpmock</ident>
-            <!-- max log message length in bytes -->
-            <maxMessageLength>128000</maxMessageLength>
-        </syslogConfig>
-    </appender>
 	<logger name="no.nav" level="${log.level.no.nav:-INFO}" />
 
 	<!-- skru paa for aa logge all sql statements med parametere -->
@@ -39,13 +29,10 @@
 	<logger name="no.nav.modig" level="${log.level.no.nav.modig:-WARN}" />
 	<!-- denne logger passord på INFO nivå! -->
 	<logger name="no.nav.modig.core.test.PropertySetter"
-		level="${log.level.no.nav.modig.core.test.PropertySetter:-WARN}" />
+			level="${log.level.no.nav.modig.core.test.PropertySetter:-WARN}" />
 
 	<root level="${log.level.root:-WARN}">
-		<appender-ref ref="STDOUT_JSON" />
+		<appender-ref ref="STDOUT" />
 	</root>
-    
-    <logger level="INFO" name="sporing" additivity="false">
-        <appender-ref ref="SPORING_LOG" />
-    </logger>
+
 </configuration>

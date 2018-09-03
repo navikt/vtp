@@ -8,7 +8,6 @@ import javax.ws.rs.core.MediaType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-//TODO, bytt til jaxrs
 @Api(tags = { "Sigrun/beregnetskatt" })
 @Path("/beregnetskatt")
 public class SigrunMock {

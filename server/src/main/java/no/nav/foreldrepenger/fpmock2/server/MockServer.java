@@ -11,14 +11,18 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MockServer {
 
+    private static final Logger log = LoggerFactory.getLogger(MockServer.class);
     private static final String HTTP_HOST = "0.0.0.0";
     private Server server;
     private JettyHttpServer jettyHttpServer;
-    private int port;
     private String host = HTTP_HOST;
+
+    private final int port;
 
     public static void main(String[] args) throws Exception {
         PropertiesUtils.lagPropertiesFilFraTemplate();
@@ -26,12 +30,13 @@ public class MockServer {
 
         System.setProperty("com.sun.net.httpserver.HttpServerProvider", JettyHttpServerProvider.class.getName());
 
-        MockServer mockServer = new MockServer(8080);
+        MockServer mockServer = new MockServer(Integer.getInteger("server.port"));
         mockServer.start();
+
     }
 
     public MockServer(int port) {
-        this.port = port;
+        this.port=port;
     }
 
     protected void start() throws Exception {
@@ -51,7 +56,7 @@ public class MockServer {
             servletHolder.setInitParameter("resourceBase", "./webapp/");
         } else {
             // kjører i utvikling IDE
-            servletHolder.setInitParameter("resourceBase", "./src/main/webapp/");
+            servletHolder.setInitParameter("resourceBase", "./server/src/main/webapp/");
         }
         servletHolder.setInitParameter("dirAllowed", "false");
 
@@ -61,6 +66,8 @@ public class MockServer {
         jettyHttpServer = new JettyHttpServer(server, true);
         // kjør soap oppsett etter
         new SoapWebServiceConfig(jettyHttpServer).setup();
+
+        log.info("{} har startet, port={}", getClass().getName(), port);
     }
 
     protected void setConnectors(Server server) {
