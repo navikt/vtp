@@ -1,0 +1,59 @@
+{
+  "modeller": [
+    {
+      "ident": {
+        "@type": "ident",
+        "ident": "${for1}"
+      },
+      "arena": {
+        "saker": [
+          {
+            "saksnummer": "${arenasak1}",
+            "tema": "AAP",
+            "status": "AKTIV",
+            "vedtak": [
+              {
+                "fom": "now() - P1M",
+                "tom": "now() + P2M",
+                "vedtakDato": "now() - P1M1D",
+                "kravMottattDato": "now() - P1M5D",
+                "status": "IVERK",
+                "meldekort": [
+                  {
+                    "fom": "now() - P1M",
+                    "tom": "now() + P2M",
+                    "dagsats": 10000,
+                    "beløp": 10,
+                    "utbetalingsgrad": 1
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "inntektskomponent": {
+        "inntektsperioder": [
+          {
+            "fom": "now() - P12M",
+            "tom": "now() - P10M",
+            "beløp": 50000,
+            "orgnummer": 123123123,
+            "type": "Lønnsinntekt",
+            "fordel": "kontantytelse",
+            "beskrivelse": "fastloenn"
+          },
+          {
+            "fom": "now() - P10M",
+            "tom": "now() - P2M",
+            "beløp": 60000,
+            "orgnummer": 123123123,
+            "type": "Lønnsinntekt",
+            "fordel": "kontantytelse",
+            "beskrivelse": "fastloenn"
+          }
+        ]
+      }
+    }
+  ]
+}
