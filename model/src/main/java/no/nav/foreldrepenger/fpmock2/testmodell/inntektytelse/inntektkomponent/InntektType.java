@@ -10,6 +10,15 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 
+/*
+Ref: https://app-t11.adeo.no/inntektstub/api/v1/kodeverk/Inntektstype
+[
+{"navn":"Loennsinntekt","term":"Lønnsinntekt"},
+{"navn":"Naeringsinntekt","term":"Næringsinntekt"},
+{"navn":"PensjonEllerTrygd","term":"Pensjon eller trygd"},
+{"navn":"YtelseFraOffentlige","term":"Ytelse fra offentlige"}]
+ */
+
 public class InntektType {
 
     private static List<String> VALID_KODER;

@@ -9,7 +9,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
-
+/*
+[
+{"navn":"kontantytelse","term":"Kontantytelse"},
+{"navn":"naturalytelse","term":"Naturalytelse"},
+{"navn":"utgiftsgodtgjoerelse","term":"Utgiftsgodtgjørelse"}]
+ */
 public class InntektFordel {
 
     private static List<String> VALID_KODER;
