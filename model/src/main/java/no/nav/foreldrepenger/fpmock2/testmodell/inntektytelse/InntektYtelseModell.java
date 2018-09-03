@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektKomponentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerIdent;
 
 @JsonInclude(Include.NON_EMPTY)
@@ -21,8 +21,8 @@ public class InntektYtelseModell {
     @JsonProperty("infotrygd")
     private InfotrygdModell infotrygdModell;
 
-    @JsonProperty("inntektKomponent")
-    private InntektKomponentModell inntektKomponentModell;
+    @JsonProperty("inntektskomponent")
+    private InntektskomponentModell inntektskomponentModell;
 
     public InntektYtelseModell() {
     }
@@ -61,11 +61,14 @@ public class InntektYtelseModell {
         this.infotrygdModell = infotrygdModell;
     }
 
-    public InntektKomponentModell getInntektKomponentModell() {
-        return inntektKomponentModell;
+    public InntektskomponentModell getInntektskomponentModell() {
+        if (inntektskomponentModell == null) {
+            this.inntektskomponentModell = new InntektskomponentModell();
+        }
+        return inntektskomponentModell;
     }
 
-    public void setInntektKomponentModell(InntektKomponentModell inntektKomponentModell) {
-        this.inntektKomponentModell = inntektKomponentModell;
+    public void setInntektskomponentModell(InntektskomponentModell inntektskomponentModell) {
+        this.inntektskomponentModell = inntektskomponentModell;
     }
 }

@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
-public class InntektKomponentModell {
+public class InntektBeskrivelse {
 
+    //TODO: Ola implementer
 }

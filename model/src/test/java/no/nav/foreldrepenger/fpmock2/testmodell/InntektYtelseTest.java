@@ -31,6 +31,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.beregnin
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdInntektsperiodeType;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdVedtak;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerIdent;
 
 public class InntektYtelseTest {
@@ -42,6 +44,7 @@ public class InntektYtelseTest {
         InntektYtelseModell inntektYtelse = new InntektYtelseModell(new BrukerIdent("#myid#"));
         initArenaModell(inntektYtelse);
         initInfotrygdModell(inntektYtelse);
+        initInntektskomponentModell(inntektYtelse);
         
         Scenario scenario = new Scenario("test3", identer, mapper.getVirksomheter());
         scenario.leggTil(inntektYtelse);
@@ -49,6 +52,27 @@ public class InntektYtelseTest {
         String json = skrivInntektYtelse(scenario, mapper);
         
         System.out.println(json);
+    }
+
+    private void initInntektskomponentModell(InntektYtelseModell inntektYtelse){
+        InntektskomponentModell inntektskomponentModell = inntektYtelse.getInntektskomponentModell();
+        List<Inntektsperiode> inntektsperioder = lagInntektsperioder();
+        inntektskomponentModell.setInntektsperioder(inntektsperioder);
+    }
+
+    private List<Inntektsperiode> lagInntektsperioder() {
+        List<Inntektsperiode> resultat = new ArrayList<>();
+        resultat.add(lagInntektsperiode());
+        return resultat;
+    }
+
+    private Inntektsperiode lagInntektsperiode() {
+        LocalDateTime now = LocalDateTime.now();
+        Inntektsperiode inntektsperiode = new Inntektsperiode();
+        inntektsperiode.setBeløp(5000);
+        inntektsperiode.setFom(now.minusMonths(10));
+        inntektsperiode.setTom(now.minusMonths(1));
+        return inntektsperiode;
     }
 
     private void initInfotrygdModell(InntektYtelseModell inntektYtelse) {

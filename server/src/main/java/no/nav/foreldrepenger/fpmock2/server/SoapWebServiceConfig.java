@@ -69,7 +69,7 @@ public class SoapWebServiceConfig {
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/meldekortutbetalingsgrunnlag");
         publishWebService(new MedlemServiceMockImpl(repo), "/medlem");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/arbeidsfordeling");
-        publishWebService(new InntektMockImpl(), "/inntekt");
+        publishWebService(new InntektMockImpl(repo), "/inntekt");
         publishWebService(new OppgaveServiceMockImpl(), "/oppgave");
         publishWebService(new ArbeidsforholdMockImpl(), "/arbeidsforhold");
         publishWebService(new OrganisasjonMockImpl(), "/organisasjon");
