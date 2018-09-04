@@ -47,7 +47,7 @@
             "fom": "now() - P10M",
             "tom": "now() - P2M",
             "beløp": 60000,
-            "orgnummer": "${orgnr1}",
+            "orgnr": "${orgnr1}",
             "type": "Lønnsinntekt",
             "fordel": "kontantytelse",
             "beskrivelse": "fastloenn"
@@ -56,7 +56,7 @@
             "fom": "now() - P4M",
             "tom": "now() - P1M",
             "beløp": 60000,
-            "orgnummer": "${orgnr2}",
+            "orgnr": "${orgnr2}",
             "type": "Lønnsinntekt",
             "fordel": "kontantytelse",
             "beskrivelse": "testbeskrivelsesomfungererennsålenge"

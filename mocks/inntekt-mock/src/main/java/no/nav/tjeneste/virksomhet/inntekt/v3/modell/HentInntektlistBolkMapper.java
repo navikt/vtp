@@ -92,7 +92,7 @@ public class HentInntektlistBolkMapper {
             LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
             inntektsperioderPaaMaaned.add(new Inntektsperiode(init.withDayOfMonth(1).atStartOfDay()
                     , init.withDayOfMonth(init.lengthOfMonth()).atStartOfDay(),
-                    ip.getBeløp(), ip.getOrgnummer(), ip.getType(), ip.getFordel(), ip.getBeskrivelse()));
+                    ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse()));
 
         });
         return inntektsperioderPaaMaaned;
@@ -107,8 +107,8 @@ public class HentInntektlistBolkMapper {
         loennsinntekt.setUtloeserArbeidsgiveravgift(true);
         loennsinntekt.setInngaarIGrunnlagForTrekk(true);
         loennsinntekt.setInntektsmottaker(makePersonIdent(fnr));
-        loennsinntekt.setVirksomhet(makeOrganisation(ip.getOrgnummer()));
-        loennsinntekt.setOpplysningspliktig(makeOrganisation(ip.getOrgnummer()));
+        loennsinntekt.setVirksomhet(makeOrganisation(ip.getOrgnr()));
+        loennsinntekt.setOpplysningspliktig(makeOrganisation(ip.getOrgnr()));
         //loennsinntekt.setUtbetaltIPeriode();
         //loennsinntekt.setLevereringstidspunkt();
         //loennsinntekt.setInntektsstatus();

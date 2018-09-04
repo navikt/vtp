@@ -44,8 +44,8 @@ public class Inntektsperiode {
     @JsonProperty("beløp")
     private Integer beløp;
 
-    @JsonProperty("orgnummer")
-    private String orgnummer;
+    @JsonProperty("orgnr")
+    private String orgnr;
 
     @JsonProperty("type")
     private InntektType type;
@@ -58,11 +58,11 @@ public class Inntektsperiode {
 
     public Inntektsperiode(){ }
 
-    public Inntektsperiode(LocalDateTime fom, LocalDateTime tom, Integer beløp, String orgnummer, InntektType inntektType, InntektFordel inntektFordel, String beskrivelse){
+    public Inntektsperiode(LocalDateTime fom, LocalDateTime tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel, String beskrivelse){
         this.fom = fom;
         this.tom = tom;
         this.beløp = beløp;
-        this.orgnummer = orgnummer;
+        this.orgnr = orgnr;
         this.type = inntektType;
         this.fordel = inntektFordel;
         this.beskrivelse = beskrivelse;
@@ -92,12 +92,12 @@ public class Inntektsperiode {
         this.beløp = beløp;
     }
 
-    public String getOrgnummer() {
-        return orgnummer;
+    public String getOrgnr() {
+        return orgnr;
     }
 
-    public void setOrgnummer(String orgnummer) {
-        this.orgnummer = orgnummer;
+    public void setOrgnr(String orgnr) {
+        this.orgnr = orgnr;
     }
 
     public InntektType getType() {
