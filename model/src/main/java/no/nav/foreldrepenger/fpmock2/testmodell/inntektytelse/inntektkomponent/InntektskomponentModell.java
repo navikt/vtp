@@ -10,11 +10,19 @@ public class InntektskomponentModell {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("inntektsperioder")
-    List<Inntektsperiode> inntektsperioder  = new ArrayList<>();;
+    List<Inntektsperiode> inntektsperioder  = new ArrayList<>();
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("frilansarbeidsforholdperioder")
+    List<FrilansArbeidsforholdsperiode> frilansarbeidsforholdperioder = new ArrayList<>();
 
     public void setInntektsperioder(List<Inntektsperiode> inntektsperioder) {
         this.inntektsperioder.clear();
         this.inntektsperioder.addAll(inntektsperioder);
+    }
+
+    public List<Inntektsperiode> getInntektsperioder(){
+        return inntektsperioder;
     }
 
 }

@@ -38,7 +38,7 @@
             "fom": "now() - P12M",
             "tom": "now() - P10M",
             "beløp": 50000,
-            "orgnummer": 123123123,
+            "orgnr": "${orgnr1}",
             "type": "Lønnsinntekt",
             "fordel": "kontantytelse",
             "beskrivelse": "fastloenn"
@@ -47,10 +47,19 @@
             "fom": "now() - P10M",
             "tom": "now() - P2M",
             "beløp": 60000,
-            "orgnummer": 123123123,
+            "orgnummer": "${orgnr1}",
             "type": "Lønnsinntekt",
             "fordel": "kontantytelse",
             "beskrivelse": "fastloenn"
+          },
+          {
+            "fom": "now() - P4M",
+            "tom": "now() - P1M",
+            "beløp": 60000,
+            "orgnummer": "${orgnr2}",
+            "type": "Lønnsinntekt",
+            "fordel": "kontantytelse",
+            "beskrivelse": "testbeskrivelsesomfungererennsålenge"
           }
         ]
       }

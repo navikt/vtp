@@ -8,8 +8,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
-
 /*
 Ref: https://app-t11.adeo.no/inntektstub/api/v1/kodeverk/Inntektstype
 [
@@ -68,7 +66,7 @@ public class InntektType {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Landkode) obj).getKode());
+        return Objects.equals(getKode(), ((InntektType) obj).getKode());
     }
 
     @Override

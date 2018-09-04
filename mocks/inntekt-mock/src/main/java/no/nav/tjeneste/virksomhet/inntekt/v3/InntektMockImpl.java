@@ -1,8 +1,6 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.jws.HandlerChain;
@@ -10,7 +8,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
@@ -21,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter;
@@ -42,7 +40,6 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.binding.InntektV3;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Organisasjon;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkRequest;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkResponse;
@@ -70,6 +67,8 @@ public class InntektMockImpl implements InntektV3 {
 
     private Repository scenarioRepository;
 
+    public InntektMockImpl(){}
+
     public InntektMockImpl(Repository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
 
 
@@ -83,34 +82,30 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeBolkResponse")
     public HentInntektListeBolkResponse hentInntektListeBolk(@WebParam(name = "request",targetNamespace = "") HentInntektListeBolkRequest request) throws HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeBolkUgyldigInput {
 
+        HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
+
         if (request != null && request.getIdentListe() != null
                 && !request.getIdentListe().isEmpty()
                 && request.getUttrekksperiode() != null) {
 
-            List<InntektYtelseModell> inntektYtelseModellList = new ArrayList<>();
-
-            for(Aktoer aktoer : request.getIdentListe()) {
-                //TODO: Koble opp mapping mot FNR
-                Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getIndeks().getInntektYtelseModell("2029500269");
-                if(inntektYtelseModell.isPresent()){
-                    String s = "blah";
-                }
-
-            }
-
             LocalDate fom = ConversionUtils.convertToLocalDate(request.getUttrekksperiode().getMaanedFom());
             LocalDate tom = ConversionUtils.convertToLocalDate(request.getUttrekksperiode().getMaanedTom());
-            HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
 
             for (Aktoer aktoer : request.getIdentListe()) {
-                // PK-41326: Mock av en response for å teste oppdatering av registeropplysninger i vedtaksløsningen.
-                List<ArbeidsInntektIdent> inntekter = new InntektGenerator().hentInntekter(aktoer, fom, tom);
+                //TODO: Koble opp mapping mot FNR
+                String fnr = getIdentFromAktoer(aktoer);
+                Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getIndeks().getInntektYtelseModell(fnr);
+                if (inntektYtelseModell.isPresent()) {
+                    InntektskomponentModell modell = inntektYtelseModell.get().getInntektskomponentModell();
+                    ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlistBolkMapper.makeArbeidsInntektIdent(modell, fnr);
+                    response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
 
-                response.getArbeidsInntektIdentListe().addAll(inntekter);
+                }
             }
-            return response;
         }
-        return null;
+
+
+        return response;
     }
 
 
@@ -184,7 +179,7 @@ public class InntektMockImpl implements InntektV3 {
             return ((PersonIdent) aktoer).getPersonIdent();
         } else if (aktoer instanceof AktoerId){
             //TODO: Konverter AktoerId til PersonIdent
-            return ((AktoerId) aktoer).getAktoerId();
+            throw new UnsupportedOperationException("AktoerId ikke støttet PT");
         } else {
             throw new UnsupportedOperationException("Aktoertype ikke støttet");
         }
