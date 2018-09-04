@@ -47,7 +47,7 @@
 		<jackson.version>2.9.5</jackson.version>
 		<swagger.version>1.5.21</swagger.version>
 		<resteasy.version>3.6.1.Final</resteasy.version>
-
+		
 		<oppgave.version>3.0.0</oppgave.version>
 		<gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
@@ -286,21 +286,14 @@
 				<scope>import</scope>
 			</dependency>
 
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-plus</artifactId>
+            <dependency>
+	            <groupId>org.eclipse.jetty</groupId>
+	            <artifactId>jetty-bom</artifactId>
 				<version>${jetty.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-http-spi</artifactId>
-				<version>${jetty.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-annotations</artifactId>
-				<version>${jetty.version}</version>
-			</dependency>
+				<scope>import</scope>
+				<type>pom</type>
+	        </dependency>
+			
 			<dependency>
 				<groupId>org.threeten</groupId>
 				<artifactId>threeten-extra</artifactId>

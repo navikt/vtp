@@ -1,22 +1,20 @@
 package no.nav.foreldrepenger.fpmock2.server;
 
-import java.io.File;
-
 import org.eclipse.jetty.http.spi.JettyHttpServer;
-import org.eclipse.jetty.http.spi.JettyHttpServerProvider;
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HandlerContainer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.jolokia.http.AgentServlet;
 
 public class MockServer {
-
-    private static final Logger log = LoggerFactory.getLogger(MockServer.class);
+    
     private static final String HTTP_HOST = "0.0.0.0";
     private Server server;
     private JettyHttpServer jettyHttpServer;
@@ -28,7 +26,7 @@ public class MockServer {
         PropertiesUtils.lagPropertiesFilFraTemplate();
         PropertiesUtils.initProperties();
 
-        System.setProperty("com.sun.net.httpserver.HttpServerProvider", JettyHttpServerProvider.class.getName());
+//        System.setProperty("com.sun.net.httpserver.HttpServerProvider", JettyHttpServerProvider.class.getName());
 
         MockServer mockServer = new MockServer(Integer.getInteger("server.port"));
         mockServer.start();
@@ -37,37 +35,62 @@ public class MockServer {
 
     public MockServer(int port) {
         this.port=port;
-    }
-
-    protected void start() throws Exception {
         server = new Server();
         setConnectors(server);
 
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
 
-        new RestConfig(contextHandlerCollection).setup();
+    }
 
-        final ServletContextHandler context = new ServletContextHandler(contextHandlerCollection, "/web");
-        DefaultServlet defaultServlet = new DefaultServlet();
-        ServletHolder servletHolder = new ServletHolder(defaultServlet);
-        if (new File("./webapp").exists()) {
-            // kjører på docker (forventer at webapp er opprettet i Dockerfile
-            servletHolder.setInitParameter("resourceBase", "./webapp/");
-        } else {
-            // kjører i utvikling IDE
-            servletHolder.setInitParameter("resourceBase", "./server/src/main/webapp/");
-        }
-        servletHolder.setInitParameter("dirAllowed", "false");
+    public void start() throws Exception {
+        HandlerContainer handler = (HandlerContainer)server.getHandler();
+        addRestServices(handler);
+        addWebResources(handler);
+        addJmxRestApi(handler);
+        
+        startServer();
+        
+        // kjør soap oppsett etter jetty har startet
+        addSoapServices();
 
-        context.addServlet(servletHolder, "/");
+    }
 
+    protected void startServer() throws Exception {
         server.start();
         jettyHttpServer = new JettyHttpServer(server, true);
-        // kjør soap oppsett etter
-        new SoapWebServiceConfig(jettyHttpServer).setup();
+    }
 
-        log.info("{} har startet, port={}", getClass().getName(), port);
+    protected void addSoapServices() {
+        new SoapWebServiceConfig(jettyHttpServer).setup();
+    }
+
+    protected void addRestServices(HandlerContainer handler) {
+        new RestConfig(handler).setup();
+    }
+
+    protected void addWebResources(HandlerContainer handlerContainer) {
+        
+        WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
+        ctx.setThrowUnavailableOnStartupException(true);
+        ctx.setLogUrlOnStart(true);
+        
+        DefaultServlet defaultServlet = new DefaultServlet();
+        ServletHolder servletHolder = new ServletHolder(defaultServlet);
+        servletHolder.setInitParameter("dirAllowed", "false");
+        
+        ctx.addServlet(servletHolder, "/");
+    }
+    
+    protected void addJmxRestApi(HandlerContainer parent) {
+        
+        ServletContextHandler ctx = new ServletContextHandler(parent, "/jmx");
+        
+        AgentServlet jolokia = new AgentServlet();
+        ServletHolder servletHolder = new ServletHolder(jolokia);
+        servletHolder.setInitParameter("logHandlerClass", JolokiaLogHandler.class.getName());
+        
+        ctx.addServlet(servletHolder, "/");
     }
 
     protected void setConnectors(Server server) {
@@ -85,5 +108,7 @@ public class MockServer {
     public String getHost() {
         return host;
     }
+    
+    
 
 }

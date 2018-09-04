@@ -22,6 +22,9 @@
 	<logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-WARN}" />
 	<logger name="org.flywaydb" level="${log.level.org.flywaydb:-INFO}" />
 	<logger name="org.apache" level="${log.level.org.apache:-ERROR}" />
+	
+	<logger name="org.eclipse.jetty" level="${log.level.org.eclipse.jetty:-INFO}" />
+	
 	<!-- ESSV: genererer en del støy for webservice -->
 	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
 	<logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />

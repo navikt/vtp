@@ -84,6 +84,11 @@
 			<artifactId>jetty-http-spi</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+		</dependency>
+    
+		<dependency>
 			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>arena-mock</artifactId>
 		</dependency>
