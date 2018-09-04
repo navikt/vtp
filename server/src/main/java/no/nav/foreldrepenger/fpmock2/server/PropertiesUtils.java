@@ -1,8 +1,5 @@
 package no.nav.foreldrepenger.fpmock2.server;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,12 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PropertiesUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
 
     private static String TEMPLATE_FILNAVN = "application-local.properties";
-    private static String JETTY_SCHEMAS_LOCAL = "jetty_web_server.json"; // ikke i bruk enda, tar med for senere
 
     private static String DEV_FILNAVN = "application.properties";
     private static String DEV_FILNAVN_LOCAL = "application-local.properties";

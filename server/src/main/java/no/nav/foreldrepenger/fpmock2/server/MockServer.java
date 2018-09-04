@@ -7,11 +7,9 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.jolokia.http.AgentServlet;
 
 public class MockServer {
     
@@ -25,8 +23,6 @@ public class MockServer {
     public static void main(String[] args) throws Exception {
         PropertiesUtils.lagPropertiesFilFraTemplate();
         PropertiesUtils.initProperties();
-
-//        System.setProperty("com.sun.net.httpserver.HttpServerProvider", JettyHttpServerProvider.class.getName());
 
         MockServer mockServer = new MockServer(Integer.getInteger("server.port"));
         mockServer.start();
@@ -47,7 +43,6 @@ public class MockServer {
         HandlerContainer handler = (HandlerContainer)server.getHandler();
         addRestServices(handler);
         addWebResources(handler);
-        addJmxRestApi(handler);
         
         startServer();
         
@@ -78,17 +73,6 @@ public class MockServer {
         DefaultServlet defaultServlet = new DefaultServlet();
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
-        
-        ctx.addServlet(servletHolder, "/");
-    }
-    
-    protected void addJmxRestApi(HandlerContainer parent) {
-        
-        ServletContextHandler ctx = new ServletContextHandler(parent, "/jmx");
-        
-        AgentServlet jolokia = new AgentServlet();
-        ServletHolder servletHolder = new ServletHolder(jolokia);
-        servletHolder.setInitParameter("logHandlerClass", JolokiaLogHandler.class.getName());
         
         ctx.addServlet(servletHolder, "/");
     }
