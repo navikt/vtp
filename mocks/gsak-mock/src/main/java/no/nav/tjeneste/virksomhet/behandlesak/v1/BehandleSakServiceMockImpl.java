@@ -16,8 +16,8 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.BehandleSakV1;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.OpprettSakSakEksistererAllerede;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.OpprettSakUgyldigInput;
@@ -32,9 +32,9 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
 
     private static final Logger LOG = LoggerFactory.getLogger(BehandleSakServiceMockImpl.class);
     private GsakRepo gsakRepo;
-    private Repository repository;
+    private TestscenarioRepository repository;
 
-    public BehandleSakServiceMockImpl(GsakRepo repo, Repository repository) {
+    public BehandleSakServiceMockImpl(GsakRepo repo, TestscenarioRepository repository) {
         this.gsakRepo = repo;
         this.repository = repository;
     }
@@ -51,7 +51,7 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
         OpprettSakResponse response = new OpprettSakResponse();
         Set<String> identer = request.getSak().getGjelderBrukerListe().stream().map(a -> a.getIdent()).collect(Collectors.toSet());
 
-        List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getIndeks().getPersonIndeks().finnByIdent(i)).collect(Collectors.toList());
+        List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getPersonIndeks().finnByIdent(i)).collect(Collectors.toList());
         no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak sak = gsakRepo.leggTilSak(personer);
         response.setSakId(sak.getSakId());
         return response;

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** Indeks av alle virksomheter registrert. Konverterer alle lokale virksomheter til globale nr. */
+/** TestscenarioRepositoryImpl av alle virksomheter registrert. Konverterer alle lokale virksomheter til globale nr. */
 public class VirksomhetIndeks {
 
     private final Map<String, VirksomhetModell> virksomheter = new ConcurrentHashMap<>(); // NOSONAR

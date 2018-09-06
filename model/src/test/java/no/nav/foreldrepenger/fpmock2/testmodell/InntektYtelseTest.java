@@ -34,19 +34,23 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.ytelse.I
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerIdent;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTilTemplateMapper;
 
 public class InntektYtelseTest {
     @Test
     public void skal_skrive_scenario_til_inntektytelse_json() throws Exception {
-        ScenarioMapper mapper = new ScenarioMapper();
-        ScenarioIdenter identer = mapper.getIndeks().getIdenter("test");
+        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
+        TestscenarioTilTemplateMapper mapper = new TestscenarioTilTemplateMapper();
 
         InntektYtelseModell inntektYtelse = new InntektYtelseModell(new BrukerIdent("#myid#"));
         initArenaModell(inntektYtelse);
         initInfotrygdModell(inntektYtelse);
         initInntektskomponentModell(inntektYtelse);
         
-        Scenario scenario = new Scenario("test3", identer, mapper.getVirksomheter());
+        TestscenarioImpl scenario = new TestscenarioImpl("test3", "test3-123", testScenarioRepository);
         scenario.leggTil(inntektYtelse);
         
         String json = skrivInntektYtelse(scenario, mapper);
@@ -155,7 +159,7 @@ public class InntektYtelseTest {
         return arenaSak;
     }
 
-    private String skrivInntektYtelse(Scenario scenario, ScenarioMapper mapper) throws IOException {
+    private String skrivInntektYtelse(Testscenario scenario, TestscenarioTilTemplateMapper mapper) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedOutputStream buf = new BufferedOutputStream(baos);
         mapper.skrivInntektYtelse(buf, scenario, true);

@@ -22,9 +22,9 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.arena.meldekort.modell.ArenaMUMapper;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning;
@@ -51,9 +51,9 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
 
     private static ObjectFactory of = new ObjectFactory();
     private static ArenaMUMapper arenaMapper = new ArenaMUMapper();
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public MeldekortUtbetalingsgrunnlagMockImpl(Repository scenarioRepository) {
+    public MeldekortUtbetalingsgrunnlagMockImpl(TestscenarioRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
@@ -74,7 +74,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             UgyldigInput faultInfo = lagUgyldigInput(ident);
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
-        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getIndeks().getInntektYtelseModell(ident);
+        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModell(ident);
         if (!iyIndeksOpt.isPresent()) {
             return response;
         }

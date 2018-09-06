@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.ScenarioVirksomheter;
+import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.ScenarioVirksomheter;
 import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetModell;
 
 public class InfotrygdArbeidsforhold {

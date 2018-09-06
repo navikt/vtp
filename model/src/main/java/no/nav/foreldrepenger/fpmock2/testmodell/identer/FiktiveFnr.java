@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.testmodell.personopplysning;
+package no.nav.foreldrepenger.fpmock2.testmodell.identer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 
  * @see https://confluence.adeo.no/pages/viewpageattachments.action?pageId=211653415&metadataLink=true (SKD fiktive identer)
  */
-public class FiktiveFnr {
+public class FiktiveFnr implements IdentGenerator {
     static class Innhold {
         final AtomicInteger teller = new AtomicInteger();
         final List<String> fnrs;
@@ -40,6 +40,7 @@ public class FiktiveFnr {
      * Bruk denne når kjønn ikke har betydning for anvendt FNR. (Bør normalt brukes slik at en sikrer at applikasjonen ikke gjør antagelser om
      * koding av kjønn i FNR.
      */
+    @Override
     public String nesteFnr() {
         if (nesteTilfeldig.getAndIncrement() % 2 == 0) {
             return nesteKvinneFnr();
@@ -49,16 +50,19 @@ public class FiktiveFnr {
     }
 
     /** Returnerer FNR for mann > 18 år */
+    @Override
     public String nesteMannFnr() {
         return neste("mann");
     }
 
     /** Returnerer FNR for kvinne > 18 år */
+    @Override
     public String nesteKvinneFnr() {
         return neste("kvinne");
     }
 
     /** Returnerer FNR for barn (tilfeldig kjønn) < 18 år */
+    @Override
     public String nesteBarnFnr() {
         return neste("barn");
     }

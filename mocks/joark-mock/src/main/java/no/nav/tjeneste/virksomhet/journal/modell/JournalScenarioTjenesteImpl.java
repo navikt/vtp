@@ -2,14 +2,14 @@ package no.nav.tjeneste.virksomhet.journal.modell;
 
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 
 
 public class JournalScenarioTjenesteImpl {
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public JournalScenarioTjenesteImpl(Repository scenarioRepository) {
+    public JournalScenarioTjenesteImpl(TestscenarioRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 

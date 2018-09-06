@@ -1,21 +1,21 @@
-package no.nav.foreldrepenger.fpmock2.testmodell;
+package no.nav.foreldrepenger.fpmock2.testmodell.identer;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FiktiveFnr;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell.Kjønn;
 
 /** konverterer lokale identer brukt i testcase til utvalgte fødselsnummer hentet fra syntetisk liste. */
-public class ScenarioIdenter {
+public class LokalIdentIndeks {
 
-    private static final FiktiveFnr fiktive = new FiktiveFnr(); // NOSONAR
+    private final IdentGenerator identGenerator;
     private final Map<String, String> identer = new ConcurrentHashMap<>(); // NOSONAR
-    private String scenario;
+    private String unikScenarioId;
 
-    public ScenarioIdenter(String scenario) {
-        this.scenario = scenario;
+    public LokalIdentIndeks(String unikScenarioId, IdentGenerator identGenerator) {
+        this.unikScenarioId = unikScenarioId;
+        this.identGenerator = identGenerator;
     }
     
     public Map<String, String> getAlleIdenter(){
@@ -26,11 +26,11 @@ public class ScenarioIdenter {
         if (lokalIdent.matches("^\\d+$")) {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
-        return identer.computeIfAbsent(key(lokalIdent), i -> kjønn == Kjønn.M ? fiktive.nesteMannFnr() : fiktive.nesteKvinneFnr());
+        return identer.computeIfAbsent(key(lokalIdent), i -> kjønn == Kjønn.M ? identGenerator.nesteMannFnr() : identGenerator.nesteKvinneFnr());
     }
 
     private String key(String lokalIdent) {
-        return scenario + "::" + lokalIdent;
+        return unikScenarioId + "::" + lokalIdent;
     }
 
     public String getBarnIdentForLokalIdent(String lokalIdent) {
@@ -38,7 +38,7 @@ public class ScenarioIdenter {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
         // tilfeldig kjønn
-        return identer.computeIfAbsent(key(lokalIdent), i -> fiktive.nesteBarnFnr());
+        return identer.computeIfAbsent(key(lokalIdent), i -> identGenerator.nesteBarnFnr());
     }
 
     public String getIdent(String lokalIdent) {

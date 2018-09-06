@@ -16,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter;
@@ -65,11 +65,11 @@ public class InntektMockImpl implements InntektV3 {
     private static ObjectFactory of = new ObjectFactory();
     private static HentInntektlistBolkMapper hentInntektlistBolkMapper = new HentInntektlistBolkMapper();
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
     public InntektMockImpl(){}
 
-    public InntektMockImpl(Repository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
+    public InntektMockImpl(TestscenarioRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
 
 
 
@@ -94,7 +94,7 @@ public class InntektMockImpl implements InntektV3 {
             for (Aktoer aktoer : request.getIdentListe()) {
                 //TODO: Koble opp mapping mot FNR
                 String fnr = getIdentFromAktoer(aktoer);
-                Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getIndeks().getInntektYtelseModell(fnr);
+                Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
                 if (inntektYtelseModell.isPresent()) {
                     InntektskomponentModell modell = inntektYtelseModell.get().getInntektskomponentModell();
                     ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlistBolkMapper.makeArbeidsInntektIdent(modell, fnr);

@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.FeilKodeKonstanter;
 import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdBeregningsgrunnlag;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.modell.InfotrygdGrunnlagMapper;
 import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.binding.FinnGrunnlagListePersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.binding.FinnGrunnlagListeSikkerhetsbegrensning;
@@ -50,9 +50,9 @@ public class FinnGrunnlagListeMockImpl implements InfotrygdBeregningsgrunnlagV1 
     private static ObjectFactory of = new ObjectFactory();
     private static InfotrygdGrunnlagMapper itmapper = new InfotrygdGrunnlagMapper();
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public FinnGrunnlagListeMockImpl(Repository scenarioRepository) {
+    public FinnGrunnlagListeMockImpl(TestscenarioRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
@@ -68,7 +68,7 @@ public class FinnGrunnlagListeMockImpl implements InfotrygdBeregningsgrunnlagV1 
         String ident = finnGrunnlagListeRequest.getPersonident();
         LOG.info("FinnGrunnlagListeRequest, ident={}", ident);
 
-        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getIndeks().getInntektYtelseModell(ident);
+        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModell(ident);
         if (!iyIndeksOpt.isPresent()) {
             return response;
         }

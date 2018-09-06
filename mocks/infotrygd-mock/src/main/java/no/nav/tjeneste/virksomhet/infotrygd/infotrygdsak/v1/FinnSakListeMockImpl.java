@@ -20,10 +20,10 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.FeilKodeKonstanter;
 import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.modell.InfotrygdSakBygger;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.modell.InfotrygdVedtakBygger;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListePersonIkkeFunnet;
@@ -48,9 +48,9 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
     private static final String FAULTINFO_FEILAARSAK = "Feilaarsak";
     private static final String FAULTINFO_FEILKILDE = "Mock infotrygdSak";
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public FinnSakListeMockImpl(Repository scenarioRepository) {
+    public FinnSakListeMockImpl(TestscenarioRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
@@ -66,7 +66,7 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
         String ident = finnSakListeRequest.getPersonident();
         LOG.info("FinnSakListeRequest, ident={}", ident);
 
-        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getIndeks().getInntektYtelseModell(ident);
+        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModell(ident);
         if (!iyIndeksOpt.isPresent()) {
             return response;
         }

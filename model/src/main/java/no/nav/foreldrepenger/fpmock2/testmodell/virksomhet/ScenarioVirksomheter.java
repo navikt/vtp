@@ -1,12 +1,9 @@
-package no.nav.foreldrepenger.fpmock2.testmodell;
+package no.nav.foreldrepenger.fpmock2.testmodell.virksomhet;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetIndeks;
-import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetModell;
 
 /** konverterer lokale virksomheter orgnr brukt i testcase til utvalgte virksomheter hentet fra syntetisk liste. */
 public class ScenarioVirksomheter {

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.time.LocalDate;
 
 import org.junit.Test;
@@ -15,19 +14,26 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell.Kjønn;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell.Diskresjonskoder;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.StringTestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioFraTemplateMapper;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTilTemplateMapper;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SivilstandModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.StatsborgerskapModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
 
 public class PersonopplysningerTest {
-    
+
     @Test
     public void skal_skrive_scenario_til_personopplysninger_json() throws Exception {
-        ScenarioMapper mapper = new ScenarioMapper();
-        ScenarioIdenter identer = mapper.getIndeks().getIdenter("test");
+        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
 
-        Scenario scenario = new Scenario("test", identer, mapper.getVirksomheter());
+        TestscenarioTilTemplateMapper mapper = new TestscenarioTilTemplateMapper();
+
+        TestscenarioImpl scenario = new TestscenarioImpl("test", "test-1", testScenarioRepository);
         String lokalIdent = "#id1#";
         SøkerModell søker = new SøkerModell(lokalIdent, "Donald", LocalDate.now().minusYears(20), Kjønn.M);
         Personopplysninger personopplysninger = new Personopplysninger(søker);
@@ -44,26 +50,25 @@ public class PersonopplysningerTest {
 
         // Act - writeout
         String json = skrivPersonopplysninger(scenario, mapper);
-        System.out.println("Scenario:" + scenario.getNavn() + "\n--------------");
+        System.out.println("TestscenarioImpl:" + scenario + "\n--------------");
         System.out.println(json);
         System.out.println("--------------");
 
         // Act - readback
-        Scenario scenario2 = new Scenario("test", identer, mapper.getVirksomheter());
 
-        mapper.load(scenario2, new StringReader(json));
+        TestscenarioFraTemplateMapper readMapper = new TestscenarioFraTemplateMapper(testScenarioRepository);
+        Testscenario scenario2 = readMapper.lagTestscenario(new StringTestscenarioTemplate(json, null));
 
         // Assert
         SøkerModell søker2 = scenario2.getPersonopplysninger().getSøker();
         assertThat(søker2).isNotNull();
         assertThat(søker2.getEtternavn()).isEqualTo("Donald");
- 
-        SøkerModell søkerFraIndeks = mapper.getIndeks().getPersonIndeks().finnByIdent(søker2.getIdent());
+
+        SøkerModell søkerFraIndeks = testScenarioRepository.getPersonIndeks().finnByIdent(søker2.getIdent());
         assertThat(søkerFraIndeks).isEqualTo(søker2);
     }
 
-
-    private String skrivPersonopplysninger(Scenario scenario, ScenarioMapper mapper) throws IOException {
+    private String skrivPersonopplysninger(Testscenario scenario, TestscenarioTilTemplateMapper mapper) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedOutputStream buf = new BufferedOutputStream(baos);
         mapper.skrivPersonopplysninger(buf, scenario, true);

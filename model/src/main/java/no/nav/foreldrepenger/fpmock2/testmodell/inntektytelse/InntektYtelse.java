@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.ScenarioIdenter;
+import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +18,7 @@ public class InntektYtelse {
     private List<InntektYtelseModell> modeller = new ArrayList<>();
     
     @JacksonInject
-    private ScenarioIdenter identer;
+    private LokalIdentIndeks identer;
     
     public InntektYtelse() {
     }
@@ -31,7 +31,7 @@ public class InntektYtelse {
         return modeller;
     }
 
-    public void setIdenter(ScenarioIdenter identer) {
+    public void setIdenter(LokalIdentIndeks identer) {
         this.identer = identer;
     }
 

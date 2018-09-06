@@ -13,6 +13,10 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
@@ -24,16 +28,22 @@ public class ScenariosTest {
     @Test
     public void skal_laste_scenarios() throws Exception {
         boolean avsjekketEttScenario = false;
-        Collection<Scenario> scenarios = Scenarios.scenarios();
-        for (Scenario sc : scenarios) {
-            sjekkIdenterErInjisert(sc);
-            Personopplysninger pers = sc.getPersonopplysninger();
+        TestscenarioTemplateRepositoryImpl templateRepository = new TestscenarioTemplateRepositoryImpl();
+        templateRepository.load();
+        
+        Collection<TestscenarioTemplate> scenarioTemplates = templateRepository.getTemplates();
+        
+        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
+        for (TestscenarioTemplate sc : scenarioTemplates) {
+            Testscenario testScenario = testScenarioRepository.lagTestscenario(sc);
+            sjekkIdenterErInjisert(testScenario);
+            Personopplysninger pers = testScenario.getPersonopplysninger();
             assertThat(pers).isNotNull();
             SøkerModell søker = pers.getSøker();
             assertThat(pers.getFamilierelasjoner()).isNotEmpty();
             assertThat(søker.getGeografiskTilknytning()).isNotNull();
 
-            if (sc.getNavn().equals(TEST_SCENARIO_NAVN)) {
+            if (sc.getTemplateNavn().equals(TEST_SCENARIO_NAVN)) {
                 avsjekketEttScenario = avsjekkSpesifiktScenario(pers, søker);
             }
         }
@@ -63,7 +73,7 @@ public class ScenariosTest {
         return avsjekketEttScenario;
     }
 
-    private void sjekkIdenterErInjisert(Scenario sc) {
+    private void sjekkIdenterErInjisert(Testscenario sc) {
         sc.getIdenter().getAlleIdenter().entrySet().forEach(e -> {
             System.out.println(e);
         });

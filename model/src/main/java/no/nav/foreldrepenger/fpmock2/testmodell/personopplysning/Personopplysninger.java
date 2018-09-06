@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.ScenarioIdenter;
+import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 
 public class Personopplysninger {
@@ -32,7 +32,7 @@ public class Personopplysninger {
      * Deler VirksomhetIndeks for et helt scenario for å veksle lokale identer inn i fnr el.
      */
     @JacksonInject
-    private ScenarioIdenter identer;
+    private LokalIdentIndeks identer;
 
     public Personopplysninger(SøkerModell søker) {
         this.søker = søker;
@@ -75,7 +75,7 @@ public class Personopplysninger {
         this.familierelasjoner.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
     }
 
-    public void setIdenter(ScenarioIdenter identer) {
+    public void setIdenter(LokalIdentIndeks identer) {
         this.identer = identer;
         this.søker.setIdenter(identer);
         if (this.annenPart != null) {

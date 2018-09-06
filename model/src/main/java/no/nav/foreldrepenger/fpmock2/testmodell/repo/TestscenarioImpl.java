@@ -1,23 +1,18 @@
-package no.nav.foreldrepenger.fpmock2.testmodell;
+package no.nav.foreldrepenger.fpmock2.testmodell.repo;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetIndeks;
+import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.ScenarioVirksomheter;
 
-public class Scenario {
+public class TestscenarioImpl implements Testscenario {
 
-    private final String name;
+    private final String templateNavn;
 
     /** identity cache for dette scenario. Medfører at identer kan genereres dynamisk basert på lokal id referanse i scenarioet. */
-    private final ScenarioIdenter identer;
-
-    /** variable som kan injectes i json struktur. */
-    private Map<String, String> vars = new HashMap<>();
+    private final LokalIdentIndeks identer;
 
     private AdresseIndeks adresseIndeks;
 
@@ -27,31 +22,40 @@ public class Scenario {
 
     private ScenarioVirksomheter scenarioVirksomheter;
 
-    public Scenario(String name, ScenarioIdenter identer, VirksomhetIndeks virksomhetIndeks) {
-        this.name = name;
-        this.identer = identer;
-        this.scenarioVirksomheter = new ScenarioVirksomheter(this.name, virksomhetIndeks);
-        this.inntektYtelse.setIdenter(identer);
+    private String unikScenarioId;
+
+    @SuppressWarnings("unused")
+    private TestscenarioRepository scenarioIndeks;
+
+    public TestscenarioImpl(String templateNavn, String unikScenarioId, TestscenarioRepository scenarioIndeks) {
+        this.templateNavn = templateNavn;
+        this.unikScenarioId = unikScenarioId;
+        this.scenarioIndeks = scenarioIndeks;
+        
+        this.scenarioVirksomheter = new ScenarioVirksomheter(this.templateNavn, scenarioIndeks.getBasisdata().getVirksomhetIndeks());
+        
+        this.identer = scenarioIndeks.getIdenter(getUnikScenarioId());
+        this.inntektYtelse.setIdenter(this.identer);
     }
 
-    public String getNavn() {
-        return name;
+    @Override
+    public String getTemplateNavn() {
+        return templateNavn;
+    }
+    
+    @Override
+    public String getUnikScenarioId() {
+        return unikScenarioId;
     }
 
-    public ScenarioIdenter getIdenter() {
+    @Override
+    public LokalIdentIndeks getIdenter() {
         return identer;
     }
 
-    public Map<String, String> getVars() {
-        return vars;
-    }
-
+    @Override
     public AdresseIndeks getAdresseIndeks() {
         return adresseIndeks;
-    }
-
-    public void setVars(Map<String, String> map) {
-        this.vars = map;
     }
 
     public void setAdresseIndeks(AdresseIndeks adresseIndeks) {
@@ -63,10 +67,12 @@ public class Scenario {
         personopplysninger.setIdenter(identer);
     }
 
+    @Override
     public Personopplysninger getPersonopplysninger() {
         return this.personopplysninger;
     }
 
+    @Override
     public InntektYtelse getInntektYtelse() {
         return this.inntektYtelse;
     }
@@ -75,6 +81,7 @@ public class Scenario {
         this.inntektYtelse.leggTil(iyModell);
     }
 
+    @Override
     public ScenarioVirksomheter getVirksomheter() {
         return scenarioVirksomheter;
     }

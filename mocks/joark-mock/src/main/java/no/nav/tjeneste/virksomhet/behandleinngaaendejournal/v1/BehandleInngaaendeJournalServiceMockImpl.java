@@ -20,7 +20,7 @@ import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.binding.BehandleInngaaendeJournalV1;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.binding.FerdigstillJournalfoeringFerdigstillingIkkeMulig;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.binding.FerdigstillJournalfoeringJournalpostIkkeInngaaende;
@@ -60,9 +60,9 @@ public class BehandleInngaaendeJournalServiceMockImpl implements BehandleInngaae
     private static final String FAULTINFO_FEILAARSAK = "ja si det?";
     private static final String FAULTINFO_FEILKILDE = "mock behandleinngaaendejournal";
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public BehandleInngaaendeJournalServiceMockImpl(Repository scenarioRepository) {
+    public BehandleInngaaendeJournalServiceMockImpl(TestscenarioRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 

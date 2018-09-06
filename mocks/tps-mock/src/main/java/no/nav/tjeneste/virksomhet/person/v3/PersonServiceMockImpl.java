@@ -17,11 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentGeografiskTilknytningPersonIkkeFunnet;
@@ -68,9 +68,9 @@ public class PersonServiceMockImpl implements PersonV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(PersonServiceMockImpl.class);
 
-    private Repository repo;
+    private TestscenarioRepository repo;
 
-    public PersonServiceMockImpl(Repository repo) {
+    public PersonServiceMockImpl(TestscenarioRepository repo) {
         this.repo = repo;
     }
 
@@ -88,7 +88,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         HentPersonResponse response = new HentPersonResponse();
         Bruker person = new PersonAdapter().fra(bruker);
         
-        Personopplysninger pers = repo.getIndeks().getPersonIndeks().finnPersonopplysningerByIdent(bruker.getIdent());
+        Personopplysninger pers = repo.getPersonIndeks().finnPersonopplysningerByIdent(bruker.getIdent());
         
         List<Familierelasjon> familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjoner());
         familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));

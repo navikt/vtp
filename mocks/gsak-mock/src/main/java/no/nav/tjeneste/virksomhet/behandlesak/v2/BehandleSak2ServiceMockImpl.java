@@ -16,8 +16,8 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 @Addressing
@@ -27,9 +27,9 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(BehandleSak2ServiceMockImpl.class);
     private GsakRepo gsakRepo;
-    private Repository repository;
+    private TestscenarioRepository repository;
 
-    public BehandleSak2ServiceMockImpl(GsakRepo gsakRepo, Repository repository) {
+    public BehandleSak2ServiceMockImpl(GsakRepo gsakRepo, TestscenarioRepository repository) {
         this.gsakRepo = gsakRepo;
         this.repository = repository;
     }
@@ -45,7 +45,7 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
         LOG.info("Oppretter Sak_V2: {}", request);
         Set<String> identer = request.getSak().getGjelderBrukerListe().stream().map(a -> a.getIdent()).collect(Collectors.toSet());
 
-        List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getIndeks().getPersonIndeks().finnByIdent(i))
+        List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getPersonIndeks().finnByIdent(i))
             .collect(Collectors.toList());
         no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak sak = gsakRepo.leggTilSak(personer);
 

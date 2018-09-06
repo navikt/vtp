@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentinfoRelasjon;
@@ -35,9 +35,9 @@ public class JournalpostModelData {
     public static final String TILKNYTTET_SOM_HOVEDDOKUMENT = "HOVEDDOKUMENT";
     public static final String TILKNYTTET_SOM_VEDLEGG = "VEDLEGG";
 
-    public JournalpostModelData(Repository scenarioRepository) {
+    public JournalpostModelData(TestscenarioRepository scenarioRepository) {
 
-        for (Personopplysninger pers : scenarioRepository.getIndeks().getPersonIndeks().getAlleSøkere()) {
+        for (Personopplysninger pers : scenarioRepository.getPersonIndeks().getAlleSøkere()) {
             genererJournalposter(pers);
         }
 

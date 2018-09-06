@@ -9,8 +9,7 @@ import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 
 import no.nav.abac.pdp.PdpMock;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
-import no.nav.foreldrepenger.fpmock2.testmodell.Scenarios;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
@@ -39,8 +38,7 @@ public class SoapWebServiceConfig {
         this.jettyHttpServer = jettyHttpServer;
     }
 
-    public void setup() {
-        Repository repo = Scenarios.getRepository();
+    public void setup(TestscenarioRepository repo) {
         GsakRepo gsakRepo = new GsakRepo();
 
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
@@ -73,7 +71,6 @@ public class SoapWebServiceConfig {
         publishWebService(new OppgaveServiceMockImpl(), "/oppgave");
         publishWebService(new ArbeidsforholdMockImpl(), "/arbeidsforhold");
         publishWebService(new OrganisasjonMockImpl(), "/organisasjon");
-
     }
 
     private void publishWebService(Object ws, String path) {

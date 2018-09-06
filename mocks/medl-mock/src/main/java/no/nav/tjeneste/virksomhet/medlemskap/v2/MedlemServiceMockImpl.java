@@ -13,7 +13,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeRequest;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeResponse;
@@ -25,9 +25,9 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeResponse;
 @HandlerChain(file="Handler-chain.xml")
 public class MedlemServiceMockImpl implements MedlemskapV2 {
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public MedlemServiceMockImpl(Repository scenarioRepository){
+    public MedlemServiceMockImpl(TestscenarioRepository scenarioRepository){
         this.scenarioRepository = scenarioRepository;
     } 
     

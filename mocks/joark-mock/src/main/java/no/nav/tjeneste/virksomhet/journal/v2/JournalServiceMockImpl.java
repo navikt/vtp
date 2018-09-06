@@ -24,7 +24,7 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalDokument;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalScenarioTjenesteImpl;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostBygger;
@@ -57,7 +57,7 @@ public class JournalServiceMockImpl implements JournalV2 {
 
     private JournalScenarioTjenesteImpl joarkScenarioTjeneste;
 
-    public JournalServiceMockImpl(Repository scenarioRepository) {
+    public JournalServiceMockImpl(TestscenarioRepository scenarioRepository) {
         this.journalpostModelData = new JournalpostModelData(scenarioRepository);
         this.joarkScenarioTjeneste = new JournalScenarioTjenesteImpl(scenarioRepository);
     }

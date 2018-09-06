@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
@@ -16,15 +15,22 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.UstrukturertAdresseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
 
 public class AdresserTest {
 
     @Test
     public void sjekk_scenarios() throws Exception {
-        Collection<Scenario> scenarios = Scenarios.scenarios();
-        for (Scenario sc : scenarios) {
-            sjekkAdresseIndeks(sc);
+        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
+        TestscenarioTemplateRepositoryImpl templateRepository = new TestscenarioTemplateRepositoryImpl();
+        templateRepository.load();
+        for (TestscenarioTemplate testScenarioTemplate : templateRepository.getTemplates()) {
+            Testscenario testScenario = testScenarioRepository.lagTestscenario(testScenarioTemplate);
+            sjekkAdresseIndeks(testScenario);
         }
     }
 
@@ -76,7 +82,7 @@ public class AdresserTest {
         assertThat(adresser2).hasSize(adresser.size());
     }
 
-    private void sjekkAdresseIndeks(Scenario sc) {
+    private void sjekkAdresseIndeks(Testscenario sc) {
         assertThat(sc.getAdresseIndeks()).isNotNull();
         AdresseModell bostedsadresse = sc.getAdresseIndeks().finn(AdresseType.BOSTEDSADRESSE, Landkode.NOR);
         assertThat(bostedsadresse).isNotNull();

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.Repository;
 import no.nav.foreldrepenger.fpmock2.testmodell.medlemskap.MedlemskapperiodeModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.KildeMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LandkodeMedTerm;
@@ -17,15 +17,15 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.Trygdedekni
 
 public class MedlemskapperioderAdapter {
 
-    private Repository scenarioRepository;
+    private TestscenarioRepository scenarioRepository;
 
-    public MedlemskapperioderAdapter(Repository scenarioRepository) {
+    public MedlemskapperioderAdapter(TestscenarioRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
     public List<Medlemsperiode> finnMedlemsperioder(String personIdent) {
         if (personIdent != null) {
-            BrukerModell brukerModell = scenarioRepository.getIndeks().getPersonIndeks().finnByIdent(personIdent);
+            BrukerModell brukerModell = scenarioRepository.getPersonIndeks().finnByIdent(personIdent);
             if (brukerModell!=null && brukerModell instanceof PersonModell) {
                 PersonModell pm = (PersonModell)brukerModell;
                 
