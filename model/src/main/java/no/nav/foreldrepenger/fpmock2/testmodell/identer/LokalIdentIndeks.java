@@ -26,7 +26,7 @@ public class LokalIdentIndeks {
         if (lokalIdent.matches("^\\d+$")) {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
-        return identer.computeIfAbsent(key(lokalIdent), i -> kjønn == Kjønn.M ? identGenerator.nesteMannFnr() : identGenerator.nesteKvinneFnr());
+        return identer.computeIfAbsent(key(lokalIdent), i -> kjønn == Kjønn.M ? identGenerator.tilfeldigMannFnr() : identGenerator.tilfeldigKvinneFnr());
     }
 
     private String key(String lokalIdent) {
@@ -38,7 +38,7 @@ public class LokalIdentIndeks {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
         // tilfeldig kjønn
-        return identer.computeIfAbsent(key(lokalIdent), i -> identGenerator.nesteBarnFnr());
+        return identer.computeIfAbsent(key(lokalIdent), i -> identGenerator.tilfeldigBarnUnderTreAarFnr());
     }
 
     public String getIdent(String lokalIdent) {

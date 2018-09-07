@@ -42,7 +42,6 @@ public class RestConfig {
             }
         });
 
-        
         HttpServletDispatcher servlet = new HttpServletDispatcher();
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setInitParameter("resteasy.servlet.mapping.prefix", "/");

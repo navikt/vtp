@@ -1,5 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.identer;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.enums.Kjonn;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.TestdataUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,77 +18,47 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see https://confluence.adeo.no/pages/viewpageattachments.action?pageId=211653415&metadataLink=true (SKD fiktive identer)
  */
 public class FiktiveFnr implements IdentGenerator {
-    static class Innhold {
-        final AtomicInteger teller = new AtomicInteger();
-        final List<String> fnrs;
-        private String type;
-
-        Innhold(String type, List<String> fnrs) {
-            this.type = type;
-            this.fnrs = fnrs;
-        }
-
-        String neste() {
-            if (teller.get() >= fnrs.size()) {
-                throw new IllegalStateException("Tom for fødselsnummer:" + type);
-            }
-            return fnrs.get(teller.getAndIncrement());
-        }
-    }
-
-    private static final Map<String, Innhold> FNRS = new ConcurrentHashMap<>();
-    private static final AtomicInteger nesteTilfeldig = new AtomicInteger();
-
     /**
      * Bruk denne når kjønn ikke har betydning for anvendt FNR. (Bør normalt brukes slik at en sikrer at applikasjonen ikke gjør antagelser om
      * koding av kjønn i FNR.
      */
     @Override
-    public String nesteFnr() {
-        if (nesteTilfeldig.getAndIncrement() % 2 == 0) {
-            return nesteKvinneFnr();
-        } else {
-            return nesteMannFnr();
-        }
+    public String tilfeldigFnr() {
+        return new FoedselsnummerGenerator
+                .FodselsnummerGeneratorBuilder()
+                .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
+                .buildAndGenerate();
+
     }
 
     /** Returnerer FNR for mann > 18 år */
     @Override
-    public String nesteMannFnr() {
-        return neste("mann");
+    public String tilfeldigMannFnr() {
+        //return neste("mann");
+        return new FoedselsnummerGenerator
+                .FodselsnummerGeneratorBuilder()
+                .kjonn(Kjonn.MANN)
+                .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
+                .buildAndGenerate();
     }
 
     /** Returnerer FNR for kvinne > 18 år */
     @Override
-    public String nesteKvinneFnr() {
-        return neste("kvinne");
+    public String tilfeldigKvinneFnr() {
+        return new FoedselsnummerGenerator
+                .FodselsnummerGeneratorBuilder()
+                .kjonn(Kjonn.KVINNE)
+                .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
+                .buildAndGenerate();
     }
 
-    /** Returnerer FNR for barn (tilfeldig kjønn) < 18 år */
+    /** Returnerer FNR for barn (tilfeldig kjønn) < 3 år */
     @Override
-    public String nesteBarnFnr() {
-        return neste("barn");
-    }
+    public String tilfeldigBarnUnderTreAarFnr() {
+        return new FoedselsnummerGenerator
+                .FodselsnummerGeneratorBuilder()
+                .fodselsdato(TestdataUtil.generateBirthdateNowMinusThreeYears())
+                .buildAndGenerate();
 
-    private String neste(String key) {
-        return FNRS.computeIfAbsent(key, this::read).neste();
-    }
-
-    private Innhold read(String key) {
-        return new Innhold(key, readFile("/basedata/fiktive_fnr_" + key + ".csv"));
-    }
-
-    private static List<String> readFile(String fil) {
-        List<String> list = new ArrayList<>();
-        try (InputStream is = FiktiveFnr.class.getResourceAsStream(fil);
-                Scanner scanner = new Scanner(is)) {
-            while (scanner.hasNextLine()) {
-                list.add(scanner.nextLine());
-            }
-            return list;
-        } catch (IOException e) {
-            throw new IllegalStateException("Kunne ikke lese fil: " + fil, e);
-
-        }
     }
 }
