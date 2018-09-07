@@ -16,4 +16,5 @@ mock.log.*
 .mvn/maven.config
 .flattened
 logs
+*.log
 APP_LOG_HOME_IS_UNDEFINED
