@@ -7,12 +7,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
@@ -27,30 +28,31 @@ public class TestscenarioFraTemplateMapper {
         this.testScenarioRepository = testScenarioRepository;
     }
 
-    public TestscenarioRepositoryImpl getTestscenarioRepository() {
+    public TestscenarioBuilderRepositoryImpl getTestscenarioRepository() {
         return testScenarioRepository;
     }
 
-    public Testscenario lagTestscenario(TestscenarioTemplate template) {
+    public TestscenarioImpl lagTestscenario(TestscenarioTemplate template) {
         String uuid = UUID.randomUUID().toString();
         Map<String, String> emptyMap = Collections.emptyMap();
         return lagTestscenario(template, uuid, emptyMap);
     }
 
-    public Testscenario lagTestscenario(TestscenarioTemplate template, String unikTestscenarioId, Map<String, String> vars) {
+    public TestscenarioImpl lagTestscenario(TestscenarioTemplate template, String unikTestscenarioId, Map<String, String> vars) {
         TestscenarioImpl testScenario = new TestscenarioImpl(template.getTemplateNavn(), unikTestscenarioId, testScenarioRepository);
         load(testScenario, template, vars);
         return testScenario;
     }
 
-    private void load(TestscenarioImpl scenario, TestscenarioTemplate template, Map<String, String> vars) {
-        JsonMapper jsonMapper = new JsonMapper();
+    private void load(TestscenarioImpl scenario, TestscenarioTemplate template, Map<String, String> overrideVars) {
+        JsonMapper jsonMapper = new JsonMapper(scenario.getVariabelContainer());
         jsonMapper.addVars(template.getDefaultVars());
-        jsonMapper.addVars(vars);
+        jsonMapper.addVars(overrideVars);
         initJsonMapper(jsonMapper, scenario);
+        ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
         try (Reader reader = template.personopplysningReader()) {
             if (reader != null) {
-                Personopplysninger personopplysninger = jsonMapper.getObjectMapper().readValue(reader, Personopplysninger.class);
+                Personopplysninger personopplysninger = objectMapper.readValue(reader, Personopplysninger.class);
                 scenario.setPersonopplysninger(personopplysninger);
             }
         } catch (IOException e) {
@@ -60,7 +62,7 @@ public class TestscenarioFraTemplateMapper {
         try (Reader reader = template.inntektopplysningReader()) {
             // detaljer
             if (reader != null) {
-                InntektYtelse inntektYtelse = jsonMapper.getObjectMapper().readValue(reader, InntektYtelse.class);
+                InntektYtelse inntektYtelse = objectMapper.readValue(reader, InntektYtelse.class);
                 for (InntektYtelseModell iym : inntektYtelse.getModeller()) {
                     scenario.leggTil(iym);
                 }

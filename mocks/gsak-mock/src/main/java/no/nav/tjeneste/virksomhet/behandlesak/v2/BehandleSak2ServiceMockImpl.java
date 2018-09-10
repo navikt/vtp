@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 @Addressing
@@ -27,9 +27,9 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(BehandleSak2ServiceMockImpl.class);
     private GsakRepo gsakRepo;
-    private TestscenarioRepository repository;
+    private TestscenarioBuilderRepository repository;
 
-    public BehandleSak2ServiceMockImpl(GsakRepo gsakRepo, TestscenarioRepository repository) {
+    public BehandleSak2ServiceMockImpl(GsakRepo gsakRepo, TestscenarioBuilderRepository repository) {
         this.gsakRepo = gsakRepo;
         this.repository = repository;
     }

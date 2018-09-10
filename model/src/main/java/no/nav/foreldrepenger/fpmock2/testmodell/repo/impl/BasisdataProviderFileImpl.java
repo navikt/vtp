@@ -56,7 +56,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         try (InputStream is = getClass().getResourceAsStream("/basedata/adresse-maler.json")) {
             TypeReference<List<AdresseModell>> typeRef = new TypeReference<List<AdresseModell>>() {
             };
-            List<AdresseModell> adresser = jsonMapper.getObjectMapper().readValue(is, typeRef);
+            List<AdresseModell> adresser = jsonMapper.lagObjectMapper().readValue(is, typeRef);
             adresser.forEach(a -> adresseIndeks.leggTil(a));
         }
     }
@@ -65,7 +65,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         try (InputStream is = getClass().getResourceAsStream("/basedata/enheter.json")) {
             TypeReference<List<Norg2Modell>> typeRef = new TypeReference<List<Norg2Modell>>() {
             };
-            List<Norg2Modell> adresser = jsonMapper.getObjectMapper().readValue(is, typeRef);
+            List<Norg2Modell> adresser = jsonMapper.lagObjectMapper().readValue(is, typeRef);
             enheterIndeks.leggTil(adresser);
         }
     }
@@ -74,7 +74,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         try (InputStream is = getClass().getResourceAsStream("/basedata/virksomheter.json")) {
             TypeReference<List<VirksomhetModell>> typeRef = new TypeReference<List<VirksomhetModell>>() {
             };
-            List<VirksomhetModell> virksomheter = jsonMapper.getObjectMapper().readValue(is, typeRef);
+            List<VirksomhetModell> virksomheter = jsonMapper.lagObjectMapper().readValue(is, typeRef);
             virksomhetIndeks.leggTil(virksomheter);
         }
     }

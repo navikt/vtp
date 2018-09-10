@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 
 /**
  * TestscenarioRepository av alle test templates.
@@ -57,7 +58,7 @@ public class TestscenarioTemplateRepositoryImpl implements TestscenarioTemplateR
             this.rootDir = scenariosDir;
         }
     }
-    
+
     @Override
     public Collection<TestscenarioTemplate> getTemplates() {
         return testTemplates.values();
@@ -84,13 +85,19 @@ public class TestscenarioTemplateRepositoryImpl implements TestscenarioTemplateR
                     // overstyr med angitte vars
                     inputVariable.putAll(vars);
                 }
-                testTemplates.put(dir.getName(), new FileTestscenarioTemplate(dir, inputVariable));
+                VariabelContainer variables = new VariabelContainer(inputVariable);
+                FileTestscenarioTemplate template = new FileTestscenarioTemplate(dir, variables);
+                testTemplates.put(template.getTemplateKey(), template);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new IllegalStateException("Kunne ikke laste template fra dir:" + dir.getAbsolutePath(), e);
             }
         }
 
+    }
+
+    @Override
+    public TestscenarioTemplate finn(String templateKey) {
+        return testTemplates.get(templateKey);
     }
 
     public File getRootDir() {
@@ -102,7 +109,7 @@ public class TestscenarioTemplateRepositoryImpl implements TestscenarioTemplateR
             try (InputStream is = new FileInputStream(varsFile)) {
                 TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
                 };
-                return jsonMapper.getObjectMapper().readValue(is, typeRef);
+                return jsonMapper.lagObjectMapper().readValue(is, typeRef);
             }
         } else {
             return Collections.emptyMap();

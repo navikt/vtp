@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter;
@@ -65,11 +65,11 @@ public class InntektMockImpl implements InntektV3 {
     private static ObjectFactory of = new ObjectFactory();
     private static HentInntektlistBolkMapper hentInntektlistBolkMapper = new HentInntektlistBolkMapper();
 
-    private TestscenarioRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
 
     public InntektMockImpl(){}
 
-    public InntektMockImpl(TestscenarioRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
+    public InntektMockImpl(TestscenarioBuilderRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
 
 
 

@@ -5,6 +5,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.ScenarioVirksomheter;
 
 public class TestscenarioImpl implements Testscenario {
@@ -22,20 +23,22 @@ public class TestscenarioImpl implements Testscenario {
 
     private ScenarioVirksomheter scenarioVirksomheter;
 
-    private String unikScenarioId;
+    /** Unik testscenario id. */
+    private String id;
+    
+    private VariabelContainer vars = new VariabelContainer();
 
     @SuppressWarnings("unused")
-    private TestscenarioRepository scenarioIndeks;
+    private TestscenarioBuilderRepository scenarioIndeks;
 
-    public TestscenarioImpl(String templateNavn, String unikScenarioId, TestscenarioRepository scenarioIndeks) {
+    public TestscenarioImpl(String templateNavn, String id, TestscenarioBuilderRepository scenarioIndeks) {
         this.templateNavn = templateNavn;
-        this.unikScenarioId = unikScenarioId;
+        this.id = id;
         this.scenarioIndeks = scenarioIndeks;
         
         this.scenarioVirksomheter = new ScenarioVirksomheter(this.templateNavn, scenarioIndeks.getBasisdata().getVirksomhetIndeks());
         
-        this.identer = scenarioIndeks.getIdenter(getUnikScenarioId());
-        this.inntektYtelse.setIdenter(this.identer);
+        this.identer = scenarioIndeks.getIdenter(getId());
     }
 
     @Override
@@ -44,16 +47,14 @@ public class TestscenarioImpl implements Testscenario {
     }
     
     @Override
-    public String getUnikScenarioId() {
-        return unikScenarioId;
+    public String getId() {
+        return id;
     }
 
-    @Override
     public LokalIdentIndeks getIdenter() {
         return identer;
     }
 
-    @Override
     public AdresseIndeks getAdresseIndeks() {
         return adresseIndeks;
     }
@@ -81,8 +82,12 @@ public class TestscenarioImpl implements Testscenario {
         this.inntektYtelse.leggTil(iyModell);
     }
 
-    @Override
     public ScenarioVirksomheter getVirksomheter() {
         return scenarioVirksomheter;
+    }
+    
+    @Override
+    public VariabelContainer getVariabelContainer() {
+        return vars;
     }
 }

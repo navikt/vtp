@@ -38,8 +38,11 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTilTemplateMapper;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
 
 public class InntektYtelseTest {
+    private static final JsonMapper jsonMapper =  new JsonMapper();
+    
     @Test
     public void skal_skrive_scenario_til_inntektytelse_json() throws Exception {
         TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
@@ -162,7 +165,7 @@ public class InntektYtelseTest {
     private String skrivInntektYtelse(Testscenario scenario, TestscenarioTilTemplateMapper mapper) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedOutputStream buf = new BufferedOutputStream(baos);
-        mapper.skrivInntektYtelse(buf, scenario, true);
+        mapper.skrivInntektYtelse(jsonMapper.canonicalMapper(), buf, scenario);
         buf.flush();
         return baos.toString("UTF8");
     }

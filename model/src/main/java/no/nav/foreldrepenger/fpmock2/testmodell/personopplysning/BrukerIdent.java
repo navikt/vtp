@@ -15,7 +15,8 @@ public class BrukerIdent extends BrukerModell {
 
     @Override
     public String getIdent() {
-        return getIdenter().getIdent(getLokalIdent());
+        String lokalIdent = getLokalIdent();
+        return getIdenter() == null ? null : getIdenter().getIdent(lokalIdent);
     }
 
 }

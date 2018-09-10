@@ -2,7 +2,7 @@ package no.nav.tjeneste.virksomhet.person.v3;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer;
@@ -11,9 +11,9 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 
 public class FinnPerson {
 
-    private TestscenarioRepository repo;
+    private TestscenarioBuilderRepository repo;
 
-    public FinnPerson(TestscenarioRepository repo) {
+    public FinnPerson(TestscenarioBuilderRepository repo) {
         this.repo = repo;
     }
 

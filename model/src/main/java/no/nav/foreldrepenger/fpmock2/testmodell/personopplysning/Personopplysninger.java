@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 
 public class Personopplysninger {
 
@@ -33,6 +34,9 @@ public class Personopplysninger {
      */
     @JacksonInject
     private LokalIdentIndeks identer;
+    
+    @JacksonInject
+    private VariabelContainer vars;
 
     public Personopplysninger(SøkerModell søker) {
         this.søker = søker;

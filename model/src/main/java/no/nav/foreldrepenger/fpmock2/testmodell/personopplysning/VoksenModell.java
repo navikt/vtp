@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public abstract class VoksenModell extends PersonModell {
 
-
     public VoksenModell() {
     }
 
@@ -15,6 +14,8 @@ public abstract class VoksenModell extends PersonModell {
 
     @Override
     public String getIdent() {
-        return getIdenter().getVoksenIdentForLokalIdent(getLokalIdent(), getKjønn());
+        return getIdenter() == null
+            ? null
+            : getIdenter().getVoksenIdentForLokalIdent(getLokalIdent(), getKjønn());
     }
 }

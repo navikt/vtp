@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.enheter.Norg2Modell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.ArbeidsfordelingV1;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnAlleBehandlendeEnheterListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnBehandlendeEnhetListeUgyldigInput;
@@ -35,9 +35,9 @@ import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeE
 public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
 
     private static final Logger log = LoggerFactory.getLogger(ArbeidsfordelingMockImpl.class);
-    private TestscenarioRepository repo;
+    private TestscenarioBuilderRepository repo;
 
-    public ArbeidsfordelingMockImpl(TestscenarioRepository repo) {
+    public ArbeidsfordelingMockImpl(TestscenarioBuilderRepository repo) {
         this.repo = repo;
     }
 

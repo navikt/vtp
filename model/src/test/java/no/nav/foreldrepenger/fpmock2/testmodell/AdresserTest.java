@@ -15,7 +15,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.UstrukturertAdresseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
@@ -29,7 +29,7 @@ public class AdresserTest {
         TestscenarioTemplateRepositoryImpl templateRepository = new TestscenarioTemplateRepositoryImpl();
         templateRepository.load();
         for (TestscenarioTemplate testScenarioTemplate : templateRepository.getTemplates()) {
-            Testscenario testScenario = testScenarioRepository.lagTestscenario(testScenarioTemplate);
+            TestscenarioImpl testScenario = testScenarioRepository.opprettTestscenario(testScenarioTemplate);
             sjekkAdresseIndeks(testScenario);
         }
     }
@@ -72,17 +72,17 @@ public class AdresserTest {
         StringWriter sw = new StringWriter();
         TypeReference<List<AdresseModell>> typeAdresseListe = new TypeReference<List<AdresseModell>>() {
         };
-        new JsonMapper().getObjectMapper().writerWithDefaultPrettyPrinter().forType(typeAdresseListe).writeValue(sw, adresser);
+        new JsonMapper().lagObjectMapper().writerWithDefaultPrettyPrinter().forType(typeAdresseListe).writeValue(sw, adresser);
 
         String json = sw.toString();
         System.out.println(json);
 
-        List<AdresseModell> adresser2 = new JsonMapper().getObjectMapper().readValue(json, typeAdresseListe);
+        List<AdresseModell> adresser2 = new JsonMapper().lagObjectMapper().readValue(json, typeAdresseListe);
 
         assertThat(adresser2).hasSize(adresser.size());
     }
 
-    private void sjekkAdresseIndeks(Testscenario sc) {
+    private void sjekkAdresseIndeks(TestscenarioImpl sc) {
         assertThat(sc.getAdresseIndeks()).isNotNull();
         AdresseModell bostedsadresse = sc.getAdresseIndeks().finn(AdresseType.BOSTEDSADRESSE, Landkode.NOR);
         assertThat(bostedsadresse).isNotNull();

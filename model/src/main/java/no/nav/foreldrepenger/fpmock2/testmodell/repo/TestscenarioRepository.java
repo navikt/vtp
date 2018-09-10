@@ -1,26 +1,15 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo;
 
 import java.util.Collection;
-import java.util.Optional;
+import java.util.Map;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.enheter.EnheterIndeks;
-import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonIndeks;
+public interface TestscenarioRepository extends TestscenarioBuilderRepository {
 
-public interface TestscenarioRepository {
-
-    EnheterIndeks getEnheterIndeks();
-
-    PersonIndeks getPersonIndeks();
-
-    Optional<InntektYtelseModell> getInntektYtelseModell(String ident);
-
-    BasisdataProvider getBasisdata();
-
+    @Override
     Collection<Testscenario> getTestscenarios();
 
-    LokalIdentIndeks getIdenter(String unikScenarioId);
+    Testscenario opprettTestscenario(TestscenarioTemplate template);
     
-    
+    Testscenario opprettTestscenario(TestscenarioTemplate template, Map<String, String> userSuppliedVariables);
+
 }

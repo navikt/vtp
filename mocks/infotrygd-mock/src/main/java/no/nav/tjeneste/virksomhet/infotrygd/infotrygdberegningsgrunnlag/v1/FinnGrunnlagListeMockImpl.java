@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdBeregningsgrunnlag;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.modell.InfotrygdGrunnlagMapper;
 import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.binding.FinnGrunnlagListePersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.infotrygdberegningsgrunnlag.v1.binding.FinnGrunnlagListeSikkerhetsbegrensning;
@@ -50,9 +50,9 @@ public class FinnGrunnlagListeMockImpl implements InfotrygdBeregningsgrunnlagV1 
     private static ObjectFactory of = new ObjectFactory();
     private static InfotrygdGrunnlagMapper itmapper = new InfotrygdGrunnlagMapper();
 
-    private TestscenarioRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
 
-    public FinnGrunnlagListeMockImpl(TestscenarioRepository scenarioRepository) {
+    public FinnGrunnlagListeMockImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 

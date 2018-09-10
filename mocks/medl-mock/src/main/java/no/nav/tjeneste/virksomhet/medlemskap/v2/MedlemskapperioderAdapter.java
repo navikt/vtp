@@ -7,7 +7,7 @@ import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.medlemskap.MedlemskapperiodeModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.KildeMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LandkodeMedTerm;
@@ -17,9 +17,9 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.Trygdedekni
 
 public class MedlemskapperioderAdapter {
 
-    private TestscenarioRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
 
-    public MedlemskapperioderAdapter(TestscenarioRepository scenarioRepository) {
+    public MedlemskapperioderAdapter(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 

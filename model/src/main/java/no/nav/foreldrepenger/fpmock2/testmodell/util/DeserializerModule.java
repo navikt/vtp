@@ -14,25 +14,18 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class DeserializerModule extends SimpleModule {
 
-    private final Map<String, String> vars;
+    private final VariabelContainer vars;
 
-    private LocalDate baseLocalDate = LocalDate.now();
-    private LocalDateTime baseLocalDateTime = LocalDateTime.now();
-
-    public DeserializerModule(Map<String, String> vars) {
+    public DeserializerModule(VariabelContainer vars) {
         super("FPMOCK2-DESERIALIZER", new Version(1, 0, 0, null, null, null));
         this.vars = vars;
 
@@ -43,7 +36,7 @@ public class DeserializerModule extends SimpleModule {
             @Override
             public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
                 if (String.class.isAssignableFrom(beanDesc.getBeanClass())) {
-                    return new StringDeserializer(super.modifyDeserializer(config, beanDesc, deserializer));
+                    return new StringVarDeserializer(super.modifyDeserializer(config, beanDesc, deserializer), vars);
                 } else {
                     return super.modifyDeserializer(config, beanDesc, deserializer);
                 }
@@ -51,46 +44,10 @@ public class DeserializerModule extends SimpleModule {
         });
     }
 
-    class StringDeserializer extends JsonDeserializer<String> implements ContextualDeserializer, ResolvableDeserializer {
-        private final JsonDeserializer<?> delegate;
-
-        public StringDeserializer(JsonDeserializer<?> delegate) {
-            this.delegate = delegate;
-        }
-
-        @Override
-        public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-            if (delegate instanceof ResolvableDeserializer) {
-                ((ResolvableDeserializer) delegate).resolve(ctxt);
-            }
-        }
-
-        @SuppressWarnings({ "rawtypes" })
-        @Override
-        public JsonDeserializer<?> createContextual(DeserializationContext ctxt, BeanProperty property) throws JsonMappingException {
-            JsonDeserializer delSer = delegate;
-            if (delSer instanceof ContextualDeserializer) {
-                delSer = ((ContextualDeserializer) delegate).createContextual(ctxt, property);
-            }
-            if (delSer == delegate) {
-                return this;
-            }
-            return new StringDeserializer(delSer);
-        }
-
-        @Override
-        public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            String text = p.getText();
-
-            String reformatted = text;
-            for (Map.Entry<String, String> v : vars.entrySet()) {
-                reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
-            }
-            return reformatted;
-
-        }
+    private LocalDateTime initTimeVar(String basedt) {
+        return LocalDateTime.parse(vars.computeIfAbsent(basedt, n -> LocalDateTime.now().toString()));
     }
-
+    
     class LocalDateDeserializer extends StdScalarDeserializer<LocalDate> {
 
         protected LocalDateDeserializer() {
@@ -102,17 +59,15 @@ public class DeserializerModule extends SimpleModule {
             String text = p.getText();
 
             String reformatted = text;
-            for (Map.Entry<String, String> v : vars.entrySet()) {
+            for (Map.Entry<String, String> v : vars.getVars().entrySet()) {
                 reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
             }
 
             Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))?$");
             Matcher matcher = testRegexp.matcher(reformatted);
             if (matcher.matches()) {
-                LocalDate base = baseLocalDate;
-                if("basedate".equals(matcher.group(2))) {
-                     base = LocalDate.now();
-                }
+                String baseref = matcher.group(1);
+                LocalDate base = initTimeVar(baseref).toLocalDate();
                 String op = matcher.group(3);
                 if (op != null) {
                     Period period = Period.parse(matcher.group(4));
@@ -129,6 +84,7 @@ public class DeserializerModule extends SimpleModule {
             }
 
         }
+
     }
 
     class LocalDateTimeDeserializer extends StdScalarDeserializer<LocalDateTime> {
@@ -142,16 +98,14 @@ public class DeserializerModule extends SimpleModule {
             String text = p.getText();
 
             String reformatted = text;
-            for (Map.Entry<String, String> v : vars.entrySet()) {
+            for (Map.Entry<String, String> v : vars.getVars().entrySet()) {
                 reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
             }
             Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))?$");
             Matcher matcher = testRegexp.matcher(reformatted);
             if (matcher.matches()) {
-                LocalDateTime base = baseLocalDateTime;
-                if("basedate".equals(matcher.group(2))) {
-                     base = LocalDateTime.now();
-                }
+                String baseref = matcher.group(1);
+                LocalDateTime base = initTimeVar(baseref);
                 String op = matcher.group(3);
                 if (op != null) {
                     String per = matcher.group(4);

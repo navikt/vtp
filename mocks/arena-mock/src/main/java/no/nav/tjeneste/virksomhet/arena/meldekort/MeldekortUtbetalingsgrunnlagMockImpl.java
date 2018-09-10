@@ -24,7 +24,7 @@ import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.arena.meldekort.modell.ArenaMUMapper;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning;
@@ -51,9 +51,9 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
 
     private static ObjectFactory of = new ObjectFactory();
     private static ArenaMUMapper arenaMapper = new ArenaMUMapper();
-    private TestscenarioRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
 
-    public MeldekortUtbetalingsgrunnlagMockImpl(TestscenarioRepository scenarioRepository) {
+    public MeldekortUtbetalingsgrunnlagMockImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 

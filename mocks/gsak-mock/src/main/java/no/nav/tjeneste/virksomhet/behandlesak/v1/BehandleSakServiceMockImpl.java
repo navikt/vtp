@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.BehandleSakV1;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.OpprettSakSakEksistererAllerede;
 import no.nav.tjeneste.virksomhet.behandlesak.v1.binding.OpprettSakUgyldigInput;
@@ -32,9 +32,9 @@ public class BehandleSakServiceMockImpl implements BehandleSakV1 {
 
     private static final Logger LOG = LoggerFactory.getLogger(BehandleSakServiceMockImpl.class);
     private GsakRepo gsakRepo;
-    private TestscenarioRepository repository;
+    private TestscenarioBuilderRepository repository;
 
-    public BehandleSakServiceMockImpl(GsakRepo repo, TestscenarioRepository repository) {
+    public BehandleSakServiceMockImpl(GsakRepo repo, TestscenarioBuilderRepository repository) {
         this.gsakRepo = repo;
         this.repository = repository;
     }

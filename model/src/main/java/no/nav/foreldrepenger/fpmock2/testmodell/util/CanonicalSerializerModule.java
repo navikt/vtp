@@ -4,6 +4,13 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.Version;
@@ -15,8 +22,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 
+
+/**
+ * @threadsafety Ikke trådsafe eller gjenbrukbar.
+ */
 public class CanonicalSerializerModule extends SimpleModule {
 
+    private final NavigableMap<String, List<String>> valueToKey = new TreeMap<>();
+    
     public CanonicalSerializerModule() {
         super("FPMOCK2-CANONICAL-SERIALIZER", new Version(1, 0, 0, null, null, null));
 
@@ -27,7 +40,7 @@ public class CanonicalSerializerModule extends SimpleModule {
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
 
                 if (String.class.isAssignableFrom(beanDesc.getBeanClass())) {
-                    StringVarSerializer varSerializer = new StringVarSerializer(super.modifySerializer(config, beanDesc, serializer));
+                    StringVarSerializer varSerializer = new StringVarSerializer(super.modifySerializer(config, beanDesc, serializer), valueToKey);
                     return varSerializer;
                 } else {
                     return super.modifySerializer(config, beanDesc, serializer);
@@ -37,6 +50,17 @@ public class CanonicalSerializerModule extends SimpleModule {
         });
     }
 
+    public Map<String, String> getNewVars() {
+        Map<String, String> vars = new TreeMap<>();
+        for(Map.Entry<String, List<String>> entry : valueToKey.entrySet()) {
+            List<String> vals = new ArrayList<>(new LinkedHashSet<>(entry.getValue()));
+            for(int i = 0;i<vals.size();i++) {
+                vars.put(StringVarSerializer.createKey(entry.getKey(), i), vals.get(i));
+            }
+        }
+        return Collections.unmodifiableMap(vars);
+    }
+    
     private class LocalDateSerializer extends StdScalarSerializer<LocalDate> {
 
         public LocalDateSerializer() {

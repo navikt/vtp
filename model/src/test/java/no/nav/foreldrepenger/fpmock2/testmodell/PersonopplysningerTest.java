@@ -14,16 +14,17 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell.Kjønn;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell.Diskresjonskoder;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SivilstandModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.StatsborgerskapModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.StringTestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioFraTemplateMapper;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTilTemplateMapper;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SivilstandModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.StatsborgerskapModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
 
 public class PersonopplysningerTest {
 
@@ -34,6 +35,7 @@ public class PersonopplysningerTest {
         TestscenarioTilTemplateMapper mapper = new TestscenarioTilTemplateMapper();
 
         TestscenarioImpl scenario = new TestscenarioImpl("test", "test-1", testScenarioRepository);
+        JsonMapper jsonMapper =  new JsonMapper(scenario.getVariabelContainer());
         String lokalIdent = "#id1#";
         SøkerModell søker = new SøkerModell(lokalIdent, "Donald", LocalDate.now().minusYears(20), Kjønn.M);
         Personopplysninger personopplysninger = new Personopplysninger(søker);
@@ -49,7 +51,7 @@ public class PersonopplysningerTest {
         personopplysninger.leggTilBarn(barn);
 
         // Act - writeout
-        String json = skrivPersonopplysninger(scenario, mapper);
+        String json = skrivPersonopplysninger(scenario, mapper, jsonMapper);
         System.out.println("TestscenarioImpl:" + scenario + "\n--------------");
         System.out.println(json);
         System.out.println("--------------");
@@ -57,7 +59,7 @@ public class PersonopplysningerTest {
         // Act - readback
 
         TestscenarioFraTemplateMapper readMapper = new TestscenarioFraTemplateMapper(testScenarioRepository);
-        Testscenario scenario2 = readMapper.lagTestscenario(new StringTestscenarioTemplate(json, null));
+        Testscenario scenario2 = readMapper.lagTestscenario(new StringTestscenarioTemplate("my-template", json, null));
 
         // Assert
         SøkerModell søker2 = scenario2.getPersonopplysninger().getSøker();
@@ -68,10 +70,10 @@ public class PersonopplysningerTest {
         assertThat(søkerFraIndeks).isEqualTo(søker2);
     }
 
-    private String skrivPersonopplysninger(Testscenario scenario, TestscenarioTilTemplateMapper mapper) throws IOException {
+    private String skrivPersonopplysninger(Testscenario scenario, TestscenarioTilTemplateMapper mapper, JsonMapper jsonMapper) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedOutputStream buf = new BufferedOutputStream(baos);
-        mapper.skrivPersonopplysninger(buf, scenario, true);
+        mapper.skrivPersonopplysninger(jsonMapper.canonicalMapper(), buf, scenario);
         buf.flush();
         return baos.toString("UTF8");
     }

@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Optional;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -20,14 +19,18 @@ import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 
 class StringVarSerializer extends JsonSerializer<String> implements ContextualSerializer, ResolvableSerializer {
 
-    private static final List<String> VAR_PARAM_NAMES = Arrays.asList("orgnr", "saksnummer", "sakId");
+    private static final List<String> VAR_PARAM_NAMES = Arrays.asList(
+        "orgnr",
+        "saksnummer" /* arenasak */,
+        "sakId" /* infotrygdsak */);
 
-    private final NavigableMap<String, List<String>> valueToKey = new TreeMap<>();
+    private final NavigableMap<String, List<String>> valueToKey;
 
     private JsonSerializer<?> delegate;
 
-    public StringVarSerializer(JsonSerializer<?> delegate) {
+    public StringVarSerializer(JsonSerializer<?> delegate, NavigableMap<String, List<String>> valueToKey) {
         this.delegate = delegate;
+        this.valueToKey = valueToKey;
     }
 
     @Override
@@ -46,7 +49,7 @@ class StringVarSerializer extends JsonSerializer<String> implements ContextualSe
         if (ser == delegate) {
             return this;
         }
-        return new StringVarSerializer(ser);
+        return new StringVarSerializer(ser, valueToKey);
     }
 
     @Override
@@ -66,11 +69,12 @@ class StringVarSerializer extends JsonSerializer<String> implements ContextualSe
                 gen.writeString("${" + realKey.get().getKey() + (pos + 1) + "}"); // skriver tilbake key
             } else {
                 int pos = valueToKey.get(type).indexOf(value);
-                gen.writeString("${" + type + (pos + 1) + "}"); // skriver tilbake key
+                String key = createKey(type, pos);
+                gen.writeString("${" + key + "}"); // skriver tilbake key
             }
         } else {
             if (VAR_PARAM_NAMES.contains(currentName)) {
-                String type=currentName;
+                String type = currentName;
                 valueToKey.computeIfAbsent(type, k -> new ArrayList<>()).add(value); // blir duplikater her, men finner alltid første
 
                 // sjekk om nøkkel er registrert som noe annet
@@ -78,7 +82,7 @@ class StringVarSerializer extends JsonSerializer<String> implements ContextualSe
                     .filter(e -> e.getValue().contains(value)).findFirst();
                 if (realKey.isPresent()) {
                     int pos = realKey.get().getValue().indexOf(value);
-                    gen.writeString("${" + realKey.get().getKey() + (pos + 1) + "}"); // skriver tilbake key
+                    gen.writeString("${" + createKey(realKey.get().getKey(), pos) + "}"); // skriver tilbake key
                 } else {
                     int pos = valueToKey.get(type).indexOf(value);
                     gen.writeString("${" + type + (pos + 1) + "}"); // skriver tilbake key
@@ -88,6 +92,10 @@ class StringVarSerializer extends JsonSerializer<String> implements ContextualSe
                 gen.writeString(value);
             }
         }
+    }
+
+    public static String createKey(String type, int pos) {
+        return type + (pos + 1);
     }
 
 }

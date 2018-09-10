@@ -12,7 +12,7 @@ import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 
 public class RestConfig {
@@ -25,7 +25,7 @@ public class RestConfig {
         this.templateRepository = templateRepository;
     }
 
-    public void setup(DelegatingTestscenarioRepository testScenarioRepository) {
+    public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository) {
         // Setup RESTEasy's HttpServletDispatcher at "/api/*".
         final ServletContextHandler context = new ServletContextHandler(handler, "/api");
         

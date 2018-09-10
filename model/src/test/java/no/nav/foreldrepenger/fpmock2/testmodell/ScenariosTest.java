@@ -13,13 +13,13 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 
 public class ScenariosTest {
 
@@ -35,7 +35,7 @@ public class ScenariosTest {
         
         TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
         for (TestscenarioTemplate sc : scenarioTemplates) {
-            Testscenario testScenario = testScenarioRepository.lagTestscenario(sc);
+            TestscenarioImpl testScenario = testScenarioRepository.opprettTestscenario(sc);
             sjekkIdenterErInjisert(testScenario);
             Personopplysninger pers = testScenario.getPersonopplysninger();
             assertThat(pers).isNotNull();
@@ -73,7 +73,7 @@ public class ScenariosTest {
         return avsjekketEttScenario;
     }
 
-    private void sjekkIdenterErInjisert(Testscenario sc) {
+    private void sjekkIdenterErInjisert(TestscenarioImpl sc) {
         sc.getIdenter().getAlleIdenter().entrySet().forEach(e -> {
             System.out.println(e);
         });

@@ -6,4 +6,6 @@ public interface TestscenarioTemplateRepository {
 
     Collection<TestscenarioTemplate> getTemplates();
 
+    TestscenarioTemplate finn(String templateKey);
+
 }

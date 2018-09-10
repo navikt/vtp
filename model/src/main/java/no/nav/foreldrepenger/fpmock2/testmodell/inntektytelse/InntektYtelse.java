@@ -3,12 +3,8 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InntektYtelse {
@@ -16,9 +12,6 @@ public class InntektYtelse {
     @JsonInclude(value=Include.ALWAYS)
     @JsonProperty("modeller")
     private List<InntektYtelseModell> modeller = new ArrayList<>();
-    
-    @JacksonInject
-    private LokalIdentIndeks identer;
     
     public InntektYtelse() {
     }
@@ -29,10 +22,6 @@ public class InntektYtelse {
     
     public List<InntektYtelseModell> getModeller() {
         return modeller;
-    }
-
-    public void setIdenter(LokalIdentIndeks identer) {
-        this.identer = identer;
     }
 
     public void leggTil(InntektYtelseModell iyModell) {

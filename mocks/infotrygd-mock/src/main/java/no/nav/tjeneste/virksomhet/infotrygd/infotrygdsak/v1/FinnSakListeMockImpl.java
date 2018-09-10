@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.modell.InfotrygdSakBygger;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.modell.InfotrygdVedtakBygger;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.binding.FinnSakListePersonIkkeFunnet;
@@ -48,9 +48,9 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
     private static final String FAULTINFO_FEILAARSAK = "Feilaarsak";
     private static final String FAULTINFO_FEILKILDE = "Mock infotrygdSak";
 
-    private TestscenarioRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
 
-    public FinnSakListeMockImpl(TestscenarioRepository scenarioRepository) {
+    public FinnSakListeMockImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 

@@ -19,7 +19,7 @@ public class BarnModell extends PersonModell {
 
     @Override
     public String getIdent() {
-        return getIdenter().getBarnIdentForLokalIdent(getLokalIdent());
+        return getIdenter() == null ? null : getIdenter().getBarnIdentForLokalIdent(getLokalIdent());
     }
 
     @Override

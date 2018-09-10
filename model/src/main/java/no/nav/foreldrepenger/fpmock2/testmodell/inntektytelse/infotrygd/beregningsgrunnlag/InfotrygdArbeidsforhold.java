@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.ScenarioVirksomheter;
 import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.VirksomhetModell;
 
@@ -21,6 +22,9 @@ public class InfotrygdArbeidsforhold {
 
     @JacksonInject
     private ScenarioVirksomheter virksomheter;
+    
+    @JacksonInject
+    private VariabelContainer vars;
 
     public InfotrygdArbeidsforhold() {
     }
@@ -34,7 +38,9 @@ public class InfotrygdArbeidsforhold {
     }
 
     public VirksomhetModell getVirksomhet() {
-        return virksomheter.getVirksomhet(lokalOrgnr);
+        VirksomhetModell virksomhet = virksomheter.getVirksomhet(lokalOrgnr);
+        vars.computeIfAbsent(lokalOrgnr, (n) -> virksomhet.getOrgnr());
+        return virksomhet;
     }
 
     public String getLokalOrgnr() {

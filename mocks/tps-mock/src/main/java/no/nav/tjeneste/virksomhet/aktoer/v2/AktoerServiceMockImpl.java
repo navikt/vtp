@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.AktoerV2;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentIdentForAktoerIdPersonIkkeFunnet;
@@ -42,9 +42,9 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.IdentDetaljer;
 public class AktoerServiceMockImpl implements AktoerV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(AktoerServiceMockImpl.class);
-    private TestscenarioRepository repo;
+    private TestscenarioBuilderRepository repo;
 
-    public AktoerServiceMockImpl(TestscenarioRepository repo) {
+    public AktoerServiceMockImpl(TestscenarioBuilderRepository repo) {
         this.repo = repo;
     }
 

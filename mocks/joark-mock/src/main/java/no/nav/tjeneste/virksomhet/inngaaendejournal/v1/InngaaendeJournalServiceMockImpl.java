@@ -20,7 +20,7 @@ import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeFunnet;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeInngaaende;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostSikkerhetsbegrensning;
@@ -64,13 +64,13 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
 
     @SuppressWarnings("unused")
-    private TestscenarioRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
     
     private JournalpostModelData journalpostModelData;
 
     private JournalScenarioTjenesteImpl joarkScenarioTjeneste;
 
-    public InngaaendeJournalServiceMockImpl(TestscenarioRepository scenarioRepository){
+    public InngaaendeJournalServiceMockImpl(TestscenarioBuilderRepository scenarioRepository){
         this.scenarioRepository = scenarioRepository;
         this.journalpostModelData = new JournalpostModelData(scenarioRepository);
         this.joarkScenarioTjeneste = new JournalScenarioTjenesteImpl(scenarioRepository);

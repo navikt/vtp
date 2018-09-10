@@ -4,21 +4,28 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TemplateVariable;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.FindTemplateVariables;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 
 public class StringTestscenarioTemplate implements TestscenarioTemplate {
 
-    private Map<String, String> vars = new TreeMap<>();
-    private String personopplysningTemplate;
-    private String inntektopplysningTemplate;
+    private final VariabelContainer vars = new VariabelContainer();
+    private final String personopplysningTemplate;
+    private final String inntektopplysningTemplate;
+    private final String templateNavn;
 
-    public StringTestscenarioTemplate(String personopplysningTemplate, String inntektopplysningTemplate) {
-        this(personopplysningTemplate, inntektopplysningTemplate, Collections.emptyMap());
+    public StringTestscenarioTemplate(String templateNavn, String personopplysningTemplate, String inntektopplysningTemplate) {
+        this(templateNavn, personopplysningTemplate, inntektopplysningTemplate, Collections.emptyMap());
     }
 
-    public StringTestscenarioTemplate(String personopplysningTemplate, String inntektopplysningTemplate, Map<String, String> vars) {
+    public StringTestscenarioTemplate(String templateNavn, String personopplysningTemplate, String inntektopplysningTemplate, Map<String, String> vars) {
+        this.templateNavn = templateNavn;
         this.personopplysningTemplate = personopplysningTemplate;
         this.inntektopplysningTemplate = inntektopplysningTemplate;
         this.vars.putAll(vars);
@@ -26,11 +33,11 @@ public class StringTestscenarioTemplate implements TestscenarioTemplate {
 
     @Override
     public String getTemplateNavn() {
-        return null;
+        return templateNavn;
     }
 
     @Override
-    public Map<String, String> getDefaultVars() {
+    public VariabelContainer getDefaultVars() {
         return vars;
     }
 
@@ -42,6 +49,14 @@ public class StringTestscenarioTemplate implements TestscenarioTemplate {
     @Override
     public Reader inntektopplysningReader() {
         return inntektopplysningTemplate == null ? null : new StringReader(inntektopplysningTemplate);
+    }
+
+    @Override
+    public Set<TemplateVariable> getExpectedVars() {
+        FindTemplateVariables finder = new FindTemplateVariables();
+        finder.scanForVariables(Personopplysninger.class, personopplysningReader());
+        finder.scanForVariables(InntektYtelse.class, personopplysningReader());
+        return finder.getDiscoveredVariables();
     }
 
 }

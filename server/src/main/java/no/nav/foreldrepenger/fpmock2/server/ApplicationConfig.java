@@ -14,6 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
+import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioTemplateRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.checks.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.checks.IsReadyImpl;
 import no.nav.sigrun.SigrunMock;
@@ -39,6 +40,7 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
+        classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
 
         // tekniske ting

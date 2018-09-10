@@ -11,8 +11,9 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -71,11 +72,11 @@ public class MockServer {
         jettyHttpServer = new JettyHttpServer(server, true);
     }
 
-    protected void addSoapServices(TestscenarioRepository testScenarioRepository, @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository) {
+    protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository, @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository) {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository);
     }
 
-    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioRepository testScenarioRepository, DelegatingTestscenarioTemplateRepository templateRepository) {
+    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository, DelegatingTestscenarioTemplateRepository templateRepository) {
         new RestConfig(handler, templateRepository).setup(testScenarioRepository);
     }
 
