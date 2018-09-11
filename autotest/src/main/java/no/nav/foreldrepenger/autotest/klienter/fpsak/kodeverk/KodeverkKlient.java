@@ -1,10 +1,6 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import com.google.gson.reflect.TypeToken;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
@@ -24,7 +20,7 @@ public class KodeverkKlient extends FpsakKlient{
     
     public Kodeverk getKodeverk() throws IOException{
         String url = hentRestRotUrl() + KODEVERK_URL;
-        return getOgHentJson(url, new TypeToken<Kodeverk>() {}, StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, Kodeverk.class, StatusRange.STATUS_SUCCESS);
     }
     
     

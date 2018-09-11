@@ -3,8 +3,6 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger;
 import java.io.IOException;
 import java.util.List;
 
-import com.google.gson.reflect.TypeToken;
-
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingByttEnhet;
@@ -75,7 +73,7 @@ public class BehandlingerKlient extends FpsakKlient{
     
     public List<Behandling> alle(long saksnummer) throws IOException {
         String url = hentRestRotUrl() + String.format(BEHANDLINGER_ALLE_URL, saksnummer);
-        return getOgHentJson(url, new TypeToken<List<Behandling>>() {}, StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(List.class, Behandling.class), StatusRange.STATUS_SUCCESS);
     }
     
     public void opneForEndringer(BehandlingIdPost behandling) {

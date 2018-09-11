@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto;
 
-import java.util.List;
 
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Fagsak {
 
     /*

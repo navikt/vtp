@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.autotest.util.konfigurasjon;
 import java.io.File;
 
 public class TestKonfigurasjon extends KonfigurasjonBase{
-    public static TestKonfigurasjon konfigurasjon;
     
     private static String KONFIGURASJONS_FIL = "../application.properties";
     private static String KONFIGURASJONS_FIL_LOKAL = "../application-local.properties";

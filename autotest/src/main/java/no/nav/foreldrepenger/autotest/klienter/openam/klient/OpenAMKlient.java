@@ -15,10 +15,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
+import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.TestKonfigurasjon;
 
 public class OpenAMKlient extends JsonRest {
@@ -74,21 +77,15 @@ public class OpenAMKlient extends JsonRest {
 
         String result = hentResponseBody(response);
 
-        Gson gson = hentGson();
-
-        return gson.fromJson(result, OpenAMSessionAuth.class).authId;
+        return hentObjectMapper().readValue(result, OpenAMSessionAuth.class).authId;
     }
 
     private String hentSessionToken(String sessionId, String username, String password) throws IOException {
         String url = baseUrl + "/json/authenticate";
 
         OpenAMTokenLogin tokenLogin = new OpenAMTokenLogin(sessionId, username, password);
-        Gson gson = hentGson();
-        HttpResponse response = postJson(url, gson.toJson(tokenLogin));
-
-
-        String result = hentResponseBody(response);
-        return gson.fromJson(result, OpenAMSessionToken.class).tokenId;
+        
+        return postOgHentJson(url, tokenLogin, OpenAMSessionToken.class, StatusRange.STATUS_SUCCESS).tokenId;
     }
 
     private String getAuthorizationCode(String sessionToken) throws IOException {
@@ -141,12 +138,10 @@ public class OpenAMKlient extends JsonRest {
                 + "&realm=" + realm
                 + "&redirect_uri=" + redirectUriEncoded
                 + "&code=" + authorizationCode;
-        HttpResponse response = post(url, new StringEntity(data, StandardCharsets.UTF_8.name()), headers);
-        String content = hentResponseBody(response);
-
-        ValidateResponse(response, 200, content);
-
-        return hentGson().fromJson(content, OpenAMAccessToken.class);
+        
+        HttpResponse response =  post(url, new StringEntity(data, StandardCharsets.UTF_8.name()),headers);
+        ValidateResponse(response, StatusRange.STATUS_SUCCESS);
+        return hentObjectMapper().readValue(hentResponseBody(response), OpenAMAccessToken.class);
     }
 
     @Override
@@ -154,12 +149,14 @@ public class OpenAMKlient extends JsonRest {
         return null;
     }
     
-    private class OpenAMSessionAuth {
-        String authId;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class OpenAMSessionAuth {
+        public String authId;
     }
 
-    private class OpenAMSessionToken {
-        String tokenId;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    private static class OpenAMSessionToken {
+        public String tokenId;
     }
 
     private class OpenAMTokenLogin {
@@ -167,7 +164,7 @@ public class OpenAMKlient extends JsonRest {
         public String template = "";
         public String stage = "DataStore1";
         public String header = "Sign in to OpenAM";
-        List<CallBack> callbacks = new ArrayList<>();
+        public List<CallBack> callbacks = new ArrayList<>();
 
         private OpenAMTokenLogin(String authId, String username, String password) {
             this.authId = authId;
@@ -183,7 +180,8 @@ public class OpenAMKlient extends JsonRest {
         }
     }
 
-    public class OpenAMAccessToken {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class OpenAMAccessToken {
         public String access_token;
         public String refresh_token;
         public String id_token;
@@ -192,8 +190,8 @@ public class OpenAMKlient extends JsonRest {
 
     private class CallBack {
         public String type;
-        List<InputOutput> output = new ArrayList<>();
-        List<InputOutput> input = new ArrayList<>();
+        public List<InputOutput> output = new ArrayList<>();
+        public List<InputOutput> input = new ArrayList<>();
 
         private CallBack(String type) {
             this.type = type;

@@ -15,7 +15,7 @@ public class Aktoer {
 	}
 	
 	public void erLoggetInnMedRolle(String rolle) {
-		Bruker user = TestKonfigurasjon.konfigurasjon.hentBruker(rolle);
+		Bruker user = TestKonfigurasjon.hentBruker(rolle);
 		
 		try {
 			OpenAMKlient openAMHelper = new OpenAMKlient(session, TestKonfigurasjon.hentOICDUrl());

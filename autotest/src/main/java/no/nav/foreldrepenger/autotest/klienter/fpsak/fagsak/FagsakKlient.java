@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import com.google.gson.reflect.TypeToken;
+import java.util.List;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.*;
@@ -35,6 +35,6 @@ public class FagsakKlient extends FpsakKlient{
 	
 	public ArrayList<Fagsak> søk(Sok søk) throws IOException {
 		String url = hentRestRotUrl() + FAGSAK_SØK_URL_FORMAT;
-		return postOgHentJson(url, søk, new TypeToken<ArrayList<Fagsak>>() {}, StatusRange.STATUS_200);
+		return postOgHentJson(url, søk, hentObjectMapper().getTypeFactory().constructCollectionType(List.class, Fagsak.class), StatusRange.STATUS_200);
 	}
 }
