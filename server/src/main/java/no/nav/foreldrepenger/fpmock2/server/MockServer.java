@@ -22,6 +22,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRe
 public class MockServer {
 
     private static final String HTTP_HOST = "0.0.0.0";
+    private static final String SERVER_PORT = "8060";
     private Server server;
     private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
@@ -29,10 +30,9 @@ public class MockServer {
     private final int port;
 
     public static void main(String[] args) throws Exception {
-        PropertiesUtils.lagPropertiesFilFraTemplate();
         PropertiesUtils.initProperties();
 
-        MockServer mockServer = new MockServer(Integer.getInteger("server.port"));
+        MockServer mockServer = new MockServer(Integer.valueOf(System.getProperty("server.port", SERVER_PORT)));
         mockServer.start();
 
     }
