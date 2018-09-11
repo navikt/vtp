@@ -23,6 +23,7 @@
 		<module>mocks</module>
 		<module>server</module>
 		<module>dokumentgenerator</module>
+		<module>autotest</module>
 	</modules>
 
 	<properties>

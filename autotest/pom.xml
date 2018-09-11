@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>no.nav.vedtak.fpmock2</groupId>
+    <artifactId>fpmock2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+	
+  <artifactId>autotest</artifactId>
+  <name>FPMock2 :: AutoTest</name>
+  
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<maven.compiler.source>1.8</maven.compiler.source>
+  	<maven.compiler.target>1.8</maven.compiler.target>
+  	<tests>internal</tests>
+  </properties>
+  
+  <profiles>
+    <profile>
+      <id>Smoke</id>
+	  <properties>
+	    <tests>smoke</tests>
+	  </properties>
+    </profile>
+    <profile>
+      <id>Regresjon</id>
+	  <properties>
+	    <tests>regresjon,smoke</tests>
+	  </properties>
+    </profile>
+  </profiles>
+  
+  <build>
+  	<plugins>
+	  	<plugin>
+	  		<groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-surefire-plugin</artifactId>
+		    <version>2.19.1</version>
+		    <configuration>
+		    	<properties>
+		    		<includeTags>${tests}</includeTags>
+		    	</properties>
+		    </configuration>
+		    <dependencies>
+		        <dependency>
+		            <groupId>org.junit.platform</groupId>
+		            <artifactId>junit-platform-surefire-provider</artifactId>
+		            <version>1.1.0</version>
+		        </dependency>
+		        <dependency>
+		            <groupId>org.junit.jupiter</groupId>
+		            <artifactId>junit-jupiter-engine</artifactId>
+		            <version>5.1.0</version>
+		        </dependency>
+		    </dependencies>
+	  	</plugin>
+	  </plugins>
+  </build>
+  
+  
+  <dependencies>
+  
+  	<dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-launcher</artifactId>
+        <version>1.1.0-M1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.1.0-M1</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.2</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.2</version>
+    </dependency>
+    
+  </dependencies>
+    
+</project>

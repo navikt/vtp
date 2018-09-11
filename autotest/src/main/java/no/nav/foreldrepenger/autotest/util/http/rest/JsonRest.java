@@ -1,0 +1,146 @@
+package no.nav.foreldrepenger.autotest.util.http.rest;
+
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+
+import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class JsonRest extends Rest{
+	
+    private static String ACCEPT_JSON_HEADER = "application/json";
+
+    public JsonRest(HttpSession session) {
+        super(session);
+    }
+    
+    
+    
+    /*
+     * POST
+     */
+    
+    protected HttpResponse postJson(String url, Object object) throws IOException {
+        return postJson(url, hentGson().toJson(object));
+    }
+
+    protected HttpResponse postJson(String url, String json) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        return postJson(url, json, headers);
+    }
+
+    protected HttpResponse postJson(String url, String json, Map<String, String> headers) throws IOException {
+        headers.put("Accept", ACCEPT_JSON_HEADER);
+        return post(url, hentJsonPostEntity(json), headers);
+    }
+    
+    protected <T> T postOgHentJson(String url, Object requestData, TypeToken<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
+    }
+    
+    protected <T> T postOgHentJson(String url, Object requestData, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
+    }
+    
+    protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	return postOgHentJson(url, requestData, headers, new TypeToken<T>() {}, expectedStatusRange);
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, TypeToken<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
+    	return (T) hentGson().fromJson(json, returnType.getType());
+    }
+    
+    protected String postOgVerifiser(String url, Object requestData, Map<String, String> headers, StatusRange expectedStatusRange) throws IOException {
+    	String request = hentGson().toJson(requestData);
+    	HttpResponse response = postJson(url, request, headers);
+    	String json = hentResponseBody(response);
+    	if(expectedStatusRange != null) {
+    		ValidateResponse(response, expectedStatusRange, url + "\n" + request +"\n\n" + json);
+    	}
+    	return json;
+    }
+
+    /*
+     * GET
+     */
+
+    
+
+    protected HttpResponse getJson(String url) throws IOException {
+        return getJson(url, new HashMap<>());
+    }
+
+    protected HttpResponse getJson(String url, Map<String, String> headers, Map<String, String> data) throws IOException {
+        return getJson(url + UrlEncodeQuery(data), headers);
+    }
+    
+    protected HttpResponse getJson(String url, Map<String, String> headers) throws IOException {
+        headers.put("Accept", ACCEPT_JSON_HEADER);
+        return get(url, headers);
+    }
+    
+    protected <T> T getOgHentJson(String url, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	return getOgHentJson(url, new HashMap<>(), returnType, expectedStatusRange);
+    }
+    
+    protected <T> T getOgHentJson(String url, TypeToken<T> returnType, StatusRange expectedStatusRange) throws IOException {
+        return getOgHentJson(url, new HashMap<>(), returnType, expectedStatusRange);
+    }
+    
+    protected <T> T getOgHentJson(String url, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	HttpResponse response = getJson(url, headers);
+    	String json = hentResponseBody(response);
+    	ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
+    	return hentGson().fromJson(json, returnType);
+    }
+    
+    protected <T> T getOgHentJson(String url, Map<String, String> headers, TypeToken<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    	HttpResponse response = getJson(url, headers);
+    	String json = hentResponseBody(response);
+    	ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
+    	return hentGson().fromJson(json, returnType.getType());
+    }
+    
+    
+    /*
+     * PUT
+     */
+    protected HttpResponse putJson(String url, String json) throws IOException {
+        return put(url, hentJsonPostEntity(json));
+    }
+    
+
+    protected StringEntity hentJsonPostEntity(String json) {
+        try {
+            return new StringEntity(json, ContentType.APPLICATION_JSON);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    protected JsonArray tilJsonArray(String json) {
+        return new JsonParser().parse(json).getAsJsonArray();
+    }
+
+    protected JsonObject tilJsonObject(String json) {
+        return new JsonParser().parse(json).getAsJsonObject();
+    }
+
+    protected Gson hentGson() {
+        GsonBuilder builder = new GsonBuilder();
+        return builder.create();
+    }
+}
