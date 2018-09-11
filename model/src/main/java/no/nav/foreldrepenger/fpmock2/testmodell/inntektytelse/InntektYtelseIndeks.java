@@ -12,8 +12,8 @@ public class InntektYtelseIndeks {
         return Optional.ofNullable(byIdent.get(ident));
     }
 
-    public void leggTil(InntektYtelseModell iy) {
-        byIdent.put(iy.getIdent().getIdent(), iy);
+    public void leggTil(String ident, InntektYtelseModell iy) {
+        byIdent.put(ident, iy);
     }
 
 }

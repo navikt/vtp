@@ -7,13 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerIdent;
 
 @JsonInclude(Include.NON_EMPTY)
 public class InntektYtelseModell {
-
-    @JsonProperty("ident")
-    private BrukerIdent ident;
 
     @JsonProperty("arena")
     private ArenaModell arenaModell;
@@ -25,18 +21,6 @@ public class InntektYtelseModell {
     private InntektskomponentModell inntektskomponentModell;
 
     public InntektYtelseModell() {
-    }
-
-    public InntektYtelseModell(BrukerIdent brukerIdent) {
-        ident = brukerIdent;
-    }
-
-    public BrukerIdent getIdent() {
-        return ident;
-    }
-
-    public void setIdent(BrukerIdent ident) {
-        this.ident = ident;
     }
 
     public ArenaModell getArenaModell() {

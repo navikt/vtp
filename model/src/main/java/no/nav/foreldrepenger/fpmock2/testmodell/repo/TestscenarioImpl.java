@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
@@ -18,14 +17,16 @@ public class TestscenarioImpl implements Testscenario {
     private AdresseIndeks adresseIndeks;
 
     private Personopplysninger personopplysninger;
-    
-    private InntektYtelse inntektYtelse = new InntektYtelse();
+
+    private InntektYtelseModell søkerInntektYtelse;
+
+    private InntektYtelseModell annenpartInntektYtelse;
 
     private ScenarioVirksomheter scenarioVirksomheter;
 
     /** Unik testscenario id. */
     private String id;
-    
+
     private VariabelContainer vars = new VariabelContainer();
 
     @SuppressWarnings("unused")
@@ -35,9 +36,9 @@ public class TestscenarioImpl implements Testscenario {
         this.templateNavn = templateNavn;
         this.id = id;
         this.scenarioIndeks = scenarioIndeks;
-        
+
         this.scenarioVirksomheter = new ScenarioVirksomheter(this.templateNavn, scenarioIndeks.getBasisdata().getVirksomhetIndeks());
-        
+
         this.identer = scenarioIndeks.getIdenter(getId());
     }
 
@@ -45,7 +46,7 @@ public class TestscenarioImpl implements Testscenario {
     public String getTemplateNavn() {
         return templateNavn;
     }
-    
+
     @Override
     public String getId() {
         return id;
@@ -73,21 +74,35 @@ public class TestscenarioImpl implements Testscenario {
         return this.personopplysninger;
     }
 
-    @Override
-    public InntektYtelse getInntektYtelse() {
-        return this.inntektYtelse;
-    }
-    
-    public void leggTil(InntektYtelseModell iyModell) {
-        this.inntektYtelse.leggTil(iyModell);
-    }
-
     public ScenarioVirksomheter getVirksomheter() {
         return scenarioVirksomheter;
     }
-    
+
     @Override
     public VariabelContainer getVariabelContainer() {
         return vars;
+    }
+
+    @Override
+    public InntektYtelseModell getSøkerInntektYtelse() {
+        return søkerInntektYtelse;
+    }
+
+    @Override
+    public InntektYtelseModell getAnnenpartInntektYtelse() {
+        return annenpartInntektYtelse;
+    }
+
+    public void setSøkerInntektYtelse(InntektYtelseModell inntektYtelse) {
+        this.søkerInntektYtelse = inntektYtelse;
+    }
+
+    public void setAnnenpartInntektYtelse(InntektYtelseModell inntektYtelse) {
+        this.annenpartInntektYtelse = inntektYtelse;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "<template, " + templateNavn + ", id=" + id + ">";
     }
 }

@@ -16,12 +16,11 @@ import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Fagomraader;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Fagsystemer;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Person;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak;
+import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sakstyper;
 
 public class GsakRepo {
 
-    private static final String SAKSBEHANDLER_IDENT = "Sakbruker";
-    private static final String FAGOMRÅDE_KODE = "FOR";
-    private static final String FAGSYSTEM_KODE = "FS22";
+    private static final String SAKSBEHANDLER_IDENT = "MinSaksbehandler";
 
     private Map<String, Sak> bySakId;
     private AtomicInteger sakIder  = new AtomicInteger(10000);
@@ -42,7 +41,7 @@ public class GsakRepo {
         return bySakId.values();
     }
 
-    public Sak leggTilSak(List<PersonModell> person) {
+    public Sak leggTilSak(List<PersonModell> person, String fagomrade, String fagsystem, String saktype) {
         String sakId = String.valueOf(sakIder.incrementAndGet());
         Sak sak = new Sak();
 
@@ -50,11 +49,14 @@ public class GsakRepo {
         sak.setEndretAv(SAKSBEHANDLER_IDENT);
 
         Fagomraader fagomraader = new Fagomraader();
-        fagomraader.setValue(FAGOMRÅDE_KODE);
+        fagomraader.setValue(fagomrade);
         sak.setFagomraade(fagomraader);
-
+        Sakstyper sakstyper = new Sakstyper();
+        sakstyper.setValue(saktype);
+        
+        sak.setSakstype(sakstyper);
         Fagsystemer fagsystemer = new Fagsystemer();
-        fagsystemer.setValue(FAGSYSTEM_KODE);
+        fagsystemer.setValue(fagsystem);
         sak.setFagsystem(fagsystemer);
 
         Aktoer aktoer = new Person();
@@ -74,8 +76,6 @@ public class GsakRepo {
 
         sak.setOpprettetAv(SAKSBEHANDLER_IDENT);
         sak.setVersjonsnummer("1");
-
-        sak.setFagsystemSakId("FS22_98");
 
         bySakId.put(sakId, sak);
         

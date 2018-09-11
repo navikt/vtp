@@ -10,7 +10,6 @@ import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
@@ -59,16 +58,26 @@ public class TestscenarioFraTemplateMapper {
             throw new IllegalArgumentException("Kunne ikke lese personopplysning.json for scenario:" + scenario, e);
         }
 
-        try (Reader reader = template.inntektopplysningReader()) {
+        try (Reader reader = template.inntektopplysningReader("søker")) {
             // detaljer
             if (reader != null) {
-                InntektYtelse inntektYtelse = objectMapper.readValue(reader, InntektYtelse.class);
-                for (InntektYtelseModell iym : inntektYtelse.getModeller()) {
-                    scenario.leggTil(iym);
-                }
+                InntektYtelseModell inntektYtelse = objectMapper.readValue(reader, InntektYtelseModell.class);
+                scenario.setSøkerInntektYtelse(inntektYtelse);
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("Kunne ikke lese inntektytelser.json for scenario:" + scenario, e);
+            throw new IllegalArgumentException("Kunne ikke lese inntektytelser-søker.json for scenario:" + scenario, e);
+        }
+
+        if (scenario.getPersonopplysninger().getAnnenPart() != null) {
+            try (Reader reader = template.inntektopplysningReader("annenpart")) {
+                // detaljer
+                if (reader != null) {
+                    InntektYtelseModell inntektYtelse = objectMapper.readValue(reader, InntektYtelseModell.class);
+                    scenario.setAnnenpartInntektYtelse(inntektYtelse);
+                }
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Kunne ikke lese inntektytelser-annenpart.json for scenario:" + scenario, e);
+            }
         }
 
         testScenarioRepository.indekser(scenario);

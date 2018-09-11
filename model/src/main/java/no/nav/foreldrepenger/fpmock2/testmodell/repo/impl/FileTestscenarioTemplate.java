@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Set;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TemplateVariable;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
@@ -16,7 +16,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 
 public class FileTestscenarioTemplate implements TestscenarioTemplate {
 
-    public static final String INNTEKTYTELSE_JSON_FILE = "inntektytelse.json";
     public static final String PERSONOPPLYSNING_JSON_FILE = "personopplysning.json";
     public static final String VARS_JSON_FILE = "vars.json";
 
@@ -41,11 +40,14 @@ public class FileTestscenarioTemplate implements TestscenarioTemplate {
     @Override
     public Set<TemplateVariable> getExpectedVars() {
         try (Reader personopplysningReader = personopplysningReader();
-                Reader inntektopplysningReader = inntektopplysningReader();) {
+                Reader søkerInntektopplysningReader = inntektopplysningReader("søker");
+                Reader annenpartInntektopplysningReader = inntektopplysningReader("annenpart");) {
             FindTemplateVariables finder = new FindTemplateVariables();
-            
-            finder.scanForVariables(Personopplysninger.class, personopplysningReader());
-            finder.scanForVariables(InntektYtelse.class, personopplysningReader());
+
+            finder.scanForVariables(Personopplysninger.class, personopplysningReader);
+            finder.scanForVariables(InntektYtelseModell.class, søkerInntektopplysningReader);
+            finder.scanForVariables(InntektYtelseModell.class, annenpartInntektopplysningReader);
+
             return finder.getDiscoveredVariables();
 
         } catch (IOException e) {
@@ -55,12 +57,14 @@ public class FileTestscenarioTemplate implements TestscenarioTemplate {
 
     @Override
     public Reader personopplysningReader() throws FileNotFoundException {
-        return new FileReader(new File(templateDir, PERSONOPPLYSNING_JSON_FILE));
+        File file = new File(templateDir, PERSONOPPLYSNING_JSON_FILE);
+        return file.exists() ? new FileReader(file) : null;
     }
 
     @Override
-    public Reader inntektopplysningReader() throws FileNotFoundException {
-        return new FileReader(new File(templateDir, INNTEKTYTELSE_JSON_FILE));
+    public Reader inntektopplysningReader(String rolle) throws FileNotFoundException {
+        File file = new File(templateDir, String.format("inntektytelse-%s.json", rolle));
+        return file.exists() ? new FileReader(file) : null;
     }
 
 }

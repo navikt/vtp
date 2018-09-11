@@ -11,7 +11,7 @@ public interface TestscenarioTemplate {
 
     Reader personopplysningReader() throws IOException;
 
-    Reader inntektopplysningReader() throws IOException;
+    Reader inntektopplysningReader(String rolle) throws IOException;
 
     VariabelContainer getDefaultVars();
 

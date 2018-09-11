@@ -48,13 +48,13 @@ public class InntektYtelseTest {
         TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
         TestscenarioTilTemplateMapper mapper = new TestscenarioTilTemplateMapper();
 
-        InntektYtelseModell inntektYtelse = new InntektYtelseModell(new BrukerIdent("#myid#"));
+        InntektYtelseModell inntektYtelse = new InntektYtelseModell();
         initArenaModell(inntektYtelse);
         initInfotrygdModell(inntektYtelse);
         initInntektskomponentModell(inntektYtelse);
         
         TestscenarioImpl scenario = new TestscenarioImpl("test3", "test3-123", testScenarioRepository);
-        scenario.leggTil(inntektYtelse);
+        scenario.setSøkerInntektYtelse(inntektYtelse);
         
         String json = skrivInntektYtelse(scenario, mapper);
         
@@ -165,7 +165,7 @@ public class InntektYtelseTest {
     private String skrivInntektYtelse(Testscenario scenario, TestscenarioTilTemplateMapper mapper) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedOutputStream buf = new BufferedOutputStream(baos);
-        mapper.skrivInntektYtelse(jsonMapper.canonicalMapper(), buf, scenario);
+        mapper.skrivInntektYtelse(jsonMapper.canonicalMapper(), buf, scenario, scenario.getSøkerInntektYtelse());
         buf.flush();
         return baos.toString("UTF8");
     }

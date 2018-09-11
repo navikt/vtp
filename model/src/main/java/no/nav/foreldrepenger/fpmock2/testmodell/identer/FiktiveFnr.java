@@ -3,15 +3,6 @@ package no.nav.foreldrepenger.fpmock2.testmodell.identer;
 import no.nav.foreldrepenger.fpmock2.testmodell.enums.Kjonn;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.TestdataUtil;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Hent et tilfeldig gyldig men fiktivt Fødselsnummer.
  * 

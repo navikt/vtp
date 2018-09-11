@@ -19,11 +19,6 @@
 		</dependency>
 		<dependency>
 			<groupId>no.nav.tjenester.fim</groupId>
-			<artifactId>nav-fim-behandleSak-v1-tjenestespesifikasjon</artifactId>
-			<classifier>jaxws</classifier>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenester.fim</groupId>
 			<artifactId>nav-fim-oppgave-v3-tjenestespesifikasjon</artifactId>
 			<classifier>jaxws</classifier>
 		</dependency>

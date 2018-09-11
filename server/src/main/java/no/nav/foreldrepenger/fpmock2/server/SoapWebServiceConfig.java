@@ -16,7 +16,6 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
-import no.nav.tjeneste.virksomhet.behandlesak.v1.BehandleSakServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl;
@@ -56,8 +55,6 @@ public class SoapWebServiceConfig {
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/behandleoppgave");
         // access wsdl on http://localhost:7999/behandleoppgave?wsdl
-        publishWebService(new BehandleSakServiceMockImpl(gsakRepo, repo), "/behandlesak");
-        // access wsdl on http://localhost:7999/behandlesak?wsdl
         publishWebService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/behandlesakV2");
         // access wsdl on http://localhost:7999/behandlesakV2?wsdl
         publishWebService(new PdpMock(), "/asm-pdp/authorize");

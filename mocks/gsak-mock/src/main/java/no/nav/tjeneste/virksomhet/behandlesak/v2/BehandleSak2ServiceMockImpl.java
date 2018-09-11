@@ -47,7 +47,13 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
 
         List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getPersonIndeks().finnByIdent(i))
             .collect(Collectors.toList());
-        no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak sak = gsakRepo.leggTilSak(personer);
+        
+        WSSak wsSak = request.getSak();
+        String fagomrade = wsSak.getFagomrade();
+        String fagsystem = wsSak.getFagsystem();
+        String saktype = wsSak.getSaktype();
+        
+        no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak sak = gsakRepo.leggTilSak(personer, fagomrade, fagsystem, saktype);
 
         WSOpprettSakResponse response = new WSOpprettSakResponse();
         response.setSakId(sak.getSakId());
