@@ -1,9 +1,17 @@
 FROM navikt/java:8
 
+ENV JAVA_OPTS="-Dscenarios.dir=./model/scenarios"
+ENV LC_ALL="no_NB.UTF-8"
+ENV LANG="no_NB.UTF-8"
+ENV TZ="Europe/Oslo"
+ARG JAR_FILE
+
 RUN mkdir /app/lib
-COPY server/src/main/webapp /app/webapp
-COPY server/src/main/resources/logback.xml logback.xml
-COPY server/target/server*.jar /app/app.jar
 COPY server/lib/*.jar /app/lib/
+
+COPY server/src/main/resources/logback.xml logback.xml
+COPY server/target/server*.jar app.jar
 COPY run-java.sh /
+
+EXPOSE 8060
 RUN chmod +x /run-java.sh
