@@ -1,15 +1,17 @@
-package no.nav.foreldrepenger.autotest.internal.prototype;
+package no.nav.foreldrepenger.autotest.sut.fpsak.eksempel;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import no.nav.foreldrepenger.autotest.sut.fpsak.FpsakTestBase;
+
 @Tag("smoke")
 public class SmokeTest extends FpsakTestBase{
 	
-	@ParameterizedTest
+    @ParameterizedTest
     @ValueSource(strings= {"Saksbehandler"})
-	void loginnTest(String rolle) throws Exception {
+    void loginnTest(String rolle) throws Exception {
         saksbehandler.erLoggetInnMedRolle(rolle);
     }
 }
