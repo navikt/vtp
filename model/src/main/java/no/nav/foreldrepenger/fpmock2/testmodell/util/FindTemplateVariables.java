@@ -31,9 +31,9 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TemplateVariable;
 
 /** Scanner input for template variable og finner type, path etc. */
 public class FindTemplateVariables {
-    
+
     static final Pattern TEMPLATE_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.+)\\}");
-            
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final FindTemplateVariableModule module = new FindTemplateVariableModule();
 
@@ -61,6 +61,9 @@ public class FindTemplateVariables {
     }
 
     public void scanForVariables(Class<?> targetClass, Reader reader) {
+        if(reader==null) {
+            return;
+        }
         try {
             // ignore return, fanger opp variabler i #module ved deserialisering
             objectMapper.readValue(reader, targetClass);
@@ -140,9 +143,8 @@ public class FindTemplateVariables {
             return null;
         }
 
-
     }
-    
+
     static String getPath(JsonStreamContext streamContext) {
         JsonStreamContext pc = streamContext;
         StringBuilder sb = new StringBuilder(pc.getCurrentName());
