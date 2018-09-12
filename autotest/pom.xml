@@ -30,6 +30,12 @@
 	    <tests>regresjon,smoke</tests>
 	  </properties>
     </profile>
+    <profile>
+      <id>Internal</id>
+	  <properties>
+	    <tests>internal</tests>
+	  </properties>
+    </profile>
   </profiles>
   
   <build>
