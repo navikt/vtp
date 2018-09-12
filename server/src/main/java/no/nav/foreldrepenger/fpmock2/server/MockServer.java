@@ -20,7 +20,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepository
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 
 public class MockServer {
-    
+
     private static final String HTTP_HOST = "0.0.0.0";
     private Server server;
     private JettyHttpServer jettyHttpServer;
@@ -38,7 +38,7 @@ public class MockServer {
     }
 
     public MockServer(int port) {
-        this.port=port;
+        this.port = port;
         server = new Server();
         setConnectors(server);
 
@@ -48,20 +48,21 @@ public class MockServer {
     }
 
     public void start() throws Exception {
-        HandlerContainer handler = (HandlerContainer)server.getHandler();
-        
+        HandlerContainer handler = (HandlerContainer) server.getHandler();
+        server.setErrorHandler(new NotFoundErrorHandler());
+
         TestscenarioTemplateRepositoryImpl templateRepositoryImpl = new TestscenarioTemplateRepositoryImpl();
         templateRepositoryImpl.load();
-        
+
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
         DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(new TestscenarioRepositoryImpl());
-        
+
         addRestServices(handler, testScenarioRepository, templateRepository);
-        
+
         addWebResources(handler);
-        
+
         startServer();
-        
+
         // kjør soap oppsett etter jetty har startet
         addSoapServices(testScenarioRepository, templateRepository);
 
@@ -72,24 +73,26 @@ public class MockServer {
         jettyHttpServer = new JettyHttpServer(server, true);
     }
 
-    protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository, @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository) {
+    protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository,
+                                   @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository) {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository);
     }
 
-    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository, DelegatingTestscenarioTemplateRepository templateRepository) {
+    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
+                                   DelegatingTestscenarioTemplateRepository templateRepository) {
         new RestConfig(handler, templateRepository).setup(testScenarioRepository);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {
-        
+
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
-        
+
         DefaultServlet defaultServlet = new DefaultServlet();
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
-        
+
         ctx.addServlet(servletHolder, "/");
     }
 
@@ -108,7 +111,5 @@ public class MockServer {
     public String getHost() {
         return host;
     }
-    
-    
 
 }
