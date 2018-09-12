@@ -12,26 +12,30 @@
   
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<tests>internal</tests>
+  	<testsTags>internal</testsTags>
+  	<testPackage>no.nav.foreldrepenger.autotest.internal.**</testPackage>
   </properties>
   
   <profiles>
     <profile>
       <id>Smoke</id>
 	  <properties>
-	    <tests>smoke</tests>
+	    <testsTags>smoke</testsTags>
+	    <testPackage>no.nav.foreldrepenger.autotest.sut.**</testPackage>
 	  </properties>
     </profile>
     <profile>
       <id>Regresjon</id>
 	  <properties>
-	    <tests>regresjon,smoke</tests>
+	    <testsTags>regresjon,smoke</testsTags>
+	    <testPackage>no.nav.foreldrepenger.autotest.sut.**</testPackage>
 	  </properties>
     </profile>
     <profile>
       <id>Internal</id>
 	  <properties>
-	    <tests>internal</tests>
+	    <testsTags>internal</testsTags>
+	    <testPackage>no.nav.foreldrepenger.autotest.internal.**</testPackage>
 	  </properties>
     </profile>
   </profiles>
@@ -43,8 +47,11 @@
 		    <artifactId>maven-surefire-plugin</artifactId>
 		    <version>2.19.1</version>
 		    <configuration>
+		    	<includes>
+		    		<include>${testPackage}</include>
+		    	</includes>
 		    	<properties>
-		    		<includeTags>${tests}</includeTags>
+    				<includeTags>${testsTags}</includeTags>
 		    	</properties>
 		    </configuration>
 		    <dependencies>
