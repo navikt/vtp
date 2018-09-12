@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.autotest.aktoerer;
 
-import no.nav.foreldrepenger.autotest.klienter.openam.klient.OpenAMKlient;
+import no.nav.foreldrepenger.autotest.klienter.openam.OpenAMKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.HttpsSession;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.TestKonfigurasjon;

@@ -1,13 +1,11 @@
-package no.nav.foreldrepenger.autotest.klienter.openam.klient;
+package no.nav.foreldrepenger.autotest.klienter.openam;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,8 +15,11 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMAccessToken;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionAuth;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionToken;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMTokenLogin;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
@@ -147,65 +148,6 @@ public class OpenAMKlient extends JsonRest {
     @Override
     public String hentRestRotUrl() {
         return null;
-    }
-    
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class OpenAMSessionAuth {
-        public String authId;
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class OpenAMSessionToken {
-        public String tokenId;
-    }
-
-    private class OpenAMTokenLogin {
-        public String authId;
-        public String template = "";
-        public String stage = "DataStore1";
-        public String header = "Sign in to OpenAM";
-        public List<CallBack> callbacks = new ArrayList<>();
-
-        private OpenAMTokenLogin(String authId, String username, String password) {
-            this.authId = authId;
-            CallBack nameCallback = new CallBack("NameCallback");
-            nameCallback.output.add(new InputOutput("prompt", "User Name:"));
-            nameCallback.input.add(new InputOutput("IDToken1", username));
-            callbacks.add(nameCallback);
-
-            CallBack passwordCallback = new CallBack("PasswordCallback");
-            passwordCallback.output.add(new InputOutput("prompt", "Password:"));
-            passwordCallback.input.add(new InputOutput("IDToken2", password));
-            callbacks.add(passwordCallback);
-        }
-    }
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class OpenAMAccessToken {
-        public String access_token;
-        public String refresh_token;
-        public String id_token;
-        public String scope;
-    }
-
-    private class CallBack {
-        public String type;
-        public List<InputOutput> output = new ArrayList<>();
-        public List<InputOutput> input = new ArrayList<>();
-
-        private CallBack(String type) {
-            this.type = type;
-        }
-    }
-
-    private class InputOutput {
-        public String name;
-        public String value;
-
-        private InputOutput(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
     }
 }
 
