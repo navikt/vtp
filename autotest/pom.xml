@@ -12,8 +12,6 @@
   
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<maven.compiler.source>1.8</maven.compiler.source>
-  	<maven.compiler.target>1.8</maven.compiler.target>
   	<tests>internal</tests>
   </properties>
   
@@ -58,7 +56,7 @@
 		        <dependency>
 		            <groupId>org.junit.jupiter</groupId>
 		            <artifactId>junit-jupiter-engine</artifactId>
-		            <version>5.1.0</version>
+		            <version>RELEASE</version>
 		        </dependency>
 		    </dependencies>
 	  	</plugin>
