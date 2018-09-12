@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.journal.modell;
 import java.time.LocalDateTime;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalDokument;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivtemaer;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
@@ -17,7 +18,6 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.TilknyttetJournalpostSo
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Variantformater;
 
 public class JournalpostBygger {
-    protected long id;
     protected String dokumentId;
     protected String journalpostId;
 //    protected String innhold;
@@ -34,24 +34,22 @@ public class JournalpostBygger {
 
 
     public JournalpostBygger(JournalDokument journalDokument){
-        this.id = journalDokument.getId();
         this.dokumentId = journalDokument.getDokumentId();
         this.journalpostId = journalDokument.getJournalpostId();
 //        this.innhold = journalDokument.getDokument().toString();
         this.sakId = journalDokument.getSakId();
         this.dokumentTyper = journalDokument.getDokumentType();
         this.kategori = journalDokument.getKategori();
-        this.tilknyttetJpSom = journalDokument.getTilknJpSom();
+        this.tilknyttetJpSom = journalDokument.getTilknyttetJPSom();
         this.kommskanaler = journalDokument.getKommunikasjonskanal();
-        this.kommsretninger = journalDokument.getKommunikasjonsretning();
+        this.kommsretninger = journalDokument.getKommunkasjonsretning();
         this.arkivFiltype = journalDokument.getFilType();
         this.variantFormat = journalDokument.getVariantformat();
         this.arkivTema = journalDokument.getArkivtema();
-        this.datoMottatt = journalDokument.getDatoMottatt();
+        this.datoMottatt = journalDokument.getMottattDato();
     }
 
-    public JournalpostBygger(long id, String journalpostId, String innhold, String sakId) {
-        this.id = id;
+    public JournalpostBygger(String journalpostId, String innhold, String sakId) {
         this.journalpostId = journalpostId;
 //        this.innhold = innhold;
         this.sakId = sakId;

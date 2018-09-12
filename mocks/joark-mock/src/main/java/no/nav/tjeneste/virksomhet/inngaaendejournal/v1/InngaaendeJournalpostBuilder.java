@@ -1,19 +1,34 @@
 package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.*;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Person;
-import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Variantformater;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalDokument;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalV2Constants;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.ArkivSak;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinformasjon;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinnhold;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentkategorier;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumenttilstand;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.DokumenttypeIder;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.InngaaendeJournalpost;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Journaltilstand;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Mottakskanaler;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Person;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Tema;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Variantformater;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalDokument;
+import no.nav.tjeneste.virksomhet.journal.modell.JournalV2Constants;
+import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentinfoRelasjon;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.JournalfoertDokumentInfo;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalstatuser;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.RegistertSak;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Statuser;
 
 class InngaaendeJournalpostBuilder {
 
@@ -29,8 +44,8 @@ class InngaaendeJournalpostBuilder {
         if (foersteDok.getBrukerFnr() != null) {
             inngJournalpost.setAvsenderId(foersteDok.getBrukerFnr());
         }
-        if (foersteDok.getDatoMottatt() != null) {
-            inngJournalpost.setForsendelseMottatt(ConversionUtils.convertToXMLGregorianCalendar(foersteDok.getDatoMottatt()));
+        if (foersteDok.getMottattDato() != null) {
+            inngJournalpost.setForsendelseMottatt(ConversionUtils.convertToXMLGregorianCalendar(foersteDok.getMottattDato()));
         }
         if (foersteDok.getKommunikasjonskanal() != null) {
             Mottakskanaler mottakskanal = new Mottakskanaler();
@@ -149,11 +164,11 @@ class InngaaendeJournalpostBuilder {
     }
 
     private boolean erHoveddokument(JournalDokument journalDok) {
-        return JournalpostModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(journalDok.getTilknJpSom());
+        return JournalpostModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(journalDok.getTilknyttetJPSom());
     }
 
     private boolean erVedlegg(JournalDokument journalDok) {
-        return JournalpostModelData.TILKNYTTET_SOM_VEDLEGG.equals(journalDok.getTilknJpSom());
+        return JournalpostModelData.TILKNYTTET_SOM_VEDLEGG.equals(journalDok.getTilknyttetJPSom());
     }
 
     //---------  Journalpost -> InngaaendeJournalpost  -------------

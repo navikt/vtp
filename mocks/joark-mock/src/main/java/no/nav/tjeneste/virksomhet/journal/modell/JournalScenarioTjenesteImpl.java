@@ -2,6 +2,7 @@ package no.nav.tjeneste.virksomhet.journal.modell;
 
 import java.util.List;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalDokument;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 
 
@@ -14,7 +15,7 @@ public class JournalScenarioTjenesteImpl {
     }
 
     /**
-     * Hent dokument på dokument id
+     * Hent journal på journal id
      * @param dokumentId
      * @return JournalDokument
      */
@@ -23,7 +24,7 @@ public class JournalScenarioTjenesteImpl {
     }
 
     /**
-     * Hent ett dokument på journal id
+     * Hent ett journal på journal id
      * @param journalId
      * @return JournalDokument
      */

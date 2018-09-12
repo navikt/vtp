@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalDokument;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalDokument;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalScenarioTjenesteImpl;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostBygger;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
@@ -56,6 +56,8 @@ public class JournalServiceMockImpl implements JournalV2 {
     private JournalpostModelData journalpostModelData;
 
     private JournalScenarioTjenesteImpl joarkScenarioTjeneste;
+
+    public JournalServiceMockImpl(){}
 
     public JournalServiceMockImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.journalpostModelData = new JournalpostModelData(scenarioRepository);
@@ -153,7 +155,7 @@ public class JournalServiceMockImpl implements JournalV2 {
         }
 
         /**
-         * Henter dokument fra db dersom det finnes, hvis ikke hent statisk data(journalpost) fra prosjektfolder
+         * Henter journal fra db dersom det finnes, hvis ikke hent statisk data(journalpost) fra prosjektfolder
          */
 
         JournalDokument journalDokument = null;
