@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.server;
+package no.nav.foreldrepenger.fpmock2.felles;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,12 +17,11 @@ public class PropertiesUtils {
     private static String DEV_FILNAVN = "application.properties";
     private static String DEV_FILNAVN_LOCAL = "application-local.properties";
 
-
-
     public static void initProperties() {
         File devFil = new File(DEV_FILNAVN);
         loadPropertyFile(devFil);
         loadPropertyFile(new File(DEV_FILNAVN_LOCAL));
+        LOGGER.info("PROPERTIES LASTET");
     }
 
     private static void loadPropertyFile(File devFil) {

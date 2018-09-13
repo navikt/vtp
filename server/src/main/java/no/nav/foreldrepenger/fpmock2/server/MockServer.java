@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.fpmock2.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;

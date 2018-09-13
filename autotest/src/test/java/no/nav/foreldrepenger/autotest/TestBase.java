@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest;
 
 import java.util.List;
 
+import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import org.junit.jupiter.api.BeforeAll;
 
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
@@ -11,7 +12,9 @@ public abstract class TestBase {
     
     @BeforeAll
     protected static void setUpAll() {
-        TestKonfigurasjon.init();
+        //TestKonfigurasjon.init();
+		PropertiesUtils.initProperties();
+
         new MiljoKonfigurasjon();
     }
 	protected void verifiserListeInneholder(List<Object> liste, Object object1) {
