@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -16,12 +18,15 @@ public class PropertiesUtils {
 
     private static String DEV_FILNAVN = "application.properties";
     private static String DEV_FILNAVN_LOCAL = "application-local.properties";
-
-    public static void initProperties() {
-        File devFil = new File(DEV_FILNAVN);
+    public static void initProperties(String propertyDir) {
+        File devFil = Paths.get(propertyDir, DEV_FILNAVN).toFile();
         loadPropertyFile(devFil);
-        loadPropertyFile(new File(DEV_FILNAVN_LOCAL));
+        loadPropertyFile(Paths.get(propertyDir, DEV_FILNAVN_LOCAL).toFile());
         LOGGER.info("PROPERTIES LASTET");
+    }
+    
+    public static void initProperties() {
+        initProperties("");
     }
 
     private static void loadPropertyFile(File devFil) {
@@ -35,5 +40,4 @@ public class PropertiesUtils {
             System.getProperties().putAll(prop);
         }
     }
-
 }

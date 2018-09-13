@@ -12,9 +12,7 @@ public abstract class TestBase {
     
     @BeforeAll
     protected static void setUpAll() {
-        //TestKonfigurasjon.init();
-		PropertiesUtils.initProperties();
-
+        PropertiesUtils.initProperties(hentPropertyDir());
         new MiljoKonfigurasjon();
     }
 	protected void verifiserListeInneholder(List<Object> liste, Object object1) {
@@ -38,5 +36,13 @@ public abstract class TestBase {
 		if(!statement) {
 			throw new RuntimeException("Verifisering feilet: " + message);
 		}
+	}
+	
+	private static String hentPropertyDir() {
+	    String propertyDir = System.getProperty("application.root");
+	    if(null == propertyDir) {
+	        throw new RuntimeException("System property 'application.root' er ikke satt");
+	    }
+	    return propertyDir;
 	}
 }

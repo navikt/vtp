@@ -53,6 +53,9 @@
 		    	<properties>
     				<includeTags>${testsTags}</includeTags>
 		    	</properties>
+		    	<systemPropertyVariables>
+		    		<application.root>${maven.multiModuleProjectDirectory}</application.root>
+		    	</systemPropertyVariables>
 		    </configuration>
 		    <dependencies>
 		        <dependency>
