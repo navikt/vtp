@@ -12,7 +12,7 @@ COPY model/scenarios/ /app/model/scenarios/
 
 COPY server/src/main/resources/logback.xml logback.xml
 COPY server/target/server*.jar app.jar
+COPY server/target/application-local.properties application-local.properties
 COPY run-java.sh /
 
-EXPOSE 8060
 RUN chmod +x /run-java.sh
