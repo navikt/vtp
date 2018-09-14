@@ -40,31 +40,31 @@ public class SoapWebServiceConfig {
         GsakRepo gsakRepo = new GsakRepo();
 
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
-        publishWebService(new AktoerServiceMockImpl(repo), "/Aktoer/v2");
+        publishWebService(new AktoerServiceMockImpl(repo), "/aktoerregister/ws/Aktoer/v2");
         // access wsdl on http://localhost:7999/aktoer?wsdl
-        publishWebService(new SakServiceMockImpl(gsakRepo), "/Sak/v1");
+        publishWebService(new SakServiceMockImpl(gsakRepo), "/nav-gsak-ws/SakV1");
         // access wsdl on http://localhost:7999/sak?wsdl
-        publishWebService(new PersonServiceMockImpl(repo), "/Person/v3");
+        publishWebService(new PersonServiceMockImpl(repo), "/tpsws/ws/Person/v3");
         // access wsdl on http://localhost:7999/person?wsdl
-        publishWebService(new JournalServiceMockImpl(repo), "/Journal/v2");
+        publishWebService(new JournalServiceMockImpl(repo), "/joark/Journal/v2");
         // access wsdl on http://localhost:7999/journal?wsdl
-        publishWebService(new InngaaendeJournalServiceMockImpl(repo), "/Inngaaendejournal/v1");
-        publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/Oppgavebehandling/v3");
+        publishWebService(new InngaaendeJournalServiceMockImpl(repo), "/joark/InngaaendeJournal/v1");
+        publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/nav-gsak-ws/BehandleOppgaveV1");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
-        publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/BehandleOppgave/v1");
+        publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/nav-gsak-ws/BehandleOppgaveV1");
         // access wsdl on http://localhost:7999/behandleoppgave?wsdl
-        publishWebService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/BehandleSak/v2");
+        publishWebService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/nav-gsak-ws/BehandleSakV2");
         // access wsdl on http://localhost:7999/behandlesakV2?wsdl
-        publishWebService(new FinnSakListeMockImpl(repo), "/Infotrygdsak/v1");
-        publishWebService(new FinnGrunnlagListeMockImpl(repo), "/InfotrygdBeregningsgrunnlag/v1");
+        publishWebService(new FinnSakListeMockImpl(repo), "/infotrygd-ws/InfotrygdSak/v1");
+        publishWebService(new FinnGrunnlagListeMockImpl(repo), "/infotrygd-ws/InfotrygdBeregningsgrunnlag/v1");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-        publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/MeldekortUtbetalingsgrunnlag/v1");
-        publishWebService(new MedlemServiceMockImpl(repo), "/Medlemskap/v2");
-        publishWebService(new ArbeidsfordelingMockImpl(repo), "/Arbeidsfordeling/v1");
-        publishWebService(new InntektMockImpl(repo), "/Inntekt/v3");
-        publishWebService(new OppgaveServiceMockImpl(), "/Oppgave/v3");
-        publishWebService(new ArbeidsforholdMockImpl(), "/Arbeidsforhold/v3");
-        publishWebService(new OrganisasjonMockImpl(), "/Organisasjon/v4");
+        publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
+        publishWebService(new MedlemServiceMockImpl(repo), "/medl2/ws/Medlemskap/v2");
+        publishWebService(new ArbeidsfordelingMockImpl(repo), "/norg2/ws/Arbeidsfordeling/v1");
+        publishWebService(new InntektMockImpl(repo), "/inntektskomponenten-ws/inntekt/v3/Inntekt");
+        publishWebService(new OppgaveServiceMockImpl(), "/nav-gsak-ws/OppgaveV3");
+        publishWebService(new ArbeidsforholdMockImpl(), "/aareg-core/ArbeidsforholdService/v3");
+        publishWebService(new OrganisasjonMockImpl(), "/ereg/ws/OrganisasjonService/v4");
         publishWebService(new PdpMock(), "/asm-pdp/authorize");
     }
 
