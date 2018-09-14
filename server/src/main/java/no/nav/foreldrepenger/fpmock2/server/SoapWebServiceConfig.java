@@ -14,7 +14,6 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
-import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
@@ -41,33 +40,32 @@ public class SoapWebServiceConfig {
         GsakRepo gsakRepo = new GsakRepo();
 
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
-        publishWebService(new AktoerServiceMockImpl(repo), "/aktoer");
+        publishWebService(new AktoerServiceMockImpl(repo), "/Aktoer/v2");
         // access wsdl on http://localhost:7999/aktoer?wsdl
-        publishWebService(new SakServiceMockImpl(gsakRepo), "/sak");
+        publishWebService(new SakServiceMockImpl(gsakRepo), "/Sak/v1");
         // access wsdl on http://localhost:7999/sak?wsdl
-        publishWebService(new PersonServiceMockImpl(repo), "/person");
+        publishWebService(new PersonServiceMockImpl(repo), "/Person/v3");
         // access wsdl on http://localhost:7999/person?wsdl
-        publishWebService(new JournalServiceMockImpl(repo), "/journal");
+        publishWebService(new JournalServiceMockImpl(repo), "/Journal/v2");
         // access wsdl on http://localhost:7999/journal?wsdl
-        publishWebService(new InngaaendeJournalServiceMockImpl(repo), "/inngaaendejournal");
-        publishWebService(new BehandleInngaaendeJournalServiceMockImpl(repo), "/behandleinngaaendejournal");
-        publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/oppgavebehandling");
+        publishWebService(new InngaaendeJournalServiceMockImpl(repo), "/Inngaaendejournal/v1");
+        publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/Oppgavebehandling/v3");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
-        publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/behandleoppgave");
+        publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/BehandleOppgave/v1");
         // access wsdl on http://localhost:7999/behandleoppgave?wsdl
-        publishWebService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/behandlesakV2");
+        publishWebService(new BehandleSak2ServiceMockImpl(gsakRepo, repo), "/BehandleSak/v2");
         // access wsdl on http://localhost:7999/behandlesakV2?wsdl
-        publishWebService(new PdpMock(), "/asm-pdp/authorize");
-        publishWebService(new FinnSakListeMockImpl(repo), "/infotrygdsak");
-        publishWebService(new FinnGrunnlagListeMockImpl(repo), "/infotrygdberegningsgrunnlag");
+        publishWebService(new FinnSakListeMockImpl(repo), "/Infotrygdsak/v1");
+        publishWebService(new FinnGrunnlagListeMockImpl(repo), "/InfotrygdBeregningsgrunnlag/v1");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-        publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/meldekortutbetalingsgrunnlag");
-        publishWebService(new MedlemServiceMockImpl(repo), "/medlem");
-        publishWebService(new ArbeidsfordelingMockImpl(repo), "/arbeidsfordeling");
-        publishWebService(new InntektMockImpl(repo), "/inntekt");
-        publishWebService(new OppgaveServiceMockImpl(), "/oppgave");
-        publishWebService(new ArbeidsforholdMockImpl(), "/arbeidsforhold");
-        publishWebService(new OrganisasjonMockImpl(), "/organisasjon");
+        publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/MeldekortUtbetalingsgrunnlag/v1");
+        publishWebService(new MedlemServiceMockImpl(repo), "/Medlemskap/v2");
+        publishWebService(new ArbeidsfordelingMockImpl(repo), "/Arbeidsfordeling/v1");
+        publishWebService(new InntektMockImpl(repo), "/Inntekt/v3");
+        publishWebService(new OppgaveServiceMockImpl(), "/Oppgave/v3");
+        publishWebService(new ArbeidsforholdMockImpl(), "/Arbeidsforhold/v3");
+        publishWebService(new OrganisasjonMockImpl(), "/Organisasjon/v4");
+        publishWebService(new PdpMock(), "/asm-pdp/authorize");
     }
 
     private void publishWebService(Object ws, String path) {
