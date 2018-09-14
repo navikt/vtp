@@ -22,6 +22,7 @@
 		<module>model</module>
 		<module>mocks</module>
 		<module>server</module>
+		<module>dokumentgenerator</module>
 	</modules>
 
 	<properties>
