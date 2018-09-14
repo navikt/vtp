@@ -1,8 +1,9 @@
-package no.nav.foreldrepenger.fpmock2.testmodell.journal;
+package no.nav.foreldrepenger.fpmock2.testmodell.dokument;
 
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument.DokumentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 
 
@@ -10,12 +11,13 @@ public class JournalScenarioTjenesteImpl {
 
     private TestscenarioBuilderRepository scenarioRepository;
 
+
     public JournalScenarioTjenesteImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
     /**
-     * Hent journal på journal id
+     * Hent modell på modell id
      * @param dokumentId
      * @return List<JournalpostModell>
      */
@@ -24,7 +26,7 @@ public class JournalScenarioTjenesteImpl {
     }
 
     /**
-     * Hent ett journal på journal id
+     * Hent ett modell på modell id
      * @param journalId
      * @return JournalpostModell
      */
@@ -33,7 +35,7 @@ public class JournalScenarioTjenesteImpl {
     }
 
     /**
-     * Hent dokumenter på journal id
+     * Hent dokumenter på modell id
      * @param journalId
      * @return List<DokumentModell>
      */
@@ -54,5 +56,10 @@ public class JournalScenarioTjenesteImpl {
     public JournalpostModell finnJournalpostMedJournalpostId(String journalpostId){
         throw new UnsupportedOperationException("TODO: implementer");
     }
+
+    public void leggTilJournalpost(JournalpostModell journalpostModell){
+        throw new UnsupportedOperationException("TODO: implementer");
+    }
+
 
 }

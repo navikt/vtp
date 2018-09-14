@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument;
+package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell;
 
 public class DokumentVariantInnhold {
 

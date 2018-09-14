@@ -1,10 +1,8 @@
-package no.nav.foreldrepenger.fpmock2.testmodell.journal;
+package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument.DokumentModell;
 
 public class JournalpostModell {
 

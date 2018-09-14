@@ -12,8 +12,10 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalScenarioTjenesteImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.modell.InngaaendeJournalpostBuilder;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeFunnet;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeInngaaende;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostSikkerhetsbegrensning;
@@ -29,8 +31,6 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpost
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpostResponse;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovRequest;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovResponse;
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalScenarioTjenesteImpl;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 
 @Addressing
@@ -48,14 +48,11 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     public InngaaendeJournalServiceMockImpl(){}
 
     private TestscenarioBuilderRepository scenarioRepository;
-    
-    private JournalpostModelData journalpostModelData;
 
     private JournalScenarioTjenesteImpl joarkScenarioTjeneste;
 
     public InngaaendeJournalServiceMockImpl(TestscenarioBuilderRepository scenarioRepository){
         this.scenarioRepository = scenarioRepository;
-        this.journalpostModelData = new JournalpostModelData(scenarioRepository);
         this.joarkScenarioTjeneste = new JournalScenarioTjenesteImpl(scenarioRepository);
     }
     
