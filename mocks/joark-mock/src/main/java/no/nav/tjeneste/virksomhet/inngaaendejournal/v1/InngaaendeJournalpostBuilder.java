@@ -1,11 +1,13 @@
 package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument.DokumentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument.DokumentVariantInnhold;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.ArkivSak;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinformasjon;
@@ -19,7 +21,6 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Mottakskanale
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Person;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Tema;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Variantformater;
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalDokument;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalV2Constants;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
@@ -30,183 +31,116 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalstatuser;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.RegistertSak;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Statuser;
 
+
 class InngaaendeJournalpostBuilder {
 
-    //---------  List<JournalDokument> -> InngaaendeJournalpost  -------------
-
-    InngaaendeJournalpost buildFrom(List<JournalDokument> journalDokListe) {
+    public static InngaaendeJournalpost buildFrom(JournalpostModell journalpostModell) {
 
         InngaaendeJournalpost inngJournalpost = new InngaaendeJournalpost();
 
-        JournalDokument foersteDok = journalDokListe.get(0);
             // første og beste - de skal være like på feltene vi setter her
 
-        if (foersteDok.getBrukerFnr() != null) {
-            inngJournalpost.setAvsenderId(foersteDok.getBrukerFnr());
+        if (journalpostModell.getAvsenderFnr() != null) {
+            inngJournalpost.setAvsenderId(journalpostModell.getAvsenderFnr());
         }
-        if (foersteDok.getMottattDato() != null) {
-            inngJournalpost.setForsendelseMottatt(ConversionUtils.convertToXMLGregorianCalendar(foersteDok.getMottattDato()));
+        if (journalpostModell.getMottattDato() != null) {
+            inngJournalpost.setForsendelseMottatt(ConversionUtils.convertToXMLGregorianCalendar(journalpostModell.getMottattDato()));
         }
-        if (foersteDok.getKommunikasjonskanal() != null) {
+        if (journalpostModell.getMottakskanal() != null) {
             Mottakskanaler mottakskanal = new Mottakskanaler();
-            mottakskanal.setValue(foersteDok.getKommunikasjonskanal());
+            mottakskanal.setValue(journalpostModell.getMottakskanal());
             inngJournalpost.setMottakskanal(mottakskanal);
         }
-        if (foersteDok.getArkivtema() != null) {
+        if (journalpostModell.getArkivtema() != null) {
             Tema tema = new Tema();
-            tema.setValue(foersteDok.getArkivtema());
+            tema.setValue(journalpostModell.getArkivtema());
             inngJournalpost.setTema(tema);
         }
-        if (foersteDok.getJournaltilstand() != null) {
-            Journaltilstand journaltilstand = Journaltilstand.fromValue(foersteDok.getJournaltilstand());
+        if (journalpostModell.getJournaltilstand() != null) {
+            Journaltilstand journaltilstand = Journaltilstand.fromValue(journalpostModell.getJournaltilstand());
             inngJournalpost.setJournaltilstand(journaltilstand);
         }
 
-        ArkivSak arkivSak = lagArkivSak(foersteDok);
+        ArkivSak arkivSak = lagArkivSak(journalpostModell);
         inngJournalpost.setArkivSak(arkivSak);
 
-        if (foersteDok.getBrukerFnr() != null) {
+        if (journalpostModell.getAvsenderFnr() != null) {
             Person bruker = new Person();
-            bruker.setIdent(foersteDok.getBrukerFnr());
+            bruker.setIdent(journalpostModell.getAvsenderFnr());
             inngJournalpost.getBrukerListe().add(bruker);
         }
 
-        Dokumentinformasjon dokInfoHoved = lagDokumentinformasjonHoved(journalDokListe);
+        Dokumentinformasjon dokInfoHoved = lagDokumentinformasjonHoved(journalpostModell);
         inngJournalpost.setHoveddokument(dokInfoHoved);
 
-        List<Dokumentinformasjon> dokInfoVedleggListe = lagDokumentinformasjonVedlegg(journalDokListe);
+        List<Dokumentinformasjon> dokInfoVedleggListe = lagDokumentinformasjonVedlegg(journalpostModell);
         inngJournalpost.getVedleggListe().addAll(dokInfoVedleggListe);
 
         return inngJournalpost;
     }
 
-    private Dokumentinformasjon lagDokumentinformasjonHoved(List<JournalDokument> journalDokListe) {
+    private static Dokumentinformasjon lagDokumentinformasjonHoved(JournalpostModell journalpostModell) {
 
-        List<JournalDokument> hovedListe = journalDokListe.stream()
-                .filter(this::erHoveddokument)
-                .collect(Collectors.toList());
+        DokumentModell dokumentModell = journalpostModell.getDokumentModellList().stream()
+                .filter(t-> erHoveddokument(t))
+                .findFirst().orElseThrow(() -> new IllegalStateException("Journalpost mangler hoveddokument"));
 
-        Dokumentinformasjon dokinfo = lagDokumentinformasjon(hovedListe);
+        Dokumentinformasjon dokinfo = lagDokumentinformasjon(dokumentModell);
         return dokinfo;
     }
 
-    private List<Dokumentinformasjon> lagDokumentinformasjonVedlegg(List<JournalDokument> journalDokListe) {
+    private static List<Dokumentinformasjon> lagDokumentinformasjonVedlegg(JournalpostModell journalpostModell) {
 
-        List<JournalDokument> vedleggListe = journalDokListe.stream()
-                .filter(this::erVedlegg)
+        List<DokumentModell> vedleggListe = journalpostModell.getDokumentModellList().stream()
+                .filter(t-> erVedlegg(t))
                 .collect(Collectors.toList());
 
-        Map<String, List<JournalDokument>> vedleggPrDokumentId = vedleggListe.stream()
-                .collect(Collectors.groupingBy(JournalDokument::getDokumentId));
 
-        List<Dokumentinformasjon> dokInfoVedleggListe = vedleggPrDokumentId.entrySet().stream()
-                .map(entry -> lagDokumentinformasjon(entry.getValue()))
+        List<Dokumentinformasjon> dokInfoVedleggListe = vedleggListe.stream()
+                .map(entry -> lagDokumentinformasjon(entry))
                 .collect(Collectors.toList());
 
         return dokInfoVedleggListe;
     }
 
-    private Dokumentinformasjon lagDokumentinformasjon(List<JournalDokument> journalDokListe) {
+    private static Dokumentinformasjon lagDokumentinformasjon(DokumentModell dokumentModell) {
 
-        Dokumentinformasjon dokinfo = null;
+        Dokumentinformasjon dokinfo = new Dokumentinformasjon();
 
-        if (! journalDokListe.isEmpty()) {
-            dokinfo = new Dokumentinformasjon();
-            JournalDokument journalDokFoerste = journalDokListe.get(0);
-                // første og beste - de skal være like på feltene vi setter her
-            if (journalDokFoerste.getKategori() != null) {
-                Dokumentkategorier dokumentkategori = new Dokumentkategorier();
-                dokumentkategori.setValue(journalDokFoerste.getKategori());
-                dokinfo.setDokumentkategori(dokumentkategori);
-            }
-            if (journalDokFoerste.getDokumentType() != null) {
+            if (dokumentModell.getDokumentType() != null) {
                 DokumenttypeIder dokumenttypeId = new DokumenttypeIder();
-                dokumenttypeId.setValue(journalDokFoerste.getDokumentType());
+                dokumenttypeId.setValue(dokumentModell.getDokumentType());
                 dokinfo.setDokumenttypeId(dokumenttypeId);
             }
-            dokinfo.setDokumentId(journalDokFoerste.getDokumentId());
-            if (journalDokFoerste.getDokumenttilstand() != null) {
-                Dokumenttilstand dokumenttilstand = Dokumenttilstand.fromValue(journalDokFoerste.getDokumenttilstand());
-                dokinfo.setDokumenttilstand(dokumenttilstand);
+            dokinfo.setDokumentId(dokumentModell.getDokumentId());
+
+            for(DokumentVariantInnhold innhold : dokumentModell.getDokumentVariantInnholdListe()){
+                Dokumentinnhold dokumentInnhold = new Dokumentinnhold();
+                dokumentInnhold.setArkivfiltype(new Arkivfiltyper().withValue(innhold.getFilType()));
+                dokumentInnhold.setVariantformat(new Variantformater().withValue(innhold.getVariantFormat()));
+                dokinfo.getDokumentInnholdListe().add(dokumentInnhold);
+
             }
-            for (JournalDokument journalDok : journalDokListe) {
-                Dokumentinnhold dokInnhold = new Dokumentinnhold();
-                boolean harVerdier = false;
-                if (journalDok.getFilType() != null) {
-                    Arkivfiltyper arkivfiltype = new Arkivfiltyper();
-                    arkivfiltype.setValue(journalDok.getFilType());
-                    dokInnhold.setArkivfiltype(arkivfiltype);
-                    harVerdier = true;
-                }
-                if (journalDok.getVariantformat() != null) {
-                    Variantformater variantformat = new Variantformater();
-                    variantformat.setValue(journalDok.getVariantformat());
-                    dokInnhold.setVariantformat(variantformat);
-                    harVerdier = true;
-                }
-                if (harVerdier) {
-                    dokinfo.getDokumentInnholdListe().add(dokInnhold);
-                }
-            }
-        }
 
         return dokinfo;
     }
 
-    private ArkivSak lagArkivSak(JournalDokument journalDok) {
+    private static ArkivSak lagArkivSak(JournalpostModell journalpostmodell) {
         ArkivSak arkivSak = null;
-        if (journalDok.getSakId() != null || journalDok.getFagsystem() != null) {
+        if (journalpostmodell.getSakId() != null || journalpostmodell.getFagsystemId() != null) {
             arkivSak = new ArkivSak();
-            arkivSak.setArkivSakId(journalDok.getSakId());
-            arkivSak.setArkivSakSystem(journalDok.getFagsystem());
+            arkivSak.setArkivSakId(journalpostmodell.getSakId());
+            arkivSak.setArkivSakSystem(journalpostmodell.getFagsystemId());
         }
         return arkivSak;
     }
 
-    private boolean erHoveddokument(JournalDokument journalDok) {
-        return JournalpostModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(journalDok.getTilknyttetJPSom());
+    private static boolean erHoveddokument(DokumentModell dokumentModell) {
+        return JournalpostModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(dokumentModell.getDokumentTilknyttetJournalpost());
     }
 
-    private boolean erVedlegg(JournalDokument journalDok) {
-        return JournalpostModelData.TILKNYTTET_SOM_VEDLEGG.equals(journalDok.getTilknyttetJPSom());
-    }
-
-    //---------  Journalpost -> InngaaendeJournalpost  -------------
-
-    InngaaendeJournalpost buildFrom(Journalpost journalpost) {
-
-        InngaaendeJournalpost inngJournalpost = new InngaaendeJournalpost();
-
-        // AvsenderId - har ikke data
-
-        inngJournalpost.setForsendelseMottatt(journalpost.getMottatt());
-
-        if (journalpost.getKommunikasjonskanal() != null) {
-            Mottakskanaler mottakskanal = new Mottakskanaler();
-            mottakskanal.setValue(journalpost.getKommunikasjonskanal().getValue());
-            inngJournalpost.setMottakskanal(mottakskanal);
-        }
-
-        if (journalpost.getArkivtema() != null) {
-            Tema tema = new Tema();
-            tema.setValue(journalpost.getArkivtema().getValue());
-            inngJournalpost.setTema(tema);
-        }
-
-        inngJournalpost.setJournaltilstand(lagJournaltilstand(journalpost.getJournalstatus()));
-
-        ArkivSak arkivSak = lagArkivSak(journalpost);
-        inngJournalpost.setArkivSak(arkivSak);
-
-        // brukerListe - har ikke data
-
-        Dokumentinformasjon dokInfoHoved = lagDokumentinformasjonHoved(journalpost);
-        inngJournalpost.setHoveddokument(dokInfoHoved);
-
-        List<Dokumentinformasjon> dokInfoVedleggListe = lagDokumentinformasjonVedlegg(journalpost);
-        inngJournalpost.getVedleggListe().addAll(dokInfoVedleggListe);
-
-        return inngJournalpost;
+    private static boolean erVedlegg(DokumentModell dokumentModell) {
+        return JournalpostModelData.TILKNYTTET_SOM_VEDLEGG.equals(dokumentModell.getDokumentTilknyttetJournalpost());
     }
 
     private Journaltilstand lagJournaltilstand(Journalstatuser journalstatus) {
@@ -230,7 +164,7 @@ class InngaaendeJournalpostBuilder {
     private Dokumentinformasjon lagDokumentinformasjonHoved(Journalpost journalpost) {
 
         Optional<DokumentinfoRelasjon> dokInfoRelHoved = journalpost.getDokumentinfoRelasjonListe().stream()
-                .filter(this::erHoveddokument)
+                .filter(t-> erHoveddokument(t))
                 .findFirst();
 
         Dokumentinformasjon dokinfo = null;
@@ -243,7 +177,7 @@ class InngaaendeJournalpostBuilder {
     private List<Dokumentinformasjon> lagDokumentinformasjonVedlegg(Journalpost journalpost) {
 
         List<DokumentinfoRelasjon> dokInfoRelVedleggListe = journalpost.getDokumentinfoRelasjonListe().stream()
-                .filter(this::erVedlegg)
+                .filter(t-> erVedlegg(t))
                 .collect(Collectors.toList());
 
         List<Dokumentinformasjon> dokInfoVedleggListe = dokInfoRelVedleggListe.stream()
@@ -335,11 +269,11 @@ class InngaaendeJournalpostBuilder {
         return arkivSak;
     }
 
-    private boolean erHoveddokument(DokumentinfoRelasjon dokinfoRel) {
+    private static boolean erHoveddokument(DokumentinfoRelasjon dokinfoRel) {
         return JournalpostModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(dokinfoRel.getDokumentTilknyttetJournalpost().getValue());
     }
 
-    private boolean erVedlegg(DokumentinfoRelasjon dokinfoRel) {
+    private static boolean erVedlegg(DokumentinfoRelasjon dokinfoRel) {
         return JournalpostModelData.TILKNYTTET_SOM_VEDLEGG.equals(dokinfoRel.getDokumentTilknyttetJournalpost().getValue());
     }
 }

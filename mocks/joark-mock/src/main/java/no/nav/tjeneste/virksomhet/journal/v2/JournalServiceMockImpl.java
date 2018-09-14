@@ -4,12 +4,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.jws.HandlerChain;
@@ -24,9 +19,10 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalScenarioTjenesteImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument.DokumentVariantInnhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalDokument;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalScenarioTjenesteImpl;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostBygger;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
@@ -36,9 +32,6 @@ import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLSikkerhetsbe
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.JournalV2;
 import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentinfoRelasjon;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.JournalfoertDokumentInfo;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
@@ -71,74 +64,22 @@ public class JournalServiceMockImpl implements JournalV2 {
     @Override
     public HentJournalpostListeResponse hentJournalpostListe(@WebParam(name = "Request", targetNamespace = "") HentJournalpostListeRequest request)
             throws HentJournalpostListeSikkerhetsbegrensning {
+
         HentJournalpostListeResponse response = new HentJournalpostListeResponse();
-        Optional<String> funnetsaksnr = request.getSakListe().stream().map(sak -> sak.getSakId()).findFirst();
+        List<String> sakList = request.getSakListe().stream().map(t-> t.getSakId()).collect(Collectors.toList());
 
-        if (!funnetsaksnr.isPresent()) {
-            LOG.info("Fant ingen saksnr i request.");
+        if (sakList.size() == 0) {
+            LOG.info("Fant ingen saksnr i request");
             return response;
         }
 
-        List<Journalpost> journalposter;
-
-        List<JournalDokument> journalpost = joarkScenarioTjeneste.finnJournalposterMedSakId(funnetsaksnr.get());
-        Map<String, List<JournalDokument>> journalDokumenterPerJpId = new HashMap<>();
-        Map<String, List<JournalDokument>> journalDokumenterPerDokType = new HashMap<>();
-
-        if (journalpost != null) {
-
-            lagJournalDokumentMapMedJpIdSomKey(journalpost, journalDokumenterPerJpId);
-
-            int j = 0;
-            for (String key : journalDokumenterPerJpId.keySet()) {
-                JournalpostBygger journalpostBygger = null;
-
-                for (int i = 0; i < journalDokumenterPerJpId.get(key).size(); i++) {
-                    String keyForType = journalDokumenterPerJpId.get(key).get(i).getDokumentType();
-                    if (journalDokumenterPerDokType.containsKey(keyForType)) {
-                        List<JournalDokument> jdList = journalDokumenterPerDokType.get(keyForType);
-                        jdList.add(journalDokumenterPerJpId.get(key).get(i));
-
-                    } else {
-                        List<JournalDokument> jdokList = new ArrayList<>();
-                        jdokList.add(journalDokumenterPerJpId.get(key).get(i));
-                        journalDokumenterPerDokType.put(keyForType, jdokList);
-                    }
-                }
-
-                try {
-
-                    Object keyJd = journalDokumenterPerDokType.keySet().toArray()[0];
-                    journalpostBygger = new JournalpostBygger(journalDokumenterPerDokType.get(keyJd).get(0));
-                    response.getJournalpostListe().add(journalpostBygger.byggJournalpost());
-
-                    for (String st : journalDokumenterPerDokType.keySet()) {
-                        Object[] keyValues = journalDokumenterPerDokType.keySet().toArray();
-                        int index = Arrays.asList(keyValues).indexOf(st);
-                        List<DokumentInnhold> dokumentInnholdList = journalDokumenterPerDokType.get(st).stream().map(e-> new JournalpostBygger(e).byggDokumentInnhold()).collect(Collectors.toList());
-                        List<DokumentinfoRelasjon> dokumentinfoRelasjonList = journalDokumenterPerDokType.get(st).stream().map(e-> new JournalpostBygger(e).byggDokumentinfoRelasjon()).collect(Collectors.toList());
-                        List<JournalfoertDokumentInfo> journalfoertDokumentInfo = journalDokumenterPerDokType.get(st).stream().map(e-> new JournalpostBygger(e).byggJournalfoertDokumentInfo()).collect(Collectors.toList());
-                        response.getJournalpostListe().get(j).getDokumentinfoRelasjonListe().add(dokumentinfoRelasjonList.get(0));
-                        response.getJournalpostListe().get(j).getDokumentinfoRelasjonListe().get(index).setJournalfoertDokument(journalfoertDokumentInfo.get(0));
-                        response.getJournalpostListe().get(j).getDokumentinfoRelasjonListe().get(index).getJournalfoertDokument().getBeskriverInnholdListe().addAll(dokumentInnholdList);
-
-                    }
-                } catch (NullPointerException npe) {
-                    npe.printStackTrace();
-                }
-                j++;
+        for(String sak : sakList){
+            List<JournalpostModell> journalpostModelleForSak = joarkScenarioTjeneste.finnJournalposterMedSakId(sak);
+            for(JournalpostModell journalpostModell : journalpostModelleForSak){
+                Journalpost journalpost = JournalpostBygger.buildFrom(journalpostModell);
+                response.getJournalpostListe().add(journalpost);
             }
-            return response;
         }
-
-        String saksnr = funnetsaksnr.get();
-        journalposter = journalpostModelData.getJournalposterForFagsak(saksnr);
-        if (journalposter == null) {
-            LOG.info("Fant ingen matchende journalpost for saksnr = " + saksnr);
-            return response;
-        }
-        response.getJournalpostListe().addAll(journalposter);
-        LOG.info("Sender HentJournalpostListeResponse med 1 Journalpost for saksnr = " + saksnr);
         return response;
     }
 
@@ -149,25 +90,24 @@ public class JournalServiceMockImpl implements JournalV2 {
     @Override
     public HentDokumentResponse hentDokument(@WebParam(name = "Request", targetNamespace = "") HentDokumentRequest request)
             throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning {
-        HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
-        if (request.getJournalpostId() == null || request.getDokumentId() == null || request.getJournalpostId().isEmpty() || request.getDokumentId().isEmpty()) {
-            throw new HentDokumentDokumentIkkeFunnet("DoumentId eller JournalpostId er null.", new DokumentIkkeFunnet());
-        }
+
 
         /**
          * Henter journal fra db dersom det finnes, hvis ikke hent statisk data(journalpost) fra prosjektfolder
          */
+        
+        HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
 
-        JournalDokument journalDokument = null;
+        DokumentVariantInnhold dokumentVariantInnhold = null;
 
         if (request.getDokumentId() != null || request.getDokumentId().isEmpty()) {
-            journalDokument = joarkScenarioTjeneste.finnDokumentMedDokumentId(request.getDokumentId()).
-                    stream().filter(d -> d.getVariantformat().equals(request.getVariantformat().getValue())).findFirst().get();
+            dokumentVariantInnhold = joarkScenarioTjeneste.finnDokumentMedDokumentId(request.getDokumentId()).getDokumentVariantInnholdListe().
+                    stream().filter(d -> d.getVariantFormat().equals(request.getVariantformat().getValue())).findFirst().get();
         } else if (request.getJournalpostId() == null || request.getJournalpostId().isEmpty()) {
-            journalDokument = joarkScenarioTjeneste.finnDokumentMedJournalId(request.getJournalpostId());
+            joarkScenarioTjeneste.finnDokumentMedJournalId(request.getJournalpostId())
         }
-        if (journalDokument != null) {
-            hentDokumentResponse.setDokument(journalDokument.getDokument());
+        if (dokumentVariantInnhold != null) {
+            hentDokumentResponse.setDokument(dokumentVariantInnhold.getDokumentInnhold());
             return hentDokumentResponse;
         }
 
@@ -214,19 +154,5 @@ public class JournalServiceMockImpl implements JournalV2 {
         LOG.info("Ping mottatt og besvart");
     }
 
-    private void lagJournalDokumentMapMedJpIdSomKey (List<JournalDokument> journalpost, Map<String, List<JournalDokument>> journalDokumenterPerJpId) {
-        for (JournalDokument jd : journalpost) {
-            String key = jd.getJournalpostId();
-
-            if (journalDokumenterPerJpId.containsKey(key)) {
-                List<JournalDokument> list = journalDokumenterPerJpId.get(key);
-                list.add(jd);
-            } else {
-                List<JournalDokument> list = new ArrayList<>();
-                list.add(jd);
-                journalDokumenterPerJpId.put(key, list);
-            }
-        }
-    }
 
 }

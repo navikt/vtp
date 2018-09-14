@@ -1,7 +1,6 @@
 package no.nav.tjeneste.virksomhet.journal.modell;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,36 +37,13 @@ public class JournalpostModelData {
     public JournalpostModelData(TestscenarioBuilderRepository scenarioRepository) {
 
         for (Personopplysninger pers : scenarioRepository.getPersonIndeks().getAlleSøkere()) {
-            genererJournalposter(pers);
+            //genererJournalposter(pers);
         }
 
         journalposterPerFagsak.forEach((saksnr, poster) -> poster.forEach(post -> journalpostPerJournalpostId.put(post.getJournalpostId(), post)));
 
     }
 
-    // TODO (FC) : Logikken her er ikke helt bra, lag noe nytt
-    private void genererJournalposter(Personopplysninger pers) {
-        
-        // Fagsaksnr settes opp som fnr*100 av simulert Swagger-mottak
-        String saksnummer = Long.parseLong(pers.getSøker().getIdent()) * 100L + "";// saksnr = fnr * 100
-        Journalpost journalpostInn = createJournalpost("journalpost-inn-" + saksnummer, "I");
-        List<DokumentinfoRelasjon> dokumentListeInn = journalpostInn.getDokumentinfoRelasjonListe();
-        dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_inn_1", "393893532"));
-        dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_inn_2", "393893532"));
-        dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_XML, VARIANTFORMAT_ARKIV, "Dokument_inn_3", "393893544"));
-        dokumentListeInn.add(createDokumentinfoRelasjon(FILTYPE_XML, VARIANTFORMAT_ORIGINAL, "Dokument_inn_4", "393893534"));
-
-        Journalpost journalpostUt = createJournalpost("journalpost-ut-" + saksnummer, "U");
-        List<DokumentinfoRelasjon> dokumentListeUt = journalpostUt.getDokumentinfoRelasjonListe();
-        dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ORIGINAL, "Dokument_ut_1", DOKUMENT_ID_393893509));
-        dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_ut_2", DOKUMENT_ID_393893509));
-        dokumentListeUt.add(createDokumentinfoRelasjon(FILTYPE_PDF, VARIANTFORMAT_ARKIV, "Dokument_ut_3", "393893534"));
-
-        List<Journalpost> journalposter = new ArrayList<>();
-        journalposter.add(journalpostInn);
-        journalposter.add(journalpostUt);
-        journalposterPerFagsak.put(saksnummer, journalposter);
-    }
 
     public List<Journalpost> getJournalposterForFagsak(String saksnr) {
         return journalposterPerFagsak.get(saksnr);

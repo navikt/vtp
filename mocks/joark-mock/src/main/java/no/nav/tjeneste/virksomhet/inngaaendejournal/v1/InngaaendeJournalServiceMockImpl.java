@@ -12,6 +12,7 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeFunnet;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeInngaaende;
@@ -23,11 +24,12 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeri
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeringsbehovJournalpostKanIkkeBehandles;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeringsbehovSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.UtledJournalfoeringsbehovUgyldigInput;
+import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.InngaaendeJournalpost;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpostRequest;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpostResponse;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovRequest;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovResponse;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalScenarioTjenesteImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalScenarioTjenesteImpl;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 
@@ -45,7 +47,6 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
     public InngaaendeJournalServiceMockImpl(){}
 
-    @SuppressWarnings("unused")
     private TestscenarioBuilderRepository scenarioRepository;
     
     private JournalpostModelData journalpostModelData;
@@ -98,8 +99,20 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             throws HentJournalpostJournalpostIkkeFunnet, HentJournalpostJournalpostIkkeInngaaende,
             HentJournalpostSikkerhetsbegrensning, HentJournalpostUgyldigInput {
 
-        return new HentJournalpostResponse();
+        String journalpostId = request.getJournalpostId();
+
+        JournalpostModell journalpostModell = joarkScenarioTjeneste.finnJournalpostMedJournalpostId(journalpostId);
+        if(journalpostModell == null){
+            throw new HentJournalpostJournalpostIkkeFunnet("Kunne ikke finne journalpost");
+        }
+
+        InngaaendeJournalpost inngaaendeJournalpost = InngaaendeJournalpostBuilder.buildFrom(journalpostModell);
+        HentJournalpostResponse hentJournalpostResponse = new HentJournalpostResponse();
+        hentJournalpostResponse.setInngaaendeJournalpost(inngaaendeJournalpost);
+        return hentJournalpostResponse;
     }
+
+
 
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/inngaaendeJournal/v1/InngaaendeJournal_v1/utledJournalfoeringsbehovRequest"
