@@ -64,7 +64,12 @@
 		<dependency>
 			<groupId>no.nav.modig</groupId>
 			<artifactId>modig-testcertificates</artifactId>
-			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>compile</scope>		
 		</dependency>
 
 		<!-- Eksterne avhengigheter -->
@@ -87,7 +92,7 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
 		</dependency>
-    
+
 		<dependency>
 			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>arena-mock</artifactId>

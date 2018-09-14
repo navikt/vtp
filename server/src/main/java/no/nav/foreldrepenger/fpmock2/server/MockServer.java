@@ -1,14 +1,22 @@
 package no.nav.foreldrepenger.fpmock2.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
@@ -18,6 +26,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenario
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
+import no.nav.modig.testcertificates.TestCertificates;
 
 public class MockServer {
 
@@ -30,6 +39,8 @@ public class MockServer {
     private final int port;
 
     public static void main(String[] args) throws Exception {
+        TestCertificates.setupKeyAndTrustStore();
+        
         PropertiesUtils.initProperties();
 
         MockServer mockServer = new MockServer(Integer.valueOf(System.getProperty("server.port", SERVER_PORT)));
@@ -88,7 +99,7 @@ public class MockServer {
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
-
+        
         DefaultServlet defaultServlet = new DefaultServlet();
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
@@ -97,11 +108,31 @@ public class MockServer {
     }
 
     protected void setConnectors(Server server) {
-        try (ServerConnector connector = new ServerConnector(server)) {
-            connector.setPort(port);
-            connector.setHost(host);
-            server.setConnectors(new Connector[] { connector });
-        }
+
+        List<Connector> connectors = new ArrayList<>();
+
+        @SuppressWarnings("resource")
+        ServerConnector httpConnector = new ServerConnector(server);
+        httpConnector.setPort(port);
+        httpConnector.setHost(host);
+        connectors.add(httpConnector);
+
+        HttpConfiguration https = new HttpConfiguration();
+        https.addCustomizer(new SecureRequestCustomizer());
+        SslContextFactory sslContextFactory = new SslContextFactory();
+        sslContextFactory.setCertAlias("localhost-ssl");
+        sslContextFactory.setKeyStorePath(System.getProperty("no.nav.modig.security.appcert.keystore"));
+        sslContextFactory.setKeyStorePassword(System.getProperty("no.nav.modig.security.appcert.password", "changeit"));
+        sslContextFactory.setKeyManagerPassword(System.getProperty("no.nav.modig.security.appcert.password", "changeit"));
+
+        @SuppressWarnings("resource")
+        ServerConnector sslConnector = new ServerConnector(server,
+            new SslConnectionFactory(sslContextFactory, "http/1.1"),
+            new HttpConnectionFactory(https));
+        sslConnector.setPort(port + 3);
+        connectors.add(sslConnector);
+
+        server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
     }
 
     public int getPort() {

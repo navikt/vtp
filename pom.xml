@@ -67,7 +67,7 @@
 		<arbeidsforhold.version>3.0.0</arbeidsforhold.version>
 		<organisasjon.version>1.0.4</organisasjon.version>
 		<norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
-		<modig-testcertificates.version>1.2.5-vedfp-SNAPSHOT</modig-testcertificates.version>
+		<modig-testcertificates.version>1.2.5.99-SNAPSHOT</modig-testcertificates.version>
 	</properties>
 
 	<dependencyManagement>

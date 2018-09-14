@@ -27,7 +27,7 @@ public class PersonServiceMockTest {
     }
 
     public static void main(String[] args) throws MalformedURLException, HentPersonhistorikkSikkerhetsbegrensning, HentPersonhistorikkPersonIkkeFunnet {
-        URL wsdlUrl = new URL("https://localhost:8088/person?wsdl");
+        URL wsdlUrl = new URL("https://localhost:8063/person?wsdl");
         QName serviceName = new QName("http://nav.no/tjeneste/virksomhet/person/v3", "PersonServiceMockImplService");
         Service service = Service.create(wsdlUrl, serviceName);
         PersonV3 port = service.getPort(PersonV3.class);
