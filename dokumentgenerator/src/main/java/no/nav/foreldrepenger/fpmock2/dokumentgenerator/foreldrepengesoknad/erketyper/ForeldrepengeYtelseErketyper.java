@@ -11,6 +11,7 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTerminFørTermin());
+        foreldrepenger.setFordeling(FordelingErketyper.uttaksPeriodeAltTilMor());
         return foreldrepenger;
     }
 

@@ -19,6 +19,5 @@ public class ForeldrepengerBuilderTest {
         Soeknad soeknad = fpx.termindatoUttakKunMor("123");
 
         String xml = ForeldrepengesoknadBuilder.tilXML(soeknad);
-        String s = "";
     }
 }
