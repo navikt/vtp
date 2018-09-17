@@ -6,6 +6,7 @@ import java.util.List;
 
 public class JournalpostModell {
 
+    private String id;
     private List<DokumentModell> dokumentModellList = new ArrayList<>();
     private String avsenderFnr;
     private String sakId;
@@ -16,6 +17,14 @@ public class JournalpostModell {
     private String mottakskanal;
     private String arkivtema;
     private String journaltilstand;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public List<DokumentModell> getDokumentModellList() {
         return dokumentModellList;

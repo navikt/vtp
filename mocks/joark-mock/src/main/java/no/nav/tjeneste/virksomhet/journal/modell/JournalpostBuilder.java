@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.journal.modell;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinformasjon;
@@ -22,7 +23,18 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Statuser;
 public class JournalpostBuilder {
 
     public static Journalpost buildFrom(JournalpostModell modell){
-        return new Journalpost();
+        Journalpost journalpost = new Journalpost();
+
+        for(DokumentModell dokumentModell : modell.getDokumentModellList()){
+            DokumentinfoRelasjon dokinfo = new DokumentinfoRelasjon();
+            JournalfoertDokumentInfo journalfortdokinfo = new JournalfoertDokumentInfo();
+
+            //dokinfo.setDokumentTilknyttetJournalpost(dokumentModell.getDokumentTilknyttetJournalpost());
+            journalpost.getDokumentinfoRelasjonListe().add(dokinfo);
+        }
+
+
+        return journalpost;
     }
 
 

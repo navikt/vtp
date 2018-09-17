@@ -19,6 +19,7 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
@@ -66,6 +67,7 @@ public class MockServer {
 
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
         DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(new TestscenarioRepositoryImpl());
+        JournalRepository journalRepository = new JournalRepository();
 
         addRestServices(handler, testScenarioRepository, templateRepository);
 
@@ -74,7 +76,7 @@ public class MockServer {
         startServer();
 
         // kjør soap oppsett etter jetty har startet
-        addSoapServices(testScenarioRepository, templateRepository);
+        addSoapServices(testScenarioRepository, templateRepository, journalRepository);
 
     }
 
@@ -84,8 +86,9 @@ public class MockServer {
     }
 
     protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository,
-                                   @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository) {
-        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository);
+                                   @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository,
+                                   JournalRepository journalRepository) {
+        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository);
     }
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,

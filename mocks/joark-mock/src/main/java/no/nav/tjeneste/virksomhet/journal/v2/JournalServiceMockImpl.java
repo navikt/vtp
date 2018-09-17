@@ -1,10 +1,7 @@
 package no.nav.tjeneste.virksomhet.journal.v2;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.jws.HandlerChain;
@@ -19,12 +16,10 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalScenarioTjenesteImpl;
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.journal.dokument.DokumentVariantInnhold;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalpostBygger;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.tjeneste.virksomhet.journal.modell.JournalpostBuilder;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkkeFunnet;
@@ -32,7 +27,6 @@ import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLSikkerhetsbe
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentJournalpostListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.JournalV2;
 import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentURLRequest;
@@ -46,15 +40,12 @@ import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRespo
 public class JournalServiceMockImpl implements JournalV2 {
     private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
 
-    private JournalpostModelData journalpostModelData;
-
-    private JournalScenarioTjenesteImpl joarkScenarioTjeneste;
+    private JournalRepository journalRepository;
 
     public JournalServiceMockImpl(){}
 
-    public JournalServiceMockImpl(TestscenarioBuilderRepository scenarioRepository) {
-        this.journalpostModelData = new JournalpostModelData(scenarioRepository);
-        this.joarkScenarioTjeneste = new JournalScenarioTjenesteImpl(scenarioRepository);
+    public JournalServiceMockImpl(JournalRepository journalRepository) {
+        this.journalRepository = journalRepository;
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentJournalpostListeRequest")
@@ -66,21 +57,17 @@ public class JournalServiceMockImpl implements JournalV2 {
             throws HentJournalpostListeSikkerhetsbegrensning {
 
         HentJournalpostListeResponse response = new HentJournalpostListeResponse();
-        List<String> sakList = request.getSakListe().stream().map(t-> t.getSakId()).collect(Collectors.toList());
 
-        if (sakList.size() == 0) {
-            LOG.info("Fant ingen saksnr i request");
-            return response;
-        }
+        List<String> saker = request.getSakListe().stream().map(t-> t.getSakId()).collect(Collectors.toList());
 
-        for(String sak : sakList){
-            List<JournalpostModell> journalpostModelleForSak = joarkScenarioTjeneste.finnJournalposterMedSakId(sak);
-            for(JournalpostModell journalpostModell : journalpostModelleForSak){
-                Journalpost journalpost = JournalpostBygger.buildFrom(journalpostModell);
-                response.getJournalpostListe().add(journalpost);
+        for(String sak : saker){
+            for(JournalpostModell modell : journalRepository.finnJournalposterMedSakId(sak)){
+                response.getJournalpostListe().add(JournalpostBuilder.buildFrom(modell));
             }
         }
+
         return response;
+
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentDokumentRequest")
@@ -91,49 +78,18 @@ public class JournalServiceMockImpl implements JournalV2 {
     public HentDokumentResponse hentDokument(@WebParam(name = "Request", targetNamespace = "") HentDokumentRequest request)
             throws HentDokumentDokumentIkkeFunnet, HentDokumentSikkerhetsbegrensning {
 
+        HentDokumentResponse dokumentResponse = new HentDokumentResponse();
+        Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(request.getDokumentId());
 
-        /**
-         * Henter journal fra db dersom det finnes, hvis ikke hent statisk data(journalpost) fra prosjektfolder
-         */
-        
-        HentDokumentResponse hentDokumentResponse = new HentDokumentResponse();
-
-        DokumentVariantInnhold dokumentVariantInnhold = null;
-
-        if (request.getDokumentId() != null || request.getDokumentId().isEmpty()) {
-            dokumentVariantInnhold = joarkScenarioTjeneste.finnDokumentMedDokumentId(request.getDokumentId()).getDokumentVariantInnholdListe().
-                    stream().filter(d -> d.getVariantFormat().equals(request.getVariantformat().getValue())).findFirst().get();
-        } else if (request.getJournalpostId() == null || request.getJournalpostId().isEmpty()) {
-            joarkScenarioTjeneste.finnDokumentMedJournalId(request.getJournalpostId())
-        }
-        if (dokumentVariantInnhold != null) {
-            hentDokumentResponse.setDokument(dokumentVariantInnhold.getDokumentInnhold());
-            return hentDokumentResponse;
-        }
-
-        Journalpost journalpost = journalpostModelData.getJournalpostForId(request.getJournalpostId());
-
-        if (journalpost == null) {
-            throw new HentDokumentDokumentIkkeFunnet("Dokument ikke funnet for journalpostId :389425811", new DokumentIkkeFunnet());
+        if(dokumentModell.isPresent()){
+            //TODO OL: Fix format her.
+            String innhold = dokumentModell.get().getInnhold();
+            dokumentResponse.setDokument(innhold.getBytes());
+            return  dokumentResponse;
         } else {
-            Path pdfPath;
-
-            if (JournalpostModelData.DOKUMENT_ID_393893509.equals(journalpost.getJournalpostId())) {
-                pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/foreldrepenger_soknad.pdf");
-            } else {
-                pdfPath = FileSystems.getDefault().getPath("/git/vl-mock/joark-mock/journal/src/main/resources/termin_bekreftelse.pdf");
-            }
-            byte[] pdf = new byte[0];
-            try {
-                pdf = Files.readAllBytes(pdfPath);
-            } catch (IOException e) {
-
-                LOG.error("Error reading pdf file.", e);
-            }
-            LOG.info("HentDokument: Binary pdf file = %s", pdf);
-            hentDokumentResponse.setDokument(pdf);
+            throw new HentDokumentDokumentIkkeFunnet("Kunne ikke finne dokument",new DokumentIkkeFunnet());
         }
-        return hentDokumentResponse;
+
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v2/Journal_v2/hentDokumentURLRequest")

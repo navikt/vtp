@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.inngaaendejournal.v1;
 
+import java.util.Optional;
+
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -12,9 +14,8 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalScenarioTjenesteImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.modell.InngaaendeJournalpostBuilder;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeFunnet;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeInngaaende;
@@ -47,13 +48,10 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
     public InngaaendeJournalServiceMockImpl(){}
 
-    private TestscenarioBuilderRepository scenarioRepository;
+    private JournalRepository journalRepository;
 
-    private JournalScenarioTjenesteImpl joarkScenarioTjeneste;
-
-    public InngaaendeJournalServiceMockImpl(TestscenarioBuilderRepository scenarioRepository){
-        this.scenarioRepository = scenarioRepository;
-        this.joarkScenarioTjeneste = new JournalScenarioTjenesteImpl(scenarioRepository);
+    public InngaaendeJournalServiceMockImpl(JournalRepository journalRepository){
+        this.journalRepository = journalRepository;
     }
     
     @WebMethod(
@@ -98,12 +96,12 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
 
         String journalpostId = request.getJournalpostId();
 
-        JournalpostModell journalpostModell = joarkScenarioTjeneste.finnJournalpostMedJournalpostId(journalpostId);
-        if(journalpostModell == null){
+        Optional<JournalpostModell> journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
+        if(!journalpostModell.isPresent()){
             throw new HentJournalpostJournalpostIkkeFunnet("Kunne ikke finne journalpost");
         }
 
-        InngaaendeJournalpost inngaaendeJournalpost = InngaaendeJournalpostBuilder.buildFrom(journalpostModell);
+        InngaaendeJournalpost inngaaendeJournalpost = InngaaendeJournalpostBuilder.buildFrom(journalpostModell.get());
         HentJournalpostResponse hentJournalpostResponse = new HentJournalpostResponse();
         hentJournalpostResponse.setInngaaendeJournalpost(inngaaendeJournalpost);
         return hentJournalpostResponse;
