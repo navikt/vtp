@@ -5,12 +5,12 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Dekningsgrader;
 
 public class ForeldrepengeYtelseErketyper {
-    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorge() {
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTermin() {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
-        
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTerminFørTermin());
         return foreldrepenger;
     }
 

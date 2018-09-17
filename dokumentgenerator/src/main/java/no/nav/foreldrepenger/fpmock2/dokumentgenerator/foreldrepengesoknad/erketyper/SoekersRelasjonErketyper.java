@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
 import no.nav.vedtak.felles.integrasjon.felles.ws.DateUtil;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Adopsjon;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Termin;
@@ -59,5 +60,26 @@ public class SoekersRelasjonErketyper {
     }
 
 
+    public static Adopsjon søkerAdopsjon(){
+        return adopsjon(false);
+    }
+
+    public static Adopsjon søkerAdopsjonAvEktefellesBarn(){
+        return adopsjon(true);
+    }
+
+    private static Adopsjon adopsjon(boolean ektefellesBarn){
+        Adopsjon adopsjon = new Adopsjon();
+        adopsjon.setAntallBarn(1);
+        adopsjon.setAdopsjonAvEktefellesBarn(ektefellesBarn);
+        try {
+            adopsjon.setAnkomstdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+            adopsjon.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        return adopsjon;
+    }
 
 }
