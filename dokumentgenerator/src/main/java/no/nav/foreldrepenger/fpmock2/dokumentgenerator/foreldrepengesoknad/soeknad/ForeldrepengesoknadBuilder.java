@@ -108,14 +108,18 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep, BegrunnelseF
 
         //soeknad.setOmYtelse(this.omYtelse);
         soeknad.setSoeker(this.soeker);
+        if(null != this.paakrevdeVedlegg){
+            this.paakrevdeVedlegg.forEach(pkv -> {
+                soeknad.getPaakrevdeVedlegg().add(pkv);
+            });
+        }
 
-        this.paakrevdeVedlegg.forEach(pkv -> {
-            soeknad.getPaakrevdeVedlegg().add(pkv);
-        });
+        if (null != this.andreVedlegg) {
+            this.andreVedlegg.forEach(av -> {
+                soeknad.getAndreVedlegg().add(av);
+            });
+        }
 
-        this.andreVedlegg.forEach(av -> {
-            soeknad.getAndreVedlegg().add(av);
-        });
 
         return soeknad;
     }
@@ -124,26 +128,6 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep, BegrunnelseF
      * Konverterer {@link Soeknad} til XML, eller kaster en {@link RuntimeException} ved feil
      */
     public static String tilXML(Soeknad soeknad) {
-        /*
-        StringWriter sw = new StringWriter();
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Soeknad.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            JAXBElement<Soeknad> soeknadsskjemaForeldrepengerJAXBElement = (new ObjectFactory().createSoeknad(soeknad));
-            jaxbMarshaller.marshal(soeknadsskjemaForeldrepengerJAXBElement, sw);
-            return sw.toString();
-        } catch (JAXBException jaxbe) {
-            String error = "Feil under konvertering av søknad til XML: " + jaxbe.getMessage();
-            RuntimeException exception = new RuntimeException(error, jaxbe.getCause());
-            log.error(error, exception);
-            throw exception;
-        }
-        */
-
-
-
-
         String xml = null;
         try {
             JAXBElement<Soeknad> soeknadsskjemaForeldrepengerJAXBElement = (new ObjectFactory().createSoeknad(soeknad));
