@@ -6,7 +6,6 @@ import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import org.junit.jupiter.api.BeforeAll;
 
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
-import no.nav.foreldrepenger.autotest.util.konfigurasjon.TestKonfigurasjon;
 
 public abstract class TestBase {
     

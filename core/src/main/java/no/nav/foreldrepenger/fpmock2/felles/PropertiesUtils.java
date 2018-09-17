@@ -15,18 +15,20 @@ public class PropertiesUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
 
-
     private static String DEV_FILNAVN = "application.properties";
     private static String DEV_FILNAVN_LOCAL = "application-local.properties";
+    
+    //Brukes av applikasjoner som kjører på root dir
+    public static void initProperties() {
+        initProperties("");
+    }
+    
+    //Brukes av tester som bruker root application.properties
     public static void initProperties(String propertyDir) {
         File devFil = Paths.get(propertyDir, DEV_FILNAVN).toFile();
         loadPropertyFile(devFil);
         loadPropertyFile(Paths.get(propertyDir, DEV_FILNAVN_LOCAL).toFile());
         LOGGER.info("PROPERTIES LASTET");
-    }
-    
-    public static void initProperties() {
-        initProperties("");
     }
 
     private static void loadPropertyFile(File devFil) {
