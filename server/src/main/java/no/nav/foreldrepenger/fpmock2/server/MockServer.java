@@ -60,7 +60,6 @@ public class MockServer {
 
     public void start() throws Exception {
         HandlerContainer handler = (HandlerContainer) server.getHandler();
-        server.setErrorHandler(new NotFoundErrorHandler());
 
         TestscenarioTemplateRepositoryImpl templateRepositoryImpl = new TestscenarioTemplateRepositoryImpl();
         templateRepositoryImpl.load();
@@ -118,8 +117,11 @@ public class MockServer {
         connectors.add(httpConnector);
 
         HttpConfiguration https = new HttpConfiguration();
+        https.setSendServerVersion(false);
+        https.setSendXPoweredBy(false);
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
+        
         sslContextFactory.setCertAlias("localhost-ssl");
         sslContextFactory.setKeyStorePath(System.getProperty("no.nav.modig.security.appcert.keystore"));
         sslContextFactory.setKeyStorePassword(System.getProperty("no.nav.modig.security.appcert.password", "changeit"));
@@ -127,7 +129,7 @@ public class MockServer {
 
         @SuppressWarnings("resource")
         ServerConnector sslConnector = new ServerConnector(server,
-            new SslConnectionFactory(sslContextFactory, "http/1.1"),
+            new SslConnectionFactory(sslContextFactory, "HTTP/1.1"),
             new HttpConnectionFactory(https));
         sslConnector.setPort(port + 3);
         connectors.add(sslConnector);

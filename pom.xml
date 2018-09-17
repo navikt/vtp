@@ -46,6 +46,7 @@
 		<hibernate.jpa.version>1.0.2.Final</hibernate.jpa.version>
 		<threeten.version>1.4</threeten.version>
 		<jackson.version>2.9.5</jackson.version>
+		<jose4j.version>0.6.4</jose4j.version>
 		<swagger.version>1.5.21</swagger.version>
 		<resteasy.version>3.6.1.Final</resteasy.version>
 		
@@ -84,8 +85,6 @@
 				<artifactId>testmodell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
-
 
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
@@ -287,6 +286,12 @@
 				<scope>import</scope>
 				<type>pom</type>
 	        </dependency>
+			
+			<dependency>
+                <groupId>org.bitbucket.b_c</groupId>
+                <artifactId>jose4j</artifactId>
+                <version>${jose4j.version}</version>
+            </dependency>
 			
 			<dependency>
 				<groupId>org.threeten</groupId>

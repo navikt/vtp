@@ -27,7 +27,7 @@ public class RestConfig {
 
     public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository) {
         // Setup RESTEasy's HttpServletDispatcher at "/api/*".
-        final ServletContextHandler context = new ServletContextHandler(handler, "/api");
+        final ServletContextHandler context = new ServletContextHandler(handler, "/");
         
         // tilgjengeligjør disse for direkte injeksjon i REST tjenester uten CDI via @Context parameter
         // ref https://stackoverflow.com/questions/21126812/bootstrapping-jax-rs-resteasy

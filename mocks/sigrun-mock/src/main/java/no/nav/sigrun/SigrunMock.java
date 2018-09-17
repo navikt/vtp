@@ -9,7 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api(tags = { "Sigrun/beregnetskatt" })
-@Path("/beregnetskatt")
+@Path("/api/beregnetskatt")
 public class SigrunMock {
 
     @GET

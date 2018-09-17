@@ -24,7 +24,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
 
 @Api(tags = { "Testscenario" })
-@Path("/testscenario")
+@Path("/api/testscenario")
 public class TestscenarioRestTjeneste {
 
     private static final String TEMPLATE_KEY = "key";

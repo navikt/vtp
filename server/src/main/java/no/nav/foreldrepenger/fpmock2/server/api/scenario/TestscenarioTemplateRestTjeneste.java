@@ -19,7 +19,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
 
 @Api(tags = { "Testscenario/templates" })
-@Path("/testscenario/templates")
+@Path("/api/testscenario/templates")
 public class TestscenarioTemplateRestTjeneste {
 
     @Context

@@ -1,10 +1,24 @@
 package no.nav.foreldrepenger.fpmock2.server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,19 +29,20 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioTemplateRestTjeneste;
-import no.nav.foreldrepenger.fpmock2.server.checks.IsAliveImpl;
-import no.nav.foreldrepenger.fpmock2.server.checks.IsReadyImpl;
+import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
+import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
+import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
 import no.nav.sigrun.SigrunMock;
 
 public class ApplicationConfig extends Application {
 
-    public static final String API_URI = "/api";
+    public static final String API_URI = "/";
 
     public ApplicationConfig() {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[] { "https", "http" });
-        beanConfig.setBasePath("/api");
+        beanConfig.setBasePath(API_URI);
         beanConfig.setResourcePackage("no.nav");
         beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
         beanConfig.setDescription("REST grensesnitt for VTP.");
@@ -44,15 +59,19 @@ public class ApplicationConfig extends Application {
         classes.add(TestscenarioRestTjeneste.class);
 
         // tekniske ting
+        classes.add(Oauth2RestService.class);
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
         classes.add(JacksonConfigResolver.class);
+        classes.add(MyExceptionMapper.class);
 
         return classes;
     }
 
+    @Provider
+    @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
         private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -69,4 +88,50 @@ public class ApplicationConfig extends Application {
         }
     }
 
+    @Provider
+    public static class MyExceptionMapper implements ExceptionMapper<NotFoundException> {
+        
+        private static final Logger log = LoggerFactory.getLogger(MyExceptionMapper.class);
+
+        @Context HttpServletRequest req; 
+
+        @Override
+        public Response toResponse(NotFoundException exception) {
+            
+            String fullUrl = getFullURL(req);
+
+            Response response = exception.getResponse();
+            if (fullUrl.contains("favicon.ico")) {
+                return response;
+            }
+
+            StringBuilder logMsg = new StringBuilder("NOT_FOUND: ").append(req.getMethod()).append(" ").append(fullUrl);
+            for (String header : Collections.list(req.getHeaderNames())) {
+                logMsg.append("\n\t").append(header).append("=").append(req.getHeader(header));
+            }
+
+            try (BufferedReader br = req.getReader()) {
+                br.lines().forEach(line -> logMsg.append("\n\t").append(line));
+            } catch (IOException e) {
+               log.error("Kunne ikke lese request", e);
+               return response;
+            }
+
+            String logMessage = logMsg.toString();
+            log.warn(logMessage);
+            return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
+        }
+    }
+    
+
+    public static String getFullURL(HttpServletRequest request) {
+        StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+        String queryString = request.getQueryString();
+
+        if (queryString == null) {
+            return requestURL.toString();
+        } else {
+            return requestURL.append('?').append(queryString).toString();
+        }
+    }
 }
