@@ -18,7 +18,7 @@ public class ForeldrepengesoknadXmlErketyper {
         Soeknad soeknad = ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
-                .withTilleggsopplysninger("Autogenerert for erketypetest")
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker basert på termindato") // obs løser ut aksjonspunkt
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTermin())
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)

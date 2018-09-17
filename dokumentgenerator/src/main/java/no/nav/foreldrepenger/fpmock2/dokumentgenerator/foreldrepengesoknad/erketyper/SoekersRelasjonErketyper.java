@@ -1,10 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
 import no.nav.vedtak.felles.integrasjon.felles.ws.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Adopsjon;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Foedsel;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.SoekersRelasjonTilBarnet;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Termin;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.*;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Omsorgsovertakelseaarsaker;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.time.LocalDate;
@@ -80,6 +78,28 @@ public class SoekersRelasjonErketyper {
         }
 
         return adopsjon;
+    }
+
+    public static Omsorgsovertakelse søkerOmsorgsovertakelseGrunnetDød(){
+        return omsorgsovertakelse("OVERTATT_PA_GRUNN_AV_DOD");
+
+        //todo implementer OVERTATT_OMSORG, OVERTATT_OMSORG_F, ADOPTERER ALENE, men avklar først hva de betyr funksjonelt
+    }
+
+    private static Omsorgsovertakelse omsorgsovertakelse(String aarsak){
+        Omsorgsovertakelse omsorgsovertakelse = new Omsorgsovertakelse();
+        Omsorgsovertakelseaarsaker omsorgsovertakelseaarsaker = new Omsorgsovertakelseaarsaker();
+        omsorgsovertakelseaarsaker.setKode(aarsak);
+        omsorgsovertakelseaarsaker.setKodeverk("FAR_SOEKER_TYPE");
+        omsorgsovertakelse.setOmsorgsovertakelseaarsak(omsorgsovertakelseaarsaker);
+        try {
+            omsorgsovertakelse.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+            omsorgsovertakelse.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(6)));
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        return omsorgsovertakelse;
     }
 
 }
