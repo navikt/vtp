@@ -8,6 +8,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import java.time.LocalDate;
 
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTermin;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
 
 public class ForeldrepengesoknadXmlErketyper {
@@ -19,7 +20,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker basert på termindato") // obs løser ut aksjonspunkt
-                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTermin())
+                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans())
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null)

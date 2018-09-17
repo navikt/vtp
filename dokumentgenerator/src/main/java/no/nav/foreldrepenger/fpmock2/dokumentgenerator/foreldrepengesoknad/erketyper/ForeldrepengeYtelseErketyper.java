@@ -5,6 +5,8 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Dekningsgrader;
 
 public class ForeldrepengeYtelseErketyper {
+
+    //todo builder?
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTermin() {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
@@ -14,6 +16,18 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(FordelingErketyper.uttaksPeriodeAltTilMor());
         return foreldrepenger;
     }
+
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans() {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTerminFørTermin());
+        foreldrepenger.setFordeling(FordelingErketyper.uttaksPeriodeAltTilMor());
+        foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
+        return foreldrepenger;
+    }
+
 
     public static Dekningsgrad standardDekningsgrader(){
         Dekningsgrad dekningsgrad = new Dekningsgrad();
