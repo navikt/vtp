@@ -18,12 +18,7 @@ public class ForeldrepengeYtelseErketyper {
     }
 
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans() {
-        Foreldrepenger foreldrepenger = new Foreldrepenger();
-        foreldrepenger.setDekningsgrad(standardDekningsgrader());
-        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
-        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
-        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTerminFørTermin());
-        foreldrepenger.setFordeling(FordelingErketyper.uttaksPeriodeAltTilMor());
+        Foreldrepenger foreldrepenger = foreldrepengeYtelseNorskBorgerINorgeTermin();
         foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
         return foreldrepenger;
     }
