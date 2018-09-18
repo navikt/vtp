@@ -42,7 +42,7 @@ public class InngaaendeJournalpostBuilder {
         }
         if (journalpostModell.getArkivtema() != null) {
             Tema tema = new Tema();
-            tema.setValue(journalpostModell.getArkivtema());
+            tema.setValue(journalpostModell.getArkivtema().getKode());
             inngJournalpost.setTema(tema);
         }
         if (journalpostModell.getJournaltilstand() != null) {

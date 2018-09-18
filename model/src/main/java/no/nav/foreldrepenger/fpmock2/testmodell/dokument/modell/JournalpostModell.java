@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivtema;
+
 public class JournalpostModell {
 
     private String id;
@@ -15,7 +17,7 @@ public class JournalpostModell {
     private String kommunikasjonsretning;
     private LocalDateTime mottattDato;
     private String mottakskanal;
-    private String arkivtema;
+    private Arkivtema arkivtema;
     private String journaltilstand;
 
     public String getId() {
@@ -90,11 +92,11 @@ public class JournalpostModell {
         this.mottakskanal = mottakskanal;
     }
 
-    public String getArkivtema() {
+    public Arkivtema getArkivtema() {
         return arkivtema;
     }
 
-    public void setArkivtema(String arkivtema) {
+    public void setArkivtema(Arkivtema arkivtema) {
         this.arkivtema = arkivtema;
     }
 
