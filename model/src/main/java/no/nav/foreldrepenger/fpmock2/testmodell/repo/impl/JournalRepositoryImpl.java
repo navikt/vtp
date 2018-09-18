@@ -75,11 +75,15 @@ public class JournalRepositoryImpl implements JournalRepository {
                 dokumentId = genererDokumentId();
                 dokumentModell.setDokumentId(dokumentId);
             }
-            dokumenter.put(dokumentId,dokumentModell);
+            if(dokumenter.containsKey(dokumentId)){
+                throw new IllegalStateException("Forsøker å opprette dokument allerede eksisterende dokumentId");
+            } else {
+                dokumenter.put(dokumentId, dokumentModell);
+            }
         }
 
         if(journalposter.containsKey(journalpostId)){
-            throw new IllegalStateException("Forsøker å opprette allerede eksisterende journalpostId");
+            throw new IllegalStateException("Forsøker å opprette journalpost allerede eksisterende journalpostId");
         } else {
             journalposter.put(journalpostId, journalpostModell);
             return journalpostId;
