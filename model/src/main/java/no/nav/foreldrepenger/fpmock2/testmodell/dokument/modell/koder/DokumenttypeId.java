@@ -4,7 +4,7 @@ package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder;
     Hentet fra: https://modapp.adeo.no/kodeverksklient/viskodeverk/DokumentTypeId-er/6?8
  */
 
-class DokumenttypeId {
+public class DokumenttypeId {
 /*
 Fra TestHub
     FOEDSELSSOKNAD ("I000003", "Søknad engangsstønad ved fødsel"),

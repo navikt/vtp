@@ -105,8 +105,8 @@ public class InngaaendeJournalpostBuilder {
 
             for(DokumentVariantInnhold innhold : dokumentModell.getDokumentVariantInnholdListe()){
                 Dokumentinnhold dokumentInnhold = new Dokumentinnhold();
-                dokumentInnhold.setArkivfiltype(new Arkivfiltyper().withValue(innhold.getFilType()));
-                dokumentInnhold.setVariantformat(new Variantformater().withValue(innhold.getVariantFormat()));
+                dokumentInnhold.setArkivfiltype(new Arkivfiltyper().withValue(innhold.getFilType().getKode()));
+                dokumentInnhold.setVariantformat(new Variantformater().withValue(innhold.getVariantFormat().getKode()));
                 dokinfo.getDokumentInnholdListe().add(dokumentInnhold);
 
             }

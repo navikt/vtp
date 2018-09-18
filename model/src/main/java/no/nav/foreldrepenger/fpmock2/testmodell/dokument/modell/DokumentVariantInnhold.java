@@ -1,16 +1,19 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfiltype;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantformat;
+
 public class DokumentVariantInnhold {
 
-    private String filType;
+    private Arkivfiltype filType;
     private byte[] dokumentInnhold;
-    private String variantFormat;
+    private Variantformat variantFormat;
 
-    public String getFilType() {
+    public Arkivfiltype getFilType() {
         return filType;
     }
 
-    public void setFilType(String filType) {
+    public void setFilType(Arkivfiltype filType) {
         this.filType = filType;
     }
 
@@ -22,11 +25,18 @@ public class DokumentVariantInnhold {
         this.dokumentInnhold = dokumentInnhold;
     }
 
-    public String getVariantFormat() {
+    public Variantformat getVariantFormat() {
         return variantFormat;
     }
 
-    public void setVariantFormat(String variantFormat) {
+    public void setVariantFormat(Variantformat variantFormat) {
         this.variantFormat = variantFormat;
     }
+
+    public DokumentVariantInnhold(Arkivfiltype arkivfiltype, Variantformat variantformat, byte[] dokumentInnhold){
+        this.dokumentInnhold = dokumentInnhold;
+        this.variantFormat = variantformat;
+        this.filType = arkivfiltype;
+    }
+
 }
