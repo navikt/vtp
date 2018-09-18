@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
@@ -12,44 +12,46 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 
 public class JournalRepositoryImpl implements JournalRepository {
 
-    private HashMap<String,JournalpostModell> journalposterPåId;
-    private HashMap<String, DokumentModell> dokumenterPåId;
+    private HashMap<String,JournalpostModell> journalposter;
+    private HashMap<String, DokumentModell> dokumenter;
 
     private Integer journalpostId;
     private Integer dokumentId;
 
     public JournalRepositoryImpl() {
-        journalposterPåId = new HashMap<>();
-        dokumenterPåId = new HashMap<>();
-        journalpostId = 500; //Sett til psudotilfeldig offset
-        dokumentId =  500; //Sett til psudotilfeldig offset
+        journalposter = new HashMap<>();
+        dokumenter = new HashMap<>();
+        journalpostId = 5000;
+        dokumentId =  5000;
     }
 
     @Override
     public Optional<DokumentModell> finnDokumentMedDokumentId(String dokumentId) {
-        if(dokumenterPåId.containsKey(dokumentId)){
-            return Optional.ofNullable(dokumenterPåId.get(dokumentId));
+        if(dokumenter.containsKey(dokumentId)){
+            return Optional.ofNullable(dokumenter.get(dokumentId));
         } else {
             return Optional.ofNullable(null);
         }
     }
 
     @Override
-    public List<JournalpostModell> finnJournalposterPåFnr(String fnr){
-        //TODO: Søk og returner
-        return new ArrayList<>();
+    public List<JournalpostModell> finnJournalposterMedFnr(String fnr){
+        return journalposter.values().stream()
+                .filter(e -> (e.getAvsenderFnr() != null && e.getAvsenderFnr().equalsIgnoreCase(fnr)))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<JournalpostModell> finnJournalposterMedSakId(String sakId){
-        //TODO: Søk og returner
-        return new ArrayList<>();
+        return journalposter.values().stream()
+                .filter(e -> (e.getSakId() != null && e.getSakId().equalsIgnoreCase(sakId)))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<JournalpostModell> finnJournalpostMedJournalpostId(String journalpostId){
-        if(journalposterPåId.containsKey(journalpostId)){
-            return Optional.ofNullable(journalposterPåId.get(journalpostId));
+        if(journalposter.containsKey(journalpostId)){
+            return Optional.ofNullable(journalposter.get(journalpostId));
         } else {
             return Optional.ofNullable(null);
         }
@@ -57,18 +59,30 @@ public class JournalRepositoryImpl implements JournalRepository {
 
     @Override
     public String leggTilJournalpost(JournalpostModell journalpostModell){
-        String id = "";
-        if(!journalpostModell.getId().isEmpty()){
-            id = journalpostModell.getId();
+        String journalpostId = "";
+        if(journalpostModell.getId() != null && !journalpostModell.getId().isEmpty()){
+            journalpostId = journalpostModell.getId();
         } else {
-            id = genererJournalpostId();
+            journalpostId = genererJournalpostId();
+            journalpostModell.setId(journalpostId);
         }
 
-        if(journalposterPåId.containsKey(id)){
+        for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
+            String dokumentId = "";
+            if(journalpostModell.getId() != null && !journalpostModell.getId().isEmpty()){
+                dokumentId = dokumentModell.getDokumentId();
+            } else {
+                dokumentId = genererDokumentId();
+                dokumentModell.setDokumentId(dokumentId);
+            }
+            dokumenter.put(dokumentId,dokumentModell);
+        }
+
+        if(journalposter.containsKey(journalpostId)){
             throw new IllegalStateException("Forsøker å opprette allerede eksisterende journalpostId");
         } else {
-            journalposterPåId.put(id, journalpostModell);
-            return id;
+            journalposter.put(journalpostId, journalpostModell);
+            return journalpostId;
         }
     }
 

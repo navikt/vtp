@@ -9,7 +9,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModel
 public interface JournalRepository {
     Optional<DokumentModell> finnDokumentMedDokumentId(String dokumentId);
 
-    List<JournalpostModell> finnJournalposterPåFnr(String fnr);
+    List<JournalpostModell> finnJournalposterMedFnr(String fnr);
 
     List<JournalpostModell> finnJournalposterMedSakId(String sakId);
 
