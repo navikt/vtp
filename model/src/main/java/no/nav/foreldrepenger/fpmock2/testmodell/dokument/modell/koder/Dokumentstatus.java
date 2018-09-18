@@ -8,7 +8,7 @@ public class Dokumentstatus {
     /*
 
      */
-
+//TODO: Implementer
     String todo = "AVBRUTT, FERDIGSTILT, UNDER_REDIGERING";
 
 }

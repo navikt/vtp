@@ -6,6 +6,7 @@ package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder;
 
 public class Dokumentkategori {
 
+    //TODO: Implementer
     String todo = "B, SOK, KA, VB, IS";
 
 }

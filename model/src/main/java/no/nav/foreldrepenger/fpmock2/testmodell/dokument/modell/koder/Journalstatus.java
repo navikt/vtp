@@ -5,6 +5,7 @@ package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder;
  */
 
 public class Journalstatus {
+    //TODO: Implementer
     String todo = "J, MO, M, A";
 
 
