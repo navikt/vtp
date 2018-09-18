@@ -19,6 +19,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.JournalfoertDokumentInf
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalpost;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Journalstatuser;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Statuser;
+import no.nav.tjeneste.virksomhet.journal.v2.informasjon.TilknyttetJournalpostSom;
 
 public class JournalpostBuilder {
 
@@ -29,12 +30,17 @@ public class JournalpostBuilder {
             DokumentinfoRelasjon dokinfo = new DokumentinfoRelasjon();
             JournalfoertDokumentInfo journalfortdokinfo = new JournalfoertDokumentInfo();
 
-            //dokinfo.setDokumentTilknyttetJournalpost(dokumentModell.getDokumentTilknyttetJournalpost());
             journalpost.getDokumentinfoRelasjonListe().add(dokinfo);
         }
 
 
         return journalpost;
+    }
+
+    private TilknyttetJournalpostSom tilknyttetJournalpostSom(String tilknyttetJournalpost){
+        TilknyttetJournalpostSom tilknyttetJournalpostSom = new TilknyttetJournalpostSom();
+        tilknyttetJournalpostSom.setValue(tilknyttetJournalpost);
+        return tilknyttetJournalpostSom;
     }
 
 

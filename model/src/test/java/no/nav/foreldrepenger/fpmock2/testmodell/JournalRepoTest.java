@@ -78,8 +78,6 @@ public class JournalRepoTest {
         Optional<JournalpostModell> resultatModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
         assertThat(resultatModell.isPresent());
         assertThat(resultatModell.get().getId()).isEqualTo(journalpostId);
+
     }
-
-
-
 }
