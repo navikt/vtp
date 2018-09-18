@@ -8,7 +8,7 @@
 	<artifactId>fpmock2</artifactId>
 	<packaging>pom</packaging>
 	<name>FPMock2 :: Root</name>
-	<version>1.0-SNAPSHOT</version>
+	<version>${revision}${sha1}${changelist}</version>
 
 	<scm>
 		<connection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</connection>

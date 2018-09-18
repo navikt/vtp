@@ -1,3 +1,3 @@
-@Library('vl-jenkins')_
+@Library('vl-jenkins@feature/autotest')_
 
-naisPipeline{}
+vtpPipeline {}

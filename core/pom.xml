@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.vedtak.fpmock2</groupId>
         <artifactId>fpmock2</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}${sha1}${changelist}</version>
     </parent>
 
     <artifactId>core</artifactId>
