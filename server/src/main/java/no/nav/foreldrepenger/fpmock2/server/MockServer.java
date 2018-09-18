@@ -25,6 +25,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateReposit
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.modig.testcertificates.TestCertificates;
@@ -67,7 +68,7 @@ public class MockServer {
 
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
         DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(new TestscenarioRepositoryImpl());
-        JournalRepository journalRepository = new JournalRepository();
+        JournalRepository journalRepository = new JournalRepositoryImpl();
 
         addRestServices(handler, testScenarioRepository, templateRepository);
 
