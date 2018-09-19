@@ -43,18 +43,26 @@ public class Saksbehandler extends Aktoer{
 		erLoggetInnMedRolle(rolle);
 	}
 
+	/*
+	 * Hent enkel fagsak
+	 */
 	public void hentFagsak(String saksnummer) throws IOException {
 	    velgFagsak(fagsakKlient.getFagsak(saksnummer));
 	}
 
+	/*
+	 * Søker etter fagsaker
+	 */
 	public void søkEtterFagsak(String søk) throws IOException {
 		fagsaker = fagsakKlient.søk(søk);
+		if(fagsaker.size() == 1) {
+		    velgFagsak(fagsaker.get(0));
+		}
 	}
-
-    public void settBehandlingPåVent(LocalDate frist, String årsak) {
-        behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.hentKode(årsak, kodeverk.Venteårsak)));
-    }
     
+    /*
+     * Velger fagsak
+     */
     public void velgFagsak(Fagsak fagsak) throws IOException {
         valgtFagsak = fagsak;
         
@@ -66,13 +74,68 @@ public class Saksbehandler extends Aktoer{
         }
     }
     
-    
+    /*
+     * velger behandling som valgt behandling
+     */
     public void velgBehandling(Behandling behandling) {
         valgtBehandling = behandling;
     }
 
+    /*
+     * Henting av kodeverk
+     */
     public void hentKodeverk() throws IOException {
         kodeverk = kodeverkKlient.getKodeverk();
+    }
+    
+    /*
+     * Setter behandling på vent
+     */
+    public void settBehandlingPåVent(LocalDate frist, String årsak) {
+        behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.hentKode(årsak, kodeverk.Venteårsak)));
+    }
+    
+    public void gjenopptaBehandling() {
+        throw new RuntimeException("Not implemented: gjenopptaBehandling");
+    }
+    
+    /*
+     * Henter aksjonspunkt bekreftelse av gitt klasse
+     */
+    public <T> T hentAksjonspunktbekreftelse(Class<T> type) {
+        return null;
+    }
+    
+    /*
+     * bekrefter aksjonspunkt
+     */
+    public void bekreftAksjonspunkt(Object object) {
+        throw new RuntimeException("Not implemented: bekreftAksjonspunkt");
+    }
+    
+    /*
+     * Bekrefte aksjonspunkt bekreftelse
+     */
+    public void bekreftAksjonspunktBekreftelse(Object object) {
+        throw new RuntimeException("Ikke implementert bekreftAksjonspunkt");
+    }
+    
+    public void bekreftAksjonspunktbekreftelserer(List<Object> aksjonspunkter) {
+        throw new RuntimeException("Not implemented: bekreftAksjonspunktbekreftelserer");
+    }
+    
+    /*
+     * Opretter behandling på nåværende fagsak
+     */
+    public void opprettBehandling(Kode behandlingstype) {
+        opprettBehandling(behandlingstype, valgtFagsak);
+    }
+    
+    /*
+     * Opretter behandling på gitt fagsak
+     */
+    public void opprettBehandling(Kode behandlingstype, Fagsak fagsak) {
+        throw new RuntimeException("Not implemented: opprettBehandling");
     }
     
     /*
