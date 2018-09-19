@@ -18,3 +18,4 @@ mock.log.*
 logs
 *.log
 APP_LOG_HOME_IS_UNDEFINED
+application-local.properties
