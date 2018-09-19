@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +21,11 @@ public class JournalRepositoryImpl implements JournalRepository {
     private Integer dokumentId;
 
     public JournalRepositoryImpl() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
         journalposter = new HashMap<>();
         dokumenter = new HashMap<>();
-        journalpostId = 5000;
-        dokumentId =  5000;
+        journalpostId = Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;
+        dokumentId = Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;
     }
 
     @Override
