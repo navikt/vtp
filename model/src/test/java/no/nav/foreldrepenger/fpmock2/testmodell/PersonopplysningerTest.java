@@ -59,7 +59,7 @@ public class PersonopplysningerTest {
         // Act - readback
 
         TestscenarioFraTemplateMapper readMapper = new TestscenarioFraTemplateMapper(testScenarioRepository);
-        Testscenario scenario2 = readMapper.lagTestscenario(new StringTestscenarioTemplate("my-template", json, null));
+        Testscenario scenario2 = readMapper.lagTestscenario(new StringTestscenarioTemplate("my-template", json, null, null));
 
         // Assert
         SøkerModell søker2 = scenario2.getPersonopplysninger().getSøker();

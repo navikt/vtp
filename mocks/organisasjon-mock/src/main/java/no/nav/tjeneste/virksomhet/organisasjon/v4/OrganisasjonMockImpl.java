@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.organisasjon.v4;
 
+import java.util.Optional;
+
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -14,6 +16,8 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.binding.FinnOrganisasjonForMangeForekomster;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.binding.FinnOrganisasjonUgyldigInput;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.binding.HentOrganisasjonOrganisasjonIkkeFunnet;
@@ -49,6 +53,12 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonMockImpl.class);
     // private static final EntityManager entityManager = Persistence.createEntityManagerFactory("organisasjon").createEntityManager();
+
+    private TestscenarioBuilderRepository scenarioRepository;
+
+    public OrganisasjonMockImpl() {}
+
+    public OrganisasjonMockImpl(TestscenarioBuilderRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/organisasjon/v4/Organisasjon_v4/finnOrganisasjonRequest")
@@ -92,8 +102,13 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
         if (request != null && request.getOrgnummer() != null) {
             HentOrganisasjonResponse response = new HentOrganisasjonResponse();
             OrganisasjonGenerator orggen = new OrganisasjonGenerator();
-            response.setOrganisasjon(orggen.lagOrganisasjon(request.getOrgnummer()));
-
+            //response.setOrganisasjon(orggen.lagOrganisasjon(request.getOrgnummer()));
+            Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(request.getOrgnummer());
+            if (organisasjonModell.isPresent()) {
+                OrganisasjonModell modell = organisasjonModell.get();
+                Organisasjon organisasjon = OrganisasjonsMapper.mapOrganisasjonFraModell(modell);
+                response.setOrganisasjon(organisasjon);
+            }
             return response;
         } else {
             throw new HentOrganisasjonUgyldigInput("Orgnummer ikke angitt", new UgyldigInput());

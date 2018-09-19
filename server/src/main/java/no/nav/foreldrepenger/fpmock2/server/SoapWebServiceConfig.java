@@ -59,13 +59,14 @@ public class SoapWebServiceConfig {
         publishWebService(new FinnSakListeMockImpl(repo), "/infotrygd-ws/InfotrygdSak/v1");
         publishWebService(new FinnGrunnlagListeMockImpl(repo), "/infotrygd-ws/InfotrygdBeregningsgrunnlag/v1");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
+
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
         publishWebService(new MedlemServiceMockImpl(repo), "/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/norg2/ws/Arbeidsfordeling/v1");
         publishWebService(new InntektMockImpl(repo), "/inntektskomponenten-ws/inntekt/v3/Inntekt");
         publishWebService(new OppgaveServiceMockImpl(), "/nav-gsak-ws/OppgaveV3");
         publishWebService(new ArbeidsforholdMockImpl(), "/aareg-core/ArbeidsforholdService/v3");
-        publishWebService(new OrganisasjonMockImpl(), "/ereg/ws/OrganisasjonService/v4");
+        publishWebService(new OrganisasjonMockImpl(repo), "/ereg/ws/OrganisasjonService/v4");
         publishWebService(new PdpMock(), "/asm-pdp/authorize");
     }
 

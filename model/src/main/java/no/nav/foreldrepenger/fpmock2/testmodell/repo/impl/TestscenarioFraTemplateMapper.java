@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
@@ -78,6 +80,16 @@ public class TestscenarioFraTemplateMapper {
             } catch (IOException e) {
                 throw new IllegalArgumentException("Kunne ikke lese inntektytelser-annenpart.json for scenario:" + scenario, e);
             }
+        }
+
+        try (Reader reader = template.organisasjonReader()) {
+            // detaljer
+            if (reader != null) {
+                OrganisasjonModell organisasjonModell = objectMapper.readValue(reader, OrganisasjonModell.class);
+                scenario.leggTil(organisasjonModell);
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Kunne ikke lese organisasjon.json for scenario:" + scenario, e);
         }
 
         testScenarioRepository.indekser(scenario);

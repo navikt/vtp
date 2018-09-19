@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
                     <startDato>2017-01-01+01:00</startDato>
                     </opptjeningsperiode>
                     <utbetaltIPeriode>2017-01</utbetaltIPeriode>
-                    <opplysningspliktig xsi:type="ns4:Organisasjon">
+                    <opplysningspliktig xsi:type="ns4:OrganisasjonModell">
                     <orgnummer>864950582</orgnummer>
                     </opplysningspliktig>
-                    <virksomhet xsi:type="ns4:Organisasjon">
+                    <virksomhet xsi:type="ns4:OrganisasjonModell">
                     <orgnummer>972223794</orgnummer>
                     </virksomhet>
                     <inntektsmottaker xsi:type="ns4:PersonIdent">

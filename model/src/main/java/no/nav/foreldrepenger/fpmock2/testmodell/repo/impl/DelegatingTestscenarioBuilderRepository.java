@@ -7,6 +7,7 @@ import java.util.Optional;
 import no.nav.foreldrepenger.fpmock2.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
@@ -51,4 +52,8 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
         return delegate.getIdenter(unikScenarioId);
     }
 
+    @Override
+    public Optional<OrganisasjonModell> getOrganisasjon(String orgnr) {
+        return delegate.getOrganisasjon(orgnr);
+    }
 }

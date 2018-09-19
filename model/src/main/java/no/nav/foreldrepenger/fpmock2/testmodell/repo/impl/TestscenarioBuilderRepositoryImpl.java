@@ -16,6 +16,9 @@ import no.nav.foreldrepenger.fpmock2.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonIndeks;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.BasisdataProvider;
@@ -33,6 +36,12 @@ public class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRep
     private final Map<String, LokalIdentIndeks> identer = new HashMap<>();
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
+    private OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
+
+    @Override
+    public Optional<OrganisasjonModell> getOrganisasjon(String orgnr) {
+        return organisasjonIndeks.getModellForIdent(orgnr);
+    }
 
     public TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
         Objects.requireNonNull(basisdata, "basisdata");
@@ -70,6 +79,13 @@ public class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRep
         inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
         if (personopplysninger.getAnnenPart() != null) {
             inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
+        }
+
+        //Stig
+        OrganisasjonModeller organisasjonModeller = testScenario.getOrganisasjonModeller();
+        List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
+        for (OrganisasjonModell modell : modeller) {
+            organisasjonIndeks.leggTil(modell);
         }
     }
 

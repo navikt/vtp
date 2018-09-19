@@ -13,6 +13,8 @@ public interface TestscenarioTemplate {
 
     Reader inntektopplysningReader(String rolle) throws IOException;
 
+    Reader organisasjonReader() throws IOException;
+
     VariabelContainer getDefaultVars();
 
     Set<TemplateVariable> getExpectedVars();

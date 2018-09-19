@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.Set;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TemplateVariable;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
@@ -17,6 +18,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 public class FileTestscenarioTemplate implements TestscenarioTemplate {
 
     public static final String PERSONOPPLYSNING_JSON_FILE = "personopplysning.json";
+    public static final String ORGANISASJON_JSON_FILE = "organisasjon.json";
     public static final String VARS_JSON_FILE = "vars.json";
 
     private VariabelContainer vars = new VariabelContainer();
@@ -41,12 +43,14 @@ public class FileTestscenarioTemplate implements TestscenarioTemplate {
     public Set<TemplateVariable> getExpectedVars() {
         try (Reader personopplysningReader = personopplysningReader();
                 Reader søkerInntektopplysningReader = inntektopplysningReader("søker");
-                Reader annenpartInntektopplysningReader = inntektopplysningReader("annenpart");) {
+                Reader annenpartInntektopplysningReader = inntektopplysningReader("annenpart");
+                Reader organisasjonsReader = organisasjonReader()) {
             FindTemplateVariables finder = new FindTemplateVariables();
 
             finder.scanForVariables(Personopplysninger.class, personopplysningReader);
             finder.scanForVariables(InntektYtelseModell.class, søkerInntektopplysningReader);
             finder.scanForVariables(InntektYtelseModell.class, annenpartInntektopplysningReader);
+            finder.scanForVariables(OrganisasjonModell.class, organisasjonsReader);
 
             return finder.getDiscoveredVariables();
 
@@ -67,4 +71,8 @@ public class FileTestscenarioTemplate implements TestscenarioTemplate {
         return file.exists() ? new FileReader(file) : null;
     }
 
+    @Override
+    public Reader organisasjonReader() throws FileNotFoundException {
+        return new FileReader(new File(templateDir, ORGANISASJON_JSON_FILE));
+    }
 }
