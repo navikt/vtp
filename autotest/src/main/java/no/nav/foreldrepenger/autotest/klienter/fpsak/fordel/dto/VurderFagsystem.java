@@ -2,6 +2,9 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VurderFagsystem {
     public String journalpostId;
     public boolean strukturertSøknad ;

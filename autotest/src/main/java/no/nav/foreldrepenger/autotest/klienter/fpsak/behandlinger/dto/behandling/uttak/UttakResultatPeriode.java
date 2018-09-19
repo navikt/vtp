@@ -3,8 +3,11 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandlin
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPeriode {
 
     public LocalDate fom = null;

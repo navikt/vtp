@@ -2,8 +2,11 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandlin
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPeriodeAktivitet {
 
     public Kode stønadskontoType = null;

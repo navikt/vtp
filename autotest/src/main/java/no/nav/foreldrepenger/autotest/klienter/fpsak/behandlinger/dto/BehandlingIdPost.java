@@ -1,7 +1,10 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlingIdPost {
     int behandlingId;
     int behandlingVersjon;
