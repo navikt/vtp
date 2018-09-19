@@ -16,6 +16,6 @@ public class MiljoKonfigurasjonTest extends TestBase{
     
     @Test
     public void testHentApiRoot() {
-        verifiser(MiljoKonfigurasjon.konfigurasjon.hentRestRootUrl() != null, "Kunne ikke hente Rest root url for miljøet");
+        verifiser(MiljoKonfigurasjon.hentRestRootUrl() != null, "Kunne ikke hente Rest root url for miljøet");
     }
 }

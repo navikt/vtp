@@ -7,15 +7,15 @@ public class TestKonfigurasjon extends KonfigurasjonBase{
     private static String KONFIGURASJONS_FIL = "../application.properties";
     private static String KONFIGURASJONS_FIL_LOKAL = "../application-local.properties";
 	
-	public static String ENV_USERNAME_FORMAT = "autotest.openam.%s.username";
-    public static String ENV_PASSWORD_FORMAT = "autotest.openam.%s.password";
+	public static String SYSTEM_USERNAME_FORMAT = "autotest.openam.%s.username";
+    public static String SYSTEM_PASSWORD_FORMAT = "autotest.openam.%s.password";
     
     public TestKonfigurasjon() {
 	}
     
     public static Bruker hentBruker(String role){
-        return new Bruker(System.getProperty(String.format(ENV_USERNAME_FORMAT, role.toLowerCase())),
-                        System.getProperty(String.format(ENV_PASSWORD_FORMAT, role.toLowerCase())));
+        return new Bruker(System.getProperty(String.format(SYSTEM_USERNAME_FORMAT, role.toLowerCase())),
+                        System.getProperty(String.format(SYSTEM_PASSWORD_FORMAT, role.toLowerCase())));
     }
     
     public static String hentOICDSystemBruker() {

@@ -36,6 +36,11 @@ public class HttpSession{
         return client.execute(request, context);
     }
 
+    
+    public HttpResponse get(String url) throws IOException {
+        return get(url, new HashMap<>());
+    }
+    
     public HttpResponse get(String url, Map<String, String> headers) throws IOException {
         HttpGet request = new HttpGet(url);
         return execute(request, headers);

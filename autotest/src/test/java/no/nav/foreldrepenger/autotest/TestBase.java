@@ -12,7 +12,7 @@ public abstract class TestBase {
     @BeforeAll
     protected static void setUpAll() {
         PropertiesUtils.initProperties(hentPropertyDir());
-        new MiljoKonfigurasjon();
+        MiljoKonfigurasjon.initProperties();
     }
 	protected void verifiserListeInneholder(List<Object> liste, Object object1) {
 		for (Object object2 : liste) {

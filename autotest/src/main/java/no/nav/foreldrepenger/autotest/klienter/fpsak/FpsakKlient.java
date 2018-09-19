@@ -16,7 +16,7 @@ public class FpsakKlient extends JsonRest{
     	//TODO Hack until env management
     	MiljoKonfigurasjon env = new MiljoKonfigurasjon();
     	env.loadEnv(MiljoKonfigurasjon.hentMiljø());
-    	return env.hentProperty(MiljoKonfigurasjon.PROPERTY_FPSAK_API_ROOT);
+    	return env.hentRestRootUrl();
     }
 
 }

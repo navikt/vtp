@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
@@ -17,8 +19,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
+import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 
 public class Saksbehandler extends Aktoer{
 	
@@ -95,6 +97,13 @@ public class Saksbehandler extends Aktoer{
      */
     public void hentKodeverk() throws IOException {
         kodeverk = kodeverkKlient.getKodeverk();
+    }
+    
+    public void hentSelftest() throws IOException {
+        HttpResponse response = session.get(MiljoKonfigurasjon.hentSelftestUrl());
+        if(200 != response.getStatusLine().getStatusCode()) {
+            throw new RuntimeException("Kunne ikke hente selftest. fikk httpstatus: " + response.getStatusLine().getStatusCode());
+        }
     }
     
     /*

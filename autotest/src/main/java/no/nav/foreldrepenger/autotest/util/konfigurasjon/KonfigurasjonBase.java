@@ -31,8 +31,4 @@ public abstract class KonfigurasjonBase {
         
         System.getProperties().putAll(properties);
 	}
-	
-	public String hentProperty(String key) {
-		return properties.getProperty(key);
-	}
 }
