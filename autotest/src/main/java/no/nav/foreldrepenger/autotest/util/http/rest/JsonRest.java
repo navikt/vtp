@@ -105,7 +105,6 @@ public abstract class JsonRest extends Rest{
     	String json = hentResponseBody(response);
     	ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
     	return hentObjectMapper().readValue(json, returnType);
-    	//return hentGson().fromJson(json, returnType);
     }
     
     protected <T> T getOgHentJson(String url, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
@@ -113,17 +112,22 @@ public abstract class JsonRest extends Rest{
     	String json = hentResponseBody(response);
     	ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
     	return hentObjectMapper().readValue(json, returnType);
-    	//return hentGson().fromJson(json, returnType.getType());
     }
     
     
     /*
      * PUT
      */
-    protected HttpResponse putJson(String url, String json) throws IOException {
-        return put(url, hentJsonPostEntity(json));
+    protected HttpResponse putJson(String url, Object requestData, StatusRange expectedStatusRange) throws IOException {
+        String json = hentObjectMapper().writeValueAsString(requestData);
+        return putJson(url, json, expectedStatusRange);
     }
     
+    protected HttpResponse putJson(String url, String json, StatusRange expectedStatusRange) throws IOException {
+        HttpResponse response = put(url, hentJsonPostEntity(json));
+        ValidateResponse(response, expectedStatusRange);
+        return response;
+    }
 
     protected StringEntity hentJsonPostEntity(String json) {
         try {

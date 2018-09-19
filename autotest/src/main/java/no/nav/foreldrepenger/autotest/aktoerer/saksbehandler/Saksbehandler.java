@@ -6,8 +6,8 @@ import java.util.List;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
@@ -91,7 +91,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Setter behandling på vent
      */
-    public void settBehandlingPåVent(LocalDate frist, String årsak) {
+    public void settBehandlingPåVent(LocalDate frist, String årsak) throws IOException {
         behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.hentKode(årsak, kodeverk.Venteårsak)));
     }
     

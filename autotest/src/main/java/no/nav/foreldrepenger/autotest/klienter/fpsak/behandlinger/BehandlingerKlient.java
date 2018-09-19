@@ -1,12 +1,11 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
 import org.apache.http.HttpResponse;
-
-import com.google.gson.reflect.TypeToken;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingByttEnhet;
@@ -164,7 +163,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public List<Behandling> alle(long saksnummer) throws IOException {
         String url = hentRestRotUrl() + String.format(BEHANDLINGER_ALLE_URL, saksnummer);
-        return getOgHentJson(url, new TypeToken<List<Behandling>>() {}, StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class, Behandling.class), StatusRange.STATUS_SUCCESS);
     }
     
     /*
@@ -228,7 +227,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public List<Vilkar> behandlingVilkår(int behandlingsId) throws IOException {
         String url = hentRestRotUrl() + String.format(BEHANDLING_VILKAAR_URL, behandlingsId);
-        return getOgHentJson(url, new TypeToken<List<Vilkar>>() {}, StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class, Vilkar.class), StatusRange.STATUS_SUCCESS);
     }
     
     /*
@@ -236,7 +235,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public List<Aksjonspunkt> behandlingAksjonspunkt(int behandlingsId) throws IOException {
         String url = hentRestRotUrl() + String.format(BEHANDLING_AKSJONSPUNKT_URL, behandlingsId);
-        return getOgHentJson(url, new TypeToken<List<Aksjonspunkt>>() {}, StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class, Aksjonspunkt.class), StatusRange.STATUS_SUCCESS);
     }
     
     /*
