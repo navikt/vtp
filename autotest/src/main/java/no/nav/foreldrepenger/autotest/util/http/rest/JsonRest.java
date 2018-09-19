@@ -63,6 +63,10 @@ public abstract class JsonRest extends Rest{
     	return hentObjectMapper().readValue(json, returnType);
     }
     
+    protected String postOgVerifiser(String url, Object requestData, StatusRange expectedStatusRange) throws IOException {
+        return postOgVerifiser(url, requestData, new HashMap<>(), expectedStatusRange);
+    }
+    
     protected String postOgVerifiser(String url, Object requestData, Map<String, String> headers, StatusRange expectedStatusRange) throws IOException {
     	String request = hentObjectMapper().writeValueAsString(requestData);
     	HttpResponse response = postJson(url, request, headers);

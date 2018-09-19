@@ -2,11 +2,16 @@ package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
@@ -95,33 +100,41 @@ public class Saksbehandler extends Aktoer{
         behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.hentKode(årsak, kodeverk.Venteårsak)));
     }
     
-    public void gjenopptaBehandling() {
-        throw new RuntimeException("Not implemented: gjenopptaBehandling");
+    public void gjenopptaBehandling() throws IOException {
+        behandlingerKlient.gjenoppta(new BehandlingIdPost(valgtBehandling));
     }
     
     /*
      * Henter aksjonspunkt bekreftelse av gitt klasse
      */
     public <T> T hentAksjonspunktbekreftelse(Class<T> type) {
-        return null;
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
+            if(type.isInstance(aksjonspunkt.bekreftelse)) {
+                return (T) aksjonspunkt;
+            }
+        }
+        throw new RuntimeException("Valgt behandling har ikke aksjonspunktbekreftelse: " + type.getName());
     }
     
     /*
      * bekrefter aksjonspunkt
      */
-    public void bekreftAksjonspunkt(Object object) {
-        throw new RuntimeException("Not implemented: bekreftAksjonspunkt");
+    public void bekreftAksjonspunkt(Aksjonspunkt aksjonspunkt) throws IOException {
+        bekreftAksjonspunktBekreftelse(aksjonspunkt.bekreftelse);
     }
     
     /*
      * Bekrefte aksjonspunkt bekreftelse
      */
-    public void bekreftAksjonspunktBekreftelse(Object object) {
-        throw new RuntimeException("Ikke implementert bekreftAksjonspunkt");
+    public void bekreftAksjonspunktBekreftelse(AksjonspunktBekreftelse bekreftelse) throws IOException {
+        List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
+        bekreftelser.add(bekreftelse);
+        bekreftAksjonspunktbekreftelserer(bekreftelser);
     }
     
-    public void bekreftAksjonspunktbekreftelserer(List<Object> aksjonspunkter) {
-        throw new RuntimeException("Not implemented: bekreftAksjonspunktbekreftelserer");
+    public void bekreftAksjonspunktbekreftelserer(List<AksjonspunktBekreftelse> bekreftelser) throws IOException {
+        BekreftedeAksjonspunkter aksjonspunkter = new BekreftedeAksjonspunkter(valgtFagsak, valgtBehandling, bekreftelser);
+        behandlingerKlient.postBehandlingAksjonspunkt(aksjonspunkter);
     }
     
     /*

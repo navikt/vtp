@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Ytelsefordeling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Familiehendelse;
@@ -58,7 +59,8 @@ public class BehandlingerKlient extends FpsakKlient{
     private static final String BEHANDLING_FORELDREPENGER_URL = BEHANDLING_URL + "/beregningsresultat/foreldrepenger";
     private static final String BEHANDLING_BEREGNINGSGRUNNALG_URL = BEHANDLING_URL + "/beregningsgrunnlag";
     private static final String BEHANDLING_VILKAAR_URL = BEHANDLING_URL + "/vilkar?behandlingId=%s";
-    private static final String BEHANDLING_AKSJONSPUNKT_URL = BEHANDLING_URL + "/aksjonspunkt?behandlingId=%s";
+    private static final String BEHANDLING_AKSJONSPUNKT_URL = BEHANDLING_URL + "/aksjonspunkt";
+    private static final String BEHANDLING_AKSJONSPUNKT_GET_URL = BEHANDLING_AKSJONSPUNKT_URL + "?behandlingId=%s";
     private static final String BEHANDLING_SOKNAD_URL = BEHANDLING_URL + "/soknad";
     private static final String BEHANDLING_FAMILIE_HENDELSE_URL = BEHANDLING_URL + "/familiehendelse";
     private static final String BEHANDLING_OPPTJENING_URL = BEHANDLING_URL + "/opptjening";
@@ -233,9 +235,14 @@ public class BehandlingerKlient extends FpsakKlient{
     /*
      * Hent aksjonspunkter for behandling
      */
-    public List<Aksjonspunkt> behandlingAksjonspunkt(int behandlingsId) throws IOException {
-        String url = hentRestRotUrl() + String.format(BEHANDLING_AKSJONSPUNKT_URL, behandlingsId);
+    public List<Aksjonspunkt> getBehandlingAksjonspunkt(int behandlingsId) throws IOException {
+        String url = hentRestRotUrl() + String.format(BEHANDLING_AKSJONSPUNKT_GET_URL, behandlingsId);
         return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class, Aksjonspunkt.class), StatusRange.STATUS_SUCCESS);
+    }
+    
+    public void postBehandlingAksjonspunkt(BekreftedeAksjonspunkter aksjonsunkter) throws IOException {
+        String url = hentRestRotUrl() + BEHANDLING_AKSJONSPUNKT_URL;
+        postOgVerifiser(url, aksjonsunkter, StatusRange.STATUS_SUCCESS);
     }
     
     /*
