@@ -31,7 +31,7 @@ public class FordelKlient extends FpsakKlient{
     
     public void journalpost(JournalpostMottak journalpostMottak) throws IOException {
         String url = hentRestRotUrl() + JOURNALPOST_URL;
-        postJson(url, journalpostMottak);
+        postOgVerifiser(url, journalpostMottak, StatusRange.STATUS_SUCCESS);
     }
     
     public Saksnummer fagsakOpprett(OpprettSak journalpost) throws IOException {
@@ -46,6 +46,6 @@ public class FordelKlient extends FpsakKlient{
     
     public void fagsakKnyttJournalpost(JournalpostKnyttning knyttJournalpost) throws IOException {
         String url = hentRestRotUrl() + FAGSAK_KNYTT_JOURNALPOST_URL;
-        postJson(url, knyttJournalpost);
+        postOgVerifiser(url, knyttJournalpost, StatusRange.STATUS_SUCCESS);
     }
 }

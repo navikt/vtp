@@ -30,9 +30,12 @@ public abstract class JsonRest extends Rest{
     /*
      * POST
      */
-    
     protected HttpResponse postJson(String url, Object object) throws IOException {
         return postJson(url, hentObjectMapper().writeValueAsString(object));
+    }
+    
+    protected HttpResponse postJson(String url, Object object, Map<String, String> headers) throws IOException {
+        return postJson(url, hentObjectMapper().writeValueAsString(object), headers);
     }
 
     protected HttpResponse postJson(String url, String json) throws IOException {
@@ -77,12 +80,10 @@ public abstract class JsonRest extends Rest{
     	return json;
     }
 
+    
     /*
      * GET
      */
-
-    
-
     protected HttpResponse getJson(String url) throws IOException {
         return getJson(url, new HashMap<>());
     }
@@ -133,6 +134,7 @@ public abstract class JsonRest extends Rest{
         return response;
     }
 
+    
     protected StringEntity hentJsonPostEntity(String json) {
         try {
             return new StringEntity(json, ContentType.APPLICATION_JSON);

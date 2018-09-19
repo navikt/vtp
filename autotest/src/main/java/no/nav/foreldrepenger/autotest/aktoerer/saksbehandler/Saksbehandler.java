@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -69,6 +70,9 @@ public class Saksbehandler extends Aktoer{
      * Velger fagsak
      */
     public void velgFagsak(Fagsak fagsak) throws IOException {
+        if(fagsak == null) {
+            throw new RuntimeException("Kan ikke velge fagsak. fagsak er null");
+        }
         valgtFagsak = fagsak;
         
         behandlinger = behandlingerKlient.alle(fagsak.saksnummer);
