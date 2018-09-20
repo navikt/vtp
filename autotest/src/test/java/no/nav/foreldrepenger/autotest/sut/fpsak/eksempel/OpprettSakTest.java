@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.sut.fpsak.FpsakTestBase;
 
-@Tag("smoke")
+@Tag("smokeBLA")
 public class OpprettSakTest extends FpsakTestBase{
     
     @Test
