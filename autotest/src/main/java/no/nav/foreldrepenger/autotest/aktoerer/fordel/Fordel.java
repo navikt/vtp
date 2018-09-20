@@ -30,21 +30,25 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn søkand og returnerer saksinformasjon
      */
-    public Object sendInnSøknad(Object object) {
-        return null;
+    public long sendInnSøknad(Object søknad) {
+        return -1;
     }
     
     /*
      * Sender inn søknad og returnerer saksinformasjon
      */
-    public Object sendInnPapirsøkand(Object object) {
-        return null;
+    public long sendInnPapirsøkand(Object søknad) {
+        return -1;
     }
 
 
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
      */
+    public long sendInnInntektsmelding(Object inntektsmelding) throws IOException {
+        return -1;
+    }
+    
     public long sendInnInntektsmelding(String journalpostId, String behandlingstemaOffisiellKode, String dokumentTypeIdOffisiellKode, String aktørId) throws IOException {
         OpprettSak journalpost = new OpprettSak(journalpostId, behandlingstemaOffisiellKode, aktørId);
         Saksnummer saksnummer = fordelKlient.fagsakOpprett(journalpost);
@@ -65,7 +69,7 @@ public class Fordel extends Aktoer{
     }
 
 
-    // DELETEME
+    // DELETEME temp til vi får xml objekter
     /*
     private String readFile() throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get("test.xml"));
