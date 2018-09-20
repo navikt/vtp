@@ -41,7 +41,12 @@
 		<logstash.version>5.1</logstash.version>
 		<syslog4j.version>1.0.0</syslog4j.version>
 		<jetty.version>9.4.10.v20180503</jetty.version>
+		
 		<junit.version>4.12</junit.version>
+		<junit.jupiter.version>5.3.1</junit.jupiter.version>
+		<junit-platform-launcher.version>1.3.1</junit-platform-launcher.version>
+		
+		<httpclient.version>4.5.6</httpclient.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.3.1.Final</hibernate.version>
 		<hibernate.jpa.version>1.0.2.Final</hibernate.jpa.version>
@@ -50,7 +55,7 @@
 		<jose4j.version>0.6.4</jose4j.version>
 		<swagger.version>1.5.21</swagger.version>
 		<resteasy.version>3.6.1.Final</resteasy.version>
-		
+
 		<oppgave.version>3.0.0</oppgave.version>
 		<gsak.sak.version>1.0.0</gsak.sak.version>
 		<infotrygd.sak.version>1.1.2</infotrygd.sak.version>
@@ -149,6 +154,12 @@
 				<artifactId>norg2-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>autotest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 			<!-- NAV-biblioteker -->
 			<dependency>
@@ -280,20 +291,20 @@
 				<scope>import</scope>
 			</dependency>
 
-            <dependency>
-	            <groupId>org.eclipse.jetty</groupId>
-	            <artifactId>jetty-bom</artifactId>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-bom</artifactId>
 				<version>${jetty.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
-	        </dependency>
-			
+			</dependency>
+
 			<dependency>
-                <groupId>org.bitbucket.b_c</groupId>
-                <artifactId>jose4j</artifactId>
-                <version>${jose4j.version}</version>
-            </dependency>
-			
+				<groupId>org.bitbucket.b_c</groupId>
+				<artifactId>jose4j</artifactId>
+				<version>${jose4j.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.threeten</groupId>
 				<artifactId>threeten-extra</artifactId>
@@ -376,6 +387,33 @@
 				<artifactId>mockito-all</artifactId>
 				<version>${mockito.version}</version>
 				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>${junit.jupiter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-params</artifactId>
+				<version>${junit.jupiter.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.platform</groupId>
+				<artifactId>junit-platform-launcher</artifactId>
+				<version>${junit-platform-launcher.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit.jupiter.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

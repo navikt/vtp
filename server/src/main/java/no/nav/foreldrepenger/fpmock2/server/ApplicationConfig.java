@@ -29,6 +29,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioTemplateRestTjeneste;
+import no.nav.foreldrepenger.fpmock2.server.rest.AutotestRestService;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
@@ -57,6 +58,9 @@ public class ApplicationConfig extends Application {
         classes.add(SigrunMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
+        
+        // tester
+        classes.add(AutotestRestService.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);

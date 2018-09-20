@@ -64,6 +64,12 @@
 			<artifactId>arena-mock</artifactId>
 		</dependency>
 
+		<!-- Tester -->
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>autotest</artifactId>
+		</dependency>
+		
 		<!-- NAV biblioteker -->
 		<dependency>
 			<groupId>no.nav.modig</groupId>
