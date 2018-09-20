@@ -18,16 +18,20 @@ public class TestKonfigurasjon extends KonfigurasjonBase{
                         System.getProperty(String.format(SYSTEM_PASSWORD_FORMAT, role.toLowerCase())));
     }
     
-    public static String hentOICDSystemBruker() {
+    public static String hentOIDCSystemBruker() {
         return System.getProperty("autotest.oicd.username");
     }
     
-    public static String hentOICDSystemPassord() {
+    public static String hentOIDCSystemPassord() {
 		return System.getProperty("autotest.oicd.password");
     }
     
-    public static String hentOICDUrl() {
+    public static String hentOIDCUrl() {
         return System.getProperty("autotest.oicd.url");
+    }
+    
+    public static String hentOIDCMockIssuer() {
+        return System.getProperty("autotest.oicd.mock.issuer");
     }
     
     public static class Bruker{
@@ -49,5 +53,4 @@ public class TestKonfigurasjon extends KonfigurasjonBase{
             System.out.println("Kunne ikke laste inn lokal konfigurasjon");
         }
     }
-    
 }

@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import no.nav.foreldrepenger.autotest.sut.fpsak.FpsakTestBase;
 
-@Tag("smoke")
+@Tag("develop")
 public class Loginn extends FpsakTestBase{
 	
     @ParameterizedTest

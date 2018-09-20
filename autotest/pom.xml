@@ -108,11 +108,18 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
     </dependency>
-      <dependency>
-          <groupId>no.nav.vedtak.fpmock2</groupId>
-          <artifactId>core</artifactId>
-          <scope>test</scope>
-      </dependency>
+    
+    
+    <dependency>
+        <groupId>no.nav.vedtak.fpmock2</groupId>
+        <artifactId>core</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>no.nav.vedtak.fpmock2</groupId>
+        <artifactId>server</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
 
   </dependencies>
     

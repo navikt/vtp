@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMTokenLogin;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
-import no.nav.foreldrepenger.autotest.util.konfigurasjon.TestKonfigurasjon;
+import no.nav.foreldrepenger.fpmock2.server.rest.OidcTokenGenerator;
 
 public class OpenAMKlient extends JsonRest {
 
@@ -33,10 +33,20 @@ public class OpenAMKlient extends JsonRest {
 
     private static final String UTF_8 = StandardCharsets.UTF_8.name();
 
+    public OpenAMKlient(HttpSession session){
+        super(session);
+    }
+    
     public OpenAMKlient(HttpSession session, String baseUrl) throws UnsupportedEncodingException {
         super(session);
         this.baseUrl = baseUrl;
         this.redirectUriEncoded = URLEncoder.encode(redirectBase + "/vedtak/cb", UTF_8);
+    }
+    
+    public void loginMock(String issuer) {
+        // TODO fikses når man kan bruke autotest internt i server
+        //String token = new OidcTokenGenerator().withIssuer(issuer).create();
+        //addCookie("ID_token", token, "devillo.no", "/");
     }
     
     public void loginSession(String username, String password, String oicdUser, String oicdPass) throws IOException {
@@ -149,6 +159,8 @@ public class OpenAMKlient extends JsonRest {
     public String hentRestRotUrl() {
         return null;
     }
+
+    
 }
 
 

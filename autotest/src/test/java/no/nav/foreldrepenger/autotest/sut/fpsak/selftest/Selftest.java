@@ -12,7 +12,6 @@ public class Selftest extends FpsakTestBase{
     
     @Test
     public void VerifiserSelftest() throws IOException {
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentSelftest();
     }
 }
