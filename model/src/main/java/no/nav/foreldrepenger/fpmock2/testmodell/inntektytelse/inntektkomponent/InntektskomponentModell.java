@@ -10,7 +10,7 @@ public class InntektskomponentModell {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("inntektsperioder")
-    List<Inntektsperiode> inntektsperioder  = new ArrayList<>();
+    List<Inntektsperiode> inntektsperioder = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @JsonProperty("frilansarbeidsforholdperioder")
@@ -25,4 +25,12 @@ public class InntektskomponentModell {
         return inntektsperioder;
     }
 
+    public List<FrilansArbeidsforholdsperiode> getFrilansarbeidsforholdperioder() {
+        return frilansarbeidsforholdperioder;
+    }
+
+    public void setFrilansarbeidsforholdperioder(List<FrilansArbeidsforholdsperiode> frilansarbeidsforholdperioder) {
+        this.frilansarbeidsforholdperioder.clear();
+        this.frilansarbeidsforholdperioder.addAll(frilansarbeidsforholdperioder);
+    }
 }

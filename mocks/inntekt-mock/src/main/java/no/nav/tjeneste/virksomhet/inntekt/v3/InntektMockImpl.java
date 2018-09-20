@@ -57,7 +57,7 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.modell.HentInntektlistBolkMapper;
 
 @Addressing
 @WebService(name = "Inntekt_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3")
-@HandlerChain(file="Handler-chain.xml")
+@HandlerChain(file = "Handler-chain.xml")
 public class InntektMockImpl implements InntektV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(InntektMockImpl.class);
@@ -67,10 +67,12 @@ public class InntektMockImpl implements InntektV3 {
 
     private TestscenarioBuilderRepository scenarioRepository;
 
-    public InntektMockImpl(){}
+    public InntektMockImpl() {
+    }
 
-    public InntektMockImpl(TestscenarioBuilderRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
-
+    public InntektMockImpl(TestscenarioBuilderRepository scenarioRepository) {
+        this.scenarioRepository = scenarioRepository;
+    }
 
 
     @Override
@@ -80,7 +82,7 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeBolk")
     @ResponseWrapper(localName = "hentInntektListeBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeBolkResponse")
-    public HentInntektListeBolkResponse hentInntektListeBolk(@WebParam(name = "request",targetNamespace = "") HentInntektListeBolkRequest request) throws HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeBolkUgyldigInput {
+    public HentInntektListeBolkResponse hentInntektListeBolk(@WebParam(name = "request", targetNamespace = "") HentInntektListeBolkRequest request) throws HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeBolkUgyldigInput {
 
         HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
 
@@ -97,8 +99,10 @@ public class InntektMockImpl implements InntektV3 {
                 Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
                 if (inntektYtelseModell.isPresent()) {
                     InntektskomponentModell modell = inntektYtelseModell.get().getInntektskomponentModell();
+
                     ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlistBolkMapper.makeArbeidsInntektIdent(modell, fnr);
                     response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
+
 
                 }
             }
@@ -109,7 +113,6 @@ public class InntektMockImpl implements InntektV3 {
     }
 
 
-
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/inntekt/v3/Inntekt_v3/hentForventetInntektRequest")
     @WebResult(name = "response", targetNamespace = "")
@@ -117,7 +120,7 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentForventetInntekt")
     @ResponseWrapper(localName = "hentForventetInntektResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentForventetInntektResponse")
-    public HentForventetInntektResponse hentForventetInntekt(@WebParam(name = "request",targetNamespace = "") HentForventetInntektRequest hentForventetInntektRequest) throws HentForventetInntektPersonIkkeFunnet, HentForventetInntektSikkerhetsbegrensning, HentForventetInntektUgyldigInput {
+    public HentForventetInntektResponse hentForventetInntekt(@WebParam(name = "request", targetNamespace = "") HentForventetInntektRequest hentForventetInntektRequest) throws HentForventetInntektPersonIkkeFunnet, HentForventetInntektSikkerhetsbegrensning, HentForventetInntektUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
@@ -136,7 +139,7 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListe")
     @ResponseWrapper(localName = "hentInntektListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeResponse")
-    public HentInntektListeResponse hentInntektListe(@WebParam(name = "request",targetNamespace = "") HentInntektListeRequest hentInntektListeRequest) throws HentInntektListeHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeSikkerhetsbegrensning, HentInntektListeUgyldigInput {
+    public HentInntektListeResponse hentInntektListe(@WebParam(name = "request", targetNamespace = "") HentInntektListeRequest hentInntektListeRequest) throws HentInntektListeHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeSikkerhetsbegrensning, HentInntektListeUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
@@ -147,7 +150,7 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeForOpplysningspliktig")
     @ResponseWrapper(localName = "hentInntektListeForOpplysningspliktigResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeForOpplysningspliktigResponse")
-    public HentInntektListeForOpplysningspliktigResponse hentInntektListeForOpplysningspliktig(@WebParam(name = "request",targetNamespace = "") HentInntektListeForOpplysningspliktigRequest hentInntektListeForOpplysningspliktigRequest) throws HentInntektListeForOpplysningspliktigHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeForOpplysningspliktigUgyldigInput {
+    public HentInntektListeForOpplysningspliktigResponse hentInntektListeForOpplysningspliktig(@WebParam(name = "request", targetNamespace = "") HentInntektListeForOpplysningspliktigRequest hentInntektListeForOpplysningspliktigRequest) throws HentInntektListeForOpplysningspliktigHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeForOpplysningspliktigUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
@@ -158,7 +161,7 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentAbonnerteInntekterBolk")
     @ResponseWrapper(localName = "hentAbonnerteInntekterBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentAbonnerteInntekterBolkResponse")
-    public HentAbonnerteInntekterBolkResponse hentAbonnerteInntekterBolk(@WebParam(name = "request",targetNamespace = "") HentAbonnerteInntekterBolkRequest hentAbonnerteInntekterBolkRequest) throws HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter, HentAbonnerteInntekterBolkUgyldigInput {
+    public HentAbonnerteInntekterBolkResponse hentAbonnerteInntekterBolk(@WebParam(name = "request", targetNamespace = "") HentAbonnerteInntekterBolkRequest hentAbonnerteInntekterBolkRequest) throws HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter, HentAbonnerteInntekterBolkUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
@@ -169,15 +172,15 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentDetaljerteAbonnerteInntekter")
     @ResponseWrapper(localName = "hentDetaljerteAbonnerteInntekterResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentDetaljerteAbonnerteInntekterResponse")
-    public HentDetaljerteAbonnerteInntekterResponse hentDetaljerteAbonnerteInntekter(@WebParam(name = "request",targetNamespace = "") HentDetaljerteAbonnerteInntekterRequest hentDetaljerteAbonnerteInntekterRequest) throws HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter, HentDetaljerteAbonnerteInntekterManglendeAbonnent, HentDetaljerteAbonnerteInntekterPersonIkkeFunnet, HentDetaljerteAbonnerteInntekterSikkerhetsbegrensning, HentDetaljerteAbonnerteInntekterUgyldigInput {
+    public HentDetaljerteAbonnerteInntekterResponse hentDetaljerteAbonnerteInntekter(@WebParam(name = "request", targetNamespace = "") HentDetaljerteAbonnerteInntekterRequest hentDetaljerteAbonnerteInntekterRequest) throws HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter, HentDetaljerteAbonnerteInntekterManglendeAbonnent, HentDetaljerteAbonnerteInntekterPersonIkkeFunnet, HentDetaljerteAbonnerteInntekterSikkerhetsbegrensning, HentDetaljerteAbonnerteInntekterUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
 
-    private String getIdentFromAktoer(Aktoer aktoer){
-        if(aktoer instanceof PersonIdent){
+    private String getIdentFromAktoer(Aktoer aktoer) {
+        if (aktoer instanceof PersonIdent) {
             return ((PersonIdent) aktoer).getPersonIdent();
-        } else if (aktoer instanceof AktoerId){
+        } else if (aktoer instanceof AktoerId) {
             //TODO: Konverter AktoerId til PersonIdent
             throw new UnsupportedOperationException("AktoerId ikke støttet PT");
         } else {

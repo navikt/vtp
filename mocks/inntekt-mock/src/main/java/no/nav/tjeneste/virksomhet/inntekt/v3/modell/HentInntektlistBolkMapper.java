@@ -29,6 +29,7 @@ public class HentInntektlistBolkMapper {
 
 
     public static ArbeidsInntektIdent makeArbeidsInntektIdent(InntektskomponentModell modell, String fnr){
+        //TODO: OL: Gjør refaktorering når implemnterer støtte av Frilansperiode. Generering av måneder mellom A - B bør gjøres i lasting av modell, ikke når mappes til WS-response.
         ArbeidsInntektIdent arbeidsInntektIdent = new ArbeidsInntektIdent();
         arbeidsInntektIdent.setIdent(makePersonIdent(fnr));
         List<Inntekt> inntektsliste = mapInntektFraModell(modell.getInntektsperioder(), fnr);
@@ -136,6 +137,9 @@ public class HentInntektlistBolkMapper {
     }
 
     private static List<LocalDateTime> getMonthYearsWithData(InntektskomponentModell modell){
+        if(modell.getInntektsperioder().size() == 0){
+            return new ArrayList<>();
+        }
         LocalDateTime minDate = getMinimumMonth(modell);
         LocalDateTime maxDate = getMaximumMonth(modell);
         List<LocalDateTime> monthList = new ArrayList<>();
