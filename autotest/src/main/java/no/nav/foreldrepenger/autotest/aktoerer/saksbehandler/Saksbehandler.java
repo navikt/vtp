@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
@@ -123,6 +122,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Henter aksjonspunkt bekreftelse av gitt klasse
      */
+    @SuppressWarnings("unchecked")
     public <T> T hentAksjonspunktbekreftelse(Class<T> type) {
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             if(type.isInstance(aksjonspunkt.bekreftelse)) {

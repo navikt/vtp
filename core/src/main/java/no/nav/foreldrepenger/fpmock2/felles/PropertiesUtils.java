@@ -40,6 +40,8 @@ public class PropertiesUtils {
                 LOGGER.error("Kunne ikke finne properties-fil", e);
             }
             System.getProperties().putAll(prop);
+        }else {
+            LOGGER.warn("Kunne ikke finne properties-fil: " + devFil.getAbsolutePath());
         }
     }
 }

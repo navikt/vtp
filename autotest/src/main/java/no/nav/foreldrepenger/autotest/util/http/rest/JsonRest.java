@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.autotest.util.http.rest;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 
@@ -11,9 +10,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 

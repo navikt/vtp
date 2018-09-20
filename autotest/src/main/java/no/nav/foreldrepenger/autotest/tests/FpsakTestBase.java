@@ -1,8 +1,7 @@
-package no.nav.foreldrepenger.autotest.sut.fpsak;
+package no.nav.foreldrepenger.autotest.tests;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import no.nav.foreldrepenger.autotest.TestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.saksbehandler.Saksbehandler;
 
@@ -14,6 +13,7 @@ public class FpsakTestBase extends TestBase{
     @BeforeEach
     void setUp() throws Exception{
         fordel = new Fordel();
+        
         saksbehandler = new Saksbehandler();
     }
     

@@ -1,11 +1,7 @@
 package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Base64;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;

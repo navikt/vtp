@@ -65,7 +65,7 @@ public class AvklarFaktaOmsorgOgForeldreansvar extends AksjonspunktBekreftelse{
         this.vilkarType = vilkarType;
     }
     
-    private class OmsorgovertakelseBarn
+    protected class OmsorgovertakelseBarn
     {
         protected LocalDate fodselsdato;
         protected String opplysningsKilde;
@@ -78,7 +78,7 @@ public class AvklarFaktaOmsorgOgForeldreansvar extends AksjonspunktBekreftelse{
         }
     }
     
-    private class OmsorgovertakelseForelder
+    protected class OmsorgovertakelseForelder
     {
         protected int id;
         protected LocalDate dodsdato;

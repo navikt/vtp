@@ -125,8 +125,10 @@
           <groupId>no.nav.vedtak.fpmock2</groupId>
           <artifactId>dokumentgenerator</artifactId>
       </dependency>
-
-
-  </dependencies>
-    
+      
+      <dependency>
+          <groupId>no.nav.vedtak.fpmock2</groupId>
+          <artifactId>core</artifactId>
+      </dependency>
+    </dependencies>
 </project>
