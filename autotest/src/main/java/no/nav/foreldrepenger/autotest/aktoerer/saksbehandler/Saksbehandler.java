@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import org.apache.http.HttpResponse;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;

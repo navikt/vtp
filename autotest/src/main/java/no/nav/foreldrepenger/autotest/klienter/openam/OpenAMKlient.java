@@ -1,5 +1,16 @@
 package no.nav.foreldrepenger.autotest.klienter.openam;
 
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMAccessToken;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionAuth;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionToken;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMTokenLogin;
+import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
+import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.cookie.BasicClientCookie;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -8,22 +19,6 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMAccessToken;
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionAuth;
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionToken;
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMTokenLogin;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
-import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
-import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
-import no.nav.foreldrepenger.fpmock2.server.rest.OidcTokenGenerator;
 
 public class OpenAMKlient extends JsonRest {
 
