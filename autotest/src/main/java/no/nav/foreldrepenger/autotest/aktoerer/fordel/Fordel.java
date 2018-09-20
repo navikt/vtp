@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Base64;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
@@ -55,8 +56,9 @@ public class Fordel extends Aktoer{
         
         JournalpostMottak journalpostMottak = new JournalpostMottak("" + saksnummer.saksnummer, journalpostId, LocalDate.now(), behandlingstemaOffisiellKode);
         journalpostMottak.dokumentTypeIdOffisiellKode = dokumentTypeIdOffisiellKode;
-        //journalpostMottak.payloadXml = readFile();
-        //journalpostMottak.payloadLength = journalpostMottak.payloadXml.length();
+        //String xmlText = readFile();
+        //journalpostMottak.payloadXml = new String(Base64.getUrlEncoder().withoutPadding().encode(xmlText.getBytes()));
+        //journalpostMottak.payloadLength = xmlText.length();
         fordelKlient.journalpost(journalpostMottak);
         
         return saksnummer.saksnummer;
