@@ -34,6 +34,7 @@ public class JournalRepositoryImpl implements JournalRepository {
 
 
     private JournalRepositoryImpl() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
         journalposter = new HashMap<>();
         dokumenter = new HashMap<>();
         journalpostId = Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;
