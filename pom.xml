@@ -93,16 +93,6 @@
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>dokumentgenerator</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>dokumentgenerator</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>testmodell</artifactId>
 				<version>${project.version}</version>
 			</dependency>
