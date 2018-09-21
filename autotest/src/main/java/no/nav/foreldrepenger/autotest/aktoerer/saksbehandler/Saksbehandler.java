@@ -111,8 +111,8 @@ public class Saksbehandler extends Aktoer{
     }
     
     public void hentSelftest() throws IOException {
-        HttpResponse response = session.get(MiljoKonfigurasjon.hentSelftestUrl());
-        System.out.println(MiljoKonfigurasjon.hentSelftestUrl());
+        HttpResponse response = session.get(MiljoKonfigurasjon.getRouteMetrics());
+        System.out.println(MiljoKonfigurasjon.getRouteMetrics());
         System.out.println(response.getStatusLine().getStatusCode());
         if(200 != response.getStatusLine().getStatusCode()) {
             throw new RuntimeException("Kunne ikke hente selftest. fikk httpstatus: " + response.getStatusLine().getStatusCode());

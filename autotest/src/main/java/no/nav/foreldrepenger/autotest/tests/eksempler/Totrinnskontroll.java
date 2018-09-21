@@ -11,7 +11,6 @@ import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
 @Tag("eksempel")
 public class Totrinnskontroll extends FpsakTestBase{
 
-    @Test
     public void behandleTotrinnskontrollAvTerminsøknad() throws Exception {
         fordel.erLoggetInnUtenRolle();
         long saksnummer = fordel.sendInnSøknad(null);
