@@ -1,14 +1,15 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.integrasjon.felles.ws.DateUtil;
+import java.time.LocalDate;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Medlemskap;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.OppholdNorge;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.OppholdUtlandet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Periode;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Land;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.time.LocalDate;
 
 public class MedlemskapErketyper {
     public static Medlemskap medlemskapNorge(){

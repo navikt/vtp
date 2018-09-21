@@ -116,23 +116,16 @@
       <dependency>
           <groupId>no.nav.vedtak.fpmock2</groupId>
           <artifactId>core</artifactId>
-          <scope>test</scope>
       </dependency>
       <dependency>
           <groupId>no.nav.vedtak.fpmock2</groupId>
           <artifactId>testmodell</artifactId>
-          <scope>test</scope>
       </dependency>
       <dependency>
           <groupId>no.nav.vedtak.fpmock2</groupId>
-          <artifactId>testmodell</artifactId>
-          <scope>test</scope>
+          <artifactId>dokumentgenerator</artifactId>
       </dependency>
-      <dependency>
-          <groupId>no.nav.vedtak.fpmock2</groupId>
-          <artifactId>testmodell</artifactId>
-          <scope>test</scope>
-      </dependency>
+
 
   </dependencies>
     

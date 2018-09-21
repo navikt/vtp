@@ -1,11 +1,15 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.integrasjon.felles.ws.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.*;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Omsorgsovertakelseaarsaker;
+import java.time.LocalDate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
-import java.time.LocalDate;
+
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Adopsjon;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Foedsel;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Omsorgsovertakelse;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Termin;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Omsorgsovertakelseaarsaker;
 
 public class SoekersRelasjonErketyper {
     public static Foedsel søkerFødselFørFødsel(){

@@ -1,13 +1,14 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.integrasjon.felles.ws.DateUtil;
+import java.time.LocalDate;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.MorsAktivitetsTyper;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.time.LocalDate;
 
 public class FordelingErketyper {
 

@@ -85,7 +85,7 @@ public class JournalRepositoryImpl implements JournalRepository {
 
         for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
             String dokumentId = "";
-            if(journalpostModell.getId() != null && !journalpostModell.getId().isEmpty()){
+            if(dokumentModell.getDokumentId() != null && !journalpostModell.getId().isEmpty()){
                 dokumentId = dokumentModell.getDokumentId();
             } else {
                 dokumentId = genererDokumentId();

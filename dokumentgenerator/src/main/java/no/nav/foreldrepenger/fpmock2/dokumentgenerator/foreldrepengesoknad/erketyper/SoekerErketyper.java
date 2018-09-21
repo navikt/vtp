@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Bruker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Brukerroller;
-import org.apache.wss4j.binding.wssc.AbstractDerivedKeyTokenType;
 
 public class SoekerErketyper {
 
