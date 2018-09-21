@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.autotest.util.konfigurasjon;
 
 import java.io.File;
-import java.util.Properties;
 
 public class MiljoKonfigurasjon extends KonfigurasjonBase{
     

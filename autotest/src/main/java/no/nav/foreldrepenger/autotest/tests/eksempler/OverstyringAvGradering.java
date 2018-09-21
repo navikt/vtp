@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.autotest.tests.eksempler;
 
-import java.io.IOException;
-
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrUttaksperioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;

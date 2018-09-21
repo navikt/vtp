@@ -20,7 +20,7 @@ public class DokumentKlient extends FpsakKlient{
     }
     
     public Object hentDokument(long saksnummer, String journalpostId, String dokumentId) {
-        String url = hentRestRotUrl() + String.format(HENT_DOKUMENT_URL_FORMAT, saksnummer, journalpostId, dokumentId);
+        //String url = hentRestRotUrl() + String.format(HENT_DOKUMENT_URL_FORMAT, saksnummer, journalpostId, dokumentId);
         return null; //TODO usikker på modellen her. swagger viser ingenting
     }
     
