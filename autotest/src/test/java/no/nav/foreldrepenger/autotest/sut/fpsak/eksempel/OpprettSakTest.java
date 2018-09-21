@@ -11,13 +11,13 @@ import no.nav.foreldrepenger.autotest.sut.fpsak.FpsakTestBase;
 public class OpprettSakTest extends FpsakTestBase{
     
     @Test
-    public void opprettInntektsmeldingForeldrepenger() throws IOException {
+    public void opprettInntektsmeldingForeldrepenger() throws Exception {
         fordel.erLoggetInnMedRolle("Saksbehandler");
         
         long saksnummer = fordel.sendInnInntektsmelding("409593578", "ab0047", "I000067", "1000104117747");
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
-        saksbehandler.hentFagsak("" + saksnummer);
+        saksbehandler.hentFagsak(saksnummer);
         
         verifiser(saksbehandler.valgtFagsak.saksnummer == saksnummer, "Kunne ikke hente fagsak");
         

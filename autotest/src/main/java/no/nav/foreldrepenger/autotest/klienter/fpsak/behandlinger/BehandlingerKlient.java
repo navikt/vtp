@@ -120,6 +120,10 @@ public class BehandlingerKlient extends FpsakKlient{
         return response;
     }
     
+    public boolean erStatusOk(int behandlingId, Integer gruppe) throws IOException {
+        return StatusRange.STATUS_REDIRECT.inRange(status(behandlingId, gruppe).getStatusLine().getStatusCode());
+    }
+    
     /*
      * Set behandling på vent
      */

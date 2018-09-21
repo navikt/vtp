@@ -20,7 +20,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
+import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
+import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
 public class Saksbehandler extends Aktoer{
 	
@@ -54,21 +56,21 @@ public class Saksbehandler extends Aktoer{
 	/*
 	 * Hent enkel fagsak
 	 */
-	public void hentFagsak(String saksnummer) throws IOException {
+	public void hentFagsak(String saksnummer) throws Exception {
 	    velgFagsak(fagsakKlient.getFagsak(saksnummer));
 	}
 	
 	/*
      * Hent enkel fagsak
      */
-    public void hentFagsak(long saksnummer) throws IOException {
+    public void hentFagsak(long saksnummer) throws Exception {
         hentFagsak("" + saksnummer);
     }
 
 	/*
 	 * Søker etter fagsaker
 	 */
-	public void søkEtterFagsak(String søk) throws IOException {
+	public void søkEtterFagsak(String søk) throws Exception {
 		fagsaker = fagsakKlient.søk(søk);
 		if(fagsaker.size() == 1) {
 		    velgFagsak(fagsaker.get(0));
@@ -78,7 +80,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Velger fagsak
      */
-    public void velgFagsak(Fagsak fagsak) throws IOException {
+    public void velgFagsak(Fagsak fagsak) throws Exception {
         if(fagsak == null) {
             throw new RuntimeException("Kan ikke velge fagsak. fagsak er null");
         }
@@ -95,8 +97,11 @@ public class Saksbehandler extends Aktoer{
     /*
      * velger behandling som valgt behandling
      */
-    public void velgBehandling(Behandling behandling) {
-        valgtBehandling = behandling;
+    public void velgBehandling(Behandling behandling) throws Exception {
+        Vent.til(() -> {
+            return behandlingerKlient.erStatusOk(behandling.id, null);
+        }, 60, "Behandling status var ikke klar");
+        valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
     }
 
     /*
@@ -146,21 +151,22 @@ public class Saksbehandler extends Aktoer{
     /*
      * bekrefter aksjonspunkt
      */
-    public void bekreftAksjonspunkt(Aksjonspunkt aksjonspunkt) throws IOException {
+    public void bekreftAksjonspunkt(Aksjonspunkt aksjonspunkt) throws Exception {
         bekreftAksjonspunktBekreftelse(aksjonspunkt.bekreftelse);
     }
     
     /*
      * Bekrefte aksjonspunkt bekreftelse
      */
-    public <T extends AksjonspunktBekreftelse> void bekreftAksjonspunktBekreftelse(Class<T> type) throws IOException {
+    public <T extends AksjonspunktBekreftelse> void bekreftAksjonspunktBekreftelse(Class<T> type) throws Exception {
         bekreftAksjonspunktBekreftelse(hentAksjonspunktbekreftelse(type));
     }
     
-    public void bekreftAksjonspunktBekreftelse(AksjonspunktBekreftelse bekreftelse) throws IOException {
+    public void bekreftAksjonspunktBekreftelse(AksjonspunktBekreftelse bekreftelse) throws Exception {
         List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
         bekreftelser.add(bekreftelse);
         bekreftAksjonspunktbekreftelserer(bekreftelser);
+        velgBehandling(valgtBehandling);
     }
     
     public void bekreftAksjonspunktbekreftelserer(List<AksjonspunktBekreftelse> bekreftelser) throws IOException {

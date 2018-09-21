@@ -19,4 +19,8 @@ public class Kode {
         this.kode = kode;
         this.navn = navn;
     }
+    
+    public static Kode lagBlankKode() {
+        return new Kode(null, "-", null);
+    }
 }

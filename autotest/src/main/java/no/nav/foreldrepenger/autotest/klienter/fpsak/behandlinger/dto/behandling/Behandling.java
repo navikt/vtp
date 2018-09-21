@@ -12,6 +12,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatMedUttaksplan;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.medlem.Medlem;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.opptjening.Opptjening;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPerioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
@@ -51,5 +52,13 @@ public class Behandling {
     public Medlem medlem; //TODO sjekk om dette er async også
     
     public AvklartData avklartData;
+
+    public List<UttakResultatPeriode> hentUttaksperioder() {
+        return uttakResultatPerioder.perioder;
+    }
+    
+    public UttakResultatPeriode hentUttaksperiode(int index) {
+        return uttakResultatPerioder.perioder.get(index);
+    }
     
 }
