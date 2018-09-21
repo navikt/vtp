@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 
-public class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRepository {
+public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRepository {
 
     private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
@@ -43,10 +42,11 @@ public class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRep
         return organisasjonIndeks.getModellForIdent(orgnr);
     }
 
-    public TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
-        Objects.requireNonNull(basisdata, "basisdata");
+
+    protected TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
         this.basisdata = basisdata;
     }
+
 
     @Override
     public Collection<Testscenario> getTestscenarios() {

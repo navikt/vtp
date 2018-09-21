@@ -18,7 +18,6 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Mottakskanale
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Person;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Tema;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Variantformater;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalpostModelData;
 
 
 public class InngaaendeJournalpostBuilder {
@@ -124,12 +123,13 @@ public class InngaaendeJournalpostBuilder {
         return arkivSak;
     }
 
+    //TODO OL: Stykk ut i kodeverdier - ikke tekst
     private static boolean erHoveddokument(DokumentModell dokumentModell) {
-        return JournalpostModelData.TILKNYTTET_SOM_HOVEDDOKUMENT.equals(dokumentModell.getDokumentTilknyttetJournalpost());
+        return "HOVEDDOKUMENT".equals(dokumentModell.getDokumentTilknyttetJournalpost());
     }
 
     private static boolean erVedlegg(DokumentModell dokumentModell) {
-        return JournalpostModelData.TILKNYTTET_SOM_VEDLEGG.equals(dokumentModell.getDokumentTilknyttetJournalpost());
+        return "VEDLEGG".equals(dokumentModell.getDokumentTilknyttetJournalpost());
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivtema;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
 
 public class JournalpostModell {
 
@@ -13,7 +14,7 @@ public class JournalpostModell {
     private String avsenderFnr;
     private String sakId;
     private String fagsystemId;
-    private String journalStatus;
+    private Journalstatus journalStatus;
     private String kommunikasjonsretning;
     private LocalDateTime mottattDato;
     private String mottakskanal;
@@ -60,11 +61,11 @@ public class JournalpostModell {
         this.fagsystemId = fagsystemId;
     }
 
-    public String getJournalStatus() {
+    public Journalstatus getJournalStatus() {
         return journalStatus;
     }
 
-    public void setJournalStatus(String journalStatus) {
+    public void setJournalStatus(Journalstatus journalStatus) {
         this.journalStatus = journalStatus;
     }
 

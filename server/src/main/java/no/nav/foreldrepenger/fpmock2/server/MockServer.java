@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.fpmock2.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
@@ -20,9 +19,11 @@ import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
@@ -34,7 +35,7 @@ import no.nav.modig.testcertificates.TestCertificates;
 public class MockServer {
 
     private static final String HTTP_HOST = "0.0.0.0";
-    private static final String SERVER_PORT = "8060";
+    private static final String SERVER_PORT = "8030";
     private Server server;
     private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
@@ -64,12 +65,12 @@ public class MockServer {
     public void start() throws Exception {
         HandlerContainer handler = (HandlerContainer) server.getHandler();
 
-        TestscenarioTemplateRepositoryImpl templateRepositoryImpl = new TestscenarioTemplateRepositoryImpl();
+        TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
         templateRepositoryImpl.load();
 
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
-        DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(new TestscenarioRepositoryImpl());
-        JournalRepository journalRepository = new JournalRepositoryImpl();
+        DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
+        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         addRestServices(handler, testScenarioRepository, templateRepository);
 

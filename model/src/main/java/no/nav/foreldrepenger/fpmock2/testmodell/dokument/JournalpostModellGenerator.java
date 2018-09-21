@@ -7,7 +7,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfilty
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantformat;
 
-public class JournalpostModellErketype {
+public class JournalpostModellGenerator {
+
 
 
     public static JournalpostModell foreldrepengeSøknadFødselJournalpost(String xml, String fnr){

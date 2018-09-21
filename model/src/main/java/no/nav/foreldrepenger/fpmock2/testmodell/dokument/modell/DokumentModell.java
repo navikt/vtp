@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DokumentModell {
@@ -10,7 +11,8 @@ public class DokumentModell {
     private String tittel;
     private String innhold;
     private String dokumentTilknyttetJournalpost;
-    private List<DokumentVariantInnhold> dokumentVariantInnholdListe;
+    private List<DokumentVariantInnhold> dokumentVariantInnholdListe = new ArrayList<>();
+
 
 
     public String getDokumentId() {

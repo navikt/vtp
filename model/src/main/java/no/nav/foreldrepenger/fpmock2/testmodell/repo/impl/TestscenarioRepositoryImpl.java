@@ -13,11 +13,17 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 /** Indeks av alle testdata instanser. */
 public class TestscenarioRepositoryImpl extends TestscenarioBuilderRepositoryImpl implements TestscenarioRepository {
 
-    public TestscenarioRepositoryImpl() throws IOException {
-        super(new BasisdataProviderFileImpl());
+    private static TestscenarioRepositoryImpl instance;
+
+
+    public static synchronized TestscenarioRepositoryImpl getInstance(BasisdataProvider basisdata) throws IOException{
+        if(instance == null){
+            instance = new TestscenarioRepositoryImpl(basisdata);
+        }
+        return instance;
     }
 
-    public TestscenarioRepositoryImpl(BasisdataProvider basisdata) {
+    private TestscenarioRepositoryImpl(BasisdataProvider basisdata) {
         super(basisdata);
     }
 

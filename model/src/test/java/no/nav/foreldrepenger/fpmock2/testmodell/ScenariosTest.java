@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysnin
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 
@@ -28,12 +29,12 @@ public class ScenariosTest {
     @Test
     public void skal_laste_scenarios() throws Exception {
         boolean avsjekketEttScenario = false;
-        TestscenarioTemplateRepositoryImpl templateRepository = new TestscenarioTemplateRepositoryImpl();
+        TestscenarioTemplateRepositoryImpl templateRepository = TestscenarioTemplateRepositoryImpl.getInstance();
         templateRepository.load();
         
         Collection<TestscenarioTemplate> scenarioTemplates = templateRepository.getTemplates();
         
-        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
+        TestscenarioRepositoryImpl testScenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         for (TestscenarioTemplate sc : scenarioTemplates) {
             TestscenarioImpl testScenario = testScenarioRepository.opprettTestscenario(sc);
             sjekkIdenterErInjisert(testScenario);

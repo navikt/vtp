@@ -20,8 +20,20 @@ public class JournalRepositoryImpl implements JournalRepository {
     private Integer journalpostId;
     private Integer dokumentId;
 
-    public JournalRepositoryImpl() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
+    private static JournalRepositoryImpl instance;
+
+
+    public static synchronized JournalRepositoryImpl getInstance(){
+
+        if(instance == null){
+            instance = new JournalRepositoryImpl();
+        }
+
+        return instance;
+    }
+
+
+    private JournalRepositoryImpl() {
         journalposter = new HashMap<>();
         dokumenter = new HashMap<>();
         journalpostId = Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;

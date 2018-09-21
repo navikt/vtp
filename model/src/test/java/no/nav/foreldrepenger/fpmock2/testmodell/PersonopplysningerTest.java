@@ -20,6 +20,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Statsborgerskap
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.StringTestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioFraTemplateMapper;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -30,7 +31,7 @@ public class PersonopplysningerTest {
 
     @Test
     public void skal_skrive_scenario_til_personopplysninger_json() throws Exception {
-        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
+        TestscenarioRepositoryImpl testScenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
 
         TestscenarioTilTemplateMapper mapper = new TestscenarioTilTemplateMapper();
 

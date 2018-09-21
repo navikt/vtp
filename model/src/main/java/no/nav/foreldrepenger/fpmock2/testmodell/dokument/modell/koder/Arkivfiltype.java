@@ -26,19 +26,19 @@ public class Arkivfiltype {
         VALID_KODER = Collections.unmodifiableList(koder);
     }
     
-    public static Arkivfiltype DOC = new Arkivfiltype("DOC");
-    public static Arkivfiltype TIFF = new Arkivfiltype("TIFF");
-    public static Arkivfiltype XLSX = new Arkivfiltype("XLSX");
-    public static Arkivfiltype XML = new Arkivfiltype("XML");
-    public static Arkivfiltype AXML = new Arkivfiltype("AXML");
-    public static Arkivfiltype PDF = new Arkivfiltype("PDF");
-    public static Arkivfiltype PDFA = new Arkivfiltype("PDFA");
+    public static final Arkivfiltype DOC = new Arkivfiltype("DOC");
+    public static final Arkivfiltype TIFF = new Arkivfiltype("TIFF");
+    public static final Arkivfiltype XLSX = new Arkivfiltype("XLSX");
+    public static final Arkivfiltype XML = new Arkivfiltype("XML");
+    public static final Arkivfiltype AXML = new Arkivfiltype("AXML");
+    public static final Arkivfiltype PDF = new Arkivfiltype("PDF");
+    public static final Arkivfiltype PDFA = new Arkivfiltype("PDFA");
 
     private String kode;
 
     public Arkivfiltype(String kode){
         this.kode = kode == null ? this.kode : kode;
-        if(kode != null && VALID_KODER.contains(kode)){
+        if(kode != null && !VALID_KODER.contains(kode)){
             throw new IllegalArgumentException("Kode er ikke implementert i Joark arkivfiltype: " + kode);
         }
     }

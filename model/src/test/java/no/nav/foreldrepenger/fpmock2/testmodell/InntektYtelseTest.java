@@ -33,9 +33,9 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.beregnin
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerIdent;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTilTemplateMapper;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
@@ -45,7 +45,7 @@ public class InntektYtelseTest {
     
     @Test
     public void skal_skrive_scenario_til_inntektytelse_json() throws Exception {
-        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
+        TestscenarioRepositoryImpl testScenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         TestscenarioTilTemplateMapper mapper = new TestscenarioTilTemplateMapper();
 
         InntektYtelseModell inntektYtelse = new InntektYtelseModell();

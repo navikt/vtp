@@ -17,6 +17,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.UstrukturertAdresseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
@@ -25,8 +26,8 @@ public class AdresserTest {
 
     @Test
     public void sjekk_scenarios() throws Exception {
-        TestscenarioRepositoryImpl testScenarioRepository = new TestscenarioRepositoryImpl();
-        TestscenarioTemplateRepositoryImpl templateRepository = new TestscenarioTemplateRepositoryImpl();
+        TestscenarioRepositoryImpl testScenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+        TestscenarioTemplateRepositoryImpl templateRepository = TestscenarioTemplateRepositoryImpl.getInstance();
         templateRepository.load();
         for (TestscenarioTemplate testScenarioTemplate : templateRepository.getTemplates()) {
             TestscenarioImpl testScenario = testScenarioRepository.opprettTestscenario(testScenarioTemplate);

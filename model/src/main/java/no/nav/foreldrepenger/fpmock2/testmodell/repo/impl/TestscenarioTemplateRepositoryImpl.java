@@ -32,6 +32,8 @@ public class TestscenarioTemplateRepositoryImpl implements TestscenarioTemplateR
 
     private final File rootDir;
 
+    private static TestscenarioTemplateRepositoryImpl testscenarioTemplateRepository;
+
     public TestscenarioTemplateRepositoryImpl(File rootDir) {
         Objects.requireNonNull(rootDir, "rootDir");
         if (!rootDir.exists()) {
@@ -42,7 +44,17 @@ public class TestscenarioTemplateRepositoryImpl implements TestscenarioTemplateR
         this.rootDir = rootDir;
     }
 
-    public TestscenarioTemplateRepositoryImpl() {
+    public static synchronized TestscenarioTemplateRepositoryImpl getInstance(){
+        if(testscenarioTemplateRepository == null){
+            testscenarioTemplateRepository = new TestscenarioTemplateRepositoryImpl();
+        }
+        return testscenarioTemplateRepository;
+    }
+
+
+
+
+    private TestscenarioTemplateRepositoryImpl() {
         File start = new File(System.getProperty(SCENARIOS_DIR_PROPERTY, "."));
         File scDir = start;
         File scenariosDir = new File(scDir, SCENARIOS_DIR);

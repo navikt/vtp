@@ -51,7 +51,7 @@ public class DokumenttypeId {
 
     public DokumenttypeId(String kode){
         this.kode = kode == null ? this.kode : kode;
-        if(kode != null && VALID_KODER.contains(kode)){
+        if(kode != null && !VALID_KODER.contains(kode)){
             throw new IllegalArgumentException("Kode er ikke implementert i Joark arkivfiltype: " + kode);
         }
     }

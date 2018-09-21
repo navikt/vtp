@@ -29,12 +29,22 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
 
     private final JsonMapper jsonMapper = new JsonMapper();
 
-    public BasisdataProviderFileImpl() throws IOException {
+    private static BasisdataProviderFileImpl instance;
+
+    private BasisdataProviderFileImpl() throws IOException{
         loadAdresser();
         loadEnheter();
         loadVirksomheter();
         loadOrganisasjoner();
     }
+
+    public static synchronized BasisdataProviderFileImpl getInstance() throws IOException{
+        if(instance == null){
+            instance = new BasisdataProviderFileImpl();
+        }
+        return instance;
+    }
+
 
     @Override
     public VirksomhetIndeks getVirksomhetIndeks() {
