@@ -16,6 +16,7 @@
 
     <properties>
         <vl-kontrakt-soeknad.version>2.4_20180816103411_24bef47</vl-kontrakt-soeknad.version>
+        <vl-kontrakt-inntektsmelding.version>2.4_20180710114751_093c5fd</vl-kontrakt-inntektsmelding.version>
     </properties>
 
     <dependencies>
@@ -31,6 +32,13 @@
             <groupId>no.nav.vedtak.felles</groupId>
             <artifactId>felles-integrasjon-webservice</artifactId>
             <version>2.0.36</version>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+            <artifactId>inntektsmelding-v1</artifactId>
+            <version>${vl-kontrakt-inntektsmelding.version}</version>
+            <classifier>jaxb</classifier>
         </dependency>
 
 
