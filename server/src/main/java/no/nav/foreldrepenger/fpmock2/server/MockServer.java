@@ -35,7 +35,7 @@ import no.nav.modig.testcertificates.TestCertificates;
 public class MockServer {
 
     private static final String HTTP_HOST = "0.0.0.0";
-    private static final String SERVER_PORT = "8030";
+    private static final String SERVER_PORT = "8060";
     private Server server;
     private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
