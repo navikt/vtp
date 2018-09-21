@@ -84,9 +84,10 @@ public class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRep
         //Stig
         OrganisasjonModeller organisasjonModeller = testScenario.getOrganisasjonModeller();
         List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
-        for (OrganisasjonModell modell : modeller) {
+        organisasjonIndeks.leggTil(modeller);
+/*        for (OrganisasjonModell modell : modeller) {
             organisasjonIndeks.leggTil(modell);
-        }
+        }*/
     }
 
     @Override

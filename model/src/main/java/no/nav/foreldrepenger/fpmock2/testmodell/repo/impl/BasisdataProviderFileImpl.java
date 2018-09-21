@@ -10,6 +10,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.IdentGenerator;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonIndeks;
+import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.BasisdataProvider;
@@ -22,6 +24,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private final VirksomhetIndeks virksomhetIndeks = new VirksomhetIndeks();
     private final EnheterIndeks enheterIndeks = new EnheterIndeks();
     private final AdresseIndeks adresseIndeks = new AdresseIndeks();
+    private final OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
     private final IdentGenerator identGenerator = new FiktiveFnr();
 
     private final JsonMapper jsonMapper = new JsonMapper();
@@ -30,6 +33,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         loadAdresser();
         loadEnheter();
         loadVirksomheter();
+        loadOrganisasjoner();
     }
 
     @Override
@@ -79,4 +83,12 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         }
     }
 
+    private void loadOrganisasjoner() throws IOException {
+        try (InputStream is = getClass().getResourceAsStream("/basedata/organisasjon.json")) {
+            TypeReference<List<OrganisasjonModell>> typeRef = new TypeReference<List<OrganisasjonModell>>() {
+            };
+            List<OrganisasjonModell> organisasjoner = jsonMapper.lagObjectMapper().readValue(is, typeRef);
+            organisasjonIndeks.leggTil(organisasjoner);
+        }
+    }
 }
