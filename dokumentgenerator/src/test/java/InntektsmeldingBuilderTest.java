@@ -8,7 +8,7 @@ public class InntektsmeldingBuilderTest{
     public void inntektsmeldingGeneratorTest(){
         InntektsmeldingErketype inntektsmeldingErketype = new InntektsmeldingErketype();
 
-        String xml =  inntektsmeldingErketype.standardInntektsmelding();
+        String xml =  inntektsmeldingErketype.standardInntektsmelding("123123", "13213123");
 
         Assert.assertTrue(xml.toLowerCase().contains("virksomhetsnummer"));
     }
