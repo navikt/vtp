@@ -21,13 +21,27 @@ public class AvklarFaktaTerminBekreftelse extends AksjonspunktBekreftelse{
     public void setAntallBarn(int antallBarn) {
         this.antallBarn = antallBarn;
     }
+    public AvklarFaktaTerminBekreftelse antallBarn(int antallBarn) {
+        setAntallBarn(antallBarn);
+        return this;
+    }
 
     public void setUtstedtdato(LocalDate utstedtdato) {
         this.utstedtdato = utstedtdato;
     }
+    
+    public AvklarFaktaTerminBekreftelse utstedtdato(LocalDate utstedtdato) {
+        setUtstedtdato(utstedtdato);
+        return this;
+    }
 
     public void setTermindato(LocalDate termindato) {
         this.termindato = termindato;
+    }
+    
+    public AvklarFaktaTerminBekreftelse termindato(LocalDate termindato) {
+        setTermindato(termindato);
+        return this;
     }
     
     

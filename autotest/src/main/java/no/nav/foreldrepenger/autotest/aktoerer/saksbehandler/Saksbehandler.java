@@ -57,6 +57,13 @@ public class Saksbehandler extends Aktoer{
 	public void hentFagsak(String saksnummer) throws IOException {
 	    velgFagsak(fagsakKlient.getFagsak(saksnummer));
 	}
+	
+	/*
+     * Hent enkel fagsak
+     */
+    public void hentFagsak(long saksnummer) throws IOException {
+        hentFagsak("" + saksnummer);
+    }
 
 	/*
 	 * Søker etter fagsaker
@@ -119,14 +126,18 @@ public class Saksbehandler extends Aktoer{
         behandlingerKlient.gjenoppta(new BehandlingIdPost(valgtBehandling));
     }
     
+    public <T extends AksjonspunktBekreftelse> T aksjonspunktBekreftelse(Class<T> type) {
+        return hentAksjonspunktbekreftelse(type);
+    }
+    
     /*
      * Henter aksjonspunkt bekreftelse av gitt klasse
      */
     @SuppressWarnings("unchecked")
-    public <T> T hentAksjonspunktbekreftelse(Class<T> type) {
+    public <T extends AksjonspunktBekreftelse> T hentAksjonspunktbekreftelse(Class<T> type) {
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             if(type.isInstance(aksjonspunkt.bekreftelse)) {
-                return (T) aksjonspunkt;
+                return (T) aksjonspunkt.bekreftelse;
             }
         }
         throw new RuntimeException("Valgt behandling har ikke aksjonspunktbekreftelse: " + type.getName());
@@ -142,6 +153,10 @@ public class Saksbehandler extends Aktoer{
     /*
      * Bekrefte aksjonspunkt bekreftelse
      */
+    public <T extends AksjonspunktBekreftelse> void bekreftAksjonspunktBekreftelse(Class<T> type) throws IOException {
+        bekreftAksjonspunktBekreftelse(hentAksjonspunktbekreftelse(type));
+    }
+    
     public void bekreftAksjonspunktBekreftelse(AksjonspunktBekreftelse bekreftelse) throws IOException {
         List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
         bekreftelser.add(bekreftelse);
