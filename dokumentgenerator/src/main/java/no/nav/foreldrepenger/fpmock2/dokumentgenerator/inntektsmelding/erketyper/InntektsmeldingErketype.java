@@ -15,10 +15,10 @@ import java.util.UUID;
 
 public class InntektsmeldingErketype {
 
-    public String standardInntektsmelding(){
+    public String standardInntektsmelding(String fnr, String arbeidsforholdId){
         InntektsmeldingDTO inntektsmeldingDTO = new InntektsmeldingDTO();
-        inntektsmeldingDTO.setArbeidsforholdId("11111");
-        inntektsmeldingDTO.setArbeidstakerFNR("123456789");
+        inntektsmeldingDTO.setArbeidsforholdId(arbeidsforholdId);
+        inntektsmeldingDTO.setArbeidstakerFNR(fnr);
         inntektsmeldingDTO.setBeregnetInntektBelop(35000);
         inntektsmeldingDTO.setInntektsmeldingID(UUID.randomUUID().toString().substring(0, 7));
         inntektsmeldingDTO.setInntektsmeldingType(ÅrsakInnsendingKodeliste.NY.NY);
