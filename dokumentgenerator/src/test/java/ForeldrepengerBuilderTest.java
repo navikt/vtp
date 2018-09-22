@@ -1,11 +1,10 @@
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
-import no.nav.vedtak.felles.integrasjon.felles.ws.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
+import javax.xml.datatype.DatatypeConfigurationException;
+
 import org.junit.Test;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.time.LocalDate;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
+import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class ForeldrepengerBuilderTest {
 
