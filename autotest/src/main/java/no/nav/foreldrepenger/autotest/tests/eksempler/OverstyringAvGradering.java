@@ -11,24 +11,22 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileI
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
+import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class OverstyringAvGradering extends FpsakTestBase{
 
     public void skalKunneOverstyreGradering() throws Exception {
-        TestscenarioRepositoryImpl instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        TestscenarioImpl testscenario = instance.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
+        TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
+        Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getIdent());
+        //søknad.leggTilPeriode(new periode().gradering(25))
         
         fordel.erLoggetInnUtenRolle();
-        /*
-        Søkand søkand = SøknadBuilder.nyFødselsøknad();
-        søknad.leggTilPeriode(new periode().gradering(25))
-        */
-        long saksnummer = fordel.sendInnSøknad(null);
+        long saksnummer = fordel.sendInnSøknad(søknad, testscenario);
         
         /*
         Inntektsmelding = InntektsmeldingBuilder.fromSøknad(søkand);
+        fordel.sendInnInntektsmelding(null, "1000104117747");
         */
-        fordel.sendInnInntektsmelding(null);
         
         saksbehandler.hentFagsak(saksnummer);
         verifiser(saksbehandler.valgtBehandling.hentUttaksperiode(0).graderingInnvilget, "Gradering var ikke invilget. forventet invilget");

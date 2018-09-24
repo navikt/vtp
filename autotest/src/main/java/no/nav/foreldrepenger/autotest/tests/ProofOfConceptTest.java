@@ -14,30 +14,14 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepository
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
-public class ProofOfConceptTest {
-
-
-    @Test
-    public void proofOfConcept() throws Exception {
-
-    }
+public class ProofOfConceptTest extends FpsakTestBase{
 
     @Test
     public void opprettSøknadOgLagreJournalpost() throws Exception {
-        TestscenarioRepositoryImpl testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
-        ForeldrepengesoknadXmlErketyper fxe = new ForeldrepengesoknadXmlErketyper();
-        String fnrSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
-
-        Soeknad soeknad = fxe.termindatoUttakKunMor(fnrSøker);
-        String søknadXml = ForeldrepengesoknadBuilder.tilXML(soeknad);
-
-
-        JournalpostModell journalpostModell = JournalpostModellGenerator.foreldrepengeSøknadFødselJournalpost(søknadXml, testscenario.getPersonopplysninger().getSøker().getIdent());
-        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
-
-        //TODO: Forsett ved å sende journalpostId (og anndre nødvendige data) til FPSAK for å starte behandling
-
+        Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
+        
+        fordel.erLoggetInnUtenRolle();
+        fordel.sendInnSøknad(søknad, testscenario);
     }
 }

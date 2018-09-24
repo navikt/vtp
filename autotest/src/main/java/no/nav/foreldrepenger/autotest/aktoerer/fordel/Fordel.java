@@ -11,10 +11,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnytt
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class Fordel extends Aktoer{
     
@@ -31,20 +34,25 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn søkand og returnerer saksinformasjon
      */
-    public long sendInnSøknad(Object søknad) {
-        String xml = "</xml>";
-        String fnr = "105891918";
-        JournalpostModell journalpostModell = JournalpostModellGenerator.foreldrepengeSøknadFødselJournalpost(xml, fnr);
-        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-        journalRepository.leggTilJournalpost(journalpostModell);
+    public long sendInnSøknad(Soeknad søknad, TestscenarioImpl scenario) throws IOException {
+        String xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         
-        return -1;
+        JournalpostModell journalpostModell = JournalpostModellGenerator.foreldrepengeSøknadFødselJournalpost(xml, scenario.getPersonopplysninger().getSøker().getIdent());
+        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
+        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
+        
+        String behandlingstemaOffisiellKode = "ab0047";
+        String dokumentTypeIdOffisiellKode = "I000067";
+        
+        String aktørId  = scenario.getPersonopplysninger().getSøker().getAktørIdent();
+        
+        return sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
     }
     
     /*
      * Sender inn søknad og returnerer saksinformasjon
      */
-    public long sendInnPapirsøkand(Object søknad) {
+    public long sendInnPapirsøkand(Soeknad søknad, String fnr) {
         return -1;
     }
 
@@ -52,12 +60,8 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
      */
-    public long sendInnInntektsmelding(Object inntektsmelding) throws IOException {
-        return -1;
-    }
-    
-    public long sendInnInntektsmelding(String journalpostId, String behandlingstemaOffisiellKode, String dokumentTypeIdOffisiellKode, String aktørId) throws IOException {
-        return sendInnJournalpost(null, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
+    public long sendInnInntektsmelding(Object inntektsmelding, String aktørId) throws IOException {
+        return sendInnJournalpost(null, "409593578", "ab0047", "I000067", aktørId);
     }
     
     /*

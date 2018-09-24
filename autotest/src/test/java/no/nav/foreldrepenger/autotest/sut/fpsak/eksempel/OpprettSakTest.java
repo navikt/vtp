@@ -14,7 +14,7 @@ public class OpprettSakTest extends FpsakTestBase{
     public void opprettInntektsmeldingForeldrepenger() throws Exception {
         fordel.erLoggetInnMedRolle("Saksbehandler");
         
-        long saksnummer = fordel.sendInnInntektsmelding("409593578", "ab0047", "I000067", "1000104117747");
+        long saksnummer = fordel.sendInnInntektsmelding(null, "1000104117747");
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
