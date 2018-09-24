@@ -36,7 +36,6 @@ public class MockServer {
 
     private static final String HTTP_HOST = "0.0.0.0";
     private static final String SERVER_PORT = "8060";
-    private static final String SERVER_HTTPS_PORT = "8063";
     private Server server;
     private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
@@ -48,7 +47,6 @@ public class MockServer {
         
         PropertiesUtils.initProperties();
 
-        Integer.valueOf(System.getProperty("server.https.port", SERVER_HTTPS_PORT));
         MockServer mockServer = new MockServer(Integer.valueOf(System.getProperty("server.port", SERVER_PORT)));
         mockServer.start();
 
