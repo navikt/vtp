@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.person.v3;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
@@ -14,6 +15,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Land;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Person;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
@@ -32,6 +34,7 @@ public class PersonAdapter {
             return mapFraBruker(bruker);
         }
     }
+
 
     public Bruker fra(PersonModell person) {
         Bruker bruker = mapFraBruker(person);
@@ -88,6 +91,17 @@ public class PersonAdapter {
         new AdresseAdapter().setAdresser(bruker, person);
 
         return bruker;
+    }
+
+    public Person mapTilPerson(BrukerModell modell) {
+        Person person = new Person();
+        NorskIdent norskIdent = new NorskIdent();
+        norskIdent.setIdent(modell.getIdent());
+        PersonIdent personIdent = new PersonIdent();
+        personIdent.setIdent(norskIdent);
+        person.setAktoer(personIdent);
+
+        return person;
     }
 
     private Bruker mapFraBruker(no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell person) {

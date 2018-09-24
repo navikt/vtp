@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjoner;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Person;
 
 public class FamilierelasjonAdapter {
 
@@ -21,7 +21,7 @@ public class FamilierelasjonAdapter {
             familierelasjoner.setValue(rel.getRolleKode());
             familierelasjon.setTilRolle(familierelasjoner);
             
-            Bruker tilBruker = new PersonAdapter().fra(rel.getTil());
+            Person tilBruker = new PersonAdapter().mapTilPerson(rel.getTil());
             familierelasjon.setTilPerson(tilBruker);
             resultat.add(familierelasjon);
             
