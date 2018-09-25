@@ -1,6 +1,8 @@
 package no.nav.tjeneste.virksomhet.sak.v1;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +25,11 @@ public class GsakRepo {
     private static final String SAKSBEHANDLER_IDENT = "MinSaksbehandler";
 
     private Map<String, Sak> bySakId;
-    private AtomicInteger sakIder  = new AtomicInteger(10000);
+    private AtomicInteger sakIder;
 
     public GsakRepo() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
+        sakIder = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
         bySakId = new HashMap<>();
     }
 
