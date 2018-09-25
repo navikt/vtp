@@ -5,6 +5,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantI
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfiltype;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantformat;
 
 public class JournalpostModellGenerator {
@@ -13,6 +14,7 @@ public class JournalpostModellGenerator {
 
     public static JournalpostModell foreldrepengeSøknadFødselJournalpost(String xml, String fnr){
         JournalpostModell journalpostModell = new JournalpostModell();
+        journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
 
         DokumentModell dokumentModell = new DokumentModell();

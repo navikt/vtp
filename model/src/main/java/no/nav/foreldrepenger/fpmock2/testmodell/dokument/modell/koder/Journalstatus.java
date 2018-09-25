@@ -35,7 +35,7 @@ public class Journalstatus {
 
     public Journalstatus(String kode){
         this.kode = kode == null ? this.kode : kode;
-        if(kode != null && VALID_KODE.contains(kode)){
+        if(kode != null && !VALID_KODE.contains(kode)){
             throw new IllegalArgumentException("Kode er ikke implementert i Joark journalstatus: " + kode);
         }
     }

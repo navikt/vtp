@@ -22,8 +22,8 @@ public class JournalpostBuilder {
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getId());
         journalpost.setJournalstatus(lagJournalstatus(modell.getJournalStatus()));
-        journalpost.setArkivtema(lagArkivtema(modell.getArkivtema()));
-        journalpost.setKommunikasjonsretning(lagKommunikasjonsretning(modell.getKommunikasjonsretning()));
+        //journalpost.setArkivtema(lagArkivtema(modell.getArkivtema()));
+        //journalpost.setKommunikasjonsretning(lagKommunikasjonsretning(modell.getKommunikasjonsretning()));
 
         for(DokumentModell dokumentModell : modell.getDokumentModellList()){
             DokumentinfoRelasjon dokinfo = new DokumentinfoRelasjon();
@@ -41,16 +41,6 @@ public class JournalpostBuilder {
 
         return journalpost;
     }
-
-
-
-
-
-
-
-
-
-
 
 
    private static Journalstatuser lagJournalstatus(Journalstatus status){
