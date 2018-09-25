@@ -60,6 +60,8 @@ public class JournalServiceMockImpl implements JournalV2 {
 
         List<String> saker = request.getSakListe().stream().map(t-> t.getSakId()).collect(Collectors.toList());
 
+        LOG.info("Henter journalpost for følgende saker: "+ saker.toArray());
+
         for(String sak : saker){
             for(JournalpostModell modell : journalRepository.finnJournalposterMedSakId(sak)){
                 response.getJournalpostListe().add(JournalpostBuilder.buildFrom(modell));
@@ -80,6 +82,7 @@ public class JournalServiceMockImpl implements JournalV2 {
 
         HentDokumentResponse dokumentResponse = new HentDokumentResponse();
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(request.getDokumentId());
+        LOG.info("Henter dokument på følgende dokumentId: " + request.getDokumentId());
 
         if(dokumentModell.isPresent()){
             //TODO OL: Fix format her.

@@ -95,6 +95,7 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
             HentJournalpostSikkerhetsbegrensning, HentJournalpostUgyldigInput {
 
         String journalpostId = request.getJournalpostId();
+        LOG.info("Henter journalpost med id: "+ journalpostId);
 
         Optional<JournalpostModell> journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
         if(!journalpostModell.isPresent()){
