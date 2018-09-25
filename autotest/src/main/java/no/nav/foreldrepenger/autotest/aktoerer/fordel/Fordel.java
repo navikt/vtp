@@ -45,8 +45,10 @@ public class Fordel extends Aktoer{
         String dokumentTypeIdOffisiellKode = "I000067";
         
         String aktørId  = scenario.getPersonopplysninger().getSøker().getAktørIdent();
-        
-        return sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
+
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
+        journalpostModell.setSakId(String.valueOf(sakId));
+        return sakId;
     }
     
     /*
