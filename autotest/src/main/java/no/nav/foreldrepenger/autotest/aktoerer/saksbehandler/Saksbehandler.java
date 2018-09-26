@@ -122,12 +122,14 @@ public class Saksbehandler extends Aktoer{
     /*
      * Setter behandling på vent
      */
-    public void settBehandlingPåVent(LocalDate frist, String årsak) throws IOException {
+    public void settBehandlingPåVent(LocalDate frist, String årsak) throws Exception {
         behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.hentKode(årsak, kodeverk.Venteårsak)));
+        velgBehandling(valgtBehandling);
     }
     
-    public void gjenopptaBehandling() throws IOException {
+    public void gjenopptaBehandling() throws Exception {
         behandlingerKlient.gjenoppta(new BehandlingIdPost(valgtBehandling));
+        velgBehandling(valgtBehandling);
     }
     
     public <T extends AksjonspunktBekreftelse> T aksjonspunktBekreftelse(Class<T> type) {
