@@ -13,8 +13,14 @@ public class ProofOfConceptTest extends FpsakTestBase{
         TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
         Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
         
-        fordel.erLoggetInnUtenRolle();
-        fordel.sendInnSøknad(søknad, testscenario);
+        fordel.erLoggetInnMedRolle("Saksbehandler");
+        long saksnummer = fordel.sendInnSøknad(søknad, testscenario);
+        
+        System.out.println("Saksnummer: " + saksnummer);
+        
+        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.hentFagsak(saksnummer);
+        //saksbehandler.gjenopptaBehandling();
     }
 
 
