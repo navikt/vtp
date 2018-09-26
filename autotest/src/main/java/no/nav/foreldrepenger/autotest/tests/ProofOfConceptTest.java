@@ -9,10 +9,20 @@ import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 public class ProofOfConceptTest extends FpsakTestBase{
 
     @Test
-    public void opprettSøknadOgLagreJournalpost() throws Exception {
+    public void foreldrepengesøknadTermindatoKunMor() throws Exception {
         TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
         Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
         
+        fordel.erLoggetInnUtenRolle();
+        fordel.sendInnSøknad(søknad, testscenario);
+    }
+
+
+    @Test
+    public void engangsttønadFødselFunnetStedKunMor() throws Exception {
+        TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
+        Soeknad søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
+
         fordel.erLoggetInnUtenRolle();
         fordel.sendInnSøknad(søknad, testscenario);
     }
