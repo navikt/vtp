@@ -50,7 +50,7 @@ public class SoapWebServiceConfig {
         publishWebService(new JournalServiceMockImpl(journalRepository), "/joark/Journal/v2");
         // access wsdl on http://localhost:7999/journal?wsdl
         publishWebService(new InngaaendeJournalServiceMockImpl(journalRepository), "/joark/InngaaendeJournal/v1");
-        publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/nav-gsak-ws/BehandleOppgaveV1");
+        // publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/nav-gsak-ws/BehandleOppgaveV1");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/nav-gsak-ws/BehandleOppgaveV1");
         // access wsdl on http://localhost:7999/behandleoppgave?wsdl

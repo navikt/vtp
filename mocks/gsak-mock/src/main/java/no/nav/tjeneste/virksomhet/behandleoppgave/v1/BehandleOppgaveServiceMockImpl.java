@@ -69,6 +69,7 @@ public class BehandleOppgaveServiceMockImpl implements BehandleOppgaveV1 {
                                                                                                            @WebParam(name = "request", targetNamespace = "") no.nav.tjeneste.virksomhet.behandleoppgave.v1.meldinger.WSOpprettOppgaveRequest request)
             throws WSSikkerhetsbegrensningException {
         WSOpprettOppgaveResponse opprettOppgaveResponse = new WSOpprettOppgaveResponse();
+        LOG.info("Oppgave opprettet. Beskrivelse: " + request.getWsOppgave().getBeskrivelse() + ", saksnummer: " + request.getWsOppgave().getSaksnummer() + ", oppgavetypeKode: " + request.getWsOppgave().getOppgavetypeKode());
         String oppgaveId = repo.opprettOppgave(request.getWsOppgave().getSaksnummer());
         opprettOppgaveResponse.setOppgaveId(oppgaveId );
         return opprettOppgaveResponse;
