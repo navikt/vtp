@@ -7,6 +7,7 @@ import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.ArkivSak;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinformasjon;
@@ -97,7 +98,7 @@ public class InngaaendeJournalpostBuilder {
 
             if (dokumentModell.getDokumentType() != null) {
                 DokumenttypeIder dokumenttypeId = new DokumenttypeIder();
-                dokumenttypeId.setValue(dokumentModell.getDokumentType());
+                dokumenttypeId.setValue(dokumentModell.getDokumentType().getKode());
                 dokinfo.setDokumenttypeId(dokumenttypeId);
             }
             dokinfo.setDokumentId(dokumentModell.getDokumentId());
@@ -123,13 +124,12 @@ public class InngaaendeJournalpostBuilder {
         return arkivSak;
     }
 
-    //TODO OL: Stykk ut i kodeverdier - ikke tekst
     private static boolean erHoveddokument(DokumentModell dokumentModell) {
-        return "HOVEDDOKUMENT".equals(dokumentModell.getDokumentTilknyttetJournalpost());
+        return DokumentTilknyttetJournalpost.HOVEDDOKUMENT.equals(dokumentModell.getDokumentTilknyttetJournalpost());
     }
 
     private static boolean erVedlegg(DokumentModell dokumentModell) {
-        return "VEDLEGG".equals(dokumentModell.getDokumentTilknyttetJournalpost());
+        return DokumentTilknyttetJournalpost.VEDLEGG.equals(dokumentModell.getDokumentTilknyttetJournalpost());
     }
 
 }

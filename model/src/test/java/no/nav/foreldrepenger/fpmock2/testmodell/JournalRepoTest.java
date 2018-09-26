@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 
@@ -24,8 +26,8 @@ public class JournalRepoTest {
 
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setDokumentId("1235");
-        dokumentModell.setDokumentTilknyttetJournalpost("HOVEDOKUMENT");
-        dokumentModell.setDokumentType("FLG");
+        dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
+        dokumentModell.setDokumentType(DokumenttypeId.ADOPSJONSSOKNAD);
         dokumentModell.setErSensitiv(Boolean.FALSE);
         dokumentModell.setInnhold("<xml/>");
         dokumentModell.setTittel("Tittel på dokumentet");

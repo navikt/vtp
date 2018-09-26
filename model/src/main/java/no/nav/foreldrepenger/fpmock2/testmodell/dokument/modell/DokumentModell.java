@@ -3,14 +3,17 @@ package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+
 public class DokumentModell {
 
     private String dokumentId;
-    private String dokumentType;
+    private DokumenttypeId dokumenttypeId;
     private Boolean erSensitiv;
     private String tittel;
     private String innhold;
-    private String dokumentTilknyttetJournalpost;
+    private DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost;
     private List<DokumentVariantInnhold> dokumentVariantInnholdListe = new ArrayList<>();
 
 
@@ -23,12 +26,12 @@ public class DokumentModell {
         this.dokumentId = dokumentId;
     }
 
-    public String getDokumentType() {
-        return dokumentType;
+    public DokumenttypeId getDokumentType() {
+        return dokumenttypeId;
     }
 
-    public void setDokumentType(String dokumentType) {
-        this.dokumentType = dokumentType;
+    public void setDokumentType(DokumenttypeId dokumentType) {
+        this.dokumenttypeId = dokumentType;
     }
 
     public Boolean getErSensitiv() {
@@ -55,11 +58,11 @@ public class DokumentModell {
         this.innhold = innhold;
     }
 
-    public String getDokumentTilknyttetJournalpost() {
+    public DokumentTilknyttetJournalpost getDokumentTilknyttetJournalpost() {
         return dokumentTilknyttetJournalpost;
     }
 
-    public void setDokumentTilknyttetJournalpost(String dokumentTilknyttetJournalpost) {
+    public void setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost) {
         this.dokumentTilknyttetJournalpost = dokumentTilknyttetJournalpost;
     }
 

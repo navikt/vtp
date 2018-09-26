@@ -4,6 +4,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfiltype;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantformat;
@@ -19,10 +20,13 @@ public class JournalpostModellGenerator {
 
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setInnhold(xml);
-        dokumentModell.setDokumentType("I000005");
-        dokumentModell.setDokumentTilknyttetJournalpost("HOVEDDOKUMENT");
+        dokumentModell.setDokumentType(DokumenttypeId.FOEDSELSSOKNAD);
+        dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
                 Arkivfiltype.XML,Variantformat.FULLVERSJON,xml.getBytes()
+        ));
+        dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
+                Arkivfiltype.PDF,Variantformat.ARKIV, new byte[0]
         ));
 
         journalpostModell.getDokumentModellList().add(dokumentModell);
