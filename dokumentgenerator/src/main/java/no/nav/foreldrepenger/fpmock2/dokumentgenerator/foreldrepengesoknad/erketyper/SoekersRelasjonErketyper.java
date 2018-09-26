@@ -13,10 +13,10 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Omsorgsovertakelseaarsaker;
 
 public class SoekersRelasjonErketyper {
     public static Foedsel søkerFødselFørFødsel(){
-        return fødsel(1, LocalDate.now().plusMonths(1));
+        return fødsel(1, LocalDate.now().plusDays(14));
     }
 
-    public static Foedsel SøkerFøldselEtterFødsel(){
+    public static Foedsel søkerFødselEtterFødsel(){
         return fødsel(1, LocalDate.now().minusMonths(1));
     }
 
