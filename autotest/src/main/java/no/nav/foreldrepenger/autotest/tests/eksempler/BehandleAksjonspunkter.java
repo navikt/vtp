@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
@@ -17,7 +18,7 @@ public class BehandleAksjonspunkter extends FpsakTestBase{
         Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
         
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario);
+        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         
     }
