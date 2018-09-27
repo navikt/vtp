@@ -137,7 +137,7 @@ public class MockServer {
         ServerConnector sslConnector = new ServerConnector(server,
             new SslConnectionFactory(sslContextFactory, "HTTP/1.1"),
             new HttpConnectionFactory(https));
-        sslConnector.setPort(Integer.valueOf(System.getProperty("server.https.port")));
+        sslConnector.setPort(Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3))));
         connectors.add(sslConnector);
 
         server.setConnectors(connectors.toArray(new Connector[connectors.size()]));

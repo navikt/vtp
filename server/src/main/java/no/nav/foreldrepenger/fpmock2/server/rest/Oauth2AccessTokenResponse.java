@@ -19,5 +19,13 @@ public class Oauth2AccessTokenResponse {
         this.idToken = idToken;
         this.refreshToken = refreshToken;
     }
+    
+    public String getIdToken() {
+        return idToken;
+    }
+    
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
 }
