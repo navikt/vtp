@@ -7,5 +7,5 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Hendelse {
     
-    public Kode navn;
+    protected Kode navn;
 }

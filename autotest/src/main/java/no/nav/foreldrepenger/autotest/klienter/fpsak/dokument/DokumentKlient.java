@@ -11,9 +11,9 @@ import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class DokumentKlient extends FpsakKlient{
 
-    public static String DOKUMENT_URL = "/dokument";
-    public static String HENT_DOKUMENT_URL_FORMAT = DOKUMENT_URL +"/hent-dokument?saksnummer=%1$s&journalpostId=%2$s&dokumentId=%3$s";
-    public static String HENT_DOKUMENTLISTE_URL_FORMAT = DOKUMENT_URL +"/hent-dokumentliste?saksnummer=%1$s";
+    private static String DOKUMENT_URL = "/dokument";
+    private static String HENT_DOKUMENT_URL_FORMAT = DOKUMENT_URL +"/hent-dokument?saksnummer=%1$s&journalpostId=%2$s&dokumentId=%3$s";
+    private static String HENT_DOKUMENTLISTE_URL_FORMAT = DOKUMENT_URL +"/hent-dokumentliste?saksnummer=%1$s";
     
     public DokumentKlient(HttpSession session) {
         super(session);

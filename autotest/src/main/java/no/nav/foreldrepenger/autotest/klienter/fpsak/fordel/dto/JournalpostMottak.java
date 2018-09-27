@@ -7,14 +7,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JournalpostMottak {
 
-    public String saksnummer;
-    public String journalpostId;
-    public String forsendelseId;
-    public String behandlingstemaOffisiellKode;
-    public String dokumentTypeIdOffisiellKode;
-    public String forsendelseMottatt;
-    public String payloadXml;
-    public Integer payloadLength;
+    protected String saksnummer;
+    protected String journalpostId;
+    protected String forsendelseId;
+    protected String behandlingstemaOffisiellKode;
+    private String dokumentTypeIdOffisiellKode;
+    protected String forsendelseMottatt;
+    private String payloadXml;
+    private Integer payloadLength;
     
     public JournalpostMottak(String saksnummer, String journalpostId, LocalDate forsendelseMottatt,
             String behandlingstemaOffisiellKode) {
@@ -28,5 +28,29 @@ public class JournalpostMottak {
         this.journalpostId = journalpostId;
         this.forsendelseMottatt = forsendelseMottatt;
         this.behandlingstemaOffisiellKode = behandlingstemaOffisiellKode;
+    }
+
+    public String getDokumentTypeIdOffisiellKode() {
+        return dokumentTypeIdOffisiellKode;
+    }
+
+    public void setDokumentTypeIdOffisiellKode(String dokumentTypeIdOffisiellKode) {
+        this.dokumentTypeIdOffisiellKode = dokumentTypeIdOffisiellKode;
+    }
+
+    public String getPayloadXml() {
+        return payloadXml;
+    }
+
+    public void setPayloadXml(String payloadXml) {
+        this.payloadXml = payloadXml;
+    }
+
+    public Integer getPayloadLength() {
+        return payloadLength;
+    }
+
+    public void setPayloadLength(Integer payloadLength) {
+        this.payloadLength = payloadLength;
     }
 }

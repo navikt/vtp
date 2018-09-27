@@ -9,9 +9,9 @@ import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class KodeverkKlient extends FpsakKlient{
 
-    public static String KODEVERK_URL = "/kodeverk";
+    private static String KODEVERK_URL = "/kodeverk";
     
-    public static String KODEVERK_BEHANDLENDE_ENHETER_URL = KODEVERK_URL + "/behandlende-enheter";
+    private static String KODEVERK_BEHANDLENDE_ENHETER_URL = KODEVERK_URL + "/behandlende-enheter";
     
     public KodeverkKlient(HttpSession session) {
         super(session);

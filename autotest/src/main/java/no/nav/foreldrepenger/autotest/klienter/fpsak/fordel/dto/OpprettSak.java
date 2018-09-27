@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpprettSak {
 
-    public String journalpostId;
-    public String behandlingstemaOffisiellKode;
-    public String aktørId;
+    protected String journalpostId;
+    protected String behandlingstemaOffisiellKode;
+    protected String aktørId;
     
     public OpprettSak(String journalpostId, String behandlingstemaOffisiellKode, String aktørId) {
         super();

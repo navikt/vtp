@@ -1,14 +1,14 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.navansatt.dto;
 
 public class InnloggetNavAnsatt {
-    String brukernavn;
-    String navn;
-    Boolean kanSaksbehandle;
-    Boolean kanVeilede;
-    Boolean kanBeslutte;
-    Boolean kanOverstyre;
-    Boolean kanBehandleKodeEgenAnsatt;
-    Boolean kanBehandleKode6;
-    Boolean kanBehandleKode7;
-    Boolean funksjonellTid;
+    protected String brukernavn;
+    protected String navn;
+    protected Boolean kanSaksbehandle;
+    protected Boolean kanVeilede;
+    protected Boolean kanBeslutte;
+    protected Boolean kanOverstyre;
+    protected Boolean kanBehandleKodeEgenAnsatt;
+    protected Boolean kanBehandleKode6;
+    protected Boolean kanBehandleKode7;
+    protected Boolean funksjonellTid;
 }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlendeFagsystem {
 
-    public boolean behandlesIVedtaksløsningen;
-    public boolean sjekkMotInfotrygd;
-    public boolean manuellVurdering;
-    public Saksnummer saksnummer;
+    protected boolean behandlesIVedtaksløsningen;
+    protected boolean sjekkMotInfotrygd;
+    protected boolean manuellVurdering;
+    protected Saksnummer saksnummer;
 }

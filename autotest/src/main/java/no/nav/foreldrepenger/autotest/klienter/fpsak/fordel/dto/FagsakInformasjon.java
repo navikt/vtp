@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FagsakInformasjon {
 
-    public String aktørId;
-    public String behandlingstemaOffisiellKode;
+    protected String aktørId;
+    protected String behandlingstemaOffisiellKode;
 }

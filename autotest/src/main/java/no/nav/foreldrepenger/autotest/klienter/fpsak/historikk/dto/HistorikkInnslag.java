@@ -9,11 +9,11 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HistorikkInnslag {
 
-    public HistorikkTekst tekst;
-    public List<HistorikkinnslagDel> historikkinnslagDeler;
+    protected HistorikkTekst tekst;
+    protected List<HistorikkinnslagDel> historikkinnslagDeler;
     
-    public int behandlingsid;
-    public Kode type;
-    public Kode aktoer;
-    public Kode kjoenn;
+    protected int behandlingsid;
+    protected Kode type;
+    protected Kode aktoer;
+    protected Kode kjoenn;
 }

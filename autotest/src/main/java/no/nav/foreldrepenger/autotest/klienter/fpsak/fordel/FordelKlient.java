@@ -9,14 +9,14 @@ import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class FordelKlient extends FpsakKlient{
     
-    public static final String FORDEL_URL = "/fordel";
-    public static final String VURDER_FAGSYSTEM_URL = FORDEL_URL + "/vurderFagsystem";
-    public static final String JOURNALPOST_URL = FORDEL_URL + "/journalpost";
+    private static final String FORDEL_URL = "/fordel";
+    private static final String VURDER_FAGSYSTEM_URL = FORDEL_URL + "/vurderFagsystem";
+    private static final String JOURNALPOST_URL = FORDEL_URL + "/journalpost";
     
-    public static final String FAGSAK_URL = FORDEL_URL + "/fagsak";
-    public static final String FAGSAK_OPPRETT_URL = FAGSAK_URL + "/opprett";
-    public static final String FAGSAK_INFORMASJON_URL = FAGSAK_URL + "/informasjon";
-    public static final String FAGSAK_KNYTT_JOURNALPOST_URL = FAGSAK_URL + "/knyttJournalpost";
+    private static final String FAGSAK_URL = FORDEL_URL + "/fagsak";
+    private static final String FAGSAK_OPPRETT_URL = FAGSAK_URL + "/opprett";
+    private static final String FAGSAK_INFORMASJON_URL = FAGSAK_URL + "/informasjon";
+    private static final String FAGSAK_KNYTT_JOURNALPOST_URL = FAGSAK_URL + "/knyttJournalpost";
     
     
     public FordelKlient(HttpSession session) {

@@ -79,11 +79,11 @@ public class Fordel extends Aktoer{
         
         
         JournalpostMottak journalpostMottak = new JournalpostMottak("" + saksnummer.saksnummer, journalpostId, LocalDate.now(), behandlingstemaOffisiellKode);
-        journalpostMottak.dokumentTypeIdOffisiellKode = dokumentTypeIdOffisiellKode;
+        journalpostMottak.setDokumentTypeIdOffisiellKode(dokumentTypeIdOffisiellKode);
         
         if(null != xml) {
-            journalpostMottak.payloadXml = new String(Base64.getUrlEncoder().withoutPadding().encode(xml.getBytes()));
-            journalpostMottak.payloadLength = xml.length();
+            journalpostMottak.setPayloadXml(new String(Base64.getUrlEncoder().withoutPadding().encode(xml.getBytes())));
+            journalpostMottak.setPayloadLength(xml.length());
         }
         
         fordelKlient.journalpost(journalpostMottak);

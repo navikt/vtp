@@ -4,6 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HistorikkTekst {
-    public String begrunnelse;
-    public String hendelse;
+    protected String begrunnelse;
+    protected String hendelse;
 }

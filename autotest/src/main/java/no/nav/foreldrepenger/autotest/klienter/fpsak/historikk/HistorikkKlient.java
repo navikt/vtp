@@ -11,7 +11,7 @@ import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class HistorikkKlient extends FpsakKlient{
 
-    public static String HISTORIKK_URL_FORMAT = "/historikk?saksnummer=%1$s&";
+    private static String HISTORIKK_URL_FORMAT = "/historikk?saksnummer=%1$s&";
     
     public HistorikkKlient(HttpSession session) {
         super(session);

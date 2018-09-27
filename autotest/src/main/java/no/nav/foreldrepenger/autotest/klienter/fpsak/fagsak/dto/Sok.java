@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Sok {
-	public String searchString;
-
-	public Sok(String søketekst) {
-		super();
-		this.searchString = søketekst;
-	}
+    protected String searchString;
+    
+    public Sok(String søketekst) {
+        super();
+        this.searchString = søketekst;
+    }
 }

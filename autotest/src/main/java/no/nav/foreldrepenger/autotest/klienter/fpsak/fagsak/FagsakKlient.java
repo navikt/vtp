@@ -11,9 +11,9 @@ import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class FagsakKlient extends FpsakKlient{
 	
-	public static String STATUS_URL_FORMAT = "/fagsak/status?saksnummer=%1$s&gruppe=%2$s";
-	public static String FAGSAK_URL_FORMAT = "/fagsak?saksnummer=%1$s";
-	public static String FAGSAK_SØK_URL_FORMAT = "/fagsak/sok";
+	private static String STATUS_URL_FORMAT = "/fagsak/status?saksnummer=%1$s&gruppe=%2$s";
+	private static String FAGSAK_URL_FORMAT = "/fagsak?saksnummer=%1$s";
+	private static String FAGSAK_SØK_URL_FORMAT = "/fagsak/sok";
 
 	public FagsakKlient(HttpSession session) {
 		super(session);
