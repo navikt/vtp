@@ -11,10 +11,10 @@ public class JournalpostMottak {
     protected String journalpostId;
     protected String forsendelseId;
     protected String behandlingstemaOffisiellKode;
-    private String dokumentTypeIdOffisiellKode;
+    protected String dokumentTypeIdOffisiellKode;
     protected String forsendelseMottatt;
-    private String payloadXml;
-    private Integer payloadLength;
+    protected String payloadXml;
+    protected Integer payloadLength;
     
     public JournalpostMottak(String saksnummer, String journalpostId, LocalDate forsendelseMottatt,
             String behandlingstemaOffisiellKode) {
