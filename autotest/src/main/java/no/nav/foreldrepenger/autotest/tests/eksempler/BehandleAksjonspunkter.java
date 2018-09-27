@@ -8,7 +8,6 @@ import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
 @Tag("eksempel")
 public class BehandleAksjonspunkter extends FpsakTestBase{
     
-    @Test
     public void godkjenneTermindato() {
         
     }

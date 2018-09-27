@@ -10,7 +10,6 @@ import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
 @Tag("eksempel")
 public class Loginn extends FpsakTestBase{
     
-    @Test
     void loginnUtenRolle() throws UnsupportedEncodingException {
         saksbehandler.erLoggetInnUtenRolle();
     }
