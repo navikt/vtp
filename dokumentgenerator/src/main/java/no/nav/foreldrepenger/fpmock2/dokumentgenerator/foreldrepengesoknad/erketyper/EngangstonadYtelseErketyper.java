@@ -14,7 +14,4 @@ class EngangstonadYtelseErketyper {
         engangsstønad.setSoekersRelasjonTilBarnet(SoekersRelasjonErketyper.søkerFødselEtterFødsel());
         return engangsstønad;
     }
-
-
-
 }

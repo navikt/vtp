@@ -35,8 +35,8 @@ public class DokumenttypeId {
 
     private String kode;
 
-    public static DokumenttypeId FOEDSELSSOKNAD = new DokumenttypeId("I000003");
-    public static DokumenttypeId ADOPSJONSSOKNAD = new DokumenttypeId("I000004");
+    public static DokumenttypeId FOEDSELSSOKNAD_ENGANGSSTONAD = new DokumenttypeId("I000003");
+    public static DokumenttypeId ADOPSJONSSOKNAD_ENGANGSSTONAD = new DokumenttypeId("I000004");
     public static DokumenttypeId TERMINBEKREFTELSE = new DokumenttypeId("I000041");
     public static DokumenttypeId ADOPSJONSDOKUMENTASJON = new DokumenttypeId("I000042");
     public static DokumenttypeId KLAGEANKE = new DokumenttypeId("I000027");

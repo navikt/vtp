@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.tests.eksempler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrUttaksperioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
@@ -15,7 +16,7 @@ public class OverstyringAvGradering extends FpsakTestBase{
         //søknad.leggTilPeriode(new periode().gradering(25))
         
         fordel.erLoggetInnUtenRolle();
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario);
+        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         
         /*
         Inntektsmelding = InntektsmeldingBuilder.fromSøknad(søkand);

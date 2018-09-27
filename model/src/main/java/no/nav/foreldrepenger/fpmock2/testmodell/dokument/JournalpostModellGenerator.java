@@ -20,7 +20,7 @@ public class JournalpostModellGenerator {
 
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setInnhold(xml);
-        dokumentModell.setDokumentType(DokumenttypeId.FOEDSELSSOKNAD);
+        dokumentModell.setDokumentType(DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
                 Arkivfiltype.XML,Variantformat.FULLVERSJON,xml.getBytes()

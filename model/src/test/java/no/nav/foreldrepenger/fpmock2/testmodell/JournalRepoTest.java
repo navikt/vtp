@@ -27,7 +27,7 @@ public class JournalRepoTest {
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setDokumentId("1235");
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
-        dokumentModell.setDokumentType(DokumenttypeId.ADOPSJONSSOKNAD);
+        dokumentModell.setDokumentType(DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
         dokumentModell.setErSensitiv(Boolean.FALSE);
         dokumentModell.setInnhold("<xml/>");
         dokumentModell.setTittel("Tittel på dokumentet");

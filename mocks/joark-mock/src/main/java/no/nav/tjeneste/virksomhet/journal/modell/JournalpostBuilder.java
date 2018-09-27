@@ -11,6 +11,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantI
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfiltype;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivtema;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Behandlingstema;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
@@ -121,5 +122,8 @@ public class JournalpostBuilder {
         return tilknyttetJournalpostSom;
     }
 
+    public static Behandlingstema getBehandlingstemaFromDokumenttypeId(DokumenttypeId dokumenttypeId){
+        return Behandlingstema.FORELDREPENGER_ADOPSJON;
+        }
 
 }

@@ -26,7 +26,6 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null)
                 .build();
 
-
         return soeknad;
     }
 
