@@ -24,7 +24,7 @@ public class OpenAMKlient extends JsonRest {
 
     private String baseUrl;
     private String redirectUriEncoded;
-    private String redirectBase = "http://localhost:8063";
+    private String redirectBase = "http://localhost:8080";
 
     private static final String UTF_8 = StandardCharsets.UTF_8.name();
 

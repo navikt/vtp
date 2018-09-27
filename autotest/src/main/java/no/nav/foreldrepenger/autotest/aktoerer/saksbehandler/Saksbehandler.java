@@ -32,49 +32,49 @@ public class Saksbehandler extends Aktoer{
     public List<Behandling> behandlinger;
     public Behandling valgtBehandling;
     
-	private FagsakKlient fagsakKlient;
-	private BehandlingerKlient behandlingerKlient;
-	private KodeverkKlient kodeverkKlient;
-	
-	private Kodeverk kodeverk;
-	
-	
-	
-	public Saksbehandler() {
-		super();
-		fagsakKlient = new FagsakKlient(session);
-		behandlingerKlient = new BehandlingerKlient(session);
-		kodeverkKlient = new KodeverkKlient(session);
-	}
+    private FagsakKlient fagsakKlient;
+    private BehandlingerKlient behandlingerKlient;
+    private KodeverkKlient kodeverkKlient;
+    
+    private Kodeverk kodeverk;
+    
+    
+    
+    public Saksbehandler() {
+        super();
+        fagsakKlient = new FagsakKlient(session);
+        behandlingerKlient = new BehandlingerKlient(session);
+        kodeverkKlient = new KodeverkKlient(session);
+    }
 
-	public Saksbehandler(String rolle) {
-		this();
-		erLoggetInnMedRolle(rolle);
-	}
+    public Saksbehandler(String rolle) {
+        this();
+	erLoggetInnMedRolle(rolle);
+    }
 
-	/*
-	 * Hent enkel fagsak
-	 */
-	public void hentFagsak(String saksnummer) throws Exception {
-	    velgFagsak(fagsakKlient.getFagsak(saksnummer));
-	}
+    /*
+     * Hent enkel fagsak
+     */
+    public void hentFagsak(String saksnummer) throws Exception {
+        velgFagsak(fagsakKlient.getFagsak(saksnummer));
+    }
 	
-	/*
+    /*
      * Hent enkel fagsak
      */
     public void hentFagsak(long saksnummer) throws Exception {
         hentFagsak("" + saksnummer);
     }
 
-	/*
-	 * Søker etter fagsaker
-	 */
-	public void søkEtterFagsak(String søk) throws Exception {
-		fagsaker = fagsakKlient.søk(søk);
-		if(fagsaker.size() == 1) {
-		    velgFagsak(fagsaker.get(0));
-		}
-	}
+    /*
+     * Søker etter fagsaker
+     */
+    public void søkEtterFagsak(String søk) throws Exception {
+        fagsaker = fagsakKlient.søk(søk);
+        if(fagsaker.size() == 1) {
+            velgFagsak(fagsaker.get(0));
+        }
+    }
     
     /*
      * Velger fagsak
@@ -112,8 +112,6 @@ public class Saksbehandler extends Aktoer{
     
     public void hentSelftest() throws IOException {
         HttpResponse response = session.get(MiljoKonfigurasjon.getRouteMetrics());
-        System.out.println(MiljoKonfigurasjon.getRouteMetrics());
-        System.out.println(response.getStatusLine().getStatusCode());
         if(200 != response.getStatusLine().getStatusCode()) {
             throw new RuntimeException("Kunne ikke hente selftest. fikk httpstatus: " + response.getStatusLine().getStatusCode());
         }

@@ -6,8 +6,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlingIdPost {
-    int behandlingId;
-    int behandlingVersjon;
+    public int behandlingId;
+    public int behandlingVersjon;
     
     
     public BehandlingIdPost(int behandlingId, int behandlingVersjon) {

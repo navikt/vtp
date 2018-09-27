@@ -61,4 +61,12 @@ public class Behandling {
         return uttakResultatPerioder.perioder.get(index);
     }
     
+    
+    public boolean erSattPåVent() {
+        return behandlingPaaVent;
+    }
+    
+    public boolean erHenlagt() {
+        return behandlingHenlagt;
+    }
 }

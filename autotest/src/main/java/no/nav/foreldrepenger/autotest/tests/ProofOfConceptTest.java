@@ -17,14 +17,15 @@ public class ProofOfConceptTest extends FpsakTestBase{
         long saksnummer = fordel.sendInnSøknad(søknad, testscenario);
         
         System.out.println("Saksnummer: " + saksnummer);
+        Thread.sleep(2000);// vente på at behandling er ferdig
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
-        //saksbehandler.gjenopptaBehandling();
+        verifiser(saksbehandler.valgtBehandling != null);
+        saksbehandler.gjenopptaBehandling();
+        verifiser(!saksbehandler.valgtBehandling.erSattPåVent());
     }
 
-
-    @Test
     public void engangsttønadFødselFunnetStedKunMor() throws Exception {
         TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
         Soeknad søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøker().getAktørIdent());

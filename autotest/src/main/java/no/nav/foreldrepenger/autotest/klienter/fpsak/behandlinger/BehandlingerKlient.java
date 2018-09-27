@@ -129,7 +129,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public void settPaVent(BehandlingPaVent behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLINGER_SETT_PA_VENT_URL;
-        postJson(url, behandling);
+        postOgVerifiser(url, behandling, StatusRange.STATUS_SUCCESS);
     }
     
     /*
@@ -137,7 +137,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public void endrePaVent(BehandlingPaVent behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLINGER_ENDRE_PA_VENT_URL;
-        postJson(url, behandling);
+        postOgVerifiser(url, behandling, StatusRange.STATUS_SUCCESS);
     }
     
     /*
@@ -145,7 +145,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public void henlegg(BehandlingHenlegg behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLINGER_HENLEGG_URL;
-        postJson(url, behandling);
+        postOgVerifiser(url, behandling, StatusRange.STATUS_SUCCESS);
     }
     
     /*
@@ -153,7 +153,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public void gjenoppta(BehandlingIdPost behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLINGER_GJENOPPTA_URL;
-        postJson(url, behandling);
+        postOgVerifiser(url, behandling, StatusRange.STATUS_SUCCESS);
     }
     
     /*
@@ -161,7 +161,7 @@ public class BehandlingerKlient extends FpsakKlient{
      */
     public void byttEnhet(BehandlingByttEnhet behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLINGER_BYTT_ENHET_URL;
-        postJson(url, behandling);
+        postOgVerifiser(url, behandling, StatusRange.STATUS_SUCCESS);
     }
     
     /*
