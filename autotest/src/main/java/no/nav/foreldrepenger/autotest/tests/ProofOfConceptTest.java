@@ -11,7 +11,7 @@ public class ProofOfConceptTest extends FpsakTestBase{
 
 
     public void foreldrepengesøknadTermindatoKunMor() throws Exception {
-        TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
+        TestscenarioImpl testscenario = opprettScenario("50");
         Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
         
         fordel.erLoggetInnMedRolle("Saksbehandler");
