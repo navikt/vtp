@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlingHenlegg extends BehandlingIdPost{
-    String årsakKode;
-    String begrunnelse;
+    
+    protected String årsakKode;
+    protected String begrunnelse;
     
     
     public BehandlingHenlegg(int behandlingId, int behandlingVersjon, String årsakKode, String begrunnelse) {

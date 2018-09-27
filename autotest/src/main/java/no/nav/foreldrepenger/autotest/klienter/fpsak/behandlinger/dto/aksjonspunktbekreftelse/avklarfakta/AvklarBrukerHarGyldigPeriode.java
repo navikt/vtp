@@ -15,17 +15,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class AvklarBrukerHarGyldigPeriode extends AksjonspunktBekreftelse{
 
     protected ManuellVurderingType manuellVurderingType;
-    protected List<Periode> periods = new ArrayList<>();
+    protected List<Medlemskapsperiode> periods = new ArrayList<>();
     
     public AvklarBrukerHarGyldigPeriode(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        for(Medlemskapsperiode periode : behandling.medlem.medlemskapPerioder){
-            periods.add(new Periode(periode.beslutningsdato,
-                                    periode.dekningType.navn,
-                                    periode.fom,
-                                    periode.tom,
-                                    periode.medlemskapType.navn));
+        for(Medlemskapsperiode periode : behandling.medlem.getMedlemskapPerioder()){
+            periods.add(periode);
         }
     }
     
@@ -42,22 +38,6 @@ public class AvklarBrukerHarGyldigPeriode extends AksjonspunktBekreftelse{
         
         public ManuellVurderingType(String kode) {
             this.kode = kode;
-        }
-    }
-    
-    class Periode{
-        Object beslutningsdato;
-        String dekning;
-        LocalDate fom;
-        LocalDate tom;
-        String status;
-        
-        public Periode(Object beslutningsdato, String dekning, LocalDate fom, LocalDate tom, String status){
-            this.beslutningsdato = beslutningsdato;
-            this.dekning = dekning;
-            this.fom = fom;
-            this.tom = tom;
-            this.status = status;
         }
     }
 }

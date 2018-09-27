@@ -10,17 +10,34 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class Aksjonspunkt {
     
     @JsonIgnore
-    public transient AksjonspunktBekreftelse bekreftelse;
+    private
+    transient AksjonspunktBekreftelse bekreftelse;
     
-    public Kode definisjon;
-    public Kode status;
-    public String begrunnelse;
-    public Kode vilkarType;
-    public Kode kategori;
-    public Boolean toTrinnsBehandling;
-    public Boolean toTrinnsBehandlingGodkjent;
+    protected Kode definisjon;
+    protected Kode status;
+    protected String begrunnelse;
+    protected Kode vilkarType;
+    protected Kode kategori;
+    protected Boolean toTrinnsBehandling;
+    protected Boolean toTrinnsBehandlingGodkjent;
     
-    public boolean isUnconfirmed(){
+    public Kode getDefinisjon() {
+        return definisjon;
+    }
+    
+    public boolean erUbekreftet(){
         return !status.kode.equals("UTFO");
+    }
+    
+    public boolean skalTilToTrinnsBehandling() {
+        return toTrinnsBehandling;
+    }
+
+    public AksjonspunktBekreftelse getBekreftelse() {
+        return bekreftelse;
+    }
+
+    public void setBekreftelse(AksjonspunktBekreftelse bekreftelse) {
+        this.bekreftelse = bekreftelse;
     }
 }

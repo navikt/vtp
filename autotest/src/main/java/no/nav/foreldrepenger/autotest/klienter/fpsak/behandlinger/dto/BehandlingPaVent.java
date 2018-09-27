@@ -9,8 +9,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlingPaVent extends BehandlingIdPost{
-    LocalDate frist;
-    Kode ventearsak;
+    
+    protected LocalDate frist;
+    protected Kode ventearsak;
     
     
     public BehandlingPaVent(int behandlingId, int behandlingVersjon, LocalDate frist, Kode ventearsak) {

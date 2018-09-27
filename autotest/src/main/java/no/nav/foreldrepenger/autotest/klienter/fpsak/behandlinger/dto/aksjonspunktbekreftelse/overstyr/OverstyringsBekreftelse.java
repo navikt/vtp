@@ -7,8 +7,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 public abstract class OverstyringsBekreftelse extends AksjonspunktBekreftelse {
     
-    public String avslagskode;
-    public boolean erVilkarOk = true;
+    protected String avslagskode;
+    protected boolean erVilkarOk = true;
     
     public OverstyringsBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

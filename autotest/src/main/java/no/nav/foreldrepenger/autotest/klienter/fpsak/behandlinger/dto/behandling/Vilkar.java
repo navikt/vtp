@@ -6,6 +6,6 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Vilkar {
-    public Kode vilkarType;
-    public Kode vilkarStatus;
+    protected Kode vilkarType;
+    protected Kode vilkarStatus;
 }

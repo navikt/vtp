@@ -16,21 +16,21 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @BekreftelseKode(kode="5070")
 public class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftelse {
 
-    public List<BekreftetUttakPeriode> bekreftedePerioder = new ArrayList<>();
-    public List<BekreftetUttakPeriode> slettedePerioder = new ArrayList<>();
+    protected List<BekreftetUttakPeriode> bekreftedePerioder = new ArrayList<>();
+    protected List<BekreftetUttakPeriode> slettedePerioder = new ArrayList<>();
     
     public AvklarFaktaUttakBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        for (KontrollerFaktaPeriode periode : behandling.kontrollerFaktaData.perioder) {
-            BekreftetUttakPeriode bekreftetUttakPeriode = new BekreftetUttakPeriode(periode.fom,
-                    periode.tom,
-                    periode.arbeidstidsprosent,
-                    periode.begrunnelse,
+        for (KontrollerFaktaPeriode periode : behandling.kontrollerFaktaData.getPerioder()) {
+            BekreftetUttakPeriode bekreftetUttakPeriode = new BekreftetUttakPeriode(periode.getFom(),
+                    periode.getTom(),
+                    periode.getArbeidstidsprosent(),
+                    periode.getBegrunnelse(),
                     periode);
             
-            periode.begrunnelse = "Vurdert av autotest";
-            periode.bekreftet = true;
+            periode.setBegrunnelse("Vurdert av autotest");
+            periode.setBekreftet(true);
             
             bekreftedePerioder.add(bekreftetUttakPeriode);
         }
@@ -39,22 +39,22 @@ public class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftelse {
     public void godkjennPeriode(LocalDate fra, LocalDate til, Kode godkjenningskode) {
         BekreftetUttakPeriode periode = finnUttaksperiode(fra, til);
         
-        periode.bekreftetPeriode.bekreftet = true;
-        periode.bekreftetPeriode.resultat = godkjenningskode;
-        periode.bekreftetPeriode.begrunnelse = "Godkjent av autotest";
-        periode.bekreftetPeriode.dokumentertePerioder.add(new UttakDokumentasjon(fra, til, null));
+        periode.bekreftetPeriode.setBekreftet(true);
+        periode.bekreftetPeriode.setResultat(godkjenningskode);
+        periode.bekreftetPeriode.setBegrunnelse("Godkjent av autotest");
+        periode.bekreftetPeriode.getDokumentertePerioder().add(new UttakDokumentasjon(fra, til, null));
     }
     
     public void delvisGodkjennPeriode(LocalDate fra, LocalDate til, LocalDate godkjentFra, LocalDate godkjentTil, Kode godkjenningskode) {
         BekreftetUttakPeriode periode = finnUttaksperiode(fra, til);
         
-        periode.bekreftetPeriode.bekreftet = true;
-        periode.bekreftetPeriode.resultat = godkjenningskode;
-        periode.bekreftetPeriode.begrunnelse = "Godkjent av autotest";
+        periode.bekreftetPeriode.setBekreftet(true);
+        periode.bekreftetPeriode.setResultat(godkjenningskode);
+        periode.bekreftetPeriode.setBegrunnelse("Godkjent av autotest");
         
-        periode.bekreftetPeriode.fom = godkjentFra;
-        periode.bekreftetPeriode.tom = godkjentTil;
-        periode.bekreftetPeriode.dokumentertePerioder.add(new UttakDokumentasjon(godkjentFra, godkjentTil, null));
+        periode.bekreftetPeriode.setFom(godkjentFra);
+        periode.bekreftetPeriode.setTom(godkjentTil);
+        periode.bekreftetPeriode.getDokumentertePerioder().add(new UttakDokumentasjon(godkjentFra, godkjentTil, null));
     }
     
     public void slettPeriode(LocalDate fra, LocalDate til) {
@@ -62,16 +62,16 @@ public class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftelse {
         
         slettedePerioder.add(periode);
         bekreftedePerioder.remove(periode);
-        periode.bekreftetPeriode.begrunnelse = "Slettet av autotest";
+        periode.bekreftetPeriode.setBegrunnelse("Slettet av autotest");
     }
     
     public void avvisPeriode(LocalDate fra, LocalDate til, Kode avvisKode) {
         BekreftetUttakPeriode periode = finnUttaksperiode(fra, til);
         
-        periode.bekreftetPeriode.bekreftet = false;
-        periode.bekreftetPeriode.resultat = avvisKode;
-        periode.bekreftetPeriode.begrunnelse = "Avvist av autotest";
-        periode.bekreftetPeriode.dokumentertePerioder.clear();
+        periode.bekreftetPeriode.setBekreftet(false);
+        periode.bekreftetPeriode.setResultat(avvisKode);
+        periode.bekreftetPeriode.setBegrunnelse("Avvist av autotest");
+        periode.bekreftetPeriode.getDokumentertePerioder().clear();
     }
     
     private BekreftetUttakPeriode finnUttaksperiode(LocalDate fra, LocalDate til) {

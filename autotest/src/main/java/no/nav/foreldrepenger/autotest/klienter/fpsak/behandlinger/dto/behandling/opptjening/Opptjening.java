@@ -6,5 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Opptjening {
-    public List<OpptjeningAktivitet> opptjeningAktivitetList = null;
+    protected List<OpptjeningAktivitet> opptjeningAktivitetList = null;
+
+    public List<OpptjeningAktivitet> getOpptjeningAktivitetList() {
+        return opptjeningAktivitetList;
+    }
 }

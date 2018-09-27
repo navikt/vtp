@@ -10,8 +10,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 @BekreftelseKode(kode="5061")
 public class VurderOmsorgForBarnBekreftelse extends AksjonspunktBekreftelse {
 
-    public Boolean omsorg;
-    public List<Periode> ikkeOmsorgPerioder = new ArrayList<>();
+    protected Boolean omsorg;
+    protected List<Periode> ikkeOmsorgPerioder = new ArrayList<>();
     
     public VurderOmsorgForBarnBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

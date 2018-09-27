@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.reflections.Reflections;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
@@ -11,10 +13,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 public abstract class AksjonspunktBekreftelse {
 
-    
-    //TODO serialize to "@type" with jackson
-    public String kode;
-    public String begrunnelse;
+    @JsonProperty("@type")
+    protected String kode;
+    protected String begrunnelse;
     
     public AksjonspunktBekreftelse(Fagsak fagsak, Behandling behandling) {
         if(null == this.getClass().getAnnotation(BekreftelseKode.class)) {
@@ -39,6 +40,6 @@ public abstract class AksjonspunktBekreftelse {
     }
     
     public static AksjonspunktBekreftelse fromAksjonspunkt(Fagsak fagsak, Behandling behandling, Aksjonspunkt aksjonspunkt) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return fromKode(fagsak, behandling, aksjonspunkt.definisjon.kode);
+        return fromKode(fagsak, behandling, aksjonspunkt.getDefinisjon().kode);
     }
 }

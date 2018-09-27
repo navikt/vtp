@@ -23,14 +23,14 @@ public class OverstyringAvGradering extends FpsakTestBase{
         */
         
         saksbehandler.hentFagsak(saksnummer);
-        verifiser(saksbehandler.valgtBehandling.hentUttaksperiode(0).graderingInnvilget, "Gradering var ikke invilget. forventet invilget");
+        verifiser(saksbehandler.valgtBehandling.hentUttaksperiode(0).getGraderingInnvilget(), "Gradering var ikke invilget. forventet invilget");
         
         saksbehandler.aksjonspunktBekreftelse(OverstyrUttaksperioder.class)
             .bekreftPeriodeGraderingErIkkeOppfylt(saksbehandler.valgtBehandling.hentUttaksperiode(0), new Kode());
         saksbehandler.bekreftAksjonspunktBekreftelse(OverstyrUttaksperioder.class);
         
-        verifiser(!saksbehandler.valgtBehandling.hentUttaksperiode(0).graderingInnvilget, "Gradering var invilget. forventet ikke invilget");
-        verifiserLikhet(saksbehandler.valgtBehandling.hentUttaksperiode(0).gradertAktivitet.prosentArbeid.longValue(), 75);
-        verifiserLikhet(saksbehandler.valgtBehandling.hentUttaksperiode(0).gradertAktivitet.prosentArbeid.longValue(), 25);
+        verifiser(!saksbehandler.valgtBehandling.hentUttaksperiode(0).getGraderingInnvilget(), "Gradering var invilget. forventet ikke invilget");
+        verifiserLikhet(saksbehandler.valgtBehandling.hentUttaksperiode(0).getGradertArbeidsprosent(), 75);
+        verifiserLikhet(saksbehandler.valgtBehandling.hentUttaksperiode(0).getGradertArbeidsprosent(), 25);
     }
 }

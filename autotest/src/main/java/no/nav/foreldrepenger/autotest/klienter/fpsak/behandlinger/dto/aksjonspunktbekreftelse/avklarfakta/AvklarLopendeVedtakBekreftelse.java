@@ -9,8 +9,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @BekreftelseKode(kode="5031")
 public class AvklarLopendeVedtakBekreftelse extends AksjonspunktBekreftelse {
 
-    public boolean erVilkarOk;
-    public String avslagskode;
+    protected boolean erVilkarOk;
+    protected String avslagskode;
     
     public AvklarLopendeVedtakBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

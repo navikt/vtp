@@ -25,21 +25,21 @@ public class AvklarFaktaForeldreansvarFPBrekreftelse extends AksjonspunktBekreft
     public AvklarFaktaForeldreansvarFPBrekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        antallBarn = behandling.soknad.antallBarn;
-        omsorgsovertakelseDato = behandling.soknad.omsorgsovertakelseDato;
+        antallBarn = behandling.soknad.getAntallBarn();
+        omsorgsovertakelseDato = behandling.soknad.getOmsorgsovertakelseDato();
         
         foreldre.add(new OmsorgovertakelseForelder(behandling.personopplysning));
         
-        if(behandling.soknad.adopsjonFodelsedatoer != null){
-            Map<Integer, LocalDate> fodselsdatoer = behandling.soknad.adopsjonFodelsedatoer;
+        if(behandling.soknad.getAdopsjonFodelsedatoer() != null){
+            Map<Integer, LocalDate> fodselsdatoer = behandling.soknad.getAdopsjonFodelsedatoer();
             
             for(int i = 0; i < fodselsdatoer.size(); i++){
                 barn.add(new OmsorgovertakelseBarn(fodselsdatoer.get(i+1), "SAKSBEH", (i+1)));
             }
         }
         else{
-            for(int i = 0; i < behandling.soknad.antallBarn; i++){
-                barn.add(new OmsorgovertakelseBarn(behandling.soknad.fodselsdatoer.get(i+1), "SAKSBEH", (i+1)));
+            for(int i = 0; i < behandling.soknad.getAntallBarn(); i++){
+                barn.add(new OmsorgovertakelseBarn(behandling.soknad.getFodselsdatoer().get(i+1), "SAKSBEH", (i+1)));
             }
         }
     }
@@ -60,11 +60,11 @@ public class AvklarFaktaForeldreansvarFPBrekreftelse extends AksjonspunktBekreft
         }
         
         public OmsorgovertakelseForelder(Personopplysning person){
-            id = person.id;
-            aktorId = "" + person.aktoerId;
-            dodsdato = person.doedsdato;
-            erMor = person.navBrukerKjonn.kode.equals("K");
-            navn = person.navn;
+            id = person.getId();
+            aktorId = "" + person.getAktoerId();
+            dodsdato = person.getDoedsdato();
+            erMor = person.getNavBrukerKjonn().kode.equals("K");
+            navn = person.getNavn();
             opplysningsKilde = "TPS";
         }
     }

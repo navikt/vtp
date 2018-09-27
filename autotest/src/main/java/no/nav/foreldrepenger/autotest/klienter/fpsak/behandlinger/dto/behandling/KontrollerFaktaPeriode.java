@@ -13,18 +13,60 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KontrollerFaktaPeriode {
 
-    public LocalDate tom = null;
-    public LocalDate fom = null;
+    private LocalDate tom = null;
+    private LocalDate fom = null;
 
-    public Kode uttakPeriodeType = null;
-    public Kode utsettelseÅrsak = null;
-    public Kode overføringÅrsak = null;
-    public Kode resultat = null;
-    public List<UttakDokumentasjon> dokumentertePerioder = new ArrayList<>();
+    protected Kode uttakPeriodeType = null;
+    protected Kode utsettelseÅrsak = null;
+    protected Kode overføringÅrsak = null;
+    private Kode resultat = null;
+    private List<UttakDokumentasjon> dokumentertePerioder = new ArrayList<>();
     
-    public BigDecimal arbeidstidsprosent = null;
-    public String begrunnelse = null;
-    public Boolean bekreftet = null;
-    public String orgnr = null;
-    public Boolean erArbeidstaker = null;
+    private BigDecimal arbeidstidsprosent = null;
+    private String begrunnelse = null;
+    private Boolean bekreftet = null;
+    protected String orgnr = null;
+    protected Boolean erArbeidstaker = null;
+    public LocalDate getTom() {
+        return tom;
+    }
+    public void setTom(LocalDate tom) {
+        this.tom = tom;
+    }
+    public BigDecimal getArbeidstidsprosent() {
+        return arbeidstidsprosent;
+    }
+    public void setArbeidstidsprosent(BigDecimal arbeidstidsprosent) {
+        this.arbeidstidsprosent = arbeidstidsprosent;
+    }
+    public String getBegrunnelse() {
+        return begrunnelse;
+    }
+    public void setBegrunnelse(String begrunnelse) {
+        this.begrunnelse = begrunnelse;
+    }
+    public Boolean getBekreftet() {
+        return bekreftet;
+    }
+    public void setBekreftet(Boolean bekreftet) {
+        this.bekreftet = bekreftet;
+    }
+    public Kode getResultat() {
+        return resultat;
+    }
+    public void setResultat(Kode resultat) {
+        this.resultat = resultat;
+    }
+    public List<UttakDokumentasjon> getDokumentertePerioder() {
+        return dokumentertePerioder;
+    }
+    public void setDokumentertePerioder(List<UttakDokumentasjon> dokumentertePerioder) {
+        this.dokumentertePerioder = dokumentertePerioder;
+    }
+    public LocalDate getFom() {
+        return fom;
+    }
+    public void setFom(LocalDate fom) {
+        this.fom = fom;
+    }
 }

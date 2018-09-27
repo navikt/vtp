@@ -4,5 +4,5 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ArbeidsforholdKilde {
-    public String navn = null;
+    protected String navn = null;
 }

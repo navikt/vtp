@@ -13,10 +13,10 @@ public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
     private static final String VURDERING_MEDHOLD = "MEDHOLD_I_KLAGE";
     private static final String VURDERING_OPPHEVE = "OPPHEVE_YTELSESVEDTAK";
     
-    public String klageVurdering;
-    public String klageMedholdArsak;
-    public String klageAvvistArsak;
-    public LocalDate vedtaksdatoPaklagdBehandling;
+    protected String klageVurdering;
+    protected String klageMedholdArsak;
+    protected String klageAvvistArsak;
+    protected LocalDate vedtaksdatoPaklagdBehandling;
     
     public VurderingAvKlageBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

@@ -7,15 +7,45 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OpptjeningAktivitet {
 
-    public LocalDate originalFom;
-    public LocalDate originalTom;
+    protected LocalDate originalFom;
+    protected LocalDate originalTom;
     
-    public LocalDate opptjeningFom;
-    public LocalDate opptjeningTom;
+    protected LocalDate opptjeningFom;
+    protected LocalDate opptjeningTom;
     
-    public boolean erGodkjent;
-    public boolean erManueltOpprettet;
+    protected boolean erGodkjent;
+    private boolean erManueltOpprettet;
     
-    public String begrunnelse;
+    protected String begrunnelse;
+
+    public LocalDate getOpptjeningFom() {
+        return opptjeningFom;
+    }
+    
+    public LocalDate getOpptjeningTom() {
+        return opptjeningTom;
+    }
+
+    public void setOriginalFom(LocalDate fom) {
+        originalFom = fom;
+    }
+    
+    public void setOriginalTom(LocalDate tom) {
+        originalFom = tom;
+    }
+
+    public void vurder(boolean erGodkjent, String begrunnelse, boolean erManueltOpprettet) {
+        this.erGodkjent = erGodkjent;
+        this.begrunnelse = begrunnelse;
+        this.setErManueltOpprettet(erManueltOpprettet);
+    }
+
+    public boolean isErManueltOpprettet() {
+        return erManueltOpprettet;
+    }
+
+    public void setErManueltOpprettet(boolean erManueltOpprettet) {
+        this.erManueltOpprettet = erManueltOpprettet;
+    }
     
 }

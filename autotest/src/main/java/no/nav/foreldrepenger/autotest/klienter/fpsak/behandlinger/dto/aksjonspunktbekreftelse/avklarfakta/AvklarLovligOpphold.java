@@ -8,8 +8,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 @BekreftelseKode(kode="5019")
 public class AvklarLovligOpphold extends AksjonspunktBekreftelse{
 
-    public boolean erEosBorger;
-    public boolean lovligOppholdVurdering;
+    protected boolean erEosBorger;
+    protected boolean lovligOppholdVurdering;
     
     public AvklarLovligOpphold(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

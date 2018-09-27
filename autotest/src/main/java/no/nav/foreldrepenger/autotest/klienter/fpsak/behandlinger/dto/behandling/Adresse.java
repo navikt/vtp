@@ -8,13 +8,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class Adresse {
 
     //public AdresseInfo adresse;
-    public Kode adresseType;
+    protected Kode adresseType;
     
-    public String adresselinje1;
-    public String adresselinje2;
-    public String adresselinje3;
-    public String land;
-    public String mottakerNavn;
-    public String postNummer;
-    public String poststed;
+    protected String adresselinje1;
+    protected String adresselinje2;
+    protected String adresselinje3;
+    protected String land;
+    protected String mottakerNavn;
+    protected String postNummer;
+    protected String poststed;
 }

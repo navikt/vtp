@@ -10,23 +10,95 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPeriode {
 
-    public LocalDate fom = null;
-    public LocalDate tom = null;
+    private LocalDate fom = null;
+    private LocalDate tom = null;
 
-    public List<UttakResultatPeriodeAktivitet> aktiviteter = null;
+    private List<UttakResultatPeriodeAktivitet> aktiviteter = null;
 
-    public Kode periodeResultatType = null;
-    public String begrunnelse = null;
-    public Kode periodeResultatÅrsak = null;
-    public Kode manuellBehandlingÅrsak = null;
-    public Kode graderingAvslagÅrsak = null;
-    public Boolean flerbarnsdager = null;
-    public Boolean samtidigUttak;
-    public Boolean graderingInnvilget;
-    public Kode periodeType = null;
-    public Kode utsettelseType = null;
+    private Kode periodeResultatType = null;
+    protected String begrunnelse = null;
+    private Kode periodeResultatÅrsak = null;
+    protected Kode manuellBehandlingÅrsak = null;
+    private Kode graderingAvslagÅrsak = null;
+    protected Boolean flerbarnsdager = null;
+    protected Boolean samtidigUttak;
+    private Boolean graderingInnvilget;
+    protected Kode periodeType = null;
+    private Kode utsettelseType = null;
 
-    public UttakResultatPeriodeAktivitet gradertAktivitet = null;
+    protected UttakResultatPeriodeAktivitet gradertAktivitet = null;
+
+    public void setBegrunnelse(String begrunnelse) {
+        this.begrunnelse = begrunnelse;
+    }
+
+    public Kode getPeriodeResultatType() {
+        return periodeResultatType;
+    }
+
+    public void setPeriodeResultatType(Kode periodeResultatType) {
+        this.periodeResultatType = periodeResultatType;
+    }
+
+    public Kode getPeriodeResultatÅrsak() {
+        return periodeResultatÅrsak;
+    }
+
+    public void setPeriodeResultatÅrsak(Kode periodeResultatÅrsak) {
+        this.periodeResultatÅrsak = periodeResultatÅrsak;
+    }
+
+    public Kode getUtsettelseType() {
+        return utsettelseType;
+    }
+
+    public void setUtsettelseType(Kode utsettelseType) {
+        this.utsettelseType = utsettelseType;
+    }
+
+    public LocalDate getTom() {
+        return tom;
+    }
+
+    public void setTom(LocalDate tom) {
+        this.tom = tom;
+    }
+
+    public LocalDate getFom() {
+        return fom;
+    }
+
+    public void setFom(LocalDate fom) {
+        this.fom = fom;
+    }
+
+    public List<UttakResultatPeriodeAktivitet> getAktiviteter() {
+        return aktiviteter;
+    }
+
+    public void setAktiviteter(List<UttakResultatPeriodeAktivitet> aktiviteter) {
+        this.aktiviteter = aktiviteter;
+    }
+
+    public Kode getGraderingAvslagÅrsak() {
+        return graderingAvslagÅrsak;
+    }
+
+    public void setGraderingAvslagÅrsak(Kode graderingAvslagÅrsak) {
+        this.graderingAvslagÅrsak = graderingAvslagÅrsak;
+    }
+
+    public Boolean getGraderingInnvilget() {
+        return graderingInnvilget;
+    }
+
+    public void setGraderingInnvilget(Boolean graderingInnvilget) {
+        this.graderingInnvilget = graderingInnvilget;
+    }
+
+    public Object getGradertArbeidsprosent() {
+        return gradertAktivitet.prosentArbeid.longValue();
+    }
     
 
 }

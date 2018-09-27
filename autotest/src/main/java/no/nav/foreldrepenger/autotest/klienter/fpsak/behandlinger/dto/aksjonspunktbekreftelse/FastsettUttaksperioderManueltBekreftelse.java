@@ -14,13 +14,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @BekreftelseKode(kode="5071")
 public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekreftelse {
 
-    private List<UttakResultatPeriode> perioder = new ArrayList<>();
+    protected List<UttakResultatPeriode> perioder = new ArrayList<>();
     
     public FastsettUttaksperioderManueltBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        for (UttakResultatPeriode uttakPeriode : behandling.uttakResultatPerioder.perioder) {
-            uttakPeriode.begrunnelse = "Begrunnelse";
+        for (UttakResultatPeriode uttakPeriode : behandling.uttakResultatPerioder.getPerioder()) {
+            uttakPeriode.setBegrunnelse("Begrunnelse");
             LeggTilUttakPeriode(uttakPeriode);
         }
     }
@@ -40,14 +40,14 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     }
     
     public void godkjennPeriode(UttakResultatPeriode periode, int utbetalingsgrad) {
-        periode.periodeResultatType = new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget");
-        periode.periodeResultatÅrsak = new Kode("INNVILGET_AARSAK", "2001", "§14-6: Uttak er oppfylt");
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(new Kode("INNVILGET_AARSAK", "2001", "§14-6: Uttak er oppfylt"));
         
         //Utsettelses perioder trenger ikke trekkdager. set dem til 0
-        for (UttakResultatPeriodeAktivitet aktivitet : periode.aktiviteter) {
-            aktivitet.utbetalingsgrad = BigDecimal.valueOf(utbetalingsgrad);
-            if(!periode.utsettelseType.kode.equals("-")) {
-                aktivitet.trekkdager = 0;
+        for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
+            aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(utbetalingsgrad));
+            if(!periode.getUtsettelseType().kode.equals("-")) {
+                aktivitet.setTrekkdager(0);
             }
         }
     }
@@ -59,15 +59,15 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     }
     
     public void avvisPeriode(UttakResultatPeriode periode, int utbetalingsgrad, Kode årsak) {
-        periode.periodeResultatType = new Kode("PERIODE_RESULTAT_TYPE", "AVSLÅTT", "Avslått");
-        periode.periodeResultatÅrsak = new Kode(null, "-", null);
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "AVSLÅTT", "Avslått"));
+        periode.setPeriodeResultatÅrsak(new Kode(null, "-", null));
         
         //HACK for manglende aktivitet i periode (set aktivitet til å trekke fra mødrekvoten)
-        for (UttakResultatPeriodeAktivitet aktivitet : periode.aktiviteter) {
-            aktivitet.utbetalingsgrad = BigDecimal.valueOf(utbetalingsgrad);
-            aktivitet.trekkdager = 0;
-            if(aktivitet.stønadskontoType == null || aktivitet.stønadskontoType.kode.equals("-")) {
-                aktivitet.stønadskontoType = new Kode("STOENADSKONTOTYPE", "MØDREKVOTE", "Mødrekvote");
+        for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
+            aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(utbetalingsgrad));
+            aktivitet.setTrekkdager(0);
+            if(aktivitet.getStønadskontoType() == null || aktivitet.getStønadskontoType().kode.equals("-")) {
+                aktivitet.setStønadskontoType(new Kode("STOENADSKONTOTYPE", "MØDREKVOTE", "Mødrekvote"));
             }
         }
     }
@@ -78,7 +78,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     
     public UttakResultatPeriode finnPeriode(LocalDate fra, LocalDate til) {
         for (UttakResultatPeriode uttakPeriode : perioder) {
-            if(uttakPeriode.fom.equals(fra) && uttakPeriode.tom.equals(til)) {
+            if(uttakPeriode.getFom().equals(fra) && uttakPeriode.getTom().equals(til)) {
                 return uttakPeriode;
             }
         }

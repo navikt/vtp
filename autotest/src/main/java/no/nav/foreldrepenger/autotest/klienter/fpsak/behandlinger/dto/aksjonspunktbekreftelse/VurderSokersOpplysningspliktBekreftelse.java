@@ -6,7 +6,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 @BekreftelseKode(kode="5017")
 public class VurderSokersOpplysningspliktBekreftelse extends AksjonspunktBekreftelse{
 
-    public Boolean erVilkarOk;
+    protected Boolean erVilkarOk;
     
     public VurderSokersOpplysningspliktBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

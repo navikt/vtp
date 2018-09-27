@@ -10,13 +10,19 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Medlem {
-    public List<BekreftetForelder> bekrefteteForeldre = new ArrayList<>();
-    public Object bosattVurdering;
-    public Object erEosBorger;
-    public List<Object> inntekt;
-    public Object lovligOppholdVurdering;
-    public Object medlemskapManuellVurderingType;
-    public List<Medlemskapsperiode> medlemskapPerioder;
-    public Object oppholdsrettVurdering;
-    public LocalDate skjearingstidspunkt;
+    protected List<BekreftetForelder> bekrefteteForeldre = new ArrayList<>();
+    protected Object bosattVurdering;
+    protected Object erEosBorger;
+    protected List<Object> inntekt;
+    protected Object lovligOppholdVurdering;
+    protected Object medlemskapManuellVurderingType;
+    private List<Medlemskapsperiode> medlemskapPerioder;
+    protected Object oppholdsrettVurdering;
+    protected LocalDate skjearingstidspunkt;
+    public List<Medlemskapsperiode> getMedlemskapPerioder() {
+        return medlemskapPerioder;
+    }
+    public void setMedlemskapPerioder(List<Medlemskapsperiode> medlemskapPerioder) {
+        this.medlemskapPerioder = medlemskapPerioder;
+    }
 }

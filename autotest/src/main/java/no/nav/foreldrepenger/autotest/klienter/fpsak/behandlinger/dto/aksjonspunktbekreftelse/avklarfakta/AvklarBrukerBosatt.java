@@ -8,7 +8,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 @BekreftelseKode(kode="5020")
 public class AvklarBrukerBosatt extends AksjonspunktBekreftelse {
 
-    public boolean bosattVurdering;
+    protected boolean bosattVurdering;
     
     public AvklarBrukerBosatt(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

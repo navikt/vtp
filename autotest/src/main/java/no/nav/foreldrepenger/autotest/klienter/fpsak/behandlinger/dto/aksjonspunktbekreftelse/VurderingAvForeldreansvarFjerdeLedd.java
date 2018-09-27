@@ -6,8 +6,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 @BekreftelseKode(kode="5014")
 public class VurderingAvForeldreansvarFjerdeLedd extends AksjonspunktBekreftelse {
 
-    public Boolean erVilkarOk;
-    public String avslagskode;
+    protected Boolean erVilkarOk;
+    protected String avslagskode;
     
     public VurderingAvForeldreansvarFjerdeLedd(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);

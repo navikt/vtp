@@ -7,9 +7,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 public class BekreftedeAksjonspunkter {
     
-    public BehandlingId behandlingId;
-    public int behandlingVersjon;
-    List<AksjonspunktBekreftelse> bekreftedeAksjonspunktDtoer;
+    protected BehandlingId behandlingId;
+    protected int behandlingVersjon;
+    protected List<AksjonspunktBekreftelse> bekreftedeAksjonspunktDtoer;
     
     
     public BekreftedeAksjonspunkter(Fagsak fagsak, Behandling behandling, List<AksjonspunktBekreftelse> aksjonspunktBekreftelser) {

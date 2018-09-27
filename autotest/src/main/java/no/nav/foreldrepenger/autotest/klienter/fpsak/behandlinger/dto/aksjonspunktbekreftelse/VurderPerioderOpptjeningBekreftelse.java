@@ -14,33 +14,29 @@ public class VurderPerioderOpptjeningBekreftelse extends AksjonspunktBekreftelse
     
     public VurderPerioderOpptjeningBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
-        if(behandling.opptjening.opptjeningAktivitetList == null) {
+        if(behandling.opptjening.getOpptjeningAktivitetList() == null) {
             return;
         }
         
-        for (OpptjeningAktivitet opptjeningAktivitet : behandling.opptjening.opptjeningAktivitetList) {
+        for (OpptjeningAktivitet opptjeningAktivitet : behandling.opptjening.getOpptjeningAktivitetList()) {
             
-            opptjeningAktivitet.originalFom = opptjeningAktivitet.opptjeningFom;
-            opptjeningAktivitet.originalTom = opptjeningAktivitet.opptjeningTom;
+            opptjeningAktivitet.setOriginalFom(opptjeningAktivitet.getOpptjeningFom());
+            opptjeningAktivitet.setOriginalTom(opptjeningAktivitet.getOpptjeningTom());
             
             opptjeningAktivitetList.add(opptjeningAktivitet);
         }
     }
     
     public void godkjennOpptjening(OpptjeningAktivitet aktivitet) {
-        aktivitet.erGodkjent = true;
-        aktivitet.begrunnelse = "Godkjent";
-        aktivitet.erManueltOpprettet = false;
+        aktivitet.vurder(true, "Godkjent", false);
     }
     
     public void avvisOpptjening(OpptjeningAktivitet aktivitet) {
-        aktivitet.erGodkjent = false;
-        aktivitet.begrunnelse = "Avvist";
-        aktivitet.erManueltOpprettet = false;
+        aktivitet.vurder(false, "Avvist", false);
     }
     
     public void leggTilOpptjening(OpptjeningAktivitet aktivitet) {
-        aktivitet.erManueltOpprettet = true;
+        aktivitet.setErManueltOpprettet(true);
         opptjeningAktivitetList.add(aktivitet);
     }
     

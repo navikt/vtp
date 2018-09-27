@@ -6,13 +6,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BekreftetForelder {
-    public String adresse;
-    public boolean bekreftetAvTps;
-    public Object dodsdato;
-    public boolean erMor;
-    public String navn;
-    public int nummer;
-    public Object oversyrtPersonstatus;
-    public Kode personstatus;
-    public Object utlandsadresse;
+    protected String adresse;
+    protected boolean bekreftetAvTps;
+    protected Object dodsdato;
+    protected boolean erMor;
+    protected String navn;
+    protected int nummer;
+    protected Object oversyrtPersonstatus;
+    protected Kode personstatus;
+    protected Object utlandsadresse;
 }

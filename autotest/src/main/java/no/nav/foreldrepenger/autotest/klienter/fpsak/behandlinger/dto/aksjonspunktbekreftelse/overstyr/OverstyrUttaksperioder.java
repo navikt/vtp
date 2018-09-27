@@ -11,7 +11,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @BekreftelseKode(kode="6008")
 public class OverstyrUttaksperioder extends OverstyringsBekreftelse{
 
-    List<UttakResultatPeriode> perioder;
+    protected List<UttakResultatPeriode> perioder;
     
     public OverstyrUttaksperioder(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
@@ -20,23 +20,23 @@ public class OverstyrUttaksperioder extends OverstyringsBekreftelse{
     }
     
     public void bekreftPeriodeErOppfylt(UttakResultatPeriode periode, Kode årsak) {
-        periode.periodeResultatType = new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget");
-        periode.periodeResultatÅrsak = årsak;
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(årsak);
     }
     
     public void bekreftPeriodeErIkkeOppfylt(UttakResultatPeriode periode, Kode årsak) {
-        periode.periodeResultatType = new Kode("PERIODE_RESULTAT_TYPE", "AVSLÅTT", "Avslått");
-        periode.periodeResultatÅrsak = årsak;
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "AVSLÅTT", "Avslått"));
+        periode.setPeriodeResultatÅrsak(årsak);
     }
     
     public void bekreftPeriodeGraderingErOppfylt(UttakResultatPeriode periode) {
-        periode.graderingAvslagÅrsak = Kode.lagBlankKode();
-        periode.graderingInnvilget = true;
+        periode.setGraderingAvslagÅrsak(Kode.lagBlankKode());
+        periode.setGraderingInnvilget(true);
     }
     
     public void bekreftPeriodeGraderingErIkkeOppfylt(UttakResultatPeriode periode, Kode årsak) {
-        periode.graderingAvslagÅrsak = årsak;
-        periode.graderingInnvilget = false;
+        periode.setGraderingAvslagÅrsak(årsak);
+        periode.setGraderingInnvilget(false);
     }
     
 }

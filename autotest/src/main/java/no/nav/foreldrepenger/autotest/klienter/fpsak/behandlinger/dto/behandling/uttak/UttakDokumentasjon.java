@@ -9,9 +9,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakDokumentasjon {
 
-    public LocalDate fom = null;
-    public LocalDate tom = null;
-    public Kode dokumentasjonType = null;
+    protected LocalDate fom = null;
+    protected LocalDate tom = null;
+    protected Kode dokumentasjonType = null;
     
     public UttakDokumentasjon(LocalDate fom, LocalDate tom, Kode dokumentasjonType) {
         super();

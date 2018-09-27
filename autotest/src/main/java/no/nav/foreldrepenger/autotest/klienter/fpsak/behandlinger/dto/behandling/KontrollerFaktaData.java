@@ -7,5 +7,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KontrollerFaktaData {
 
-    public List<KontrollerFaktaPeriode> perioder = null;
+    private List<KontrollerFaktaPeriode> perioder = null;
+
+    public List<KontrollerFaktaPeriode> getPerioder() {
+        return perioder;
+    }
+
+    public void setPerioder(List<KontrollerFaktaPeriode> perioder) {
+        this.perioder = perioder;
+    }
 }

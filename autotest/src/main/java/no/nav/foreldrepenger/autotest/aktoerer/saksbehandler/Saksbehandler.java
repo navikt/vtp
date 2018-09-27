@@ -140,8 +140,8 @@ public class Saksbehandler extends Aktoer{
     @SuppressWarnings("unchecked")
     public <T extends AksjonspunktBekreftelse> T hentAksjonspunktbekreftelse(Class<T> type) {
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
-            if(type.isInstance(aksjonspunkt.bekreftelse)) {
-                return (T) aksjonspunkt.bekreftelse;
+            if(type.isInstance(aksjonspunkt.getBekreftelse())) {
+                return (T) aksjonspunkt.getBekreftelse();
             }
         }
         throw new RuntimeException("Valgt behandling har ikke aksjonspunktbekreftelse: " + type.getName());
@@ -151,7 +151,7 @@ public class Saksbehandler extends Aktoer{
      * bekrefter aksjonspunkt
      */
     public void bekreftAksjonspunkt(Aksjonspunkt aksjonspunkt) throws Exception {
-        bekreftAksjonspunktBekreftelse(aksjonspunkt.bekreftelse);
+        bekreftAksjonspunktBekreftelse(aksjonspunkt.getBekreftelse());
     }
     
     /*

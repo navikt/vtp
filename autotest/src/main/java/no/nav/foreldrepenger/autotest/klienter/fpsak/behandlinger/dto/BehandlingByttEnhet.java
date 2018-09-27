@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlingByttEnhet extends BehandlingIdPost{
     
-    String enhetNavn;
-    String enhetId;
-    String begrunnelse;
+    protected String enhetNavn;
+    protected String enhetId;
+    protected String begrunnelse;
     
     
     public BehandlingByttEnhet(int behandlingId, int behandlingVersjon, String enhetNavn, String enhetId,

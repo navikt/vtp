@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AvklartData {
-    public LocalDate fodselsdato;
-    public int antallBarnFodsel;
-    public LocalDate termindato;
-    public int antallBarnTermin;
-    public LocalDate utstedtdato;
+    protected LocalDate fodselsdato;
+    protected int antallBarnFodsel;
+    protected LocalDate termindato;
+    protected int antallBarnTermin;
+    protected LocalDate utstedtdato;
 }

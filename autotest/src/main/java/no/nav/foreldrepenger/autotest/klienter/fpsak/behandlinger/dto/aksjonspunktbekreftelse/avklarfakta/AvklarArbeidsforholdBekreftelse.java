@@ -12,7 +12,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 @BekreftelseKode(kode="5080")
 public class AvklarArbeidsforholdBekreftelse extends AksjonspunktBekreftelse {
 
-    List<Arbeidsforhold> arbeidsforhold = new ArrayList<>();
+    protected List<Arbeidsforhold> arbeidsforhold = new ArrayList<>();
     
     public AvklarArbeidsforholdBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
@@ -20,7 +20,7 @@ public class AvklarArbeidsforholdBekreftelse extends AksjonspunktBekreftelse {
         arbeidsforhold = behandling.inntektArbeidYtelse.arbeidsforhold;
         
         for (Arbeidsforhold arbeidsforholdBehandling : arbeidsforhold) {
-            arbeidsforholdBehandling.brukArbeidsforholdet = true;
+            arbeidsforholdBehandling.setBrukArbeidsforholdet(true);
         }
     }
     
@@ -33,8 +33,8 @@ public class AvklarArbeidsforholdBekreftelse extends AksjonspunktBekreftelse {
     }
     
     public void bekreftArbeidsforholdErRelevant(Arbeidsforhold forhold, boolean fortsettUtenInntekt) {
-        forhold.brukArbeidsforholdet = true;
-        forhold.fortsettBehandlingUtenInntektsmelding = fortsettUtenInntekt;
+        forhold.setBrukArbeidsforholdet(true);
+        forhold.setFortsettBehandlingUtenInntektsmelding(fortsettUtenInntekt);
     }
     
     public void bekreftArbeidsforholdErIkkeRelevant(String navn) {
@@ -46,12 +46,12 @@ public class AvklarArbeidsforholdBekreftelse extends AksjonspunktBekreftelse {
     }
     
     public void bekreftArbeidsforholdErIkkeRelevant(Arbeidsforhold forhold) {
-        forhold.brukArbeidsforholdet = false;
+        forhold.setBrukArbeidsforholdet(false);
     }
     
     private Arbeidsforhold finnArbeidsforhold(String navn) {
         for (Arbeidsforhold arbeidsforhold : this.arbeidsforhold) {
-            if(arbeidsforhold.navn.equals(navn)) {
+            if(arbeidsforhold.getNavn().equals(navn)) {
                 return arbeidsforhold;
             }
         }

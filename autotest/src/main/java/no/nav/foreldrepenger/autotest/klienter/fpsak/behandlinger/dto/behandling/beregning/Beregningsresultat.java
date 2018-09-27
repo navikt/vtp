@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Beregningsresultat {
-    public int beregnetTilkjentYtelse;
-    public int satsVerdi;
-    public int antallBarn;
+    protected int beregnetTilkjentYtelse;
+    protected int satsVerdi;
+    protected int antallBarn;
 }

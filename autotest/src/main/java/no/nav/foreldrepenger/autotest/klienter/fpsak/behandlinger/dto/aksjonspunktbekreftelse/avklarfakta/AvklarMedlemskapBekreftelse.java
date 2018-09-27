@@ -5,7 +5,6 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
-
 @BekreftelseKode(kode="5053")
 public class AvklarMedlemskapBekreftelse extends AksjonspunktBekreftelse {
 

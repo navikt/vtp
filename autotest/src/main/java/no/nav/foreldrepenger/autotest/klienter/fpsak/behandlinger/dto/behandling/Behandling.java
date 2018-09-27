@@ -54,11 +54,11 @@ public class Behandling {
     public AvklartData avklartData;
 
     public List<UttakResultatPeriode> hentUttaksperioder() {
-        return uttakResultatPerioder.perioder;
+        return uttakResultatPerioder.getPerioder();
     }
     
     public UttakResultatPeriode hentUttaksperiode(int index) {
-        return uttakResultatPerioder.perioder.get(index);
+        return uttakResultatPerioder.getPerioder().get(index);
     }
     
     
