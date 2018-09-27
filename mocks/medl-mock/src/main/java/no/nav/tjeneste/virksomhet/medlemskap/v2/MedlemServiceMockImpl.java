@@ -44,7 +44,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
     })
     @Override
     public HentPeriodeResponse hentPeriode(@WebParam(name = "request",targetNamespace = "") HentPeriodeRequest request) throws Sikkerhetsbegrensning {
-        return null;
+        throw new UnsupportedOperationException("Ikke implementert");
     }
 
     @WebMethod
@@ -52,9 +52,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/medlemskap/v2", className = "no.nav.tjeneste.virksomhet.medlemskap.v2.PingResponse")
     @Action(input = "http://nav.no/tjeneste/virksomhet/medlemskap/v2/Medlemskap_v2/pingRequest", output = "http://nav.no/tjeneste/virksomhet/medlemskap/v2/Medlemskap_v2/pingResponse")
     @Override
-    public void ping() {
-
-    }
+    public void ping() { LOG.info("Ping mottatt og besvart");}
 
     @WebMethod
     @WebResult(name = "response", targetNamespace = "")
@@ -74,6 +72,6 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
             HentPeriodeListeResponse response = new HentPeriodeListeResponse().withPeriodeListe(medlemsperiodeListe);
             return response;
         }
-        return null;
+        throw new IllegalArgumentException("Request eller ident i request mangler");
     }
 }

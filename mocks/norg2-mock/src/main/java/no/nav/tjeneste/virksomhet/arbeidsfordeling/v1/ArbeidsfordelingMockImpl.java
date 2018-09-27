@@ -66,7 +66,7 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/", className = "no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.PingResponse")
     @Override
     public void ping() {
-        LOG.info("Ping: " + getClass().getSimpleName());
+        LOG.info("Ping mottatt og besvart");
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/Arbeidsfordeling_v1/finnAlleBehandlendeEnheterListeRequest")

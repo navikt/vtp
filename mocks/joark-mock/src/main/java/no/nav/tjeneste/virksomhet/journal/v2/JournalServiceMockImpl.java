@@ -60,7 +60,7 @@ public class JournalServiceMockImpl implements JournalV2 {
 
         List<String> saker = request.getSakListe().stream().map(t-> t.getSakId()).collect(Collectors.toList());
 
-        LOG.info("Henter journalpost for følgende saker: "+ saker.stream().collect(Collectors.joining()));
+        LOG.info("Henter journalpost for følgende saker: "+ saker.stream().collect(Collectors.joining(",")));
 
         for(String sak : saker){
             for(JournalpostModell modell : journalRepository.finnJournalposterMedSakId(sak)){

@@ -100,7 +100,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/meldekortutbetalingsgrunnlag/v1", className = "no.nav.tjeneste.virksomhet.arena.meldekort.PingResponse")
     @Override
     public void ping() {
-        LOG.info("Returned ping");
+        LOG.info("Ping mottatt og besvart");
     }
 
     private void haandterExceptions(String kode, String ident)

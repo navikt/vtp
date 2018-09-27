@@ -13,6 +13,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +38,6 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.HentVergePersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentVergeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonstatusPeriode;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.StatsborgerskapPeriode;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentEkteskapshistorikkRequest;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentEkteskapshistorikkResponse;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest;
@@ -164,6 +158,7 @@ public class PersonServiceMockImpl implements PersonV3 {
     public HentPersonhistorikkResponse hentPersonhistorikk(@WebParam(name = "request", targetNamespace = "") HentPersonhistorikkRequest hentPersonhistorikkRequest)
             throws HentPersonhistorikkPersonIkkeFunnet, HentPersonhistorikkSikkerhetsbegrensning {
 
+        LOG.info("hentPersonhistorikk. AktoerId: {}", hentPersonhistorikkRequest.getAktoer().toString());
         BrukerModell bruker;
         try {
             bruker = finnPerson(hentPersonhistorikkRequest.getAktoer());
@@ -225,3 +220,5 @@ public class PersonServiceMockImpl implements PersonV3 {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 }
+
+
