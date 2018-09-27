@@ -11,6 +11,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderReposito
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.KildeMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LandkodeMedTerm;
+import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LovvalgMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.PeriodetypeMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.StatuskodeMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.TrygdedekningMedTerm;
@@ -49,6 +50,7 @@ public class MedlemskapperioderAdapter {
             .withType(new PeriodetypeMedTerm().withValue(medlemsskapsperiode.getType().getKode()))
             .withKilde(new KildeMedTerm().withValue(medlemsskapsperiode.getKilde().getKode()))
             .withStatus(new StatuskodeMedTerm().withValue(medlemsskapsperiode.getStatus().getKode()))
+            .withLovvalg(new LovvalgMedTerm().withValue("ENDL")) //TODO OL: Hent fra modell
 
         /**
          * disse brukes ikke i FPSAK, ignorerer inntil det er behov.
