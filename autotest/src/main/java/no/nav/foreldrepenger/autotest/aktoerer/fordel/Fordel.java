@@ -5,12 +5,14 @@ import java.time.LocalDate;
 import java.util.Base64;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostId;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnyttning;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
+import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
@@ -26,16 +28,18 @@ public class Fordel extends Aktoer{
      * Klienter
      */
     FordelKlient fordelKlient;
+    BehandlingerKlient behandlingerKlient;
     
     public Fordel() {
         fordelKlient = new FordelKlient(session);
+        behandlingerKlient = new BehandlingerKlient(session);
     }
     
     
     /*
      * Sender inn søkand og returnerer saksinformasjon
      */
-    public long sendInnSøknad(Soeknad søknad, TestscenarioImpl scenario, DokumenttypeId dokumenttypeId) throws IOException {
+    public long sendInnSøknad(Soeknad søknad, TestscenarioImpl scenario, DokumenttypeId dokumenttypeId) throws Exception {
         String xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         
         JournalpostModell journalpostModell = JournalpostModellGenerator.foreldrepengeSøknadFødselJournalpost(xml, scenario.getPersonopplysninger().getSøker().getIdent());
@@ -49,6 +53,11 @@ public class Fordel extends Aktoer{
 
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
         journalpostModell.setSakId(String.valueOf(sakId));
+        
+        Vent.til(() -> {
+            return behandlingerKlient.alle(sakId).size() > 0;
+        }, 15, "Saken hadde ingen behandlinger");
+        
         return sakId;
     }
     

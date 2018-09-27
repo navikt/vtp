@@ -39,9 +39,9 @@ public class OpenAMKlient extends JsonRest {
     }
     
     public void loginMock(String issuer) {
-        // TODO fikses når man kan bruke autotest internt i server
-        //String token = new OidcTokenGenerator().withIssuer(issuer).create();
-        //addCookie("ID_token", token, "devillo.no", "/");
+         TODO fikses når man kan bruke autotest internt i server
+        String token = new OidcTokenGenerator().withIssuer(issuer).create();
+        addCookie("ID_token", token, "devillo.no", "/");
     }
     
     public void loginSession(String username, String password, String oicdUser, String oicdPass) throws IOException {

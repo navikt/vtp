@@ -10,7 +10,7 @@ public class Vent {
 
         while (!callable.call()) {
             if (LocalDateTime.now().isAfter(end)) {
-                throw new RuntimeException(String.format("Waiting timed out after %s seconds because: %s", timeoutInSeconds, failReason));
+                throw new RuntimeException(String.format("Async venting timet ut etter %s sekunder fordi: %s", timeoutInSeconds, failReason));
             }
             Thread.sleep(100);
         }

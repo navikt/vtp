@@ -13,4 +13,8 @@ public class Loginn extends FpsakTestBase{
     void loginnUtenRolle() throws UnsupportedEncodingException {
         saksbehandler.erLoggetInnUtenRolle();
     }
+    
+    void loginnMedRolle() throws UnsupportedEncodingException {
+        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+    }
 }

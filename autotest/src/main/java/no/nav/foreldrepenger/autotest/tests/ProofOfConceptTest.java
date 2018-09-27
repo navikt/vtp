@@ -8,8 +8,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRe
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class ProofOfConceptTest extends FpsakTestBase{
-
-
+    
     public void foreldrepengesøknadTermindatoKunMor() throws Exception {
         TestscenarioImpl testscenario = opprettScenario("50");
         Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
@@ -18,7 +17,6 @@ public class ProofOfConceptTest extends FpsakTestBase{
         long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         
         System.out.println("Saksnummer: " + saksnummer);
-        Thread.sleep(2000);// vente på at behandling er ferdig
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
