@@ -52,7 +52,6 @@ import no.nav.tjeneste.virksomhet.organisasjon.v4.meldinger.FinnOrganisasjonsend
 public class OrganisasjonMockImpl implements OrganisasjonV4 {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonMockImpl.class);
-    // private static final EntityManager entityManager = Persistence.createEntityManagerFactory("organisasjon").createEntityManager();
 
     private TestscenarioBuilderRepository scenarioRepository;
 
