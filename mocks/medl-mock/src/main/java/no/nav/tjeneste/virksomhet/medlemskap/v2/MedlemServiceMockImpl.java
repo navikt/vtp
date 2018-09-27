@@ -13,6 +13,9 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeRequest;
@@ -25,6 +28,7 @@ import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeResponse;
 @HandlerChain(file="Handler-chain.xml")
 public class MedlemServiceMockImpl implements MedlemskapV2 {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MedlemServiceMockImpl.class);
     private TestscenarioBuilderRepository scenarioRepository;
 
     public MedlemServiceMockImpl(TestscenarioBuilderRepository scenarioRepository){
@@ -63,6 +67,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
     @Override
     public HentPeriodeListeResponse hentPeriodeListe(@WebParam(name = "request",targetNamespace = "") HentPeriodeListeRequest request) throws PersonIkkeFunnet, Sikkerhetsbegrensning {
 
+        LOG.info("hentPeriodeListe. IdentFNR: {}", request.getIdent().getValue());
         if (request != null && request.getIdent() != null) {
             String fnr = request.getIdent().getValue();
             List<Medlemsperiode> medlemsperiodeListe = new MedlemskapperioderAdapter(scenarioRepository).finnMedlemsperioder(fnr);

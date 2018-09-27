@@ -99,6 +99,7 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
             className = "no.nav.tjeneste.virksomhet.organisasjon.v4.HentOrganisasjonResponse")
     public HentOrganisasjonResponse hentOrganisasjon(@WebParam(name = "request",targetNamespace = "") HentOrganisasjonRequest request) throws HentOrganisasjonOrganisasjonIkkeFunnet, HentOrganisasjonUgyldigInput{
 
+        LOG.info("hentOrganisasjon. Orgnummer: {}", request.getOrgnummer());
         if (request != null && request.getOrgnummer() != null) {
             HentOrganisasjonResponse response = new HentOrganisasjonResponse();
             OrganisasjonGenerator orggen = new OrganisasjonGenerator();
@@ -124,6 +125,7 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
             className = "no.nav.tjeneste.virksomhet.organisasjon.v4.HentNoekkelinfoOrganisasjonResponse")
     public HentNoekkelinfoOrganisasjonResponse hentNoekkelinfoOrganisasjon(@WebParam(name = "request",targetNamespace = "") HentNoekkelinfoOrganisasjonRequest request) throws HentNoekkelinfoOrganisasjonOrganisasjonIkkeFunnet, HentNoekkelinfoOrganisasjonUgyldigInput{
 
+        LOG.info("hentNoekkelinfoOrganisasjon. Orgnummer: {}", request.getOrgnummer());
         if (request != null && request.getOrgnummer() != null) {
 
             HentNoekkelinfoOrganisasjonResponse response = new HentNoekkelinfoOrganisasjonResponse();

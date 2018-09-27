@@ -96,7 +96,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
     public HentAktoerIdForIdentListeResponse hentAktoerIdForIdentListe(
                                                                        @WebParam(name = "hentAktoerIdForIdentListeRequest", targetNamespace = "") HentAktoerIdForIdentListeRequest hentAktoerIdForIdentListeRequest) {
 
-        LOG.info("hentIdentForAktoerId: " + hentAktoerIdForIdentListeRequest.getIdentListe().stream().collect(Collectors.joining(",")));
+        LOG.info("hentAktoerIdForIdentListe: " + hentAktoerIdForIdentListeRequest.getIdentListe().stream().collect(Collectors.joining(",")));
 
         Map<String, String> aktørTilIdent = hentAktoerIdForIdentListeRequest.getIdentListe().stream()
             .collect(Collectors.toMap(Function.identity(), ident -> {

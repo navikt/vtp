@@ -69,6 +69,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         FinnMeldekortUtbetalingsgrunnlagListeResponse response = of.createFinnMeldekortUtbetalingsgrunnlagListeResponse();
         AktoerId aktoerId = (AktoerId) finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent();
         String ident = aktoerId.getAktoerId();
+        LOG.info("finnMeldekortUtbetalingsgrunnlagListe. AktoerIdent: " + ident);
 
         if (ident == null) {
             UgyldigInput faultInfo = lagUgyldigInput(ident);

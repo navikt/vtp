@@ -38,6 +38,7 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "hentOppgave", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.HentOppgave")
     @ResponseWrapper(localName = "hentOppgaveResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.HentOppgaveResponse")
     public HentOppgaveResponse hentOppgave(@WebParam(name = "request", targetNamespace = "") HentOppgaveRequest hentOppgaveRequest) throws HentOppgaveOppgaveIkkeFunnet {
+        LOG.info("hentOppgave. OppgaveId: {}", hentOppgaveRequest.getOppgaveId());
         HentOppgaveResponse hentOppgaveResponse = new HentOppgaveResponse();
         Oppgave oppgave = new Oppgave();
         oppgave.setBeskrivelse("Liksomoppgave");
@@ -54,6 +55,8 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnOppgaveListe")
     @ResponseWrapper(localName = "finnOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnOppgaveListeResponse")
     public FinnOppgaveListeResponse finnOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnOppgaveListeRequest finnOppgaveListeRequest) {
+        LOG.info("finnOppgaveListe. Søk: ansvarligEnhetId: {0}, brukerId: {1}, sakId: {2}, søknadsId: {3}", finnOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnOppgaveListeRequest.getSok().getBrukerId(),
+            finnOppgaveListeRequest.getSok().getSakId(), finnOppgaveListeRequest.getSok().getSoknadsId());
         FinnOppgaveListeResponse finnOppgaveListeResponse = new FinnOppgaveListeResponse();
         finnOppgaveListeResponse.setTotaltAntallTreff(0);
         return finnOppgaveListeResponse;
@@ -65,6 +68,8 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnFerdigstiltOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFerdigstiltOppgaveListe")
     @ResponseWrapper(localName = "finnFerdigstiltOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFerdigstiltOppgaveListeResponse")
     public FinnFerdigstiltOppgaveListeResponse finnFerdigstiltOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnFerdigstiltOppgaveListeRequest finnFerdigstiltOppgaveListeRequest) {
+        LOG.info("finnFerdigstiltOppgaveListe. Søk: ansvarligEnhetId: {0}, brukerId: {1}, sakId: {2}, søknadsId: {3}", finnFerdigstiltOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnFerdigstiltOppgaveListeRequest.getSok().getBrukerId(),
+                finnFerdigstiltOppgaveListeRequest.getSok().getSakId(), finnFerdigstiltOppgaveListeRequest.getSok().getSoknadsId());
         FinnFerdigstiltOppgaveListeResponse  finnFerdigstiltOppgaveListeResponse = new FinnFerdigstiltOppgaveListeResponse();
         return finnFerdigstiltOppgaveListeResponse;
     }
@@ -75,6 +80,8 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnFeilregistrertOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFeilregistrertOppgaveListe")
     @ResponseWrapper(localName = "finnFeilregistrertOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFeilregistrertOppgaveListeResponse")
     public FinnFeilregistrertOppgaveListeResponse finnFeilregistrertOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnFeilregistrertOppgaveListeRequest finnFeilregistrertOppgaveListeRequest) {
+        LOG.info("finnFeilregistrertOppgaveListe. Søk: ansvarligEnhetId: {0}, brukerId: {1}, sakId: {2}, aøknadsId{3}", finnFeilregistrertOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnFeilregistrertOppgaveListeRequest.getSok().getBrukerId(),
+                finnFeilregistrertOppgaveListeRequest.getSok().getSakId(), finnFeilregistrertOppgaveListeRequest.getSok().getSoknadsId());
         FinnFeilregistrertOppgaveListeResponse finnFeilregistrertOppgaveListeResponse = new FinnFeilregistrertOppgaveListeResponse();
         return finnFeilregistrertOppgaveListeResponse;
     }
@@ -85,6 +92,7 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnMappeListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnMappeListe")
     @ResponseWrapper(localName = "finnMappeListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnMappeListeResponse")
     public FinnMappeListeResponse finnMappeListe(@WebParam(name = "request", targetNamespace = "") FinnMappeListeRequest finnMappeListeRequest) {
+        LOG.info("finnMappeListe. EnhetId: {}", finnMappeListeRequest.getEnhetId());
         return new FinnMappeListeResponse();
     }
 

@@ -39,6 +39,8 @@ import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.TildelOppgaveRe
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.TildelOppgaveResponse;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
+import java.util.stream.Collectors;
+
 @Addressing
 @WebService(name = "Oppgavebehandling_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3")
 @HandlerChain(file = "Handler-chain.xml")
@@ -65,6 +67,8 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @RequestWrapper(localName = "opprettOppgave", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OpprettOppgave")
     @ResponseWrapper(localName = "opprettOppgaveResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OpprettOppgaveResponse")
     public OpprettOppgaveResponse opprettOppgave(@WebParam(name = "request", targetNamespace = "") OpprettOppgaveRequest opprettOppgaveRequest) {
+        LOG.info("Oppgavebehandling_opprettOppgave. OpprettetAvEnhetId: {0}, oppgavetypeKode: {1}, brukerId {2}", opprettOppgaveRequest.getOpprettetAvEnhetId(), opprettOppgaveRequest.getOpprettOppgave().getOppgavetypeKode(),
+                opprettOppgaveRequest.getOpprettOppgave().getBrukerId());
         OpprettOppgaveResponse opprettOppgaveResponse = new OpprettOppgaveResponse();
         String oppgaveId = gsakRepo.opprettOppgave(opprettOppgaveRequest.getOpprettOppgave().getSaksnummer());
         opprettOppgaveResponse.setOppgaveId(oppgaveId);
@@ -105,6 +109,7 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @ResponseWrapper(localName = "ferdigstillOppgaveBolkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.FerdigstillOppgaveBolkResponse")
     public FerdigstillOppgaveBolkResponse ferdigstillOppgaveBolk(@WebParam(name = "request", targetNamespace = "") FerdigstillOppgaveBolkRequest ferdigstillOppgaveBolkRequest) {
 // throw new UnsupportedOperationException("Ikke implementert");
+        LOG.info("Oppgavebehandling_ferdigstillOppgaveBolk. oppgaveIdListe: {}", ferdigstillOppgaveBolkRequest.getOppgaveIdListe().stream().collect(Collectors.joining(",")));
         FerdigstillOppgaveBolkResponse response = new FerdigstillOppgaveBolkResponse();
         response.setTransaksjonOk(true);
         return response;

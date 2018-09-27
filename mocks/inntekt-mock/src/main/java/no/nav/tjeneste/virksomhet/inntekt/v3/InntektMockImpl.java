@@ -2,6 +2,7 @@ package no.nav.tjeneste.virksomhet.inntekt.v3;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -84,6 +85,7 @@ public class InntektMockImpl implements InntektV3 {
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentInntektListeBolkResponse")
     public HentInntektListeBolkResponse hentInntektListeBolk(@WebParam(name = "request", targetNamespace = "") HentInntektListeBolkRequest request) throws HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeBolkUgyldigInput {
 
+        LOG.info("hentInntektListeBolk. AktoerIdentListe: {}", request.getIdentListe().stream().map(t-> getIdentFromAktoer(t)).collect(Collectors.joining(",")));
         HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
 
         if (request != null && request.getIdentListe() != null

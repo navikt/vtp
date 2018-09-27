@@ -82,6 +82,7 @@ public class PersonServiceMockImpl implements PersonV3 {
     public HentPersonResponse hentPerson(@WebParam(name = "request", targetNamespace = "") HentPersonRequest hentPersonRequest)
             throws HentPersonPersonIkkeFunnet, HentPersonSikkerhetsbegrensning {
 
+        LOG.info("hentPerson. Aktoer: {}", hentPersonRequest.getAktoer().toString());
         Aktoer aktoer = hentPersonRequest.getAktoer();
         PersonModell bruker = finnPerson(aktoer);
 
@@ -109,6 +110,7 @@ public class PersonServiceMockImpl implements PersonV3 {
     @Override
     public HentGeografiskTilknytningResponse hentGeografiskTilknytning(@WebParam(name = "request", targetNamespace = "") HentGeografiskTilknytningRequest hentGeografiskTilknytningRequest)
             throws HentGeografiskTilknytningPersonIkkeFunnet, HentGeografiskTilknytningSikkerhetsbegrensing {
+        LOG.info("hentGeografiskTilknytning. {}", hentGeografiskTilknytningRequest.toString());
         PersonModell bruker;
         try {
             bruker = finnPerson(hentGeografiskTilknytningRequest.getAktoer());

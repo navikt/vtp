@@ -34,7 +34,7 @@ import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeE
 @HandlerChain(file = "Handler-chain.xml")
 public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
 
-    private static final Logger log = LoggerFactory.getLogger(ArbeidsfordelingMockImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ArbeidsfordelingMockImpl.class);
     private TestscenarioBuilderRepository repo;
 
     public ArbeidsfordelingMockImpl(TestscenarioBuilderRepository repo) {
@@ -49,6 +49,8 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
     public FinnBehandlendeEnhetListeResponse finnBehandlendeEnhetListe(
                                                                        @WebParam(name = "request", targetNamespace = "") FinnBehandlendeEnhetListeRequest request)
             throws FinnBehandlendeEnhetListeUgyldigInput {
+        LOG.info("finnBehandlendeEnhetListe. Diskresjonskode: {0}, tema: {1}", request.getArbeidsfordelingKriterier().getDiskresjonskode().getKodeverksRef(),
+                request.getArbeidsfordelingKriterier().getTema().getKodeverksRef());
         Diskresjonskoder diskrKode = request.getArbeidsfordelingKriterier().getDiskresjonskode();
         String diskrKodeStr = (diskrKode != null ? diskrKode.getValue() : null);
         Organisasjonsenhet enhet = lagOrganisasjonsenhet(diskrKodeStr);
@@ -64,7 +66,7 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
     @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/", className = "no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.PingResponse")
     @Override
     public void ping() {
-        log.info("Ping: " + getClass().getSimpleName());
+        LOG.info("Ping: " + getClass().getSimpleName());
     }
 
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/Arbeidsfordeling_v1/finnAlleBehandlendeEnheterListeRequest")
@@ -76,6 +78,8 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
                                                                                    @WebParam(name = "request", targetNamespace = "") FinnAlleBehandlendeEnheterListeRequest request)
             throws FinnAlleBehandlendeEnheterListeUgyldigInput {
 
+        LOG.info("finnAlleBehandlendeEnheterListe. Diskresjonskode: {0}, tema: {1}", request.getArbeidsfordelingKriterier().getDiskresjonskode().getKodeverksRef(),
+                request.getArbeidsfordelingKriterier().getTema().getKodeverksRef());
         FinnAlleBehandlendeEnheterListeResponse response = new FinnAlleBehandlendeEnheterListeResponse();
         repo.getEnheterIndeks().getAlleEnheter().forEach(e -> response.getBehandlendeEnhetListe().add(lagEnhet(e)));
         return response;

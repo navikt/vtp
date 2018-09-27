@@ -87,7 +87,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
     @ResponseWrapper(localName = "finnArbeidsforholdPrArbeidstakerResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstakerResponse")
     public FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstaker(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidsforholdPrArbeidstakerRequest request) throws FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidstakerUgyldigInput {
-
+        LOG.info("finnArbeidsforholdPrArbeidstaker. Ident: " + request.getIdent().getIdent() + ". Regelverk: " + request.getRapportertSomRegelverk().getKodeverksRef());
         if (request != null && request.getIdent() != null
                 && request.getIdent().getIdent() != null
                 && request.getRapportertSomRegelverk() != null) {

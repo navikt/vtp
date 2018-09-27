@@ -43,6 +43,7 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
                                                                                      @WebParam(name = "opprettSakRequest", targetNamespace = "") no.nav.tjeneste.virksomhet.behandlesak.v2.WSOpprettSakRequest request)
             throws WSSikkerhetsbegrensningException, WSSakEksistererAlleredeException, WSUgyldigInputException {
         LOG.info("Oppretter Sak_V2: {}", request);
+        LOG.info("opprettSak. Saktype: {0}. Fagområde: {1}. Fagsystem: {2}", request.getSak().getSaktype(), request.getSak().getFagomrade(), request.getSak().getFagsystem());
         Set<String> identer = request.getSak().getGjelderBrukerListe().stream().map(a -> a.getIdent()).collect(Collectors.toSet());
 
         List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getPersonIndeks().finnByIdent(i))
