@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKl
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
@@ -40,6 +41,7 @@ public class Saksbehandler extends Aktoer{
     private KodeverkKlient kodeverkKlient;
     
     public Kodeverk kodeverk;
+    public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
     
     
     
@@ -101,9 +103,15 @@ public class Saksbehandler extends Aktoer{
      */
     public void velgBehandling(Behandling behandling) throws Exception {
         Vent.til(() -> {
-            return behandlingerKlient.erStatusOk(behandling.id, null);
+            return behandlingerKlient.erStatusOk(behandling.id, null) || ikkeVentPåStatus;
         }, 60, "Behandling status var ikke klar");
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
+        valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
+        valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
+            aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
+        }
     }
 
     /*

@@ -30,6 +30,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsgrunnlag;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatMedUttaksplan;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.medlem.Medlem;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.opptjening.Opptjening;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.PeriodeGrense;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.Stonadskontoer;
@@ -55,6 +56,7 @@ public class BehandlingerKlient extends FpsakKlient{
     private static final String BEHANDLING_URL = "/behandling";
     private static final String BEHANDLING_PERSONOPPLYSNINGER_URL = BEHANDLING_URL + "/person/personopplysninger";
     private static final String BEHANDLING_VERGE_URL = BEHANDLING_URL + "/person/verge";
+    private static final String BEHANDLING_PERSON_MEDLEMSKAP = BEHANDLING_URL + "/person/medlemskap";
     private static final String BEHANDLING_ENGANGSSTØNAD_URL = BEHANDLING_URL + "/beregningsresultat/engangsstonad";
     private static final String BEHANDLING_FORELDREPENGER_URL = BEHANDLING_URL + "/beregningsresultat/foreldrepenger";
     private static final String BEHANDLING_BEREGNINGSGRUNNALG_URL = BEHANDLING_URL + "/beregningsgrunnlag";
@@ -202,6 +204,14 @@ public class BehandlingerKlient extends FpsakKlient{
     public Verge behandlingVerge(BehandlingResourceRequest behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLING_VERGE_URL;
         return postOgHentJson(url, behandling, Verge.class, StatusRange.STATUS_SUCCESS);
+    }
+    
+    /*
+     * Hent medlemskap for behandling
+     */
+    public Medlem behandlingMedlemskap(BehandlingResourceRequest behandling) throws IOException {
+        String url = hentRestRotUrl() + BEHANDLING_PERSON_MEDLEMSKAP;
+        return postOgHentJson(url, behandling, Medlem.class, StatusRange.STATUS_SUCCESS);
     }
     
     /*

@@ -31,7 +31,10 @@ public abstract class AksjonspunktBekreftelse {
             
             BekreftelseKode annotation = klasse.getDeclaredAnnotation(BekreftelseKode.class);
             
-            if(annotation.kode().equals(kode)) {
+            if(annotation == null) {
+                System.out.println("Aksjonspunkt mangler annotasjon" + klasse.getName());
+            }
+            else if(annotation.kode().equals(kode)) {
                 return klasse.getDeclaredConstructor(Fagsak.class, Behandling.class).newInstance(fagsak, behandling);
             }
         }

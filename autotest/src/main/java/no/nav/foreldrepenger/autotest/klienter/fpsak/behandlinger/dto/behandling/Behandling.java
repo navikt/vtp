@@ -50,7 +50,7 @@ public class Behandling {
     public Opptjening opptjening;
     public InntektArbeidYtelse inntektArbeidYtelse;
     public KontrollerFaktaData kontrollerFaktaData;
-    public Medlem medlem; //TODO sjekk om dette er async også
+    public Medlem medlem;
     
     public AvklartData avklartData;
 

@@ -16,12 +16,14 @@ public class Medlem {
     protected List<Object> inntekt;
     protected Object lovligOppholdVurdering;
     protected Object medlemskapManuellVurderingType;
-    private List<Medlemskapsperiode> medlemskapPerioder;
+    protected List<Medlemskapsperiode> medlemskapPerioder;
     protected Object oppholdsrettVurdering;
     protected LocalDate skjearingstidspunkt;
+    
     public List<Medlemskapsperiode> getMedlemskapPerioder() {
         return medlemskapPerioder;
     }
+    
     public void setMedlemskapPerioder(List<Medlemskapsperiode> medlemskapPerioder) {
         this.medlemskapPerioder = medlemskapPerioder;
     }

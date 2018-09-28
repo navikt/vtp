@@ -51,11 +51,11 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
         aksjonspunktGodkjenningDtos.add(godkjenning);
     }
     
-    class AksjonspunktGodkjenningDto{
-        String aksjonspunktKode;
-        List<String> arsaker = new ArrayList<>();
-        String begrunnelse = "";
-        boolean godkjent = false;
+    public static class AksjonspunktGodkjenningDto{
+        protected String aksjonspunktKode;
+        protected List<String> arsaker = new ArrayList<>();
+        protected String begrunnelse = "";
+        protected boolean godkjent = false;
         
         public AksjonspunktGodkjenningDto(Aksjonspunkt aksjonspunkt) {
             aksjonspunktKode = aksjonspunkt.getDefinisjon().kode;
