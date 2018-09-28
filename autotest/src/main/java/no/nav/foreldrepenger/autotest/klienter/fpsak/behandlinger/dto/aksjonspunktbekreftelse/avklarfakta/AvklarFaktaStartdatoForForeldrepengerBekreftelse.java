@@ -1,17 +1,23 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta;
 
+import java.time.LocalDate;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftelseKode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
-@BekreftelseKode(kode="5053")
-public class AvklarMedlemskapBekreftelse extends AksjonspunktBekreftelse {
+@BekreftelseKode(kode="5045")
+public class AvklarFaktaStartdatoForForeldrepengerBekreftelse extends AksjonspunktBekreftelse {
 
-    public AvklarMedlemskapBekreftelse(Fagsak fagsak, Behandling behandling) {
+    protected LocalDate startdatoFraSoknad;
+    
+    public AvklarFaktaStartdatoForForeldrepengerBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
     }
     
-    //TODO Stub
+    public void setStartdatoFraSoknad(LocalDate dato) {
+        
+    }
 
 }

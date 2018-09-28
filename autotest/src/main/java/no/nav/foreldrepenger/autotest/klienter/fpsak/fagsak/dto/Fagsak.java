@@ -12,7 +12,7 @@ public class Fagsak {
     public long saksnummer;
     protected Kode status;
 
-    public Object hentStatus() {
+    public Kode hentStatus() {
         return status;
     }
 }

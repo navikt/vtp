@@ -20,8 +20,12 @@ public abstract class TestBase {
 		verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
 	}
 	
-	protected void verifiserLikhet(Object verdi1, Object verdi2) {
-		verifiser(verdi1.equals(verdi2), verdi1 + " != " + verdi2);
+	protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet) {
+		verifiserLikhet(verdiGjeldende, verdiForventet, "Object");
+	}
+	
+	protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet, String verdiNavn) {
+	    verifiser(verdiGjeldende.equals(verdiNavn), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
 	}
 	
 	protected void verifiser(boolean statement) {

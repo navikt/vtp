@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTerminBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 @Tag("eksempel")
 public class Totrinnskontroll extends FpsakTestBase{
 
     public void behandleTotrinnskontrollAvTerminsøknad() throws Exception {
-      //Oprett scenario og søknad
+        //Oprett scenario og søknad
         TestscenarioImpl testscenario = opprettScenario("50");
         Soeknad søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getAktørIdent());
         
@@ -33,9 +33,10 @@ public class Totrinnskontroll extends FpsakTestBase{
         bekreftelse.setAntallBarn(1);
         saksbehandler.bekreftAksjonspunktBekreftelse(bekreftelse);
         
+        //Behandle totrinnskontroll
         beslutter.erLoggetInnMedRolle("Beslutter");
         beslutter.hentFagsak(saksnummer);
         FatterVedtakBekreftelse fatterVedtak = beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
-        fatterVedtak.godkjennAksjonspunkt(beslutter.hentAksjonspunkt("5001"));
+        fatterVedtak.godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_TERMINBEKREFTELSE));
     }
 }

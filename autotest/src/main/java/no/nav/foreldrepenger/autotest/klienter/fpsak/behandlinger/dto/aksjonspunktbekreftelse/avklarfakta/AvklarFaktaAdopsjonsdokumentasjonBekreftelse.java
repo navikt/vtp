@@ -9,12 +9,12 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 @BekreftelseKode(kode="5004")
-public class AvklarAdopsjonsDokumentasjon extends AksjonspunktBekreftelse{
+public class AvklarFaktaAdopsjonsdokumentasjonBekreftelse extends AksjonspunktBekreftelse{
 
     protected LocalDate omsorgsovertakelseDato;
     protected Map<Integer, LocalDate> fodselsdatoer;
     
-    public AvklarAdopsjonsDokumentasjon(Fagsak fagsak, Behandling behandling) {
+    public AvklarFaktaAdopsjonsdokumentasjonBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
         if(behandling.soknad.getOmsorgsovertakelseDato() != null){

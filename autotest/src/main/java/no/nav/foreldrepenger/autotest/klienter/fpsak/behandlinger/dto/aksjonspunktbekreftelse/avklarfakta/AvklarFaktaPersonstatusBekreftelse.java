@@ -6,12 +6,12 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 @BekreftelseKode(kode="5022")
-public class AvklarPersonstatusBekreftelse extends AksjonspunktBekreftelse {
+public class AvklarFaktaPersonstatusBekreftelse extends AksjonspunktBekreftelse {
 
     protected String erEosBorger;
     protected String oppholdsrettVurdering;
     
-    public AvklarPersonstatusBekreftelse(Fagsak fagsak, Behandling behandling) {
+    public AvklarFaktaPersonstatusBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
     }
     

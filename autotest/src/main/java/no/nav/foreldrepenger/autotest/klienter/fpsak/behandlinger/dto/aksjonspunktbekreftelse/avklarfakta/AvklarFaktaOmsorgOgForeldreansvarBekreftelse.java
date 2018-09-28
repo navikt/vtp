@@ -12,7 +12,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 @BekreftelseKode(kode="5008")
-public class AvklarFaktaOmsorgOgForeldreansvar extends AksjonspunktBekreftelse{
+public class AvklarFaktaOmsorgOgForeldreansvarBekreftelse extends AksjonspunktBekreftelse{
 
     protected int antallBarn;
     protected int originalAntallBarn;
@@ -23,7 +23,7 @@ public class AvklarFaktaOmsorgOgForeldreansvar extends AksjonspunktBekreftelse{
     protected List<OmsorgovertakelseForelder> foreldre = new ArrayList<>();
     protected List<Object> ytelser = new ArrayList<>();
     
-    public AvklarFaktaOmsorgOgForeldreansvar(Fagsak fagsak, Behandling behandling) {
+    public AvklarFaktaOmsorgOgForeldreansvarBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         //Set antall barn fra søknad
         antallBarn = behandling.soknad.getAntallBarn();

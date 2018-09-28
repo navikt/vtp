@@ -12,12 +12,12 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @BekreftelseKode(kode="5021")
-public class AvklarBrukerHarGyldigPeriode extends AksjonspunktBekreftelse{
+public class AvklarBrukerHarGyldigPeriodeBekreftelse extends AksjonspunktBekreftelse{
 
     protected ManuellVurderingType manuellVurderingType;
     protected List<Medlemskapsperiode> periods = new ArrayList<>();
     
-    public AvklarBrukerHarGyldigPeriode(Fagsak fagsak, Behandling behandling) {
+    public AvklarBrukerHarGyldigPeriodeBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
         for(Medlemskapsperiode periode : behandling.medlem.getMedlemskapPerioder()){

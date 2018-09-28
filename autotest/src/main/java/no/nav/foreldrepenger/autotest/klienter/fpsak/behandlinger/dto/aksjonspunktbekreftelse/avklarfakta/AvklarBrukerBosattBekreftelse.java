@@ -6,11 +6,11 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 @BekreftelseKode(kode="5020")
-public class AvklarBrukerBosatt extends AksjonspunktBekreftelse {
+public class AvklarBrukerBosattBekreftelse extends AksjonspunktBekreftelse {
 
     protected boolean bosattVurdering;
     
-    public AvklarBrukerBosatt(Fagsak fagsak, Behandling behandling) {
+    public AvklarBrukerBosattBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
     }
     
