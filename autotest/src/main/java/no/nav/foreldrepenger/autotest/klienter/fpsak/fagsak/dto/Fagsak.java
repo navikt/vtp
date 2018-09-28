@@ -3,11 +3,16 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Fagsak {
 
-    /*
-     * dto
-     */
-	public long saksnummer;
+    
+    public long saksnummer;
+    protected Kode status;
+
+    public Object hentStatus() {
+        return status;
+    }
 }

@@ -18,6 +18,12 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
         // TODO Auto-generated constructor stub
     }
     
+    public void godkjennAksjonspunkter(List<Aksjonspunkt> aksjonspunkter) {
+        for (Aksjonspunkt aksjonspunkt : aksjonspunkter) {
+            godkjennAksjonspunkt(aksjonspunkt);
+        }
+    }
+    
     public void godkjennAksjonspunkt(Aksjonspunkt aksjonspunkt) {
         if(!aksjonspunkt.skalTilToTrinnsBehandling()) {
             throw new RuntimeException("Godkjenner aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().navn);

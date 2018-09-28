@@ -10,8 +10,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class Aksjonspunkt {
     
     @JsonIgnore
-    private
-    transient AksjonspunktBekreftelse bekreftelse;
+    private transient AksjonspunktBekreftelse bekreftelse;
     
     protected Kode definisjon;
     protected Kode status;

@@ -17,6 +17,8 @@ public class FpsakTestBase extends TestBase{
      */
     protected Fordel fordel;
     protected Saksbehandler saksbehandler;
+    protected Saksbehandler overstyrer;
+    protected Saksbehandler beslutter;
     
     /*
      * VTP
@@ -29,6 +31,8 @@ public class FpsakTestBase extends TestBase{
     void setUp() throws Exception{
         fordel = new Fordel();
         saksbehandler = new Saksbehandler();
+        overstyrer = new Saksbehandler();
+        beslutter = new Saksbehandler();
         
         testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         testscenarioTemplates = TestscenarioTemplateRepositoryImpl.getInstance();

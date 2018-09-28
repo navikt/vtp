@@ -40,6 +40,7 @@ public class Behandling {
     
     public Personopplysning personopplysning;
     public Verge verge;
+    public Behandlingsresultat behandlingsresultat;
     public Beregningsgrunnlag beregningsgrunnlag;
     public Beregningsresultat beregningResultatEngangsstonad;
     public BeregningsresultatMedUttaksplan beregningResultatForeldrepenger;
@@ -68,5 +69,9 @@ public class Behandling {
     
     public boolean erHenlagt() {
         return behandlingHenlagt;
+    }
+
+    public String hentBehandlingsresultat() {
+        return behandlingsresultat.type.navn;
     }
 }

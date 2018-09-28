@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import org.apache.http.HttpResponse;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
@@ -36,7 +39,7 @@ public class Saksbehandler extends Aktoer{
     private BehandlingerKlient behandlingerKlient;
     private KodeverkKlient kodeverkKlient;
     
-    private Kodeverk kodeverk;
+    public Kodeverk kodeverk;
     
     
     
@@ -88,7 +91,7 @@ public class Saksbehandler extends Aktoer{
         behandlinger = behandlingerKlient.alle(fagsak.saksnummer);
         valgtBehandling = null;
         
-        if(behandlinger.size() == 1) {
+        if(behandlinger.size() > 0) {
             velgBehandling(behandlinger.get(0));
         }
     }
@@ -148,6 +151,18 @@ public class Saksbehandler extends Aktoer{
     }
     
     /*
+     * Henter aksjonspunkt av gitt kode
+     */
+    public Aksjonspunkt hentAksjonspunkt(String kode) {
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
+            if(aksjonspunkt.getDefinisjon().kode.equals(kode)) {
+                return aksjonspunkt;
+            }
+        }
+        throw new RuntimeException("Fant ikke aksonspunkt ");
+    }
+    
+    /*
      * bekrefter aksjonspunkt
      */
     public void bekreftAksjonspunkt(Aksjonspunkt aksjonspunkt) throws Exception {
@@ -176,19 +191,26 @@ public class Saksbehandler extends Aktoer{
     /*
      * Opretter behandling på nåværende fagsak
      */
-    public void opprettBehandling(Kode behandlingstype) {
+    public void opprettBehandling(Kode behandlingstype) throws Exception {
         opprettBehandling(behandlingstype, valgtFagsak);
     }
+
+    public void opprettBehandlingRevurdering() throws Exception {
+        opprettBehandling(kodeverk.hentKode("Revurdering", kodeverk.BehandlingType));
+    }
+    public void opprettBehandlingKlage() throws Exception {
+        opprettBehandling(kodeverk.hentKode("Klage", kodeverk.BehandlingType));
+    }
+
+    /*
+     * Private
+     */
     
     /*
      * Opretter behandling på gitt fagsak
      */
-    public void opprettBehandling(Kode behandlingstype, Fagsak fagsak) {
-        throw new RuntimeException("Not implemented: opprettBehandling");
+    private void opprettBehandling(Kode behandlingstype, Fagsak fagsak) throws Exception {
+        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype));
+        velgFagsak(valgtFagsak); //Henter fagsaken på ny
     }
-    
-    /*
-     * Private
-     */
-
 }
