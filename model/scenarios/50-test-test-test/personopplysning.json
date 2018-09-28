@@ -20,7 +20,8 @@
 		],
 		"personstatus": [
 			{
-				"kode": "UREG"
+				"kode": "BOSA",
+                "fom": "now()-P50Y"
 			}
 		],
 		"sivilstand": [
@@ -52,7 +53,8 @@
 		"kjønn": "K",
 		"personstatus": [
 			{
-				"kode": "BOSA"
+				"kode": "BOSA",
+				"fom": "now()-P50Y"
 			}
 		]
 	},
