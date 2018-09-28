@@ -2,6 +2,7 @@ package no.nav.tjeneste.virksomhet.organisasjon.v4;
 
 import java.util.Arrays;
 
+import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonDetaljerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Organisasjon;
@@ -24,8 +25,14 @@ public class OrganisasjonsMapper {
 
     public static OrganisasjonsDetaljer mapOrganisasjonDetaljerFraModell(OrganisasjonDetaljerModell detaljer) {
         OrganisasjonsDetaljer organisasjonsDetaljer = new OrganisasjonsDetaljer();
-        //organisasjonsDetaljer.setRegistreringsDato(ConversionUtils.convertToXMLGregorianCalendar(detaljer.getRegistreringsDato()));
-        //organisasjonsDetaljer.setDatoSistEndret(ConversionUtils.convertToXMLGregorianCalendar(detaljer.getDatoSistEndret()));
+        if (!(null == detaljer)) {
+            if (!(null == detaljer.getRegistreringsDato())) {
+                organisasjonsDetaljer.setRegistreringsDato(ConversionUtils.convertToXMLGregorianCalendar(detaljer.getRegistreringsDato()));
+            }
+            if (!(null == detaljer.getDatoSistEndret())) {
+                organisasjonsDetaljer.setDatoSistEndret(ConversionUtils.convertToXMLGregorianCalendar(detaljer.getDatoSistEndret()));
+            }
+        }
         return organisasjonsDetaljer;
     }
 }
