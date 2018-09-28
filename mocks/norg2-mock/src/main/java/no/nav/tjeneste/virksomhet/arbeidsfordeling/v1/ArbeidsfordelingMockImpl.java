@@ -12,6 +12,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderReposito
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.ArbeidsfordelingV1;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnAlleBehandlendeEnheterListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnBehandlendeEnhetListeUgyldigInput;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Diskresjonskoder;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Enhetsstatus;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Enhetstyper;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Organisasjonsenhet;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnAlleBehandlendeEnheterListeRequest;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnAlleBehandlendeEnheterListeResponse;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeEnhetListeRequest;
@@ -49,8 +46,8 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
     public FinnBehandlendeEnhetListeResponse finnBehandlendeEnhetListe(
                                                                        @WebParam(name = "request", targetNamespace = "") FinnBehandlendeEnhetListeRequest request)
             throws FinnBehandlendeEnhetListeUgyldigInput {
-        LOG.info("finnBehandlendeEnhetListe. Diskresjonskode: {0}, tema: {1}", request.getArbeidsfordelingKriterier().getDiskresjonskode().getKodeverksRef(),
-                request.getArbeidsfordelingKriterier().getTema().getKodeverksRef());
+        LOG.info("finnBehandlendeEnhetListe. Diskresjonskode: {}, tema: {}", getKodeverdi(request.getArbeidsfordelingKriterier().getDiskresjonskode()),
+                getKodeverdi(request.getArbeidsfordelingKriterier().getTema()));
         Diskresjonskoder diskrKode = request.getArbeidsfordelingKriterier().getDiskresjonskode();
         String diskrKodeStr = (diskrKode != null ? diskrKode.getValue() : null);
         Organisasjonsenhet enhet = lagOrganisasjonsenhet(diskrKodeStr);
@@ -78,8 +75,8 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
                                                                                    @WebParam(name = "request", targetNamespace = "") FinnAlleBehandlendeEnheterListeRequest request)
             throws FinnAlleBehandlendeEnheterListeUgyldigInput {
 
-        LOG.info("finnAlleBehandlendeEnheterListe. Diskresjonskode: {0}, tema: {1}", request.getArbeidsfordelingKriterier().getDiskresjonskode().getKodeverksRef(),
-                request.getArbeidsfordelingKriterier().getTema().getKodeverksRef());
+        LOG.info("finnAlleBehandlendeEnheterListe. Diskresjonskode: {}, tema: {}", getKodeverdi(request.getArbeidsfordelingKriterier().getDiskresjonskode()),
+                getKodeverdi(request.getArbeidsfordelingKriterier().getTema()));
         FinnAlleBehandlendeEnheterListeResponse response = new FinnAlleBehandlendeEnheterListeResponse();
         repo.getEnheterIndeks().getAlleEnheter().forEach(e -> response.getBehandlendeEnhetListe().add(lagEnhet(e)));
         return response;
@@ -118,6 +115,14 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
         }
 
         return enhet;
+    }
+
+    private String getKodeverdi(Kodeverdi kodeverdi){
+        if(kodeverdi == null){
+            return "null";
+        } else {
+            return kodeverdi.getValue();
+        }
     }
 
 }

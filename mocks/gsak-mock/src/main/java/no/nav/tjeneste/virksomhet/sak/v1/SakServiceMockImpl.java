@@ -60,7 +60,7 @@ public class SakServiceMockImpl implements SakV1 {
                                    @WebParam(name = "request", targetNamespace = "") FinnSakRequest request)
             throws FinnSakForMangeForekomster, FinnSakUgyldigInput {
 
-        LOG.info("finnSak. Bruker: AktoerIdent: {0}. FagsystemSakId {1}", request.getBruker().getIdent(), request.getFagsystemSakId());
+        LOG.info("finnSak. Bruker: AktoerIdent: {}. FagsystemSakId {}", request.getBruker().getIdent(), request.getFagsystemSakId());
         Aktoer bruker = request.getBruker();
         Fagsystemer fagsystem = request.getFagsystem();
         String fagsystemSakID = request.getFagsystemSakId();

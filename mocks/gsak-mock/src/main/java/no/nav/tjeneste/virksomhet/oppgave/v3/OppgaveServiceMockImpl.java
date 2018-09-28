@@ -55,7 +55,7 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnOppgaveListe")
     @ResponseWrapper(localName = "finnOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnOppgaveListeResponse")
     public FinnOppgaveListeResponse finnOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnOppgaveListeRequest finnOppgaveListeRequest) {
-        LOG.info("finnOppgaveListe. Søk: ansvarligEnhetId: {0}, brukerId: {1}, sakId: {2}, søknadsId: {3}", finnOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnOppgaveListeRequest.getSok().getBrukerId(),
+        LOG.info("finnOppgaveListe. Søk: ansvarligEnhetId: {}, brukerId: {}, sakId: {}, søknadsId: {}", finnOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnOppgaveListeRequest.getSok().getBrukerId(),
             finnOppgaveListeRequest.getSok().getSakId(), finnOppgaveListeRequest.getSok().getSoknadsId());
         FinnOppgaveListeResponse finnOppgaveListeResponse = new FinnOppgaveListeResponse();
         finnOppgaveListeResponse.setTotaltAntallTreff(0);
@@ -68,7 +68,7 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnFerdigstiltOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFerdigstiltOppgaveListe")
     @ResponseWrapper(localName = "finnFerdigstiltOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFerdigstiltOppgaveListeResponse")
     public FinnFerdigstiltOppgaveListeResponse finnFerdigstiltOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnFerdigstiltOppgaveListeRequest finnFerdigstiltOppgaveListeRequest) {
-        LOG.info("finnFerdigstiltOppgaveListe. Søk: ansvarligEnhetId: {0}, brukerId: {1}, sakId: {2}, søknadsId: {3}", finnFerdigstiltOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnFerdigstiltOppgaveListeRequest.getSok().getBrukerId(),
+        LOG.info("finnFerdigstiltOppgaveListe. Søk: ansvarligEnhetId: {}, brukerId: {}, sakId: {}, søknadsId: {}", finnFerdigstiltOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnFerdigstiltOppgaveListeRequest.getSok().getBrukerId(),
                 finnFerdigstiltOppgaveListeRequest.getSok().getSakId(), finnFerdigstiltOppgaveListeRequest.getSok().getSoknadsId());
         FinnFerdigstiltOppgaveListeResponse  finnFerdigstiltOppgaveListeResponse = new FinnFerdigstiltOppgaveListeResponse();
         return finnFerdigstiltOppgaveListeResponse;
@@ -80,7 +80,7 @@ public class OppgaveServiceMockImpl implements OppgaveV3 {
     @RequestWrapper(localName = "finnFeilregistrertOppgaveListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFeilregistrertOppgaveListe")
     @ResponseWrapper(localName = "finnFeilregistrertOppgaveListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgave/v3", className = "no.nav.tjeneste.virksomhet.oppgave.v3.FinnFeilregistrertOppgaveListeResponse")
     public FinnFeilregistrertOppgaveListeResponse finnFeilregistrertOppgaveListe(@WebParam(name = "request", targetNamespace = "") FinnFeilregistrertOppgaveListeRequest finnFeilregistrertOppgaveListeRequest) {
-        LOG.info("finnFeilregistrertOppgaveListe. Søk: ansvarligEnhetId: {0}, brukerId: {1}, sakId: {2}, aøknadsId{3}", finnFeilregistrertOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnFeilregistrertOppgaveListeRequest.getSok().getBrukerId(),
+        LOG.info("finnFeilregistrertOppgaveListe. Søk: ansvarligEnhetId: {}, brukerId: {}, sakId: {}, aøknadsId{}", finnFeilregistrertOppgaveListeRequest.getSok().getAnsvarligEnhetId(), finnFeilregistrertOppgaveListeRequest.getSok().getBrukerId(),
                 finnFeilregistrertOppgaveListeRequest.getSok().getSakId(), finnFeilregistrertOppgaveListeRequest.getSok().getSoknadsId());
         FinnFeilregistrertOppgaveListeResponse finnFeilregistrertOppgaveListeResponse = new FinnFeilregistrertOppgaveListeResponse();
         return finnFeilregistrertOppgaveListeResponse;

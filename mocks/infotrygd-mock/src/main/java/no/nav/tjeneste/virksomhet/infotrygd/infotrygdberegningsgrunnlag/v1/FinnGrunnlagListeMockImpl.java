@@ -86,9 +86,9 @@ public class FinnGrunnlagListeMockImpl implements InfotrygdBeregningsgrunnlagV1 
         }
 
         List<InfotrygdBeregningsgrunnlag> infotrygdGrunnlagList = infotrygdModell.getGrunnlag();
-        LOG.info("infotrygdGrunnlagListe ", infotrygdGrunnlagList);
+        LOG.info("infotrygdGrunnlagListe {}", infotrygdGrunnlagList);
         if (infotrygdGrunnlagList != null) {
-            LOG.info("infotrygdGrunnlagListestørrelse ", infotrygdGrunnlagList.size());
+            LOG.info("infotrygdGrunnlagListestørrelse {}", infotrygdGrunnlagList.size());
 
             response = itmapper.mapInfotrygdGrunnlag(response, infotrygdGrunnlagList);
 

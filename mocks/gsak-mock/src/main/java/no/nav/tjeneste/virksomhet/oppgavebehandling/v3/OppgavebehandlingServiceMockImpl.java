@@ -67,7 +67,7 @@ public class OppgavebehandlingServiceMockImpl implements OppgavebehandlingV3 {
     @RequestWrapper(localName = "opprettOppgave", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OpprettOppgave")
     @ResponseWrapper(localName = "opprettOppgaveResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3", className = "no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OpprettOppgaveResponse")
     public OpprettOppgaveResponse opprettOppgave(@WebParam(name = "request", targetNamespace = "") OpprettOppgaveRequest opprettOppgaveRequest) {
-        LOG.info("Oppgavebehandling_opprettOppgave. OpprettetAvEnhetId: {0}, oppgavetypeKode: {1}, brukerId {2}", opprettOppgaveRequest.getOpprettetAvEnhetId(), opprettOppgaveRequest.getOpprettOppgave().getOppgavetypeKode(),
+        LOG.info("Oppgavebehandling_opprettOppgave. OpprettetAvEnhetId: {}, oppgavetypeKode: {}, brukerId {}", opprettOppgaveRequest.getOpprettetAvEnhetId(), opprettOppgaveRequest.getOpprettOppgave().getOppgavetypeKode(),
                 opprettOppgaveRequest.getOpprettOppgave().getBrukerId());
         OpprettOppgaveResponse opprettOppgaveResponse = new OpprettOppgaveResponse();
         String oppgaveId = gsakRepo.opprettOppgave(opprettOppgaveRequest.getOpprettOppgave().getSaksnummer());

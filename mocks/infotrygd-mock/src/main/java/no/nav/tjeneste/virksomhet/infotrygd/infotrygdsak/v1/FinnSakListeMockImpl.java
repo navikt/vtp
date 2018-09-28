@@ -84,9 +84,9 @@ public class FinnSakListeMockImpl implements InfotrygdSakV1 {
         }
 
         List<InfotrygdYtelse> infotrygdYtelseListe = infotrygdModell.getYtelser();
-        LOG.info("infotrygdYtelseListe ", infotrygdYtelseListe);
+        LOG.info("infotrygdYtelseListe {}", infotrygdYtelseListe);
         if (infotrygdYtelseListe != null) {
-            LOG.info("infotrygdYtelseListestørrelse ", infotrygdYtelseListe.size());
+            LOG.info("infotrygdYtelseListestørrelse {}", infotrygdYtelseListe.size());
 
             for (InfotrygdYtelse ytelse : infotrygdYtelseListe) {
                 if (null == ytelse.getOpphørFom()) {
