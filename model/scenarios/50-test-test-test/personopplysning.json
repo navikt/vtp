@@ -2,10 +2,10 @@
 	"søker": {
 		"@type": "søker",
 		"ident": "${for1}",
-		"fornavn": "Donald",
+		"fornavn": "Dolly",
 		"etternavn": "Duck",
 		"fødselsdato": "now()-P50Y",
-		"kjønn": "M",
+		"kjønn": "K",
 		"geografiskTilknytning": {
 			"type": "Land",
 			"kode": "NOR"
@@ -47,10 +47,10 @@
 	"annenPart": {
 		"@type": "annenPart",
 		"ident": "${for2}",
-		"fornavn": "Dolly",
+		"fornavn": "Donaldo",
 		"etternavn": "Duck",
 		"fødselsdato": "now()-P50Y",
-		"kjønn": "K",
+		"kjønn": "M",
 		"personstatus": [
 			{
 				"kode": "BOSA",
