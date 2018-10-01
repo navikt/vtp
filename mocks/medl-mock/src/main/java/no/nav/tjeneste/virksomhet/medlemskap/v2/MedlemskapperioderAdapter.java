@@ -47,10 +47,10 @@ public class MedlemskapperioderAdapter {
             .withLand(new LandkodeMedTerm().withValue(medlemsskapsperiode.getLandkode().getKode()))
 
             .withTrygdedekning(new TrygdedekningMedTerm().withValue(medlemsskapsperiode.getDekningType().getKode()))
-            .withType(new PeriodetypeMedTerm().withValue(medlemsskapsperiode.getType().getKode()))
+            .withType(new PeriodetypeMedTerm().withValue("PMMEDSKP")) // medlemsskapsperiode.getType().getKode()
             .withKilde(new KildeMedTerm().withValue(medlemsskapsperiode.getKilde().getKode()))
             .withStatus(new StatuskodeMedTerm().withValue(medlemsskapsperiode.getStatus().getKode()))
-            .withLovvalg(new LovvalgMedTerm().withValue("ENDL")) //TODO OL: Hent fra modell
+            .withLovvalg(new LovvalgMedTerm().withValue(medlemsskapsperiode.getType().getKode())) 
 
         /**
          * disse brukes ikke i FPSAK, ignorerer inntil det er behov.

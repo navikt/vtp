@@ -37,7 +37,7 @@
 					"land": "DEU",
 					"trygdedekning": "IHT_Avtale",
 					"kilde": "ANNEN",
-					"medlemskapType": "ENDL",
+					"lovvalgType": "ENDL",
 					"status": "GYLD"
 				}
 			]

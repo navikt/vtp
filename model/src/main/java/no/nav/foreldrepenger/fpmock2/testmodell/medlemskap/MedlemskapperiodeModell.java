@@ -37,7 +37,7 @@ public class MedlemskapperiodeModell {
     @JsonProperty("kilde")
     private MedlemskapKildeType kilde = MedlemskapKildeType.TPS;
 
-    @JsonProperty("medlemskapType")
+    @JsonProperty("lovvalgType")
     private MedlemskapType type = MedlemskapType.ENDL;
 
     @JsonProperty("status")
