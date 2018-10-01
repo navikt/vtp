@@ -40,7 +40,7 @@ public class FordelKlient extends FpsakKlient{
     }
     
     public FagsakInformasjon fagsakInformasjon(Saksnummer id) throws IOException {
-        String url = hentRestRotUrl() + FAGSAK_OPPRETT_URL;
+        String url = hentRestRotUrl() + FAGSAK_INFORMASJON_URL;
         return postOgHentJson(url, id, FagsakInformasjon.class, StatusRange.STATUS_SUCCESS);
     }
     

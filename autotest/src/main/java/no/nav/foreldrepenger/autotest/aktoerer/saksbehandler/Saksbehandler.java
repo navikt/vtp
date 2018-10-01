@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;

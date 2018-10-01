@@ -53,14 +53,14 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     }
     
     
-    public void avvisPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad, Kode årsak) {
+    public void avvisPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad) {
         UttakResultatPeriode periode = finnPeriode(fra, til);
-        avvisPeriode(periode, utbetalingsgrad, årsak);
+        avvisPeriode(periode, utbetalingsgrad);
     }
     
-    public void avvisPeriode(UttakResultatPeriode periode, int utbetalingsgrad, Kode årsak) {
+    public void avvisPeriode(UttakResultatPeriode periode, int utbetalingsgrad) {
         periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "AVSLÅTT", "Avslått"));
-        periode.setPeriodeResultatÅrsak(new Kode(null, "-", null));
+        periode.setPeriodeResultatÅrsak(Kode.lagBlankKode());
         
         //HACK for manglende aktivitet i periode (set aktivitet til å trekke fra mødrekvoten)
         for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {

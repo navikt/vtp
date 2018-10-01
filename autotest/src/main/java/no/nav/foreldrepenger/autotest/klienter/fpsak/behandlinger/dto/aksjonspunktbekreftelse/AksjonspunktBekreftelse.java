@@ -17,6 +17,7 @@ public abstract class AksjonspunktBekreftelse {
     protected String kode;
     protected String begrunnelse;
     
+    @SuppressWarnings("unused")
     public AksjonspunktBekreftelse(Fagsak fagsak, Behandling behandling) {
         if(null == this.getClass().getAnnotation(BekreftelseKode.class)) {
             throw new RuntimeException("Kode annotation er ikke satt for " + this.getClass().getTypeName());

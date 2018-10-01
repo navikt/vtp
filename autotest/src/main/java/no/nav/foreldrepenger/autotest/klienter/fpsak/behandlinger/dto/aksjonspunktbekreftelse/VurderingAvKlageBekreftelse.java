@@ -33,11 +33,11 @@ public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
         klageMedholdArsak = årsak;
     }
     
-    public void bekreftStadfestet(String årsak) {
+    public void bekreftStadfestet() {
         klageVurdering  = VURDERING_STADFEST;
     }
     
-    public void bekreftOpphevet(String årsak) {
+    public void bekreftOpphevet() {
         klageVurdering  = VURDERING_OPPHEVE;
     }
     

@@ -17,7 +17,7 @@ public class AvklarFaktaStartdatoForForeldrepengerBekreftelse extends Aksjonspun
     }
     
     public void setStartdatoFraSoknad(LocalDate dato) {
-        
+        startdatoFraSoknad = dato;
     }
 
 }

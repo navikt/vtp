@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

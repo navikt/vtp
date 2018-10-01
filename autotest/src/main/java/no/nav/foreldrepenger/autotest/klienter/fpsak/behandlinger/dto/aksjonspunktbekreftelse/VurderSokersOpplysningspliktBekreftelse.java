@@ -16,7 +16,7 @@ public class VurderSokersOpplysningspliktBekreftelse extends AksjonspunktBekreft
         erVilkarOk = true;
     }
     
-    public void bekreftAvvist(String kode) {
+    public void bekreftAvvist() {
         erVilkarOk = false;
     }
 }
