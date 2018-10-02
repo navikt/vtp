@@ -14,6 +14,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,8 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArbeidsforholdMockImpl.class);
 //    private static final EntityManager entityManager = Persistence.createEntityManagerFactory("arbeidsforhold").createEntityManager();
+
+    private TestscenarioBuilderRepository scenarioRepository;
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/finnArbeidsforholdPrArbeidsgiverRequest")
