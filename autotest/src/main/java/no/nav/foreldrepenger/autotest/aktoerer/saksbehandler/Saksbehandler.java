@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,18 @@ public class Saksbehandler extends Aktoer{
         this();
 	erLoggetInnMedRolle(rolle);
     }
+    
+    @Override
+    public void erLoggetInnMedRolle(String rolle) {
+        super.erLoggetInnMedRolle(rolle);
+        hentKodeverk();
+    }
+    
+    @Override
+    public void erLoggetInnUtenRolle() throws UnsupportedEncodingException {
+        super.erLoggetInnUtenRolle();
+        hentKodeverk();
+    }
 
     /*
      * Hent enkel fagsak
@@ -105,16 +118,19 @@ public class Saksbehandler extends Aktoer{
         }, 60, "Behandling status var ikke klar");
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
         valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
-        valgtBehandling.personopplysning = behandlingerKlient.behandlingPersonopplysninger(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.verge = behandlingerKlient.behandlingVerge(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        //valgtBehandling.behandlingsresultat = behandlingerKlient.behandl
-        valgtBehandling.beregningsgrunnlag = behandlingerKlient.behandlingBeregningsgrunnlag(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.soknad = behandlingerKlient.behandlingSøknad(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.familiehendelse = behandlingerKlient.behandlingFamiliehendelse(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.opptjening = behandlingerKlient.behandlingOpptjening(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
-        valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        
+        BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
+        valgtBehandling.personopplysning = behandlingerKlient.behandlingPersonopplysninger(request);
+        valgtBehandling.verge = behandlingerKlient.behandlingVerge(request);
+        valgtBehandling.beregningsgrunnlag = behandlingerKlient.behandlingBeregningsgrunnlag(request);
+        valgtBehandling.beregningResultatEngangsstonad = behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
+        valgtBehandling.beregningResultatForeldrepenger = behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
+        valgtBehandling.soknad = behandlingerKlient.behandlingSøknad(request);
+        valgtBehandling.familiehendelse = behandlingerKlient.behandlingFamiliehendelse(request);
+        valgtBehandling.opptjening = behandlingerKlient.behandlingOpptjening(request);
+        valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(request);
+        valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
+        valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(request);
 
         
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
@@ -125,8 +141,12 @@ public class Saksbehandler extends Aktoer{
     /*
      * Henting av kodeverk
      */
-    public void hentKodeverk() throws IOException {
-        kodeverk = kodeverkKlient.getKodeverk();
+    public void hentKodeverk() {
+        try {
+            kodeverk = kodeverkKlient.getKodeverk();
+        } catch (Exception e) {
+            throw new RuntimeException("Kunne ikke hente kodeverk: " + e.getMessage());
+        }
     }
     
     public void hentSelftest() throws IOException {

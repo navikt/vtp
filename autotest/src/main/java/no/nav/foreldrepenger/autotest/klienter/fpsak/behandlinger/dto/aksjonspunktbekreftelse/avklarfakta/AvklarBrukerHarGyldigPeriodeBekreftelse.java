@@ -13,7 +13,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @BekreftelseKode(kode="5021")
 public class AvklarBrukerHarGyldigPeriodeBekreftelse extends AksjonspunktBekreftelse{
 
-    protected ManuellVurderingType manuellVurderingType;
+    protected Kode manuellVurderingType;
     protected List<Medlemskapsperiode> periods = new ArrayList<>();
     
     public AvklarBrukerHarGyldigPeriodeBekreftelse(Fagsak fagsak, Behandling behandling) {
@@ -25,18 +25,6 @@ public class AvklarBrukerHarGyldigPeriodeBekreftelse extends AksjonspunktBekreft
     }
     
     public void setVurdering(Kode kode) {
-        setVurdering(kode.kode);
-    }
-    
-    public void setVurdering(String kode) {
-        manuellVurderingType = new ManuellVurderingType(kode);
-    }
-
-    class ManuellVurderingType{
-        String kode;
-        
-        public ManuellVurderingType(String kode) {
-            this.kode = kode;
-        }
+        manuellVurderingType = kode;
     }
 }
