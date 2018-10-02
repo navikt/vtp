@@ -48,7 +48,7 @@ public class FpsakTestBase extends TestBase{
     }
     
     protected TestscenarioImpl opprettScenario(String id) {
-        return testscenarioRepository.opprettTestscenario(testscenarioTemplates.finn("50"));
+        return testscenarioRepository.opprettTestscenario(testscenarioTemplates.finn(id));
     }
     
 }
