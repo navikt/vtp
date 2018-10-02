@@ -41,11 +41,12 @@
 		<logstash.version>5.1</logstash.version>
 		<syslog4j.version>1.0.0</syslog4j.version>
 		<jetty.version>9.4.10.v20180503</jetty.version>
-		
+
 		<junit.version>4.12</junit.version>
 		<junit.jupiter.version>5.3.1</junit.jupiter.version>
 		<junit-platform-launcher.version>1.3.1</junit-platform-launcher.version>
-		
+
+		<cxf.version>3.2.5</cxf.version>
 		<httpclient.version>4.5.6</httpclient.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.3.1.Final</hibernate.version>
@@ -159,12 +160,6 @@
 				<artifactId>norg2-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
-			<dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>autotest</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
@@ -378,6 +373,13 @@
 				<groupId>com.papertrailapp</groupId>
 				<artifactId>logback-syslog4j</artifactId>
 				<version>${syslog4j.version}</version>
+			</dependency>
+
+			<!-- CXF - for å kunne stubbe WS-trust -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-ws-security</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 
 			<!-- Testavhengigheter -->

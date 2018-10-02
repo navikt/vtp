@@ -9,6 +9,7 @@ import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 
 import no.nav.abac.pdp.PdpMock;
+import no.nav.foreldrepenger.fpmock2.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
@@ -24,7 +25,6 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
-import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.OppgavebehandlingServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
@@ -40,6 +40,8 @@ public class SoapWebServiceConfig {
     public void setup(TestscenarioBuilderRepository repo, JournalRepository journalRepository) {
         GsakRepo gsakRepo = new GsakRepo();
 
+        publishWebService(new SecurityTokenServiceMockImpl(), "/SecurityTokenServiceProvider");
+        
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishWebService(new AktoerServiceMockImpl(repo), "/aktoerregister/ws/Aktoer/v2");
         // access wsdl on http://localhost:7999/aktoer?wsdl

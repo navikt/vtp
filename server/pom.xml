@@ -65,17 +65,17 @@
 			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>autotest</artifactId>
 		</dependency>
-		
+
 		<!-- NAV biblioteker -->
 		<dependency>
 			<groupId>no.nav.modig</groupId>
 			<artifactId>modig-testcertificates</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>compile</scope>		
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- Eksterne avhengigheter -->
@@ -109,9 +109,9 @@
 			<artifactId>swagger-jaxrs</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jackson2-provider</artifactId>
-        </dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson2-provider</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-client</artifactId>
@@ -125,9 +125,8 @@
 			<artifactId>jose4j</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>7.0</version>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
