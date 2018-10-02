@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.saksbehandler.Saksbehandler;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
@@ -37,6 +38,13 @@ public class FpsakTestBase extends TestBase{
         testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         testscenarioTemplates = TestscenarioTemplateRepositoryImpl.getInstance();
         foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();
+    }
+    
+    protected Kodeverk hentKodeverk() {
+        if(saksbehandler != null && saksbehandler.kodeverk != null) {
+            return saksbehandler.kodeverk;
+        }
+        return null;
     }
     
     protected TestscenarioImpl opprettScenario(String id) {

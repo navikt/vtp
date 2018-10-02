@@ -160,7 +160,7 @@ public class Saksbehandler extends Aktoer{
      * Setter behandling på vent
      */
     public void settBehandlingPåVent(LocalDate frist, String årsak) throws Exception {
-        behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.hentKode(årsak, kodeverk.Venteårsak)));
+        behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kodeverk.Venteårsak.getKode(årsak)));
         velgBehandling(valgtBehandling);
     }
     
@@ -232,10 +232,10 @@ public class Saksbehandler extends Aktoer{
     }
 
     public void opprettBehandlingRevurdering() throws Exception {
-        opprettBehandling(kodeverk.hentKode("Revurdering", kodeverk.BehandlingType));
+        opprettBehandling(kodeverk.BehandlingType.getKode("Revurdering"));
     }
     public void opprettBehandlingKlage() throws Exception {
-        opprettBehandling(kodeverk.hentKode("Klage", kodeverk.BehandlingType));
+        opprettBehandling(kodeverk.BehandlingType.getKode("Klage"));
     }
 
     /*

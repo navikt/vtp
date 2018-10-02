@@ -54,7 +54,7 @@ public class ProofOfConceptTest extends FpsakTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
         
         saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(saksbehandler.kodeverk.hentKode("Periode med medlemskap", saksbehandler.kodeverk.MedlemskapManuellVurderingType));
+            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
