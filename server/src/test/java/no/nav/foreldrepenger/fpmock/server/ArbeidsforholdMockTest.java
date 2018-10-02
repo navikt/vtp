@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock.server;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
@@ -37,12 +38,15 @@ public class ArbeidsforholdMockTest {
     @Test
     public void finnArbeidsforholdPrArbeidstakerTest(){
         TestscenarioTemplate template = templateRepository.finn("50");
+
+        Testscenario testscenario = testRepo.opprettTestscenario(template);
+
         ArbeidsforholdMockImpl arbeidsforholdMock = new ArbeidsforholdMockImpl();
 
         FinnArbeidsforholdPrArbeidstakerRequest finnArbeidsforholdPrArbeidstakerRequest = new FinnArbeidsforholdPrArbeidstakerRequest();
 
         NorskIdent norskIdent = new NorskIdent();
-        norskIdent.setIdent(template.getDefaultVars().getVar("for2"));
+        norskIdent.setIdent(testscenario.getVariabelContainer().getVar("for1"));
         finnArbeidsforholdPrArbeidstakerRequest.setIdent(norskIdent);
 
         Regelverker regelverk = new Regelverker();
@@ -52,7 +56,6 @@ public class ArbeidsforholdMockTest {
         try {
             FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstakerResponse = arbeidsforholdMock.finnArbeidsforholdPrArbeidstaker(finnArbeidsforholdPrArbeidstakerRequest);
 
-            String s = "";
         } catch (FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning finnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning) {
             finnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning.printStackTrace();
         } catch (FinnArbeidsforholdPrArbeidstakerUgyldigInput finnArbeidsforholdPrArbeidstakerUgyldigInput) {
