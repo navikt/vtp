@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 
-public class MedlemskapType {
+public class LovvalgType {
 
     private static List<String> VALID_KODER;
     static {
@@ -22,14 +22,14 @@ public class MedlemskapType {
         VALID_KODER = Collections.unmodifiableList(koder);
     }
     
-    public static final MedlemskapType ENDL = new MedlemskapType("ENDL");
-    public static final MedlemskapType UAVK = new MedlemskapType("UAVK");
-    public static final MedlemskapType FORL = new MedlemskapType("FORL");
+    public static final LovvalgType ENDL = new LovvalgType("ENDL");
+    public static final LovvalgType UAVK = new LovvalgType("UAVK");
+    public static final LovvalgType FORL = new LovvalgType("FORL");
     
     private String kode;
 
     @JsonCreator
-    public MedlemskapType(String kode) {
+    public LovvalgType(String kode) {
         this.kode = kode == null ? this.kode : kode;
         if (kode != null && !VALID_KODER.contains(kode)) {
             throw new IllegalArgumentException("Kode er ikke gyldig Medl2 medlemskaptype type: " + kode);

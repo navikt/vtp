@@ -50,7 +50,7 @@ public class MedlemskapperioderAdapter {
             .withType(new PeriodetypeMedTerm().withValue("PMMEDSKP")) // medlemsskapsperiode.getType().getKode()
             .withKilde(new KildeMedTerm().withValue(medlemsskapsperiode.getKilde().getKode()))
             .withStatus(new StatuskodeMedTerm().withValue(medlemsskapsperiode.getStatus().getKode()))
-            .withLovvalg(new LovvalgMedTerm().withValue(medlemsskapsperiode.getType().getKode())) 
+            .withLovvalg(new LovvalgMedTerm().withValue(medlemsskapsperiode.getLovvalgType().getKode()))
 
         /**
          * disse brukes ikke i FPSAK, ignorerer inntil det er behov.

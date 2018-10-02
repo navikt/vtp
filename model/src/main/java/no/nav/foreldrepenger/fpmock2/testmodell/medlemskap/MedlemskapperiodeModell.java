@@ -38,7 +38,7 @@ public class MedlemskapperiodeModell {
     private MedlemskapKildeType kilde = MedlemskapKildeType.TPS;
 
     @JsonProperty("lovvalgType")
-    private MedlemskapType type = MedlemskapType.ENDL;
+    private LovvalgType lovvalgType = LovvalgType.ENDL;
 
     @JsonProperty("status")
     private PeriodeStatus status = PeriodeStatus.UAVK;
@@ -99,12 +99,12 @@ public class MedlemskapperiodeModell {
         this.kilde = kilde;
     }
 
-    public MedlemskapType getType() {
-        return type;
+    public LovvalgType getLovvalgType() {
+        return lovvalgType;
     }
 
-    public void setType(MedlemskapType type) {
-        this.type = type;
+    public void setLovvalgType(LovvalgType lovvalgType) {
+        this.lovvalgType = lovvalgType;
     }
 
     public PeriodeStatus getStatus() {
