@@ -27,7 +27,7 @@ public class TestKonfigurasjon extends KonfigurasjonBase{
     }
     
     public static String hentOIDCUrl() {
-        return System.getProperty("autotest.oicd.url");
+        return System.getProperty("autotest.oicd.url", System.getProperty("server.url") + "/isso");
     }
     
     public static String hentOIDCMockIssuer() {

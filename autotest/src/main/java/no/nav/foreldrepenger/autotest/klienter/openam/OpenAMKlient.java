@@ -1,16 +1,5 @@
 package no.nav.foreldrepenger.autotest.klienter.openam;
 
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMAccessToken;
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionAuth;
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionToken;
-import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMTokenLogin;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
-import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
-import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
-import org.apache.http.HttpResponse;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -19,6 +8,20 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.cookie.BasicClientCookie;
+
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMAccessToken;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionAuth;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMSessionToken;
+import no.nav.foreldrepenger.autotest.klienter.openam.dto.OpenAMTokenLogin;
+import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
+import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class OpenAMKlient extends JsonRest {
 
@@ -76,6 +79,7 @@ public class OpenAMKlient extends JsonRest {
         headers.put("X-Password", "anonymous");
         headers.put("X-Requested-With", "XMLHttpRequest");
         headers.put("X-Username", "anonymous");
+        headers.put(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
 
         response = post(baseUrl + "/json/authenticate?realm=/&goto=" + baseUrl + "/oauth2/authorize?session=winssochain&authIndexType=service&authIndexValue=winssochain&response_type=code&scope=openid&client_id=OIDC&state=state_1234&redirect_uri=" + redirectUriEncoded,
                 new StringEntity(""), headers);

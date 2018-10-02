@@ -47,13 +47,16 @@ public class MockServer {
         
         PropertiesUtils.initProperties();
 
-        MockServer mockServer = new MockServer(Integer.valueOf(System.getProperty("server.port", SERVER_PORT)));
+        MockServer mockServer = new MockServer();
         mockServer.start();
 
     }
 
-    public MockServer(int port) {
-        this.port = port;
+    public MockServer() {
+        this.port = Integer.valueOf(System.getProperty("server.port", SERVER_PORT));
+
+        System.setProperty("server.url", "https://localhost:" + getSslPort());
+
         server = new Server();
         setConnectors(server);
 
@@ -137,10 +140,15 @@ public class MockServer {
         ServerConnector sslConnector = new ServerConnector(server,
             new SslConnectionFactory(sslContextFactory, "HTTP/1.1"),
             new HttpConnectionFactory(https));
-        sslConnector.setPort(Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3))));
+        sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
 
         server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
+    }
+
+    private Integer getSslPort() {
+        Integer sslPort = Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
+        return sslPort;
     }
 
     public int getPort() {

@@ -79,7 +79,7 @@ public class Oauth2RestService {
 
     @POST
     @Path("/oauth2/access_token")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON})
     @ApiOperation(value = "oauth2/access_token", notes = ("Mock impl av Oauth2 access_token"))
     public Response accessToken(
                               @SuppressWarnings("unused") @Context HttpServletRequest req,

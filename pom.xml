@@ -46,7 +46,7 @@
 		<junit.jupiter.version>5.3.1</junit.jupiter.version>
 		<junit-platform-launcher.version>1.3.1</junit-platform-launcher.version>
 
-		<cxf.version>3.2.5</cxf.version>
+		<cxf.version>3.2.1</cxf.version>
 		<httpclient.version>4.5.6</httpclient.version>
 		<ojdbc.version>12.2.0.1</ojdbc.version>
 		<hibernate.version>5.3.1.Final</hibernate.version>
@@ -186,6 +186,13 @@
 				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>server</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<!-- CXF - for å kunne stubbe WS-trust -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-ws-security</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 
 			<!-- NAV-biblioteker -->
@@ -346,6 +353,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>7.0</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.bitbucket.b_c</groupId>
 				<artifactId>jose4j</artifactId>
 				<version>${jose4j.version}</version>
@@ -413,13 +426,6 @@
 				<groupId>com.papertrailapp</groupId>
 				<artifactId>logback-syslog4j</artifactId>
 				<version>${syslog4j.version}</version>
-			</dependency>
-
-			<!-- CXF - for å kunne stubbe WS-trust -->
-			<dependency>
-				<groupId>org.apache.cxf</groupId>
-				<artifactId>cxf-rt-ws-security</artifactId>
-				<version>${cxf.version}</version>
 			</dependency>
 
 			<!-- Testavhengigheter -->

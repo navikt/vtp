@@ -138,7 +138,6 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-ws-security</artifactId>
 		</dependency>
-
 	</dependencies>
 	<build>
 		<plugins>
