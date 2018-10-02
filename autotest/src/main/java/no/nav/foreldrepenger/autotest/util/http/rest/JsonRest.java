@@ -55,12 +55,12 @@ public abstract class JsonRest extends Rest{
     
     protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
         String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
-        return hentObjectMapper().readValue(json, returnType);
+        return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
     
     protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
     	String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
-    	return hentObjectMapper().readValue(json, returnType);
+    	return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
     
     protected String postOgVerifiser(String url, Object requestData, StatusRange expectedStatusRange) throws IOException {

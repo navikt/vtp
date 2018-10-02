@@ -105,7 +105,17 @@ public class Saksbehandler extends Aktoer{
         }, 60, "Behandling status var ikke klar");
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
         valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
+        valgtBehandling.personopplysning = behandlingerKlient.behandlingPersonopplysninger(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        valgtBehandling.verge = behandlingerKlient.behandlingVerge(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        //valgtBehandling.behandlingsresultat = behandlingerKlient.behandl
+        valgtBehandling.beregningsgrunnlag = behandlingerKlient.behandlingBeregningsgrunnlag(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        valgtBehandling.soknad = behandlingerKlient.behandlingSøknad(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        valgtBehandling.familiehendelse = behandlingerKlient.behandlingFamiliehendelse(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        valgtBehandling.opptjening = behandlingerKlient.behandlingOpptjening(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+        valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
         valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer));
+
         
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
