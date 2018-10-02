@@ -59,6 +59,10 @@
 			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>sigrun-mock</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>dokumentproduksjon-mock</artifactId>
+		</dependency>
 
 		<!-- Tester -->
 		<dependency>
@@ -128,6 +132,7 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-ws-security</artifactId>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

@@ -15,6 +15,7 @@
 		<module>gsak-mock</module>
 		<module>joark-mock</module>
 		<module>pdp-mock</module>
+        <module>dokumentproduksjon-mock</module>
 		<module>infotrygd-mock</module>
 		<module>arena-mock</module>
 		<module>medl-mock</module>

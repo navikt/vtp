@@ -76,6 +76,7 @@
 		<arbeidsforhold.version>3.0.0</arbeidsforhold.version>
 		<organisasjon.version>1.0.4</organisasjon.version>
 		<norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
+		<dokumentproduksjon.version>2.1.7</dokumentproduksjon.version>
 		<modig-testcertificates.version>1.2.5-vedfp-SNAPSHOT</modig-testcertificates.version>
 	</properties>
 
@@ -158,6 +159,12 @@
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>norg2-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>dokumentproduksjon-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -277,6 +284,12 @@
 				<groupId>no.nav.tjenester.fim</groupId>
 				<artifactId>nav-arbeidsforhold-v3-tjenestespesifikasjon</artifactId>
 				<version>${arbeidsforhold.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-dokumentproduksjon-v2-tjenestespesifikasjon</artifactId>
+				<version>${dokumentproduksjon.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
 

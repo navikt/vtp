@@ -18,6 +18,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.DokumentproduksjonV2Impl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
@@ -61,7 +62,7 @@ public class SoapWebServiceConfig {
         publishWebService(new FinnSakListeMockImpl(repo), "/infotrygd-ws/InfotrygdSak/v1");
         publishWebService(new FinnGrunnlagListeMockImpl(repo), "/infotrygd-ws/InfotrygdBeregningsgrunnlag/v1");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-
+        publishWebService(new DokumentproduksjonV2Impl(repo), "/dokprod/ws/dokumentproduksjon/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
         publishWebService(new MedlemServiceMockImpl(repo), "/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/norg2/ws/Arbeidsfordeling/v1");
