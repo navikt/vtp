@@ -1,6 +1,8 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -9,10 +11,12 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +42,6 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeHarIkkeTilg
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.InntektV3;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkRequest;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkResponse;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentDetaljerteAbonnerteInntekterRequest;
@@ -94,17 +94,29 @@ public class InntektMockImpl implements InntektV3 {
 
             LocalDate fom = ConversionUtils.convertToLocalDate(request.getUttrekksperiode().getMaanedFom());
             LocalDate tom = ConversionUtils.convertToLocalDate(request.getUttrekksperiode().getMaanedTom());
+            if (tom == null) {
+                tom = LocalDate.now();
+            } else { tom = tom.plusMonths(1);}
 
             for (Aktoer aktoer : request.getIdentListe()) {
-                //TODO: Koble opp mapping mot FNR
                 String fnr = getIdentFromAktoer(aktoer);
                 Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
                 if (inntektYtelseModell.isPresent()) {
                     InntektskomponentModell modell = inntektYtelseModell.get().getInntektskomponentModell();
 
                     ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlistBolkMapper.makeArbeidsInntektIdent(modell, fnr);
-                    response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
+                    List<ArbeidsInntektMaaned> listeOnskedeMnd = new ArrayList<>();
+                    for (ArbeidsInntektMaaned aarMaaned : arbeidsInntektIdent.getArbeidsInntektMaaned()) {
+                        XMLGregorianCalendar am = aarMaaned.getAarMaaned();
+                        LocalDate nyAm = ConversionUtils.convertToLocalDate(am);
+                        if (nyAm.equals(fom) || (nyAm.isAfter(fom) && nyAm.isBefore(tom)) || nyAm.equals(tom)) {
+                            listeOnskedeMnd.add(aarMaaned);
+                        }
+                    }
+                    arbeidsInntektIdent.getArbeidsInntektMaaned().clear();
+                    arbeidsInntektIdent.getArbeidsInntektMaaned().addAll(listeOnskedeMnd);
 
+                    response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
 
                 }
             }
