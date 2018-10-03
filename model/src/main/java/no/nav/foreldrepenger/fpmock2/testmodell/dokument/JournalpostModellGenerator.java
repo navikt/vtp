@@ -12,8 +12,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantfor
 public class JournalpostModellGenerator {
 
 
-
-    public static JournalpostModell foreldrepengeSøknadFødselJournalpost(String xml, String fnr){
+    public static JournalpostModell foreldrepengeSøknadFødselJournalpost(String xml, String fnr) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
@@ -23,10 +22,10 @@ public class JournalpostModellGenerator {
         dokumentModell.setDokumentType(DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
-                Arkivfiltype.XML,Variantformat.FULLVERSJON,xml.getBytes()
+                Arkivfiltype.XML, Variantformat.FULLVERSJON, xml.getBytes()
         ));
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
-                Arkivfiltype.PDF,Variantformat.ARKIV, new byte[0]
+                Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]
         ));
 
         journalpostModell.getDokumentModellList().add(dokumentModell);
@@ -34,17 +33,26 @@ public class JournalpostModellGenerator {
         return journalpostModell;
     }
 
-    public static JournalpostModell makeInntektsmeldingJournalpost(String xml, String fnr){
+    public static JournalpostModell makeInntektsmeldingJournalpost(String xml, String fnr) {
         throw new UnsupportedOperationException("Ikke implementert");
 
     }
 
-    public static JournalpostModell makeUstrukturertDokumentJournalpost(DokumenttypeId dokumenttypeId, String fnr){
-        throw new UnsupportedOperationException("Ikke implementert");
+    public static JournalpostModell makeUstrukturertDokumentJournalpost(String dokumenttypeId, String fnr) {
+        JournalpostModell journalpostModell = new JournalpostModell();
+        journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
+        journalpostModell.setAvsenderFnr(fnr);
+
+        DokumentModell dokumentModell = new DokumentModell();
+        dokumentModell.setInnhold("innhold: " + dokumenttypeId);
+        dokumentModell.setDokumentType(DokumenttypeId.ADOPSJONSDOKUMENTASJON); //TODO: lag oversetter fra Id til object
+        dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
+        dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
+                Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]
+        ));
+        journalpostModell.getDokumentModellList().add(dokumentModell);
+        return journalpostModell;
     }
-
-
-
 
 
 }

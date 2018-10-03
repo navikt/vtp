@@ -4,10 +4,14 @@ import javax.jws.HandlerChain;
 import javax.jws.WebService;
 import javax.xml.ws.soap.Addressing;
 
+import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseAvbrytelseIkkeTillatt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostAlleredeAvbrutt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostIkkeFunnet;
@@ -46,6 +50,8 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserRedigerb
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.RedigerDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.RedigerDokumentPessimistiskLaasing;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.RedigerDokumentRedigeringIkkeTillatt;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Aktoer;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Person;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.AvbrytForsendelseRequest;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.AvbrytVedleggRequest;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.EndreDokumentTilRedigerbartRequest;
@@ -71,10 +77,10 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2MockImpl.class);
 
 
-    private TestscenarioBuilderRepository scenarioRepository;
+    private JournalRepository journalRepository;
 
-    public DokumentproduksjonV2MockImpl(TestscenarioBuilderRepository scenarioRepository){
-        this.scenarioRepository = scenarioRepository;
+    public DokumentproduksjonV2MockImpl(JournalRepository journalRepository){
+        this.journalRepository = journalRepository;
     }
 
 
@@ -94,8 +100,21 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     }
 
     @Override
-    public ProduserIkkeredigerbartDokumentResponse produserIkkeredigerbartDokument(ProduserIkkeredigerbartDokumentRequest produserIkkeredigerbartDokumentRequest) throws ProduserIkkeredigerbartDokumentDokumentErRedigerbart, ProduserIkkeredigerbartDokumentDokumentErVedlegg {
-        throw new UnsupportedOperationException("Ikke implementert");
+    public ProduserIkkeredigerbartDokumentResponse produserIkkeredigerbartDokument(ProduserIkkeredigerbartDokumentRequest request) throws ProduserIkkeredigerbartDokumentDokumentErRedigerbart, ProduserIkkeredigerbartDokumentDokumentErVedlegg {
+        Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
+        String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
+
+
+        LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());
+        ProduserIkkeredigerbartDokumentResponse response = new ProduserIkkeredigerbartDokumentResponse();
+        String journalpostId = journalRepository.leggTilJournalpost(
+                JournalpostModellGenerator.makeUstrukturertDokumentJournalpost(dokumenttypeId, ((Person) bruker).getIdent()));
+        String dokumentId = journalRepository.finnJournalpostMedJournalpostId(journalpostId).get().getDokumentModellList().get(0).getDokumentId();
+        LOG.info("produsererIkkeredigerbartDokument generer journalpost {} med dokument {})", journalpostId, dokumentId);
+
+        response.setDokumentId(dokumentId);
+        response.setJournalpostId(journalpostId);
+        return response;
     }
 
     @Override
@@ -114,8 +133,8 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     }
 
     @Override
-    public void ferdigstillForsendelse(FerdigstillForsendelseRequest ferdigstillForsendelseRequest) throws FerdigstillForsendelseDokumentUnderRedigering, FerdigstillForsendelseJournalpostIkkeUnderArbeid, FerdigstillForsendelseJournalpostIkkeFunnet {
-        throw new UnsupportedOperationException("Ikke implementert");
+    public void ferdigstillForsendelse(FerdigstillForsendelseRequest request) throws FerdigstillForsendelseDokumentUnderRedigering, FerdigstillForsendelseJournalpostIkkeUnderArbeid, FerdigstillForsendelseJournalpostIkkeFunnet {
+        LOG.info("ferdigstillForsendelse ferdigstiller journalpost: {}",request.getJournalpostId());
     }
 
     @Override

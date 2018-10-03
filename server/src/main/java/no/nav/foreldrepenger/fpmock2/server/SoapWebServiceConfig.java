@@ -62,7 +62,7 @@ public class SoapWebServiceConfig {
         publishWebService(new FinnSakListeMockImpl(repo), "/infotrygd-ws/InfotrygdSak/v1");
         publishWebService(new FinnGrunnlagListeMockImpl(repo), "/infotrygd-ws/InfotrygdBeregningsgrunnlag/v1");
         // access wsdl on http://localhost:7999/infotrygdsak?wsdl
-        publishWebService(new DokumentproduksjonV2MockImpl(repo), "/dokprod/ws/dokumentproduksjon/v2");
+        publishWebService(new DokumentproduksjonV2MockImpl(journalRepository), "/dokprod/ws/dokumentproduksjon/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
         publishWebService(new MedlemServiceMockImpl(repo), "/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/norg2/ws/Arbeidsfordeling/v1");
