@@ -2,6 +2,6 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soek
 
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Bruker;
 
-public interface SoekerStep {
-    AndreVedleggStep withSoeker(Bruker soeker);
+public interface SoekerStep <T extends SoekerStep<T>>{
+    T withSoeker(Bruker soeker);
 }

@@ -2,6 +2,6 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soek
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-public interface MottattDatoStep {
-    BegrunnelseForSenSoeknadStep withMottattDato(XMLGregorianCalendar mottattDato);
+public interface MottattDatoStep<T extends MottattDatoStep<T>> {
+    T withMottattDato(XMLGregorianCalendar mottattDato);
 }

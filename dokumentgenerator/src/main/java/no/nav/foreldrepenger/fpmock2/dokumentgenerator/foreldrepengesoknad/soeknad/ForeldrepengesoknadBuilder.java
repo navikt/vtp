@@ -16,7 +16,14 @@ import javax.xml.bind.JAXBException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 
-public class ForeldrepengesoknadBuilder implements MottattDatoStep, BegrunnelseForSenSoeknadStep, TilleggsopplysningerStep, OmYtelseStep, SoekerStep, AndreVedleggStep, PaakrevdeVedlegg, BuildStep {
+public class ForeldrepengesoknadBuilder implements MottattDatoStep<ForeldrepengesoknadBuilder>,
+                                                   BegrunnelseForSenSoeknadStep<ForeldrepengesoknadBuilder>,
+                                                   TilleggsopplysningerStep<ForeldrepengesoknadBuilder>,
+                                                   OmYtelseStep<ForeldrepengesoknadBuilder>,
+                                                   SoekerStep<ForeldrepengesoknadBuilder>,
+                                                   AndreVedleggStep<ForeldrepengesoknadBuilder>,
+                                                   PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
+                                                   BuildStep {
 
     private static final Logger log = LoggerFactory.getLogger(ForeldrepengesoknadBuilder.class);
     private XMLGregorianCalendar mottattDato;
@@ -36,61 +43,61 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep, BegrunnelseF
     }
 
 
-    public static MottattDatoStep soeknad() {
+    public static ForeldrepengesoknadBuilder soeknad() {
 
         return new ForeldrepengesoknadBuilder();
     }
 
     @Override
-    public BegrunnelseForSenSoeknadStep withMottattDato(XMLGregorianCalendar mottattDato) {
+    public ForeldrepengesoknadBuilder withMottattDato(XMLGregorianCalendar mottattDato) {
         this.mottattDato = mottattDato;
         return this;
     }
 
     @Override
-    public TilleggsopplysningerStep withBegrunnelseForSenSoeknad(String begrunnelseForSenSoeknad) {
+    public ForeldrepengesoknadBuilder withBegrunnelseForSenSoeknad(String begrunnelseForSenSoeknad) {
         this.begrunnelseForSenSoeknad = begrunnelseForSenSoeknad;
         return this;
     }
 
     @Override
-    public OmYtelseStep withTilleggsopplysninger(String tilleggsopplysninger) {
+    public ForeldrepengesoknadBuilder withTilleggsopplysninger(String tilleggsopplysninger) {
         this.tilleggsopplysninger = tilleggsopplysninger;
         return this;
     }
 
     @Override
-    public SoekerStep withForeldrepengerYtelse(Ytelse omYtelse) {
+    public ForeldrepengesoknadBuilder withForeldrepengerYtelse(Ytelse omYtelse) {
         this.omYtelse = omYtelse;
         return this;
     }
 
     @Override
-    public SoekerStep withEndringssoeknadYtelse(Ytelse omYtelse) {
+    public ForeldrepengesoknadBuilder withEndringssoeknadYtelse(Ytelse omYtelse) {
         this.omYtelse = omYtelse;
         return this;
     }
 
     @Override
-    public SoekerStep withEngangsstoenadYtelse(Ytelse omYtelse) {
+    public ForeldrepengesoknadBuilder withEngangsstoenadYtelse(Ytelse omYtelse) {
         this.omYtelse = omYtelse;
         return this;
     }
 
     @Override
-    public AndreVedleggStep withSoeker(Bruker soeker) {
+    public ForeldrepengesoknadBuilder withSoeker(Bruker soeker) {
         this.soeker = soeker;
         return this;
     }
 
     @Override
-    public PaakrevdeVedlegg withAndreVedlegg(List<Vedlegg> andreVedlegg) {
+    public ForeldrepengesoknadBuilder withAndreVedlegg(List<Vedlegg> andreVedlegg) {
         this.andreVedlegg = andreVedlegg;
         return this;
     }
 
     @Override
-    public BuildStep withPaakrevdeVedlegg(List<Vedlegg> paakrevdeVedlegg) {
+    public ForeldrepengesoknadBuilder withPaakrevdeVedlegg(List<Vedlegg> paakrevdeVedlegg) {
         this.paakrevdeVedlegg = paakrevdeVedlegg;
         return this;
     }

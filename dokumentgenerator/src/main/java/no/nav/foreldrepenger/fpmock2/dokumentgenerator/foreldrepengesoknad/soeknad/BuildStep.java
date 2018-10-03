@@ -2,6 +2,6 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soek
 
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
-public interface BuildStep {
+public interface BuildStep{
     Soeknad build();
 }

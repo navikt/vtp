@@ -15,32 +15,27 @@ public class ForeldrepengesoknadXmlErketyper {
 
 
 
-    public Soeknad termindatoUttakKunMor(String aktoerId) throws DatatypeConfigurationException {
-        Soeknad soeknad = ForeldrepengesoknadBuilder.startBuilding()
+    public ForeldrepengesoknadBuilder termindatoUttakKunMor(String aktoerId) throws DatatypeConfigurationException {
+        return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker basert på termindato") // obs løser ut aksjonspunkt
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans())
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
-                .withPaakrevdeVedlegg(null)
-                .build();
+                .withPaakrevdeVedlegg(null);
 
-        return soeknad;
     }
 
-    public Soeknad fodselfunnetstedUttakKunMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
-        Soeknad soeknad = ForeldrepengesoknadBuilder.startBuilding()
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+        return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeFødselEtterFødsel())
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
-                .withPaakrevdeVedlegg(null)
-                .build();
-
-        return  soeknad;
+                .withPaakrevdeVedlegg(null);
     }
 
 }

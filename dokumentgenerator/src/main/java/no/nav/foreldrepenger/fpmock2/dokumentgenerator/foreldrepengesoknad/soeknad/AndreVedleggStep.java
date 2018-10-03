@@ -4,6 +4,6 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v1.Vedlegg;
 
 import java.util.List;
 
-public interface AndreVedleggStep {
-    PaakrevdeVedlegg withAndreVedlegg(List<Vedlegg> andreVedlegg);
+public interface AndreVedleggStep <T extends AndreVedleggStep<T>>{
+    T withAndreVedlegg(List<Vedlegg> andreVedlegg);
 }

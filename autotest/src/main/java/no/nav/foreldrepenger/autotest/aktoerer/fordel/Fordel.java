@@ -63,6 +63,10 @@ public class Fordel extends Aktoer{
         return sakId;
     }
     
+    public long sendInnSøknad(ForeldrepengesoknadBuilder builder,TestscenarioImpl scenario, DokumenttypeId dokumenttypeId) throws Exception{
+        return sendInnSøknad(builder.build(), scenario, dokumenttypeId);
+    }
+    
     /*
      * Sender inn søknad og returnerer saksinformasjon
      */

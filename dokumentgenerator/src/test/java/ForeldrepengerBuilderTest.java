@@ -12,7 +12,7 @@ public class ForeldrepengerBuilderTest {
     public void foreldrepengerKontraktBuilderTest() throws DatatypeConfigurationException {
         ForeldrepengesoknadXmlErketyper fpx = new ForeldrepengesoknadXmlErketyper();
 
-        Soeknad soeknad = fpx.termindatoUttakKunMor("123");
+        Soeknad soeknad = fpx.termindatoUttakKunMor("123").build();
 
         String xml = ForeldrepengesoknadBuilder.tilXML(soeknad);
 

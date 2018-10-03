@@ -1,5 +1,5 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad;
 
-public interface TilleggsopplysningerStep {
-    OmYtelseStep withTilleggsopplysninger(String tilleggsopplysninger);
+public interface TilleggsopplysningerStep <T extends TilleggsopplysningerStep<T>>{
+    T withTilleggsopplysninger(String tilleggsopplysninger);
 }
