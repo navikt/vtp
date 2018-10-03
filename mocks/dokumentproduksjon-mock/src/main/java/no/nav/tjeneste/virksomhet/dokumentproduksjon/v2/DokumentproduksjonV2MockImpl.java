@@ -66,14 +66,14 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumen
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.DokumentproduksjonV2")
 @HandlerChain(file = "Handler-chain.xml")
-public class DokumentproduksjonV2Impl implements DokumentproduksjonV2 {
+public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2Impl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2MockImpl.class);
 
 
     private TestscenarioBuilderRepository scenarioRepository;
 
-    public DokumentproduksjonV2Impl(TestscenarioBuilderRepository scenarioRepository){
+    public DokumentproduksjonV2MockImpl(TestscenarioBuilderRepository scenarioRepository){
         this.scenarioRepository = scenarioRepository;
     }
 
