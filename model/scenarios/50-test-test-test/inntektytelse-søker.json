@@ -56,5 +56,15 @@
 				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
 			}
 		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+			{
+				"arbeidsforholdBeskrivelse": "et vanlig arbeidsforhold"
+			},
+			{
+				"arbeidsforholdBeskrivelse": "et uvanlig forhold"
+			}
+		]
 	}
-}
+ }

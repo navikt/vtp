@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
@@ -17,6 +18,8 @@ public class TestscenarioImpl implements Testscenario {
     private final LokalIdentIndeks identer;
 
     private AdresseIndeks adresseIndeks;
+
+    private ArbeidsforholdModell arbeidsforhold;
 
     private Personopplysninger personopplysninger;
 
@@ -71,6 +74,14 @@ public class TestscenarioImpl implements Testscenario {
     public void setPersonopplysninger(Personopplysninger personopplysninger) {
         this.personopplysninger = personopplysninger;
         personopplysninger.setIdenter(identer);
+    }
+
+    public ArbeidsforholdModell getArbeidsforhold() {
+        return arbeidsforhold;
+    }
+
+    public void setArbeidsforhold(ArbeidsforholdModell arbeidsforhold) {
+        this.arbeidsforhold = arbeidsforhold;
     }
 
     @Override

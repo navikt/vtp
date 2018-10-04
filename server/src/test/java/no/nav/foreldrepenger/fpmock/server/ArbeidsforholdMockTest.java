@@ -53,9 +53,11 @@ public class ArbeidsforholdMockTest {
         regelverk.setKodeverksRef("A_ORDNINGEN");
         finnArbeidsforholdPrArbeidstakerRequest.setRapportertSomRegelverk(regelverk);
 
+
         try {
             FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstakerResponse = arbeidsforholdMock.finnArbeidsforholdPrArbeidstaker(finnArbeidsforholdPrArbeidstakerRequest);
 
+            String s = "";
         } catch (FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning finnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning) {
             finnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning.printStackTrace();
         } catch (FinnArbeidsforholdPrArbeidstakerUgyldigInput finnArbeidsforholdPrArbeidstakerUgyldigInput) {

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
@@ -19,6 +21,9 @@ public class InntektYtelseModell {
 
     @JsonProperty("inntektskomponent")
     private InntektskomponentModell inntektskomponentModell;
+
+    @JsonProperty("aareg")
+    private ArbeidsforholdModell arbeidsforholdModell;
 
     public InntektYtelseModell() {
     }
@@ -54,5 +59,16 @@ public class InntektYtelseModell {
 
     public void setInntektskomponentModell(InntektskomponentModell inntektskomponentModell) {
         this.inntektskomponentModell = inntektskomponentModell;
+    }
+
+    public ArbeidsforholdModell getArbeidsforholdModell() {
+        if(null != arbeidsforholdModell){
+            this.arbeidsforholdModell = new ArbeidsforholdModell();
+        }
+        return arbeidsforholdModell;
+    }
+
+    public void setArbeidsforholdModell(ArbeidsforholdModell arbeidsforholdModell) {
+        this.arbeidsforholdModell = arbeidsforholdModell;
     }
 }
