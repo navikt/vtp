@@ -1,10 +1,20 @@
 package no.nav.foreldrepenger.fpmock.server;
 
+import java.io.IOException;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.*;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidsforholdPrArbeidstakerUgyldigInput;
@@ -12,10 +22,6 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.N
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Regelverker;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidstakerRequest;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidstakerResponse;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.IOException;
 
 public class ArbeidsforholdMockTest {
 
@@ -52,6 +58,8 @@ public class ArbeidsforholdMockTest {
         Regelverker regelverk = new Regelverker();
         regelverk.setKodeverksRef("A_ORDNINGEN");
         finnArbeidsforholdPrArbeidstakerRequest.setRapportertSomRegelverk(regelverk);
+
+        InntektYtelseModell søkerInntektYtelse = testscenario.getSøkerInntektYtelse();
 
 
         try {
