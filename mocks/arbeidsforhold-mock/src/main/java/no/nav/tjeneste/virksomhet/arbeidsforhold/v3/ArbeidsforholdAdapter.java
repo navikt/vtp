@@ -24,9 +24,16 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.O
  * Enkel førsteutgave i påvente av infrastruktur for å generere org.nr. Gir et svar med to arbeidsforhold.
  */
 
-public class ArbeidsforholdGenerator {
+public class ArbeidsforholdAdapter {
 
     private ObjectFactory objectFactory = new ObjectFactory();
+
+    public Arbeidsforhold fra(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforholdModell){
+
+        //TODO - Skriv mapping her.
+        return null;
+    }
+
 
     public List<Arbeidsforhold> hentArbeidsforhold(NorskIdent ident, LocalDate fom, LocalDate tom) {
         List<Arbeidsforhold> returliste = new ArrayList<>();
@@ -34,11 +41,6 @@ public class ArbeidsforholdGenerator {
         //returliste.add(lagEksempelTimeArbeidsforhold(ident));
 
         return returliste;
-    }
-
-    private BigDecimal lagBD(String number) {
-        BigDecimal bd = new BigDecimal(number);
-        return bd;
     }
 
     private Arbeidsavtale lagEksempelArbeidsavtale (boolean fast) {
@@ -139,6 +141,11 @@ public class ArbeidsforholdGenerator {
         arbeidsforhold.setArbeidsforholdInnrapportertEtterAOrdningen(true);
 
         return arbeidsforhold;
+    }
+
+    private BigDecimal lagBD(String number) {
+        BigDecimal bd = new BigDecimal(number);
+        return bd;
     }
 
     AntallTimerIPerioden lagTimePostering(String timer, XMLGregorianCalendar gperiode) {
