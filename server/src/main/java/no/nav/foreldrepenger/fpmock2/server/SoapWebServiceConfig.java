@@ -71,7 +71,7 @@ public class SoapWebServiceConfig {
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/norg2/ws/Arbeidsfordeling/v1");
         publishWebService(new InntektMockImpl(repo), "/inntektskomponenten-ws/inntekt/v3/Inntekt");
         publishWebService(new OppgaveServiceMockImpl(), "/nav-gsak-ws/OppgaveV3");
-        publishWebService(new ArbeidsforholdMockImpl(), "/aareg-core/ArbeidsforholdService/v3");
+        publishWebService(new ArbeidsforholdMockImpl(repo), "/aareg-core/ArbeidsforholdService/v3");
         publishWebService(new OrganisasjonMockImpl(repo), "/ereg/ws/OrganisasjonService/v4");
         publishWebService(new PdpMock(), "/asm-pdp/authorize");
     }

@@ -2,6 +2,7 @@ package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -14,6 +15,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,14 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 //    private static final EntityManager entityManager = Persistence.createEntityManagerFactory("arbeidsforhold").createEntityManager();
 
     private TestscenarioBuilderRepository scenarioRepository;
+
+    public ArbeidsforholdMockImpl(){
+
+    }
+
+    public ArbeidsforholdMockImpl(TestscenarioBuilderRepository scenarioRepository) {
+        this.scenarioRepository = scenarioRepository;
+    }
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/finnArbeidsforholdPrArbeidsgiverRequest")
@@ -95,6 +105,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
                 && request.getIdent().getIdent() != null
                 && request.getRapportertSomRegelverk() != null) {
 
+            Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(request.getIdent().getIdent());
             LocalDate fom = null;
             LocalDate tom = null;
 

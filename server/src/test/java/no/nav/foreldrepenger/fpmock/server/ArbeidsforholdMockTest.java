@@ -41,7 +41,7 @@ public class ArbeidsforholdMockTest {
 
         Testscenario testscenario = testRepo.opprettTestscenario(template);
 
-        ArbeidsforholdMockImpl arbeidsforholdMock = new ArbeidsforholdMockImpl();
+        ArbeidsforholdMockImpl arbeidsforholdMock = new ArbeidsforholdMockImpl(testRepo);
 
         FinnArbeidsforholdPrArbeidstakerRequest finnArbeidsforholdPrArbeidstakerRequest = new FinnArbeidsforholdPrArbeidstakerRequest();
 
