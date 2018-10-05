@@ -34,7 +34,6 @@ public class ProofOfConceptTest extends FpsakTestBase{
         //verifiser(!saksbehandler.valgtBehandling.erSattPåVent());
     }
     
-    @Test
     public void engangsttønadFødselFunnetStedKunMor() throws Exception {
         TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
         Soeknad søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøker().getAktørIdent());

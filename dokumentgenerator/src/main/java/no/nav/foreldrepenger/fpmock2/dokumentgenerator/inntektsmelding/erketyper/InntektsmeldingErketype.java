@@ -2,6 +2,9 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketype
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.EksempelArbeidsgiver;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.InntektsmeldingDTO;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.seres.xsd.nav.inntektsmelding_m._20180618.*;
@@ -9,7 +12,10 @@ import no.seres.xsd.nav.inntektsmelding_m._20180618.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -27,13 +33,11 @@ public class InntektsmeldingErketype {
         inntektsmeldingDTO.setOrganisasjonsnummer(EksempelArbeidsgiver.STATOILSOKKEL.getOrgNummer());
         inntektsmeldingDTO.setEksempelArbeidsgiver(EksempelArbeidsgiver.STATOILSOKKEL);
 
-        return makeInntektsmeldingFromRequest(inntektsmeldingDTO);
+        return makeInntektsmeldingFromRequestToString(inntektsmeldingDTO);
 
     }
-
-    public String makeInntektsmeldingFromRequest(InntektsmeldingDTO request){
-        String fnr = request.getArbeidstakerFNR();
-
+    
+    public InntektsmeldingBuilder makeInntektsmeldingFromRequest(InntektsmeldingDTO request) {
         InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder(
                 request.getInntektsmeldingID(),
                 request.getInntektsmeldingYtelse(),
@@ -170,6 +174,56 @@ public class InntektsmeldingErketype {
                 avtaltFerieListe
         ));
 
-        return inntektsmeldingBuilder.createInntektesmeldingXML();
+        return inntektsmeldingBuilder;
+    }
+
+    public String makeInntektsmeldingFromRequestToString(InntektsmeldingDTO request){
+        return makeInntektsmeldingFromRequest(request).createInntektesmeldingXML();
+    }
+
+    public List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioImpl testscenario, LocalDate startDatoForeldrepenger) {
+        List<InntektsmeldingBuilder> intektsmeldinger = new ArrayList<>();
+        String fnr = testscenario.getPersonopplysninger().getSøker().getIdent();
+        InntektYtelseModell modell = testscenario.getSøkerInntektYtelse();
+        
+        for (Inntektsperiode periode : hentGjeldendeInntektsperioder(modell.getInntektskomponentModell().getInntektsperioder())) {
+            InntektsmeldingBuilder intektsmelding = fromInntektsperiode(periode,
+                                                                        fnr,
+                                                                        startDatoForeldrepenger);
+            intektsmeldinger.add(intektsmelding);
+        }
+        
+        return intektsmeldinger;
+    }
+    
+    private List<Inntektsperiode> hentGjeldendeInntektsperioder(List<Inntektsperiode> perioder){
+        Map<String, Inntektsperiode> periodeMap = new HashMap<>();
+        
+        for (Inntektsperiode periode : perioder) {
+            
+            if(periodeMap.get(periode.getOrgnr()) == null || periode.getTom().isAfter(periodeMap.get(periode.getOrgnr()).getTom())) {
+                periodeMap.put(periode.getOrgnr(), periode);
+            }
+        }
+        
+        return new ArrayList<>(periodeMap.values());
+    }
+    
+    private InntektsmeldingBuilder fromInntektsperiode(Inntektsperiode inntektsperiode, String fnr, LocalDate startDatoForeldrepenger) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+                                                                    YtelseKodeliste.FORELDREPENGER,
+                                                                    ÅrsakInnsendingKodeliste.NY.NY,
+                                                                    fnr,
+                                                                    startDatoForeldrepenger);
+        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(inntektsperiode.getOrgnr(), inntektsperiode.getOrgnr(), "41925090"));
+        builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+            "", //TODO arbeidsforhold id 
+            null,
+            new BigDecimal(inntektsperiode.getBeløp()),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>()));
+        
+        return builder;
     }
 }

@@ -6,6 +6,7 @@ import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.saksbehandler.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -27,6 +28,7 @@ public class FpsakTestBase extends TestBase{
     protected TestscenarioRepositoryImpl testscenarioRepository;
     protected TestscenarioTemplateRepositoryImpl testscenarioTemplates;
     protected ForeldrepengesoknadXmlErketyper foreldrepengeSøknadErketyper;
+    protected InntektsmeldingErketype inntektsmeldingErketype;
     
     @BeforeEach
     void setUp() throws Exception{
@@ -38,6 +40,7 @@ public class FpsakTestBase extends TestBase{
         testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         testscenarioTemplates = TestscenarioTemplateRepositoryImpl.getInstance();
         foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();
+        inntektsmeldingErketype = new InntektsmeldingErketype();
     }
     
     protected Kodeverk hentKodeverk() {

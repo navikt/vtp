@@ -206,6 +206,12 @@ public class InntektsmeldingBuilder {
         this.naerRelasjon = naerRelasjon;
         return this;
     }
+    
+    public InntektsmeldingBuilder addGradertperiode(int arbeidsprosent, Periode periode) {
+        GraderingIForeldrepenger gradering = createGraderingIForeldrepenger(new BigDecimal(arbeidsprosent), periode);
+        this.arbeidsforhold.getGraderingIForeldrepengerListe().getValue().getGraderingIForeldrepenger().add(gradering);
+        return this;
+    }
 
 
 
@@ -473,7 +479,4 @@ public class InntektsmeldingBuilder {
     private boolean isNull(Object o) {
         return o == null;
     }
-
-
-
 }

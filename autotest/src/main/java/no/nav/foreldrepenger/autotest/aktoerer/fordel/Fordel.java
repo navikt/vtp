@@ -14,6 +14,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -72,8 +73,9 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
      */
-    public long sendInnInntektsmelding(Object inntektsmelding, String aktørId) throws IOException {
-        return sendInnJournalpost(null, "409593578", "ab0047", "I000067", aktørId);
+    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, String aktørId) throws IOException {
+        String xml = inntektsmelding.createInntektesmeldingXML();
+        return sendInnJournalpost(xml, "409593578", "ab0047", "I000067", aktørId); //TODO hva skal verdi kodene være her?
     }
     
     /*
