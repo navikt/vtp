@@ -17,7 +17,7 @@ public class Inntektsmelding extends FpsakTestBase{
         TestscenarioImpl testscenario = opprettScenario("50");
         List<InntektsmeldingBuilder> inntektsmeldinger = inntektsmeldingErketype.makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
         InntektsmeldingBuilder inntektsmelding = inntektsmeldinger.get(0);
-        inntektsmelding.addGradertperiode();
+        inntektsmelding.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
         
         System.out.println(inntektsmelding.createInntektesmeldingXML());
         
