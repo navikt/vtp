@@ -19,6 +19,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenera
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
@@ -73,9 +74,19 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
      */
-    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, String aktørId) throws IOException {
+    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, Testscenario scenario) throws IOException {
         String xml = inntektsmelding.createInntektesmeldingXML();
-        return sendInnJournalpost(xml, "409593578", "ab0047", "I000067", aktørId); //TODO hva skal verdi kodene være her?
+        String aktørId  = scenario.getPersonopplysninger().getSøker().getAktørIdent();
+        String behandlingstemaOffisiellKode = "ab0047";
+        String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
+        
+        JournalpostModell journalpostModell = JournalpostModellGenerator.foreldrepengeSøknadFødselJournalpost(xml, scenario.getPersonopplysninger().getSøker().getIdent());
+        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
+        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
+        
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
+        journalpostModell.setSakId(String.valueOf(sakId));
+        return sakId;
     }
     
     /*

@@ -21,9 +21,9 @@ public class Inntektsmelding extends FpsakTestBase{
         
         System.out.println(inntektsmelding.createInntektesmeldingXML());
         
-        /*
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        fordel.sendInnInntektsmelding(inntektsmelding, testscenario.getPersonopplysninger().getSøker().getAktørIdent());
-        */
+        long saksnummer = fordel.sendInnInntektsmelding(inntektsmelding, testscenario);
+        
+        System.out.println(saksnummer);
     }
 }

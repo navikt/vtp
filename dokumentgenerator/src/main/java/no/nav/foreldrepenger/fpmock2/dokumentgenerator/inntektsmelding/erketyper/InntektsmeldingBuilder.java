@@ -7,28 +7,28 @@ import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakBeregnetInntektEndringKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakUtsettelseKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Arbeidsforhold;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Arbeidsgiver;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.ArbeidsgiverperiodeListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Avsendersystem;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.AvtaltFerieListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.EndringIRefusjon;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.EndringIRefusjonsListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.GjenopptakelseNaturalytelseListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.GraderingIForeldrepenger;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.GraderingIForeldrepengerListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Inntekt;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.InntektsmeldingM;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Kontaktinformasjon;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.NaturalytelseDetaljer;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.ObjectFactory;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.OpphoerAvNaturalytelseListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Periode;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Refusjon;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.Skjemainnhold;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.SykepengerIArbeidsgiverperioden;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.UtsettelseAvForeldrepenger;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.UtsettelseAvForeldrepengerListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Arbeidsforhold;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Arbeidsgiver;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.ArbeidsgiverperiodeListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Avsendersystem;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.AvtaltFerieListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.EndringIRefusjon;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.EndringIRefusjonsListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.GjenopptakelseNaturalytelseListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.GraderingIForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.GraderingIForeldrepengerListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Inntekt;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.InntektsmeldingM;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Kontaktinformasjon;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.NaturalytelseDetaljer;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.ObjectFactory;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.OpphoerAvNaturalytelseListe;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Periode;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Refusjon;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Skjemainnhold;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.SykepengerIArbeidsgiverperioden;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.UtsettelseAvForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.UtsettelseAvForeldrepengerListe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -208,6 +208,11 @@ public class InntektsmeldingBuilder {
     }
     
     public InntektsmeldingBuilder addGradertperiode(int arbeidsprosent, Periode periode) {
+        if(null == this.arbeidsforhold.getGraderingIForeldrepengerListe()) {
+            ObjectFactory objectFactory = new ObjectFactory();
+            arbeidsforhold.setGraderingIForeldrepengerListe(objectFactory.createArbeidsforholdGraderingIForeldrepengerListe(objectFactory.createGraderingIForeldrepengerListe()));
+        }
+        
         GraderingIForeldrepenger gradering = createGraderingIForeldrepenger(new BigDecimal(arbeidsprosent), periode);
         this.arbeidsforhold.getGraderingIForeldrepengerListe().getValue().getGraderingIForeldrepenger().add(gradering);
         return this;
@@ -241,13 +246,11 @@ public class InntektsmeldingBuilder {
         }
     }
 
-    public static Arbeidsgiver createArbeidsgiver(String juridiskOrganisasjonsnummer,
-                                                  String virksomhetsnummer,
+    public static Arbeidsgiver createArbeidsgiver(String virksomhetsnummer,
                                                   String kontaktinformasjonTLF){
 
         Arbeidsgiver arbeidsgiver = new Arbeidsgiver();
-        arbeidsgiver.setJuridiskEnhet(juridiskOrganisasjonsnummer);
-        arbeidsgiver.setVirksomhetsnummer(juridiskOrganisasjonsnummer);
+        arbeidsgiver.setVirksomhetsnummer(virksomhetsnummer);
 
         Kontaktinformasjon kontaktinformasjon = new Kontaktinformasjon();
         kontaktinformasjon.setTelefonnummer(kontaktinformasjonTLF);

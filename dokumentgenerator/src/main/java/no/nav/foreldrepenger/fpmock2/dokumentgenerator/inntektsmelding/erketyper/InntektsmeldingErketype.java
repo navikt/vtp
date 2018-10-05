@@ -7,7 +7,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.I
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20180618.*;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -62,14 +62,12 @@ public class InntektsmeldingErketype {
         if (request.getOrganisasjonsnummer() != null) {
             inntektsmeldingBuilder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(
                     request.getOrganisasjonsnummer(),
-                    request.getOrganisasjonsnummer(),
                     "41925090"
             ));
         }
 
         if (request.getOrganisasjonsnummer() == null && request.getEksempelArbeidsgiver() != null) {
             inntektsmeldingBuilder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(
-                    request.getEksempelArbeidsgiver().getOrgNummer(),
                     request.getEksempelArbeidsgiver().getVirkNummer(),
                     request.getEksempelArbeidsgiver().getKontaktInfoTLF()));
         }
@@ -215,7 +213,7 @@ public class InntektsmeldingErketype {
                                                                     ÅrsakInnsendingKodeliste.NY.NY,
                                                                     fnr,
                                                                     startDatoForeldrepenger);
-        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(inntektsperiode.getOrgnr(), inntektsperiode.getOrgnr(), "41925090"));
+        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(inntektsperiode.getOrgnr(), "41925090"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
             "", //TODO arbeidsforhold id 
             null,
