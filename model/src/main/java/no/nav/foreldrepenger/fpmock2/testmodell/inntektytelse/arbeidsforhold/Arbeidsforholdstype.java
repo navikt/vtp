@@ -8,7 +8,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-class Arbeidsforholdstype {
+public class Arbeidsforholdstype {
 
     private static List<String> VALID_KODER;
 

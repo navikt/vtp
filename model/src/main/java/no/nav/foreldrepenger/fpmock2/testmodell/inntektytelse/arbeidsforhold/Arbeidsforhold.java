@@ -13,7 +13,7 @@ public class Arbeidsforhold {
     @JsonProperty("arbeidsforholdId")
     private String arbeidsforholdId;
 
-    private String arbeidsforholdIdnav;
+    private Long arbeidsforholdIdnav;
 
     @JsonProperty("ansettelsesperiodeTom")
     private LocalDate ansettelsesperiodeTom;
@@ -33,5 +33,75 @@ public class Arbeidsforhold {
     private String opplyserOrgnr;
 
 
+    public List<Arbeidsavtale> getArbeidsavtaler() {
+        return arbeidsavtaler;
+    }
 
+    public void setArbeidsavtaler(List<Arbeidsavtale> arbeidsavtaler) {
+        this.arbeidsavtaler = arbeidsavtaler;
+    }
+
+    public String getArbeidsforholdId() {
+        return arbeidsforholdId;
+    }
+
+    public void setArbeidsforholdId(String arbeidsforholdId) {
+        this.arbeidsforholdId = arbeidsforholdId;
+    }
+
+    public Long getArbeidsforholdIdnav() {
+        return arbeidsforholdIdnav;
+    }
+
+    public void setArbeidsforholdIdnav(Long arbeidsforholdIdnav) {
+        this.arbeidsforholdIdnav = arbeidsforholdIdnav;
+    }
+
+    public LocalDate getAnsettelsesperiodeTom() {
+        return ansettelsesperiodeTom;
+    }
+
+    public void setAnsettelsesperiodeTom(LocalDate ansettelsesperiodeTom) {
+        this.ansettelsesperiodeTom = ansettelsesperiodeTom;
+    }
+
+    public LocalDate getAnsettelsesperiodeFom() {
+        return ansettelsesperiodeFom;
+    }
+
+    public void setAnsettelsesperiodeFom(LocalDate ansettelsesperiodeFom) {
+        this.ansettelsesperiodeFom = ansettelsesperiodeFom;
+    }
+
+    public Arbeidsforholdstype getArbeidsforholdstype() {
+        return arbeidsforholdstype;
+    }
+
+    public void setArbeidsforholdstype(Arbeidsforholdstype arbeidsforholdstype) {
+        this.arbeidsforholdstype = arbeidsforholdstype;
+    }
+
+    public List<AntallTimerIPerioden> getTimeposteringer() {
+        return timeposteringer;
+    }
+
+    public void setTimeposteringer(List<AntallTimerIPerioden> timeposteringer) {
+        this.timeposteringer = timeposteringer;
+    }
+
+    public String getArbeidsgiverOrgnr() {
+        return arbeidsgiverOrgnr;
+    }
+
+    public void setArbeidsgiverOrgnr(String arbeidsgiverOrgnr) {
+        this.arbeidsgiverOrgnr = arbeidsgiverOrgnr;
+    }
+
+    public String getOpplyserOrgnr() {
+        return opplyserOrgnr;
+    }
+
+    public void setOpplyserOrgnr(String opplyserOrgnr) {
+        this.opplyserOrgnr = opplyserOrgnr;
+    }
 }

@@ -63,12 +63,19 @@
 				"arbeidsforholdId": "et vanlig arbeidsforhold",
 				"ansettelsesperiodeFom": "now() - P4M",
 				"arbeidsforholdstype": "Ordinært arbeidsforhold",
+
 				"arbeidsavtaler" : [
 					{
-						"stillingsprosent" : 100
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 100,
+						"beregnetAntallTimerPerUke": "30"
 					},
 					{
-						"stillingsprosent" : 50
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "30",
+						"stillingsprosent" : 50,
+						"beregnetAntallTimerPerUke": "20"
 					}
 				]
 
@@ -76,7 +83,22 @@
 			{
 				"arbeidsforholdId": "et uvanlig forhold",
 				"ansettelsesperiodeFom": "now() - P4Y",
-				"ansettelsesperiodeTom": "now() - P4M"
+				"ansettelsesperiodeTom": "now() - P4M",
+				"arbeidsforholdstype": "Ordinært arbeidsforhold",
+				"arbeidsavtaler" : [
+					{
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 100,
+						"beregnetAntallTimerPerUke": "30"
+					},
+					{
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "30",
+						"stillingsprosent" : 50,
+						"beregnetAntallTimerPerUke": "20"
+					}
+				]
 			}
 		]
 	}

@@ -28,43 +28,59 @@ public class ArbeidsforholdAdapter {
 
     private ObjectFactory objectFactory = new ObjectFactory();
 
-    public Arbeidsforhold fra(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforholdModell){
+    public Arbeidsforhold fra(String fnr, no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforholdModell){
 
-        //TODO - Skriv mapping her.
-        return null;
+        Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
+        arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
+        //arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
+
+        Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
+        aftype.setValue(arbeidsforholdModell.getArbeidsforholdstype().getKode());
+        arbeidsforhold.setArbeidsforholdstype(aftype);
+
+        Gyldighetsperiode enansperiode = objectFactory.createGyldighetsperiode();
+        enansperiode.setFom(ConversionUtils.convertToXMLGregorianCalendar(arbeidsforholdModell.getAnsettelsesperiodeFom()));
+        if(arbeidsforholdModell.getAnsettelsesperiodeTom() != null){
+            enansperiode.setTom(ConversionUtils.convertToXMLGregorianCalendar(arbeidsforholdModell.getAnsettelsesperiodeTom()));
+        }
+        AnsettelsesPeriode ansperiode = objectFactory.createAnsettelsesPeriode();
+        ansperiode.setPeriode(enansperiode);
+        arbeidsforhold.setAnsettelsesPeriode(ansperiode);
+
+        for (no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtale : arbeidsforholdModell.getArbeidsavtaler()) {
+            arbeidsforhold.getArbeidsavtale().add(fra(arbeidsavtale));
+        }
+
+        Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
+        arbeidsgiver.setOrgnummer(arbeidsforholdModell.getArbeidsgiverOrgnr());
+        arbeidsforhold.setArbeidsgiver(arbeidsgiver);
+
+        Organisasjon opplyser = objectFactory.createOrganisasjon();
+        opplyser.setOrgnummer(arbeidsforholdModell.getOpplyserOrgnr());
+        arbeidsforhold.setOpplysningspliktig(opplyser);
+
+        Person person = objectFactory.createPerson();
+        NorskIdent norskIdent = new NorskIdent();
+        norskIdent.setIdent(fnr);
+        person.setIdent(norskIdent);
+        arbeidsforhold.setArbeidstaker(person);
+        arbeidsforhold.setArbeidsforholdInnrapportertEtterAOrdningen(true);
+
+        return arbeidsforhold;
     }
 
-
-    public List<Arbeidsforhold> hentArbeidsforhold(NorskIdent ident, LocalDate fom, LocalDate tom) {
-        List<Arbeidsforhold> returliste = new ArrayList<>();
-        returliste.add(lagEksempelFastArbeidsforhold(ident));
-        //returliste.add(lagEksempelTimeArbeidsforhold(ident));
-
-        return returliste;
-    }
-
-    private Arbeidsavtale lagEksempelArbeidsavtale (boolean fast) {
+    public Arbeidsavtale fra(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtaleModell){
         Arbeidsavtale arbeidsavtale = objectFactory.createArbeidsavtale();
 
         Yrker yrke = objectFactory.createYrker();
         Avloenningstyper loenn = objectFactory.createAvloenningstyper();
-        if (fast) {
-            yrke.setKodeRef("9133117");
-            yrke.setValue("KJØKKENMEDHJELPER");
-            loenn.setKodeRef("fast");
-            loenn.setValue("Fastlønn");
-            arbeidsavtale.setAvtaltArbeidstimerPerUke(lagBD("10.0"));
-            arbeidsavtale.setStillingsprosent(lagBD("27"));
-            arbeidsavtale.setBeregnetAntallTimerPrUke(lagBD("2.7"));
-        } else {
-            yrke.setKodeRef("5221126");
-            yrke.setValue("BUTIKKMEDARBEIDER");
-            loenn.setKodeRef("time");
-            loenn.setValue("Timelønn");
-            arbeidsavtale.setAvtaltArbeidstimerPerUke(lagBD("37.5"));
-            arbeidsavtale.setStillingsprosent(lagBD("60"));
-            arbeidsavtale.setBeregnetAntallTimerPrUke(lagBD("22"));
-        }
+
+        //TODO: Test og fjern / eller bygg i kodeverk
+        yrke.setValue("KJØKKENMEDHJELPER"); // "KJØKKENMEDHJELPER"
+        loenn.setValue(arbeidsavtaleModell.getAvlønningstype().getKode()); // Fastlønn
+        arbeidsavtale.setAvtaltArbeidstimerPerUke(lagBD(arbeidsavtaleModell.getAvtaltArbeidstimerPerUke()));
+        arbeidsavtale.setStillingsprosent(lagBD(arbeidsavtaleModell.getStillingsprosent()));
+        arbeidsavtale.setBeregnetAntallTimerPrUke(lagBD(arbeidsavtaleModell.getBeregnetAntallTimerPerUke()));
 
         arbeidsavtale.setYrke(yrke);
         arbeidsavtale.setAvloenningstype(loenn);
@@ -72,39 +88,6 @@ public class ArbeidsforholdAdapter {
         return arbeidsavtale;
     }
 
-    private Arbeidsforhold lagEksempelFastArbeidsforhold (NorskIdent ident) {
-        Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
-        arbeidsforhold.setArbeidsforholdID("A01--Altinn");
-        arbeidsforhold.setArbeidsforholdIDnav(32994858);
-
-        Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
-        aftype.setKodeRef("ordinaertArbeidsforhold");
-        aftype.setValue("Ordinært InfotrygdArbeidsforhold");
-        arbeidsforhold.setArbeidsforholdstype(aftype);
-
-        Gyldighetsperiode enansperiode = objectFactory.createGyldighetsperiode();
-        enansperiode.setFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2003, 8, 1)));
-        AnsettelsesPeriode ansperiode = objectFactory.createAnsettelsesPeriode();
-        ansperiode.setPeriode(enansperiode);
-        arbeidsforhold.setAnsettelsesPeriode(ansperiode);
-
-        arbeidsforhold.getArbeidsavtale().add(lagEksempelArbeidsavtale(true));
-
-        Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
-        arbeidsgiver.setOrgnummer("976037286");
-        arbeidsforhold.setArbeidsgiver(arbeidsgiver);
-
-        Organisasjon opplyser = objectFactory.createOrganisasjon();
-        opplyser.setOrgnummer("976030788");
-        arbeidsforhold.setOpplysningspliktig(opplyser);
-
-        Person person = objectFactory.createPerson();
-        person.setIdent(ident);
-        arbeidsforhold.setArbeidstaker(person);
-        arbeidsforhold.setArbeidsforholdInnrapportertEtterAOrdningen(true);
-
-        return arbeidsforhold;
-    }
 
     private Arbeidsforhold lagEksempelTimeArbeidsforhold (NorskIdent ident) {
         Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
@@ -125,7 +108,7 @@ public class ArbeidsforholdAdapter {
         arbeidsforhold.getAntallTimerForTimeloennet().add(lagTimePostering("140", ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2017, 5, 2))));
         arbeidsforhold.getAntallTimerForTimeloennet().add(lagTimePostering("170", ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2017, 8, 2))));
 
-        arbeidsforhold.getArbeidsavtale().add(lagEksempelArbeidsavtale(false));
+        //arbeidsforhold.getArbeidsavtale().add(lagEksempelArbeidsavtale(false));
 
         Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
         arbeidsgiver.setOrgnummer("986507035");
@@ -144,6 +127,11 @@ public class ArbeidsforholdAdapter {
     }
 
     private BigDecimal lagBD(String number) {
+        BigDecimal bd = new BigDecimal(number);
+        return bd;
+    }
+
+    private BigDecimal lagBD(Integer number) {
         BigDecimal bd = new BigDecimal(number);
         return bd;
     }

@@ -105,14 +105,15 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
             ArbeidsforholdAdapter arbeidsforholdAdapter = new ArbeidsforholdAdapter();
 
-            Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(request.getIdent().getIdent());
+            String fnr = request.getIdent().getIdent();
+            Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
 
             if(inntektYtelseModell.isPresent() && inntektYtelseModell.get().getArbeidsforholdModell() != null){
                 ArbeidsforholdModell arbeidsforholdModell = inntektYtelseModell.get().getArbeidsforholdModell();
                 List<Arbeidsforhold> responseArbeidsforhold = new ArrayList<>();
 
                 for(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforhold : arbeidsforholdModell.getArbeidsforhold()){
-                    responseArbeidsforhold.add(arbeidsforholdAdapter.fra(arbeidsforhold));
+                    responseArbeidsforhold.add(arbeidsforholdAdapter.fra(fnr, arbeidsforhold));
                 }
 
                 FinnArbeidsforholdPrArbeidstakerResponse response = new FinnArbeidsforholdPrArbeidstakerResponse();

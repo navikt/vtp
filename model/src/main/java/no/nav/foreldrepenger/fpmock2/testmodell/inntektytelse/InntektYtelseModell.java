@@ -62,7 +62,7 @@ public class InntektYtelseModell {
     }
 
     public ArbeidsforholdModell getArbeidsforholdModell() {
-        if(null != arbeidsforholdModell){
+        if(null == arbeidsforholdModell){
             this.arbeidsforholdModell = new ArbeidsforholdModell();
         }
         return arbeidsforholdModell;
