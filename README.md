@@ -20,7 +20,7 @@ Følgende properties må settes i fpsak
 * Journal_v2.url=https://localhost:8063/joark/Journal/v2
 * InngaaendeJournal_v1.url=https://localhost:8063/joark/InngaaendeJournal/v1
 * #BehandleInngaaendeJournal_v1.url=MANGLER MANGLER MANGLER, portes fra vl-mock
-* #Dokumentproduksjon_v2.url= MANGLER MANGLER MANGLER
+* Dokumentproduksjon_v2.url=https://localhost:8063/dokprod/ws/dokumentproduksjon/v2
 * BehandleSak_v2.url=https://localhost:8063/nav-gsak-ws/BehandleSakV2
 * Behandleoppgave_v1.url=https://localhost:8063/nav-gsak-ws/BehandleOppgaveV1
 * Oppgave_v3.url=https://localhost:8063/nav-gsak-ws/OppgaveV3
@@ -32,7 +32,7 @@ Følgende properties må settes i fpsak
 * Arbeidsforhold_v3.url=https://localhost:8063/aareg-core/ArbeidsforholdService/v3
 * Organisasjon_v4.url=https://localhost:8063/ereg/ws/OrganisasjonService/v4
 * Medlem_v2.url=https://localhost:8063/medl2/ws/Medlemskap/v2
-* #Kodeverk_v2.url=MANGLER MANGLER MANGLER
+* Kodeverk_v2.url=https://localhost:8063/kodeverk/ws/Kodeverk/v2
 * MeldekortUtbetalingsgrunnlag_v1.url=https://localhost:8063/ail_ws/MeldekortUtbetalingsgrunnlag_v1
 * #SigrunRestBeregnetSkatt.url= MANGLER MANGLER MANGLER, port fra httpss://fpmock-t10.nais.preprod.local
 * Arbeidsfordeling_v1.url=https://localhost:8063/norg2/ws/Arbeidsfordeling/v1

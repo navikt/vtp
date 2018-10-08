@@ -47,7 +47,8 @@ public class Fordel extends Aktoer{
         JournalpostModell journalpostModell = JournalpostModellGenerator.foreldrepengeSøknadFødselJournalpost(xml, scenario.getPersonopplysninger().getSøker().getIdent());
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
         String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
-        
+
+        //TODO: Avled behandlingstema fra kode
         String behandlingstemaOffisiellKode = "ab0050";
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
         

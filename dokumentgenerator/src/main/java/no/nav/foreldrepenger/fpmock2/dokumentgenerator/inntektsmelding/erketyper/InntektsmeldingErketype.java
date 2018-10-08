@@ -1,5 +1,13 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.EksempelArbeidsgiver;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.InntektsmeldingDTO;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
@@ -7,16 +15,11 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.I
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.EndringIRefusjon;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.GraderingIForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.NaturalytelseDetaljer;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.Periode;
+import no.seres.xsd.nav.inntektsmelding_m._20180924.UtsettelseAvForeldrepenger;
 
 
 public class InntektsmeldingErketype {
@@ -183,12 +186,13 @@ public class InntektsmeldingErketype {
         List<InntektsmeldingBuilder> intektsmeldinger = new ArrayList<>();
         String fnr = testscenario.getPersonopplysninger().getSøker().getIdent();
         InntektYtelseModell modell = testscenario.getSøkerInntektYtelse();
-        
+
         for (Inntektsperiode periode : hentGjeldendeInntektsperioder(modell.getInntektskomponentModell().getInntektsperioder())) {
-            InntektsmeldingBuilder intektsmelding = fromInntektsperiode(periode,
+            InntektsmeldingBuilder inntektsmelding = fromInntektsperiode(periode,
                                                                         fnr,
                                                                         startDatoForeldrepenger);
-            intektsmeldinger.add(intektsmelding);
+            inntektsmelding.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
+            intektsmeldinger.add(inntektsmelding);
         }
         
         return intektsmeldinger;

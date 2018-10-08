@@ -136,7 +136,14 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkRequest")
     @ResponseWrapper(localName = "HentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkResponse")
-    public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest hentArbeidsforholdHistorikkRequest) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
-        throw new UnsupportedOperationException("Ikke implementert");
+    public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest request) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
+
+        request.getArbeidsforholdId();
+
+
+        HentArbeidsforholdHistorikkResponse response = new HentArbeidsforholdHistorikkResponse();
+
+
+
     }
 }
