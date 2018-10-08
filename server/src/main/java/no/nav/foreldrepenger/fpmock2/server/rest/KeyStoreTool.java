@@ -17,11 +17,15 @@ import org.jose4j.base64url.Base64Url;
 import org.jose4j.jwk.PublicJsonWebKey;
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.lang.JoseException;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.x509.impl.KeyStoreX509CredentialAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class KeyStoreTool {
     private static RsaJsonWebKey jwk = null;
+    
+    private static KeyStore keystore = null;
 
     private static final Logger log = LoggerFactory.getLogger(KeyStoreTool.class);
 
@@ -29,9 +33,9 @@ public class KeyStoreTool {
 
         PublicKey myPublicKey;
         PrivateKey myPrivateKey;
-        char[] keystorePassword = System.getProperty("no.nav.modig.security.appcert.password").toCharArray();
-        String keystorePath = System.getProperty("no.nav.modig.security.appcert.keystore");
-        String keyAndCertAlias = System.getProperty("no.nav.modig.security.appkey", "app-key");
+        char[] keystorePassword = getKeyStoreAndKeyPassword();
+        String keystorePath = getDefaultKeyStorePath();
+        String keyAndCertAlias = getKeyAndCertAlias();
 
         try (FileInputStream keystoreFile = new FileInputStream(new File(keystorePath))) {
             KeyStore ks = KeyStore.getInstance("JKS");
@@ -42,6 +46,8 @@ public class KeyStoreTool {
             myPrivateKey = pk.getPrivateKey();
             Certificate cert = ks.getCertificate(keyAndCertAlias);
             myPublicKey = cert.getPublicKey();
+            
+            KeyStoreTool.keystore = ks;
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableEntryException e) {
             log.error("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
             throw new RuntimeException(e);
@@ -58,6 +64,28 @@ public class KeyStoreTool {
 
     }
 
+    public static String getDefaultKeyStorePath() {
+        return System.getProperty("no.nav.modig.security.appcert.keystore");
+    }
+
+    public static char[] getKeyStoreAndKeyPassword() {
+        return System.getProperty("no.nav.modig.security.appcert.password").toCharArray();
+    }
+
+    public static String getKeyAndCertAlias() {
+        return System.getProperty("no.nav.modig.security.appkey", "app-key");
+    }
+    
+    
+    public static synchronized Credential getDefaultCredential() {
+        if (keystore == null) {
+            init();
+            org.apache.xml.security.Init.init();
+        }
+        KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(),  getKeyStoreAndKeyPassword());
+        return credentialAdapter;
+    }
+    
     public static synchronized RsaJsonWebKey getJsonWebKey() {
         if (jwk == null) {
             init();

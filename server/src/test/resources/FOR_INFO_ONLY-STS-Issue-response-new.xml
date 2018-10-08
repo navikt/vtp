@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+	<S:Body>
+		<RequestSecurityTokenResponseCollection xmlns="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
+			xmlns:ns2="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+			xmlns:ns3="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+			xmlns:ns4="http://www.w3.org/2005/08/addressing" xmlns:ns5="http://docs.oasis-open.org/ws-sx/ws-trust/200802"
+			xmlns:ns6="http://www.w3.org/2000/09/xmldsig#">
+			<RequestSecurityTokenResponse>
+				<TokenType>http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0</TokenType>
+				<RequestedSecurityToken>
+					<saml2:Assertion xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+						xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="_8d4d03a9-c78f-4b04-9090-224109f5af5c"
+						IssueInstant="2018-10-10T13:37:42.389Z" Version="2.0" xsi:type="saml2:AssertionType">
+						<saml2:Issuer>VTP</saml2:Issuer>
+						<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+							<ds:SignedInfo>
+								<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+								<ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+								<ds:Reference URI="#_8d4d03a9-c78f-4b04-9090-224109f5af5c">
+									<ds:Transforms>
+										<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+										<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#">
+											<ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="xsd" />
+										</ds:Transform>
+									</ds:Transforms>
+									<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+									<ds:DigestValue>uTqyUXv8HtaQt1jLS769ncOlya0Wuu7MFDc2UuWLOAg=</ds:DigestValue>
+								</ds:Reference>
+							</ds:SignedInfo>
+							<ds:SignatureValue>d6kXrdG/SiPQaKCC6eRPWY8Rac9PxkhmT7scGJ0nKi9PNVeff/POrL/1ur2nJhoNdaNeI3cCoVpK&#xD;
+								rsVp+TTG7rtXBMQ2GCj7DuQjISyCz3wYPlp6R7+9O/NHs8HSG7RRDV49RS9i6nK6SDmKs44jAHyF&#xD;
+								Hmy6IDiaxqgtMfDZHF/iZmZkVZbiDQ8v3DVqP+lSI+9A7O/ETWwx8B0eqDvfB8GF3ZQhzg7wMgfX&#xD;
+								8ljDsRNTzAehsPqDCqtQsgHA6JuF2WYeaAGGrV4WfT40g49d+e5tG5wYrWL9MNg9Xo0ujD9IxaLU&#xD;
+								Nu5bNtHsK2IUgPZApD6TTZxji89LF21eE1vuXQ==</ds:SignatureValue>
+							<ds:KeyInfo>
+								<ds:X509Data>
+									<ds:X509Certificate>MIIGojCCBYqgAwIBAgITGgAAIkhgfVV1yohv1wACAAAiSDANBgkqhkiG9w0BAQsFADBNMRUwEwYK
+										CZImiZPyLGQBGRYFbG9jYWwxFDASBgoJkiaJk/IsZAEZFgR0ZXN0MR4wHAYDVQQDExVEMjYgSXNz
+										dWluZyBDQSBJbnRlcm4wHhcNMTcwNjA5MTE0MTU3WhcNMTkwNjA5MTE1MTU3WjBxMRUwEwYKCZIm
+										iZPyLGQBGRYFbG9jYWwxFDASBgoJkiaJk/IsZAEZFgR0ZXN0MRgwFgYDVQQLEw9TZXJ2aWNlQWNj
+										b3VudHMxFTATBgNVBAsTDEFwcGxBY2NvdW50czERMA8GA1UEAxMIc3J2ZHJhY28wggEiMA0GCSqG
+										SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCA+S61qGs5i8ObFzByYBOA0QQWBSB271glD+3zg7mA0c6a
+										nWtCCHKNJt2KlEt87kEDea17ToXOEDsOtTj6oy0jr/r6hN/NJJIvcZc19rmyYBYltmUdOYPyqurk
+										O/DPkC6lCMRm5+0htrvF/6XG/DCQCtN354x4qtxwbJ7dRAU1JaKcdpDJDNUmAQnOlv32DT6+cwBb
+										5chdj1TCk27M6Z3wReE5IbqIVXSmpRtsIK9N4UBW07rZpJ7Mrt9R26bBSoEyaKU144D/C+yMUJuf
+										SRCcQEjpb3JesJzOYsrnwE0J4D7Xa80hPfN4dY8M8tOfmSMBzECA+MDcqJl5R8Z3inHDAgMBAAGj
+										ggNVMIIDUTAdBgNVHQ4EFgQUkM3L7T8TvTf8t6/0quEZdMI4RbQwHwYDVR0jBBgwFoAU/ZPNA4Il
+										h8Mdr4P0Oc1USAY8urUwggEbBgNVHR8EggESMIIBDjCCAQqgggEGoIIBAoaBxGxkYXA6Ly8vY249
+										RDI2JTIwSXNzdWluZyUyMENBJTIwSW50ZXJuLENOPUQyNkRSVlcwNTEsQ049Q0RQLENOPVB1Ymxp
+										YyUyMGtleSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9dGVzdCxE
+										Qz1sb2NhbD9jZXJ0aWZpY2F0ZVJldm9jYXRpb25MaXN0P2Jhc2U/b2JqZWN0Q2xhc3M9Y1JMRGlz
+										dHJpYnV0aW9uUG9pbnSGOWh0dHA6Ly9jcmwudGVzdC5sb2NhbC9jcmwvRDI2JTIwSXNzdWluZyUy
+										MENBJTIwSW50ZXJuLmNybDCCAVcGCCsGAQUFBwEBBIIBSTCCAUUwgbkGCCsGAQUFBzAChoGsbGRh
+										cDovLy9jbj1EMjYlMjBJc3N1aW5nJTIwQ0ElMjBJbnRlcm4sQ049QUlBLENOPVB1YmxpYyUyMGtl
+										eSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9dGVzdCxEQz1sb2Nh
+										bD9jQUNlcnRpZmljYXRlP2Jhc2U/b2JqZWN0Q2xhc3M9Y2VydGlmaWNhdGlvbkF1dGhvcml0eTAn
+										BggrBgEFBQcwAYYbaHR0cDovL29jc3AudGVzdC5sb2NhbC9vY3NwMF4GCCsGAQUFBzAChlJodHRw
+										Oi8vY3JsLnRlc3QubG9jYWwvY3JsL0QyNkRSVlcwNTEudGVzdC5sb2NhbF9EMjYlMjBJc3N1aW5n
+										JTIwQ0ElMjBJbnRlcm4oMikuY3J0MA4GA1UdDwEB/wQEAwIFoDA9BgkrBgEEAYI3FQcEMDAuBiYr
+										BgEEAYI3FQiC/PpShtLaSIPZlTyE+pRygp3WUhKH898rhfe5bAIBZAIBAjAdBgNVHSUEFjAUBggr
+										BgEFBQcDAQYIKwYBBQUHAwIwJwYJKwYBBAGCNxUKBBowGDAKBggrBgEFBQcDATAKBggrBgEFBQcD
+										AjANBgkqhkiG9w0BAQsFAAOCAQEAS5Vc6fyUR5+qrRNo47KiwTamF9pSUTtqIi69rc7t/TentKrs
+										uvVwNo7T6QZKpmjzaFbYYZ6GmIy4dBTiA8YdGZYThrrILWyjPhNew7/+FrxeppzppyhSLtL+/DXs
+										vWUZwu9FRHKVFzsFxIIIGTME1fNR2g45lB/KhfgcDHYRbNxTtQM34FXDGcm6nhh0/aWZ/QqJh2pW
+										XuA4djr7vufO2V/wsFiLvw9bNUJDRRig4gSlTuKXdHpaOGedCZmCxadJfYlXgFgUS6dxbVkfosU3
+										YanpiBsvbQHR+DmNGqPmhu7ALBDwM3KqohE/h/yYDpKITlbteLCoRlE+kLA5DnybuA==</ds:X509Certificate>
+								</ds:X509Data>
+							</ds:KeyInfo>
+						</ds:Signature>
+						<saml2:Subject>
+							<saml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" NameQualifier="http://cxf.apache.org/sts">app-key</saml2:NameID>
+							<saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer" />
+						</saml2:Subject>
+						<saml2:Conditions NotBefore="2018-10-10T13:37:42.420Z" NotOnOrAfter="2018-10-10T14:07:42.420Z" />
+						<saml2:AttributeStatement>
+							<saml2:Attribute Name="token-requestor" NameFormat="http://cxf.apache.org/sts">
+								<saml2:AttributeValue xsi:type="xsd:string">authenticated</saml2:AttributeValue>
+							</saml2:Attribute>
+						</saml2:AttributeStatement>
+					</saml2:Assertion>
+				</RequestedSecurityToken>
+				<RequestedAttachedReference>
+					<ns3:SecurityTokenReference
+						xmlns:wsse11="http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd"
+						wsse11:TokenType="http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0">
+						<ns3:KeyIdentifier ValueType="http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLID">_8d4d03a9-c78f-4b04-9090-224109f5af5c</ns3:KeyIdentifier>
+					</ns3:SecurityTokenReference>
+				</RequestedAttachedReference>
+				<RequestedUnattachedReference>
+					<ns3:SecurityTokenReference
+						xmlns:wsse11="http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd"
+						wsse11:TokenType="http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0">
+						<ns3:KeyIdentifier ValueType="http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLID">_8d4d03a9-c78f-4b04-9090-224109f5af5c</ns3:KeyIdentifier>
+					</ns3:SecurityTokenReference>
+				</RequestedUnattachedReference>
+				<Lifetime>
+					<ns2:Created>2018-10-10T13:37:42.420Z</ns2:Created>
+					<ns2:Expires>2018-10-10T14:07:42.420Z</ns2:Expires>
+				</Lifetime>
+			</RequestSecurityTokenResponse>
+		</RequestSecurityTokenResponseCollection>
+	</S:Body>
+</S:Envelope>

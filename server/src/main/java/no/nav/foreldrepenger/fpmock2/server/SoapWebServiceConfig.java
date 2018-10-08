@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.fpmock2.server;
 import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
+import javax.xml.ws.WebServiceFeature;
 
 import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
@@ -10,6 +11,7 @@ import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 
 import no.nav.abac.pdp.PdpMock;
+import no.nav.foreldrepenger.fpmock2.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
@@ -33,6 +35,7 @@ import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 
 public class SoapWebServiceConfig {
+    
     private JettyHttpServer jettyHttpServer;
 
     public SoapWebServiceConfig(JettyHttpServer jettyHttpServer) {
@@ -42,7 +45,7 @@ public class SoapWebServiceConfig {
     public void setup(TestscenarioBuilderRepository repo, JournalRepository journalRepository) {
         GsakRepo gsakRepo = new GsakRepo();
 
-        //publishWebService(new SecurityTokenServiceMockImpl(), "/SecurityTokenServiceProvider");
+        publishWebService(new SecurityTokenServiceMockImpl(), "/SecurityTokenServiceProvider/");
         
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishWebService(new AktoerServiceMockImpl(repo), "/aktoerregister/ws/Aktoer/v2");
@@ -77,10 +80,10 @@ public class SoapWebServiceConfig {
         publishWebService(new PdpMock(), "/asm-pdp/authorize");
     }
 
-    private void publishWebService(Object ws, String path) {
+    private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
         // binder sammen jetty, tjeneste til JAX-WS Endpoint
         JettyHttpContext context = buildHttpContext(path);
-        Endpoint endpoint = Endpoint.create(ws);
+        Endpoint endpoint = Endpoint.create(ws, features);
         endpoint.publish(context);
     }
 
