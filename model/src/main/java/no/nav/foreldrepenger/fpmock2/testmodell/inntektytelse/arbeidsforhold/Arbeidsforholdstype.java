@@ -14,13 +14,13 @@ public class Arbeidsforholdstype {
 
     static {
         List<String> koder = new ArrayList<>();
-        koder.add("Ordinært arbeidsforhold");
+        koder.add("ordinaertArbeidsforhold");
         //TODO: Fyll ut denne
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
 
-    public static final Arbeidsforholdstype ORDINÆRT_ARBEIDSFORHOLD = new Arbeidsforholdstype("Ordinært arbeidsforhold");
+    public static final Arbeidsforholdstype ORDINÆRT_ARBEIDSFORHOLD = new Arbeidsforholdstype("ordinaertArbeidsforhold");
 
     private String kode;
 

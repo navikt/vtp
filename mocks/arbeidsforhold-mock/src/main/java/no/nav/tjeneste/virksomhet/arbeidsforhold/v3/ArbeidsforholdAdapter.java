@@ -1,24 +1,22 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Organisasjon;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Person;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Yrker;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Avloenningstyper;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Gyldighetsperiode;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AnsettelsesPeriode;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsavtale;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AntallTimerIPerioden;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforholdstyper;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsavtale;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforholdstyper;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Avloenningstyper;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Gyldighetsperiode;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.ObjectFactory;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Organisasjon;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Person;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Yrker;
 
 /**
  * Enkel førsteutgave i påvente av infrastruktur for å generere org.nr. Gir et svar med to arbeidsforhold.
@@ -35,7 +33,7 @@ public class ArbeidsforholdAdapter {
         //arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
-        aftype.setValue(arbeidsforholdModell.getArbeidsforholdstype().getKode());
+        aftype.setKodeRef(arbeidsforholdModell.getArbeidsforholdstype().getKode());
         arbeidsforhold.setArbeidsforholdstype(aftype);
 
         Gyldighetsperiode enansperiode = objectFactory.createGyldighetsperiode();
@@ -89,42 +87,6 @@ public class ArbeidsforholdAdapter {
     }
 
 
-    private Arbeidsforhold lagEksempelTimeArbeidsforhold (NorskIdent ident) {
-        Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
-        arbeidsforhold.setArbeidsforholdID("810986498192000104516");
-        arbeidsforhold.setArbeidsforholdIDnav(34778270);
-
-        Gyldighetsperiode enansperiode = objectFactory.createGyldighetsperiode();
-        enansperiode.setFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2009, 8, 27)));
-        AnsettelsesPeriode ansperiode = objectFactory.createAnsettelsesPeriode();
-        ansperiode.setPeriode(enansperiode);
-        arbeidsforhold.setAnsettelsesPeriode(ansperiode);
-
-        Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
-        aftype.setKodeRef("ordinaertArbeidsforhold");
-        aftype.setValue("Ordinært InfotrygdArbeidsforhold");
-        arbeidsforhold.setArbeidsforholdstype(aftype);
-
-        arbeidsforhold.getAntallTimerForTimeloennet().add(lagTimePostering("140", ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2017, 5, 2))));
-        arbeidsforhold.getAntallTimerForTimeloennet().add(lagTimePostering("170", ConversionUtils.convertToXMLGregorianCalendar(LocalDate.of(2017, 8, 2))));
-
-        //arbeidsforhold.getArbeidsavtale().add(lagEksempelArbeidsavtale(false));
-
-        Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
-        arbeidsgiver.setOrgnummer("986507035");
-        arbeidsforhold.setArbeidsgiver(arbeidsgiver);
-
-        Organisasjon opplyser = objectFactory.createOrganisasjon();
-        opplyser.setOrgnummer("986498192");
-        arbeidsforhold.setOpplysningspliktig(opplyser);
-
-        Person person = objectFactory.createPerson();
-        person.setIdent(ident);
-        arbeidsforhold.setArbeidstaker(person);
-        arbeidsforhold.setArbeidsforholdInnrapportertEtterAOrdningen(true);
-
-        return arbeidsforhold;
-    }
 
     private BigDecimal lagBD(String number) {
         BigDecimal bd = new BigDecimal(number);
