@@ -138,12 +138,10 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkResponse")
     public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest request) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
 
-        request.getArbeidsforholdId();
+        LOG.info("Kall til HentArbeidsforholdHistorikk. Ber om historikk for arbeidsforholdsId: {}", request.getArbeidsforholdId());
 
 
-        HentArbeidsforholdHistorikkResponse response = new HentArbeidsforholdHistorikkResponse();
-
-
+        return new HentArbeidsforholdHistorikkResponse();
 
     }
 }
