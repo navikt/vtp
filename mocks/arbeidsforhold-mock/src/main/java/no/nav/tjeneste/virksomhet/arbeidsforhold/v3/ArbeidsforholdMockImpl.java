@@ -134,7 +134,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
     @WebResult(name = "parameters", targetNamespace = "")
     @RequestWrapper(localName = "hentArbeidsforholdHistorikk", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkRequest")
-    @ResponseWrapper(localName = "HentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
+    @ResponseWrapper(localName = "hentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkResponse")
     public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest request) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
 

@@ -60,9 +60,11 @@
 	"aareg": {
 		"arbeidsforhold": [
 			{
-				"arbeidsforholdId": "et vanlig arbeidsforhold",
+				"arbeidsforholdId": "ARB001-001",
 				"ansettelsesperiodeFom": "now() - P4M",
 				"arbeidsforholdstype": "Ordinært arbeidsforhold",
+				"arbeidsgiverOrgnr": "979191138",
+
 
 				"arbeidsavtaler" : [
 					{
@@ -81,10 +83,11 @@
 
 			},
 			{
-				"arbeidsforholdId": "et uvanlig forhold",
+				"arbeidsforholdId": "ARB001-002",
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"ansettelsesperiodeTom": "now() - P4M",
 				"arbeidsforholdstype": "Ordinært arbeidsforhold",
+				"arbeidsgiverOrgnr": "979191138",
 				"arbeidsavtaler" : [
 					{
 						"avlønningstype": "fastlønn",
