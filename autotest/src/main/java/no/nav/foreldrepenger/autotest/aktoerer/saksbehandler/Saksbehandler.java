@@ -159,8 +159,8 @@ public class Saksbehandler extends Aktoer{
     /*
      * Setter behandling på vent
      */
-    public void settBehandlingPåVent(LocalDate frist, Kode kode) throws Exception {
-        behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, kode));
+    public void settBehandlingPåVent(LocalDate frist, Kode årsak) throws Exception {
+        behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, årsak));
         velgBehandling(valgtBehandling);
     }
     
