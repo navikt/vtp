@@ -1,0 +1,128 @@
+package no.nav.foreldrepenger.autotest;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+
+import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
+import no.nav.foreldrepenger.autotest.aktoerer.saksbehandler.Saksbehandler;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
+import no.nav.foreldrepenger.autotest.klienter.vtp.testscenario.TestscenarioKlient;
+import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
+import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
+import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
+import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
+
+public class FpsakTestBase extends TestBase{
+
+    /*
+     * Aktører
+     */
+    protected Fordel fordel;
+    protected Saksbehandler saksbehandler;
+    protected Saksbehandler overstyrer;
+    protected Saksbehandler beslutter;
+    
+    /*
+     * VTP
+     */
+    //protected TestscenarioRepositoryImpl testscenarioRepository;
+    //protected TestscenarioTemplateRepositoryImpl testscenarioTemplates;
+    protected TestscenarioKlient testscenarioKlient;
+    protected ForeldrepengesoknadXmlErketyper foreldrepengeSøknadErketyper;
+    protected InntektsmeldingErketype inntektsmeldingErketype;
+    
+    @BeforeAll
+    public static void setUpAll() {
+        PropertiesUtils.initProperties();
+    }
+    
+    @BeforeEach
+    void setUp() throws Exception{
+        fordel = new Fordel();
+        saksbehandler = new Saksbehandler();
+        overstyrer = new Saksbehandler();
+        beslutter = new Saksbehandler();
+        
+        //testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+        //testscenarioTemplates = TestscenarioTemplateRepositoryImpl.getInstance();
+        testscenarioKlient = new TestscenarioKlient(new HttpSession());
+        foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();
+        inntektsmeldingErketype = new InntektsmeldingErketype();
+    }
+    
+    protected Kodeverk hentKodeverk() {
+        if(saksbehandler != null && saksbehandler.kodeverk != null) {
+            return saksbehandler.kodeverk;
+        }
+        return null;
+    }
+    
+    protected TestscenarioDto opprettScenario(String id) throws IOException {
+        return testscenarioKlient.opprettTestscenario(id);
+    }
+    
+    protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
+        return null;
+        /*
+        List<InntektsmeldingBuilder> intektsmeldinger = new ArrayList<>();
+        String fnr = testscenario.getPersonopplysninger().getSøker().getIdent();
+        InntektYtelseModell modell = testscenario.getSøkerInntektYtelse();
+
+        for (Inntektsperiode periode : hentGjeldendeInntektsperioder(modell.getInntektskomponentModell().getInntektsperioder())) {
+            InntektsmeldingBuilder inntektsmelding = fromInntektsperiode(periode,
+                                                                        fnr,
+                                                                        startDatoForeldrepenger);
+            inntektsmelding.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
+            intektsmeldinger.add(inntektsmelding);
+        }
+        
+        return intektsmeldinger;
+        */
+    }
+    
+    private List<Inntektsperiode> hentGjeldendeInntektsperioder(List<Inntektsperiode> perioder){
+        Map<String, Inntektsperiode> periodeMap = new HashMap<>();
+        
+        for (Inntektsperiode periode : perioder) {
+            
+            if(periodeMap.get(periode.getOrgnr()) == null || periode.getTom().isAfter(periodeMap.get(periode.getOrgnr()).getTom())) {
+                periodeMap.put(periode.getOrgnr(), periode);
+            }
+        }
+        
+        return new ArrayList<>(periodeMap.values());
+    }
+    
+    private InntektsmeldingBuilder fromInntektsperiode(Inntektsperiode inntektsperiode, String fnr, LocalDate startDatoForeldrepenger) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+                                                                    YtelseKodeliste.FORELDREPENGER,
+                                                                    ÅrsakInnsendingKodeliste.NY.NY,
+                                                                    fnr,
+                                                                    startDatoForeldrepenger);
+        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(inntektsperiode.getOrgnr(), "41925090"));
+        builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+            "", //TODO arbeidsforhold id 
+            null,
+            new BigDecimal(inntektsperiode.getBeløp()),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>()));
+        
+        return builder;
+    }
+    
+}

@@ -26,6 +26,10 @@ public class TestscenarioDto extends TestscenarioReferanse {
     @JsonIgnore
     @JsonProperty("template")
     private TestscenarioTemplate template;
+    
+    public TestscenarioDto() {
+        super(null,  null);
+    }
 
     public TestscenarioDto(TestscenarioTemplate template, String testscenarioId, Map<String, String> variabler,
                            TestscenarioPersonopplysningDto scenarioPersonopplysninger) {

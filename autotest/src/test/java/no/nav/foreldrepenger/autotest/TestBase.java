@@ -1,8 +1,6 @@
 package no.nav.foreldrepenger.autotest;
 
 import java.util.List;
-
-import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import org.junit.jupiter.api.BeforeAll;
 
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
@@ -11,8 +9,7 @@ public abstract class TestBase {
     
     @BeforeAll
     protected static void setUpAll() {
-        PropertiesUtils.initProperties(hentPropertyDir());
-        MiljoKonfigurasjon.initProperties();
+        new MiljoKonfigurasjon();
     }
 	protected void verifiserListeInneholder(List<Object> liste, Object object1) {
 		for (Object object2 : liste) {
@@ -23,8 +20,12 @@ public abstract class TestBase {
 		verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
 	}
 	
-	protected void verifiserLikhet(Object verdi1, Object verdi2) {
-		verifiser(verdi1.equals(verdi2), verdi1 + " != " + verdi2);
+	protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet) {
+		verifiserLikhet(verdiGjeldende, verdiForventet, "Object");
+	}
+	
+	protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet, String verdiNavn) {
+	    verifiser(verdiGjeldende.equals(verdiNavn), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
 	}
 	
 	protected void verifiser(boolean statement) {
@@ -35,13 +36,5 @@ public abstract class TestBase {
 		if(!statement) {
 			throw new RuntimeException("Verifisering feilet: " + message);
 		}
-	}
-	
-	private static String hentPropertyDir() {
-	    String propertyDir = System.getProperty("application.root");
-	    if(null == propertyDir) {
-	        throw new RuntimeException("System property 'application.root' er ikke satt");
-	    }
-	    return propertyDir;
 	}
 }

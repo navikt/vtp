@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+/*
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.launcher.Launcher;
@@ -19,6 +20,7 @@ import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
 import org.junit.platform.launcher.listeners.TestExecutionSummary;
+*/
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +33,8 @@ public class AutotestRestService {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "autotest", notes = ("Kjører alle autotester og rapporterer output"))
     public Response autotest() {
-
+        return null;
+        /*
         LauncherDiscoveryRequestBuilder requestBuilder = LauncherDiscoveryRequestBuilder.request();
         LauncherDiscoveryRequest launcherRequest = requestBuilder
             .selectors(DiscoverySelectors.selectPackage("no.nav.foreldrepenger.autotest.tests"))
@@ -71,6 +74,6 @@ public class AutotestRestService {
         } else {
             return Response.ok(sw.toString()).build();
         }
-
+        */
     }
 }

@@ -97,6 +97,11 @@
 		    <groupId>no.nav.vedtak.fpmock2</groupId>
 		    <artifactId>core</artifactId>
 		</dependency>
+		
+		<dependency>
+		    <groupId>no.nav.vedtak.fpmock2</groupId>
+		    <artifactId>server</artifactId>
+		</dependency>
 
 		<!-- External dependencies -->
 	  	<dependency>

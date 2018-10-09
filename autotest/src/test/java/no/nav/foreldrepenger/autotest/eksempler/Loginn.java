@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.autotest.tests.eksempler;
+package no.nav.foreldrepenger.autotest.eksempler;
 
 import java.io.UnsupportedEncodingException;
 
 import org.junit.jupiter.api.Tag;
 
-import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.FpsakTestBase;
 
 @Tag("eksempel")
 public class Loginn extends FpsakTestBase{

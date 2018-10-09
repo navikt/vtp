@@ -1,19 +1,17 @@
-package no.nav.foreldrepenger.autotest.tests.eksempler;
+package no.nav.foreldrepenger.autotest.eksempler;
 
+import no.nav.foreldrepenger.autotest.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrUttaksperioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
-import no.nav.foreldrepenger.autotest.tests.FpsakTestBase;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
+import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
-import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class OverstyringAvGradering extends FpsakTestBase{
 
     public void skalKunneOverstyreGradering() throws Exception {
-        TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøker().getIdent());
+        TestscenarioDto testscenario = opprettScenario("50");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         //søknad.leggTilPeriode(new periode().gradering(25))
         
         fordel.erLoggetInnUtenRolle();

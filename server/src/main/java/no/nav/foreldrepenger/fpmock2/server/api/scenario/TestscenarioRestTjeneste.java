@@ -50,7 +50,8 @@ public class TestscenarioRestTjeneste {
         
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
-        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker ,fnrAnnenPart);
+        String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
+        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker ,fnrAnnenPart, aktørIdSøker);
         return new TestscenarioDto(template, testscenario.getId(), variabler, scenarioPersonopplysninger);
     }
 

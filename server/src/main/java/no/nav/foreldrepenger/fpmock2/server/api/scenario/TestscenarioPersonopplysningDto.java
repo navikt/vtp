@@ -9,13 +9,20 @@ public class TestscenarioPersonopplysningDto {
 
     @JsonProperty("søkerIdent")
     private String søkerIdent;
+    
+    @JsonProperty("søkerAktørIdent")
+    private String søkerAktørIdent;
 
     @JsonProperty("annenpartIdent")
     private String annenpartIdent;
 
-    public TestscenarioPersonopplysningDto(String søkerIdent, String annenpartIdent) {
+    public TestscenarioPersonopplysningDto() {
+    }
+    
+    public TestscenarioPersonopplysningDto(String søkerIdent, String annenpartIdent, String søkerAktørIdent) {
         this.søkerIdent = søkerIdent;
         this.annenpartIdent = annenpartIdent;
+        this.søkerAktørIdent = søkerAktørIdent;
     }
 
     public String getSøkerIdent() {
@@ -24,6 +31,10 @@ public class TestscenarioPersonopplysningDto {
 
     public String getAnnenpartIdent() {
         return annenpartIdent;
+    }
+
+    public String getSøkerAktørIdent() {
+        return søkerAktørIdent;
     }
 
 }
