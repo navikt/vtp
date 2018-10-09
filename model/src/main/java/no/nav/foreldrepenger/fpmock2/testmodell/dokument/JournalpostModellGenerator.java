@@ -12,17 +12,17 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantfor
 public class JournalpostModellGenerator {
 
 
-    public static JournalpostModell foreldrepengeSøknadFødselJournalpost(String xml, String fnr) {
+    public static JournalpostModell lagJournalpost(String innhold, String fnr, DokumentTilknyttetJournalpost dokumenttype, DokumenttypeId dokumenttypeId) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
 
         DokumentModell dokumentModell = new DokumentModell();
-        dokumentModell.setInnhold(xml);
-        dokumentModell.setDokumentType(DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
-        dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
+        dokumentModell.setInnhold(innhold);
+        dokumentModell.setDokumentType(dokumenttypeId);
+        dokumentModell.setDokumentTilknyttetJournalpost(dokumenttype);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
-                Arkivfiltype.XML, Variantformat.FULLVERSJON, xml.getBytes()
+                Arkivfiltype.XML, Variantformat.FULLVERSJON, innhold.getBytes()
         ));
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
                 Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]

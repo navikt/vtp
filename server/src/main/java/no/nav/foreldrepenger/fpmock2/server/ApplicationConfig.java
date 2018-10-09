@@ -17,6 +17,7 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestTjeneste;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +59,8 @@ public class ApplicationConfig extends Application {
         classes.add(SigrunMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
-        
+        classes.add(JournalforingRestTjeneste.class);
+
         // tester
         classes.add(AutotestRestService.class);
 
