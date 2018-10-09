@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arb
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.sigrun.SigrunModell;
 
 @JsonInclude(Include.NON_EMPTY)
 public class InntektYtelseModell {
@@ -24,6 +25,9 @@ public class InntektYtelseModell {
 
     @JsonProperty("aareg")
     private ArbeidsforholdModell arbeidsforholdModell;
+
+    @JsonProperty("sigrun")
+    private SigrunModell sigrunModell;
 
     public InntektYtelseModell() {
     }
@@ -70,5 +74,16 @@ public class InntektYtelseModell {
 
     public void setArbeidsforholdModell(ArbeidsforholdModell arbeidsforholdModell) {
         this.arbeidsforholdModell = arbeidsforholdModell;
+    }
+
+    public SigrunModell getSigrunModell() {
+        if (sigrunModell == null) {
+            this.sigrunModell = new SigrunModell();
+        }
+        return sigrunModell;
+    }
+
+    public void setSigrunModell(SigrunModell sigrunModell) {
+        this.sigrunModell = sigrunModell;
     }
 }

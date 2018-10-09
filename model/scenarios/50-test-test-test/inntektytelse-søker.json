@@ -104,5 +104,22 @@
 				]
 			}
 		]
+	},
+	"sigrun": {
+		"inntektsår": [
+			{
+				"år": "2016",
+				"oppføring": [
+					{
+						"tekniskNavn": "ettellerannet",
+						"beløp": 5000
+					},
+					{
+						"tekniskNavn": "noeannet",
+						"beløp": 6000
+					}
+				]
+			}
+		]
 	}
  }
