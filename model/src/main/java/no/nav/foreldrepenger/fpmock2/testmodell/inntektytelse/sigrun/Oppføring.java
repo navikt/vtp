@@ -20,6 +20,6 @@ public class Oppføring {
 
     @Override
     public String toString(){
-        return "{\n" + "\"tekniskNavn\"" + ":" + tekniskNavn + "," + "\n" + "\"beløp\"" + ":" + belop +"\n}";
+        return "{\n" + "\"tekniskNavn\"" + ": \""+ tekniskNavn + "\"," + "\n" + "\"beløp\"" + ": \"" + belop +"\"\n}";
     }
 }
