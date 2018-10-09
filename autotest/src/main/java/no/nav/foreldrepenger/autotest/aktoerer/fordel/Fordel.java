@@ -12,7 +12,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnytt
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
-import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalpostKlient;
+import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -34,12 +34,12 @@ public class Fordel extends Aktoer{
     BehandlingerKlient behandlingerKlient;
     
     //Vtp Klienter
-    JournalpostKlient journalpostKlient;
+    JournalforingKlient journalpostKlient;
     
     public Fordel() {
         fordelKlient = new FordelKlient(session);
         behandlingerKlient = new BehandlingerKlient(session);
-        journalpostKlient = new JournalpostKlient(new HttpSession());
+        journalpostKlient = new JournalforingKlient(new HttpSession());
     }
     
     
@@ -49,25 +49,26 @@ public class Fordel extends Aktoer{
     public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
         String xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerAktørIdent(), dokumenttypeId);
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
         //String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
-        String journalpostId = journalpostKlient.leggTilJournalpost(journalpostModell);
+        String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
         
         //TODO: Avled behandlingstema fra kode
         String behandlingstemaOffisiellKode = "ab0050";
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
         
-        String aktørId  = scenario.getPersonopplysninger().getSøkerIdent(); //TODO dette er nok personnummer
+        String aktørId  = scenario.getPersonopplysninger().getSøkerAktørIdent();
 
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
         journalpostModell.setSakId(String.valueOf(sakId));
+        System.out.println("Opprettet søknad: " + sakId);
         
         Vent.til(() -> {
             return behandlingerKlient.alle(sakId).size() > 0;
         }, 15, "Saken hadde ingen behandlinger");
         
-        System.out.println("Opprettet søknad: " + sakId);
+        
         return sakId;
     }
     
