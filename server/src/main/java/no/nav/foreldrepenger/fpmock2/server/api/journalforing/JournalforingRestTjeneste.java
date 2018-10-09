@@ -19,17 +19,16 @@ import javax.ws.rs.core.MediaType;
 @Path("/api/journalforing")
 public class JournalforingRestTjeneste {
 
-    private static final String DOKUMENTTYYPE_KEY = "dokumenttype";
     private static final String DOKUMENTTYYPEID_KEY = "dokumenttypeid";
     private static final String AKTORID_KEY = "fnr";
 
     @POST
-    @Path("/foreldrepengesoknadxml/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}/dokumenttype/{dokumenttype}")
+    @Path("/foreldrepengesoknadxml/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Journalfører en foreldrepengesøknad basert på erketype. XML postes som body."), response = JournalforingResultatDto.class)
-    public JournalforingResultatDto foreldrepengesoknadErketype(String xml, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPE_KEY) DokumentTilknyttetJournalpost dokumenttype, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeId){
+    @ApiOperation(value = "", notes = ("Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body."), response = JournalforingResultatDto.class)
+    public JournalforingResultatDto foreldrepengesoknadErketype(String xml, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeId){
 
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, fnr, dokumenttype, dokumenttypeId);
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, fnr, dokumenttypeId);
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
         String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
 
