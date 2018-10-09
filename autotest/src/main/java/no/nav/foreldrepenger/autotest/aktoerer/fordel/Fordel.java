@@ -61,6 +61,7 @@ public class Fordel extends Aktoer{
             return behandlingerKlient.alle(sakId).size() > 0;
         }, 15, "Saken hadde ingen behandlinger");
         
+        System.out.println("Opprettet søknad: " + sakId);
         return sakId;
     }
     

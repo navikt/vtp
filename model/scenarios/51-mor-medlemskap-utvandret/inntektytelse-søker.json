@@ -62,7 +62,7 @@
 			{
 				"arbeidsforholdId": "ARB001-001",
 				"ansettelsesperiodeFom": "now() - P4M",
-				"arbeidsforholdstype": "Ordinært arbeidsforhold",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
 
 
@@ -86,7 +86,7 @@
 				"arbeidsforholdId": "ARB001-002",
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"ansettelsesperiodeTom": "now() - P4M",
-				"arbeidsforholdstype": "Ordinært arbeidsforhold",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
 				"arbeidsavtaler" : [
 					{

@@ -17,7 +17,6 @@ import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class Sokandsfrist extends EngangsstonadTestBase{
 
-    @Test
     public void behandleFødselEngangstønadSøknadsfristGodkjent() throws Exception {
         TestscenarioImpl testscenario = testscenarioRepository.opprettTestscenario(TestscenarioTemplateRepositoryImpl.getInstance().finn("50"));
         Soeknad søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadSøktForSent(testscenario.getPersonopplysninger().getSøker().getAktørIdent());

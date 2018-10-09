@@ -19,8 +19,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRe
 
 public class ProofOfConceptTest extends FpsakTestBase {
 
-
-    @Test
     public void foreldrepengesøknadTermindatoKunMorMedInntektsmelding() throws Exception {
         TestscenarioImpl testscenario = opprettScenario("50");
 
