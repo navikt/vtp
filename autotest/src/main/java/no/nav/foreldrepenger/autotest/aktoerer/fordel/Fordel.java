@@ -12,6 +12,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnytt
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
+import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalpostKlient;
+import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -20,8 +22,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenera
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
@@ -33,9 +33,13 @@ public class Fordel extends Aktoer{
     FordelKlient fordelKlient;
     BehandlingerKlient behandlingerKlient;
     
+    //Vtp Klienter
+    JournalpostKlient journalpostKlient;
+    
     public Fordel() {
         fordelKlient = new FordelKlient(session);
         behandlingerKlient = new BehandlingerKlient(session);
+        journalpostKlient = new JournalpostKlient(new HttpSession());
     }
     
     
@@ -47,8 +51,9 @@ public class Fordel extends Aktoer{
         
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
-
+        //String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
+        String journalpostId = journalpostKlient.leggTilJournalpost(journalpostModell);
+        
         //TODO: Avled behandlingstema fra kode
         String behandlingstemaOffisiellKode = "ab0050";
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
