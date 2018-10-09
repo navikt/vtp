@@ -13,6 +13,7 @@ public class Arbeidsforhold {
     @JsonProperty("arbeidsforholdId")
     private String arbeidsforholdId;
 
+    @JsonProperty("arbeidsforholdIdNav")
     private Long arbeidsforholdIdnav;
 
     @JsonProperty("ansettelsesperiodeTom")

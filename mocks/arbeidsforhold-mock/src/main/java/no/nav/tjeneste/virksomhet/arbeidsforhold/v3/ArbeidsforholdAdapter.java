@@ -10,13 +10,11 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.A
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsavtale;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforholdstyper;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Avloenningstyper;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Gyldighetsperiode;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.ObjectFactory;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Organisasjon;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Person;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Yrker;
 
 /**
  * Enkel førsteutgave i påvente av infrastruktur for å generere org.nr. Gir et svar med to arbeidsforhold.
@@ -30,7 +28,7 @@ public class ArbeidsforholdAdapter {
 
         Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
         arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
-        //arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
+        arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
         aftype.setKodeRef(arbeidsforholdModell.getArbeidsforholdstype().getKode());
@@ -70,18 +68,12 @@ public class ArbeidsforholdAdapter {
     public Arbeidsavtale fra(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtaleModell){
         Arbeidsavtale arbeidsavtale = objectFactory.createArbeidsavtale();
 
-        Yrker yrke = objectFactory.createYrker();
-        Avloenningstyper loenn = objectFactory.createAvloenningstyper();
-
-        //TODO: Test og fjern / eller bygg i kodeverk
-        yrke.setValue("KJØKKENMEDHJELPER"); // "KJØKKENMEDHJELPER"
-        loenn.setValue(arbeidsavtaleModell.getAvlønningstype().getKode()); // Fastlønn
         arbeidsavtale.setAvtaltArbeidstimerPerUke(lagBD(arbeidsavtaleModell.getAvtaltArbeidstimerPerUke()));
         arbeidsavtale.setStillingsprosent(lagBD(arbeidsavtaleModell.getStillingsprosent()));
         arbeidsavtale.setBeregnetAntallTimerPrUke(lagBD(arbeidsavtaleModell.getBeregnetAntallTimerPerUke()));
+        arbeidsavtale.setSisteLoennsendringsdato(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getSisteLønnnsendringsdato()));
+        arbeidsavtale.setFomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getFomGyldighetsperiode()));
 
-        arbeidsavtale.setYrke(yrke);
-        arbeidsavtale.setAvloenningstype(loenn);
 
         return arbeidsavtale;
     }

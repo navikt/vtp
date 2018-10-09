@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
@@ -29,6 +30,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidstakerePrA
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.FinnArbeidstakerePrArbeidsgiverUgyldigInput;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHistorikkSikkerhetsbegrensning;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.feil.ArbeidsforholdIkkeFunnet;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidsgiverRequest;
@@ -137,11 +139,29 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
     @ResponseWrapper(localName = "hentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkResponse")
     public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest request) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
-
         LOG.info("Kall til HentArbeidsforholdHistorikk. Ber om historikk for arbeidsforholdsId: {}", request.getArbeidsforholdId());
 
+        ArbeidsforholdAdapter adapter = new ArbeidsforholdAdapter();
+        //TODO: Bruker arbeidsforholdsIdNav for videre oppslag.
+        Long arbeidsforholdId = request.getArbeidsforholdId();
 
-        return new HentArbeidsforholdHistorikkResponse();
+        HentArbeidsforholdHistorikkResponse response = new HentArbeidsforholdHistorikkResponse();
+        List<String> identer = scenarioRepository.getPersonIndeks().getAlleSøkere()
+                .stream()
+                .map(t-> t.getSøker().getIdent())
+                .collect(Collectors.toList());
 
+        for (String fnr : identer){
+            ArbeidsforholdModell arbeidsforholdModell = scenarioRepository.getInntektYtelseModell(fnr).get().getArbeidsforholdModell();
+            if(arbeidsforholdModell != null){
+                Optional<no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold> first = arbeidsforholdModell.getArbeidsforhold().stream().filter(t -> t.getArbeidsforholdIdnav().equals(arbeidsforholdId)).findFirst();
+                if(first.isPresent()){
+                    Arbeidsforhold responseArbeidsforhold = adapter.fra(fnr, first.get());
+                    response.setArbeidsforhold(responseArbeidsforhold);
+                    return  response;
+                }
+            }
+        }
+        throw new HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet("Kunne ikke finne arbeidsforholdHistorikk med Id " + arbeidsforholdId, new ArbeidsforholdIkkeFunnet());
     }
 }

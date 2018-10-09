@@ -1,9 +1,11 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Arbeidsavtale {
+
 
 
     private Yrke yrke;
@@ -19,6 +21,13 @@ public class Arbeidsavtale {
 
     @JsonProperty("beregnetAntallTimerPerUke")
     private Integer beregnetAntallTimerPerUke;
+
+    @JsonProperty("sisteLønnsendringsdato")
+    public LocalDate sisteLønnnsendringsdato;
+
+    @JsonProperty("fomGyldighetsperiode")
+    public LocalDate fomGyldighetsperiode;
+
 
 
     public Yrke getYrke() {
@@ -59,5 +68,21 @@ public class Arbeidsavtale {
 
     public void setBeregnetAntallTimerPerUke(Integer beregnetAntallTimerPerUke) {
         this.beregnetAntallTimerPerUke = beregnetAntallTimerPerUke;
+    }
+
+    public LocalDate getSisteLønnnsendringsdato() {
+        return sisteLønnnsendringsdato;
+    }
+
+    public void setSisteLønnnsendringsdato(LocalDate sisteLønnnsendringsdato) {
+        this.sisteLønnnsendringsdato = sisteLønnnsendringsdato;
+    }
+
+    public LocalDate getFomGyldighetsperiode() {
+        return fomGyldighetsperiode;
+    }
+
+    public void setFomGyldighetsperiode(LocalDate fomGyldighetsperiode) {
+        this.fomGyldighetsperiode = fomGyldighetsperiode;
     }
 }
