@@ -10,13 +10,13 @@ public class Inntektsår {
     private String år;
 
     @JsonProperty("oppføring")
-    private List<Oppfoering> oppfoering;
+    private List<Oppføring> oppføring;
 
     public String getÅr() { return år; }
 
     public void setÅr(String år) { this.år = år; }
 
-    public List<Oppfoering> getOppfoering() { return oppfoering; }
+    public List<Oppføring> getOppføring() { return oppføring; }
 
-    public void setOppfoering(List<Oppfoering> oppfoering) { this.oppfoering = oppfoering; }
+    public void setOppfoering(List<Oppføring> oppføring) { this.oppføring = oppføring; }
 }

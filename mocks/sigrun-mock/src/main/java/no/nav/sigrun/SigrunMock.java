@@ -71,7 +71,7 @@ public class SigrunMock {
 
         if (inntektYtelseModell.isPresent()) {
             List<Inntektsår> inntektsår = inntektYtelseModell.get().getSigrunModell().getInntektsår();
-            String test = inntektsår.get(0).getOppfoering().stream().map(t -> t.toString()).collect(Collectors.joining(",\n"));
+            String test = inntektsår.get(0).getOppføring().stream().map(t -> t.toString()).collect(Collectors.joining(",\n"));
 
             response = String.format("[\n%s\n]", test);
         } else {

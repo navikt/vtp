@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.sigrun;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Oppfoering {
+public class Oppføring {
 
     @JsonProperty("tekniskNavn")
     private String tekniskNavn;
