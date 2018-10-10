@@ -6,4 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Saksnummer {
 
     public long saksnummer;
+
+    public Saksnummer(){}
+
+    public Saksnummer(Long saksnummer){
+        this.saksnummer = saksnummer;
+    }
+
+
+
 }

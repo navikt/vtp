@@ -46,7 +46,7 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn søkand og returnerer saksinformasjon
      */
-    public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
+    public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception {
         String xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
@@ -60,7 +60,7 @@ public class Fordel extends Aktoer{
         
         String aktørId  = scenario.getPersonopplysninger().getSøkerAktørIdent();
 
-        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
         
@@ -72,8 +72,8 @@ public class Fordel extends Aktoer{
         return sakId;
     }
     
-    public long sendInnSøknad(ForeldrepengesoknadBuilder builder,TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception{
-        return sendInnSøknad(builder.build(), scenario, dokumenttypeId);
+    public long sendInnSøknad(ForeldrepengesoknadBuilder builder,TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception{
+        return sendInnSøknad(builder.build(), scenario, dokumenttypeId, saksnummer);
     }
     
     /*
@@ -87,34 +87,38 @@ public class Fordel extends Aktoer{
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
      */
-    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario) throws IOException {
-        String xml = inntektsmelding.createInntektesmeldingXML();
-        String aktørId  = scenario.getPersonopplysninger().getSøkerAktørIdent();
-        String behandlingstemaOffisiellKode = "ab0047";
-        String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
-        
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
-        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
-        
-        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId);
-        journalpostModell.setSakId(String.valueOf(sakId));
-        return sakId;
+    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
+            String xml = inntektsmelding.createInntektesmeldingXML();
+            String aktørId  = scenario.getPersonopplysninger().getSøkerAktørIdent();
+            String behandlingstemaOffisiellKode = "ab0047";
+            String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
+
+            JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
+            JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
+            String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
+
+            long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId, saksnummer);
+            journalpostModell.setSakId(String.valueOf(sakId));
+            return sakId;
+
     }
     
     /*
      * Sender inn journalpost og returnerer saksnummer
      */
-    private long sendInnJournalpost(String xml, String journalpostId, String behandlingstemaOffisiellKode, String dokumentTypeIdOffisiellKode, String aktørId) throws IOException {
-        OpprettSak journalpost = new OpprettSak(journalpostId, behandlingstemaOffisiellKode, aktørId);
-        Saksnummer saksnummer = fordelKlient.fagsakOpprett(journalpost);
-        
+    private Long sendInnJournalpost(String xml, String journalpostId, String behandlingstemaOffisiellKode, String dokumentTypeIdOffisiellKode, String aktørId, Long saksnummer) throws IOException {
+
+        if(saksnummer == null || saksnummer.longValue() == 0L){
+            OpprettSak journalpost = new OpprettSak(journalpostId, behandlingstemaOffisiellKode, aktørId);
+            saksnummer = fordelKlient.fagsakOpprett(journalpost).saksnummer;
+        }
+
         JournalpostId idDto = new JournalpostId(journalpostId);
-        JournalpostKnyttning journalpostKnyttning = new JournalpostKnyttning(saksnummer, idDto);
+        JournalpostKnyttning journalpostKnyttning = new JournalpostKnyttning(new Saksnummer(), idDto);
         fordelKlient.fagsakKnyttJournalpost(journalpostKnyttning);
         
         
-        JournalpostMottak journalpostMottak = new JournalpostMottak("" + saksnummer.saksnummer, journalpostId, LocalDate.now(), behandlingstemaOffisiellKode);
+        JournalpostMottak journalpostMottak = new JournalpostMottak("" + saksnummer, journalpostId, LocalDate.now(), behandlingstemaOffisiellKode);
         journalpostMottak.setDokumentTypeIdOffisiellKode(dokumentTypeIdOffisiellKode);
         
         if(null != xml) {
@@ -124,6 +128,6 @@ public class Fordel extends Aktoer{
         
         fordelKlient.journalpost(journalpostMottak);
         
-        return saksnummer.saksnummer;
+        return saksnummer;
     }
 }
