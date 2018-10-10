@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiOperation;
 public class IsReadyImpl {
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @ApiOperation(value = "isReady", notes = ("Sjekker om systemet er ready for NAIS"))
     public String buildPermitResponse() {
         return "OK";

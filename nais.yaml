@@ -7,10 +7,10 @@ port: 8080
 healthcheck:
   liveness:
     path: /isAlive
-    initialDelay: 120
+    initialDelay: 40
   readiness:
     path: /isReady
-    initialDelay: 120
+    initialDelay: 40
 resources:
   limits:
     cpu: 1000m

@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiOperation;
 public class IsAliveImpl {
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @ApiOperation(value = "isAlive", notes = ("Sjekker om systemet er alive for NAIS"))
     public String buildPermitResponse() {
         return "OK";
