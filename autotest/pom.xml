@@ -21,14 +21,14 @@
       <id>Smoke</id>
 	  <properties>
 	    <testsTags>smoke</testsTags>
-	    <testPackage>no.nav.foreldrepenger.autotest.sut.**</testPackage>
+	    <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
 	  </properties>
     </profile>
     <profile>
       <id>Regresjon</id>
 	  <properties>
 	    <testsTags>regresjon,smoke</testsTags>
-	    <testPackage>no.nav.foreldrepenger.autotest.sut.**</testPackage>
+	    <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
 	  </properties>
     </profile>
     <profile>
