@@ -3,10 +3,7 @@ package no.nav.tjeneste.virksomhet.sak.v1;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
@@ -88,6 +85,8 @@ public class GsakRepo {
 
     public String opprettOppgave(String sakId) {
         // TODO cache disse?
-        return sakId + "99";
+        Integer oppgavenrGenerert = new Random().nextInt(899 + 1) + 100;
+        String oppgaveId =  sakId + String.valueOf(oppgavenrGenerert);
+        return oppgaveId;
     }
 }
