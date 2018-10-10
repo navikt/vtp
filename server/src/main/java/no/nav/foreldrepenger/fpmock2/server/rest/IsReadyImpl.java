@@ -16,7 +16,6 @@ public class IsReadyImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "isReady", notes = ("Sjekker om systemet er ready for NAIS"))
     public String buildPermitResponse() {
-        return " { \"Response\" : {\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
-            "\"status:ok\"}}}}";
+        return "OK";
     }
 }

@@ -16,7 +16,6 @@ public class IsAliveImpl {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "isAlive", notes = ("Sjekker om systemet er alive for NAIS"))
     public String buildPermitResponse() {
-        return " { \"Response\" : {\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
-            "\"status:ok\"}}}}";
+        return "OK";
     }
 }
