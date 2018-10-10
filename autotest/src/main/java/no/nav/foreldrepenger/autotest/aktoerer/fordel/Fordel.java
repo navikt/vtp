@@ -49,7 +49,7 @@ public class Fordel extends Aktoer{
     public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
         String xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerAktørIdent(), dokumenttypeId);
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
         //String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();

@@ -4,11 +4,14 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
+import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 
 public abstract class TestBase {
     
     @BeforeAll
     protected static void setUpAll() {
+        String propertiesDir = System.getProperty("application.root");
+        PropertiesUtils.initProperties(propertiesDir == null ? "." : propertiesDir);
         new MiljoKonfigurasjon();
     }
 	protected void verifiserListeInneholder(List<Object> liste, Object object1) {

@@ -45,11 +45,6 @@ public class FpsakTestBase extends TestBase{
     protected ForeldrepengesoknadXmlErketyper foreldrepengeSøknadErketyper;
     protected InntektsmeldingErketype inntektsmeldingErketype;
     
-    @BeforeAll
-    public static void setUpAll() {
-        PropertiesUtils.initProperties();
-    }
-    
     @BeforeEach
     void setUp() throws Exception{
         fordel = new Fordel();
