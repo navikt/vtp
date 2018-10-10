@@ -11,7 +11,7 @@ public abstract class TestBase {
     @BeforeAll
     protected static void setUpAll() {
         String propertiesDir = System.getProperty("application.root");
-        PropertiesUtils.initProperties(propertiesDir == null ? "." : propertiesDir);
+        PropertiesUtils.initProperties(propertiesDir == null ? ".." : propertiesDir);
         new MiljoKonfigurasjon();
     }
 	protected void verifiserListeInneholder(List<Object> liste, Object object1) {
