@@ -51,7 +51,6 @@ public class Fordel extends Aktoer{
         
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-        //String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
         
         //TODO: Avled behandlingstema fra kode
@@ -72,8 +71,18 @@ public class Fordel extends Aktoer{
         return sakId;
     }
     
+    /*
+     * Sender inn søknad fra builder
+     */
     public long sendInnSøknad(ForeldrepengesoknadBuilder builder,TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception{
         return sendInnSøknad(builder.build(), scenario, dokumenttypeId, saksnummer);
+    }
+    
+    /*
+     * Sender inn søknad og opretter ny sak
+     */
+    public long sendInnSøknad(ForeldrepengesoknadBuilder builder,TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception{
+        return sendInnSøknad(builder, scenario, dokumenttypeId, null);
     }
     
     /*
@@ -101,6 +110,10 @@ public class Fordel extends Aktoer{
             journalpostModell.setSakId(String.valueOf(sakId));
             return sakId;
 
+    }
+    
+    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario) throws IOException {
+        return sendInnInntektsmelding(inntektsmelding, scenario, null);
     }
     
     /*

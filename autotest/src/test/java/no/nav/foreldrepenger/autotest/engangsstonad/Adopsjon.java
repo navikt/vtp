@@ -13,7 +13,7 @@ public class Adopsjon extends EngangsstonadTestBase{
         Soeknad søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD, null);
         System.out.println("Saksnummer: " + saksnummer);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
