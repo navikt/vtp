@@ -32,7 +32,6 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpost
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.HentJournalpostResponse;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovRequest;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoeringsbehovResponse;
-import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 
 @Addressing
 @WebService(
@@ -41,7 +40,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
 )
 @HandlerChain(file="Handler-chain.xml")
 public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
-    private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InngaaendeJournalServiceMockImpl.class);
 
 
     private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";

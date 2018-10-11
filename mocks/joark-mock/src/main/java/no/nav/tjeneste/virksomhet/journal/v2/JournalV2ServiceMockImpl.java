@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
-import no.nav.tjeneste.virksomhet.journal.modell.JournalpostBuilder;
+import no.nav.tjeneste.virksomhet.journal.modell.JournalpostV2Builder;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentURLDokumentIkkeFunnet;
@@ -37,14 +37,14 @@ import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentJournalpostListeRespo
 @Addressing
 @WebService(name = "Journal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v2")
 @HandlerChain(file="Handler-chain.xml")
-public class JournalServiceMockImpl implements JournalV2 {
-    private static final Logger LOG = LoggerFactory.getLogger(JournalServiceMockImpl.class);
+public class JournalV2ServiceMockImpl implements JournalV2 {
+    private static final Logger LOG = LoggerFactory.getLogger(JournalV2ServiceMockImpl.class);
 
     private JournalRepository journalRepository;
 
-    public JournalServiceMockImpl(){}
+    public JournalV2ServiceMockImpl(){}
 
-    public JournalServiceMockImpl(JournalRepository journalRepository) {
+    public JournalV2ServiceMockImpl(JournalRepository journalRepository) {
         this.journalRepository = journalRepository;
     }
 
@@ -64,7 +64,7 @@ public class JournalServiceMockImpl implements JournalV2 {
 
         for(String sak : saker){
             for(JournalpostModell modell : journalRepository.finnJournalposterMedSakId(sak)){
-                response.getJournalpostListe().add(JournalpostBuilder.buildFrom(modell));
+                response.getJournalpostListe().add(JournalpostV2Builder.buildFrom(modell));
             }
         }
 

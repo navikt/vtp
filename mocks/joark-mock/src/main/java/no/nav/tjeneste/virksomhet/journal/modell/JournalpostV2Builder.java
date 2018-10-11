@@ -28,7 +28,7 @@ import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Kommunikasjonsretninger
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.TilknyttetJournalpostSom;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Variantformater;
 
-public class JournalpostBuilder {
+public class JournalpostV2Builder {
 
     public static Journalpost buildFrom(JournalpostModell modell){
         Journalpost journalpost = new Journalpost();

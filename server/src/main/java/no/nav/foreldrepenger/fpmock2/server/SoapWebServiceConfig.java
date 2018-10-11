@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.xml.ws.Endpoint;
 
+import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
@@ -24,7 +25,7 @@ import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl
 import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
-import no.nav.tjeneste.virksomhet.journal.v2.JournalServiceMockImpl;
+import no.nav.tjeneste.virksomhet.journal.v2.JournalV2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
@@ -51,8 +52,9 @@ public class SoapWebServiceConfig {
         // access wsdl on http://localhost:7999/sak?wsdl
         publishWebService(new PersonServiceMockImpl(repo), "/tpsws/ws/Person/v3");
         // access wsdl on http://localhost:7999/person?wsdl
-        publishWebService(new JournalServiceMockImpl(journalRepository), "/joark/Journal/v2");
+        publishWebService(new JournalV2ServiceMockImpl(journalRepository), "/joark/Journal/v2");
         // access wsdl on http://localhost:7999/journal?wsdl
+        publishWebService(new JournalV3ServiceMockImpl(journalRepository), "/joark/Journal/v3");
         publishWebService(new InngaaendeJournalServiceMockImpl(journalRepository), "/joark/InngaaendeJournal/v1");
         // publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/nav-gsak-ws/BehandleOppgaveV1");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
