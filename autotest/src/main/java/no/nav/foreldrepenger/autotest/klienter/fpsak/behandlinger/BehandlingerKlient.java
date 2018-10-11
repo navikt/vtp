@@ -63,6 +63,7 @@ public class BehandlingerKlient extends FpsakKlient{
     private static final String BEHANDLING_VILKAAR_URL = BEHANDLING_URL + "/vilkar?behandlingId=%s";
     private static final String BEHANDLING_AKSJONSPUNKT_URL = BEHANDLING_URL + "/aksjonspunkt";
     private static final String BEHANDLING_AKSJONSPUNKT_GET_URL = BEHANDLING_AKSJONSPUNKT_URL + "?behandlingId=%s";
+    private static final String BEHANDLING_AKSJONSPUNKT_OVERSTYR_URL = BEHANDLING_AKSJONSPUNKT_URL + "/overstyr";
     private static final String BEHANDLING_SOKNAD_URL = BEHANDLING_URL + "/soknad";
     private static final String BEHANDLING_FAMILIE_HENDELSE_URL = BEHANDLING_URL + "/familiehendelse";
     private static final String BEHANDLING_OPPTJENING_URL = BEHANDLING_URL + "/opptjening";
@@ -256,6 +257,14 @@ public class BehandlingerKlient extends FpsakKlient{
     
     public void postBehandlingAksjonspunkt(BekreftedeAksjonspunkter aksjonsunkter) throws IOException {
         String url = hentRestRotUrl() + BEHANDLING_AKSJONSPUNKT_URL;
+        postOgVerifiser(url, aksjonsunkter, StatusRange.STATUS_SUCCESS);
+    }
+    
+    /*
+     * Overstyring
+     */
+    public void overstyr(BekreftedeAksjonspunkter aksjonsunkter) throws IOException {
+        String url = hentRestRotUrl() + BEHANDLING_AKSJONSPUNKT_OVERSTYR_URL;
         postOgVerifiser(url, aksjonsunkter, StatusRange.STATUS_SUCCESS);
     }
     

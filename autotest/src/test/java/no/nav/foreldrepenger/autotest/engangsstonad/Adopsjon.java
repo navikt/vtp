@@ -8,15 +8,15 @@ import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 public class Adopsjon extends EngangsstonadTestBase{
 
     
-    public void behandleAdopsjonEngangstønadGodkjent() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
-        Soeknad søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
-
-        fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD, null);
-        System.out.println("Saksnummer: " + saksnummer);
-        
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
-        saksbehandler.hentFagsak(saksnummer);
+    public void behandleAdopsjonMorGodkjent() throws Exception {
+    }
+    
+    public void behandleAdopsjonMorAvvist() throws Exception {
+    }
+    
+    public void behandleAdopsjonMorOverstyrt() throws Exception {
+    }
+    
+    public void behandleAdopsjonFarGodkjent() throws Exception {
     }
 }

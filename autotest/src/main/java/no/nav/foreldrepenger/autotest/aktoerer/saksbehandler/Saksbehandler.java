@@ -215,12 +215,31 @@ public class Saksbehandler extends Aktoer{
         List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
         bekreftelser.add(bekreftelse);
         bekreftAksjonspunktbekreftelserer(bekreftelser);
+    }
+    
+    public void bekreftAksjonspunktbekreftelserer(List<AksjonspunktBekreftelse> bekreftelser) throws Exception {
+        BekreftedeAksjonspunkter aksjonspunkter = new BekreftedeAksjonspunkter(valgtFagsak, valgtBehandling, bekreftelser);
+        behandlingerKlient.postBehandlingAksjonspunkt(aksjonspunkter);
         velgBehandling(valgtBehandling);
     }
     
-    public void bekreftAksjonspunktbekreftelserer(List<AksjonspunktBekreftelse> bekreftelser) throws IOException {
+    /*
+     * Oversyring
+     */
+    public <T extends AksjonspunktBekreftelse> void overstyr(Class<T> type) throws Exception {
+        overstyr(hentAksjonspunktbekreftelse(type));
+    }
+    
+    public void overstyr(AksjonspunktBekreftelse bekreftelse) throws Exception {
+        List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
+        bekreftelser.add(bekreftelse);
+        overstyr(bekreftelser);
+    }
+    
+    public void overstyr(List<AksjonspunktBekreftelse> bekreftelser) throws Exception {
         BekreftedeAksjonspunkter aksjonspunkter = new BekreftedeAksjonspunkter(valgtFagsak, valgtBehandling, bekreftelser);
-        behandlingerKlient.postBehandlingAksjonspunkt(aksjonspunkter);
+        behandlingerKlient.overstyr(aksjonspunkter);
+        velgBehandling(valgtBehandling);
     }
     
     /*
