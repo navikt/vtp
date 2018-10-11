@@ -52,8 +52,11 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
     }
     
+<<<<<<< HEAD
     @Tag("utvikling")
     @Test
+=======
+>>>>>>> flere sceanrioer og start på tester
     public void behandleFødselMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -83,7 +86,6 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
-    @Test
     public void behandleFødselFarGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -114,7 +116,6 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
     }
     
-    @Test
     public void behandleFødselMorOverstyrFødsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
