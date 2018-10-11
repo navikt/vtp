@@ -76,16 +76,16 @@ public class JournalRepositoryImpl implements JournalRepository {
     @Override
     public String leggTilJournalpost(JournalpostModell journalpostModell){
         String journalpostId = "";
-        if(journalpostModell.getId() != null && !journalpostModell.getId().isEmpty()){
-            journalpostId = journalpostModell.getId();
+        if(journalpostModell.getJournalpostId() != null && !journalpostModell.getJournalpostId().isEmpty()){
+            journalpostId = journalpostModell.getJournalpostId();
         } else {
             journalpostId = genererJournalpostId();
-            journalpostModell.setId(journalpostId);
+            journalpostModell.setJournalpostId(journalpostId);
         }
 
         for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
             String dokumentId = "";
-            if(dokumentModell.getDokumentId() != null && !journalpostModell.getId().isEmpty()){
+            if(dokumentModell.getDokumentId() != null && !journalpostModell.getJournalpostId().isEmpty()){
                 dokumentId = dokumentModell.getDokumentId();
             } else {
                 dokumentId = genererDokumentId();

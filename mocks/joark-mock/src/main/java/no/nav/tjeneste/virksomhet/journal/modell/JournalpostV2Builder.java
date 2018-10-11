@@ -32,7 +32,7 @@ public class JournalpostV2Builder {
 
     public static Journalpost buildFrom(JournalpostModell modell){
         Journalpost journalpost = new Journalpost();
-        journalpost.setJournalpostId(modell.getId());
+        journalpost.setJournalpostId(modell.getJournalpostId());
         journalpost.setJournalstatus(lagJournalstatus(modell.getJournalStatus()));
         //journalpost.setArkivtema(lagArkivtema(modell.getArkivtema()));
         //journalpost.setKommunikasjonsretning(lagKommunikasjonsretning(modell.getKommunikasjonsretning()));

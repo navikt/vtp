@@ -19,7 +19,7 @@ public class JournalpostV3Bulider {
 
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
-        journalpost.setJournalpostId(modell.getId());//TODO sjekk om det er riktig id som settes inn
+        journalpost.setJournalpostId(modell.getJournalpostId());//TODO sjekk om det er riktig id som settes inn
 
         if (finnHoveddokumentFraJournalpost(modell).isPresent()) {
             DokumentModell hoveddokument = finnHoveddokumentFraJournalpost(modell).get();

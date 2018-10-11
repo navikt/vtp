@@ -9,7 +9,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalsta
 
 public class JournalpostModell {
 
-    private String id;
+    private String journalpostId;
     private List<DokumentModell> dokumentModellList = new ArrayList<>();
     private String avsenderFnr;
     private String sakId;
@@ -21,12 +21,12 @@ public class JournalpostModell {
     private Arkivtema arkivtema;
     private String journaltilstand;
 
-    public String getId() {
-        return id;
+    public String getJournalpostId() {
+        return journalpostId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setJournalpostId(String journalpostId) {
+        this.journalpostId = journalpostId;
     }
 
     public List<DokumentModell> getDokumentModellList() {
