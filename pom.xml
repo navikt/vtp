@@ -52,7 +52,7 @@
 		<hibernate.version>5.3.1.Final</hibernate.version>
 		<hibernate.jpa.version>1.0.2.Final</hibernate.jpa.version>
 		<threeten.version>1.4</threeten.version>
-		<jackson.version>2.9.5</jackson.version>
+		<jackson.version>2.9.7</jackson.version>
 		<jose4j.version>0.6.4</jose4j.version>
 		<swagger.version>1.5.21</swagger.version>
 		<resteasy.version>3.6.1.Final</resteasy.version>
@@ -181,7 +181,7 @@
 				<artifactId>autotest</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>server</artifactId>
@@ -241,6 +241,12 @@
 				<artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
 				<classifier>jaxws</classifier>
 				<version>${joark.journalv3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
+				<version>3.0.1</version>
+				<classifier>jaxws</classifier>
 			</dependency>
 			<dependency>
 				<groupId>no.nav.tjenester.fim</groupId>
@@ -363,6 +369,18 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.modelmapper</groupId>
+				<artifactId>modelmapper</artifactId>
+				<version>2.3.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>0.9.11</version>
+			</dependency>
+
+			<dependency>
 				<groupId>javax</groupId>
 				<artifactId>javaee-api</artifactId>
 				<version>7.0</version>
@@ -424,6 +442,11 @@
 				<version>${jackson.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jdk8</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 
 			<dependency>
@@ -530,13 +553,9 @@
 					<version>2.8.2</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.5.1</version>
-					<configuration>
-						<source>${java.jdk.version}</source>
-						<target>${java.jdk.version}</target>
-						<encoding>UTF-8</encoding>
-					</configuration>
+					<version>3.8.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -557,7 +576,9 @@
 					<version>1.0.0</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.22.0</version>
 					<configuration>
 						<argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
 					</configuration>
@@ -565,6 +586,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.22.0</version>
 					<executions>
 						<execution>
 							<id>failsafe-integration-test</id>
@@ -683,6 +705,15 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.jdk.version}</source>
+					<target>${java.jdk.version}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -698,5 +729,6 @@
 			<url>http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 
 </project>

@@ -78,7 +78,7 @@ public class JournalRepoTest {
         String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
 
         Optional<JournalpostModell> resultatModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
-        assertThat(resultatModell.isPresent());
+        assertThat(resultatModell).isPresent();
         assertThat(resultatModell.get().getJournalpostId()).isEqualTo(journalpostId);
 
     }

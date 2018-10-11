@@ -45,7 +45,6 @@
 	  	<plugin>
 	  		<groupId>org.apache.maven.plugins</groupId>
 		    <artifactId>maven-surefire-plugin</artifactId>
-		    <version>2.19.1</version>
 		    <configuration>
 		    	<includes>
 		    		<include>${testPackage}</include>
@@ -90,16 +89,6 @@
 		</dependency>
 		<dependency>
 		    <groupId>no.nav.vedtak.fpmock2</groupId>
-		    <artifactId>testmodell</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>no.nav.vedtak.fpmock2</groupId>
-		    <artifactId>core</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>no.nav.vedtak.fpmock2</groupId>
 		    <artifactId>server</artifactId>
 		</dependency>
 
@@ -107,34 +96,28 @@
 	  	<dependency>
 	      <groupId>org.junit.jupiter</groupId>
 	      <artifactId>junit-jupiter-api</artifactId>
-	      <version>RELEASE</version>
 	    </dependency>
 	    <dependency>
 	      <groupId>org.junit.jupiter</groupId>
 	      <artifactId>junit-jupiter-params</artifactId>
-	      <version>RELEASE</version>
 	    </dependency>
 	    <dependency>
 	        <groupId>org.junit.platform</groupId>
 	        <artifactId>junit-platform-launcher</artifactId>
-	        <version>1.1.0-M1</version>
 	    </dependency>
 	    <dependency>
 	        <groupId>org.junit.jupiter</groupId>
 	        <artifactId>junit-jupiter-engine</artifactId>
-	        <version>5.1.0-M1</version>
 	    </dependency>
 	    
 	    <dependency>
 		    <groupId>org.reflections</groupId>
 		    <artifactId>reflections</artifactId>
-		    <version>0.9.10</version>
 		</dependency>
 	    
 	    <dependency>
 	        <groupId>org.apache.httpcomponents</groupId>
 	        <artifactId>httpclient</artifactId>
-	        <version>4.5.2</version>
 	    </dependency>
 	    
 	    <dependency>
