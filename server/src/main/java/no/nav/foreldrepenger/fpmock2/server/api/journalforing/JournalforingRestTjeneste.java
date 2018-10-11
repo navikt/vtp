@@ -63,7 +63,6 @@ public class JournalforingRestTjeneste {
         LOG.info("Knytter sak: {} til journalpost: {}", saksnummer, journalpostId);
 
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-        //TODO: Kast feil om ikke finner:
         JournalpostModell journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId).orElseThrow(()-> new NotFoundException("Kunne ikke finne journalpost"));
         journalpostModell.setSakId(saksnummer);
 
