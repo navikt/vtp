@@ -35,7 +35,8 @@ public class SecurityTokenServiceMockImpl implements SecurityTokenService {
     @WebMethod(operationName = "KeyExchangeToken", action = "http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/KET")
     public RequestSecurityTokenResponseType keyExchangeToken(
                                                              @WebParam(partName = "request", name = "RequestSecurityToken", targetNamespace = "http://docs.oasis-open.org/ws-sx/ws-trust/200512") RequestSecurityTokenType request) {
-        throw new UnsupportedOperationException("Not yet implemented - keyExchangeToken");
+        // TODO - må verifisers dersom behov
+        return new STSIssueResponseGenerator().buildRequestSecurityTokenResponseType(request);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class SecurityTokenServiceMockImpl implements SecurityTokenService {
     @WebMethod(action = "Issue")
     public RequestSecurityTokenResponseType issueSingle(
                                                         @WebParam(partName = "request", name = "RequestSecurityToken", targetNamespace = "http://docs.oasis-open.org/ws-sx/ws-trust/200512") RequestSecurityTokenType request) {
-        throw new UnsupportedOperationException("Not yet implemented - issueSingle");
+        return new STSIssueResponseGenerator().buildRequestSecurityTokenResponseType(request);
     }
 
     @Override
@@ -73,7 +74,8 @@ public class SecurityTokenServiceMockImpl implements SecurityTokenService {
     @WebMethod(operationName = "Validate", action = "http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/Validate")
     public RequestSecurityTokenResponseType validate(
                                                      @WebParam(partName = "request", name = "RequestSecurityToken", targetNamespace = "http://docs.oasis-open.org/ws-sx/ws-trust/200512") RequestSecurityTokenType request) {
-        throw new UnsupportedOperationException("Not yet implemented - validate");
+        // TODO - må verifiseres dersom behov
+        return new STSIssueResponseGenerator().buildRequestSecurityTokenResponseType(request);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class SecurityTokenServiceMockImpl implements SecurityTokenService {
     public RequestSecurityTokenResponseCollectionType requestCollection(
                                                                         @WebParam(partName = "requestCollection", name = "RequestSecurityTokenCollection", targetNamespace = "http://docs.oasis-open.org/ws-sx/ws-trust/200512") RequestSecurityTokenCollectionType requestCollection) {
 
-        throw new UnsupportedOperationException("Not yet implemented - requestCollection");
+        return new STSIssueResponseGenerator().buildRequestSecurityTokenResponseCollectionType(requestCollection);
     }
 
     @Override
@@ -91,7 +93,7 @@ public class SecurityTokenServiceMockImpl implements SecurityTokenService {
     @WebMethod(operationName = "Renew", action = "http://docs.oasis-open.org/ws-sx/ws-trust/200512/RST/Renew")
     public RequestSecurityTokenResponseType renew(
                                                   @WebParam(partName = "request", name = "RequestSecurityToken", targetNamespace = "http://docs.oasis-open.org/ws-sx/ws-trust/200512") RequestSecurityTokenType request) {
-        throw new UnsupportedOperationException("Not yet implemented - renew");
+        return new STSIssueResponseGenerator().buildRequestSecurityTokenResponseType(request);
     }
 
 }
