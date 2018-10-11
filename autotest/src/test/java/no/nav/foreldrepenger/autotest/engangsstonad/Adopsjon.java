@@ -9,14 +9,18 @@ public class Adopsjon extends EngangsstonadTestBase{
 
     
     public void behandleAdopsjonMorGodkjent() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
     
     public void behandleAdopsjonMorAvvist() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
     
     public void behandleAdopsjonMorOverstyrt() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
     
     public void behandleAdopsjonFarGodkjent() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
 }

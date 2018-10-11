@@ -50,7 +50,6 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
     }
     
-    @Test
     public void behandleFødselMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -80,7 +79,6 @@ public class Fodsel extends EngangsstonadTestBase{
         //verifiser(beslutter.valgtBehandling.status, "");
     }
     
-    @Test
     public void behandleFødselFarGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -111,7 +109,6 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
     }
     
-    @Test
     public void behandleFødselMorOverstyrFødsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -138,11 +135,16 @@ public class Fodsel extends EngangsstonadTestBase{
     }
     
     public void behandleFødselMorFlereBarn() throws Exception {
-        
+        TestscenarioDto testscenario = opprettScenario("53");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadFlereBarn(testscenario.getPersonopplysninger().getSøkerAktørIdent());
     }
     
     public void behandleFødselMorMedVerge() throws Exception {
-        
+        TestscenarioDto testscenario = opprettScenario("54");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+
+        fordel.erLoggetInnMedRolle("Saksbehandler");
+        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
     }
     
     

@@ -1,0 +1,107 @@
+{
+   "orgnummer": "979191138",
+   "navn": {
+      "navnelinje": [
+         "ACANDO AS",
+         [],
+         [],
+         [],
+         []
+      ]
+   },
+   "organisasjonDetaljer": {
+      "registreringsDato": "1997-09-05+02:00",
+      "datoSistEndret": "2017-09-14+02:00",
+      "gjeldendeMaalform": {
+         "@kodeRef": "NB"
+      },
+      "registrertMVA": {
+         "@fomBruksperiode": "2014-05-21T20:37:14+02:00",
+         "@fomGyldighetsperiode": "2014-02-17T00:00:00.000+01:00",
+         "registrertIMVA": "true"
+      },
+      "telefaks": {
+         "@fomBruksperiode": "2014-05-21T20:37:14+02:00",
+         "@fomGyldighetsperiode": "2014-02-17T00:00:00.000+01:00",
+         "identifikator": "73 82 59 01"
+      },
+      "forretningsadresse": {
+         "@fomBruksperiode": "2015-02-23T10:38:34.403+01:00",
+         "@fomGyldighetsperiode": "2014-02-13T00:00:00.000+01:00",
+         "@type": "ns4:SemistrukturertAdresse",
+         "landkode": {
+            "@kodeRef": "NO"
+         },
+         "adresseledd": [
+            {
+               "noekkel": {
+                  "@kodeRef": "adresselinje1"
+               },
+               "verdi": "Tordenskiolds gate 8-10"
+            },
+            {
+               "noekkel": {
+                  "@kodeRef": "postnr"
+               },
+               "verdi": "0160"
+            },
+            {
+               "noekkel": {
+                  "@kodeRef": "kommunenr"
+               },
+               "verdi": "0301"
+            }
+         ]
+      },
+      "navSpesifikkInformasjon": {
+         "@fomBruksperiode": "1900-01-01T00:00:00.000+01:00",
+         "@fomGyldighetsperiode": "1900-01-01T00:00:00.000+01:00",
+         "erIA": "false"
+      },
+      "internettadresse": {
+         "@fomBruksperiode": "2014-05-21T20:37:14+02:00",
+         "@fomGyldighetsperiode": "2014-02-17T00:00:00.000+01:00",
+         "identifikator": "www.acando.no"
+      },
+      "epostadresse": {
+         "@fomBruksperiode": "2017-02-21T04:03:29+01:00",
+         "@fomGyldighetsperiode": "2017-02-20T00:00:00.000+01:00",
+         "identifikator": "firmapostnorge@acando.no"
+      },
+      "naering": {
+         "@fomBruksperiode": "2014-05-22T01:01:53+02:00",
+         "@fomGyldighetsperiode": "2003-01-23T00:00:00.000+01:00",
+         "naeringskode": {
+            "@kodeRef": "62.020"
+         },
+         "hjelpeenhet": "false"
+      },
+      "navn": {
+         "@fomBruksperiode": "2015-02-23T08:04:53.200+01:00",
+         "@fomGyldighetsperiode": "2008-11-18T00:00:00.000+01:00",
+         "navn": {
+            "@type": "ns4:UstrukturertNavn",
+            "navnelinje": [
+               "ACANDO AS",
+               [],
+               [],
+               [],
+               []
+            ]
+         },
+         "redigertNavn": "ACANDO AS"
+      },
+      "formaal": {
+         "@fomBruksperiode": "2014-05-22T00:03:00+02:00",
+         "@fomGyldighetsperiode": "2014-02-17T00:00:00.000+01:00",
+         "formaal": "Konsulentvirksomhet innenfor IT."
+      },
+      "mobiltelefon": {
+         "@fomBruksperiode": "2017-02-21T04:03:29+01:00",
+         "@fomGyldighetsperiode": "2017-02-20T00:00:00.000+01:00",
+         "identifikator": "93001000"
+      },
+      "stiftelsesdato": "1997-08-14+02:00"
+   }
+}
+

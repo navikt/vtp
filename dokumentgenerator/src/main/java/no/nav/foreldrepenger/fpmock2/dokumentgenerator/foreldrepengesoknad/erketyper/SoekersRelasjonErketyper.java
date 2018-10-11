@@ -21,6 +21,10 @@ public class SoekersRelasjonErketyper {
         return fødsel(1, LocalDate.now().minusMonths(1));
     }
     
+    public static Foedsel søkerFødselEtterFødselFlereBarn() {
+        return fødsel(2, LocalDate.now().minusMonths(1));
+    }
+    
     public static Foedsel søkerFødselEtterSøknadsfrist() {
         return fødsel(1, LocalDate.now().minusMonths(7));
     }
