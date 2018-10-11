@@ -23,9 +23,9 @@ public class VurderManglendeFodselBekreftelse extends AksjonspunktBekreftelse {
         fodselsdato = dato;
     }
     
-    public void bekreftDokumentasjonIkkeForeligger(int antallBarn) {
+    public void bekreftDokumentasjonIkkeForeligger() {
         dokumentasjonForeligger = false;
-        antallBarnFodt = antallBarn;
+        antallBarnFodt = null;
     }
     
     public void bekreftBrukAntallBarnITps() {

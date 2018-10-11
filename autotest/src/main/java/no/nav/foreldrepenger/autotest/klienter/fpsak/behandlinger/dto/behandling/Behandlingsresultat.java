@@ -16,4 +16,10 @@ public class Behandlingsresultat {
     protected String overskrift;
     protected String fritekstbrev;
     protected String skjaeringstidspunktForeldrepenger;
+    
+    @Override
+    public String toString() {
+        return type.kode;
+    }
+    
 }

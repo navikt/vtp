@@ -48,8 +48,12 @@ public class Fodsel extends EngangsstonadTestBase{
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.ikkeVentPåStatus = true;
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
     }
     
+    @Tag("utvikling")
+    @Test
     public void behandleFødselMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -62,7 +66,7 @@ public class Fodsel extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-            .bekreftDokumentasjonIkkeForeligger(0);
+            .bekreftDokumentasjonIkkeForeligger();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -76,9 +80,10 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         
         //verifiser at statusen er avvist
-        //verifiser(beslutter.valgtBehandling.status, "");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    @Test
     public void behandleFødselFarGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -109,6 +114,7 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
     }
     
+    @Test
     public void behandleFødselMorOverstyrFødsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -134,11 +140,13 @@ public class Fodsel extends EngangsstonadTestBase{
         throw new RuntimeException("");
     }
     
+    @Test
     public void behandleFødselMorFlereBarn() throws Exception {
         TestscenarioDto testscenario = opprettScenario("53");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadFlereBarn(testscenario.getPersonopplysninger().getSøkerAktørIdent());
     }
     
+    @Test
     public void behandleFødselMorMedVerge() throws Exception {
         TestscenarioDto testscenario = opprettScenario("54");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

@@ -28,7 +28,7 @@ public abstract class TestBase {
 	}
 	
 	protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet, String verdiNavn) {
-	    verifiser(verdiGjeldende.equals(verdiNavn), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
+	    verifiser(verdiGjeldende.equals(verdiForventet), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
 	}
 	
 	protected void verifiser(boolean statement) {
