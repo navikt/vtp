@@ -4,13 +4,10 @@ import javax.jws.HandlerChain;
 import javax.jws.WebService;
 import javax.xml.ws.soap.Addressing;
 
-import org.eclipse.jetty.util.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseAvbrytelseIkkeTillatt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostAlleredeAvbrutt;

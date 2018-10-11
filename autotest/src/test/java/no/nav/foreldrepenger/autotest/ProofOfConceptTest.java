@@ -20,13 +20,14 @@ public class ProofOfConceptTest extends FpsakTestBase {
         TestscenarioDto testscenario = opprettScenario("50");
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
-        InntektsmeldingBuilder inntektsmelding = inntektsmeldinger.get(0);
-        inntektsmelding.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
-
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(0);
+        inntektsmeldingsBuilder.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerIdent());
 
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        fordel.erLoggetInnMedRolle("Saksbehandler");
+        Long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingsBuilder, testscenario, null);
+        fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER,saksnummer);
 
         System.out.println("Saksnummer: " + saksnummer);
 

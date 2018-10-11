@@ -42,7 +42,6 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
     public no.nav.tjeneste.virksomhet.behandlesak.v2.WSOpprettSakResponse opprettSak(
                                                                                      @WebParam(name = "opprettSakRequest", targetNamespace = "") no.nav.tjeneste.virksomhet.behandlesak.v2.WSOpprettSakRequest request)
             throws WSSikkerhetsbegrensningException, WSSakEksistererAlleredeException, WSUgyldigInputException {
-        LOG.info("Oppretter Sak_V2: {}", request);
         LOG.info("opprettSak. Saktype: {}. Fagområde: {}. Fagsystem: {}", request.getSak().getSaktype(), request.getSak().getFagomrade(), request.getSak().getFagsystem());
         Set<String> identer = request.getSak().getGjelderBrukerListe().stream().map(a -> a.getIdent()).collect(Collectors.toSet());
 
@@ -56,6 +55,7 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
         
         no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak sak = gsakRepo.leggTilSak(personer, fagomrade, fagsystem, saktype);
 
+        LOG.info("Sak opprettet med saksnummer: {}", sak.getSakId());
         WSOpprettSakResponse response = new WSOpprettSakResponse();
         response.setSakId(sak.getSakId());
         return response;
