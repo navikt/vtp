@@ -5,7 +5,7 @@ Starte server
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
 * Trenger parameter -Dscenarios.dir="./model/scenarios" dersom denne ikke ligger under working dir (dvs. i IDE).
-* Swagger UI: http://localhost:8060/swagger/
+* Swagger UI: https://localhost:8063/swagger/
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
 
 Koble foreldrepenger til VTP
@@ -13,8 +13,6 @@ Koble foreldrepenger til VTP
 
 Følgende properties må settes i fpsak
 
-* #abac.pdp.endpoint.url=https://localhost:8063/asm-pdp/authorize
-* #securityTokenService.url=https://localhost:8063/isso/oauth2/access_token
 * Aktoer_v2.url=https://localhost:8063/aktoerregister/ws/Aktoer/v2
 * Person_v3.url=https://localhost:8063/tpsws/ws/Person/v3
 * Journal_v2.url=https://localhost:8063/joark/Journal/v2
@@ -37,10 +35,16 @@ Følgende properties må settes i fpsak
 * #SigrunRestBeregnetSkatt.url= MANGLER MANGLER MANGLER, port fra httpss://fpmock-t10.nais.preprod.local
 * Arbeidsfordeling_v1.url=https://localhost:8063/norg2/ws/Arbeidsfordeling/v1
 
-TODO
-----
-1. HTTPS?
-2. Se https://jira.adeo.no/browse/PFP-439
+I tillegg, for å overstyre sikkerhet (PDP, STS, OpenAM):
+* OpenIdConnect.issoHost=https://localhost:8063/isso/oauth2
+* OpenIdConnect.issoIssuer=https://localhost:8063/isso/oauth2
+* OpenIdConnect.issoJwks=https://localhost:8063/isso/oauth2/connect/jwk_uri
+* oidc_sts.issuer.url=https://localhost:8063/sts/issuer
+* oidc_sts.jwks.url=https://localhost:8063/sts/jwks
+* securityTokenService.url=https://localhost:8063/SecurityTokenServiceProvider/
+* abac.pdp.endpoint.url=https://localhost:8063/asm-pdp/authorize
+* OpenIdConnect.username=fpsak-localhost
+
 
 Utvikling, wsdl
 ----
