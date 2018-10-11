@@ -32,6 +32,8 @@ import no.nav.foreldrepenger.fpmock2.server.rest.KeyStoreTool;
 
 public class STSIssueResponseGenerator {
 
+    private static final String USERNAME = "goddagmannøkseskaft";
+
     static class PasswordCallbackHandler implements CallbackHandler {
 
         @Override
@@ -49,18 +51,15 @@ public class STSIssueResponseGenerator {
         }
     }
 
-    private static final Crypto CRYPTO = getCrypto(); // NOSONAR
+    private static final Crypto CRYPTO = getCrypto();
     private static final StaticSTSProperties STS_PROPERTIES = initSTSProperties(CRYPTO);
-    private static final String SIGNATURE_KEY_ALIAS = STS_PROPERTIES.getSignatureUsername();
 
-    private final Principal principal = new CustomTokenPrincipal(SIGNATURE_KEY_ALIAS);
     private final TokenIssueOperation issueOperation = new TokenIssueOperation();
-    private final Map<String, Object> messageContext = new HashMap<>();
 
     public STSIssueResponseGenerator() {
         initTokenProviders(issueOperation);
         issueOperation.setStsProperties(STS_PROPERTIES);
-        
+
         // Add Service
         // ServiceMBean service = new StaticService();
         // service.setEndpoints(Collections.singletonList("http://dummy-service.com/dummy"));
@@ -68,22 +67,34 @@ public class STSIssueResponseGenerator {
 
         // Mock up a request
 
-        this.messageContext.put(
+    }
+
+    private Map<String, Object> createMessageContext(Principal principal) {
+        Map<String, Object> messageContext = new HashMap<>();
+        messageContext.put(
             SecurityContext.class.getName(),
             createSecurityContext(principal));
+        return messageContext;
     }
 
     public RequestSecurityTokenResponseCollectionType buildRequestSecurityTokenResponseCollectionType(RequestSecurityTokenCollectionType requestCollection) {
+        Principal principal = new CustomTokenPrincipal(USERNAME);
+        Map<String, Object> messageContext = createMessageContext(principal);
         return issueOperation.issue(requestCollection, principal, messageContext);
     }
 
     /** Issue a token as part of collection */
     public RequestSecurityTokenResponseCollectionType buildRequestSecurityTokenResponseCollectionType(RequestSecurityTokenType request) {
+        Principal principal = new CustomTokenPrincipal(USERNAME);
+        
+        Map<String, Object> messageContext = createMessageContext(principal);
         return issueOperation.issue(request, principal, messageContext);
     }
 
     /** Issue a single token */
     public RequestSecurityTokenResponseType buildRequestSecurityTokenResponseType(RequestSecurityTokenType request) {
+        Principal principal = new CustomTokenPrincipal(USERNAME);
+        Map<String, Object> messageContext = createMessageContext(principal);
         return issueOperation.issueSingle(request, principal, messageContext);
     }
 

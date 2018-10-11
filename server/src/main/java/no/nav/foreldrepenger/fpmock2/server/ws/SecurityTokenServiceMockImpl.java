@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.server.ws;
 
+import javax.annotation.Resource;
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -8,6 +9,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
+import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.soap.Addressing;
 
 import org.apache.cxf.ws.security.sts.provider.SecurityTokenService;
@@ -28,6 +30,9 @@ import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenType;
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @Addressing()
 public class SecurityTokenServiceMockImpl implements SecurityTokenService {
+
+    @Resource
+    private WebServiceContext ws;
 
     @Override
     @WebResult(name = "RequestSecurityTokenResponse", targetNamespace = "http://docs.oasis-open.org/ws-sx/ws-trust/200512", partName = "response")
