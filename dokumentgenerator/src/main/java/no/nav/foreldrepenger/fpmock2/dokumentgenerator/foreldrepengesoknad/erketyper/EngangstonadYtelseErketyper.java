@@ -33,4 +33,13 @@ class EngangstonadYtelseErketyper {
         engangsstønad.setSoekersRelasjonTilBarnet(SoekersRelasjonErketyper.søkerFødselEtterSøknadsfrist());
         return engangsstønad;
     }
+
+    public static Ytelse engangsstønadUkjentForelderNorgeTerminFørTermin() {
+        Engangsstønad engangsstønad = new Engangsstønad();
+        AnnenForelder annenForelder = new UkjentForelder();
+        engangsstønad.setAnnenForelder(annenForelder);
+        engangsstønad.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        engangsstønad.setSoekersRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTerminFørTermin());
+        return engangsstønad;
+    }
 }

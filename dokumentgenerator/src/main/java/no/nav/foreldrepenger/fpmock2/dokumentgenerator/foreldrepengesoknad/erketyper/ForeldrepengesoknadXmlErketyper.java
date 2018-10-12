@@ -60,9 +60,20 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public Soeknad adopsjonMorEngangstonad(String aktørIdent) {
+    public Soeknad adopsjonMorEngangstonad(String aktoerId) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public ForeldrepengesoknadBuilder terminMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withBegrunnelseForSenSoeknad("Begrunnelse")
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeTerminFørTermin())
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
     }
 
 }

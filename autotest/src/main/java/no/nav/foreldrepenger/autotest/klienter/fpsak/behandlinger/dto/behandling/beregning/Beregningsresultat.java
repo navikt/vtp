@@ -7,4 +7,13 @@ public class Beregningsresultat {
     protected int beregnetTilkjentYtelse;
     protected int satsVerdi;
     protected int antallBarn;
+    
+    
+    public int getBeregnetTilkjentYtelse() {
+        return beregnetTilkjentYtelse;
+    }
+    
+    public int getSatsVerdi() {
+        return satsVerdi;
+    }
 }
