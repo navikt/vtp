@@ -1,9 +1,6 @@
 FROM navikt/java:8
 
 ENV JAVA_OPTS="-Dscenarios.dir=/app/model/scenarios/"
-ENV LC_ALL="no_NB.UTF-8"
-ENV LANG="no_NB.UTF-8"
-ENV TZ="Europe/Oslo"
 ARG JAR_FILE
 
 RUN mkdir /app/lib
