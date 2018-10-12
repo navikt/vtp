@@ -63,7 +63,7 @@ public class Saksbehandler extends Aktoer{
     }
     
     @Override
-    public void erLoggetInnUtenRolle() throws UnsupportedEncodingException {
+    public void erLoggetInnUtenRolle() {
         super.erLoggetInnUtenRolle();
         hentKodeverk();
     }
