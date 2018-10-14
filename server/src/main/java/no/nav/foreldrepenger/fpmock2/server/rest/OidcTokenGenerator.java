@@ -18,14 +18,10 @@ public class OidcTokenGenerator {
     private NumericDate expiration = NumericDate.fromSeconds(NumericDate.now().getValue() + 3600);
     private String issuer;
     private NumericDate issuedAt = NumericDate.now();
-    private String subject = "demo";
+    private final String subject;
     private String kid = KeyStoreTool.getJsonWebKey().getKeyId();
 
     private Map<String, String> additionalClaims = new HashMap<>();
-
-    OidcTokenGenerator() {
-        additionalClaims.put("azp", "OIDC");
-    }
 
     public OidcTokenGenerator(String brukerId) {
         additionalClaims.put("azp", "OIDC");
@@ -51,12 +47,6 @@ public class OidcTokenGenerator {
     OidcTokenGenerator withIssuedAt(NumericDate issuedAt) {
         this.issuedAt = issuedAt;
         return this;
-    }
-
-    public OidcTokenGenerator withSubject(String subject) {
-        this.subject = subject;
-        return this;
-
     }
 
     OidcTokenGenerator withKid(String kid) {

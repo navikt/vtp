@@ -26,6 +26,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentAktoerIdForIdentPersonIk
 import no.nav.tjeneste.virksomhet.aktoer.v2.binding.HentIdentForAktoerIdPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.feil.PersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.AktoerIder;
+import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.Feil;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentListeRequest;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentListeResponse;
 import no.nav.tjeneste.virksomhet.aktoer.v2.meldinger.HentAktoerIdForIdentRequest;
@@ -106,15 +107,21 @@ public class AktoerServiceMockImpl implements AktoerV2 {
                 identTilAktørId.put(ident, bruker == null ? null : bruker.getAktørIdent());
             });
 
+        HentAktoerIdForIdentListeResponse response = new HentAktoerIdForIdentListeResponse();
         identTilAktørId.forEach((ident, aktørId) -> {
             if (aktørId == null) {
-                throw new RuntimeException("Fant ingen aktoerid for ident: " + ident);
+                Feil feil = new Feil();
+                feil.setFeilBeskrivelse("Fant ikke aktørId for ident="+ident);
+                feil.setFeilKode("<dummy kode>");
+                response.getFeilListe().add(feil);
             }
         });
 
-        HentAktoerIdForIdentListeResponse response = new HentAktoerIdForIdentListeResponse();
         List<AktoerIder> aktoerListe = response.getAktoerListe();
         identTilAktørId.forEach((ident, aktoerId) -> {
+            if(aktoerId==null) {
+                return;
+            }
             AktoerIder aktoerIder = new AktoerIder();
             IdentDetaljer identDetaljer = new IdentDetaljer();
             identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now().minusYears(1)));

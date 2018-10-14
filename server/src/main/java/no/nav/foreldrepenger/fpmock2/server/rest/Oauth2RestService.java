@@ -20,7 +20,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.Api;
@@ -88,14 +90,14 @@ public class Oauth2RestService {
                               @SuppressWarnings("unused") @QueryParam("code") String code,
                               @SuppressWarnings("unused") @QueryParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
-        String token = createIdToken(req);
+        String token = createIdToken(req, "demo");
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token, UUID.randomUUID().toString());
         return Response.ok(oauthResponse).build();
     }
 
-    private String createIdToken(HttpServletRequest req) {
+    private String createIdToken(HttpServletRequest req, String username) {
         String issuer = req.getScheme() +"://"+ req.getServerName() + ":"+req.getServerPort() +"/isso/oauth2";
-        String token = new OidcTokenGenerator().withIssuer(issuer).create();
+        String token = new OidcTokenGenerator(username).withIssuer(issuer).create();
         return token;
     }
     
@@ -106,6 +108,18 @@ public class Oauth2RestService {
     public Response authorize( @SuppressWarnings("unused") @Context HttpServletRequest req) {
         String jwks = KeyStoreTool.getJwks();
         return Response.ok(jwks).build();
+    }
+    
+    @GET
+    @Path("/oauth2/bypass")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "oauth2/bypass", notes = ("Mock impl av Oauth2 jwk_uri"))
+    public Response bypass(@Context HttpServletRequest req) throws URISyntaxException {
+        String username = req.getParameter("username");
+        String idToken = createIdToken(req, username);
+        URI target = new URI("http://localhost:9000");
+        Cookie cookie = new Cookie("ID_token", idToken, "/", "");
+        return Response.temporaryRedirect(target).cookie(new NewCookie(cookie)).build();
     }
     
     /** brukes til autentisere bruker slik at en slipper å autentisere senere. OpenAM mikk-makk .*/
