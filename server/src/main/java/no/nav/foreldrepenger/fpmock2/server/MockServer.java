@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.server;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
+import no.nav.foreldrepenger.fpmock2.ldap.LdapServer;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
@@ -41,18 +44,21 @@ public class MockServer {
     private String host = HTTP_HOST;
 
     private final int port;
+    private final LdapServer ldapServer;
 
     public static void main(String[] args) throws Exception {
         TestCertificates.setupKeyAndTrustStore();
         
         PropertiesUtils.initProperties();
 
+        
         MockServer mockServer = new MockServer();
+        
         mockServer.start();
 
     }
 
-    public MockServer() {
+    public MockServer() throws Exception {
         this.port = Integer.valueOf(System.getProperty("server.port", SERVER_PORT));
 
         System.setProperty("server.url", "https://localhost:" + getSslPort());
@@ -62,10 +68,17 @@ public class MockServer {
 
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
+        
+        ldapServer = new LdapServer(new File(getKeystoreFilePath()), getKeyStorePassword().toCharArray());
 
     }
 
     public void start() throws Exception {
+        startLdapServer();
+        startWebServer();
+    }
+
+    private void startWebServer() throws IOException, Exception {
         HandlerContainer handler = (HandlerContainer) server.getHandler();
 
         TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
@@ -83,7 +96,12 @@ public class MockServer {
 
         // kjør soap oppsett etter jetty har startet
         addSoapServices(testScenarioRepository, templateRepository, journalRepository);
+    }
 
+    private void startLdapServer() {
+        Thread ldapThread = new Thread(() -> ldapServer.start(), "LdapServer");
+        ldapThread.setDaemon(true);
+        ldapThread.start();
     }
 
     protected void startServer() throws Exception {
@@ -132,9 +150,9 @@ public class MockServer {
         SslContextFactory sslContextFactory = new SslContextFactory();
         
         sslContextFactory.setCertAlias("localhost-ssl");
-        sslContextFactory.setKeyStorePath(System.getProperty("no.nav.modig.security.appcert.keystore"));
-        sslContextFactory.setKeyStorePassword(System.getProperty("no.nav.modig.security.appcert.password", "changeit"));
-        sslContextFactory.setKeyManagerPassword(System.getProperty("no.nav.modig.security.appcert.password", "changeit"));
+        sslContextFactory.setKeyStorePath(getKeystoreFilePath());
+        sslContextFactory.setKeyStorePassword(getKeyStorePassword());
+        sslContextFactory.setKeyManagerPassword(getKeyStorePassword());
 
         @SuppressWarnings("resource")
         ServerConnector sslConnector = new ServerConnector(server,
@@ -144,6 +162,14 @@ public class MockServer {
         connectors.add(sslConnector);
 
         server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
+    }
+
+    private String getKeyStorePassword() {
+        return System.getProperty("no.nav.modig.security.appcert.password", "changeit");
+    }
+
+    private String getKeystoreFilePath() {
+        return System.getProperty("no.nav.modig.security.appcert.keystore");
     }
 
     private Integer getSslPort() {

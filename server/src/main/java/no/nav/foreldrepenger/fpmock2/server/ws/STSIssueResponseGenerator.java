@@ -15,8 +15,14 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import org.apache.cxf.security.SecurityContext;
 import org.apache.cxf.sts.StaticSTSProperties;
 import org.apache.cxf.sts.operation.TokenIssueOperation;
+import org.apache.cxf.sts.request.ReceivedToken;
+import org.apache.cxf.sts.request.RequestRequirements;
+import org.apache.cxf.sts.request.TokenRequirements;
+import org.apache.cxf.sts.token.delegation.TokenDelegationHandler;
+import org.apache.cxf.sts.token.delegation.UsernameTokenDelegationHandler;
 import org.apache.cxf.sts.token.provider.SAMLTokenProvider;
 import org.apache.cxf.sts.token.provider.TokenProvider;
+import org.apache.cxf.sts.token.provider.TokenProviderParameters;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenCollectionType;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseCollectionType;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
@@ -54,7 +60,18 @@ public class STSIssueResponseGenerator {
     private static final Crypto CRYPTO = getCrypto();
     private static final StaticSTSProperties STS_PROPERTIES = initSTSProperties(CRYPTO);
 
-    private final TokenIssueOperation issueOperation = new TokenIssueOperation();
+    private final TokenIssueOperation issueOperation = new TokenIssueOperation() {
+        @Override
+        protected org.apache.cxf.sts.token.provider.TokenProviderParameters createTokenProviderParameters(RequestRequirements requestRequirements,
+                                                                                                          Principal principal,
+                                                                                                          Map<String, Object> messageContext) {
+            TokenProviderParameters providerParameters = super.createTokenProviderParameters(requestRequirements, principal, messageContext);
+            TokenRequirements tokenRequirements = providerParameters.getTokenRequirements();
+            tokenRequirements.setOnBehalfOf(null);
+            tokenRequirements.setActAs(null);
+            return providerParameters;
+        };
+    };
 
     public STSIssueResponseGenerator() {
         initTokenProviders(issueOperation);
@@ -86,7 +103,6 @@ public class STSIssueResponseGenerator {
     /** Issue a token as part of collection */
     public RequestSecurityTokenResponseCollectionType buildRequestSecurityTokenResponseCollectionType(RequestSecurityTokenType request) {
         Principal principal = new CustomTokenPrincipal(USERNAME);
-        
         Map<String, Object> messageContext = createMessageContext(principal);
         return issueOperation.issue(request, principal, messageContext);
     }
@@ -149,6 +165,16 @@ public class STSIssueResponseGenerator {
         List<TokenProvider> providerList = new ArrayList<>();
         providerList.add(new SAMLTokenProvider());
         issueOperation.setTokenProviders(providerList);
+
+        // Add TokenDelegationHandler for onBehalfOf
+        List<TokenDelegationHandler> handlers = new ArrayList<>();
+        handlers.add(new UsernameTokenDelegationHandler() {
+            @Override
+            public boolean canHandleToken(ReceivedToken delegateTarget) {
+                return true;
+            }
+        });
+        issueOperation.setDelegationHandlers(handlers);
     }
 
 }

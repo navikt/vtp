@@ -16,6 +16,10 @@
 	<dependencies>
 		<!-- Prosjektavhengigheter -->
 		<dependency>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <artifactId>ldap-mock</artifactId>
+        </dependency>
+		<dependency>
 			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>tps-mock</artifactId>
 		</dependency>

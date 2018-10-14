@@ -1,0 +1,81 @@
+dn: dc=local
+changetype: add
+objectClass: top
+objectClass: dcObject
+dc: local
+
+dn: DC=test,DC=local
+changetype: add
+dc: test
+o: test
+objectClass: top
+objectclass: dcObject
+objectclass: organization
+
+dn: OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: BusinessUnits
+objectClass: organizationalUnit
+objectClass: top
+
+dn: OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: NAV
+objectClass: organizationalUnit
+objectClass: top
+
+dn: OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: Users
+objectClass: organizationalUnit
+objectClass: top
+
+dn: CN=Saksbehandler,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Saksbehandler
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Saksbehandler
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+dn: CN=demo,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: demo
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: demo
+sn: demo
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+
+

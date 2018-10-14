@@ -5,12 +5,10 @@ import java.lang.reflect.Method;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.WebServiceFeature;
 
-import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 
-import no.nav.abac.pdp.PdpMock;
 import no.nav.foreldrepenger.fpmock2.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
@@ -23,10 +21,11 @@ import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.DokumentproduksjonV2MockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl;
-import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalV2ServiceMockImpl;
+import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
+import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
@@ -77,7 +76,6 @@ public class SoapWebServiceConfig {
         publishWebService(new OppgaveServiceMockImpl(), "/nav-gsak-ws/OppgaveV3");
         publishWebService(new ArbeidsforholdMockImpl(repo), "/aareg-core/ArbeidsforholdService/v3");
         publishWebService(new OrganisasjonMockImpl(repo), "/ereg/ws/OrganisasjonService/v4");
-        publishWebService(new PdpMock(), "/asm-pdp/authorize");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

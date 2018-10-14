@@ -1,9 +1,9 @@
 package no.nav.tjeneste.virksomhet.aktoer.v2;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.jws.HandlerChain;
@@ -98,13 +98,15 @@ public class AktoerServiceMockImpl implements AktoerV2 {
 
         LOG.info("hentAktoerIdForIdentListe: " + hentAktoerIdForIdentListeRequest.getIdentListe().stream().collect(Collectors.joining(",")));
 
-        Map<String, String> aktørTilIdent = hentAktoerIdForIdentListeRequest.getIdentListe().stream()
-            .collect(Collectors.toMap(Function.identity(), ident -> {
-                BrukerModell bruker = repo.getPersonIndeks().finnByIdent(ident);
-                return bruker.getAktørIdent();
-            }));
+        Map<String, String> identTilAktørId = new LinkedHashMap<>();
 
-        aktørTilIdent.forEach((ident, aktørId) -> {
+        hentAktoerIdForIdentListeRequest.getIdentListe().stream()
+            .forEach(ident -> {
+                BrukerModell bruker = repo.getPersonIndeks().finnByIdent(ident);
+                identTilAktørId.put(ident, bruker == null ? null : bruker.getAktørIdent());
+            });
+
+        identTilAktørId.forEach((ident, aktørId) -> {
             if (aktørId == null) {
                 throw new RuntimeException("Fant ingen aktoerid for ident: " + ident);
             }
@@ -112,7 +114,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
 
         HentAktoerIdForIdentListeResponse response = new HentAktoerIdForIdentListeResponse();
         List<AktoerIder> aktoerListe = response.getAktoerListe();
-        aktørTilIdent.forEach((ident, aktoerId) -> {
+        identTilAktørId.forEach((ident, aktoerId) -> {
             AktoerIder aktoerIder = new AktoerIder();
             IdentDetaljer identDetaljer = new IdentDetaljer();
             identDetaljer.setDatoFom(ConversionUtils.convertToXMLGregorianCalendar(LocalDate.now().minusYears(1)));

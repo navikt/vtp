@@ -181,6 +181,12 @@
 				<artifactId>autotest</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>ldap-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
@@ -384,6 +390,12 @@
 				<groupId>javax</groupId>
 				<artifactId>javaee-api</artifactId>
 				<version>7.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.unboundid</groupId>
+				<artifactId>unboundid-ldapsdk</artifactId>
+				<version>4.0.8</version>
 			</dependency>
 
 			<dependency>

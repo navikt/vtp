@@ -11,10 +11,10 @@
     <name>FPMock2 :: Mocks</name>
     <packaging>pom</packaging>
     <modules>
+		<module>ldap-mock</module>
         <module>tps-mock</module>
 		<module>gsak-mock</module>
 		<module>joark-mock</module>
-		<module>pdp-mock</module>
         <module>dokumentproduksjon-mock</module>
 		<module>infotrygd-mock</module>
 		<module>arena-mock</module>

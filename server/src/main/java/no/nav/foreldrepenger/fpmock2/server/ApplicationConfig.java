@@ -17,7 +17,6 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestTjeneste;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +27,14 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
+import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioTemplateRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.rest.AutotestRestService;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
+import no.nav.foreldrepenger.fpmock2.server.rest.PdpRestTjeneste;
 import no.nav.sigrun.SigrunMock;
 
 public class ApplicationConfig extends Application {
@@ -66,12 +67,15 @@ public class ApplicationConfig extends Application {
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
+        classes.add(PdpRestTjeneste.class);
+        
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
         classes.add(JacksonConfigResolver.class);
         classes.add(MyExceptionMapper.class);
+        
 
         return classes;
     }
