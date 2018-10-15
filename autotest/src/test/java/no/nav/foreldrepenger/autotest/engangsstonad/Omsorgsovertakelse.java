@@ -1,20 +1,25 @@
 package no.nav.foreldrepenger.autotest.engangsstonad;
 
-public class Omsorgsovertakelse {
+import java.io.IOException;
 
-    public void behenadleOmsorgsovertakelseMorGodkjent() {
-        
+import no.nav.foreldrepenger.autotest.FpsakTestBase;
+import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+
+public class Omsorgsovertakelse extends EngangsstonadTestBase{
+
+    public void behenadleOmsorgsovertakelseMorGodkjent() throws IOException {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
     
-    public void behenadleOmsorgsovertakelseMorAvvist() {
-            
+    public void behenadleOmsorgsovertakelseMorAvvist() throws IOException {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
     
-    public void behenadleOmsorgsovertakelseMorOverstyrt() {
-        
+    public void behenadleOmsorgsovertakelseMorOverstyrt() throws IOException {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
     
-    public void behenadleOmsorgsovertakelseFarGodkjent() {
-        
+    public void behenadleOmsorgsovertakelseFarGodkjent() throws IOException {
+        TestscenarioDto testscenario = opprettScenario("55");
     }
 }
