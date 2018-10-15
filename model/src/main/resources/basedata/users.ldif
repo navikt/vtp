@@ -38,7 +38,7 @@ objectClass: person
 objectClass: top
 cn: Saksbehandler
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Saksbehandler
+displayName: Sara Saksbehandler
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -52,6 +52,7 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
  
+
 dn: CN=Saksbehandler6,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
 changetype: add
 objectClass: user
@@ -60,7 +61,7 @@ objectClass: person
 objectClass: top
 cn: Saksbehandler6
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Saksbehandler6
+displayName: Sa6a Saksbehandler6
 memberOf: CN=0000-GA-GOSYS_KODE6,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -76,6 +77,7 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
  
+
 dn: CN=Saksbehandler7,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
 changetype: add
 objectClass: user
@@ -84,7 +86,7 @@ objectClass: person
 objectClass: top
 cn: Saksbehandler7
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Saksbehandler7
+displayName: Sa7a Saksbehandler7
 memberOf: CN=0000-GA-GOSYS_KODE7,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -100,6 +102,7 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
  
+
 dn: CN=Beslutter,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
 changetype: add
 objectClass: user
@@ -108,7 +111,7 @@ objectClass: person
 objectClass: top
 cn: Beslutter
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Beslutter
+displayName: Birger Beslutter
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -124,6 +127,7 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
  
+
 dn: CN=Overstyrer,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
 changetype: add
 objectClass: user
@@ -132,7 +136,7 @@ objectClass: person
 objectClass: top
 cn: Overstyrer
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Overstyrer
+displayName: Ove Overstyrer
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -156,7 +160,7 @@ objectClass: person
 objectClass: top
 cn: Klagebehandler
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Klagebehandler
+displayName: Klara Klagebehandler
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -172,6 +176,7 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
  
+
 dn: CN=Veileder,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
 changetype: add
 objectClass: user
@@ -180,7 +185,7 @@ objectClass: person
 objectClass: top
 cn: Veileder
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: Veileder
+displayName: Vegard Veileder
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
@@ -195,30 +200,4 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
  ,OU=BusinessUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
-
-dn: CN=demo,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
-changetype: add
-objectClass: user
-objectClass: organizationalPerson
-objectClass: person
-objectClass: top
-cn: demo
-objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
-displayName: demo
-sn: demo
-memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
- sUnits,DC=test,DC=local
-memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
- sUnits,DC=test,DC=local
-memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
- U=BusinessUnits,DC=test,DC=local
-memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
- inessUnits,DC=test,DC=local
-memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
- ,OU=BusinessUnits,DC=test,DC=local
-memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
- s,DC=test,DC=local
- 
-
-
 

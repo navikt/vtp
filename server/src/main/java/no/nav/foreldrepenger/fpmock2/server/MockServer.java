@@ -129,7 +129,7 @@ public class MockServer {
         DefaultServlet defaultServlet = new DefaultServlet();
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
-
+        
         ctx.addServlet(servletHolder, "/");
     }
 
