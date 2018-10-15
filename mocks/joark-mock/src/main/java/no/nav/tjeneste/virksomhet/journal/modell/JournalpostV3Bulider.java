@@ -16,7 +16,8 @@ public class JournalpostV3Bulider {
 
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
-        journalpost.setJournalpostId(modell.getJournalpostId());//TODO sjekk om det er riktig id som settes inn
+        journalpost.setJournalpostId(modell.getJournalpostId());
+        journalpost.getGjelderArkivSak().setArkivSakId(modell.getSakId());
 
         if (finnHoveddokumentFraJournalpost(modell).isPresent()) {
             DokumentModell hoveddokument = finnHoveddokumentFraJournalpost(modell).get();
@@ -29,7 +30,7 @@ public class JournalpostV3Bulider {
         journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
 
         Journalposttyper journalposttype = new Journalposttyper();
-        journalposttype.setKodeverksRef("I");
+        journalposttype.setKodeverksRef(modell.getJournalposttype().getKode());
         journalpost.setJournalposttype(journalposttype);
 
        return journalpost;
@@ -46,9 +47,15 @@ public class JournalpostV3Bulider {
     private static DetaljertDokumentinformasjon lagDetaljertDokumentinformasjon(DokumentModell dokumentModell) {
         DetaljertDokumentinformasjon detaljertDokumentinformasjon = new DetaljertDokumentinformasjon();
         detaljertDokumentinformasjon.setDokumentId(dokumentModell.getDokumentId());
+
         Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
-        dokumentkategorier.setValue("SOK");
+        dokumentkategorier.setKodeverksRef(dokumentModell.getDokumentkategori().getKode());
         detaljertDokumentinformasjon.setDokumentkategori(dokumentkategorier);
+
+        DokumenttypeIder dokumenttypeIder = new DokumenttypeIder();
+        dokumenttypeIder.setKodeverksRef(dokumentModell.getDokumentType().getKode());
+        detaljertDokumentinformasjon.setDokumentTypeId(dokumenttypeIder);
+
         for (DokumentVariantInnhold innhold : dokumentModell.getDokumentVariantInnholdListe()) {
             String arkivfiltype = innhold.getFilType().getKode();
             String variantformat = innhold.getVariantFormat().getKode();

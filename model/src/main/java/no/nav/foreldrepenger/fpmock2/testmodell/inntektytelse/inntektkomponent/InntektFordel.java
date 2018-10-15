@@ -54,7 +54,7 @@ public class InntektFordel {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Landkode) obj).getKode());
+        return Objects.equals(getKode(), ((InntektFordel) obj).getKode());
     }
 
     @Override

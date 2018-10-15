@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 public class DokumentModell {
@@ -15,6 +16,7 @@ public class DokumentModell {
     private String innhold;
     private DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost;
     private List<DokumentVariantInnhold> dokumentVariantInnholdListe = new ArrayList<>();
+    private Dokumentkategori dokumentkategori;
 
 
 
@@ -73,4 +75,8 @@ public class DokumentModell {
     public void setDokumentVariantInnholdListe(List<DokumentVariantInnhold> dokumentVariantInnholdListe) {
         this.dokumentVariantInnholdListe = dokumentVariantInnholdListe;
     }
+
+    public Dokumentkategori getDokumentkategori() { return dokumentkategori; }
+
+    public void setDokumentkategori(Dokumentkategori dokumentkategori) { this.dokumentkategori = dokumentkategori;}
 }
