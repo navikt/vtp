@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
@@ -26,18 +28,22 @@ public class TestscenarioDto extends TestscenarioReferanse {
     @JsonIgnore
     @JsonProperty("template")
     private TestscenarioTemplate template;
+
+    @JsonProperty("scenariodata")
+    private TestscenariodataDto scenariodataDto;
     
     public TestscenarioDto() {
         super(null,  null);
     }
 
     public TestscenarioDto(TestscenarioTemplate template, String testscenarioId, Map<String, String> variabler,
-                           TestscenarioPersonopplysningDto scenarioPersonopplysninger) {
+                           TestscenarioPersonopplysningDto scenarioPersonopplysninger, TestscenariodataDto scenariodataDto) {
         super(testscenarioId, template.getTemplateKey());
         this.personopplysninger = scenarioPersonopplysninger;
         Objects.requireNonNull(variabler, "variabler");
         this.template = template;
         this.variabler = variabler;
+        this.scenariodataDto = scenariodataDto;
     }
 
     public TestscenarioPersonopplysningDto getPersonopplysninger() {
