@@ -3,10 +3,7 @@ package no.nav.tjeneste.virksomhet.journal.modell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Arkivfiltyper;
-import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Journalposttyper;
-import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Journaltilstand;
-import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Variantformater;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.*;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.DetaljertDokumentinformasjon;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.DokumentInnhold;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.Journalpost;
@@ -60,6 +57,9 @@ public class JournalpostV3Bulider {
             vf.setKodeverksRef(variantformat);
             dokumentInnhold.setVariantformat(vf);
             detaljertDokumentinformasjon.getDokumentInnholdListe().add(dokumentInnhold);
+            Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
+            dokumentkategorier.setValue("SOK");
+            detaljertDokumentinformasjon.setDokumentkategori(dokumentkategorier);
         }
         return detaljertDokumentinformasjon;
     }

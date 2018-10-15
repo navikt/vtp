@@ -59,6 +59,7 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
                 response.getJournalpostListe().add(JournalpostV3Bulider.buildFrom(modell));
             }
         }
+        // TODO: sett sisteIntervall?
         return response;
     }
 
