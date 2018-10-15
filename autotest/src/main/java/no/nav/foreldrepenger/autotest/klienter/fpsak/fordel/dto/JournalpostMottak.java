@@ -15,7 +15,8 @@ public class JournalpostMottak {
     protected String forsendelseMottatt;
     protected String payloadXml;
     protected Integer payloadLength;
-    
+    protected String dokumentKategoriOffisiellKode;
+
     public JournalpostMottak(String saksnummer, String journalpostId, LocalDate forsendelseMottatt,
             String behandlingstemaOffisiellKode) {
         this(saksnummer, journalpostId, forsendelseMottatt.toString(), behandlingstemaOffisiellKode);
@@ -52,5 +53,13 @@ public class JournalpostMottak {
 
     public void setPayloadLength(Integer payloadLength) {
         this.payloadLength = payloadLength;
+    }
+    
+    public void setForsendelseId(String forsendelseId) {
+        this.forsendelseId = forsendelseId;
+    }
+    
+    public void setDokumentKategoriOffisiellKode(String dokumentKategoriOffisiellKode) {
+        this.dokumentKategoriOffisiellKode = dokumentKategoriOffisiellKode;
     }
 }

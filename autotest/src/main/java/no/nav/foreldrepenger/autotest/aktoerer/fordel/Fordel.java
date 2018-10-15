@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.UUID;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
@@ -59,7 +60,7 @@ public class Fordel extends Aktoer {
 
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
 
-        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId, saksnummer);
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOKN", aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
 
@@ -105,7 +106,7 @@ public class Fordel extends Aktoer {
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
 
-        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, aktørId, saksnummer);
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "-", aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         return sakId;
 
@@ -115,7 +116,7 @@ public class Fordel extends Aktoer {
     /*
      * Sender inn journalpost og returnerer saksnummer
      */
-    private Long sendInnJournalpost(String xml, String journalpostId, String behandlingstemaOffisiellKode, String dokumentTypeIdOffisiellKode, String aktørId, Long saksnummer) throws IOException {
+    private Long sendInnJournalpost(String xml, String journalpostId, String behandlingstemaOffisiellKode, String dokumentTypeIdOffisiellKode, String dokumentKategori, String aktørId, Long saksnummer) throws IOException {
 
         if (saksnummer == null || saksnummer.longValue() == 0L) {
             OpprettSak journalpost = new OpprettSak(journalpostId, behandlingstemaOffisiellKode, aktørId);
@@ -131,6 +132,8 @@ public class Fordel extends Aktoer {
 
         JournalpostMottak journalpostMottak = new JournalpostMottak("" + saksnummer, journalpostId, LocalDate.now(), behandlingstemaOffisiellKode);
         journalpostMottak.setDokumentTypeIdOffisiellKode(dokumentTypeIdOffisiellKode);
+        journalpostMottak.setForsendelseId(UUID.randomUUID().toString());
+        journalpostMottak.setDokumentKategoriOffisiellKode(dokumentKategori);
 
         if (null != xml) {
             journalpostMottak.setPayloadXml(new String(Base64.getUrlEncoder().withoutPadding().encode(xml.getBytes())));
