@@ -1,10 +1,6 @@
 package no.nav.foreldrepenger.autotest.aktoerer;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import org.apache.http.impl.cookie.BasicClientCookie;
-
 import no.nav.foreldrepenger.autotest.klienter.vtp.openam.OpenamKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.HttpsSession;

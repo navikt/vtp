@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

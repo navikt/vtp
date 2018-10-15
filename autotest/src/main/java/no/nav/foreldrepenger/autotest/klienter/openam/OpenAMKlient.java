@@ -41,12 +41,6 @@ public class OpenAMKlient extends JsonRest {
         this.redirectUriEncoded = URLEncoder.encode(redirectBase + "/vedtak/cb", UTF_8);
     }
     
-    public void loginMock(String issuer) {
-        //TODO fikses når man kan bruke autotest internt i server
-        //String token = new OidcTokenGenerator().withIssuer(issuer).create();
-        //addCookie("ID_token", token, "devillo.no", "/");
-    }
-    
     public void loginSession(String username, String password, String oicdUser, String oicdPass) throws IOException {
     	try {
     		OpenAMAccessToken token = login(username,
