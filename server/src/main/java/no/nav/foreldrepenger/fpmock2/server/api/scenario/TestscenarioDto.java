@@ -47,4 +47,6 @@ public class TestscenarioDto extends TestscenarioReferanse {
     public Map<String, String> getVariabler() {
         return Collections.unmodifiableMap(variabler);
     }
+
+    public TestscenariodataDto getScenariodata() { return scenariodataDto;}
 }

@@ -71,15 +71,17 @@ public class FpsakTestBase extends TestBase{
 
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
 
-        //TODO OL: Hentet tidligere fra modell.
-
         List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
 
-        inntektsmeldinger.add(fromInntektsperiode(3000,fnr,"8154900", LocalDate.now().minusMonths(3)));
+        for (Inntektsperiode periode : testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder()) {
+            String orgnummer = periode.getOrgnr();
+            Integer belop = periode.getBeløp();
+
+            inntektsmeldinger.add(fromInntektsperiode(belop, fnr, orgnummer, startDatoForeldrepenger));
+        }
 
         return inntektsmeldinger;
-
     }
 
     private List<Inntektsperiode> hentGjeldendeInntektsperioder(List<Inntektsperiode> perioder){
