@@ -46,6 +46,9 @@ public class JournalpostV3Bulider {
     private static DetaljertDokumentinformasjon lagDetaljertDokumentinformasjon(DokumentModell dokumentModell) {
         DetaljertDokumentinformasjon detaljertDokumentinformasjon = new DetaljertDokumentinformasjon();
         detaljertDokumentinformasjon.setDokumentId(dokumentModell.getDokumentId());
+        Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
+        dokumentkategorier.setValue("SOK");
+        detaljertDokumentinformasjon.setDokumentkategori(dokumentkategorier);
         for (DokumentVariantInnhold innhold : dokumentModell.getDokumentVariantInnholdListe()) {
             String arkivfiltype = innhold.getFilType().getKode();
             String variantformat = innhold.getVariantFormat().getKode();
@@ -57,9 +60,6 @@ public class JournalpostV3Bulider {
             vf.setKodeverksRef(variantformat);
             dokumentInnhold.setVariantformat(vf);
             detaljertDokumentinformasjon.getDokumentInnholdListe().add(dokumentInnhold);
-            Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
-            dokumentkategorier.setValue("SOK");
-            detaljertDokumentinformasjon.setDokumentkategori(dokumentkategorier);
         }
         return detaljertDokumentinformasjon;
     }
