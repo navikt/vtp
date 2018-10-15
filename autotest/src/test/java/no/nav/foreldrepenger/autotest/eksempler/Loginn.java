@@ -1,8 +1,5 @@
 package no.nav.foreldrepenger.autotest.eksempler;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
