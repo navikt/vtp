@@ -1,9 +1,11 @@
 package no.nav.foreldrepenger.autotest.aktoerer;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.http.impl.cookie.BasicClientCookie;
 
+import no.nav.foreldrepenger.autotest.klienter.vtp.openam.OpenamKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.HttpsSession;
 
@@ -15,20 +17,13 @@ public class Aktoer {
 		session = new HttpsSession();
 	}
 	
-	public void erLoggetInnUtenRolle() {
-	    String token = "token-som-ikke-betyr-noe";
-	    String domain = "localhost";
-	    String path  = "/";
-	    
-            
-            BasicClientCookie cookie = new BasicClientCookie("ID_token", token);
-            cookie.setDomain(domain);
-            cookie.setPath(path);
-            session.leggTilCookie(cookie);
+	public void erLoggetInnUtenRolle() throws IOException {
+	    erLoggetInnMedRolle("Saksbehandler");
 	}
 	
-	public void erLoggetInnMedRolle(String rolle) {
-	    erLoggetInnUtenRolle();
+	public void erLoggetInnMedRolle(String rolle) throws IOException {
+	    OpenamKlient klient = new OpenamKlient(session);
+            klient.bypass(rolle);
 	    /*
 		Bruker user = TestKonfigurasjon.hentBruker(rolle);
 		

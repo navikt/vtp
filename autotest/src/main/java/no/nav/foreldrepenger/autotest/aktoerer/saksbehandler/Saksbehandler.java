@@ -51,19 +51,19 @@ public class Saksbehandler extends Aktoer{
         kodeverkKlient = new KodeverkKlient(session);
     }
 
-    public Saksbehandler(String rolle) {
+    public Saksbehandler(String rolle) throws IOException {
         this();
 	erLoggetInnMedRolle(rolle);
     }
     
     @Override
-    public void erLoggetInnMedRolle(String rolle) {
+    public void erLoggetInnMedRolle(String rolle) throws IOException {
         super.erLoggetInnMedRolle(rolle);
         hentKodeverk();
     }
     
     @Override
-    public void erLoggetInnUtenRolle() {
+    public void erLoggetInnUtenRolle() throws IOException {
         super.erLoggetInnUtenRolle();
         hentKodeverk();
     }

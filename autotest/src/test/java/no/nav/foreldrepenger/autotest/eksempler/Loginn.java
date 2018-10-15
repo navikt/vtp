@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.eksempler;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.junit.jupiter.api.Tag;
@@ -12,11 +13,11 @@ public class Loginn extends FpsakTestBase{
     
     @Test
     @Tag("utvikling")
-    void loginnUtenRolle() throws UnsupportedEncodingException {
+    void loginnUtenRolle() throws Exception {
         saksbehandler.erLoggetInnUtenRolle();
     }
     
-    void loginnMedRolle() throws UnsupportedEncodingException {
+    void loginnMedRolle() throws Exception {
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
     }
 }
