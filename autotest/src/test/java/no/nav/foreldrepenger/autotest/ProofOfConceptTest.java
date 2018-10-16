@@ -32,7 +32,7 @@ public class ProofOfConceptTest extends FpsakTestBase {
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
         Long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingsBuilder, testscenario, null);
-        fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER,saksnummer);
+        fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER,saksnummer);
 
         System.out.println("Saksnummer: " + saksnummer);
 
@@ -50,7 +50,7 @@ public class ProofOfConceptTest extends FpsakTestBase {
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         System.out.println("Saksnummer: " + saksnummer);
 
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");

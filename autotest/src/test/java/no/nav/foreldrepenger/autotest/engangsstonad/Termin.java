@@ -16,7 +16,7 @@ public class Termin extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);

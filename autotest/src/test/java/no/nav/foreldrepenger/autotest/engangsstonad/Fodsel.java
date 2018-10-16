@@ -25,7 +25,7 @@ public class Fodsel extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
@@ -58,7 +58,7 @@ public class Fodsel extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
@@ -87,7 +87,7 @@ public class Fodsel extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
@@ -115,7 +115,7 @@ public class Fodsel extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
@@ -142,7 +142,7 @@ public class Fodsel extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadFlereBarn(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);
@@ -176,7 +176,7 @@ public class Fodsel extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
     }
     
     

@@ -75,17 +75,10 @@ public class Fordel extends Aktoer {
     }
 
     /*
-     * Sender inn søknad fra builder
-     */
-    public long sendInnSøknad(ForeldrepengesoknadBuilder builder, TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception {
-        return sendInnSøknad(builder.build(), scenario, dokumenttypeId, saksnummer);
-    }
-
-    /*
      * Sender inn søknad og opretter ny sak
      */
-    public long sendInnSøknad(ForeldrepengesoknadBuilder builder, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
-        return sendInnSøknad(builder, scenario, dokumenttypeId, null);
+    public long sendInnSøknad(Soeknad søkand, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
+        return sendInnSøknad(søkand, scenario, dokumenttypeId, null);
     }
 
     /*

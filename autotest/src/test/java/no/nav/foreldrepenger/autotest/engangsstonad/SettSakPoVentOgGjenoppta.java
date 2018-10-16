@@ -20,7 +20,7 @@ public class SettSakPoVentOgGjenoppta extends EngangsstonadTestBase{
         
         //Send inn søknad
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
         saksbehandler.hentFagsak(saksnummer);

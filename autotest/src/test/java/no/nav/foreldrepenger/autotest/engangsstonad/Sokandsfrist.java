@@ -15,7 +15,7 @@ public class Sokandsfrist extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadSøktForSent(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         System.out.println("Saksnummer: " + saksnummer);
         
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");

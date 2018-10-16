@@ -15,7 +15,7 @@ public class OverstyringAvGradering extends FpsakTestBase{
         //søknad.leggTilPeriode(new periode().gradering(25))
         
         fordel.erLoggetInnUtenRolle();
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         
         /*
         Inntektsmelding = InntektsmeldingBuilder.fromSøknad(søkand);

@@ -22,7 +22,7 @@ public class BehandleAksjonspunkter extends FpsakTestBase{
         
         //Send inn søknad
         fordel.erLoggetInnMedRolle("Saksbehandler");
-        long saksnummer = fordel.sendInnSøknad(søknad, testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         //Behandle sak
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
