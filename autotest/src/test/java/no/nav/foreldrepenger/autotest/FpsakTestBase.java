@@ -69,6 +69,8 @@ public class FpsakTestBase extends TestBase{
         return testscenarioKlient.opprettTestscenario(id);
     }
 
+
+
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
 
         List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
@@ -78,7 +80,7 @@ public class FpsakTestBase extends TestBase{
             String orgnummer = periode.getOrgnr();
             Integer belop = periode.getBeløp();
 
-            inntektsmeldinger.add(fromInntektsperiode(belop, fnr, orgnummer, startDatoForeldrepenger));
+            inntektsmeldinger.add(lagInntektsmeldingBuilderFraInntektsperiode(belop, fnr, orgnummer, startDatoForeldrepenger));
         }
 
         return inntektsmeldinger;
@@ -97,7 +99,7 @@ public class FpsakTestBase extends TestBase{
         return new ArrayList<>(periodeMap.values());
     }
 
-    private InntektsmeldingBuilder fromInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.FORELDREPENGER,
                 ÅrsakInnsendingKodeliste.NY.NY,
