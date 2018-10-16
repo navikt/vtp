@@ -42,9 +42,6 @@ public class ProofOfConceptTest extends FpsakTestBase {
         saksbehandler.gjenopptaBehandling();
 
 
-
-        System.out.println(saksnummer);
-
     }
 
     @Test

@@ -6,6 +6,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModel
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfiltype;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantformat;
 
@@ -16,6 +17,7 @@ public class JournalpostModellGenerator {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
+        journalpostModell.setJournalposttype(Journalposttyper.INNGAAENDE_DOKUMENT);
 
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setInnhold(innhold);

@@ -1,17 +1,22 @@
 package no.nav.tjeneste.virksomhet.journal.modell;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.tjeneste.virksomhet.journal.v3.informasjon.*;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Arkivfiltyper;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Dokumentkategorier;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.DokumenttypeIder;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Journalposttyper;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Journaltilstand;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Variantformater;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.ArkivSak;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.DetaljertDokumentinformasjon;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.DokumentInnhold;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.Journalpost;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JournalpostV3Bulider {
 
@@ -56,6 +61,7 @@ public class JournalpostV3Bulider {
     private static DetaljertDokumentinformasjon lagDetaljertDokumentinformasjon(DokumentModell dokumentModell) {
         DetaljertDokumentinformasjon detaljertDokumentinformasjon = new DetaljertDokumentinformasjon();
         detaljertDokumentinformasjon.setDokumentId(dokumentModell.getDokumentId());
+
 
         Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
         if (dokumentModell.getDokumentkategori() != null) {

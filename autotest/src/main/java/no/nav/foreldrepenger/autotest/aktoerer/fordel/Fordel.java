@@ -21,6 +21,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
@@ -101,12 +102,13 @@ public class Fordel extends Aktoer {
         String xml = inntektsmelding.createInntektesmeldingXML();
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
         String behandlingstemaOffisiellKode = "ab0047";
+        String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
         String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
 
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
 
-        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "-", aktørId, saksnummer);
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentKategori, dokumentKategori, aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         return sakId;
 
