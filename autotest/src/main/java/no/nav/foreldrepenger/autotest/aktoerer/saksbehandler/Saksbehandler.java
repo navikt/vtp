@@ -18,6 +18,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.dokument.DokumentKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.dokument.dto.DokumentListeEnhet;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
@@ -31,15 +33,19 @@ public class Saksbehandler extends Aktoer{
     public List<Fagsak> fagsaker;
     public Fagsak valgtFagsak;
     
+    public List<DokumentListeEnhet> dokumenter;
+    
     public List<Behandling> behandlinger;
     public Behandling valgtBehandling;
     
     private FagsakKlient fagsakKlient;
     private BehandlingerKlient behandlingerKlient;
     private KodeverkKlient kodeverkKlient;
+    private DokumentKlient dokumentKlient;
     
     public Kodeverk kodeverk;
     public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
+    
     
     
     
@@ -48,6 +54,7 @@ public class Saksbehandler extends Aktoer{
         fagsakKlient = new FagsakKlient(session);
         behandlingerKlient = new BehandlingerKlient(session);
         kodeverkKlient = new KodeverkKlient(session);
+        dokumentKlient = new DokumentKlient(session);
     }
 
     public Saksbehandler(String rolle) throws IOException {
@@ -99,6 +106,8 @@ public class Saksbehandler extends Aktoer{
             throw new RuntimeException("Kan ikke velge fagsak. fagsak er null");
         }
         valgtFagsak = fagsak;
+        
+        dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         
         behandlinger = behandlingerKlient.alle(fagsak.saksnummer);
         valgtBehandling = null;
