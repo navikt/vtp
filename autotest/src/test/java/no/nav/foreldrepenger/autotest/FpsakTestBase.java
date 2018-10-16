@@ -104,6 +104,7 @@ public class FpsakTestBase extends TestBase{
                 fnr,
                 startDatoForeldrepenger);
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
+        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
                 "", //TODO arbeidsforhold id
                 null,

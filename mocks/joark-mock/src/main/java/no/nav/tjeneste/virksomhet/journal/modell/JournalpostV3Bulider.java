@@ -4,6 +4,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.*;
+import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.ArkivSak;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.DetaljertDokumentinformasjon;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.DokumentInnhold;
 import no.nav.tjeneste.virksomhet.journal.v3.informasjon.hentkjernejournalpostliste.Journalpost;
@@ -17,7 +18,10 @@ public class JournalpostV3Bulider {
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getJournalpostId());
-        journalpost.getGjelderArkivSak().setArkivSakId(modell.getSakId());
+
+        ArkivSak arkivSak = new ArkivSak();
+        arkivSak.setArkivSakId(modell.getSakId());
+        journalpost.setGjelderArkivSak(arkivSak);
 
         if (finnHoveddokumentFraJournalpost(modell).isPresent()) {
             DokumentModell hoveddokument = finnHoveddokumentFraJournalpost(modell).get();
@@ -31,9 +35,12 @@ public class JournalpostV3Bulider {
             journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
         }
         //journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
-        Journalposttyper journalposttype = new Journalposttyper();
-        journalposttype.setKodeverksRef(modell.getJournalposttype().getKode());
-        journalpost.setJournalposttype(journalposttype);
+
+        if(modell.getJournalposttype() != null) {
+            Journalposttyper journalposttype = new Journalposttyper();
+            journalposttype.setKodeverksRef(modell.getJournalposttype().getKode());
+            journalpost.setJournalposttype(journalposttype);
+        }
 
        return journalpost;
     }
@@ -51,11 +58,15 @@ public class JournalpostV3Bulider {
         detaljertDokumentinformasjon.setDokumentId(dokumentModell.getDokumentId());
 
         Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
-        dokumentkategorier.setKodeverksRef(dokumentModell.getDokumentkategori().getKode());
+        if (dokumentModell.getDokumentkategori() != null) {
+            dokumentkategorier.setKodeverksRef(dokumentModell.getDokumentkategori().getKode());
+        }
         detaljertDokumentinformasjon.setDokumentkategori(dokumentkategorier);
 
         DokumenttypeIder dokumenttypeIder = new DokumenttypeIder();
-        dokumenttypeIder.setKodeverksRef(dokumentModell.getDokumentType().getKode());
+        if (dokumentModell.getDokumentType() != null) {
+            dokumenttypeIder.setKodeverksRef(dokumentModell.getDokumentType().getKode());
+        }
         detaljertDokumentinformasjon.setDokumentTypeId(dokumenttypeIder);
 
         for (DokumentVariantInnhold innhold : dokumentModell.getDokumentVariantInnholdListe()) {
