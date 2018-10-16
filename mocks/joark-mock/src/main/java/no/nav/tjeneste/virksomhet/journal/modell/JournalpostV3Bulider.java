@@ -27,8 +27,10 @@ public class JournalpostV3Bulider {
             journalpost.getVedleggListe().add(lagDetaljertDokumentinformasjon(dokumentModell));
         }
 
-        journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
-
+        if (modell.getJournaltilstand() != null) {
+            journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
+        }
+        //journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
         Journalposttyper journalposttype = new Journalposttyper();
         journalposttype.setKodeverksRef(modell.getJournalposttype().getKode());
         journalpost.setJournalposttype(journalposttype);

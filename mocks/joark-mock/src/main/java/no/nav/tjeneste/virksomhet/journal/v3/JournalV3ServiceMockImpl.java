@@ -13,8 +13,9 @@ import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentKjerneJournalpostList
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jws.HandlerChain;
-import javax.jws.WebService;
+import javax.jws.*;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +47,12 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
         throw new UnsupportedOperationException("Ikke implementert.");
     }
 
+    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v3/Journal_v3/hentKjerneJournalpostListeRequest")
+    @WebResult(name = "response", targetNamespace = "")
+    @RequestWrapper(localName = "hentKjerneJournalpostListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentKjerneJournalpostListe")
+    @ResponseWrapper(localName = "hentKjerneJournalpostListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentKjerneJournalpostListeResponse")
     @Override
-    public HentKjerneJournalpostListeResponse hentKjerneJournalpostListe(HentKjerneJournalpostListeRequest request) throws HentKjerneJournalpostListeSikkerhetsbegrensning, HentKjerneJournalpostListeUgyldigInput {
+    public HentKjerneJournalpostListeResponse hentKjerneJournalpostListe(@WebParam(name = "request", targetNamespace = "") HentKjerneJournalpostListeRequest request) throws HentKjerneJournalpostListeSikkerhetsbegrensning, HentKjerneJournalpostListeUgyldigInput {
         LOG.info("JournalV3. hentKjerneJournalpostListe.");
 
         HentKjerneJournalpostListeResponse response = new HentKjerneJournalpostListeResponse();

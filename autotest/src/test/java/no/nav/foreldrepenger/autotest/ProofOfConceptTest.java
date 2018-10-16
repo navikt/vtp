@@ -13,9 +13,11 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import org.junit.jupiter.api.Test;
 
 public class ProofOfConceptTest extends FpsakTestBase {
 
+    @Test
     public void foreldrepengesøknadTermindatoKunMorMedInntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
@@ -41,7 +43,8 @@ public class ProofOfConceptTest extends FpsakTestBase {
         System.out.println(saksnummer);
 
     }
-    
+
+    @Test
     public void engangsttønadFødselFunnetStedKunMor() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

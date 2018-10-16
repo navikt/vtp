@@ -25,6 +25,7 @@ public class Arbeidsforhold {
     @JsonProperty("arbeidsforholdstype")
     private Arbeidsforholdstype arbeidsforholdstype;
 
+    @JsonProperty("timeposteringer")
     private List<AntallTimerIPerioden> timeposteringer;
 
     @JsonProperty("arbeidsgiverOrgnr")

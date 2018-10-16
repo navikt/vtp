@@ -8,6 +8,7 @@ public class Arbeidsavtale {
 
 
 
+    @JsonProperty("yrke")
     private Yrke yrke;
 
     @JsonProperty("avlønningstype")
