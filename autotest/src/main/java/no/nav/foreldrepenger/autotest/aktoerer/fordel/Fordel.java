@@ -19,8 +19,10 @@ import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.ControllerHelper;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Behandlingstema;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
@@ -55,8 +57,7 @@ public class Fordel extends Aktoer {
         }
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
 
-        //TODO: Avled behandlingstema fra kode
-        String behandlingstemaOffisiellKode = "ab0050";
+        String behandlingstemaOffisiellKode = ControllerHelper.translateDokumenttypeToBehandlingstema(dokumenttypeId).getBehandlingstemakode();
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
 
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
