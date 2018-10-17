@@ -25,10 +25,14 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Api(tags = { "Testscenario" })
 @Path("/api/testscenario")
 public class TestscenarioRestTjeneste {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
 
     private static final String TEMPLATE_KEY = "key";
 
@@ -55,6 +59,8 @@ public class TestscenarioRestTjeneste {
         String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker ,fnrAnnenPart, aktørIdSøker);
+
+        LOG.info("Testscenario med templateKey: {}, for søker: {}, med aktørId: {}.", templateKey, fnrSøker, aktørIdSøker);
 
         ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
         InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();

@@ -17,10 +17,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Api(tags = { "Testscenario/templates" })
 @Path("/api/testscenario/templates")
 public class TestscenarioTemplateRestTjeneste {
+
+    private final static Logger LOG = LoggerFactory.getLogger(TestscenarioTemplateRestTjeneste.class);
 
     @Context
     private TestscenarioTemplateRepository templateRepository;
@@ -36,6 +40,7 @@ public class TestscenarioTemplateRestTjeneste {
                 return new TemplateReferanse(key, t.getTemplateNavn());
             })
             .collect(Collectors.toList());
+        LOG.info("TemplateTestscenatio: {}", templates.stream().toString());
         return templates;
     }
 
