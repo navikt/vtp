@@ -7,18 +7,14 @@ import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dok
 
 public class ControllerHelper {
 
-    public static Behandlingstema translateDokumenttypeToBehandlingstema(DokumenttypeId dokumenttypeId) throws Exception {
+    public static Behandlingstema translateSøknadDokumenttypeToBehandlingstema(DokumenttypeId dokumenttypeId) throws Exception {
 
-        if (dokumenttypeId == ADOPSJONSDOKUMENTASJON) {
-            return Behandlingstema.ENGANGSSTONAD_ADOPSJON;
-        } else if (dokumenttypeId == TERMINBEKREFTELSE) {
-            return Behandlingstema.ENGANGSSTONAD_FOEDSEL;
-        } else if (dokumenttypeId == FOEDSELSSOKNAD_FORELDREPENGER) {
+        if (dokumenttypeId == FOEDSELSSOKNAD_FORELDREPENGER) {
             return Behandlingstema.FORELDREPENGER_FOEDSEL;
         } else if (dokumenttypeId == ADOPSJONSSOKNAD_FORELDREPENGER) {
             return Behandlingstema.FORELDREPENGER_ADOPSJON;
         } else if (dokumenttypeId ==FOEDSELSSOKNAD_ENGANGSSTONAD) {
-            return Behandlingstema.ENGANGSSTONAD;
+            return Behandlingstema.ENGANGSSTONAD_FOEDSEL;
         } else if (dokumenttypeId == ADOPSJONSSOKNAD_ENGANGSSTONAD) {
             return Behandlingstema.ENGANGSSTONAD_ADOPSJON;
         } else {

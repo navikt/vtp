@@ -57,12 +57,12 @@ public class Fordel extends Aktoer {
         }
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
 
-        String behandlingstemaOffisiellKode = ControllerHelper.translateDokumenttypeToBehandlingstema(dokumenttypeId).getBehandlingstemakode();
+        String behandlingstemaOffisiellKode = ControllerHelper.translateSøknadDokumenttypeToBehandlingstema(dokumenttypeId).getKode();
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
 
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
 
-        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOKN", aktørId, saksnummer);
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
 
