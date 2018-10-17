@@ -85,9 +85,10 @@ public class HttpSession{
 
     protected RequestConfig getRequestConfig() {
         RequestConfig.Builder requestBuilder = RequestConfig.custom();
-        requestBuilder = requestBuilder.setConnectTimeout(5000);
-        requestBuilder = requestBuilder.setSocketTimeout(5000);
-        requestBuilder = requestBuilder.setConnectionRequestTimeout(5000);
+        int connectTimeoutMillis = 5000;
+        requestBuilder = requestBuilder.setConnectTimeout(connectTimeoutMillis * 6);
+        requestBuilder = requestBuilder.setSocketTimeout(connectTimeoutMillis * 6);
+        requestBuilder = requestBuilder.setConnectionRequestTimeout(connectTimeoutMillis);
         
         return requestBuilder.build();
     }

@@ -1,5 +1,12 @@
 package no.nav.foreldrepenger.autotest.util.http;
 
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -10,11 +17,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.security.cert.X509Certificate;
 
 public class HttpsSession extends HttpSession {
 
@@ -38,11 +40,11 @@ public class HttpsSession extends HttpSession {
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, sertifikater, null);
-
+            
             SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext);
             PlainConnectionSocketFactory plainFactory = new PlainConnectionSocketFactory();
 
-
+            
             if (doRedirect) {
                 builder = builder.setRedirectStrategy(new LaxRedirectStrategy());
             } else {
@@ -53,8 +55,7 @@ public class HttpsSession extends HttpSession {
                     "https", factory).register("http", plainFactory).build();
 
             PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(registry);
-            connManager.setValidateAfterInactivity(1);
-
+            connManager.setValidateAfterInactivity(100);
             builder.setConnectionManager(connManager);
             builder.setDefaultRequestConfig(getRequestConfig());
             return builder.build();

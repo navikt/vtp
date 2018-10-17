@@ -39,7 +39,7 @@ public class OidcTokenGenerator {
         return this;
     }
 
-    OidcTokenGenerator withIssuer(String issuer) {
+    public OidcTokenGenerator withIssuer(String issuer) {
         this.issuer = issuer;
         return this;
     }

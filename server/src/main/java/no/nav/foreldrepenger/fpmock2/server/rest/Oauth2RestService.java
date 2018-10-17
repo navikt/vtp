@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.fpmock2.server.rest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class Oauth2RestService {
 
     @GET
     @Path("/oauth2/authorize")
-    @Produces(MediaType.TEXT_HTML)
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
     @ApiOperation(value = "oauth2/authorize", notes = ("Mock impl av Oauth2 authorize"))
     @SuppressWarnings("unused")
     public Response authorize(
@@ -84,6 +85,24 @@ public class Oauth2RestService {
 
         query.put("redirect_uri", redirectUri);
 
+        if (req.getContentType().equals("text/html")) {
+            return authorizeHtmlPage(locationUri, query);
+        } else {
+            return authorizeRedirect(locationUri, query);
+        }
+    }
+
+    private Response authorizeRedirect(URI locationUri, Map<String, String> query) throws URISyntaxException {
+        // SEND JSON RESPONSE TIL OPENAM HELPER
+        query.put("code", "im-just-a-fake-code");
+
+        URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
+            null);
+        return Response.status(HttpServletResponse.SC_FOUND).location(location).build();
+    }
+
+    private Response authorizeHtmlPage(URI locationUri, Map<String, String> query) throws URISyntaxException, NamingException {
+        // LAG HTML SIDE
         URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
             null);
 
@@ -110,7 +129,7 @@ public class Oauth2RestService {
             "</body>\n" +
             "</html>";
 
-        return Response.ok(html).build();
+        return Response.ok(html, MediaType.TEXT_HTML).build();
     }
 
     private List<String> getUsernames() throws NamingException {

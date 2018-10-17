@@ -1,18 +1,24 @@
 package no.nav.foreldrepenger.autotest.klienter.vtp.openam;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 
-import org.apache.http.HttpResponse;
+import org.apache.http.impl.cookie.BasicClientCookie;
 
 import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.fpmock2.server.rest.OidcTokenGenerator;
+import no.nav.modig.testcertificates.TestCertificates;
 
 public class OpenamKlient extends VTPKlient{
 
+    static {
+        TestCertificates.setupKeyAndTrustStore();
+    }
+    
     public static final String ISSO_URL = "/isso";
     public static final String ISSO_JSON_AUTHENTICATE_URL = ISSO_URL + "/json/authenticate";
     public static final String ISSO_OAUTH_URL = ISSO_URL + "/oauth2";
@@ -47,24 +53,14 @@ public class OpenamKlient extends VTPKlient{
     }
 
     public void logInnMedRolle(String rolle) throws IOException {
-        HttpResponse resp = get("http://localhost:8080/fpsak/jetty/login");
+        String issuer = "https://localhost:8063/isso/oauth2";
+        String token = new OidcTokenGenerator(rolle).withIssuer(issuer).create();
         
-        //henter ut state fra redirect url
-        Pattern pattern = Pattern.compile("(.*)state=(.+?)(&.*)?$");
-        Matcher matcher = pattern.matcher(session.getCurrentUrl());
-        matcher.matches();
-        String state = matcher.group(2);
-        
-        Map<String, String> data = new HashMap<String, String>();
-        data.put("scope", "openid");
-        data.put("state", state);
-        data.put("client_id", "fpsak-localhost");
-        data.put("iss", "https://localhost:8063/isso/oauth2");
-        data.put("redirect_uri", "http://localhost:8080/fpsak/cb");
-        data.put("code", rolle);
-        
-        String url = "http://localhost:8080/fpsak/cb";
-        get(UrlCompose(url, data));
+        BasicClientCookie cookie = new BasicClientCookie("ID_token", token);
+        cookie.setPath("/");
+        cookie.setDomain("");
+        cookie.setExpiryDate(new Date(LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()));
+        session.leggTilCookie(cookie);
     }
     
     
