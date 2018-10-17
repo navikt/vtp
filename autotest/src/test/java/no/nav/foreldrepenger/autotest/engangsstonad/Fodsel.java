@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 @Tag("smoke")
 public class Fodsel extends EngangsstonadTestBase{
 
+    @Tag("utvikling")
     @Test
     public void behandleFødselEngangstønadGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");

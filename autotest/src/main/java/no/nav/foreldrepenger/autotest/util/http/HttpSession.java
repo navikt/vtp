@@ -12,6 +12,8 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpCoreContext;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -134,6 +136,10 @@ public class HttpSession{
 
     public void leggTilCookie(Cookie cookie) {
         hentCookieStore().addCookie(cookie);
+    }
+    
+    public String getCurrentUrl() {
+        return ((HttpUriRequest) context.getAttribute(HttpCoreContext.HTTP_REQUEST)).getURI().toString();
     }
     
     public static String readResponse(HttpResponse response){

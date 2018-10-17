@@ -1,6 +1,12 @@
 package no.nav.foreldrepenger.autotest.klienter.vtp.openam;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.HttpResponse;
 
 import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
@@ -38,6 +44,27 @@ public class OpenamKlient extends VTPKlient{
     
     public void connectJwkUri() {
         
+    }
+
+    public void logInnMedRolle(String rolle) throws IOException {
+        HttpResponse resp = get("http://localhost:8080/fpsak/jetty/login");
+        
+        //henter ut state fra redirect url
+        Pattern pattern = Pattern.compile("(.*)state=(.+?)(&.*)?$");
+        Matcher matcher = pattern.matcher(session.getCurrentUrl());
+        matcher.matches();
+        String state = matcher.group(2);
+        
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("scope", "openid");
+        data.put("state", state);
+        data.put("client_id", "fpsak-localhost");
+        data.put("iss", "https://localhost:8063/isso/oauth2");
+        data.put("redirect_uri", "http://localhost:8080/fpsak/cb");
+        data.put("code", rolle);
+        
+        String url = "http://localhost:8080/fpsak/cb";
+        get(UrlCompose(url, data));
     }
     
     

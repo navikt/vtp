@@ -139,6 +139,7 @@ public abstract class Rest {
         	if(body.equals("")) {
         		body = hentResponseBody(response);
         	}
+        	
         	throw new RuntimeException(String.format(WRONG_STATUS_MESSAGE_FORMAT, expectedRange, statuscode, body));
         }
     }
@@ -146,6 +147,9 @@ public abstract class Rest {
     /*
      * URL ENCODING
      */
+    public String UrlCompose(String url, Map<String, String> data) {
+        return url + UrlEncodeQuery(data);
+    }
     
     public String UrlEncodeQuery(Map<String, String> data) {
         StringBuilder query = new StringBuilder("?");

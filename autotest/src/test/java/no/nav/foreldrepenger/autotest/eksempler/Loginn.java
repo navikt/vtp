@@ -9,11 +9,11 @@ import no.nav.foreldrepenger.autotest.FpsakTestBase;
 public class Loginn extends FpsakTestBase{
     
     @Test
-    @Tag("utvikling")
     void loginnUtenRolle() throws Exception {
         saksbehandler.erLoggetInnUtenRolle();
     }
     
+    @Test
     void loginnMedRolle() throws Exception {
         saksbehandler.erLoggetInnMedRolle("Saksbehandler");
     }

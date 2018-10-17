@@ -19,20 +19,6 @@ public class Aktoer {
 	
 	public void erLoggetInnMedRolle(String rolle) throws IOException {
 	    OpenamKlient klient = new OpenamKlient(session);
-            klient.bypass(rolle);
-	    /*
-		Bruker user = TestKonfigurasjon.hentBruker(rolle);
-		
-		try {
-			OpenAMKlient openAMHelper = new OpenAMKlient(session, TestKonfigurasjon.hentOIDCUrl());
-			openAMHelper.loginSession(user.brukernavn, 
-					user.passord,
-                    TestKonfigurasjon.hentOIDCSystemBruker(),
-                    TestKonfigurasjon.hentOIDCSystemPassord());
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Login Failed for role: " + rolle + " - " + e.getMessage());
-		}
-	     */
+	    klient.logInnMedRolle(rolle);
 	}
 }
