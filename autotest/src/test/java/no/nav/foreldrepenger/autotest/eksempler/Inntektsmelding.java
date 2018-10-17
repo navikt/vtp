@@ -35,7 +35,7 @@ public class Inntektsmelding extends FpsakTestBase{
     public void opprettInntektsmeldingEgendefinert() throws IOException {
         LocalDate ønsketDato = LocalDate.now().minusDays(2);
         TestscenarioDto testscenario = opprettScenario("50");
-        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilderFraInntektsperiode(5000,
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilderFraInntektsperiode(60000,
                 testscenario.getPersonopplysninger().getSøkerIdent(),
                 testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr(),
                 LocalDate.now().minusDays(3));
