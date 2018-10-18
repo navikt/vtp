@@ -68,8 +68,17 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
         return response;
     }
 
+    /*@WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v3/Journal_v3/hentDokumentRequest")
+    @WebResult(name = "response", targetNamespace = "")
+    @RequestWrapper(localName = "hentDokument", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokument")
+    @ResponseWrapper(localName = "hentDokumentResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokumentResponse")
+    */
     @Override
-    public HentDokumentResponse hentDokument(HentDokumentRequest request) throws HentDokumentSikkerhetsbegrensning, HentDokumentDokumentIkkeFunnet, HentDokumentJournalpostIkkeFunnet {
+    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v3/Journal_v3/hentDokumentRequest")
+    @RequestWrapper(localName = "hentDokument", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokument")
+    @ResponseWrapper(localName = "hentDokumentResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokumentResponse")
+    @WebResult(name = "response", targetNamespace = "")
+    public HentDokumentResponse hentDokument(@WebParam(name="request", targetNamespace="") HentDokumentRequest request) throws HentDokumentSikkerhetsbegrensning, HentDokumentDokumentIkkeFunnet, HentDokumentJournalpostIkkeFunnet {
         LOG.info("JournalV3. hentDokument");
         HentDokumentResponse response = new HentDokumentResponse();
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(request.getDokumentId());
