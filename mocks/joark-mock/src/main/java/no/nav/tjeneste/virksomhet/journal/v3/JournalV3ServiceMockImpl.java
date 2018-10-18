@@ -67,12 +67,7 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
         // TODO: sett sisteIntervall?
         return response;
     }
-
-    /*@WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v3/Journal_v3/hentDokumentRequest")
-    @WebResult(name = "response", targetNamespace = "")
-    @RequestWrapper(localName = "hentDokument", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokument")
-    @ResponseWrapper(localName = "hentDokumentResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokumentResponse")
-    */
+    
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v3/Journal_v3/hentDokumentRequest")
     @RequestWrapper(localName = "hentDokument", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokument")
