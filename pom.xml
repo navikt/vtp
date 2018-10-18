@@ -113,11 +113,6 @@
 			</dependency>
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>pdp-mock</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>joark-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
