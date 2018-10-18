@@ -20,7 +20,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 @Tag("smoke")
 public class Fodsel extends EngangsstonadTestBase{
 
-    @Tag("utvikling")
     @Test
     public void behandleFødselMorGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
@@ -171,7 +170,6 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse(), 2 * SATS_2018);
     }
     
-    @Tag("utvikling")
     @Test
     public void behandleFødselMorMedVerge() throws Exception {
         TestscenarioDto testscenario = opprettScenario("54");

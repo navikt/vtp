@@ -84,6 +84,7 @@ public class SoekersRelasjonErketyper {
         adopsjon.setAntallBarn(1);
         adopsjon.setAdopsjonAvEktefellesBarn(ektefellesBarn);
         try {
+            adopsjon.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(10)));
             adopsjon.setAnkomstdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
             adopsjon.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
         } catch (DatatypeConfigurationException e) {

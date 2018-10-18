@@ -65,7 +65,7 @@ public class ForeldrepengesoknadXmlErketyper {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
-                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på adopsjon")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeAdopsjon())
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
