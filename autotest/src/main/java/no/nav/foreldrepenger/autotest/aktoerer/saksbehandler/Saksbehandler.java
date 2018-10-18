@@ -18,10 +18,14 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.dto.BestillBrev;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.dokument.DokumentKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.dokument.dto.DokumentListeEnhet;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.HistorikkKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
@@ -34,6 +38,7 @@ public class Saksbehandler extends Aktoer{
     public Fagsak valgtFagsak;
     
     public List<DokumentListeEnhet> dokumenter;
+    public List<HistorikkInnslag> historikkInnslag;
     
     public List<Behandling> behandlinger;
     public Behandling valgtBehandling;
@@ -42,6 +47,8 @@ public class Saksbehandler extends Aktoer{
     private BehandlingerKlient behandlingerKlient;
     private KodeverkKlient kodeverkKlient;
     private DokumentKlient dokumentKlient;
+    private BrevKlient brevKlient;
+    private HistorikkKlient historikkKlient;
     
     public Kodeverk kodeverk;
     public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
@@ -55,6 +62,8 @@ public class Saksbehandler extends Aktoer{
         behandlingerKlient = new BehandlingerKlient(session);
         kodeverkKlient = new KodeverkKlient(session);
         dokumentKlient = new DokumentKlient(session);
+        brevKlient = new BrevKlient(session);
+        historikkKlient = new HistorikkKlient(session);
     }
 
     public Saksbehandler(String rolle) throws IOException {
@@ -107,8 +116,6 @@ public class Saksbehandler extends Aktoer{
         }
         valgtFagsak = fagsak;
         
-        dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
-        
         behandlinger = behandlingerKlient.alle(fagsak.saksnummer);
         valgtBehandling = null;
         
@@ -121,6 +128,9 @@ public class Saksbehandler extends Aktoer{
      * velger behandling som valgt behandling
      */
     public void velgBehandling(Behandling behandling) throws Exception {
+        dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
+        historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
+        
         Vent.til(() -> {
             return behandlingerKlient.erStatusOk(behandling.id, null) || ikkeVentPåStatus;
         }, 60, "Behandling status var ikke klar");
@@ -266,6 +276,16 @@ public class Saksbehandler extends Aktoer{
     }
 
     /*
+     * Brev
+     */
+    public void sendBrev(String brevmalKode, String mottaker, String fritekst) throws IOException {
+        brevKlient.bestill(new BestillBrev(valgtBehandling.id,
+                                           mottaker,
+                                           brevmalKode, 
+                                           fritekst));
+    }
+    
+    /*
      * Private
      */
     
@@ -276,4 +296,25 @@ public class Saksbehandler extends Aktoer{
         behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype));
         velgFagsak(valgtFagsak); //Henter fagsaken på ny
     }
+    
+    public void ventTilHistorikkinnslag(String tekst) throws Exception {
+        Vent.til( () -> {
+            velgBehandling(valgtBehandling);
+            return harHistorikkinnslag(tekst);
+        }, 4, "Saken  hadde ikke historikkinslag " + tekst);
+    }
+
+    public boolean harHistorikkinnslag(String tekst) {
+        for (HistorikkInnslag innslag : historikkInnslag) {
+            if(innslag.getTekst().contains(tekst)) {
+                return true;
+            }
+            else {
+                System.out.println(innslag.getTekst() + " != " + tekst);
+            }
+        }
+        return false;
+    }
+
+    
 }

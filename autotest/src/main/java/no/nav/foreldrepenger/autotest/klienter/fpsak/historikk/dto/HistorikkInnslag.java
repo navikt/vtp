@@ -16,4 +16,8 @@ public class HistorikkInnslag {
     protected Kode type;
     protected Kode aktoer;
     protected Kode kjoenn;
+    
+    public String getTekst() {
+        return type.navn;
+    }
 }
