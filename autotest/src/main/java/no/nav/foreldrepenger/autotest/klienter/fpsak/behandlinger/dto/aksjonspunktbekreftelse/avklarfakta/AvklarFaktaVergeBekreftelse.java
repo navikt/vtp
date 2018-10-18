@@ -24,7 +24,7 @@ public class AvklarFaktaVergeBekreftelse extends AksjonspunktBekreftelse{
         super(fagsak, behandling);
     }
     
-    public void setVerge(String fnr) {
+    public AvklarFaktaVergeBekreftelse setVerge(String fnr) {
         this.fnr = fnr;
         
         //Defaults
@@ -33,38 +33,47 @@ public class AvklarFaktaVergeBekreftelse extends AksjonspunktBekreftelse{
         mandatTekst = "Hva er dette";
         navn = "Verge vergesen";
         vergeType = "BARN";
+        return this;
     }
     
-    public void setVergePeriodeStart(LocalDate fom) {
+    public AvklarFaktaVergeBekreftelse setVergePeriodeStart(LocalDate fom) {
         gyldigFom = fom;
+        return this;
     }
     
-    public void setVergePeriodeSlutt(LocalDate tom) {
+    public AvklarFaktaVergeBekreftelse setVergePeriodeSlutt(LocalDate tom) {
         gyldigTom = tom;
+        return this;
     }
     
-    public void bekreftSøkerErKontaktperson() {
+    public AvklarFaktaVergeBekreftelse bekreftSøkerErKontaktperson() {
         sokerErKontaktPerson = true;
+        return this;
     }
     
-    public void bekreftSøkerErIkkeKontaktperson() {
+    public AvklarFaktaVergeBekreftelse bekreftSøkerErIkkeKontaktperson() {
         sokerErKontaktPerson = false;
+        return this;
     }
     
-    public void bekreftSøkerErUnderTvungenForvaltning() {
+    public AvklarFaktaVergeBekreftelse bekreftSøkerErUnderTvungenForvaltning() {
         sokerErUnderTvungenForvaltning = true;
+        return this;
     }
     
-    public void bekreftSøkerErIkkeUnderTvungenForvaltning() {
+    public AvklarFaktaVergeBekreftelse bekreftSøkerErIkkeUnderTvungenForvaltning() {
         sokerErUnderTvungenForvaltning = false;
+        return this;
     }
     
-    public void bekreftVergeErKontaktPerson() {
+    public AvklarFaktaVergeBekreftelse bekreftVergeErKontaktPerson() {
         vergeErKontaktPerson = true;
+        return this;
     }
     
-    public void bekreftVergeErIkkeKontaktPerson() {
+    public AvklarFaktaVergeBekreftelse bekreftVergeErIkkeKontaktPerson() {
         vergeErKontaktPerson = false;
+        return this;
     }
     
     

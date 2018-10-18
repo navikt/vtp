@@ -17,7 +17,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 
 public class Termin extends EngangsstonadTestBase{
 
-    
+
     @Test
     public void behandleTerminMorGodkjent()  throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");

@@ -68,13 +68,6 @@
 				"etternavn": "Duck",
 				"fødselsdato": "now()-P7M"
 			}
-		},
-		{
-			"rolle": "EKTE",
-			"til": {
-				"@type": "ident",
-				"ident": "${for2}"
-			}
 		}
 	]
 }

@@ -70,6 +70,16 @@
 			}
 		},
 		{
+			"rolle": "BARN",
+			"til": {
+				"@type": "barn",
+				"ident": "${barn2}",
+				"fornavn": "${nevø2}",
+				"etternavn": "Duck",
+				"fødselsdato": "now()-P7M"
+			}
+		},
+		{
 			"rolle": "EKTE",
 			"til": {
 				"@type": "ident",
