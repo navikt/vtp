@@ -17,16 +17,17 @@ public class MedlemskapErketyper {
         medlemskap.setBoddINorgeSiste12Mnd(true);
         medlemskap.setBorINorgeNeste12Mnd(true);
         medlemskap.setINorgeVedFoedselstidspunkt(true);
-        medlemskap.getOppholdNorge().add(oppholdNorge());
+        medlemskap.getOppholdNorge().add(oppholdNorge(LocalDate.now().minusYears(2), LocalDate.now()));
+        medlemskap.getOppholdNorge().add(oppholdNorge(LocalDate.now(), LocalDate.now().plusYears(2)));
         return medlemskap;
     }
 
-    public static OppholdNorge oppholdNorge(){
+    public static OppholdNorge oppholdNorge(LocalDate fom, LocalDate tom){
         OppholdNorge oppholdNorge = new OppholdNorge();
         Periode periode = new Periode();
         try {
-            periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(2)));
-            periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusYears(2)));
+            periode.setFom(DateUtil.convertToXMLGregorianCalendar(fom));
+            periode.setTom(DateUtil.convertToXMLGregorianCalendar(tom));
 
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
