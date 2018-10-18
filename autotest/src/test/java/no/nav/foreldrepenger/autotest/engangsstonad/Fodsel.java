@@ -41,7 +41,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("beslutter");
+        beslutter.erLoggetInnMedRolle("Beslutter");
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
