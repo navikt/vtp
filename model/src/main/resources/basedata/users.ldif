@@ -118,7 +118,7 @@ memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
- memberOf: CN=0000-GA-fpsak-beslutter,OU=AccountGroups,OU=Groups,OU=NAV,O
+memberOf: CN=0000-GA-fpsak-beslutter,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
  inessUnits,DC=test,DC=local
@@ -143,7 +143,7 @@ memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
- memberOf: CN=0000-GA-fpsak-manuelt-overstyrer,OU=AccountGroups,OU=Groups,OU=NAV,O
+memberOf: CN=0000-GA-fpsak-manuelt-overstyrer,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
  inessUnits,DC=test,DC=local
@@ -167,7 +167,7 @@ memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
- memberOf: CN=0000-GA-PENSJON_KLAGEBEH,OU=AccountGroups,OU=Groups,OU=NAV,O
+memberOf: CN=0000-GA-PENSJON_KLAGEBEH,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
  inessUnits,DC=test,DC=local
