@@ -18,3 +18,7 @@ resources:
     cpu: 200m
 ingress:
   enabled: true
+fasitResources:
+  used:
+  - alias: vtp_properties
+    resourceType: ApplicationProperties
