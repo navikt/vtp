@@ -148,11 +148,17 @@ public class MockServer {
         https.setSendXPoweredBy(false);
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
-        
-        sslContextFactory.setCertAlias("localhost-ssl");
-        sslContextFactory.setKeyStorePath(getKeystoreFilePath());
-        sslContextFactory.setKeyStorePassword(getKeyStorePassword());
-        sslContextFactory.setKeyManagerPassword(getKeyStorePassword());
+
+        if(null != System.getProperty("NAV_TRUSTSTORE_PATH")) {
+            sslContextFactory.setKeyStorePath(System.getProperty("NAV_TRUSTSTORE_PATH"));
+            sslContextFactory.setKeyStorePassword(System.getProperty("NAV_TRUSTSTORE_PASSWORD", "changeit"));
+            sslContextFactory.setKeyManagerPassword(System.getProperty("NAV_TRUSTSTORE_PASSWORD", "changeit"));
+        } else {
+            sslContextFactory.setCertAlias("localhost-ssl");
+            sslContextFactory.setKeyStorePath(getKeystoreFilePath());
+            sslContextFactory.setKeyStorePassword(getKeyStorePassword());
+            sslContextFactory.setKeyManagerPassword(getKeyStorePassword());
+        }
 
         @SuppressWarnings("resource")
         ServerConnector sslConnector = new ServerConnector(server,
