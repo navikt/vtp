@@ -18,3 +18,7 @@ resources:
     cpu: 200m
 ingress:
   enabled: true
+fasitResources:
+  used:
+    - alias: NAV_TRUSTSTORE
+      resourceType: Certificate
