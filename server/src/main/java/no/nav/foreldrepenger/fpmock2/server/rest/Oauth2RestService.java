@@ -204,7 +204,7 @@ public class Oauth2RestService {
     }
 
     @GET
-    @Path("/oauth/../isAlive.jsp")
+    @Path("/oauth2/../isAlive.jsp")
     @Produces(MediaType.TEXT_HTML)
     public Response isAliveMockRassUrl(){
         String isAlive = "Server is ALIVE";
