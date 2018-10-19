@@ -204,6 +204,14 @@ public class Oauth2RestService {
     }
 
     @GET
+    @Path("/oauth/../isAlive.jsp")
+    @Produces(MediaType.TEXT_HTML)
+    public Response isAliveMockRassUrl(){
+        String isAlive = "Server is ALIVE";
+        return Response.ok(isAlive).build();
+    }
+
+    @GET
     @Path("/oauth2/connect/jwk_uri")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av Oauth2 jwk_uri"))
