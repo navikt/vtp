@@ -10,6 +10,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Personopplysning;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @BekreftelseKode(kode="5008")
 public class AvklarFaktaOmsorgOgForeldreansvarBekreftelse extends AksjonspunktBekreftelse{
@@ -61,8 +62,8 @@ public class AvklarFaktaOmsorgOgForeldreansvarBekreftelse extends AksjonspunktBe
         foreldre.get(0).dodsdato = dato;
     }
     
-    public void setVilkårType(String vilkarType) {
-        this.vilkarType = vilkarType;
+    public void setVilkårType(Kode vilkarType) {
+        this.vilkarType = vilkarType.kode;
     }
     
     protected class OmsorgovertakelseBarn

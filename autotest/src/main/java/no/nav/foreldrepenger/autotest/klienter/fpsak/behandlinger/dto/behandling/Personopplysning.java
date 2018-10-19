@@ -11,21 +11,23 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class Personopplysning {
     private int id;
     protected List<Adresse> adresser;
-    private long aktoerId;
+    protected long aktoerId;
     protected Object annenPart;
     protected List<Personopplysning> barn;
     protected boolean bekreftetAvTps;
     protected Kode diskresjonskode;
-    private LocalDate doedsdato;
+    protected LocalDate doedsdato;
     protected LocalDate foedselsdato;
     protected String foedselsnr;
-    private Kode navBrukerKjonn;
-    private String navn;
+    protected Kode navBrukerKjonn;
+    protected String navn;
     protected Object nummer;
     protected Kode personstatus;
     protected Kode region;
     protected Kode siviltilstand;
     protected Object valgtOpplysning;
+    
+    
     public int getId() {
         return id;
     }

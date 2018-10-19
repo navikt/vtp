@@ -18,8 +18,8 @@ public class Soknad {
     //Fødsel
     protected LocalDate utstedtdato;
     protected LocalDate termindato;
-    private int antallBarn;
-    private Map<Integer, LocalDate> fodselsdatoer;
+    protected int antallBarn;
+    protected Map<Integer, LocalDate> fodselsdatoer;
 
     //adopsjon
     protected Kode farSokerType;

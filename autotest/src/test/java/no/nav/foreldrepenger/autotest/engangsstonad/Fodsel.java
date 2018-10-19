@@ -20,6 +20,7 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("smoke")
+@Tag("engangsstonad")
 public class Fodsel extends EngangsstonadTestBase{
     
     @Test
@@ -53,6 +54,7 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        beslutter.ventTilHistorikkinnslag("Brev sendt");
     }
     
     @Test
@@ -85,6 +87,7 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    @Test
     public void behandleFødselFarGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("60");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -113,6 +116,8 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    @Tag("pending")
+    @Test
     public void behandleFødselMorOverstyrFødsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -139,6 +144,7 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    @Tag("pending")
     @Test
     public void behandleFødselMorFlereBarn() throws Exception {
         TestscenarioDto testscenario = opprettScenario("53");

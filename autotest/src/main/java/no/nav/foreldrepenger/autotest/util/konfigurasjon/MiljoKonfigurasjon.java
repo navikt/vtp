@@ -12,8 +12,8 @@ public class MiljoKonfigurasjon extends KonfigurasjonBase{
 	public static String PROPERTY_FPSAK_HTTP_HOSTNAME = "autotest.fpsak.http.hostname";
 	public static String PROPERTY_FPSAK_HTTP_PORT = "autotest.fpsak.http.port";
 	public static String PROPERTY_FPSAK_HTTP_ROUTING_INDEX = "autotest.fpsak.http.routing.index";
-    public static String PROPERTY_FPSAK_HTTP_ROUTING_SELFTEST = "autotest.fpsak.http.routing.selftest";
-    public static String PROPERTY_FPSAK_HTTP_ROUTING_METRICS = "autotest.fpsak.http.routing.metrics";
+        public static String PROPERTY_FPSAK_HTTP_ROUTING_SELFTEST = "autotest.fpsak.http.routing.selftest";
+        public static String PROPERTY_FPSAK_HTTP_ROUTING_METRICS = "autotest.fpsak.http.routing.metrics";
 	public static String PROPERTY_FPSAK_HTTP_ROUTING_API = "autotest.fpsak.http.routing.api";
 
 	

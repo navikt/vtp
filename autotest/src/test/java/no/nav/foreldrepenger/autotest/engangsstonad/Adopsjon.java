@@ -21,7 +21,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
-
+@Tag("engangsstonad")
 public class Adopsjon extends EngangsstonadTestBase{
 
     @Test
@@ -89,6 +89,7 @@ public class Adopsjon extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    @Tag("pending")
     @Test
     public void behandleAdopsjonMorOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");

@@ -95,13 +95,14 @@ public class SoekersRelasjonErketyper {
     }
 
     public static Omsorgsovertakelse søkerOmsorgsovertakelseGrunnetDød(){
-        return omsorgsovertakelse("OVERTATT_PA_GRUNN_AV_DOD");
+        return omsorgsovertakelse("ANDRE_FORELDER_DØD");
 
         //todo implementer OVERTATT_OMSORG, OVERTATT_OMSORG_F, ADOPTERER ALENE, men avklar først hva de betyr funksjonelt
     }
 
     private static Omsorgsovertakelse omsorgsovertakelse(String aarsak){
         Omsorgsovertakelse omsorgsovertakelse = new Omsorgsovertakelse();
+        omsorgsovertakelse.setAntallBarn(1);
         Omsorgsovertakelseaarsaker omsorgsovertakelseaarsaker = new Omsorgsovertakelseaarsaker();
         omsorgsovertakelseaarsaker.setKode(aarsak);
         omsorgsovertakelseaarsaker.setKodeverk("FAR_SOEKER_TYPE");

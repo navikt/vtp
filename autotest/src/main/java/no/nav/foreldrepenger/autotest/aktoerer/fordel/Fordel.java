@@ -68,7 +68,7 @@ public class Fordel extends Aktoer {
 
         Vent.til(() -> {
             return behandlingerKlient.alle(sakId).size() > 0;
-        }, 150, "Saken hadde ingen behandlinger");
+        }, 60, "Saken hadde ingen behandlinger");
 
 
         return sakId;

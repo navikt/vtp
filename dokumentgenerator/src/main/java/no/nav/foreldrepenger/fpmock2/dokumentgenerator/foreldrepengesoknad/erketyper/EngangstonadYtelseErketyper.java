@@ -51,4 +51,13 @@ class EngangstonadYtelseErketyper {
         engangsstønad.setSoekersRelasjonTilBarnet(SoekersRelasjonErketyper.søkerAdopsjon());
         return engangsstønad;
     }
+
+    public static Ytelse engangsstønadUkjentForelderNorgeOmsorgsovertakelse() {
+        Engangsstønad engangsstønad = new Engangsstønad();
+        AnnenForelder annenForelder = new UkjentForelder();
+        engangsstønad.setAnnenForelder(annenForelder);
+        engangsstønad.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        engangsstønad.setSoekersRelasjonTilBarnet(SoekersRelasjonErketyper.søkerOmsorgsovertakelseGrunnetDød());
+        return engangsstønad;
+    }
 }

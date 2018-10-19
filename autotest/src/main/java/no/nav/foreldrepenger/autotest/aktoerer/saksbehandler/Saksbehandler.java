@@ -132,12 +132,22 @@ public class Saksbehandler extends Aktoer{
     /*
      * velger behandling som valgt behandling
      */
+    public void velgBehandling(Kode behandlingstype) throws Exception {
+        for (Behandling behandling : behandlinger) {
+            if (behandling.type.kode.equals(behandlingstype.kode)) {
+                velgBehandling(behandling);
+                return;
+            }
+        }
+        throw new RuntimeException("Valgt fagsak har ikke behandling av type: " + behandlingstype.kode);
+    }
+    
     public void velgBehandling(Behandling behandling) throws Exception {
         dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
         
         Vent.til(() -> {
-            return behandlingerKlient.erStatusOk(behandling.id, null) || ikkeVentPåStatus;
+            return ikkeVentPåStatus || behandlingerKlient.erStatusOk(behandling.id, null);
         }, 60, "Behandling status var ikke klar");
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
         valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
@@ -275,6 +285,7 @@ public class Saksbehandler extends Aktoer{
      */
     public void opprettBehandling(Kode behandlingstype) throws Exception {
         opprettBehandling(behandlingstype, valgtFagsak);
+        hentFagsak(valgtFagsak.saksnummer);
     }
 
     public void opprettBehandlingRevurdering() throws Exception {
@@ -310,7 +321,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             velgBehandling(valgtBehandling);
             return harHistorikkinnslag(tekst);
-        }, 4, "Saken  hadde ikke historikkinslag " + tekst);
+        }, 10, "Saken  hadde ikke historikkinslag " + tekst);
     }
 
     public boolean harHistorikkinnslag(String tekst) {
@@ -323,6 +334,17 @@ public class Saksbehandler extends Aktoer{
             }
         }
         return false;
+    }
+
+    public void ventTilBehandlingsstatus(String status) throws Exception {
+        Vent.til(() -> {
+            velgBehandling(valgtBehandling);
+            return harBehandlingsstatus(status);
+        }, 10, "Behandlingsstatus var ikke " + status);
+    }
+    
+    public boolean harBehandlingsstatus(String status) {
+        return valgtBehandling.status.kode.equals(status);
     }
 
     

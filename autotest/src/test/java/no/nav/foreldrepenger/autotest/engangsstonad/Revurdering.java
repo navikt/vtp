@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.autotest.engangsstonad;
 
-import java.io.IOException;
+
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Tag;
@@ -19,7 +19,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 
 public class Revurdering extends EngangsstonadTestBase{
 
-    @Tag("utvikling")
     @Test
     public void manueltOpprettetRevurdering() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
@@ -47,8 +46,17 @@ public class Revurdering extends EngangsstonadTestBase{
         beslutter.erLoggetInnMedRolle("Beslutter");
         beslutter.hentFagsak(saksnummer);
         
+        
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
         beslutter.ikkeVentPåStatus = true;
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        
+        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilBehandlingsstatus("AVSLUTTET");
+        
+        saksbehandler.opprettBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-004")); //revurdering
     }
 }
