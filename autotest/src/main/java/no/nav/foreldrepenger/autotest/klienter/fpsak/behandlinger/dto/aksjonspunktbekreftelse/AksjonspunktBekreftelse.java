@@ -46,4 +46,8 @@ public abstract class AksjonspunktBekreftelse {
     public static AksjonspunktBekreftelse fromAksjonspunkt(Fagsak fagsak, Behandling behandling, Aksjonspunkt aksjonspunkt) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         return fromKode(fagsak, behandling, aksjonspunkt.getDefinisjon().kode);
     }
+    
+    public void setBegrunnelse(String begrunnelse) {
+        this.begrunnelse = begrunnelse;
+    }
 }

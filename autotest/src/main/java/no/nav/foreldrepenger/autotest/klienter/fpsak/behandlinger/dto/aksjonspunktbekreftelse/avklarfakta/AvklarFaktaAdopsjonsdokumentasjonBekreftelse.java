@@ -3,6 +3,8 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspu
 import java.time.LocalDate;
 import java.util.Map;
 
+import org.apache.commons.lang3.text.translate.OctalUnescaper;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftelseKode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
@@ -13,6 +15,7 @@ public class AvklarFaktaAdopsjonsdokumentasjonBekreftelse extends AksjonspunktBe
 
     protected LocalDate omsorgsovertakelseDato;
     protected Map<Integer, LocalDate> fodselsdatoer;
+    protected LocalDate barnetsAnkomstTilNorgeDato;
     
     public AvklarFaktaAdopsjonsdokumentasjonBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
@@ -36,5 +39,10 @@ public class AvklarFaktaAdopsjonsdokumentasjonBekreftelse extends AksjonspunktBe
     
     public void endreFødselsdato(Integer index, LocalDate fødselsdato) {
         fodselsdatoer.put(index, fødselsdato);
+    }
+    
+    public AvklarFaktaAdopsjonsdokumentasjonBekreftelse setBarnetsAnkomstTilNorgeDato(LocalDate dato) {
+        barnetsAnkomstTilNorgeDato = dato;
+        return this;
     }
 }

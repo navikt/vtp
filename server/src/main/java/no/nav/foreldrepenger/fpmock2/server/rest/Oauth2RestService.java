@@ -88,7 +88,7 @@ public class Oauth2RestService {
         query.put("iss", new URI(req.getScheme(), req.getServerName(), "/isso/oauth2", null).toASCIIString());
 
         query.put("redirect_uri", redirectUri);
-
+        
         if (null != req.getContentType() && req.getContentType().equals("text/html")) {
             return authorizeHtmlPage(locationUri, query);
         } else {

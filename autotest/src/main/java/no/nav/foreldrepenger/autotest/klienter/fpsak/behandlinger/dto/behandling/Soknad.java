@@ -24,7 +24,7 @@ public class Soknad {
     //adopsjon
     protected Kode farSokerType;
     protected LocalDate omsorgsovertakelseDato;
-    private Map<Integer, LocalDate> adopsjonFodelsedatoer;
+    protected Map<Integer, LocalDate> adopsjonFodelsedatoer;
     
     public LocalDate getMottattDato() {
         return mottattDato;

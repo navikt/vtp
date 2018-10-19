@@ -13,11 +13,13 @@ public class VurderEktefellesBarnBekreftelse extends AksjonspunktBekreftelse{
         // TODO Auto-generated constructor stub
     }
     
-    public void bekreftBarnErEktefellesBarn() {
+    public VurderEktefellesBarnBekreftelse bekreftBarnErEktefellesBarn() {
         ektefellesBarn = true;
+        return this;
     }
     
-    public void bekreftBarnErIkkeEktefellesBarn() {
+    public VurderEktefellesBarnBekreftelse bekreftBarnErIkkeEktefellesBarn() {
         ektefellesBarn = false;
+        return this;
     }
 }
