@@ -85,7 +85,7 @@ public class Oauth2RestService {
 
         query.put("redirect_uri", redirectUri);
 
-        if (req.getContentType().equals("text/html")) {
+        if (null != req.getContentType() && req.getContentType().equals("text/html")) {
             return authorizeHtmlPage(locationUri, query);
         } else {
             return authorizeRedirect(locationUri, query);
