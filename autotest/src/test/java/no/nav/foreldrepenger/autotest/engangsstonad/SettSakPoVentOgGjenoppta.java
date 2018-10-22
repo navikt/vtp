@@ -16,7 +16,7 @@ public class SettSakPoVentOgGjenoppta extends EngangsstonadTestBase{
     @Test
     public void settBehandlingPåVentOgGjenoppta() throws Exception {
         //Opprett scenario og søknad
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         //Send inn søknad

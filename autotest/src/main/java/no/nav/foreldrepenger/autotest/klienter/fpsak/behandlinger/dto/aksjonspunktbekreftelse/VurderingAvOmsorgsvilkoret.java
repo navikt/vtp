@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspu
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 
 
@@ -19,9 +20,9 @@ public class VurderingAvOmsorgsvilkoret extends AksjonspunktBekreftelse {
         erVilkarOk = true;
     }
     
-    public void bekreftAvvist(String kode) {
+    public void bekreftAvvist(Kode kode) {
         erVilkarOk = false;
-        avslagskode = kode;
+        avslagskode = kode.kode;
     }
 
 }
