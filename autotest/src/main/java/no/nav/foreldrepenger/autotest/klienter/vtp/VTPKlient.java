@@ -15,9 +15,10 @@ public class VTPKlient extends JsonRest{
     
     @Override
     public String hentRestRotUrl() {
-        return "http://localhost:" + System.getProperty("server.port") + "/api";
+        //return "http://localhost:" + System.getProperty("server.port") + "/api";
+        return System.getProperty("autotest.vtp.url")+":" + System.getProperty("server.port") + "/api";
     }
-    
+
     @Override
     protected ObjectMapper hentObjectMapper() {
         ObjectMapper mapper = super.hentObjectMapper();
