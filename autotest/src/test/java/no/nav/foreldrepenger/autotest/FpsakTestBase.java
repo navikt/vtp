@@ -37,8 +37,6 @@ public class FpsakTestBase extends TestBase{
     /*
      * VTP
      */
-    //protected TestscenarioRepositoryImpl testscenarioRepository;
-    //protected TestscenarioTemplateRepositoryImpl testscenarioTemplates;
     protected TestscenarioKlient testscenarioKlient;
     protected ForeldrepengesoknadXmlErketyper foreldrepengeSøknadErketyper;
     protected InntektsmeldingErketype inntektsmeldingErketype;
@@ -50,9 +48,7 @@ public class FpsakTestBase extends TestBase{
         saksbehandler = new Saksbehandler();
         overstyrer = new Saksbehandler();
         beslutter = new Saksbehandler();
-
-        //testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        //testscenarioTemplates = TestscenarioTemplateRepositoryImpl.getInstance();
+        
         testscenarioKlient = new TestscenarioKlient(new HttpSession());
         foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();
         inntektsmeldingErketype = new InntektsmeldingErketype();

@@ -16,10 +16,6 @@ public class FpsakKlient extends JsonRest{
 
     @Override
     public String hentRestRotUrl() {
-    	
-    	//TODO Hack until env management
-    	MiljoKonfigurasjon env = new MiljoKonfigurasjon();
-    	env.loadEnv(MiljoKonfigurasjon.hentMiljø());
     	return MiljoKonfigurasjon.getRouteApi();
     }
     
