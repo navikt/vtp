@@ -39,10 +39,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import no.nav.foreldrepenger.fpmock2.server.rest.EndUserAuthenticateTemplate.Callback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Api(tags = { "Openam" })
 @Path("/isso")
 public class Oauth2RestService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Oauth2RestService.class);
 
     @GET
     @Path("/oauth2/authorize")
@@ -190,7 +194,17 @@ public class Oauth2RestService {
     }
 
     private String createIdToken(HttpServletRequest req, String username) {
-        String issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
+        String issuer;
+        if (null != System.getenv("autotest.oauth2.issuer.scheme")) {
+            issuer = System.getenv("autotest.oauth2.issuer.scheme") + "://"
+                    + System.getenv("autotest.oauth2.issuer.url") + ":"
+                    + System.getenv("autotest.oauth2.issuer.port")
+                    + System.getenv("autotest.oauth2.issuer.path");
+            LOG.info("Setter issuer-url fra naisconfig: " + issuer);
+        } else {
+            issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
+            LOG.info("Setter issuer-url fra implisit localhost: " + issuer);
+        }
         String token = new OidcTokenGenerator(username).withIssuer(issuer).create();
         return token;
     }

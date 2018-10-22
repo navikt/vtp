@@ -28,6 +28,9 @@ public class MiljoKonfigurasjon extends KonfigurasjonBase{
 	
 	public static String hentMiljø() {
         String env = System.getenv(AUTOTEST_ENV);
+        if(null == env){
+        	env = System.getProperty(AUTOTEST_ENV);
+		}
         return env == null ? "localhost" : env;
     }
 	
