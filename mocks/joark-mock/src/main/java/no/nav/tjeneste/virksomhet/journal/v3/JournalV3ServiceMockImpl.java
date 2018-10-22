@@ -1,25 +1,32 @@
 package no.nav.tjeneste.virksomhet.journal.v3;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.jws.HandlerChain;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostV3Bulider;
 import no.nav.tjeneste.virksomhet.journal.v3.feil.DokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.journal.v3.informasjon.Variantformater;
-import no.nav.tjeneste.virksomhet.journal.v3.meldinger.*;
+import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentDokumentRequest;
 import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentDokumentResponse;
+import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentDokumentURLRequest;
 import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentDokumentURLResponse;
+import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentKjerneJournalpostListeRequest;
 import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentKjerneJournalpostListeResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.jws.*;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-import javax.xml.ws.soap.Addressing;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Addressing
