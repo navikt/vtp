@@ -38,7 +38,7 @@ public class HttpsSession extends HttpSession {
                         public void checkClientTrusted(X509Certificate[] arg0, String arg1) {
                         }
                     }
-            };
+                };
 
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, sertifikater, null);

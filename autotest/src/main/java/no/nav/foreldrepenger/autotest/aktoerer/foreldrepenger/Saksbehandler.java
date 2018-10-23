@@ -129,13 +129,13 @@ public class Saksbehandler extends Aktoer{
      * velger behandling som valgt behandling
      */
     public void velgBehandling(Kode behandlingstype) throws Exception {
-        for (Behandling behandling : behandlinger) {
-            if (behandling.type.kode.equals(behandlingstype.kode)) {
-                velgBehandling(behandling);
-                return;
-            }
+        Behandling behandling = getBehandling(behandlingstype);
+        if(null != behandling) {
+            velgBehandling(behandling);
         }
-        throw new RuntimeException("Valgt fagsak har ikke behandling av type: " + behandlingstype.kode);
+        else {
+            throw new RuntimeException("Valgt fagsak har ikke behandling av type: " + behandlingstype.kode);
+        }
     }
     
     public void velgBehandling(Behandling behandling) throws Exception {
@@ -359,6 +359,13 @@ public class Saksbehandler extends Aktoer{
         return false;
     }
 
-
-
+    private Behandling getBehandling(Kode behandlingstype) {
+        for (Behandling behandling : behandlinger) {
+            if (behandling.type.kode.equals(behandlingstype.kode)) {
+                return behandling;
+            }
+        }
+        return null;
+    }
+    
 }

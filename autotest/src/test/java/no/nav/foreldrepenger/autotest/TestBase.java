@@ -18,10 +18,6 @@ public abstract class TestBase {
         MiljoKonfigurasjon.initProperties();
     }
     
-    
-    
-    
-    
     /*
      * Verifisering
      */
@@ -31,7 +27,7 @@ public abstract class TestBase {
                 return;
              }
         }
-    verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
+        verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
     }
     
     protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet) {
