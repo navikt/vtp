@@ -19,3 +19,7 @@ logs
 *.log
 APP_LOG_HOME_IS_UNDEFINED
 application-local.properties
+.allure
+.allure/*
+allure-results/*
+*-result.json
