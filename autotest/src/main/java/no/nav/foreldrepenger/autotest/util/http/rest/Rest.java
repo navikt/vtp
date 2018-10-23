@@ -55,11 +55,11 @@ public abstract class Rest {
     }
     
     protected HttpResponse post(String url, String request, Map<String, String> headers) throws UnsupportedEncodingException, IOException {
-    	return post(url, new StringEntity(request), headers);
+        return post(url, new StringEntity(request), headers);
     }
     
     protected HttpResponse post(String url, String request) throws UnsupportedEncodingException, IOException {
-    	return post(url, request, HttpSession.createEmptyHeaders());
+        return post(url, request, HttpSession.createEmptyHeaders());
     }
 
     protected HttpResponse post(String url, HttpEntity entity, Map<String, String> headers) throws IOException {
@@ -136,11 +136,11 @@ public abstract class Rest {
         int statuscode = response.getStatusLine().getStatusCode();
         
         if(!expectedRange.inRange(statuscode)) {
-        	if(body.equals("")) {
-        		body = hentResponseBody(response);
-        	}
-        	
-        	throw new RuntimeException(String.format(WRONG_STATUS_MESSAGE_FORMAT, expectedRange, statuscode, body));
+            if(body.equals("")) {
+                body = hentResponseBody(response);
+            }
+            
+            throw new RuntimeException(String.format(WRONG_STATUS_MESSAGE_FORMAT, expectedRange, statuscode, body));
         }
     }
 

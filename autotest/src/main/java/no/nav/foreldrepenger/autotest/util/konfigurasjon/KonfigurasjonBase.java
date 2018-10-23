@@ -8,27 +8,26 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public abstract class KonfigurasjonBase {
-	
-	public Properties properties;
-	
-	public void loadFile(File file) {
-		properties = new Properties();
-		
-		InputStream stream;
+    
+    public Properties properties;
+
+    public void loadFile(File file) {
+        properties = new Properties();
+    InputStream stream;
+    
+    try {
+        stream = new FileInputStream(file);
+    } catch (FileNotFoundException e) {
+        throw new RuntimeException(file.getAbsolutePath() + " returns null from file stream " + e.getMessage());
+    }
         
-        try {
-			stream = new FileInputStream(file);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(file.getAbsolutePath() + " returns null from file stream " + e.getMessage());
-		}
+    try {
+        properties.load(stream);
         
-        try {
-        	properties.load(stream);
-            
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
         
         System.getProperties().putAll(properties);
-	}
+    }
 }

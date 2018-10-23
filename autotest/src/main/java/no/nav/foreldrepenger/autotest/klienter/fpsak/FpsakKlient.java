@@ -16,7 +16,7 @@ public class FpsakKlient extends JsonRest{
 
     @Override
     public String hentRestRotUrl() {
-    	return MiljoKonfigurasjon.getRouteApi();
+        return MiljoKonfigurasjon.getRouteApi();
     }
     
     @Override

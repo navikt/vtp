@@ -33,7 +33,7 @@ import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
 public class Saksbehandler extends Aktoer{
-	
+
     
     public List<Fagsak> fagsaker;
     public Fagsak valgtFagsak;
@@ -69,7 +69,7 @@ public class Saksbehandler extends Aktoer{
 
     public Saksbehandler(Rolle rolle) throws IOException {
         this();
-	erLoggetInnMedRolle(rolle);
+        erLoggetInnMedRolle(rolle);
     }
     
     @Override
@@ -90,7 +90,7 @@ public class Saksbehandler extends Aktoer{
     public void hentFagsak(String saksnummer) throws Exception {
         velgFagsak(fagsakKlient.getFagsak(saksnummer));
     }
-	
+    
     /*
      * Hent enkel fagsak
      */

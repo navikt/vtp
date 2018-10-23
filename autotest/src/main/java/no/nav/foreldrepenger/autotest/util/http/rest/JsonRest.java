@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class JsonRest extends Rest{
-	
+    
     private static String ACCEPT_JSON_HEADER = "application/json";
 
     public JsonRest(HttpSession session) {
@@ -46,11 +46,11 @@ public abstract class JsonRest extends Rest{
     }
     
     protected <T> T postOgHentJson(String url, Object requestData, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
-    	return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
+        return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
     }
     
     protected <T> T postOgHentJson(String url, Object requestData, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
-    	return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
+        return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
     }
     
     protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
@@ -59,8 +59,8 @@ public abstract class JsonRest extends Rest{
     }
     
     protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
-    	String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
-    	return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
+        String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
+        return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
     
     protected String postOgVerifiser(String url, Object requestData, StatusRange expectedStatusRange) throws IOException {
@@ -68,13 +68,13 @@ public abstract class JsonRest extends Rest{
     }
     
     protected String postOgVerifiser(String url, Object requestData, Map<String, String> headers, StatusRange expectedStatusRange) throws IOException {
-    	String request = hentObjectMapper().writeValueAsString(requestData);
-    	HttpResponse response = postJson(url, request, headers);
-    	String json = hentResponseBody(response);
-    	if(expectedStatusRange != null) {
-    		ValidateResponse(response, expectedStatusRange, url + "\n" + request +"\n\n" + json);
-    	}
-    	return json;
+        String request = hentObjectMapper().writeValueAsString(requestData);
+        HttpResponse response = postJson(url, request, headers);
+        String json = hentResponseBody(response);
+        if(expectedStatusRange != null) {
+            ValidateResponse(response, expectedStatusRange, url + "\n" + request +"\n\n" + json);
+        }
+        return json;
     }
 
     
@@ -95,7 +95,7 @@ public abstract class JsonRest extends Rest{
     }
     
     protected <T> T getOgHentJson(String url, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
-    	return getOgHentJson(url, new HashMap<>(), returnType, expectedStatusRange);
+        return getOgHentJson(url, new HashMap<>(), returnType, expectedStatusRange);
     }
     
     protected <T> T getOgHentJson(String url, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
@@ -103,17 +103,17 @@ public abstract class JsonRest extends Rest{
     }
     
     protected <T> T getOgHentJson(String url, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
-    	HttpResponse response = getJson(url, headers);
-    	String json = hentResponseBody(response);
-    	ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
-    	return hentObjectMapper().readValue(json, returnType);
+        HttpResponse response = getJson(url, headers);
+        String json = hentResponseBody(response);
+        ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
+        return hentObjectMapper().readValue(json, returnType);
     }
     
     protected <T> T getOgHentJson(String url, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
-    	HttpResponse response = getJson(url, headers);
-    	String json = hentResponseBody(response);
-    	ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
-    	return hentObjectMapper().readValue(json, returnType);
+        HttpResponse response = getJson(url, headers);
+        String json = hentResponseBody(response);
+        ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
+        return hentObjectMapper().readValue(json, returnType);
     }
     
     

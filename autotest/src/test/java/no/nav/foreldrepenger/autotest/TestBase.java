@@ -31,13 +31,13 @@ public abstract class TestBase {
                 return;
              }
         }
-	verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
+    verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
     }
-	
+    
     protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet) {
-		verifiserLikhet(verdiGjeldende, verdiForventet, "Object");
+        verifiserLikhet(verdiGjeldende, verdiForventet, "Object");
     }
-	
+    
     protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet, String verdiNavn) {
         verifiser(verdiGjeldende.equals(verdiForventet), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
     }
