@@ -13,8 +13,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <testsTags>internal</testsTags>
-        <testPackage>no.nav.foreldrepenger.autotest.internal.**</testPackage>
         <aspectj.version>1.9.2</aspectj.version>
     </properties>
 
@@ -29,23 +27,29 @@
         <profile>
             <id>Smoke</id>
             <properties>
-                <testsTags>smoke</testsTags>
+                <includeTestsTags>smoke</includeTestsTags>
+                <excludeTestsTags>pending</excludeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
             </properties>
         </profile>
         <profile>
             <id>Regresjon</id>
             <properties>
-                <testsTags>regresjon,smoke</testsTags>
+                <includeTestsTags>regresjon,smoke</includeTestsTags>
+                <excludeTestsTags>pending</excludeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
             </properties>
         </profile>
         <profile>
             <id>Internal</id>
             <properties>
-                <testsTags>internal</testsTags>
+                <includeTestsTags>internal</includeTestsTags>
+                <excludeTestsTags>pending</excludeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.internal.**</testPackage>
             </properties>
+            <activation>
+            	<activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 
@@ -67,9 +71,8 @@
                     <includes>
                         <include>${testPackage}</include>
                     </includes>
-                    <properties>
-                        <includeTags>${testsTags}</includeTags>
-                    </properties>
+                    <groups>${includeTestsTags}</groups>
+                    <excludedGroups>${excludeTestsTags}</excludedGroups>
                     <systemPropertyVariables>
                         <application.root>${maven.multiModuleProjectDirectory}</application.root>
                     </systemPropertyVariables>
