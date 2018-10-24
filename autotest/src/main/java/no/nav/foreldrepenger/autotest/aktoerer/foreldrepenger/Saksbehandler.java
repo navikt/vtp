@@ -301,17 +301,29 @@ public class Saksbehandler extends Aktoer{
                                            fritekst));
     }
     
-    /*
-     * Private
-     */
     
     /*
-     * Opretter behandling på gitt fagsak
+     * Dokumenter
      */
-    private void opprettBehandling(Kode behandlingstype, Fagsak fagsak) throws Exception {
-        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype));
-        velgFagsak(valgtFagsak); //Henter fagsaken på ny
+    
+    public void ventTilDokument(String dokument) throws Exception{
+        Vent.til(() -> {
+            velgBehandling(valgtBehandling);
+            return harDokument(dokument);
+        }, 5, "Behandling har ikke dokument: " + dokument);
     }
+    
+    public boolean harDokument(String dokument) {
+        return getDokument(dokument) != null;
+    }
+    
+    private DokumentListeEnhet getDokument(String dokument) {
+        throw new RuntimeException("getDokument ikke implementert");
+    }
+    
+    /*
+     * Historikkinnslag
+     */
     
     public void ventTilHistorikkinnslag(String tekst) throws Exception {
         Vent.til( () -> {
@@ -321,17 +333,22 @@ public class Saksbehandler extends Aktoer{
     }
 
     public boolean harHistorikkinnslag(String tekst) {
+        return getHistorikkInnslag(tekst) != null; 
+    }
+    
+    private HistorikkInnslag getHistorikkInnslag(String tekst) {
         for (HistorikkInnslag innslag : historikkInnslag) {
             if(innslag.getTekst().contains(tekst)) {
-                return true;
-            }
-            else {
-                System.out.println(innslag.getTekst() + " != " + tekst);
+                return innslag;
             }
         }
-        return false;
+        return null;
     }
 
+    
+    /*
+     * Behandlingsstatus
+     */
     public void ventTilBehandlingsstatus(String status) throws Exception {
         Vent.til(() -> {
             velgBehandling(valgtBehandling);
@@ -340,7 +357,11 @@ public class Saksbehandler extends Aktoer{
     }
     
     public boolean harBehandlingsstatus(String status) {
-        return valgtBehandling.status.kode.equals(status);
+        return getBehandlingsstatus().equals(status);
+    }
+    
+    public String getBehandlingsstatus() {
+        return valgtBehandling.status.kode;
     }
 
     public void ventTilSakHarBehandling(Kode behandlingType) throws Exception {
@@ -368,4 +389,15 @@ public class Saksbehandler extends Aktoer{
         return null;
     }
     
+    /*
+     * Private
+     */
+    
+    /*
+     * Opretter behandling på gitt fagsak
+     */
+    private void opprettBehandling(Kode behandlingstype, Fagsak fagsak) throws Exception {
+        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype));
+        velgFagsak(valgtFagsak); //Henter fagsaken på ny
+    }
 }
