@@ -1,6 +1,6 @@
 FROM navikt/java:8
 
-EXPOSE 8080 636
+EXPOSE 8080 8060 636
 
 ENV JAVA_OPTS="-Dscenarios.dir=/app/model/scenarios/"
 ARG JAR_FILE
