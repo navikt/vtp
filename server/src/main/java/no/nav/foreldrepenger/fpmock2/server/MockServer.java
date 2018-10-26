@@ -34,6 +34,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.modig.testcertificates.TestCertificates;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MockServer {
 
@@ -45,6 +47,8 @@ public class MockServer {
 
     private final int port;
     private final LdapServer ldapServer;
+
+    private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
 
     public static void main(String[] args) throws Exception {
         TestCertificates.setupKeyAndTrustStore();
@@ -59,6 +63,7 @@ public class MockServer {
     }
 
     public MockServer() throws Exception {
+        LOG.info("Dummyprop er satt til: " + System.getenv("DUMMYPROP"));
         this.port = Integer.valueOf(System.getProperty("server.port", SERVER_PORT));
 
         System.setProperty("server.url", "https://localhost:" + getSslPort());
