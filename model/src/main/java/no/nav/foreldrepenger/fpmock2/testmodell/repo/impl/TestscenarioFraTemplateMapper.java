@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;

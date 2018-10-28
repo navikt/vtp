@@ -14,16 +14,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
-
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 @Api(tags = "Journalføringsmock")
 @Path("/api/journalforing")

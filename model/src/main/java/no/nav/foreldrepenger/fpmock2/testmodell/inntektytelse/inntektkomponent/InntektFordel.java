@@ -7,8 +7,6 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 /*
 [
 {"navn":"kontantytelse","term":"Kontantytelse"},

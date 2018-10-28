@@ -12,7 +12,6 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpCoreContext;
 import org.apache.http.util.EntityUtils;
 

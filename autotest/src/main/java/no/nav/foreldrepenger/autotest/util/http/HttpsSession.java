@@ -6,7 +6,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -26,13 +25,16 @@ public class HttpsSession extends HttpSession {
             HttpClientBuilder builder = HttpClients.custom().useSystemProperties();
             TrustManager[] sertifikater = new TrustManager[]{
                     new X509TrustManager() {
+                        @Override
                         public X509Certificate[] getAcceptedIssuers() {
                             return null;
                         }
 
+                        @Override
                         public void checkServerTrusted(X509Certificate[] arg0, String arg1) {
                         }
 
+                        @Override
                         public void checkClientTrusted(X509Certificate[] arg0, String arg1) {
                         }
                     }

@@ -3,16 +3,11 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketype
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.EksempelArbeidsgiver;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.InntektsmeldingDTO;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioImpl;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.seres.xsd.nav.inntektsmelding_m._20180924.EndringIRefusjon;

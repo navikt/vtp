@@ -8,7 +8,6 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Adopsjon;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Omsorgsovertakelse;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Termin;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Omsorgsovertakelseaarsaker;
 

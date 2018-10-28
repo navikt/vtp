@@ -89,7 +89,8 @@ public class Oauth2RestService {
 
         query.put("redirect_uri", redirectUri);
         
-        if (null != req.getContentType() && req.getContentType().equals("text/html")) {
+        String acceptHeader = req.getHeader("Accept-Header");
+        if ((null == req.getContentType() || req.getContentType().equals("text/html")) && (acceptHeader==null || !acceptHeader.contains("json"))) {
             return authorizeHtmlPage(locationUri, query);
         } else {
             return authorizeRedirect(locationUri, query);
