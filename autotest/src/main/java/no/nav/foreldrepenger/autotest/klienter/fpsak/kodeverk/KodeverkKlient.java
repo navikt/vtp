@@ -8,6 +8,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.BehandlendeEnhet;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeListe;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
@@ -36,19 +37,19 @@ public class KodeverkKlient extends FpsakKlient{
         return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class, BehandlendeEnhet.class), StatusRange.STATUS_SUCCESS);
     }
     
-    public List<Kode> arsaker() throws IOException{
+    public KodeListe henleggArsaker() throws IOException{
         String url = hentRestRotUrl() + KODEVERK_HENLEGG_ÅRSAKER;
-        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class,Kode.class), StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(KodeListe.class,Kode.class), StatusRange.STATUS_SUCCESS);
     }
     
-    public List<Kode> arsakerKlage() throws IOException{
+    public KodeListe henleggArsakerKlage() throws IOException{
         String url = hentRestRotUrl() + KODEVERK_HENLEGG_ÅRSAKER_KLAGE;
-        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class,Kode.class), StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(KodeListe.class,Kode.class), StatusRange.STATUS_SUCCESS);
     }
     
-    public List<Kode> arsakerInnsyn() throws IOException{
+    public KodeListe henleggArsakerInnsyn() throws IOException{
         String url = hentRestRotUrl() + KODEVERK_HENLEGG_ÅRSAKER_INNSYN;
-        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(ArrayList.class,Kode.class), StatusRange.STATUS_SUCCESS);
+        return getOgHentJson(url, hentObjectMapper().getTypeFactory().constructCollectionType(KodeListe.class,Kode.class), StatusRange.STATUS_SUCCESS);
     }
     
     

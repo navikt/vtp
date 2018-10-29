@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingHenlegg;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
@@ -29,6 +30,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInns
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeListe;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
@@ -52,7 +54,13 @@ public class Saksbehandler extends Aktoer{
     private HistorikkKlient historikkKlient;
     
     public Kodeverk kodeverk;
+    public KodeListe henleggArsaker;
+    public KodeListe henleggArsakerKlage;
+    public KodeListe henleggArsakerInnsyn;
+    
     public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
+    
+    
     
     
     
@@ -173,6 +181,9 @@ public class Saksbehandler extends Aktoer{
     public void hentKodeverk() {
         try {
             kodeverk = kodeverkKlient.getKodeverk();
+            henleggArsaker = kodeverkKlient.henleggArsaker();
+            henleggArsakerKlage = kodeverkKlient.henleggArsakerKlage();
+            henleggArsakerInnsyn = kodeverkKlient.henleggArsakerInnsyn();
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke hente kodeverk: " + e.getMessage());
         }
@@ -195,6 +206,11 @@ public class Saksbehandler extends Aktoer{
     
     public void gjenopptaBehandling() throws Exception {
         behandlingerKlient.gjenoppta(new BehandlingIdPost(valgtBehandling));
+        velgBehandling(valgtBehandling);
+    }
+    
+    public void henleggBehandling(Kode årsak) throws Exception {
+        behandlingerKlient.henlegg(new BehandlingHenlegg(valgtBehandling.id, valgtBehandling.versjon, årsak.kode, "Henlagt"));
         velgBehandling(valgtBehandling);
     }
     

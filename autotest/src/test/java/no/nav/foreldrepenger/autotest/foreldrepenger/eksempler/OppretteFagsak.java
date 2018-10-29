@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Tag;
 
 import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
@@ -25,6 +27,14 @@ public class OppretteFagsak extends FpsakTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         
-        verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "Test", "Status");
+        saksbehandler.settBehandlingPåVent(LocalDate.now(), saksbehandler.kodeverk.Venteårsak.getKode("AVV_DOK"));
+        verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke satt på vent");
+        
+        saksbehandler.gjenopptaBehandling();
+        verifiser(!saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er satt på vent");
+        
+        saksbehandler.henleggBehandling(saksbehandler.henleggArsaker.getKode("HENLAGT_SØKNAD_TRUKKET"));
+        
+        saksbehandler.ventTilBehandlingsstatus("AVSLUTTET");
     }
 }
