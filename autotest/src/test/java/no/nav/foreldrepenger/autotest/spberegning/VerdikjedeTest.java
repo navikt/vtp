@@ -24,7 +24,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
-@Tag("eksempel")
+@Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
     BeregningKlient klient;
 

@@ -19,6 +19,13 @@
     </properties>
 
     <profiles>
+    	<profile>
+            <id>SpBeregning</id>
+            <properties>
+                <testsTags>spberegning</testsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.spberegning.**</testPackage>
+            </properties>
+        </profile>
         <profile>
             <id>Smoke</id>
             <properties>
