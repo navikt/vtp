@@ -6,7 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ForslagDto {
 
     protected Integer beregningId;
-    
+
     public ForslagDto() {
+    }
+    
+    public Integer getBeregningId() {
+        return beregningId;
     }
 }

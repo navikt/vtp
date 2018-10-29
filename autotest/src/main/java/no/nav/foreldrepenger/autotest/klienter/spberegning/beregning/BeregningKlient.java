@@ -10,6 +10,7 @@ import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.Forslag
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.LagreNotatDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.OppdaterBeregningDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.PersonDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.inntektsmelding.InntektsmeldingerDto;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
@@ -30,9 +31,9 @@ public class BeregningKlient extends SpBeregningKlient{
         super(session);
     }
     
-    public Object hentBeregning(String beregningId) {
+    public BeregningDto hentBeregning(String beregningId) throws IOException {
         String url = hentRestRotUrl() + BEREGNING_HENT_BEREGNING_URL;
-        return null;
+        return getOgHentJson(url, BeregningDto.class, StatusRange.STATUS_SUCCESS);
     }
     
     public PersonDto hentPersonInfo(String beregningId) throws IOException {

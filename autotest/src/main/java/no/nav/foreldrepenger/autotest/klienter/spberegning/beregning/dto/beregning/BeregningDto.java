@@ -10,4 +10,16 @@ public class BeregningDto {
     
     public BeregningDto() {
     }
+
+    public BeregningsgrunnlagDto getBeregningsgrunnlag() {
+        return beregningsgrunnlag;
+    }
+
+    public String getSaksnummer() {
+        return saksnummer;
+    }
+
+    public Kode getTema() {
+        return tema;
+    }
 }
