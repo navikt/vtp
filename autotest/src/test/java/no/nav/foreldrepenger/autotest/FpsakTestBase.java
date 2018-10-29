@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
-import no.nav.foreldrepenger.autotest.aktoerer.saksbehandler.Saksbehandler;
+import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.autotest.klienter.vtp.testscenario.TestscenarioKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;

@@ -31,18 +31,11 @@ public class VerdikjedeTest extends SpberegningTestBase {
     @Test
     public void grunnleggendeSykepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
+        
+        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.foreslåBeregning(testscenario, "123123");
 
-        klient = new BeregningKlient(new HttpsSession());
-        ForslagDto forslagDto = klient.foreslaBeregningPost(
-                new ForeslaaDto("SYK",
-                        Integer.parseInt(testscenario.getPersonopplysninger().getSøkerAktørIdent()),
-                        "123123"));
-
-        int beregningId = forslagDto.getBeregningId();
-
-        BeregningDto beregningDto = klient.hentBeregning(String.valueOf(beregningId));
-
-        verifiser(beregningDto.getTema().kode.equals("SYK"));
+        verifiser(saksbehandler.beregning.getTema().kode.equals("SYK"));
     }
 
 }

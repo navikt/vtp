@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest.aktoerer.saksbehandler;
+package no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger;
 
 import java.io.IOException;
 import java.time.LocalDate;

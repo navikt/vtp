@@ -31,22 +31,22 @@ public class BeregningKlient extends SpBeregningKlient{
         super(session);
     }
     
-    public BeregningDto hentBeregning(String beregningId) throws IOException {
-        String url = hentRestRotUrl() + BEREGNING_HENT_BEREGNING_URL;
+    public BeregningDto hentBeregning(int beregningId) throws IOException {
+        String url = hentRestRotUrl() + BEREGNING_HENT_BEREGNING_URL + "?beregningId="+beregningId;
         return getOgHentJson(url, BeregningDto.class, StatusRange.STATUS_SUCCESS);
     }
     
-    public PersonDto hentPersonInfo(String beregningId) throws IOException {
+    public PersonDto hentPersonInfo(int beregningId) throws IOException {
         String url = hentRestRotUrl() + BEREGNING_HENT_PERSON_INFO_URL + "?beregningId=" + beregningId;
         return getOgHentJson(url, PersonDto.class, StatusRange.STATUS_SUCCESS);
     }
     
-    public InntektsmeldingerDto hentInntektsmeldinger(String beregningId) throws IOException {
+    public InntektsmeldingerDto hentInntektsmeldinger(int beregningId) throws IOException {
         String url = hentRestRotUrl() + BEREGNING_HENT_INNTEKTSMELDING_URL + "?beregningId=" + beregningId;
         return getOgHentJson(url, InntektsmeldingerDto.class, StatusRange.STATUS_SUCCESS);
     }
     
-    public InntektsmeldingerDto hentAlleInntektsmeldinger(String beregningId) throws IOException {
+    public InntektsmeldingerDto hentAlleInntektsmeldinger(int beregningId) throws IOException {
         String url = hentRestRotUrl() + BEREGNING_HENT_ALLE_INNTEKTSMELDINGER_URL + "?beregningId=" + beregningId;
         return getOgHentJson(url, InntektsmeldingerDto.class, StatusRange.STATUS_SUCCESS);
     }

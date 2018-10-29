@@ -12,12 +12,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 
 import no.nav.foreldrepenger.autotest.TestBase;
-import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
-import no.nav.foreldrepenger.autotest.aktoerer.saksbehandler.Saksbehandler;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
+import no.nav.foreldrepenger.autotest.aktoerer.spberegning.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.vtp.testscenario.TestscenarioKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
@@ -43,11 +40,6 @@ public class SpberegningTestBase extends TestBase{
 
         testscenarioKlient = new TestscenarioKlient(new HttpSession());
         inntektsmeldingErketype = new InntektsmeldingErketype();
-    }
-
-    protected Kodeverk hentKodeverk() {
-        //TODO (Aleksander)
-        return null;
     }
 
     protected TestscenarioDto opprettScenario(String id) throws IOException {
