@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testsTags>internal</testsTags>
         <testPackage>no.nav.foreldrepenger.autotest.internal.**</testPackage>
-        <aspectj.version>1.8.10</aspectj.version>
+        <aspectj.version>1.9.2</aspectj.version>
     </properties>
 
     <profiles>
@@ -49,7 +49,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        -Dfile.encoding=UTF-8 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                     <systemProperties>
                         <property>
