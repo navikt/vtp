@@ -45,7 +45,6 @@ I tillegg, for å overstyre sikkerhet (PDP, STS, OpenAM):
 * abac.pdp.endpoint.url=https://localhost:8063/asm-pdp/authorize
 * OpenIdConnect.username=fpsak-localhost
 
-
 Utvikling, wsdl
 ----
 Se MockServer for liste over url til genererte wsdl'er for test via SoapUi eller lignende.
