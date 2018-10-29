@@ -607,6 +607,7 @@
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 						<encoding>UTF-8</encoding>
+						<release>${java.version}</release>
 					</configuration>
 				</plugin>
 				<plugin>
