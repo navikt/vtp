@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class InntektskomponentModell {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonDeserialize(using = InntektsperiodeDeserializer.class)
     @JsonProperty("inntektsperioder")
     List<Inntektsperiode> inntektsperioder = new ArrayList<>();
 
