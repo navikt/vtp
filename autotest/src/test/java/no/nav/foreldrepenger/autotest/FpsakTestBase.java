@@ -33,6 +33,7 @@ public class FpsakTestBase extends TestBase{
     protected Saksbehandler saksbehandler;
     protected Saksbehandler overstyrer;
     protected Saksbehandler beslutter;
+    protected Saksbehandler klagebehandler;
 
     /*
      * VTP
@@ -48,6 +49,7 @@ public class FpsakTestBase extends TestBase{
         saksbehandler = new Saksbehandler();
         overstyrer = new Saksbehandler();
         beslutter = new Saksbehandler();
+        klagebehandler = new Saksbehandler();
         
         testscenarioKlient = new TestscenarioKlient(new HttpSession());
         foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();

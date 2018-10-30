@@ -107,6 +107,21 @@ public class Fordel extends Aktoer {
 
     }
 
+    public long sendInnKlage(String xmlstring, TestscenarioDto scenario, Long saksnummer) throws IOException {
+        String xml = xmlstring;
+        String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
+        String behandlingstemaOffisiellKode = "ab0047";
+        String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
+        String dokumentTypeIdOffisiellKode = DokumenttypeId.KLAGEANKE.getKode();
+
+        JournalpostModell journalpostModell = JournalpostModellGenerator.makeUstrukturertDokumentJournalpost(scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.KLAGEANKE);
+        String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
+
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, dokumentKategori, aktørId, saksnummer);
+        journalpostModell.setSakId(String.valueOf(sakId));
+        return sakId;
+    }
+
 
     /*
      * Sender inn journalpost og returnerer saksnummer

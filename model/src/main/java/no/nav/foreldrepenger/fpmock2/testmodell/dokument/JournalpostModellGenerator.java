@@ -40,14 +40,14 @@ public class JournalpostModellGenerator {
 
     }
 
-    public static JournalpostModell makeUstrukturertDokumentJournalpost(String dokumenttypeId, String fnr) {
+    public static JournalpostModell makeUstrukturertDokumentJournalpost(String fnr, DokumenttypeId dokumenttypeId) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
 
         DokumentModell dokumentModell = new DokumentModell();
+        dokumentModell.setDokumentType(dokumenttypeId);
         dokumentModell.setInnhold("innhold: " + dokumenttypeId);
-        dokumentModell.setDokumentType(DokumenttypeId.ADOPSJONSDOKUMENTASJON); //TODO: lag oversetter fra Id til object
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
                 Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]

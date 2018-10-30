@@ -343,5 +343,22 @@ public class Saksbehandler extends Aktoer{
         return valgtBehandling.status.kode.equals(status);
     }
 
-    
+    public void ventTilSakHarBehandling(Kode behandlingType) throws Exception {
+        Vent.til(() -> {
+            velgFagsak(valgtFagsak);
+            return harBehandling(behandlingType);
+        }, 10, "Saken har ikke fått behandling av type: " + behandlingType);
+    }
+
+    private boolean harBehandling(Kode behandlingType){
+        for (Behandling behandling: behandlinger) {
+            if (behandling.type.kode.equals(behandlingType.kode)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
 }

@@ -4,6 +4,7 @@ import javax.jws.HandlerChain;
 import javax.jws.WebService;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,12 +101,13 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     public ProduserIkkeredigerbartDokumentResponse produserIkkeredigerbartDokument(ProduserIkkeredigerbartDokumentRequest request) throws ProduserIkkeredigerbartDokumentDokumentErRedigerbart, ProduserIkkeredigerbartDokumentDokumentErVedlegg {
         Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
+        dokumenttypeId = "I"+dokumenttypeId;
 
 
         LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());
         ProduserIkkeredigerbartDokumentResponse response = new ProduserIkkeredigerbartDokumentResponse();
         String journalpostId = journalRepository.leggTilJournalpost(
-                JournalpostModellGenerator.makeUstrukturertDokumentJournalpost(dokumenttypeId, ((Person) bruker).getIdent()));
+                JournalpostModellGenerator.makeUstrukturertDokumentJournalpost(((Person) bruker).getIdent(), new DokumenttypeId(dokumenttypeId)));
         String dokumentId = journalRepository.finnJournalpostMedJournalpostId(journalpostId).get().getDokumentModellList().get(0).getDokumentId();
         LOG.info("produsererIkkeredigerbartDokument generer journalpost {} med dokument {})", journalpostId, dokumentId);
 
