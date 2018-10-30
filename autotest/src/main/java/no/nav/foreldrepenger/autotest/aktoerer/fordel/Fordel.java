@@ -148,6 +148,8 @@ public class Fordel extends Aktoer {
         if (null != xml) {
             journalpostMottak.setPayloadXml(new String(Base64.getUrlEncoder().withoutPadding().encode(xml.getBytes())));
             journalpostMottak.setPayloadLength(xml.length());
+        } else {
+            journalpostMottak.setPayloadLength(1);
         }
 
         fordelKlient.journalpost(journalpostMottak);
