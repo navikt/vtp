@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest;
+package no.nav.foreldrepenger.autotest.foreldrepenger;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest.engangsstonad;
+package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 

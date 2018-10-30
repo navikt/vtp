@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest.eksempler;
+package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;

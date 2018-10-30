@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.autotest.eksempler;
+package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTerminBekreftelse;
@@ -13,10 +13,9 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("eksempel")
-
-public class BehandleAksjonspunkter extends FpsakTestBase{
-    @Test
-    public void godkjenneTermindato() throws Exception {
+public class OppretteRevurdering extends FpsakTestBase{
+    
+    public void opretteRevurderingPåTerminsøknad() throws Exception {
         //Opprett scenario og søknad
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -33,6 +32,13 @@ public class BehandleAksjonspunkter extends FpsakTestBase{
         bekreftelse.setAntallBarn(1);
         saksbehandler.bekreftAksjonspunktBekreftelse(bekreftelse);
         
-        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget", "Behandlingsresultat");
+        verifiserLikhet(saksbehandler.valgtFagsak.hentStatus(), "Avsluttet");
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        
+        //Opprette Revurdering
+        saksbehandler.opprettBehandlingRevurdering();
+        saksbehandler.velgBehandling(saksbehandler.behandlinger.get(1));
+        
+        verifiserLikhet(saksbehandler.valgtFagsak.hentStatus(), "Under behandling");
     }
 }

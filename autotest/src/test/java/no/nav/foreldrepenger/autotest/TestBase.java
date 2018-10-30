@@ -8,12 +8,23 @@ import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 
 public abstract class TestBase {
     
+    /*
+     * Global setup
+     */
     @BeforeAll
     protected static void setUpAll() {
         String propertiesDir = System.getProperty("application.root");
         PropertiesUtils.initProperties(propertiesDir == null ? ".." : propertiesDir);
         MiljoKonfigurasjon.initProperties();
     }
+    
+    
+    
+    
+    
+    /*
+     * Verifisering
+     */
     protected void verifiserListeInneholder(List<Object> liste, Object object1) {
         for (Object object2 : liste) {
             if(object1.equals(object2)) {

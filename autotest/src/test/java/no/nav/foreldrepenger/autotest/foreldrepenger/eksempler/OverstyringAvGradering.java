@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.autotest.eksempler;
+package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 
-import no.nav.foreldrepenger.autotest.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrUttaksperioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;

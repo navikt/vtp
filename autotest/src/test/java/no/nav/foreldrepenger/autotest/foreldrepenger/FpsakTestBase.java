@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest;
+package no.nav.foreldrepenger.autotest.foreldrepenger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import no.nav.foreldrepenger.autotest.TestBase;
+import no.nav.foreldrepenger.autotest.TestScenarioTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
@@ -24,7 +26,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.I
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 
-public class FpsakTestBase extends TestBase{
+public class FpsakTestBase extends TestScenarioTestBase{
 
     /*
      * Aktører
@@ -38,7 +40,6 @@ public class FpsakTestBase extends TestBase{
     /*
      * VTP
      */
-    protected TestscenarioKlient testscenarioKlient;
     protected ForeldrepengesoknadXmlErketyper foreldrepengeSøknadErketyper;
     protected InntektsmeldingErketype inntektsmeldingErketype;
 
@@ -51,7 +52,6 @@ public class FpsakTestBase extends TestBase{
         beslutter = new Saksbehandler();
         klagebehandler = new Saksbehandler();
         
-        testscenarioKlient = new TestscenarioKlient(new HttpSession());
         foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();
         inntektsmeldingErketype = new InntektsmeldingErketype();
     }
@@ -62,12 +62,6 @@ public class FpsakTestBase extends TestBase{
         }
         return null;
     }
-
-    protected TestscenarioDto opprettScenario(String id) throws IOException {
-        return testscenarioKlient.opprettTestscenario(id);
-    }
-
-
 
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
 
