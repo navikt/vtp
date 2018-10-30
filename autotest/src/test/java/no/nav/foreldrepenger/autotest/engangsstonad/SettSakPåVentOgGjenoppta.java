@@ -5,13 +5,14 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("smoke")
 @Tag("engangsstonad")
-public class SettSakPoVentOgGjenoppta extends EngangsstonadTestBase{
+public class SettSakPåVentOgGjenoppta extends EngangsstonadTestBase{
 
     @Test
     public void settBehandlingPåVentOgGjenoppta() throws Exception {
@@ -20,10 +21,10 @@ public class SettSakPoVentOgGjenoppta extends EngangsstonadTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         //Send inn søknad
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         
         saksbehandler.settBehandlingPåVent(LocalDate.now(), saksbehandler.kodeverk.Venteårsak.getKode("AVV_DOK"));

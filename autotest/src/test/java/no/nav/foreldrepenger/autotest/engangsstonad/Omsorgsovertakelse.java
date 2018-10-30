@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.engangsstonad;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvOmsorgsvilkoret;
@@ -23,10 +24,10 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
@@ -45,7 +46,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
     
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("Beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -64,10 +65,10 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
@@ -82,7 +83,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("Beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -98,10 +99,10 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
@@ -120,10 +121,10 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
@@ -142,7 +143,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
     
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("Beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)

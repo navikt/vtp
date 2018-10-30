@@ -4,12 +4,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,12 +37,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import no.nav.foreldrepenger.fpmock2.server.rest.EndUserAuthenticateTemplate.Callback;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Api(tags = { "Openam" })
 @Path("/isso")
@@ -88,9 +91,9 @@ public class Oauth2RestService {
         query.put("iss", new URI(req.getScheme(), req.getServerName(), "/isso/oauth2", null).toASCIIString());
 
         query.put("redirect_uri", redirectUri);
-        
+
         String acceptHeader = req.getHeader("Accept-Header");
-        if ((null == req.getContentType() || req.getContentType().equals("text/html")) && (acceptHeader==null || !acceptHeader.contains("json"))) {
+        if ((null == req.getContentType() || req.getContentType().equals("text/html")) && (acceptHeader == null || !acceptHeader.contains("json"))) {
             return authorizeHtmlPage(locationUri, query);
         } else {
             return authorizeRedirect(locationUri, query);
@@ -111,7 +114,7 @@ public class Oauth2RestService {
         URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
             null);
 
-        List<String> usernames = getUsernames();
+        List<Entry<String, String>> usernames = getUsernames();
 
         String html = "<!DOCTYPE html>\n"
             + "<html>\n" +
@@ -137,20 +140,28 @@ public class Oauth2RestService {
         return Response.ok(html, MediaType.TEXT_HTML).build();
     }
 
-    private List<String> getUsernames() throws NamingException {
+    private List<Map.Entry<String, String>> getUsernames() throws NamingException {
         List<SearchResult> allUsers = getAllUsers();
 
-        List<String> usernames = allUsers.stream().map(u -> {
-            Attribute attribute = u.getAttributes().get("cn");
-            String username;
-            try {
-                username = (String) attribute.get();
-                return username;
-            } catch (NamingException e) {
-                throw new IllegalStateException(e);
-            }
-        }).collect(Collectors.toList());
+        // Long story, økonomi forventer (per 2018-10-30) at alle interne brukere har max 8 bokstaver i bruker identen sin :-(
+        // pass derfor på at CN er definert med maks 8 bokstaver.
+
+        List<Map.Entry<String, String>> usernames = allUsers.stream()
+            .map(u -> {
+                String cn = getAttribute(u, "cn");
+                String displayName = getAttribute(u, "displayName");
+                return new SimpleEntry<String, String>(cn, displayName);
+            }).collect(Collectors.toList());
         return usernames;
+    }
+
+    private String getAttribute(SearchResult u, String attribName) {
+        Attribute attribute = u.getAttributes().get(attribName);
+        try {
+            return (String) attribute.get();
+        } catch (NamingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     private List<SearchResult> getAllUsers() throws NamingException {
@@ -198,9 +209,9 @@ public class Oauth2RestService {
         String issuer;
         if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME")) {
             issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME") + "://"
-                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_URL") + ":"
-                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_PORT")
-                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_PATH");
+                + System.getenv("AUTOTEST_OAUTH2_ISSUER_URL") + ":"
+                + System.getenv("AUTOTEST_OAUTH2_ISSUER_PORT")
+                + System.getenv("AUTOTEST_OAUTH2_ISSUER_PATH");
             LOG.info("Setter issuer-url fra naisconfig: " + issuer);
         } else {
             issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
@@ -213,7 +224,7 @@ public class Oauth2RestService {
     @GET
     @Path("/isAlive.jsp")
     @Produces(MediaType.TEXT_HTML)
-    public Response isAliveMock(){
+    public Response isAliveMock() {
         String isAlive = "Server is ALIVE";
         return Response.ok(isAlive).build();
     }
@@ -221,7 +232,7 @@ public class Oauth2RestService {
     @GET
     @Path("/oauth2/../isAlive.jsp")
     @Produces(MediaType.TEXT_HTML)
-    public Response isAliveMockRassUrl(){
+    public Response isAliveMockRassUrl() {
         String isAlive = "Server is ALIVE";
         return Response.ok(isAlive).build();
     }

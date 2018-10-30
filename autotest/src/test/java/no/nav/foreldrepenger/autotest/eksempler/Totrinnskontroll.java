@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Tag;
 
 import no.nav.foreldrepenger.autotest.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTerminBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
@@ -21,11 +22,11 @@ public class Totrinnskontroll extends FpsakTestBase{
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         //Send inn søknad
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
         //Behandle sak
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         AvklarFaktaTerminBekreftelse bekreftelse = saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaTerminBekreftelse.class);
         bekreftelse.setTermindato(LocalDate.now().plusWeeks(1));
@@ -33,7 +34,7 @@ public class Totrinnskontroll extends FpsakTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(bekreftelse);
         
         //Behandle totrinnskontroll
-        beslutter.erLoggetInnMedRolle("Beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         FatterVedtakBekreftelse fatterVedtak = beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
         fatterVedtak.godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_TERMINBEKREFTELSE));

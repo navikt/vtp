@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
@@ -19,17 +20,17 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 
 @Tag("smoke")
 @Tag("engangsstonad")
-public class Fodsel extends EngangsstonadTestBase{
+public class Fødsel extends EngangsstonadTestBase{
     
     @Test
     public void behandleFødselMorGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
@@ -43,7 +44,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("Beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -60,10 +61,10 @@ public class Fodsel extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
@@ -73,7 +74,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -90,10 +91,10 @@ public class Fodsel extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("60");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
@@ -103,7 +104,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -120,10 +121,10 @@ public class Fodsel extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
@@ -135,7 +136,7 @@ public class Fodsel extends EngangsstonadTestBase{
             .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
         
-        overstyrer.erLoggetInnMedRolle("overstyrer");
+        overstyrer.erLoggetInnMedRolle(Rolle.BESLUTTER);
         overstyrer.hentAksjonspunktbekreftelse(OverstyrFodselsvilkaaret.class).avvis(null);
         overstyrer.overstyr(OverstyrFodselsvilkaaret.class);
         
@@ -148,10 +149,10 @@ public class Fodsel extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("53");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadFlereBarn(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
@@ -165,7 +166,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -182,10 +183,10 @@ public class Fodsel extends EngangsstonadTestBase{
         TestscenarioDto testscenario = opprettScenario("54");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaVergeBekreftelse.class)
@@ -206,7 +207,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
-        beslutter.erLoggetInnMedRolle("beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)

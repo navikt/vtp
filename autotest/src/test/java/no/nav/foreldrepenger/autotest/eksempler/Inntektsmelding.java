@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 
@@ -24,7 +25,7 @@ public class Inntektsmelding extends FpsakTestBase{
         
         System.out.println(inntektsmelding.createInntektesmeldingXML());
         
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmelding, testscenario, null);
         
         System.out.println(saksnummer);
@@ -39,7 +40,7 @@ public class Inntektsmelding extends FpsakTestBase{
                 testscenario.getPersonopplysninger().getSøkerIdent(),
                 testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr(),
                 LocalDate.now().minusDays(3));
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, null);
 
         System.out.println(inntektsmeldingBuilder.createInntektesmeldingXML());

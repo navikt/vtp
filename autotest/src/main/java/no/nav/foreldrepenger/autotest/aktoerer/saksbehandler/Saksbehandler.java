@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
+
 import org.apache.http.HttpResponse;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -27,6 +27,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.HistorikkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
@@ -66,13 +67,13 @@ public class Saksbehandler extends Aktoer{
         historikkKlient = new HistorikkKlient(session);
     }
 
-    public Saksbehandler(String rolle) throws IOException {
+    public Saksbehandler(Rolle rolle) throws IOException {
         this();
 	erLoggetInnMedRolle(rolle);
     }
     
     @Override
-    public void erLoggetInnMedRolle(String rolle) throws IOException {
+    public void erLoggetInnMedRolle(Rolle rolle) throws IOException {
         super.erLoggetInnMedRolle(rolle);
         hentKodeverk();
     }
