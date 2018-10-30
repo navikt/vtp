@@ -1,4 +1,4 @@
-FROM navikt/java:8
+FROM navikt/java:10
 
 EXPOSE 8080 8083 636
 
