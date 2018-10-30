@@ -157,7 +157,7 @@ public class Fødsel extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-            .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
+            .bekreftDokumentasjonForeligger(2, LocalDate.now().minusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
         
         saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)

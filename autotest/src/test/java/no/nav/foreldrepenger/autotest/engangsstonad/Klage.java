@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.engangsstonad;
 
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
@@ -24,10 +25,10 @@ public class Klage extends EngangsstonadTestBase {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
-        fordel.erLoggetInnMedRolle("Saksbehandler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
 
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
@@ -41,7 +42,7 @@ public class Klage extends EngangsstonadTestBase {
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
-        beslutter.erLoggetInnMedRolle("Beslutter");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -54,9 +55,9 @@ public class Klage extends EngangsstonadTestBase {
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         // Motta og behandle klage
-        fordel.erLoggetInnMedRolle("Saksbehnadler");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long sakId = fordel.sendInnKlage(null, testscenario, saksnummer);
-        klagebehandler.erLoggetInnMedRolle("Klagebehandler");
+        klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
