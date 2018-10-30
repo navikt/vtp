@@ -33,7 +33,11 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
 
     public MedlemServiceMockImpl(TestscenarioBuilderRepository scenarioRepository){
         this.scenarioRepository = scenarioRepository;
-    } 
+    }
+
+    public MedlemServiceMockImpl(){
+
+    }
     
     @WebMethod
     @WebResult(name = "response", targetNamespace = "")
