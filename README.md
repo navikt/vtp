@@ -11,6 +11,8 @@ Starte server
 Koble foreldrepenger til VTP
 ------
 
+Ved å starte FPSAK med '--vtp' blir disse endepunktene satt.
+
 Følgende properties må settes i fpsak
 
 * Aktoer_v2.url=https://localhost:8063/aktoerregister/ws/Aktoer/v2
