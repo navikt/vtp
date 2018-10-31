@@ -35,6 +35,6 @@ public class OppretteFagsak extends FpsakTestBase{
         
         saksbehandler.henleggBehandling(saksbehandler.henleggArsaker.getKode("HENLAGT_SØKNAD_TRUKKET"));
         
-        saksbehandler.ventTilBehandlingsstatus("AVSLUTTET");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
 }
