@@ -30,6 +30,10 @@ public class Saksbehandler extends Aktoer{
     public ForslagDto forslag;
     public BeregningDto beregning;
     
+    public Saksbehandler() {
+        kodeverkKlient = new KodeverkKlient(session);
+        beregningKlient = new BeregningKlient(session);
+	}
     
     @Override
     public void erLoggetInnMedRolle(String rolle) throws IOException {

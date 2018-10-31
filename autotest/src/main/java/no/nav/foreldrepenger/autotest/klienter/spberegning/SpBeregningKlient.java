@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning;
 
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
+import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 
 public abstract class SpBeregningKlient extends JsonRest{
 
@@ -11,7 +12,6 @@ public abstract class SpBeregningKlient extends JsonRest{
 
     @Override
     public String hentRestRotUrl() {
-        // TODO Auto-generated method stub
-        return null;
+    	return System.getProperty("autotest.spberegning.http.routing.api");
     }
 }
