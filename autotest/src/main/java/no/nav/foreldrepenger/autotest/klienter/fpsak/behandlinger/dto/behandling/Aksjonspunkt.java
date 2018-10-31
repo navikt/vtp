@@ -36,6 +36,8 @@ public class Aksjonspunkt {
         return bekreftelse;
     }
 
+    public Kode getStatus() { return status;}
+
     public void setBekreftelse(AksjonspunktBekreftelse bekreftelse) {
         this.bekreftelse = bekreftelse;
     }

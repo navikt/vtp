@@ -12,6 +12,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerHarGyldigPeriodeBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -20,6 +21,23 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 
 @Tag("eksempel")
 public class ProofOfConceptTest extends FpsakTestBase {
+
+
+    @Test
+    public void sendInnPapirsøknad() throws Exception{
+        TestscenarioDto testscenario = opprettScenario("50");
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+
+        long saksnummer = fordel.sendInnSøknad(null, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        verifiser(saksbehandler.valgtBehandling != null);
+        Aksjonspunkt aksjonspunkt = saksbehandler.hentAksjonspunkt(AksjonspunktKoder.REGISTRER_PAPIRSØKNAD_FORELDREPENGER);
+        verifiser(aksjonspunkt.getStatus().kode.equalsIgnoreCase("OPPR"));
+
+
+    }
 
     @Test
     public void foreldrepengesøknadTermindatoKunMorMedInntektsmelding() throws Exception {

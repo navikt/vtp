@@ -24,7 +24,7 @@ public class JournalpostModellGenerator {
         dokumentModell.setDokumentType(dokumenttypeId);
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
-                Arkivfiltype.XML, Variantformat.FULLVERSJON, innhold.getBytes()
+                Arkivfiltype.XML, Variantformat.FULLVERSJON, innhold != null ? innhold.getBytes() : new byte[0]
         ));
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
                 Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]

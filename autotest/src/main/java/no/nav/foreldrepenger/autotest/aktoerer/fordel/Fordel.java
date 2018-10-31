@@ -48,7 +48,10 @@ public class Fordel extends Aktoer {
      * Sender inn søkand og returnerer saksinformasjon
      */
     public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception {
-        String xml = ForeldrepengesoknadBuilder.tilXML(søknad);
+        String xml = null;
+        if(null != søknad) {
+            xml = ForeldrepengesoknadBuilder.tilXML(søknad);
+        }
 
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
         if (saksnummer != null && saksnummer.longValue() != 0L) {
