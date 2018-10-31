@@ -128,7 +128,7 @@ public class Oauth2RestService {
             "        <table>\r\n" +
             "            <tbody>\r\n" +
             usernames.stream().map(
-                username -> "<tr><a href=\"" + location.toString() + "&code=" + username + "\"><h1>" + username + "</h1></a></tr>\n")
+                username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
                 .collect(Collectors.joining("\n"))
             +
             "            </tbody>\n" +
