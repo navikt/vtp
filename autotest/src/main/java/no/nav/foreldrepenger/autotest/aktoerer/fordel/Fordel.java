@@ -86,8 +86,8 @@ public class Fordel extends Aktoer {
     /*
      * Sender inn søknad og returnerer saksinformasjon
      */
-    public long sendInnPapirsøkand(Soeknad søknad, String fnr) {
-        return -1;
+    public long sendInnPapirsøkand(TestscenarioDto testscenario, DokumenttypeId dokumenttypeId) throws  Exception {
+        return sendInnSøknad(null, testscenario, dokumenttypeId);
     }
 
 

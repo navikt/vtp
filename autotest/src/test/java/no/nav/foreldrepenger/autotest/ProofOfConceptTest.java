@@ -28,7 +28,7 @@ public class ProofOfConceptTest extends FpsakTestBase {
         TestscenarioDto testscenario = opprettScenario("50");
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
 
-        long saksnummer = fordel.sendInnSøknad(null, testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        long saksnummer = fordel.sendInnPapirsøkand(testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
