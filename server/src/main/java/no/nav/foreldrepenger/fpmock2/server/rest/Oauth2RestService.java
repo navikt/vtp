@@ -168,7 +168,7 @@ public class Oauth2RestService {
         Hashtable<String, String> props = new Hashtable<>();
         props.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         props.put(javax.naming.Context.SECURITY_AUTHENTICATION, "none");
-        props.put(javax.naming.Context.PROVIDER_URL, "ldaps://localhost:636/");
+        props.put(javax.naming.Context.PROVIDER_URL, "ldaps://localhost:8636/");
 
         InitialLdapContext ctx = new InitialLdapContext(props, null);
         LdapName base = new LdapName("ou=NAV,ou=BusinessUnits,dc=test,dc=local");
