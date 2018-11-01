@@ -35,7 +35,7 @@ public class OppretteRevurdering extends FpsakTestBase{
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         
         //Opprette Revurdering
-        saksbehandler.opprettBehandlingRevurdering();
+        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-FEFAKTA"));
         saksbehandler.velgBehandling(saksbehandler.behandlinger.get(1));
         
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus(), "Under behandling");

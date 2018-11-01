@@ -295,17 +295,19 @@ public class Saksbehandler extends Aktoer{
     /*
      * Opretter behandling på nåværende fagsak
      */
-    public void opprettBehandling(Kode behandlingstype) throws Exception {
-        opprettBehandling(behandlingstype, valgtFagsak);
+    public void opprettBehandling(Kode behandlingstype, Kode årsak) throws Exception {
+        opprettBehandling(behandlingstype, årsak, valgtFagsak);
         hentFagsak(valgtFagsak.saksnummer);
     }
 
-    public void opprettBehandlingRevurdering() throws Exception {
-        opprettBehandling(kodeverk.BehandlingType.getKode("Revurdering"));
+    public void opprettBehandlingRevurdering(Kode årsak) throws Exception {
+        opprettBehandling(kodeverk.BehandlingType.getKode("Revurdering"), årsak);
     }
-    public void opprettBehandlingKlage() throws Exception {
-        opprettBehandling(kodeverk.BehandlingType.getKode("Klage"));
+    
+    public void oprettBehandlingInnsyn(Kode årsak) throws Exception {
+        opprettBehandling(kodeverk.BehandlingType.getKode("BT-004"), årsak);
     }
+    
 
     /*
      * Brev
@@ -412,8 +414,8 @@ public class Saksbehandler extends Aktoer{
     /*
      * Opretter behandling på gitt fagsak
      */
-    private void opprettBehandling(Kode behandlingstype, Fagsak fagsak) throws Exception {
-        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype));
+    private void opprettBehandling(Kode behandlingstype, Kode årsak, Fagsak fagsak) throws Exception {
+        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype.kode, årsak.kode));
         velgFagsak(valgtFagsak); //Henter fagsaken på ny
     }
 }

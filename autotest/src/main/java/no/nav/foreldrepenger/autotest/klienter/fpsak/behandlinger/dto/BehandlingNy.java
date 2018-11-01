@@ -7,13 +7,14 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BehandlingNy {
     protected Long saksnummer;
-    protected Kode behandlingType;
-    protected Kode behandlingArsakType = null;
+    protected String behandlingType;
+    protected String behandlingArsakType = null;
     protected Boolean nyBehandlingEtterKlage = null;
     
-    public BehandlingNy(Long saksnummer, Kode behandlingType) {
+    public BehandlingNy(Long saksnummer, String behandlingType, String behandlingArsakType) {
         super();
         this.saksnummer = saksnummer;
         this.behandlingType = behandlingType;
+        this.behandlingArsakType = behandlingArsakType;
     }
 }

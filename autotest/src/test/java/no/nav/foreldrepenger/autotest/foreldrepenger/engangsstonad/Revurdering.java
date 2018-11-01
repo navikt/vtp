@@ -55,8 +55,8 @@ public class Revurdering extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        saksbehandler.ventTilBehandlingsstatus("AVSLUTTET");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
         
-        saksbehandler.opprettBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-004")); //revurdering
+        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-FEFAKTA"));
     }
 }

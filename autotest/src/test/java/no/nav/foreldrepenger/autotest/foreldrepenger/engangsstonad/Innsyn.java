@@ -29,7 +29,7 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
-        saksbehandler.opprettBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
+        saksbehandler.oprettBehandlingInnsyn(null);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
@@ -59,7 +59,7 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
-        saksbehandler.opprettBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
+        saksbehandler.oprettBehandlingInnsyn(null);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
@@ -88,7 +88,7 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
-        saksbehandler.opprettBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
+        saksbehandler.oprettBehandlingInnsyn(null);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
