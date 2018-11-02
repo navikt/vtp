@@ -55,7 +55,7 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
     public static class AksjonspunktGodkjenningDto{
         protected String aksjonspunktKode;
         protected List<String> arsaker = new ArrayList<>();
-        protected String begrunnelse = "";
+        protected String begrunnelse = null;
         protected boolean godkjent = false;
         
         public AksjonspunktGodkjenningDto(Aksjonspunkt aksjonspunkt) {

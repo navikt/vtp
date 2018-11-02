@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 import org.reflections.Reflections;
 
@@ -32,7 +33,10 @@ public abstract class AksjonspunktBekreftelse {
             
             BekreftelseKode annotation = klasse.getDeclaredAnnotation(BekreftelseKode.class);
             
-            if(annotation == null) {
+            if(Modifier.isAbstract(klasse.getModifiers())) {
+                continue; //trenger trenger ikke skjekke klasser som er abstrakte
+            }
+            else if(annotation == null) {
                 System.out.println("Aksjonspunkt mangler annotasjon" + klasse.getName());
             }
             else if(annotation.kode().equals(kode)) {

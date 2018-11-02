@@ -128,7 +128,7 @@ public class Saksbehandler extends Aktoer{
         behandlinger = behandlingerKlient.alle(fagsak.saksnummer);
         valgtBehandling = null;
         
-        if(behandlinger.size() > 0) {
+        if(behandlinger.size() == 1) { //ellers må en velge explisit
             velgBehandling(behandlinger.get(0));
         }
     }

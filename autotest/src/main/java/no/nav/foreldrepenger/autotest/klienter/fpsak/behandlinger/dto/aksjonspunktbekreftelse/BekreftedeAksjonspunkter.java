@@ -8,19 +8,21 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
 public class BekreftedeAksjonspunkter {
     
-    protected BehandlingResourceRequest behandlingId;
+    protected int behandlingId;
+    protected String saksnummer;
     protected int behandlingVersjon;
     protected List<AksjonspunktBekreftelse> bekreftedeAksjonspunktDtoer;
     
     
     public BekreftedeAksjonspunkter(Fagsak fagsak, Behandling behandling, List<AksjonspunktBekreftelse> aksjonspunktBekreftelser) {
-        this(new BehandlingResourceRequest(behandling.id, fagsak.saksnummer), behandling.versjon, aksjonspunktBekreftelser);
+        this(behandling.id, "" + fagsak.saksnummer, behandling.versjon, aksjonspunktBekreftelser);
     }
     
-    public BekreftedeAksjonspunkter(BehandlingResourceRequest behandlingId, int behandlingVersjon,
+    public BekreftedeAksjonspunkter(int behandlingId, String saksnummer, int behandlingVersjon,
             List<AksjonspunktBekreftelse> bekreftedeAksjonspunktDtoer) {
         super();
         this.behandlingId = behandlingId;
+        this.saksnummer = saksnummer;
         this.behandlingVersjon = behandlingVersjon;
         this.bekreftedeAksjonspunktDtoer = bekreftedeAksjonspunktDtoer;
     }
