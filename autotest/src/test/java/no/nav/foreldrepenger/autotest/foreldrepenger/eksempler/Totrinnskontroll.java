@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Tag;
 
 import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
-import no.nav.foreldrepenger.autotest.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTerminBekreftelse;

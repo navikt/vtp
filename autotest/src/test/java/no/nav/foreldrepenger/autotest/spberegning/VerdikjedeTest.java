@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -32,7 +33,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
     public void grunnleggendeSykepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         
-        saksbehandler.erLoggetInnMedRolle("Saksbehandler");
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(testscenario, "123123");
 
         verifiser(saksbehandler.beregning.getTema().kode.equals("SYK"));

@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 import org.junit.jupiter.api.Tag;
 
 import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
-import no.nav.foreldrepenger.autotest.FpsakTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;

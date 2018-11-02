@@ -36,7 +36,7 @@ public class Saksbehandler extends Aktoer{
 	}
     
     @Override
-    public void erLoggetInnMedRolle(String rolle) throws IOException {
+    public void erLoggetInnMedRolle(Rolle rolle) throws IOException {
         super.erLoggetInnMedRolle(rolle);
         kodeverkKlient.kodeverk();
         throw new RuntimeException("erLoggetInnMedRolle ikke ferdig implementert");
