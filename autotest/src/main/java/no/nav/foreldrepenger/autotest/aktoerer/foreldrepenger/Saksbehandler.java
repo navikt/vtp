@@ -415,7 +415,7 @@ public class Saksbehandler extends Aktoer{
      * Opretter behandling på gitt fagsak
      */
     private void opprettBehandling(Kode behandlingstype, Kode årsak, Fagsak fagsak) throws Exception {
-        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype.kode, årsak.kode));
+        behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype.kode, årsak == null ? null : årsak.kode));
         velgFagsak(valgtFagsak); //Henter fagsaken på ny
     }
 }
