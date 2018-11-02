@@ -305,7 +305,7 @@ public class Saksbehandler extends Aktoer{
     }
     
     public void oprettBehandlingInnsyn(Kode årsak) throws Exception {
-        opprettBehandling(kodeverk.BehandlingType.getKode("BT-004"), årsak);
+        opprettBehandling(kodeverk.BehandlingType.getKode("BT-006"), årsak);
     }
     
 
