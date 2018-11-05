@@ -5,13 +5,11 @@ import java.time.LocalDate;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
-@BekreftelseKode(kode="5035")
 public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
 
     private static final String VURDERING_STADFEST = "STADFESTE_YTELSESVEDTAK";
     private static final String VURDERING_AVVIS = "AVVIS_KLAGE";
     private static final String VURDERING_MEDHOLD = "MEDHOLD_I_KLAGE";
-    private static final String VURDERING_OPPHEVE = "OPPHEVE_YTELSESVEDTAK";
     
     protected String klageVurdering;
     protected String klageMedholdArsak;
@@ -20,28 +18,28 @@ public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
     
     public VurderingAvKlageBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
-        vedtaksdatoPaklagdBehandling = LocalDate.now();
+        vedtaksdatoPaklagdBehandling = LocalDate.now(); //TODO: MV: endre naar formkrav er lagt inn?
     }
 
-    public void bekreftMedhold(String årsak) {
+    public VurderingAvKlageBekreftelse bekreftMedhold(String årsak) {
         klageVurdering  = VURDERING_MEDHOLD;
         klageMedholdArsak = årsak;
+        return this;
     }
-    
-    public void bekreftAvvist(String årsak) {
+
+    public VurderingAvKlageBekreftelse bekreftAvvist(String årsak) {
         klageVurdering  = VURDERING_AVVIS;
-        klageMedholdArsak = årsak;
+        klageAvvistArsak = årsak;
+        return this;
     }
-    
-    public void bekreftStadfestet() {
+
+    public VurderingAvKlageBekreftelse bekreftStadfestet() {
         klageVurdering  = VURDERING_STADFEST;
+        return this;
     }
-    
-    public void bekreftOpphevet() {
-        klageVurdering  = VURDERING_OPPHEVE;
-    }
-    
-    public void setVedtaksdatoPaklagdBehandling(LocalDate dato) {
+
+    public VurderingAvKlageBekreftelse setVedtaksdatoPaklagdBehandling(LocalDate dato) {
         vedtaksdatoPaklagdBehandling = dato;
+        return this;
     }
 }

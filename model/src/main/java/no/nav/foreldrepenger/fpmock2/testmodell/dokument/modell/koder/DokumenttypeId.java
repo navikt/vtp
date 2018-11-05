@@ -30,6 +30,7 @@ public class DokumenttypeId {
         koder.add("I000007");
         koder.add("I000006");
         koder.add("I000048");
+        koder.add("I000060");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -50,6 +51,7 @@ public class DokumenttypeId {
     public static DokumenttypeId INNTEKTSKJEMA_SN_FL = new DokumenttypeId("I000007");
     public static DokumenttypeId UTSETTELSE_ELLER_GRADERTUTTAK_SOKNAD = new DokumenttypeId("I000006");
     public static DokumenttypeId BREV = new DokumenttypeId("I000048");
+    public static DokumenttypeId ANNET = new DokumenttypeId("I000060");
 
     public DokumenttypeId(String kode){
         this.kode = kode == null ? this.kode : kode;
