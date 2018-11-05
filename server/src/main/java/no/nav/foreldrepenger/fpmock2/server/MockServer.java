@@ -20,6 +20,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import no.nav.foreldrepenger.fpmock2.ldap.LdapServer;
@@ -34,8 +36,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.modig.testcertificates.TestCertificates;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 public class MockServer {
 
@@ -91,16 +92,17 @@ public class MockServer {
 
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
         DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
+        GsakRepo gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
-        addRestServices(handler, testScenarioRepository, templateRepository);
+        addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo);
 
         addWebResources(handler);
 
         startServer();
 
         // kjør soap oppsett etter jetty har startet
-        addSoapServices(testScenarioRepository, templateRepository, journalRepository);
+        addSoapServices(testScenarioRepository, templateRepository, journalRepository, gsakRepo);
     }
 
     private void startLdapServer() {
@@ -116,13 +118,15 @@ public class MockServer {
 
     protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository,
                                    @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository,
-                                   JournalRepository journalRepository) {
-        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository);
+                                   JournalRepository journalRepository,
+                                   GsakRepo gsakRepo) {
+        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository, gsakRepo);
     }
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
-                                   DelegatingTestscenarioTemplateRepository templateRepository) {
-        new RestConfig(handler, templateRepository).setup(testScenarioRepository);
+                                   DelegatingTestscenarioTemplateRepository templateRepository,
+                                   GsakRepo gsakRepo) {
+        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {

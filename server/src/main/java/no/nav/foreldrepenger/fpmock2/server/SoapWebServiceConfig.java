@@ -41,8 +41,7 @@ public class SoapWebServiceConfig {
         this.jettyHttpServer = jettyHttpServer;
     }
 
-    public void setup(TestscenarioBuilderRepository repo, JournalRepository journalRepository) {
-        GsakRepo gsakRepo = new GsakRepo();
+    public void setup(TestscenarioBuilderRepository repo, JournalRepository journalRepository, GsakRepo gsakRepo) {
 
         publishWebService(new SecurityTokenServiceMockImpl(), "/SecurityTokenServiceProvider/");
         

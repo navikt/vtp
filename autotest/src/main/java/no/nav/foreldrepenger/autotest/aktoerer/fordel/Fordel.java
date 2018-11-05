@@ -2,7 +2,9 @@ package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -14,6 +16,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMotta
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
 import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlient;
+import no.nav.foreldrepenger.autotest.klienter.vtp.sak.SakKlient;
+import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakRequestDTO;
+import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakResponseDTO;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -33,6 +38,7 @@ public class Fordel extends Aktoer {
      */
     FordelKlient fordelKlient;
     BehandlingerKlient behandlingerKlient;
+    SakKlient sakKlient;
 
     //Vtp Klienter
     JournalforingKlient journalpostKlient;
@@ -41,6 +47,7 @@ public class Fordel extends Aktoer {
         fordelKlient = new FordelKlient(session);
         behandlingerKlient = new BehandlingerKlient(session);
         journalpostKlient = new JournalforingKlient(new HttpSession());
+        sakKlient = new SakKlient(session);
     }
 
 
@@ -90,6 +97,29 @@ public class Fordel extends Aktoer {
         return sendInnSøknad(null, testscenario, dokumenttypeId);
     }
 
+    /*
+     * Opprett sak
+     */
+
+    public String opprettSak(TestscenarioDto testscenarioDto) throws IOException{
+
+        List<String> aktører = new ArrayList<>();
+        aktører.add(testscenarioDto.getPersonopplysninger().getSøkerAktørIdent());
+        if(testscenarioDto.getPersonopplysninger().getAnnenpartIdent() != null){
+            aktører.add(testscenarioDto.getPersonopplysninger().getAnnenpartIdent());
+        }
+
+        OpprettSakRequestDTO request = new OpprettSakRequestDTO();
+        request.setFagområde("SYK");
+        request.setFagsystem("FS22");
+        request.setSakstype("MFS");
+        request.setLokalIdent(aktører);
+
+        OpprettSakResponseDTO responseDTO = sakKlient.opprettSak(request);
+        return responseDTO.getSaksnummer();
+
+    }
+
 
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
@@ -107,7 +137,18 @@ public class Fordel extends Aktoer {
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, dokumentKategori, aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         return sakId;
+    }
 
+    public String journalførInnektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
+        String xml = inntektsmelding.createInntektesmeldingXML();
+        String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
+        String behandlingstemaOffisiellkode = "ab0047";
+        String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
+        String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
+        journalpostModell.setSakId(saksnummer.toString());
+        String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
+        return journalpostId;
     }
 
     public long sendInnKlage(String xmlstring, TestscenarioDto scenario, Long saksnummer) throws IOException {

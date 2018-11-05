@@ -14,6 +14,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 public class RestConfig {
 
@@ -25,7 +26,7 @@ public class RestConfig {
         this.templateRepository = templateRepository;
     }
 
-    public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository) {
+    public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository, GsakRepo gsakRepo) {
         // Setup RESTEasy's HttpServletDispatcher at "/api/*".
         final ServletContextHandler context = new ServletContextHandler(handler, "/");
         
@@ -39,6 +40,7 @@ public class RestConfig {
                 Map<Class, Object> defaultContextObjects = deployment.getDispatcher().getDefaultContextObjects();
                 defaultContextObjects.put(TestscenarioRepository.class, testScenarioRepository);
                 defaultContextObjects.put(TestscenarioTemplateRepository.class, templateRepository);
+                defaultContextObjects.put(GsakRepo.class,gsakRepo);
             }
         });
 

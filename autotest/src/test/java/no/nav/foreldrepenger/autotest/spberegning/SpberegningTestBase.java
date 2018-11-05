@@ -12,6 +12,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 
 import no.nav.foreldrepenger.autotest.TestBase;
+import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.spberegning.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.vtp.testscenario.TestscenarioKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
@@ -28,6 +29,7 @@ public class SpberegningTestBase extends TestBase{
      * Aktører
      */
     protected Saksbehandler saksbehandler;
+    protected Fordel fordel;
     /*
      * VTP
      */
@@ -37,6 +39,7 @@ public class SpberegningTestBase extends TestBase{
     @BeforeEach
     void setUp() throws Exception{
         saksbehandler = new Saksbehandler();
+        fordel = new Fordel();
 
         testscenarioKlient = new TestscenarioKlient(new HttpSession());
         inntektsmeldingErketype = new InntektsmeldingErketype();
@@ -44,6 +47,10 @@ public class SpberegningTestBase extends TestBase{
 
     protected TestscenarioDto opprettScenario(String id) throws IOException {
         return testscenarioKlient.opprettTestscenario(id);
+    }
+
+    protected String opprettSak(TestscenarioDto testscenarioDto) throws IOException{
+        return fordel.opprettSak(testscenarioDto);
     }
 
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
