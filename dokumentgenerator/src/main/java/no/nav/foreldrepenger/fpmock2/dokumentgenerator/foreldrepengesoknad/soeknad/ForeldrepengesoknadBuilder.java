@@ -1,51 +1,75 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad;
 
-import no.nav.foreldrepenger.søknad.SøknadParser;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Bruker;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Vedlegg;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Ytelse;
-import no.nav.vedtak.felles.xml.soeknad.v1.ObjectFactory;
-import no.nav.vedtak.felles.xml.soeknad.v1.OmYtelse;
-import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
+import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.JaxbHelper;
+import no.nav.foreldrepenger.søknad.v1.SøknadConstants;
+import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.Endringssoeknad;
+import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v1.Engangsstønad;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Bruker;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Vedlegg;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Ytelse;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
+import no.nav.vedtak.felles.xml.soeknad.v1.ObjectFactory;
+import no.nav.vedtak.felles.xml.soeknad.v1.OmYtelse;
+import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
 
 public class ForeldrepengesoknadBuilder implements MottattDatoStep<ForeldrepengesoknadBuilder>,
-                                                   BegrunnelseForSenSoeknadStep<ForeldrepengesoknadBuilder>,
-                                                   TilleggsopplysningerStep<ForeldrepengesoknadBuilder>,
-                                                   OmYtelseStep<ForeldrepengesoknadBuilder>,
-                                                   SoekerStep<ForeldrepengesoknadBuilder>,
-                                                   AndreVedleggStep<ForeldrepengesoknadBuilder>,
-                                                   PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
-                                                   BuildStep {
+        BegrunnelseForSenSoeknadStep<ForeldrepengesoknadBuilder>,
+        TilleggsopplysningerStep<ForeldrepengesoknadBuilder>,
+        OmYtelseStep<ForeldrepengesoknadBuilder>,
+        SoekerStep<ForeldrepengesoknadBuilder>,
+        AndreVedleggStep<ForeldrepengesoknadBuilder>,
+        PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
+        BuildStep {
 
     private static final Logger log = LoggerFactory.getLogger(ForeldrepengesoknadBuilder.class);
     private XMLGregorianCalendar mottattDato;
     private String begrunnelseForSenSoeknad;
     private String tilleggsopplysninger;
-    private Ytelse omYtelse;
+    private JAXBElement<? extends Ytelse> omYtelse;
     private Bruker soeker;
     private List<Vedlegg> andreVedlegg;
     private List<Vedlegg> paakrevdeVedlegg;
 
 
+    private ForeldrepengesoknadBuilder() {
+    }
+
     public static ForeldrepengesoknadBuilder startBuilding() {
         return new ForeldrepengesoknadBuilder();
     }
 
-    private ForeldrepengesoknadBuilder() {
-    }
-
-
     public static ForeldrepengesoknadBuilder soeknad() {
 
         return new ForeldrepengesoknadBuilder();
+    }
+
+    /**
+     * Konverterer {@link Soeknad} til XML, eller kaster en {@link RuntimeException} ved feil
+     */
+    public static String tilXML(Soeknad soeknad) {
+        String xml = null;
+        try {
+            JAXBElement<Soeknad> soeknadsskjemaForeldrepengerJAXBElement = (new ObjectFactory().createSoeknad(soeknad));
+            xml = JaxbHelper.marshalAndValidateJaxb(SøknadConstants.JAXB_CLASS,
+                    soeknadsskjemaForeldrepengerJAXBElement,
+                    SøknadConstants.XSD_LOCATION,
+                    SøknadConstants.ADDITIONAL_XSD_LOCATION,
+                    SøknadConstants.ADDITIONAL_CLASSES);
+        } catch (JAXBException | SAXException e) {
+            e.printStackTrace();
+        }
+        return xml;
+
     }
 
     @Override
@@ -68,19 +92,19 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
 
     @Override
     public ForeldrepengesoknadBuilder withForeldrepengerYtelse(Ytelse omYtelse) {
-        this.omYtelse = omYtelse;
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.ObjectFactory().createForeldrepenger((Foreldrepenger) omYtelse);
         return this;
     }
 
     @Override
     public ForeldrepengesoknadBuilder withEndringssoeknadYtelse(Ytelse omYtelse) {
-        this.omYtelse = omYtelse;
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.ObjectFactory().createEndringssoeknad((Endringssoeknad) omYtelse);
         return this;
     }
 
     @Override
     public ForeldrepengesoknadBuilder withEngangsstoenadYtelse(Ytelse omYtelse) {
-        this.omYtelse = omYtelse;
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v1.ObjectFactory().createEngangsstønad((Engangsstønad) omYtelse);
         return this;
     }
 
@@ -113,9 +137,8 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
         omYtelse.getAny().add(this.omYtelse);
         soeknad.setOmYtelse(omYtelse);
 
-        //soeknad.setOmYtelse(this.omYtelse);
         soeknad.setSoeker(this.soeker);
-        if(null != this.paakrevdeVedlegg){
+        if (null != this.paakrevdeVedlegg) {
             this.paakrevdeVedlegg.forEach(pkv -> {
                 soeknad.getPaakrevdeVedlegg().add(pkv);
             });
@@ -129,22 +152,5 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
 
 
         return soeknad;
-    }
-
-    /**
-     * Konverterer {@link Soeknad} til XML, eller kaster en {@link RuntimeException} ved feil
-     */
-    public static String tilXML(Soeknad soeknad) {
-        String xml = null;
-        try {
-            JAXBElement<Soeknad> soeknadsskjemaForeldrepengerJAXBElement = (new ObjectFactory().createSoeknad(soeknad));
-            xml = SøknadParser.marshall(soeknadsskjemaForeldrepengerJAXBElement);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        return xml;
-
     }
 }
