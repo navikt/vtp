@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OpprettSakRequestDTO {
 
-    @JsonProperty("localIdent")
+    @JsonProperty("lokalIdent")
     private List<String> lokalIdent;
 
     @JsonProperty("fagområde")

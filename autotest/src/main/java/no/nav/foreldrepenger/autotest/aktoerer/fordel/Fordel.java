@@ -104,16 +104,13 @@ public class Fordel extends Aktoer {
     public String opprettSak(TestscenarioDto testscenarioDto) throws IOException{
 
         List<String> aktører = new ArrayList<>();
-        aktører.add(testscenarioDto.getPersonopplysninger().getSøkerAktørIdent());
+        aktører.add(testscenarioDto.getPersonopplysninger().getSøkerIdent());
         if(testscenarioDto.getPersonopplysninger().getAnnenpartIdent() != null){
             aktører.add(testscenarioDto.getPersonopplysninger().getAnnenpartIdent());
         }
 
-        OpprettSakRequestDTO request = new OpprettSakRequestDTO();
-        request.setFagområde("SYK");
-        request.setFagsystem("FS22");
-        request.setSakstype("MFS");
-        request.setLokalIdent(aktører);
+        OpprettSakRequestDTO request = new OpprettSakRequestDTO(aktører, "SYK", "FS22", "MFS");
+
 
         OpprettSakResponseDTO responseDTO = sakKlient.opprettSak(request);
         return responseDTO.getSaksnummer();
@@ -142,9 +139,6 @@ public class Fordel extends Aktoer {
     public String journalførInnektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
         String xml = inntektsmelding.createInntektesmeldingXML();
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
-        String behandlingstemaOffisiellkode = "ab0047";
-        String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
-        String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
         journalpostModell.setSakId(saksnummer.toString());
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();

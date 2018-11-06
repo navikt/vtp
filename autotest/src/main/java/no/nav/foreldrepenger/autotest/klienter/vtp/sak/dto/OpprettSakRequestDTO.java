@@ -4,40 +4,15 @@ import java.util.List;
 
 public class OpprettSakRequestDTO {
 
-    private List<String> lokalIdent;
-    private String fagområde;
-    private String fagsystem;
-    private String sakstype;
+    protected List<String> lokalIdent;
+    protected String fagområde;
+    protected String fagsystem;
+    protected String sakstype;
 
-    public List<String> getLokalIdent() {
-        return lokalIdent;
-    }
-
-    public void setLokalIdent(List<String> lokalIdent) {
+    public OpprettSakRequestDTO(List<String> lokalIdent, String fagområde, String fagsystem, String sakstype){
         this.lokalIdent = lokalIdent;
-    }
-
-    public String getFagområde() {
-        return fagområde;
-    }
-
-    public void setFagområde(String fagområde) {
         this.fagområde = fagområde;
-    }
-
-    public String getFagsystem() {
-        return fagsystem;
-    }
-
-    public void setFagsystem(String fagsystem) {
         this.fagsystem = fagsystem;
-    }
-
-    public String getSakstype() {
-        return sakstype;
-    }
-
-    public void setSakstype(String sakstype) {
         this.sakstype = sakstype;
     }
 }
