@@ -24,7 +24,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String saksnummer = fordel.opprettSak(testscenario);
+        String saksnummer = fordel.opprettSak(testscenario,"SYK");
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder,testscenario,Long.parseLong(saksnummer));
 
 

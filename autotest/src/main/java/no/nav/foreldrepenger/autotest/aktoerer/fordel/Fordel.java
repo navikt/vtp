@@ -101,7 +101,7 @@ public class Fordel extends Aktoer {
      * Opprett sak
      */
 
-    public String opprettSak(TestscenarioDto testscenarioDto) throws IOException{
+    public String opprettSak(TestscenarioDto testscenarioDto, String fagområde) throws IOException{
 
         List<String> aktører = new ArrayList<>();
         aktører.add(testscenarioDto.getPersonopplysninger().getSøkerIdent());
@@ -109,7 +109,7 @@ public class Fordel extends Aktoer {
             aktører.add(testscenarioDto.getPersonopplysninger().getAnnenpartIdent());
         }
 
-        OpprettSakRequestDTO request = new OpprettSakRequestDTO(aktører, "SYK", "FS22", "MFS");
+        OpprettSakRequestDTO request = new OpprettSakRequestDTO(aktører, fagområde, "FS22", "MFS");
 
 
         OpprettSakResponseDTO responseDTO = sakKlient.opprettSak(request);
