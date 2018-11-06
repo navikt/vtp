@@ -49,8 +49,8 @@ public class SpberegningTestBase extends TestBase{
         return testscenarioKlient.opprettTestscenario(id);
     }
 
-    protected String opprettSak(TestscenarioDto testscenarioDto) throws IOException{
-        return fordel.opprettSak(testscenarioDto);
+    protected String opprettSak(TestscenarioDto testscenarioDto, String fagområde) throws IOException{
+        return fordel.opprettSak(testscenarioDto, fagområde);
     }
 
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
