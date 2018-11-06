@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.SøkerModell;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
@@ -24,7 +23,7 @@ import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak;
 @Api(tags = "Gsak repository")
 @Path("/api/sak")
 public class SakRestTjeneste {
-    private static final Logger LOG = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SakRestTjeneste.class);
 
 
     @Context
