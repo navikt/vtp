@@ -11,7 +11,7 @@ import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 public class SakKlient extends VTPKlient {
 
     private static final String SAK_URL = "/sak";
-    private static final String OPPRETT_SAK_URL = SAK_URL + "/sak";
+    private static final String OPPRETT_SAK_URL = SAK_URL + "";
 
     public SakKlient(HttpSession session) {
         super(session);

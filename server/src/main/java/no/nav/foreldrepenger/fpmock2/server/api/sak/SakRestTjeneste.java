@@ -30,7 +30,6 @@ public class SakRestTjeneste {
     private GsakRepo gsakRepo;
 
     @POST
-    @Path("/sak")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Lager nytt saksnummer fra sekvens"), response = OpprettSakResponseDTO.class)
     public Response foreldrepengesoknadErketype(OpprettSakRequestDTO requestDTO){
