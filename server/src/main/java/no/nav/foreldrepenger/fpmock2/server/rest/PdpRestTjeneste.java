@@ -61,11 +61,12 @@ public class PdpRestTjeneste {
 
         if (antallPermits > 1) {
             int genPermits = antallPermits;
+            String permitResult = permit;
             while (genPermits-- > 1) {
-                permit += ", " + permit;
+                permitResult += ", " + permit;
             }
 
-            return " { \"Response\" : [" + permit + "] }";
+            return " { \"Response\" : [" + permitResult + "] }";
         } else {
             return " { \"Response\" : " + permit + "}";
         }

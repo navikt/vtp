@@ -15,6 +15,7 @@ public class OpptjeningErketyper {
     public static Opptjening medFrilansOpptjening(){
         Opptjening opptjening = new Opptjening();
         Frilans frilans = new Frilans();
+
         frilans.setHarInntektFraFosterhjem(false);
         frilans.setErNyoppstartet(false);
         frilans.setNaerRelasjon(false);
@@ -27,7 +28,9 @@ public class OpptjeningErketyper {
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
+        frilans.getPeriode().add(periode);
         frilansoppdrag.setPeriode(periode);
+
         frilans.getFrilansoppdrag().add(frilansoppdrag);
 
         opptjening.setFrilans(frilans);
