@@ -31,6 +31,25 @@ public class DokumenttypeId {
         koder.add("I000006");
         koder.add("I000048");
         koder.add("I000060");
+        koder.add("000049");
+        koder.add("000048");
+        koder.add("000050");
+        koder.add("000051");
+        koder.add("000052");
+        koder.add("000058");
+        koder.add("000056");
+        koder.add("000056");
+        koder.add("000054");
+        koder.add("000055");
+        koder.add("000059");
+        koder.add("000060");
+        koder.add("000071");
+        koder.add("000061");
+        koder.add("000085");
+        koder.add("000091");
+        koder.add("000080");
+        koder.add("000096");
+        koder.add("000056");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -52,6 +71,25 @@ public class DokumenttypeId {
     public static DokumenttypeId UTSETTELSE_ELLER_GRADERTUTTAK_SOKNAD = new DokumenttypeId("I000006");
     public static DokumenttypeId BREV = new DokumenttypeId("I000048");
     public static DokumenttypeId ANNET = new DokumenttypeId("I000060");
+    public static DokumenttypeId FPPROD_INNHENT_DOKUMENTASJON = new DokumenttypeId("000049");
+    public static DokumenttypeId FPPROD_POSITIVT_VEDTAKSBREV = new DokumenttypeId("000048");
+    public static DokumenttypeId FPPROD_BEHANDLING_AVBRUTT = new DokumenttypeId("000050");
+    public static DokumenttypeId FPPROD_AVSLAGSBREV = new DokumenttypeId("000051");
+    public static DokumenttypeId FPPROD_UENDRET_UTFALL = new DokumenttypeId("000052");
+    public static DokumenttypeId FPPROD_VARSEL_OM_REVURDERING = new DokumenttypeId("000058");
+    public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID = new DokumenttypeId("000056");
+    public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID_MEDLEMSKAP = new DokumenttypeId("000056");
+    public static DokumenttypeId FPPROD_VEDTAK_OM_AVVIST_KLAGE = new DokumenttypeId("000054");
+    public static DokumenttypeId FPPROD_VEDTAK_OM_STADFESTELSE = new DokumenttypeId("000055");
+    public static DokumenttypeId FPPROD_VEDTAK_OPPHEVET__SENDT_TIL_NY_BEHANDLING = new DokumenttypeId("000059");
+    public static DokumenttypeId FPPROD_OVERFØRING_TIL_NAV_KLAGEINSTANS = new DokumenttypeId("000060");
+    public static DokumenttypeId FPPROD_SVAR_PÅ_INNSYNSKRAV = new DokumenttypeId("000071");
+    public static DokumenttypeId FPPROD_INNVILGELSESBREV_FORELDREPENGER = new DokumenttypeId("000061");
+    public static DokumenttypeId FPPROD_OPPHØR_BREV = new DokumenttypeId("000085");
+    public static DokumenttypeId FPPROD_IKKE_MOTTATT_SØKNAD = new DokumenttypeId("000091");
+    public static DokumenttypeId FPPROD_AVSLAGSBREV_FORELDREPENGER = new DokumenttypeId("000080");
+    public static DokumenttypeId FPPROD_FRITEKSTBREV = new DokumenttypeId("000096");
+    public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID__TIDLIG_SØKNAD = new DokumenttypeId("000056");
 
     public DokumenttypeId(String kode){
         this.kode = kode == null ? this.kode : kode;
