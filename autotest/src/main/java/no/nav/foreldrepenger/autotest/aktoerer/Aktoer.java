@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.aktoerer;
 
 import java.io.IOException;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.klienter.vtp.openam.OpenamKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.HttpsSession;
@@ -18,6 +19,7 @@ public class Aktoer {
         erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
     }
 
+    @Step("Logger inn med rolle: {rolle}")
     public void erLoggetInnMedRolle(Rolle rolle) throws IOException {
         OpenamKlient klient = new OpenamKlient(session);
         klient.logInnMedRolle(rolle.getKode());

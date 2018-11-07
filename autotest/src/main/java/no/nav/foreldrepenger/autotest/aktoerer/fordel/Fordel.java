@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
@@ -93,6 +94,7 @@ public class Fordel extends Aktoer {
     /*
      * Sender inn søknad og returnerer saksinformasjon
      */
+    @Step("Sender inn papirsøknad for bruker {scenario.getPersonopplysninger().getSøkerIdent()}")
     public long sendInnPapirsøkand(TestscenarioDto testscenario, DokumenttypeId dokumenttypeId) throws  Exception {
         return sendInnSøknad(null, testscenario, dokumenttypeId);
     }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.BehandlendeEnhet;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
@@ -26,7 +27,7 @@ public class KodeverkKlient extends FpsakKlient{
         super(session);
     }
     
-    
+    @Step("Henter kodeverk for FPSAK")
     public Kodeverk getKodeverk() throws IOException{
         String url = hentRestRotUrl() + KODEVERK_URL;
         return getOgHentJson(url, Kodeverk.class, StatusRange.STATUS_SUCCESS);

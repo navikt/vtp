@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingHenlegg;
@@ -112,6 +113,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Søker etter fagsaker
      */
+    @Step("Søker etter fagsak {søk}")
     public void søkEtterFagsak(String søk) throws Exception {
         fagsaker = fagsakKlient.søk(søk);
         if(fagsaker.size() == 1) {
@@ -237,6 +239,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Henter aksjonspunkt av gitt kode
      */
+    @Step("Henter aksjonspunkt {kode}")
     public Aksjonspunkt hentAksjonspunkt(String kode) {
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             if(aksjonspunkt.getDefinisjon().kode.equals(kode)) {

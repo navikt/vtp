@@ -106,6 +106,15 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <reportDirectory>target/allure-results</reportDirectory>
+                    <reportVersion>2.7.0</reportVersion>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -130,7 +139,6 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>2.7.0</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -192,6 +200,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -24,6 +25,7 @@ public class ProofOfConceptTest extends FpsakTestBase {
 
 
     @Test
+    @Description("Sender inn papirsøknad og verifiserer at aksjonspunkt registrer papirsøknad har blitt opprettet")
     public void sendInnPapirsøknad() throws Exception{
         TestscenarioDto testscenario = opprettScenario("50");
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);

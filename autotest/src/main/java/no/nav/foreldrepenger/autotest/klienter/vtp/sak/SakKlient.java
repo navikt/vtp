@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.klienter.vtp.sak;
 
 import java.io.IOException;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakRequestDTO;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakResponseDTO;
@@ -17,6 +18,7 @@ public class SakKlient extends VTPKlient {
         super(session);
     }
 
+    @Step("Oppretter sak i VTP")
     public OpprettSakResponseDTO opprettSak(OpprettSakRequestDTO requestDTO) throws IOException {
         String url = hentRestRotUrl() + OPPRETT_SAK_URL;
         return postOgHentJson(url,requestDTO,OpprettSakResponseDTO.class, StatusRange.STATUS_SUCCESS);
