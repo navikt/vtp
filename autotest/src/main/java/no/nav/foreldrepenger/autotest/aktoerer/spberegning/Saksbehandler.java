@@ -39,14 +39,14 @@ public class Saksbehandler extends Aktoer{
     public void erLoggetInnMedRolle(Rolle rolle) throws IOException {
         super.erLoggetInnMedRolle(rolle);
         kodeverkKlient.kodeverk();
-        throw new RuntimeException("erLoggetInnMedRolle ikke ferdig implementert");
+        //throw new RuntimeException("erLoggetInnMedRolle ikke ferdig implementert");
     }
     
     /*
      * Foreslår og henter forslag fra beregning
      */
     public void foreslåBeregning(TestscenarioDto testscenario, String gosysSakId) throws IOException {
-        ForeslaaDto foreslå = new ForeslaaDto("SYK", Integer.parseInt(testscenario.getPersonopplysninger().getSøkerAktørIdent()), gosysSakId);
+        ForeslaaDto foreslå = new ForeslaaDto("SYK", Long.parseLong(testscenario.getPersonopplysninger().getSøkerAktørIdent()), gosysSakId);
         forslag = beregningKlient.foreslaBeregningPost(foreslå);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
     }
