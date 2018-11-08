@@ -101,7 +101,6 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     public ProduserIkkeredigerbartDokumentResponse produserIkkeredigerbartDokument(ProduserIkkeredigerbartDokumentRequest request) throws ProduserIkkeredigerbartDokumentDokumentErRedigerbart, ProduserIkkeredigerbartDokumentDokumentErVedlegg {
         Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
-        dokumenttypeId = "I"+dokumenttypeId;
 
 
         LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());

@@ -29,8 +29,6 @@ public class DokumenttypeId {
         koder.add("I000038");
         koder.add("I000007");
         koder.add("I000006");
-        koder.add("I000048");
-        koder.add("I000060");
         koder.add("000049");
         koder.add("000048");
         koder.add("000050");
@@ -69,8 +67,6 @@ public class DokumenttypeId {
     public static DokumenttypeId DOK_MORS_UTDANNING_ARBEID_SYKDOM = new DokumenttypeId("I000038");
     public static DokumenttypeId INNTEKTSKJEMA_SN_FL = new DokumenttypeId("I000007");
     public static DokumenttypeId UTSETTELSE_ELLER_GRADERTUTTAK_SOKNAD = new DokumenttypeId("I000006");
-    public static DokumenttypeId BREV = new DokumenttypeId("I000048");
-    public static DokumenttypeId ANNET = new DokumenttypeId("I000060");
     public static DokumenttypeId FPPROD_INNHENT_DOKUMENTASJON = new DokumenttypeId("000049");
     public static DokumenttypeId FPPROD_POSITIVT_VEDTAKSBREV = new DokumenttypeId("000048");
     public static DokumenttypeId FPPROD_BEHANDLING_AVBRUTT = new DokumenttypeId("000050");
