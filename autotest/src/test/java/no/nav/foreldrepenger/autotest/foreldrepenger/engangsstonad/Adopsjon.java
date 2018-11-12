@@ -89,36 +89,36 @@ public class Adopsjon extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
-    @Tag("pending")
-    @Test
-    @Ignore
-    public void behandleAdopsjonMorOverstyrt() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("55");
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
-        
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
-        
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-        
-        AvklarFaktaAdopsjonsdokumentasjonBekreftelse bekreftelse1 = saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaAdopsjonsdokumentasjonBekreftelse.class);
-        bekreftelse1.setBarnetsAnkomstTilNorgeDato(LocalDate.now());
-        VurderEktefellesBarnBekreftelse bekreftelse2 = saksbehandler.hentAksjonspunktbekreftelse(VurderEktefellesBarnBekreftelse.class);
-        bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
-        saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
-        overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
-        overstyrer.hentAksjonspunktbekreftelse(OverstyrAdopsjonsvilkaaret.class).avvis(null);
-        overstyrer.overstyr(OverstyrAdopsjonsvilkaaret.class);
-        
-        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
-    }
+//    @Tag("pending")
+//    @Test
+//    @Ignore
+//    public void behandleAdopsjonMorOverstyrt() throws Exception {
+//        TestscenarioDto testscenario = opprettScenario("55");
+//        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+//
+//        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+//        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
+//
+//        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+//        saksbehandler.hentFagsak(saksnummer);
+//        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+//
+//        AvklarFaktaAdopsjonsdokumentasjonBekreftelse bekreftelse1 = saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaAdopsjonsdokumentasjonBekreftelse.class);
+//        bekreftelse1.setBarnetsAnkomstTilNorgeDato(LocalDate.now());
+//        VurderEktefellesBarnBekreftelse bekreftelse2 = saksbehandler.hentAksjonspunktbekreftelse(VurderEktefellesBarnBekreftelse.class);
+//        bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
+//        saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
+//
+//        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
+//            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
+//        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
+//
+//        overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
+//        overstyrer.hentAksjonspunktbekreftelse(OverstyrAdopsjonsvilkaaret.class).avvis(null);
+//        overstyrer.overstyr(OverstyrAdopsjonsvilkaaret.class);
+//
+//        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+//    }
     
     @Test
     public void behandleAdopsjonFarGodkjent() throws Exception {
