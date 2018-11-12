@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -90,6 +91,7 @@ public class Adopsjon extends EngangsstonadTestBase{
     
     @Tag("pending")
     @Test
+    @Ignore
     public void behandleAdopsjonMorOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
