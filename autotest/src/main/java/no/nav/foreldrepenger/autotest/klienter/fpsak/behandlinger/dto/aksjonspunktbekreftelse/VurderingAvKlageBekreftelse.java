@@ -21,6 +21,7 @@ public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
         vedtaksdatoPaklagdBehandling = LocalDate.now(); //TODO: MV: endre naar formkrav er lagt inn?
     }
 
+    // Omgjør vedtaket
     public VurderingAvKlageBekreftelse bekreftMedhold(String årsak) {
         klageVurdering  = VURDERING_MEDHOLD;
         klageMedholdArsak = årsak;
@@ -33,6 +34,7 @@ public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
         return this;
     }
 
+    // oppretthold vedtaket
     public VurderingAvKlageBekreftelse bekreftStadfestet() {
         klageVurdering  = VURDERING_STADFEST;
         return this;

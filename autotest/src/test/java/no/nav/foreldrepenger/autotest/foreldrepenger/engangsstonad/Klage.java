@@ -4,6 +4,7 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerHarGyldigPeriodeBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
@@ -25,7 +26,7 @@ public class Klage extends EngangsstonadTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         opprettForstegangssoknadVedtak(saksnummer);
 
-        // Motta og behandle klage
+        // Motta og behandle klage NFP
         // TODO: MV: Endre test naar formkrav er implementert i FPSAK
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long sakId = fordel.sendInnKlage(null, testscenario, saksnummer);
@@ -45,6 +46,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        klagebehandler.ventTilBehandlingsstatus("AVSLU");
+        verifiserLikhet(klagebehandler.valgtBehandling.status.kode, "AVSLU", "behandlingstatus");
     }
 
     @Test
@@ -127,8 +130,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        //saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        //saksbehandler.ventTilBehandlingsstatus("AVSLU");
+        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
         // vent til brev sendt?
         // vent til behandlingsstatus "Avslu"?
     }
@@ -152,11 +155,18 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
-                .bekreftStadfestet()
+                .bekreftMedhold("NYE_OPPLYSNINGER")
                 .setVedtaksdatoPaklagdBehandling(LocalDate.now())
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET", "Behandlingsresultat");
+        klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD", "Behandlingsresultat");
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(sakId);
+        beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
+
         //
 
     }
