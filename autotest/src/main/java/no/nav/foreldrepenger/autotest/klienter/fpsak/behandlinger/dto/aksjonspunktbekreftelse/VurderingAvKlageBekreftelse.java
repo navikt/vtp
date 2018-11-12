@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
-public class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
+public abstract class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
 
     private static final String VURDERING_STADFEST = "STADFESTE_YTELSESVEDTAK";
     private static final String VURDERING_AVVIS = "AVVIS_KLAGE";

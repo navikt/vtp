@@ -4,7 +4,6 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerHarGyldigPeriodeBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
@@ -82,14 +81,15 @@ public class Klage extends EngangsstonadTestBase {
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
         verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET", "Behandlingsresultat");
+        klagebehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class)
+                .setBegrunnelse("Fritekst");
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        // Skriver ingenting i fritekst til brev. Skal dette gaa?
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        // vent til brev sendt?
-        // vent til behandlingsstatus "Avslu"?
+        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilBehandlingsstatus("AVSLU");
 
     }
 
@@ -132,12 +132,10 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
-        // vent til brev sendt?
-        // vent til behandlingsstatus "Avslu"?
     }
 
     @Test
-    public void hoppeTilbakeStegNfp() throws Exception {
+    public void avvistAvBelutterNFP() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
@@ -161,14 +159,35 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD", "Behandlingsresultat");
+
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
 
-        //
+        //avvisAksjonspunkt kan ta imot kode istedenfor
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .avvisAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP), "FEIL_FAKTA");
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
+        klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
+        klagebehandler.hentFagsak(sakId);
+        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
+                .bekreftAvvist("KLAGE_UGYLDIG")
+                .setVedtaksdatoPaklagdBehandling(LocalDate.now())
+                .setBegrunnelse("Fordi");
+        klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
+        klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(sakId);
+        beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+
+        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 
     public void opprettForstegangssoknadVedtak(long saksnummer)throws Exception{
