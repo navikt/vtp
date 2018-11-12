@@ -6,6 +6,7 @@ import java.util.List;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 
 @BekreftelseKode(kode="5016")
@@ -35,13 +36,14 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
         return this;
     }
     
-    public void avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, String årsak) {
-        List<String> årsaker = new ArrayList<>();
-        årsaker.add(årsak);
+    public FatterVedtakBekreftelse avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, Kode kode) {
+        List<Kode> årsaker = new ArrayList<>();
+        årsaker.add(kode);
         avvisAksjonspunkt(aksjonspunkt, årsaker);
+        return this;
     }
     
-    public void avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, List<String> arsaker) {
+    public void avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, List<Kode> arsaker) {
         if(!aksjonspunkt.skalTilToTrinnsBehandling()) {
             throw new RuntimeException("Avvister aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().navn);
         }
@@ -54,7 +56,7 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
     
     public static class AksjonspunktGodkjenningDto{
         protected String aksjonspunktKode;
-        protected List<String> arsaker = new ArrayList<>();
+        protected List<Kode> arsaker = new ArrayList<>();
         protected String begrunnelse = null;
         protected boolean godkjent = false;
         

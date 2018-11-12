@@ -45,8 +45,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        klagebehandler.ventTilBehandlingsstatus("AVSLU");
-        verifiserLikhet(klagebehandler.valgtBehandling.status.kode, "AVSLU", "behandlingstatus");
+        beslutter.ventTilBehandlingsstatus("AVSLU");
+        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "behandlingstatus");
     }
 
     @Test
@@ -130,8 +130,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        saksbehandler.ventTilBehandlingsstatus("AVSLU");
+        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 
     @Test
@@ -167,7 +167,8 @@ public class Klage extends EngangsstonadTestBase {
 
         //avvisAksjonspunkt kan ta imot kode istedenfor
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .avvisAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP), "FEIL_FAKTA");
+                .avvisAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP), beslutter.kodeverk.BehandlingÅrsakType.getKode("RE-LOV"))
+                .setBegrunnelse("Fordi");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
@@ -190,7 +191,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 
-    public void opprettForstegangssoknadVedtak(long saksnummer)throws Exception{
+    private void opprettForstegangssoknadVedtak(long saksnummer)throws Exception{
         // Opprette førstegangssøknad engangsstønad
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
@@ -210,12 +211,12 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.ikkeVentPåStatus = true;
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        saksbehandler.ventTilBehandlingsstatus("AVSLU");
+        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 }
