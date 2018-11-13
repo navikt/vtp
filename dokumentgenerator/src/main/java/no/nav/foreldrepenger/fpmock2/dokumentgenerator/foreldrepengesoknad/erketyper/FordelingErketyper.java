@@ -12,7 +12,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
 
 public class FordelingErketyper {
 
-    public static Fordeling uttaksPeriodeAltTilMor(){
+    public static Fordeling uttaksPeriodeAltTilMor(){ //TODO periode må bli argument eller flere metoder
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
 
@@ -27,9 +27,13 @@ public class FordelingErketyper {
         morsAktivitetsTyper.setKodeverk("MORS_AKTIVITET");
         morsAktivitetsTyper.setKode("ARBEID");
         uttaksperiode.setMorsAktivitetIPerioden(morsAktivitetsTyper);
-        uttaksperiode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1))); //minusMonths(1) for fodsel
-        uttaksperiode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(4)));
-
+        
+        try {
+            uttaksperiode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
+            uttaksperiode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(4)));
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
 
         fordeling.getPerioder().add(uttaksperiode);
 
