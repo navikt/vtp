@@ -11,5 +11,5 @@ public class AvklarFaktaAleneomsorgBekreftelse extends AksjonspunktBekreftelse{
     public AvklarFaktaAleneomsorgBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
     }
-    
+
 }

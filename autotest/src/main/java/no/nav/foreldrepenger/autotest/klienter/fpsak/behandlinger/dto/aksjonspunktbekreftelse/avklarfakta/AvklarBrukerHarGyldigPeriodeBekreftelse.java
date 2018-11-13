@@ -24,7 +24,8 @@ public class AvklarBrukerHarGyldigPeriodeBekreftelse extends AksjonspunktBekreft
         }
     }
     
-    public void setVurdering(Kode kode) {
+    public AvklarBrukerHarGyldigPeriodeBekreftelse setVurdering(Kode kode) {
         manuellVurderingType = kode;
+        return this;
     }
 }

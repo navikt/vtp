@@ -29,7 +29,7 @@ public class FordelingErketyper {
         uttaksperiode.setMorsAktivitetIPerioden(morsAktivitetsTyper);
 
         try {
-            uttaksperiode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+            uttaksperiode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1))); //minusMonths(1) for fodsel
             uttaksperiode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(4)));
         } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
