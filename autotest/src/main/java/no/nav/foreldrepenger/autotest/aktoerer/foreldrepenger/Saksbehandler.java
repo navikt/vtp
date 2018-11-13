@@ -17,6 +17,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
@@ -59,10 +60,6 @@ public class Saksbehandler extends Aktoer{
     public KodeListe henleggArsakerInnsyn;
     
     public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
-    
-    
-    
-    
     
     
     public Saksbehandler() {
@@ -276,10 +273,6 @@ public class Saksbehandler extends Aktoer{
     /*
      * Oversyring
      */
-    public <T extends AksjonspunktBekreftelse> void overstyr(Class<T> type) throws Exception {
-        overstyr(hentAksjonspunktbekreftelse(type));
-    }
-    
     public void overstyr(AksjonspunktBekreftelse bekreftelse) throws Exception {
         List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
         bekreftelser.add(bekreftelse);
@@ -287,7 +280,7 @@ public class Saksbehandler extends Aktoer{
     }
     
     public void overstyr(List<AksjonspunktBekreftelse> bekreftelser) throws Exception {
-        BekreftedeAksjonspunkter aksjonspunkter = new BekreftedeAksjonspunkter(valgtFagsak, valgtBehandling, bekreftelser);
+        OverstyrAksjonspunkter aksjonspunkter = new OverstyrAksjonspunkter(valgtFagsak, valgtBehandling, bekreftelser);
         behandlingerKlient.overstyr(aksjonspunkter);
         velgBehandling(valgtBehandling);
     }

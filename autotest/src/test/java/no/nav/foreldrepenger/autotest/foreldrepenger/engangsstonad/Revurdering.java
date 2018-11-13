@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -18,6 +19,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
+@Tag("engangsstonad")
 public class Revurdering extends EngangsstonadTestBase{
 
     @Test

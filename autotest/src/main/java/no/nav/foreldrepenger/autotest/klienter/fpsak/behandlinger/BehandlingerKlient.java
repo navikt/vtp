@@ -16,6 +16,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Ytelsefordeling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Familiehendelse;
@@ -263,7 +264,7 @@ public class BehandlingerKlient extends FpsakKlient{
     /*
      * Overstyring
      */
-    public void overstyr(BekreftedeAksjonspunkter aksjonsunkter) throws IOException {
+    public void overstyr(OverstyrAksjonspunkter aksjonsunkter) throws IOException {
         String url = hentRestRotUrl() + BEHANDLING_AKSJONSPUNKT_OVERSTYR_URL;
         postOgVerifiser(url, aksjonsunkter, StatusRange.STATUS_SUCCESS);
     }
