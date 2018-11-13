@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødsel;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.farSoeker;
 
@@ -25,6 +26,17 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
 
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId) throws DatatypeConfigurationException {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withBegrunnelseForSenSoeknad(null)
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødsel())
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
