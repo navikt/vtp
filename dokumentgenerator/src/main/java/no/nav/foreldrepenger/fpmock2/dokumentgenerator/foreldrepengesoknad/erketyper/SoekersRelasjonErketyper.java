@@ -32,11 +32,7 @@ public class SoekersRelasjonErketyper {
     private static Foedsel fødsel(int antall, LocalDate foedselsDato){
         Foedsel soekersRelasjonTilBarnet = new Foedsel();
         soekersRelasjonTilBarnet.setAntallBarn(antall);
-        try {
-            soekersRelasjonTilBarnet.setFoedselsdato(DateUtil.convertToXMLGregorianCalendar(foedselsDato));
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
+        soekersRelasjonTilBarnet.setFoedselsdato(DateUtil.convertToXMLGregorianCalendar(foedselsDato));
 
         return soekersRelasjonTilBarnet;
     }
@@ -53,17 +49,12 @@ public class SoekersRelasjonErketyper {
     private static Termin termin(int antall, boolean førTermin){
         Termin termin = new Termin();
         termin.setAntallBarn(antall);
-        try {
-            if (førTermin) {
-                termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-                termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
-            } else {
-                termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
-                termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(2)));
-            }
-
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
+        if (førTermin) {
+            termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+            termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
+        } else {
+            termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
+            termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(2)));
         }
 
         return termin;
@@ -82,13 +73,9 @@ public class SoekersRelasjonErketyper {
         Adopsjon adopsjon = new Adopsjon();
         adopsjon.setAntallBarn(1);
         adopsjon.setAdopsjonAvEktefellesBarn(ektefellesBarn);
-        try {
-            adopsjon.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(10)));
-            adopsjon.setAnkomstdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-            adopsjon.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
+        adopsjon.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(10)));
+        adopsjon.setAnkomstdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+        adopsjon.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
 
         return adopsjon;
     }
@@ -106,12 +93,8 @@ public class SoekersRelasjonErketyper {
         omsorgsovertakelseaarsaker.setKode(aarsak);
         omsorgsovertakelseaarsaker.setKodeverk("FAR_SOEKER_TYPE");
         omsorgsovertakelse.setOmsorgsovertakelseaarsak(omsorgsovertakelseaarsaker);
-        try {
-            omsorgsovertakelse.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-            omsorgsovertakelse.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(6)));
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
+        omsorgsovertakelse.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+        omsorgsovertakelse.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(6)));
 
         return omsorgsovertakelse;
     }

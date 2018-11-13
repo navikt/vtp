@@ -25,13 +25,9 @@ public class MedlemskapErketyper {
     public static OppholdNorge oppholdNorge(LocalDate fom, LocalDate tom){
         OppholdNorge oppholdNorge = new OppholdNorge();
         Periode periode = new Periode();
-        try {
-            periode.setFom(DateUtil.convertToXMLGregorianCalendar(fom));
-            periode.setTom(DateUtil.convertToXMLGregorianCalendar(tom));
+        periode.setFom(DateUtil.convertToXMLGregorianCalendar(fom));
+        periode.setTom(DateUtil.convertToXMLGregorianCalendar(tom));
 
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
         oppholdNorge.setPeriode(periode);
         return oppholdNorge;
     }

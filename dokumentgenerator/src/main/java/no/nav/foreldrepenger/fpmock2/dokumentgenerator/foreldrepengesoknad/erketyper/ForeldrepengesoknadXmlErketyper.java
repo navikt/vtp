@@ -16,7 +16,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
 
 
-    public ForeldrepengesoknadBuilder termindatoUttakKunMor(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder termindatoUttakKunMor(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -28,7 +28,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -39,7 +39,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -50,7 +50,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
     
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadFlereBarn(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadFlereBarn(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -61,7 +61,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
     
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadSøktForSent(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadSøktForSent(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
@@ -72,7 +72,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder adopsjonMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder adopsjonMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -83,7 +83,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
     
-    public ForeldrepengesoknadBuilder adopsjonFarEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder adopsjonFarEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -94,7 +94,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder terminMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder terminMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
@@ -105,7 +105,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder terminFarEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder terminFarEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
@@ -116,7 +116,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder omsorgsovertakelseFarEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder omsorgsovertakelseFarEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
@@ -127,7 +127,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder omsorgsovertakelseMorEngangstonad(String aktoerId) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder omsorgsovertakelseMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)

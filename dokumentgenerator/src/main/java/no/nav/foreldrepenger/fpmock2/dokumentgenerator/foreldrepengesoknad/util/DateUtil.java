@@ -14,27 +14,35 @@ public class DateUtil {
     private DateUtil() {
     }
 
-    public static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDateTime localDateTime) throws DatatypeConfigurationException {
+    public static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDateTime localDateTime) {
         if (localDateTime == null) {
             return null;
         } else {
             GregorianCalendar gregorianCalendar = new GregorianCalendar();
             gregorianCalendar.setTime(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+            return datatypeFactoryInstance().newXMLGregorianCalendar(gregorianCalendar);
         }
     }
 
-    public static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDate localDate) throws DatatypeConfigurationException {
+    public static XMLGregorianCalendar convertToXMLGregorianCalendar(LocalDate localDate) {
         if (localDate == null) {
             return null;
         } else {
             GregorianCalendar gregorianCalendar = GregorianCalendar.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+            return datatypeFactoryInstance().newXMLGregorianCalendar(gregorianCalendar);
         }
     }
 
-    public static XMLGregorianCalendar convertToXMLGregorianCalendarRemoveTimezone(LocalDate localDate) throws DatatypeConfigurationException {
-        return localDate == null ? null : DatatypeFactory.newInstance().newXMLGregorianCalendar(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), -2147483648, -2147483648, -2147483648, -2147483648, -2147483648);
+    private static DatatypeFactory datatypeFactoryInstance() {
+        try {
+            return DatatypeFactory.newInstance();
+        } catch (DatatypeConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static XMLGregorianCalendar convertToXMLGregorianCalendarRemoveTimezone(LocalDate localDate) {
+        return localDate == null ? null : datatypeFactoryInstance().newXMLGregorianCalendar(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), -2147483648, -2147483648, -2147483648, -2147483648, -2147483648);
     }
 
     public static LocalDateTime convertToLocalDateTime(XMLGregorianCalendar xmlGregorianCalendar) {

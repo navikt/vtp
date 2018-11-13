@@ -22,12 +22,8 @@ public class OpptjeningErketyper {
         Frilansoppdrag frilansoppdrag = new Frilansoppdrag();
         frilansoppdrag.setOppdragsgiver("Tims BBQ og fotmassasje");
         Periode periode = new Periode();
-        try {
-            periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(1)));
-            periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
+        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(1)));
+        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
         frilans.getPeriode().add(periode);
         frilansoppdrag.setPeriode(periode);
 

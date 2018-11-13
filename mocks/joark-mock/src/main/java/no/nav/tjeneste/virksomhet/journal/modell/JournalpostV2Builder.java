@@ -42,12 +42,8 @@ public class JournalpostV2Builder {
         journalpost.setKommunikasjonsretning(kommunikasjonsretninger);
         XMLGregorianCalendar xmlGregorianCalendar = null;
 
-        try {
-            xmlGregorianCalendar = DateUtil.convertToXMLGregorianCalendar(LocalDate.now());
-            journalpost.setMottatt(xmlGregorianCalendar);
-        } catch (DatatypeConfigurationException e) {
-            e.printStackTrace();
-        }
+        xmlGregorianCalendar = DateUtil.convertToXMLGregorianCalendar(LocalDate.now());
+        journalpost.setMottatt(xmlGregorianCalendar);
 
 
         for(DokumentModell dokumentModell : modell.getDokumentModellList()){
