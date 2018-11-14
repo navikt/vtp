@@ -27,6 +27,15 @@ public class Fodsel extends ForeldrepengerTestBase{
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             fordel.sendInnInntektsmelding(builder, testscenario, saksnummer);
         }
-
+        
+        //verifiser uttak
+        
+        //verifiser historikkinnslag
+        
+        //Fatte vedtak
+        
+        //verifiser økonomi?
+        
+        //verifiser brev
     }
 }
