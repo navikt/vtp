@@ -198,10 +198,6 @@ public class Klage extends EngangsstonadTestBase {
                 .bekreftDokumentasjonForeligger(1, LocalDate.now().minusDays(15));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
 
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-                .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);

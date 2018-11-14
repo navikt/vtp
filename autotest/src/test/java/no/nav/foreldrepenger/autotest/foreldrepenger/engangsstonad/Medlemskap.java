@@ -24,7 +24,7 @@ public class Medlemskap extends EngangsstonadTestBase{
 
     @Test
     public void behandleFødselMorErUtvandret() throws Exception{
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("51");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
