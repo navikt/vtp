@@ -13,20 +13,21 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KontrollerFaktaPeriode {
 
-    private LocalDate tom = null;
-    private LocalDate fom = null;
+    protected LocalDate tom = null;
+    protected LocalDate fom = null;
 
     protected Kode uttakPeriodeType = null;
     protected Kode utsettelseÅrsak = null;
     protected Kode overføringÅrsak = null;
-    private Kode resultat = null;
-    private List<UttakDokumentasjon> dokumentertePerioder = new ArrayList<>();
-    
-    private BigDecimal arbeidstidsprosent = null;
-    private String begrunnelse = null;
-    private Boolean bekreftet = null;
+    protected Kode resultat = null;
+    protected List<UttakDokumentasjon> dokumentertePerioder = new ArrayList<>();
+
+    protected BigDecimal arbeidstidsprosent = null;
+    protected String begrunnelse = null;
+    protected Boolean bekreftet = null;
     protected String orgnr = null;
     protected Boolean erArbeidstaker = null;
+
     public LocalDate getTom() {
         return tom;
     }

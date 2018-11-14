@@ -9,13 +9,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPeriodeAktivitet {
 
-    private Kode stønadskontoType = null;
-    private Integer trekkdager = null;
+    protected Kode stønadskontoType = null;
+    protected Integer trekkdager = null;
     protected BigDecimal prosentArbeid = null;
     protected String arbeidsforholdId = null;
     protected String arbeidsforholdNavn = null;
     protected String arbeidsforholdOrgnr = null;
-    private BigDecimal utbetalingsgrad = null;
+    protected BigDecimal utbetalingsgrad = null;
     protected Kode uttakArbeidType = null;
     public BigDecimal getUtbetalingsgrad() {
         return utbetalingsgrad;

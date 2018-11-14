@@ -33,10 +33,10 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     
     
     
-    public void godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad) {
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad) {
         UttakResultatPeriode periode = finnPeriode(fra, til);
         godkjennPeriode(periode, utbetalingsgrad);
-        
+        return this;
     }
     
     public void godkjennPeriode(UttakResultatPeriode periode, int utbetalingsgrad) {

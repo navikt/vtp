@@ -11,27 +11,28 @@ public class VurderBeregnetInntektsAvvikBekreftelse extends AksjonspunktBekrefte
     
     protected List<InntektPrAndel> inntektPrAndelList = new ArrayList<>();
     // TODO MV: sjekke om frilanser skal være her
-    protected int inntektFrilanser;
+    protected Integer inntektFrilanser;
     
     public VurderBeregnetInntektsAvvikBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
     }
     
-    public VurderBeregnetInntektsAvvikBekreftelse leggTilInntekt(int inntekt) {
-        inntektPrAndelList.add(new InntektPrAndel(inntekt, 1));
+    public VurderBeregnetInntektsAvvikBekreftelse leggTilInntekt(Integer inntekt) {
+        inntektPrAndelList.add(new InntektPrAndel(inntekt, 1L));
         return this;
     }
 
-    public VurderBeregnetInntektsAvvikBekreftelse leggTilInntektFrilans(int inntektFrilanser) {
+    public VurderBeregnetInntektsAvvikBekreftelse leggTilInntektFrilans(Integer inntektFrilanser) {
         this.inntektFrilanser = inntektFrilanser;
         return this;
     }
     
     class InntektPrAndel {
-        int inntekt;
-        int andelsnr;
+
+        protected Integer inntekt;
+        protected Long andelsnr;
         
-        public InntektPrAndel(int inntekt, int andelsnr) {
+        public InntektPrAndel(Integer inntekt, Long andelsnr) {
             super();
             this.inntekt = inntekt;
             this.andelsnr = andelsnr;

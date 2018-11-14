@@ -10,21 +10,21 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPeriode {
 
-    private LocalDate fom = null;
-    private LocalDate tom = null;
+    protected LocalDate fom = null;
+    protected LocalDate tom = null;
 
-    private List<UttakResultatPeriodeAktivitet> aktiviteter = null;
+    protected List<UttakResultatPeriodeAktivitet> aktiviteter = null;
 
-    private Kode periodeResultatType = null;
+    protected Kode periodeResultatType = null;
     protected String begrunnelse = null;
-    private Kode periodeResultatÅrsak = null;
+    protected Kode periodeResultatÅrsak = null;
     protected Kode manuellBehandlingÅrsak = null;
-    private Kode graderingAvslagÅrsak = null;
+    protected Kode graderingAvslagÅrsak = null;
     protected Boolean flerbarnsdager = null;
     protected Boolean samtidigUttak;
-    private Boolean graderingInnvilget;
+    protected Boolean graderingInnvilget;
     protected Kode periodeType = null;
-    private Kode utsettelseType = null;
+    protected Kode utsettelseType = null;
 
     protected UttakResultatPeriodeAktivitet gradertAktivitet = null;
 
