@@ -29,7 +29,7 @@ public class SoekersRelasjonErketyper {
     }
 
 
-    private static Foedsel fødsel(int antall, LocalDate foedselsDato){
+    public static Foedsel fødsel(int antall, LocalDate foedselsDato){
         Foedsel soekersRelasjonTilBarnet = new Foedsel();
         soekersRelasjonTilBarnet.setAntallBarn(antall);
         soekersRelasjonTilBarnet.setFoedselsdato(DateUtil.convertToXMLGregorianCalendar(foedselsDato));
@@ -38,15 +38,18 @@ public class SoekersRelasjonErketyper {
     }
 
     public static Termin søkerTerminFørTermin() {
-        return termin(1,true);
+        return søkerTerminFørTermin(LocalDate.now());
+    }
+
+    public static Termin søkerTerminFørTermin(LocalDate termindato) {
+        return termin(1, true, termindato);
     }
 
     public static Termin søkerTerminEtterTermin() {
-        return termin(1, false);
+        return termin(1, false, LocalDate.now());
     }
 
-
-    private static Termin termin(int antall, boolean førTermin){
+    private static Termin termin(int antall, boolean førTermin, LocalDate termindato){
         Termin termin = new Termin();
         termin.setAntallBarn(antall);
         if (førTermin) {
@@ -98,5 +101,4 @@ public class SoekersRelasjonErketyper {
 
         return omsorgsovertakelse;
     }
-
 }

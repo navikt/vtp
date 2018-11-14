@@ -19,7 +19,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Fodsel extends ForeldrepengerTestBase{
 
     @Test
-    public void MorSøkerFodselMedArbeidsforhold() throws Exception {
+    public void MorSøkerFodselMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now().minusMonths(1));
