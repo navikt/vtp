@@ -54,8 +54,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_GYLDIG_MEDLEMSKAPSPERIODE))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag("Brev sendt");
@@ -90,12 +89,34 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    public void behenadleOmsorgsovertakelseMorOverstyrt() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+
+        
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaOmsorgOgForeldreansvarBekreftelse.class)
+            .setVilkårType(saksbehandler.kodeverk.OmsorgsovertakelseVilkårType.getKode("FP_VK_5"));
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaOmsorgOgForeldreansvarBekreftelse.class);
+        
+        saksbehandler.hentAksjonspunktbekreftelse(VurderingAvOmsorgsvilkoret.class)
+            .bekreftAvvist(saksbehandler.kodeverk.Avslagsårsak.get("FP_VK_33").getKode("1018"));
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvOmsorgsvilkoret.class);
+        
+        //TODO bør gå til beslutter
+    }
+
     @Test
     public void behenadleOmsorgsovertakelseFarGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
@@ -129,8 +150,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_GYLDIG_MEDLEMSKAPSPERIODE))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag("Brev sendt");

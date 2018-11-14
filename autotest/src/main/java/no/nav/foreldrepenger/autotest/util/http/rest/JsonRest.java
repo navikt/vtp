@@ -68,7 +68,7 @@ public abstract class JsonRest extends Rest{
     }
     
     protected String postOgVerifiser(String url, Object requestData, Map<String, String> headers, StatusRange expectedStatusRange) throws IOException {
-        String request = hentObjectMapper().writeValueAsString(requestData);
+        String request = requestData == null ? "{}" : hentObjectMapper().writeValueAsString(requestData);
         HttpResponse response = postJson(url, request, headers);
         String json = hentResponseBody(response);
         if(expectedStatusRange != null) {

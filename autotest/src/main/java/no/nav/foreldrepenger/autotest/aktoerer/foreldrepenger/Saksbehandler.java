@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
@@ -32,6 +33,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeListe;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsesstaskDto;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
@@ -53,6 +57,7 @@ public class Saksbehandler extends Aktoer{
     private DokumentKlient dokumentKlient;
     private BrevKlient brevKlient;
     private HistorikkKlient historikkKlient;
+    private ProsesstaskKlient prosesstaskKlient;
     
     public Kodeverk kodeverk;
     public KodeListe henleggArsaker;
@@ -70,6 +75,7 @@ public class Saksbehandler extends Aktoer{
         dokumentKlient = new DokumentKlient(session);
         brevKlient = new BrevKlient(session);
         historikkKlient = new HistorikkKlient(session);
+        prosesstaskKlient = new ProsesstaskKlient(session);
     }
 
     public Saksbehandler(Rolle rolle) throws IOException {
@@ -364,7 +370,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             velgBehandling(valgtBehandling);
             return harBehandlingsstatus(status);
-        }, 10, "Behandlingsstatus var ikke " + status);
+        }, 10, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus());
     }
     
     public boolean harBehandlingsstatus(String status) {
@@ -398,6 +404,27 @@ public class Saksbehandler extends Aktoer{
             }
         }
         return null;
+    }
+    
+    public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
+        ikkeVentPåStatus = true;
+        bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        godkjennØkonomioppdrag();
+        ikkeVentPåStatus = false;
+    }
+    
+    public void godkjennØkonomioppdrag() throws Exception {
+        //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
+        List<ProsessTaskListItemDto> list = prosesstaskKlient.list(null);
+        
+        for (ProsessTaskListItemDto prosessTaskListItemDto : list) {
+            if(prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
+               && prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")) {
+                prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));
+            }
+        }
+        
+        ventTilBehandlingsstatus("AVSLU");
     }
     
     /*

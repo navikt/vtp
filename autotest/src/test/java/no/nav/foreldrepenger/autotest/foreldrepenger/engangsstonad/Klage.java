@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+@Tag("smoke")
 @Tag("engangsstonad")
 public class Klage extends EngangsstonadTestBase {
     @Test
@@ -44,8 +45,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        beslutter.ventTilBehandlingsstatus("AVSLU");
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "behandlingstatus");
     }
 
@@ -87,9 +87,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         beslutter.ventTilHistorikkinnslag("Brev sendt");
-        beslutter.ventTilBehandlingsstatus("AVSLU");
 
     }
 
@@ -129,9 +128,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         beslutter.ventTilHistorikkinnslag("Brev sendt");
-        beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 
     @Test
@@ -185,10 +183,9 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(sakId);
         beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
 
         beslutter.ventTilHistorikkinnslag("Brev sendt");
-        beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 
     private void opprettForstegangssoknadVedtak(long saksnummer)throws Exception{
@@ -213,10 +210,9 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag("Brev sendt");
-        beslutter.ventTilBehandlingsstatus("AVSLU");
     }
 }
