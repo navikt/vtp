@@ -18,8 +18,8 @@ public class FordelingErketyper {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
 
-        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), LocalDate.now()));
-        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, LocalDate.now(), LocalDate.now().plusWeeks(6)));
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)));
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familehendelseDato, familehendelseDato.plusWeeks(6)));
 
         return fordeling;
     }

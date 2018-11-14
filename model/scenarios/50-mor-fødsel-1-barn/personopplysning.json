@@ -36,7 +36,7 @@
 					"tom": "now() + P3Y",
 					"besluttetDato": "now() - P1Y",
 					"land": "DEU",
-					"trygdedekning": "IHT_Avtale",
+					"trygdedekning": "Full",
 					"kilde": "ANNEN",
 					"lovvalgType": "ENDL",
 					"status": "GYLD"

@@ -1,10 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-
-import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -20,14 +17,16 @@ public class Fodsel extends ForeldrepengerTestBase{
 
     @Test
     public void MorSøkerFodselMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("55");
+        TestscenarioDto testscenario = opprettScenario("50");
 
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now().minusMonths(1));
-        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(0);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now().minusWeeks(3).minusDays(1));
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        fordel.sendInnInntektsmelding(inntektsmeldingsBuilder, testscenario, saksnummer);
+        for (InntektsmeldingBuilder builder : inntektsmeldinger) {
+            fordel.sendInnInntektsmelding(builder, testscenario, saksnummer);
+        }
+
     }
 }
