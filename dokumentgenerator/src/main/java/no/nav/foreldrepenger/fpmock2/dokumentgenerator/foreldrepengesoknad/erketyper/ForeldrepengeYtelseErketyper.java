@@ -20,8 +20,8 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødsel() {
-        LocalDate fødselsdato = LocalDate.now().minusDays(1);
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødsel(LocalDate startDatoForeldrepenger) {
+        LocalDate fødselsdato = startDatoForeldrepenger.plusWeeks(3);
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());

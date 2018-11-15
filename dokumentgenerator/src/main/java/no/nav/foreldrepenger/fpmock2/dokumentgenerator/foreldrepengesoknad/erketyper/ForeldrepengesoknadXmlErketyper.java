@@ -28,11 +28,11 @@ public class ForeldrepengesoknadXmlErketyper {
 
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate startDatoForeldrepenger) throws DatatypeConfigurationException {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødsel())
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødsel(startDatoForeldrepenger))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);

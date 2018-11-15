@@ -29,10 +29,10 @@ public class SoekersRelasjonErketyper {
     }
 
 
-    public static Foedsel fødsel(int antall, LocalDate foedselsDato){
+    public static Foedsel fødsel(int antall, LocalDate fødselsdato){
         Foedsel soekersRelasjonTilBarnet = new Foedsel();
         soekersRelasjonTilBarnet.setAntallBarn(antall);
-        soekersRelasjonTilBarnet.setFoedselsdato(DateUtil.convertToXMLGregorianCalendar(foedselsDato));
+        soekersRelasjonTilBarnet.setFoedselsdato(DateUtil.convertToXMLGregorianCalendar(fødselsdato));
 
         return soekersRelasjonTilBarnet;
     }

@@ -19,8 +19,9 @@ public class Fodsel extends ForeldrepengerTestBase{
     public void MorSøkerFodselMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now().minusWeeks(3).minusDays(1));
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        LocalDate startDatoForeldrepenger = LocalDate.now().minusDays(2).minusWeeks(3);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent(), startDatoForeldrepenger);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
