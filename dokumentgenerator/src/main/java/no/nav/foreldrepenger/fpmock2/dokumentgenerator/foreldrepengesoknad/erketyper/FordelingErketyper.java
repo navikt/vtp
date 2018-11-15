@@ -16,9 +16,9 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
 
 public class FordelingErketyper {
 
-    private static final String STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL = "FORELDREPENGER_FØR_FØDSEL";
-    private static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
-    private static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
+    public static final String STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL = "FORELDREPENGER_FØR_FØDSEL";
+    public static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
+    public static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
 
     public static Fordeling fordelingMorHappyCase(LocalDate familehendelseDato) {
         Fordeling fordeling = new Fordeling();

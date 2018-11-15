@@ -14,7 +14,6 @@ public class Kode {
     }
     
     public Kode(String kodeverk, String kode, String navn) {
-        super();
         this.kodeverk = kodeverk;
         this.kode = kode;
         this.navn = navn;

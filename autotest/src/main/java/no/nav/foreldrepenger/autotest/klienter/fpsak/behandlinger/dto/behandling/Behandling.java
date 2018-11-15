@@ -2,7 +2,9 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandlin
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -44,7 +46,7 @@ public class Behandling {
     public Beregningsgrunnlag beregningsgrunnlag;
     public Beregningsresultat beregningResultatEngangsstonad;
     public BeregningsresultatMedUttaksplan beregningResultatForeldrepenger;
-    public UttakResultatPerioder uttakResultatPerioder;
+    private UttakResultatPerioder uttakResultatPerioder;
     public Soknad soknad;
     public Familiehendelse familiehendelse;
     public Opptjening opptjening;
@@ -55,11 +57,11 @@ public class Behandling {
     public AvklartData avklartData;
 
     public List<UttakResultatPeriode> hentUttaksperioder() {
-        return uttakResultatPerioder.getPerioder();
+        return uttakResultatPerioder.getPerioder().stream().sorted(Comparator.comparing(UttakResultatPeriode::getFom)).collect(Collectors.toList());
     }
     
     public UttakResultatPeriode hentUttaksperiode(int index) {
-        return uttakResultatPerioder.getPerioder().get(index);
+        return hentUttaksperioder().get(index);
     }
     
     
