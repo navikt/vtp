@@ -36,7 +36,7 @@ public class Fodsel extends ForeldrepengerTestBase{
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             fordel.sendInnInntektsmelding(builder, testscenario, saksnummer);
         }
-
+        
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         verifiserUttak();
