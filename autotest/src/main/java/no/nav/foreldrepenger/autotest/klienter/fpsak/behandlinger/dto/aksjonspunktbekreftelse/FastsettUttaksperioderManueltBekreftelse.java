@@ -19,7 +19,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     public FastsettUttaksperioderManueltBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        for (UttakResultatPeriode uttakPeriode : behandling.uttakResultatPerioder.getPerioder()) {
+        for (UttakResultatPeriode uttakPeriode : behandling.hentUttaksperioder()) {
             uttakPeriode.setBegrunnelse("Begrunnelse");
             LeggTilUttakPeriode(uttakPeriode);
         }
