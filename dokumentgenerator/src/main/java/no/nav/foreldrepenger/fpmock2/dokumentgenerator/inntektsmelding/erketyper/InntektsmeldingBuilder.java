@@ -41,7 +41,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class InntektsmeldingBuilder {
@@ -481,5 +483,59 @@ public class InntektsmeldingBuilder {
 
     private boolean isNull(Object o) {
         return o == null;
+    }
+    
+    public static InntektsmeldingBuilder createDefaultForeldrepenger(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+                YtelseKodeliste.FORELDREPENGER,
+                ÅrsakInnsendingKodeliste.NY.NY,
+                fnr,
+                startDatoForeldrepenger);
+        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
+        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
+        builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+                "", //TODO arbeidsforhold id
+                null,
+                new BigDecimal(beløp),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()));
+        return builder;
+    }
+    
+    public static InntektsmeldingBuilder createDefaultSykepenger(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger, String arbeidsgiverFnr, int bruttoUtbetalt, LocalDate sykepengerFra, LocalDate sykepengerTil) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+                YtelseKodeliste.SYKEPENGER,
+                ÅrsakInnsendingKodeliste.NY.NY,
+                fnr,
+                startDatoForeldrepenger);
+        
+        List<Periode> perioder = new ArrayList<>();
+        perioder.add(InntektsmeldingBuilder.createPeriode(sykepengerFra, sykepengerTil));
+        
+        builder.setArbeidstakerFNR(fnr);
+        builder.setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
+                new BigDecimal(bruttoUtbetalt),
+                perioder,
+                BegrunnelseIngenEllerRedusertUtbetalingKodeliste.LOVLIG_FRAVAER));
+        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
+        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS32","1.0"));
+        builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+                "", //TODO arbeidsforhold id
+                null,
+                new BigDecimal(beløp),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()));
+        return builder;
+    }
+    
+    public static InntektsmeldingBuilder createDefaultOMS(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+                YtelseKodeliste.FORELDREPENGER,
+                ÅrsakInnsendingKodeliste.NY.NY,
+                fnr,
+                startDatoForeldrepenger);
+        return builder;
     }
 }
