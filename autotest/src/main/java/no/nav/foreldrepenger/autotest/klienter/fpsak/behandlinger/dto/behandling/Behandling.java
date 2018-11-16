@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandlin
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +58,9 @@ public class Behandling {
     public AvklartData avklartData;
 
     public List<UttakResultatPeriode> hentUttaksperioder() {
+        if (uttakResultatPerioder == null) {
+            return Collections.emptyList();
+        }
         return uttakResultatPerioder.getPerioder().stream().sorted(Comparator.comparing(UttakResultatPeriode::getFom)).collect(Collectors.toList());
     }
     

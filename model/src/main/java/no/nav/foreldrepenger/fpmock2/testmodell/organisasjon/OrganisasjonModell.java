@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OrganisasjonModell {
-    public OrganisasjonModell() {
-    }
-
     @JsonProperty("orgnummer")
     private String orgnummer;
 
@@ -16,6 +13,9 @@ public class OrganisasjonModell {
 
     @JsonProperty("organisasjonDetaljer")
     private OrganisasjonDetaljerModell organisasjonDetaljer;
+
+    public OrganisasjonModell() {
+    }
 
     public String getOrgnummer() {
         return orgnummer;

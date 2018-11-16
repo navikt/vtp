@@ -7,16 +7,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OrganisasjonModeller {
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("modeller")
+    private List<OrganisasjonModell> modeller = new ArrayList<>();
+
     public OrganisasjonModeller() {
     }
 
     public OrganisasjonModeller(List<OrganisasjonModell> modeller) {
         this.modeller = modeller;
     }
-
-    @JsonInclude(value=JsonInclude.Include.ALWAYS)
-    @JsonProperty("modeller")
-    private List<OrganisasjonModell> modeller = new ArrayList<>();
 
     public List<OrganisasjonModell> getModeller() {
         return modeller;

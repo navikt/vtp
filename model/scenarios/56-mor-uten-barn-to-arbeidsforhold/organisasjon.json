@@ -11,6 +11,18 @@
             "registreringsDato": "now() - P10Y",
             "datoSistEndret": "now() - P1Y"
          }
+      },
+      {
+         "orgnummer": "973861778",
+         "navn": {
+            "navnelinje": [
+               "STATOIL"
+            ]
+         },
+         "organisasjonDetaljer": {
+            "registreringsDato": "now() - P10Y",
+            "datoSistEndret": "now() - P1Y"
+         }
       }
    ]
 }
