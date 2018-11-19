@@ -61,6 +61,10 @@
 		</dependency>
 		<dependency>
 			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>infotrygdfeed-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>kodeverk-mock</artifactId>
 		</dependency>
 		<dependency>

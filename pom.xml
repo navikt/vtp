@@ -183,6 +183,12 @@
 
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>infotrygdfeed-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>norg2-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>

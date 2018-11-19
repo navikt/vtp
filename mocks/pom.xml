@@ -25,6 +25,7 @@
 		<module>norg2-mock</module>
 		<module>sigrun-mock</module>
         <module>kodeverk-mock</module>
+        <module>infotrygdfeed-mock</module>
     </modules>
 
     <dependencies>

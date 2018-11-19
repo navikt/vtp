@@ -36,6 +36,7 @@ import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
 import no.nav.foreldrepenger.fpmock2.server.rest.PdpRestTjeneste;
+import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.sigrun.SigrunMock;
 
 public class ApplicationConfig extends Application {
@@ -59,6 +60,7 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
+        classes.add(InfotrygdfeedMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
