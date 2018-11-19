@@ -25,6 +25,22 @@
             </properties>
         </profile>
         <profile>
+        	<id>SmokeProd</id>
+        	<properties>
+                <includeTestsTags>smokeprod</includeTestsTags>
+                <excludeTestsTags>pending</excludeTestsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
+        	<id>SmokeFeature</id>
+        	<properties>
+                <includeTestsTags>smokefeature</includeTestsTags>
+                <excludeTestsTags>pending</excludeTestsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
             <id>Smoke</id>
             <properties>
                 <includeTestsTags>smoke</includeTestsTags>
