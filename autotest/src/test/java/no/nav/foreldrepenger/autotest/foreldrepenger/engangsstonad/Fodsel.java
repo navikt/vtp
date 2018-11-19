@@ -111,7 +111,6 @@ public class Fodsel extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
-    @Tag("pending")
     @Test
     public void behandleFødselMorOverstyrFødsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
@@ -127,10 +126,6 @@ public class Fodsel extends EngangsstonadTestBase{
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
             .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
         
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
@@ -148,11 +143,7 @@ public class Fodsel extends EngangsstonadTestBase{
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_FØDSELSVILKÅRET));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
-        
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
     }
     
     @Test
@@ -182,8 +173,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         verifiserLikhet(beslutter.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse(), 2 * SATS_2018);
@@ -223,8 +213,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
     }

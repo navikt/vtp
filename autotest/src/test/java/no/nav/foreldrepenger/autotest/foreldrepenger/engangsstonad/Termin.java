@@ -117,8 +117,7 @@ public class Termin extends EngangsstonadTestBase{
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_FØDSELSVILKÅRET));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
