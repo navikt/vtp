@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 import java.time.LocalDate;
 import java.util.List;
 
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +32,10 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         // TODO (MV) : Jobb videre herfra
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-INNTK"));
+        saksbehandler.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
     }
 
