@@ -113,6 +113,7 @@
                 <configuration>
                     <reportDirectory>target/allure-results</reportDirectory>
                     <reportVersion>2.7.0</reportVersion>
+                    <allureDownloadUrl>http://maven.adeo.no/nexus/service/local/repositories/m2internal/content/no/testhub/allure/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
                 </configuration>
             </plugin>
         </plugins>
