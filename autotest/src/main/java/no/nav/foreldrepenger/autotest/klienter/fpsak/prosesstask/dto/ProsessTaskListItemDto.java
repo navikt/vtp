@@ -19,6 +19,10 @@ public class ProsessTaskListItemDto {
         return id;
     }
     
+    public String getStatus() {
+        return status;
+    }
+    
     public String getTaskType() {
         return taskType;
     }

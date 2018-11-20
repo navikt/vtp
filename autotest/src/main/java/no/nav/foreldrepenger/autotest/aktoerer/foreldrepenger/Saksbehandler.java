@@ -417,18 +417,27 @@ public class Saksbehandler extends Aktoer{
         ikkeVentPåStatus = false;
     }
     
-    public void godkjennØkonomioppdrag() throws Exception {
+    public void ventOgGodkjennØkonomioppdrag() throws Exception {
+       Vent.til(() ->  {
+           return godkjennØkonomioppdrag();
+       }, 10, "Fant ingen økonomioppdag og godkjenne");
+    }
+    
+    
+    public boolean godkjennØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(null);
         
         for (ProsessTaskListItemDto prosessTaskListItemDto : list) {
             if(prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
-               && prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")) {
+               && prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
+               && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
                 prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));
+                ventTilBehandlingsstatus("AVSLU");
+                return true;
             }
         }
-        
-        ventTilBehandlingsstatus("AVSLU");
+        return false;
     }
     
     /*
@@ -442,4 +451,5 @@ public class Saksbehandler extends Aktoer{
         behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype.kode, årsak == null ? null : årsak.kode));
         velgFagsak(valgtFagsak); //Henter fagsaken på ny
     }
+
 }
