@@ -78,4 +78,13 @@ public class FordelingErketyper {
         uttaksperiodetyper.setKode(stønadskontotype);
         uttaksperiode.setType(uttaksperiodetyper);
     }
+
+    public static Fordeling fordelingFarHappyCase(LocalDate familehendelseDato) {
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(true);
+
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(6)));
+
+        return fordeling;
+    }
 }

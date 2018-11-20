@@ -47,7 +47,7 @@ public class Behandling {
     public Beregningsgrunnlag beregningsgrunnlag;
     public Beregningsresultat beregningResultatEngangsstonad;
     public BeregningsresultatMedUttaksplan beregningResultatForeldrepenger;
-    private UttakResultatPerioder uttakResultatPerioder;
+    public UttakResultatPerioder uttakResultatPerioder;
     public Soknad soknad;
     public Familiehendelse familiehendelse;
     public Opptjening opptjening;
@@ -61,7 +61,7 @@ public class Behandling {
         if (uttakResultatPerioder == null) {
             return Collections.emptyList();
         }
-        return uttakResultatPerioder.getPerioder().stream().sorted(Comparator.comparing(UttakResultatPeriode::getFom)).collect(Collectors.toList());
+        return uttakResultatPerioder.getPerioderForSøker().stream().sorted(Comparator.comparing(UttakResultatPeriode::getFom)).collect(Collectors.toList());
     }
     
     public UttakResultatPeriode hentUttaksperiode(int index) {

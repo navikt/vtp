@@ -20,7 +20,7 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødsel(LocalDate startDatoForeldrepenger) {
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate startDatoForeldrepenger) {
         LocalDate fødselsdato = startDatoForeldrepenger.plusWeeks(3);
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
@@ -28,6 +28,17 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
         foreldrepenger.setFordeling(FordelingErketyper.fordelingMorHappyCase(fødselsdato));
+        return foreldrepenger;
+    }
+    
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFar(LocalDate startDatoForeldrepenger) {
+        LocalDate fødselsdato = startDatoForeldrepenger.minusWeeks(3);
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(fødselsdato));
         return foreldrepenger;
     }
 

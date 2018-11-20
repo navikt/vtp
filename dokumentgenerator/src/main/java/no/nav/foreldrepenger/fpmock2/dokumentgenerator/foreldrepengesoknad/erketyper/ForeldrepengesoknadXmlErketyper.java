@@ -1,9 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødsel;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.farSoeker;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.*;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.*;
 
 import java.time.LocalDate;
 
@@ -32,7 +30,7 @@ public class ForeldrepengesoknadXmlErketyper {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødsel(startDatoForeldrepenger))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
@@ -133,6 +131,17 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withTilleggsopplysninger("Autogenerert erketypetest far søker på omsorgsovertakelse")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeOmsorgsovertakelse())
                 .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunFar(String aktoerId,
+            LocalDate startDatoForeldrepenger) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.minusWeeks(3)))
+                .withBegrunnelseForSenSoeknad(null)
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFar(startDatoForeldrepenger))
+                .withSoeker(farSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }

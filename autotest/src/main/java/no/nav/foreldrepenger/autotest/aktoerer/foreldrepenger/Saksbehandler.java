@@ -173,6 +173,7 @@ public class Saksbehandler extends Aktoer{
         valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(request);
         valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
         valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(request);
+        valgtBehandling.uttakResultatPerioder = behandlingerKlient.behandlingUttakResultatPerioder(request);
 
         
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {

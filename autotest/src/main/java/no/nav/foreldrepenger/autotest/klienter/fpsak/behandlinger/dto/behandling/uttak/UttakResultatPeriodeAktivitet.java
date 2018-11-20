@@ -17,6 +17,8 @@ public class UttakResultatPeriodeAktivitet {
     protected String arbeidsforholdOrgnr = null;
     protected BigDecimal utbetalingsgrad = null;
     protected Kode uttakArbeidType = null;
+    protected Arbeidsgiver arbeidsgiver;
+    
     public BigDecimal getUtbetalingsgrad() {
         return utbetalingsgrad;
     }

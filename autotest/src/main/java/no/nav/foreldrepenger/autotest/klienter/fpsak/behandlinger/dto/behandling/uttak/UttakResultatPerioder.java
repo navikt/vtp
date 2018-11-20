@@ -6,9 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPerioder {
-    protected List<UttakResultatPeriode> perioder;
+    protected List<UttakResultatPeriode> perioderAnnenpart;
+    protected List<UttakResultatPeriode> perioderSøker;
 
-    public List<UttakResultatPeriode> getPerioder() {
-        return perioder;
+    public List<UttakResultatPeriode> getPerioderForSøker() {
+        return perioderSøker;
     }
 }
