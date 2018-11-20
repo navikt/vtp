@@ -83,7 +83,7 @@ public class FordelingErketyper {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
 
-        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(6)));
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(5)));
 
         return fordeling;
     }

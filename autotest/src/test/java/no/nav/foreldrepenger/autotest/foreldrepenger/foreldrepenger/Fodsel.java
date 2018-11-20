@@ -120,14 +120,12 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(3), saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
+        
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2), saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.class);
         
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        verifiserLikhet(perioder.size(), 2);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class).godkjennAllePerioder();
-        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
+        verifiserLikhet(perioder.size(), 1);
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
@@ -135,8 +133,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         beslutter.hentFagsak(saksnummer);
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK))
-            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
+            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
