@@ -4,7 +4,8 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravNfp;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravKa;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerHarGyldigPeriodeBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNfpBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNkBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
@@ -13,8 +14,8 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
+
 
 @Tag("smoke")
 @Tag("engangsstonad")
@@ -37,11 +38,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L; // håndter hvis det ikke er påklagd et vedtak eller hvis ingen vedtak finnes
+        Long vedtaksId = 0L;
         for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                vedtaksId = behandling.fagsakId;
-            }
+            if (behandling.type.kode.equals("BT-002")) { vedtaksId = behandling.fagsakId; }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
@@ -62,7 +61,7 @@ public class Klage extends EngangsstonadTestBase {
     }
 
     @Test
-    public void klageStadfesteAvKA() throws Exception {
+    public void klageOppheveAvKA() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
@@ -78,11 +77,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L; // håndter hvis det ikke er påklagd et vedtak eller hvis ingen vedtak finnes
+        Long vedtaksId = 0L;
         for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                vedtaksId = behandling.fagsakId;
-            }
+            if (behandling.type.kode.equals("BT-002")) { vedtaksId = behandling.fagsakId; }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
@@ -101,11 +98,11 @@ public class Klage extends EngangsstonadTestBase {
                 .setBegrunnelse("blabla begrunnelse");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
-                .bekreftStadfestet()
+                .bekreftOpphevet("NYE_OPPLYSNINGER")
                 .fritekstBrev("Fritekst brev fra KA")
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET", "Behandlingsresultat");
+        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET", "Behandlingsresultat");
         klagebehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class)
                 .setBegrunnelse("Fritekst");
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -134,11 +131,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L; // håndter hvis det ikke er påklagd et vedtak eller hvis ingen vedtak finnes
+        Long vedtaksId = 0L;
         for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                vedtaksId = behandling.fagsakId;
-            }
+            if (behandling.type.kode.equals("BT-002")) { vedtaksId = behandling.fagsakId; }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
