@@ -6,8 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Disabled;
@@ -25,10 +27,57 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 
 @Tag("smoke")
 @Tag("foreldrepenger")
 public class Fodsel extends ForeldrepengerTestBase {
+
+    @Test
+    public void morSøkerFødlseMedToArbeidsforholdISammeOrganisasjon() throws Exception {
+
+        TestscenarioDto testscenario = opprettScenario("57");
+
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fpStartdato);
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+
+        Arbeidsforhold arbeidsforhold_1 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0);
+        Arbeidsforhold arbeidsforhold_2 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(1);
+
+        List<Integer> inntekter = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().stream()
+                .map(Inntektsperiode::getBeløp)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
+
+        InntektsmeldingBuilder inntektsmeldingBuilder_1 = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(0), fnr,
+                arbeidsforhold_1.getArbeidsgiverOrgnr(), fpStartdato, Optional.of(arbeidsforhold_1.getArbeidsforholdId()));
+        InntektsmeldingBuilder inntektsmeldingBuilder_2 = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(1), fnr,
+                arbeidsforhold_2.getArbeidsgiverOrgnr(), fpStartdato, Optional.of(arbeidsforhold_2.getArbeidsforholdId()));
+
+        fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.ikkeVentPåStatus = true;
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventOgGodkjennØkonomioppdrag();
+        saksbehandler.ikkeVentPåStatus = false;
+
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
+        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
+
+        // TODO : Asserts
+
+    }
 
     @Test
     public void morSøkerFødselMedEttArbeidsforhold() throws Exception {

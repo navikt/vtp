@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -79,7 +80,7 @@ public class FpsakTestBase extends TestScenarioTestBase{
                     .max(Comparator.comparing(Inntektsperiode::getTom))
                     .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
             Integer beløp = sisteInntektsperiode.getBeløp();
-            inntektsmeldinger.add(lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, arbeidsgiverOrgnr, startDatoForeldrepenger));
+            inntektsmeldinger.add(lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, arbeidsgiverOrgnr, startDatoForeldrepenger, Optional.empty()));
         }
 
         return inntektsmeldinger;
@@ -98,16 +99,20 @@ public class FpsakTestBase extends TestScenarioTestBase{
         return new ArrayList<>(periodeMap.values());
     }
 
-    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp,
+                                                                                 String fnr,
+                                                                                 String orgnummer,
+                                                                                 LocalDate startDatoForeldrepenger,
+                                                                                 Optional<String> arbeidsforholdId) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.FORELDREPENGER,
-                ÅrsakInnsendingKodeliste.NY.NY,
+                ÅrsakInnsendingKodeliste.NY,
                 fnr,
                 startDatoForeldrepenger);
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
-                "", //TODO arbeidsforhold id
+                arbeidsforholdId.orElse(null),
                 null,
                 new BigDecimal(beløp),
                 new ArrayList<>(),
