@@ -142,7 +142,6 @@ public class Saksbehandler extends Aktoer{
     /*
      * velger behandling som valgt behandling
      */
-    @Step("Velger behandling {fagsak}")
     public void velgBehandling(Kode behandlingstype) throws Exception {
         Behandling behandling = getBehandling(behandlingstype);
         if(null != behandling) {
@@ -152,7 +151,8 @@ public class Saksbehandler extends Aktoer{
             throw new RuntimeException("Valgt fagsak har ikke behandling av type: " + behandlingstype.kode);
         }
     }
-    
+
+    @Step("Velger behandling {behandlingstype}")
     public void velgBehandling(Behandling behandling) throws Exception {
         dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
@@ -373,7 +373,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Behandlingsstatus
      */
-    @Step("Venter på behandlingsstatus {tekst}")
+    @Step("Venter på behandlingsstatus {status}")
     public void ventTilBehandlingsstatus(String status) throws Exception {
         Vent.til(() -> {
             velgBehandling(valgtBehandling);
