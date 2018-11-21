@@ -124,6 +124,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Velger fagsak
      */
+    @Step("Velger fagsak {fagsak}")
     public void velgFagsak(Fagsak fagsak) throws Exception {
         if(fagsak == null) {
             throw new RuntimeException("Kan ikke velge fagsak. fagsak er null");
@@ -141,6 +142,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * velger behandling som valgt behandling
      */
+    @Step("Velger behandling {fagsak}")
     public void velgBehandling(Kode behandlingstype) throws Exception {
         Behandling behandling = getBehandling(behandlingstype);
         if(null != behandling) {
@@ -263,7 +265,8 @@ public class Saksbehandler extends Aktoer{
     public <T extends AksjonspunktBekreftelse> void bekreftAksjonspunktBekreftelse(Class<T> type) throws Exception {
         bekreftAksjonspunktBekreftelse(hentAksjonspunktbekreftelse(type));
     }
-    
+
+    @Step("Bekrefter aksjonspunkt {bekreftelse}")
     public void bekreftAksjonspunktBekreftelse(AksjonspunktBekreftelse bekreftelse) throws Exception {
         List<AksjonspunktBekreftelse> bekreftelser = new ArrayList<>();
         bekreftelser.add(bekreftelse);
@@ -345,7 +348,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Historikkinnslag
      */
-    
+    @Step("Venter på historikkinnslag {tekst}")
     public void ventTilHistorikkinnslag(String tekst) throws Exception {
         Vent.til( () -> {
             velgBehandling(valgtBehandling);
@@ -370,6 +373,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Behandlingsstatus
      */
+    @Step("Venter på behandlingsstatus {tekst}")
     public void ventTilBehandlingsstatus(String status) throws Exception {
         Vent.til(() -> {
             velgBehandling(valgtBehandling);
@@ -422,8 +426,8 @@ public class Saksbehandler extends Aktoer{
            return godkjennØkonomioppdrag();
        }, 10, "Fant ingen økonomioppdag og godkjenne");
     }
-    
-    
+
+    @Step("Godkjenner økonomioppdrag")
     public boolean godkjennØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(null);

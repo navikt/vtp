@@ -87,6 +87,7 @@ public class Fordel extends Aktoer {
     /*
      * Sender inn søknad og opretter ny sak
      */
+    @Step("Sender inn søknad for bruker {scenario.getPersonopplysninger().getSøkerIdent()}")
     public long sendInnSøknad(Soeknad søkand, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
         return sendInnSøknad(søkand, scenario, dokumenttypeId, null);
     }
@@ -123,6 +124,7 @@ public class Fordel extends Aktoer {
     /*
      * Sender inn inntektsmelding og returnerer saksnummer
      */
+    @Step("Sender inn inntektsmelding for bruker {scenario.getPersonopplysninger().getSøkerIdent()}")
     public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
         String xml = inntektsmelding.createInntektesmeldingXML();
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -153,6 +155,7 @@ public class Fordel extends Aktoer {
         return journalpostId;
     }
 
+    @Step("Sender inn klage for bruker {scenario.getPersonopplysninger().getSøkerIdent()}")
     public long sendInnKlage(String xmlstring, TestscenarioDto scenario, Long saksnummer) throws IOException {
         String xml = xmlstring;
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();

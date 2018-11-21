@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 
@@ -33,7 +34,8 @@ public abstract class TestBase {
     protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet) {
         verifiserLikhet(verdiGjeldende, verdiForventet, "Object");
     }
-    
+
+    @Step("Verifiserer likhet på {verdiNavn} mellom gjeldene {verdiGjeldende} og forventet {verdiForventet}")
     protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet, String verdiNavn) {
         verifiser(verdiGjeldende.equals(verdiForventet), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
     }

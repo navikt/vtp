@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.aktoerer.spberegning;
 
 import java.io.IOException;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.ForeslaaDto;
@@ -45,6 +46,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Foreslår og henter forslag fra beregning
      */
+    @Step("Foreslår beregning for Gosyssak {gosysSakId}")
     public void foreslåBeregning(TestscenarioDto testscenario, String gosysSakId) throws IOException {
         ForeslaaDto foreslå = new ForeslaaDto("SYK", Long.parseLong(testscenario.getPersonopplysninger().getSøkerAktørIdent()), gosysSakId);
         forslag = beregningKlient.foreslaBeregningPost(foreslå);
