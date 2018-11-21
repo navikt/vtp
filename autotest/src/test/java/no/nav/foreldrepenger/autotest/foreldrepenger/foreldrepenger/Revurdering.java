@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public class Revurdering extends ForeldrepengerTestBase {
     @Test
     public void opprettRevurderingManuelt() throws Exception {
 
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("50"); // 51
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -32,10 +33,23 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         // TODO (MV) : Jobb videre herfra
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-INNTK"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
+        overstyrer.ikkeVentPåStatus = true;
+        overstyrer.hentFagsak(saksnummer);
+        overstyrer.ventOgGodkjennØkonomioppdrag();
+        overstyrer.ikkeVentPåStatus = false;
+        overstyrer.opprettBehandlingRevurdering(overstyrer.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
+        overstyrer.velgBehandling(overstyrer.kodeverk.BehandlingType.getKode("Revurdering"));
+        overstyrer.aksjonspunktBekreftelse(OverstyrMedlemskapsvilkaaret.class) //stopper her
+                .avvis(overstyrer.kodeverk.IkkeOppfyltÅrsak.getKode("1021"));
+        overstyrer.bekreftAksjonspunktBekreftelse(OverstyrMedlemskapsvilkaaret.class);
+        /*
+        * kode: 6005
+        * avslagskode: "1021" (=utvandret) (1020= er ikke medlem)
+        * begrunnelse: "blabla"
+        * erVilkarOk: false
+        * */
+        overstyrer.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
     }
 
