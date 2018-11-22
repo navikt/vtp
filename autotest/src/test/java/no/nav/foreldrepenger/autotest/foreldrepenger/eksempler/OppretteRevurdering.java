@@ -17,7 +17,7 @@ public class OppretteRevurdering extends FpsakTestBase{
     public void opretteRevurderingPåTerminsøknad() throws Exception {
         //Opprett scenario og søknad
         TestscenarioDto testscenario = opprettScenario("50");
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
         //Send inn søknad
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);

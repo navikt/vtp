@@ -46,7 +46,9 @@ public class ProofOfConceptTest extends FpsakTestBase {
         TestscenarioDto testscenario = opprettScenario("58");
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerIdent());
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(0);
+        inntektsmeldingsBuilder.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerIdent(), LocalDate.now().plusWeeks(3));
 
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);

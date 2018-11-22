@@ -9,14 +9,23 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Dekningsgrader;
 public class ForeldrepengeYtelseErketyper {
 
     //todo builder?
-    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTermin() {
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate termindato) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
-        LocalDate termindato = LocalDate.now();
-        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTerminFørTermin(termindato));
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTermin(termindato));
         foreldrepenger.setFordeling(FordelingErketyper.fordelingMorHappyCase(termindato));
+        return foreldrepenger;
+    }
+    
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminFar(LocalDate termindato) {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTermin(termindato));
+        foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(termindato));
         return foreldrepenger;
     }
 
@@ -43,7 +52,7 @@ public class ForeldrepengeYtelseErketyper {
     }
 
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans() {
-        Foreldrepenger foreldrepenger = foreldrepengeYtelseNorskBorgerINorgeTermin();
+        Foreldrepenger foreldrepenger = foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate.now().plusWeeks(3));
         foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
         return foreldrepenger;
     }

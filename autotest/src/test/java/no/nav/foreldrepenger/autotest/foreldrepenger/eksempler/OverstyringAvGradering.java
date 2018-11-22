@@ -11,7 +11,7 @@ public class OverstyringAvGradering extends FpsakTestBase{
 
     public void skalKunneOverstyreGradering() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         //søknad.leggTilPeriode(new periode().gradering(25))
         
         fordel.erLoggetInnUtenRolle();

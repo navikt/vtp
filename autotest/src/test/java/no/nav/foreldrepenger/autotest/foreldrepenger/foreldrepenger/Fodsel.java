@@ -176,6 +176,31 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
     }
+    
+    @Test
+    public void morOgFarSøkerFødselMedEttArbeidsforhold() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("50");
+        
+        behandleSøknadForMor(testscenario);
+        behandleSøknadForFar(testscenario);
+    }
+    
+    public void behandleSøknadForMor(TestscenarioDto testscenario) {
+        String aktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+        
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(aktørid, startDatoForeldrepenger);
+ 
+    }
+    
+    public void behandleSøknadForFar(TestscenarioDto testscenario) {
+        String aktørid = testscenario.getPersonopplysninger().getAnnenpartIdent(); //Aktørid far
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(null, startDatoForeldrepenger);
+    }
 
     @Test
     public void morSøkerFødselMedToArbeidsforholdISammeOrganisasjonEnInntektsmelding() throws Exception {

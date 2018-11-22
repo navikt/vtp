@@ -36,30 +36,24 @@ public class SoekersRelasjonErketyper {
 
         return soekersRelasjonTilBarnet;
     }
-
-    public static Termin søkerTerminFørTermin() {
-        return søkerTerminFørTermin(LocalDate.now());
+    
+    public static Termin søkerTermin(LocalDate termindato) {
+        return termin(1, termindato);
     }
 
-    public static Termin søkerTerminFørTermin(LocalDate termindato) {
-        return termin(1, true, termindato);
+    public static Termin søkerTerminFørTermin() {
+        return termin(1, LocalDate.now().plusWeeks(3));
     }
 
     public static Termin søkerTerminEtterTermin() {
-        return termin(1, false, LocalDate.now());
+        return termin(1, LocalDate.now().minusWeeks(3));
     }
 
-    private static Termin termin(int antall, boolean førTermin, LocalDate termindato){
+    private static Termin termin(int antall, LocalDate termindato){
         Termin termin = new Termin();
         termin.setAntallBarn(antall);
-        if (førTermin) {
-            termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-            termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
-        } else {
-            termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(1)));
-            termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(2)));
-        }
-
+        termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(termindato));
+        termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(termindato.minusMonths(1)));
         return termin;
     }
 

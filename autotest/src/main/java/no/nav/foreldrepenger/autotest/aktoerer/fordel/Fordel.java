@@ -11,6 +11,7 @@ import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostId;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnyttning;
@@ -41,6 +42,7 @@ public class Fordel extends Aktoer {
     FordelKlient fordelKlient;
     BehandlingerKlient behandlingerKlient;
     SakKlient sakKlient;
+    FagsakKlient fagsakKlient;
 
     //Vtp Klienter
     JournalforingKlient journalpostKlient;
@@ -50,6 +52,7 @@ public class Fordel extends Aktoer {
         behandlingerKlient = new BehandlingerKlient(session);
         journalpostKlient = new JournalforingKlient(new HttpSession());
         sakKlient = new SakKlient(session);
+        fagsakKlient = new FagsakKlient(session);
     }
 
 
@@ -140,12 +143,23 @@ public class Fordel extends Aktoer {
         journalpostModell.setSakId(String.valueOf(sakId));
         return sakId;
     }
-
+    
+    public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario) throws Exception {
+        Long saksnummer = sendInnInntektsmeldinger(inntektsmeldinger, scenario, null);
+        
+        Vent.til(() ->{
+            return fagsakKlient.søk("" + saksnummer).size() > 0;
+        }, 4, "Oprettet ikke fagsag for inntektsmelding");
+        
+        return saksnummer;
+    }
+    
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario, Long saksnummer) throws IOException {
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, scenario, saksnummer);
         }
         return saksnummer;
+
     }
 
     public String journalførInnektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {

@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.junit.Test;
@@ -12,7 +14,7 @@ public class ForeldrepengerBuilderTest {
     public void foreldrepengerKontraktBuilderTest() throws DatatypeConfigurationException {
         ForeldrepengesoknadXmlErketyper fpx = new ForeldrepengesoknadXmlErketyper();
 
-        Soeknad soeknad = fpx.termindatoUttakKunMor("123").build();
+        Soeknad soeknad = fpx.termindatoUttakKunMor("123", LocalDate.now()).build();
 
         String xml = ForeldrepengesoknadBuilder.tilXML(soeknad);
 
