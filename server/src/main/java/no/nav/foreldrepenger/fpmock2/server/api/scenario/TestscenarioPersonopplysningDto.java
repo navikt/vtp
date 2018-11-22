@@ -17,18 +17,23 @@ public class TestscenarioPersonopplysningDto {
 
     @JsonProperty("annenpartIdent")
     private String annenpartIdent;
+    
+    @JsonProperty("annenpartAktørIdent")
+    private String annenpartAktørIdent;
 
     @JsonProperty("fødselsdato")
     private LocalDate fødselsdato;
 
     public TestscenarioPersonopplysningDto() {
+        
     }
 
 
-    public TestscenarioPersonopplysningDto(String søkerIdent, String annenpartIdent, String søkerAktørIdent, LocalDate fødselsdato) {
+    public TestscenarioPersonopplysningDto(String søkerIdent, String annenpartIdent, String søkerAktørIdent, String annenpartAktørIdent,LocalDate fødselsdato) {
         this.søkerIdent = søkerIdent;
         this.annenpartIdent = annenpartIdent;
         this.søkerAktørIdent = søkerAktørIdent;
+        this.annenpartAktørIdent = annenpartAktørIdent;
         this.fødselsdato = fødselsdato;
     }
 

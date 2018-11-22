@@ -62,9 +62,10 @@ public class TestscenarioRestTjeneste {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
+        String aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
 
-        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker ,fnrAnnenPart, aktørIdSøker, fødselsdato.orElse(null));
+        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker ,fnrAnnenPart, aktørIdSøker, aktørIdAnnenPart, fødselsdato.orElse(null));
 
         LOG.info("Testscenario med templateKey: {}, for søker: {}, med aktørId: {}.", templateKey, fnrSøker, aktørIdSøker);
 

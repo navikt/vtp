@@ -157,22 +157,22 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String aktoerId, LocalDate startDatoForeldrepenger) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate startDatoForeldrepenger) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger))
-                .withSoeker(morSoeker(aktoerId))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(startDatoForeldrepenger, farAktørId))
+                .withSoeker(morSoeker(morAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
     
-    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String aktoerId, LocalDate startDatoForeldrepenger) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String farAktørId, String morAktørId, LocalDate startDatoForeldrepenger) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.minusWeeks(3)))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFar(startDatoForeldrepenger))
-                .withSoeker(farSoeker(aktoerId))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(startDatoForeldrepenger, morAktørId))
+                .withSoeker(farSoeker(farAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }

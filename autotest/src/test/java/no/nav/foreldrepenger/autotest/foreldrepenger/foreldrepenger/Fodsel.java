@@ -178,7 +178,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     
     @Test
     @Disabled
-    public void morOgFarSøkerFødselMedEttArbeidsforhold() throws Exception {
+    public void farOgMorSøkerFødselMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("60");
         
         behandleSøknadForMor(testscenario);
@@ -186,11 +186,12 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
     
     public void behandleSøknadForMor(TestscenarioDto testscenario) throws Exception {
-        String aktørid = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        String søkerAktørid = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        String annenPartAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
         
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(aktørid, startDatoForeldrepenger);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -205,11 +206,12 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
     
     public void behandleSøknadForFar(TestscenarioDto testscenario) throws Exception {
-        String aktørid = testscenario.getPersonopplysninger().getAnnenpartIdent(); //Aktørid far
+        String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent(); //Aktørid far
+        String annenPartAktørid = testscenario.getPersonopplysninger().getAnnenpartIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
 
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(null, startDatoForeldrepenger);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
     }
 
     @Test
