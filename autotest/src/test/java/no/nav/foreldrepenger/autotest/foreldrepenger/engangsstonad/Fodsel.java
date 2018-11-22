@@ -75,8 +75,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         //verifiser at statusen er avvist
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
@@ -105,8 +104,7 @@ public class Fodsel extends EngangsstonadTestBase{
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }

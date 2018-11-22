@@ -40,20 +40,17 @@ public class Termin extends EngangsstonadTestBase{
             .setTermindato(LocalDate.now().plusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTerminBekreftelse.class);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_GYLDIG_MEDLEMSKAPSPERIODE));
+            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_TERMINBEKREFTELSE));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        
     }
     
     
@@ -96,10 +93,6 @@ public class Termin extends EngangsstonadTestBase{
             .utstedtdato(LocalDate.now().minusMonths(1))
             .setTermindato(LocalDate.now().plusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTerminBekreftelse.class);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
         
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);

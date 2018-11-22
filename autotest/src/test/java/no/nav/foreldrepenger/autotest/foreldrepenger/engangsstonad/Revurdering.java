@@ -41,10 +41,6 @@ public class Revurdering extends EngangsstonadTestBase{
         bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -92,10 +88,6 @@ public class Revurdering extends EngangsstonadTestBase{
         bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -125,10 +117,6 @@ public class Revurdering extends EngangsstonadTestBase{
         bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         
@@ -136,8 +124,7 @@ public class Revurdering extends EngangsstonadTestBase{
         beslutter.hentFagsak(saksnummer);
         beslutter.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN))
-            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_GYLDIG_MEDLEMSKAPSPERIODE));
+            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         beslutter.ventTilBehandlingsstatus("AVSLU");

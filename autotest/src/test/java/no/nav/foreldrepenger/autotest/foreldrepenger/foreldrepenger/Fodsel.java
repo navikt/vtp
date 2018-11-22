@@ -92,7 +92,6 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         hackForÅkommeForbiØkonomi(saksnummer);
 
-
         //verifiserer uttak
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
         assertThat(perioder).hasSize(3);
@@ -178,23 +177,34 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
     
     @Test
+    @Disabled
     public void morOgFarSøkerFødselMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("60");
         
         behandleSøknadForMor(testscenario);
         behandleSøknadForFar(testscenario);
     }
     
-    public void behandleSøknadForMor(TestscenarioDto testscenario) {
-        String aktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+    public void behandleSøknadForMor(TestscenarioDto testscenario) throws Exception {
+        String aktørid = testscenario.getPersonopplysninger().getAnnenpartIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
         
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(aktørid, startDatoForeldrepenger);
- 
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(aktørid, startDatoForeldrepenger);
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
+        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.ikkeVentPåStatus = true;
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ikkeVentPåStatus = false;
+        saksbehandler.ventOgGodkjennØkonomioppdrag();
     }
     
-    public void behandleSøknadForFar(TestscenarioDto testscenario) {
+    public void behandleSøknadForFar(TestscenarioDto testscenario) throws Exception {
         String aktørid = testscenario.getPersonopplysninger().getAnnenpartIdent(); //Aktørid far
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);

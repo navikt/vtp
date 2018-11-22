@@ -42,10 +42,6 @@ public class Adopsjon extends EngangsstonadTestBase{
         bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -107,10 +103,6 @@ public class Adopsjon extends EngangsstonadTestBase{
         bekreftelse2.bekreftBarnErIkkeEktefellesBarn();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
-        
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         
@@ -153,10 +145,6 @@ public class Adopsjon extends EngangsstonadTestBase{
         MannAdoptererAleneBekreftelse bekreftelse3 = saksbehandler.hentAksjonspunktbekreftelse(MannAdoptererAleneBekreftelse.class);
         bekreftelse3.bekreftMannAdoptererAlene();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2, bekreftelse3);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         

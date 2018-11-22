@@ -41,10 +41,6 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvOmsorgsvilkoret.class)
             .bekreftGodkjent();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvOmsorgsvilkoret.class);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
     
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
@@ -52,7 +48,6 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_GYLDIG_MEDLEMSKAPSPERIODE))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
@@ -141,10 +136,6 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvOmsorgsvilkoret.class)
             .bekreftGodkjent();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvOmsorgsvilkoret.class);
-        
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
-            .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
     
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
@@ -152,7 +143,6 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_GYLDIG_MEDLEMSKAPSPERIODE))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
