@@ -164,7 +164,8 @@ public class Fordel extends Aktoer {
 
     public String journalførInnektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
         String xml = inntektsmelding.createInntektesmeldingXML();
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
+        String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, aktørId, DokumenttypeId.INNTEKTSMELDING);
         journalpostModell.setSakId(saksnummer.toString());
         return journalpostKlient.journalfør(journalpostModell).getJournalpostId();
     }
