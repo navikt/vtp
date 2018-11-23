@@ -1,2 +1,2 @@
 FROM docker.adeo.no:5000/fpsak:autotest
-copy vtp.sh /init-scripts/
+COPY vtp.sh /init-scripts/
