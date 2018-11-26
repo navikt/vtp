@@ -3,8 +3,12 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 import java.time.LocalDate;
 import java.util.List;
 
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttakKontrollerOpplysningerOmMedlemskap;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerManueltOpprettetRevurdering;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +24,7 @@ public class Revurdering extends ForeldrepengerTestBase {
     @Test
     public void opprettRevurderingManuelt() throws Exception {
 
-        TestscenarioDto testscenario = opprettScenario("50"); // 51
+        TestscenarioDto testscenario = opprettScenario("50"); // 51?
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -32,24 +36,42 @@ public class Revurdering extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
-        // TODO (MV) : Jobb videre herfra
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.ikkeVentPåStatus = true;
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventOgGodkjennØkonomioppdrag();
+        saksbehandler.ikkeVentPåStatus = false;
+        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
+
+
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
-        overstyrer.ikkeVentPåStatus = true;
         overstyrer.hentFagsak(saksnummer);
-        overstyrer.ventOgGodkjennØkonomioppdrag();
-        overstyrer.ikkeVentPåStatus = false;
-        overstyrer.opprettBehandlingRevurdering(overstyrer.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
         overstyrer.velgBehandling(overstyrer.kodeverk.BehandlingType.getKode("Revurdering"));
-        overstyrer.aksjonspunktBekreftelse(OverstyrMedlemskapsvilkaaret.class) //stopper her
-                .avvis(overstyrer.kodeverk.IkkeOppfyltÅrsak.getKode("1021"));
-        overstyrer.bekreftAksjonspunktBekreftelse(OverstyrMedlemskapsvilkaaret.class);
-        /*
-        * kode: 6005
-        * avslagskode: "1021" (=utvandret) (1020= er ikke medlem)
-        * begrunnelse: "blabla"
-        * erVilkarOk: false
-        * */
-        overstyrer.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak,overstyrer.valgtBehandling);
+        overstyrMedlemskapsvilkaaret.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
+        overstyrMedlemskapsvilkaaret.setBegrunnelse("avvist");
+        overstyrer.overstyr(overstyrMedlemskapsvilkaaret);
+        overstyrer.hentAksjonspunktbekreftelse(FastsettUttakKontrollerOpplysningerOmMedlemskap.class)
+                .setBegrunnelse("Kontrollerer opplysninger medlmeskap.");
+        overstyrer.bekreftAksjonspunktBekreftelse(FastsettUttakKontrollerOpplysningerOmMedlemskap.class);
+        overstyrer.bekreftAksjonspunktBekreftelse(KontrollerManueltOpprettetRevurdering.class);
+        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
+        overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Revurdering"));
+
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET))
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.KONTROLLER_OPPLYSNINGER_OM_MEDLEMSKAP));
+        beslutter.ikkeVentPåStatus = true;
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.ventOgGodkjennØkonomioppdrag();
+        beslutter.ikkeVentPåStatus = false;
+
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
+        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
 
     }
 
