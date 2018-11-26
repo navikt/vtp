@@ -23,6 +23,18 @@
         "registreringsDato": "now() - P10Y",
         "datoSistEndret": "now() - P1Y"
       }
+    },
+    {
+      "orgnummer": "979191300",
+      "navn": {
+        "navnelinje": [
+          "TESTTECH"
+        ]
+      },
+      "organisasjonDetaljer": {
+        "registreringsDato": "now() - P10Y",
+        "datoSistEndret": "now() - P1Y"
+      }
     }
   ]
 }

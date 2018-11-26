@@ -43,16 +43,14 @@ public class ProofOfConceptTest extends FpsakTestBase {
 
     @Test
     public void foreldrepengesøknadTermindatoKunMorMedInntektsmelding() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("58");
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
-        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(0);
-        inntektsmeldingsBuilder.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerIdent());
 
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        Long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingsBuilder, testscenario, null);
+        Long saksnummer = fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, null);
         fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER,saksnummer);
 
         System.out.println("Saksnummer: " + saksnummer);

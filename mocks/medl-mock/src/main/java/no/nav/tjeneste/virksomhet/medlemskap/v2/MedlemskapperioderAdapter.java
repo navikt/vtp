@@ -31,7 +31,9 @@ public class MedlemskapperioderAdapter {
                 PersonModell pm = (PersonModell)brukerModell;
                 
                 List<Medlemsperiode> periodeListe = new ArrayList<>();
-                pm.getMedlemskap().getPerioder().forEach(medlemsskapsperiode -> periodeListe.add(tilMedlemsperiode(medlemsskapsperiode)));
+                if(pm.getMedlemskap() != null && pm.getMedlemskap().getPerioder() != null) {
+                    pm.getMedlemskap().getPerioder().forEach(medlemsskapsperiode -> periodeListe.add(tilMedlemsperiode(medlemsskapsperiode)));
+                }
                 return periodeListe;
             }
         }

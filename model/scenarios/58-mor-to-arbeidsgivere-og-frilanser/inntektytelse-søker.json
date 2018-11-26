@@ -1,5 +1,4 @@
 {
-
 	"inntektskomponent": {
 		"inntektsperioder": [
 			{
@@ -27,17 +26,16 @@
 				"orgnr": "979191200",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
-				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
+				"beskrivelse": "fastloenn"
 			}
 		],
 		"frilansarbeidsforholdperioder": [
 			{
-				"frilansFom":"now() - P15M",
-				"frilansTom":"now() - P1D",
-				"orgnr":"979191200",
-				"stillingsprosent":"25"
+				"frilansFom":"now() - P1Y",
+				"frilansTom":"now() - P1M",
+				"orgnr":"979191300",
+				"stillingsprosent":"10"
 			}
-
 		]
 	},
 	"aareg": {
@@ -48,22 +46,20 @@
 				"ansettelsesperiodeFom": "now() - P4M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
-
-
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P2M",
 						"sisteLønnsendringsdato": "now() - P1M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "40",
-						"stillingsprosent" : 100,
+						"stillingsprosent" : 20,
 						"beregnetAntallTimerPerUke": "30"
 					},
 					{
 						"fomGyldighetsperiode": "now() - P4M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "30",
-						"stillingsprosent" : 50,
+						"stillingsprosent" : 30,
 						"beregnetAntallTimerPerUke": "20"
 					}
 				]
@@ -73,24 +69,15 @@
 				"arbeidsforholdId": "ARB001-002",
 				"arbeidsforholdIdNav": "1238162",
 				"ansettelsesperiodeFom": "now() - P4Y",
-				"ansettelsesperiodeTom": "now() - P4M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "979191200",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P4Y",
-						"sisteLønnsendringsdato": "now() - P1Y",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "40",
-						"stillingsprosent" : 100,
-						"beregnetAntallTimerPerUke": "30"
-					},
-					{
-						"fomGyldighetsperiode": "now() - P10M",
-						"avlønningstype": "fastlønn",
-						"avtaltArbeidstimerPerUke": "30",
 						"stillingsprosent" : 50,
-						"beregnetAntallTimerPerUke": "20"
+						"beregnetAntallTimerPerUke": "30"
 					}
 				]
 			}
@@ -99,15 +86,15 @@
 	"sigrun": {
 		"inntektsår": [
 			{
-				"år": "2016",
+				"år": "2017",
 				"oppføring": [
 					{
-						"tekniskNavn": "ettellerannet",
-						"beløp": 5000
+						"tekniskNavn": "personinntektNaering",
+						"beløp": 500000
 					},
 					{
-						"tekniskNavn": "noeannet",
-						"beløp": 6000
+						"tekniskNavn": "personinntektLoenn",
+						"beløp": 600000
 					}
 				]
 			}

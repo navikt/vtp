@@ -141,10 +141,11 @@ public class Fordel extends Aktoer {
         return sakId;
     }
 
-    public void sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario, Long saksnummer) throws IOException {
+    public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario, Long saksnummer) throws IOException {
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
-            sendInnInntektsmelding(builder, scenario, saksnummer);
+            saksnummer = sendInnInntektsmelding(builder, scenario, saksnummer);
         }
+        return saksnummer;
     }
 
     public String journalførInnektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
