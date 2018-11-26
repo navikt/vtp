@@ -161,9 +161,9 @@ public class MockServer {
         SslContextFactory sslContextFactory = new SslContextFactory();
 
         if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
-            sslContextFactory.setKeyStorePath(System.getProperty("CUSTOM_KEYSTORE_PATH"));
-            sslContextFactory.setKeyStorePassword(System.getProperty("CUSTOM_KEYSTORE_PASSWORD", "changeit"));
-            sslContextFactory.setKeyManagerPassword(System.getProperty("CUSTOM_KEYSTORE_PASSWORD", "changeit"));
+            sslContextFactory.setKeyStorePath(System.getenv("CUSTOM_KEYSTORE_PATH"));
+            sslContextFactory.setKeyStorePassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
+            sslContextFactory.setKeyManagerPassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
         } else {
             sslContextFactory.setCertAlias("localhost-ssl");
             sslContextFactory.setKeyStorePath(getKeystoreFilePath());
