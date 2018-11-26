@@ -161,6 +161,7 @@ public class MockServer {
         SslContextFactory sslContextFactory = new SslContextFactory();
 
         if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
+            sslContextFactory.setCertAlias("fpmock2");
             sslContextFactory.setKeyStorePath(System.getenv("CUSTOM_KEYSTORE_PATH"));
             sslContextFactory.setKeyStorePassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
             sslContextFactory.setKeyManagerPassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
@@ -182,11 +183,19 @@ public class MockServer {
     }
 
     private String getKeyStorePassword() {
-        return System.getProperty("no.nav.modig.security.appcert.password", "changeit");
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
+            return System.getenv("CUSTOM_KEYSTORE_PASSWORD");
+        } else {
+            return System.getProperty("no.nav.modig.security.appcert.password", "changeit");
+        }
     }
 
     private String getKeystoreFilePath() {
-        return System.getProperty("no.nav.modig.security.appcert.keystore");
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
+            return System.getenv("CUSTOM_KEYSTORE_PATH");
+        } else {
+            return System.getProperty("no.nav.modig.security.appcert.keystore");
+        }
     }
 
     private Integer getSslPort() {
