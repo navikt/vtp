@@ -65,15 +65,28 @@ public class KeyStoreTool {
     }
 
     public static String getDefaultKeyStorePath() {
-        return System.getProperty("no.nav.modig.security.appcert.keystore");
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
+            return System.getenv("CUSTOM_KEYSTORE_PATH");
+        } else {
+            return System.getProperty("no.nav.modig.security.appcert.keystore");
+        }
     }
 
     public static char[] getKeyStoreAndKeyPassword() {
-        return System.getProperty("no.nav.modig.security.appcert.password").toCharArray();
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
+            return System.getenv("CUSTOM_KEYSTORE_PASSWORD").toCharArray();
+        } else {
+
+            return System.getProperty("no.nav.modig.security.appcert.password").toCharArray();
+        }
     }
 
     public static String getKeyAndCertAlias() {
-        return System.getProperty("no.nav.modig.security.appkey", "app-key");
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
+            return "fpmock2";
+        } else {
+            return System.getProperty("no.nav.modig.security.appkey", "app-key");
+        }
     }
     
     
