@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Tag;
@@ -35,12 +34,11 @@ public class Inntektsmelding extends FpsakTestBase{
 
     @Test
     public void opprettInntektsmeldingEgendefinert() throws IOException {
-        LocalDate ønsketDato = LocalDate.now().minusDays(2);
         TestscenarioDto testscenario = opprettScenario("50");
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilderFraInntektsperiode(60000,
                 testscenario.getPersonopplysninger().getSøkerIdent(),
                 testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr(),
-                LocalDate.now().minusDays(3), Optional.empty());
+                LocalDate.now().minusDays(3));
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, null);
 

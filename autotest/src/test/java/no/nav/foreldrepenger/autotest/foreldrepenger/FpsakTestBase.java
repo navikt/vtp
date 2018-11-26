@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -80,7 +79,7 @@ public class FpsakTestBase extends TestScenarioTestBase{
                     .max(Comparator.comparing(Inntektsperiode::getTom))
                     .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
             Integer beløp = sisteInntektsperiode.getBeløp();
-            inntektsmeldinger.add(lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, arbeidsgiverOrgnr, startDatoForeldrepenger, Optional.empty()));
+            inntektsmeldinger.add(lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, arbeidsgiverOrgnr, startDatoForeldrepenger));
         }
 
         return inntektsmeldinger;
@@ -102,8 +101,15 @@ public class FpsakTestBase extends TestScenarioTestBase{
     protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp,
                                                                                  String fnr,
                                                                                  String orgnummer,
+                                                                                 LocalDate startDatoForeldrepenger) {
+        return lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, orgnummer, startDatoForeldrepenger, null);
+    }
+
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp,
+                                                                                 String fnr,
+                                                                                 String orgnummer,
                                                                                  LocalDate startDatoForeldrepenger,
-                                                                                 Optional<String> arbeidsforholdId) {
+                                                                                 String arbeidsforholdId) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.FORELDREPENGER,
                 ÅrsakInnsendingKodeliste.NY,
@@ -112,7 +118,7 @@ public class FpsakTestBase extends TestScenarioTestBase{
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
-                arbeidsforholdId.orElse(null),
+                arbeidsforholdId,
                 null,
                 new BigDecimal(beløp),
                 new ArrayList<>(),

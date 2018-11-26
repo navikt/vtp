@@ -76,10 +76,7 @@ public class Fordel extends Aktoer {
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
 
-        Vent.til(() -> {
-            return behandlingerKlient.alle(sakId).size() > 0;
-        }, 60, "Saken hadde ingen behandlinger");
-
+        Vent.til(() -> behandlingerKlient.alle(sakId).size() > 0, 60, "Saken hadde ingen behandlinger");
 
         return sakId;
     }
@@ -148,11 +145,9 @@ public class Fordel extends Aktoer {
 
     public String journalførInnektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto scenario, Long saksnummer) throws IOException {
         String xml = inntektsmelding.createInntektesmeldingXML();
-        String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.INNTEKTSMELDING);
         journalpostModell.setSakId(saksnummer.toString());
-        String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
-        return journalpostId;
+        return journalpostKlient.journalfør(journalpostModell).getJournalpostId();
     }
 
     @Step("Sender inn klage for bruker")
