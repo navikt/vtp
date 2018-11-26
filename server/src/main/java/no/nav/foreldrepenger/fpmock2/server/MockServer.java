@@ -52,8 +52,10 @@ public class MockServer {
     private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
 
     public static void main(String[] args) throws Exception {
-        TestCertificates.setupKeyAndTrustStore();
-        
+        if (null == System.getenv("ENABLE_CUSTOM_TRUSTSTORE")) {
+            TestCertificates.setupKeyAndTrustStore();
+        }
+
         PropertiesUtils.initProperties();
 
         
