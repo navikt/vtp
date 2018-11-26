@@ -6,8 +6,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.JaxbHelper;
@@ -31,7 +29,6 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
         PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
         BuildStep {
 
-    private static final Logger log = LoggerFactory.getLogger(ForeldrepengesoknadBuilder.class);
     private XMLGregorianCalendar mottattDato;
     private String begrunnelseForSenSoeknad;
     private String tilleggsopplysninger;

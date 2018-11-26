@@ -19,9 +19,13 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaUttakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.papirsoknad.PapirSoknadForeldrepengerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.FordelingDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.PermisjonPeriodeDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriodeAktivitet;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
@@ -254,12 +258,40 @@ public class Fodsel extends ForeldrepengerTestBase {
 
     }
 
-    private List<Integer> sorterteInntektsbeløp(TestscenarioDto testscenario) {
-        return testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().stream()
-                .map(Inntektsperiode::getBeløp)
-                .distinct()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toList());
+    @Test
+    public void morSøkerFødselMedEttArbeidsforhold_papirsøknad() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("50");
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnPapirsøkand(testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
+        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        PapirSoknadForeldrepengerBekreftelse aksjonspunktBekreftelse = saksbehandler.aksjonspunktBekreftelse(PapirSoknadForeldrepengerBekreftelse.class);
+        FordelingDto fordeling = new FordelingDto();
+        PermisjonPeriodeDto fpff = new PermisjonPeriodeDto(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL,
+                startDatoForeldrepenger, fødselsdato.minusDays(1));
+        PermisjonPeriodeDto mødrekvote = new PermisjonPeriodeDto(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE,
+                fødselsdato, fødselsdato.plusWeeks(10));
+        fordeling.permisjonsPerioder.add(fpff);
+        fordeling.permisjonsPerioder.add(mødrekvote);
+        aksjonspunktBekreftelse.morSøkerFødsel(fordeling, fødselsdato, fpff.periodeFom);
+
+        saksbehandler.ikkeVentPåStatus = true;
+        saksbehandler.bekreftAksjonspunktBekreftelse(aksjonspunktBekreftelse);
+        saksbehandler.ventOgGodkjennØkonomioppdrag();
+        saksbehandler.ikkeVentPåStatus = false;
+
+        //verifiserer uttak
+        List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
+        assertThat(perioder).hasSize(3);
+        verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, 1);
+        verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, 1);
+        verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 1);
     }
 
     private void verifiserUttaksperiode(UttakResultatPeriode uttakResultatPeriode, String stønadskontotype, int antallAktiviteter) {
@@ -280,5 +312,13 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventOgGodkjennØkonomioppdrag();
         saksbehandler.ikkeVentPåStatus = false;
+    }
+
+    private List<Integer> sorterteInntektsbeløp(TestscenarioDto testscenario) {
+        return testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().stream()
+                .map(Inntektsperiode::getBeløp)
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
     }
 }
