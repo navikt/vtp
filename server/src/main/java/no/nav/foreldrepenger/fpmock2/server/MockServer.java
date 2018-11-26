@@ -158,10 +158,10 @@ public class MockServer {
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
 
-        if(null != System.getenv("NAV_TRUSTSTORE_PATH") && System.getenv("ENABLE_NAV_TRUSTSTORE").equalsIgnoreCase("true")) {
-            sslContextFactory.setKeyStorePath(System.getProperty("NAV_TRUSTSTORE_PATH"));
-            sslContextFactory.setKeyStorePassword(System.getProperty("NAV_TRUSTSTORE_PASSWORD", "changeit"));
-            sslContextFactory.setKeyManagerPassword(System.getProperty("NAV_TRUSTSTORE_PASSWORD", "changeit"));
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
+            sslContextFactory.setKeyStorePath(System.getProperty("CUSTOM_KEYSTORE_PATH"));
+            sslContextFactory.setKeyStorePassword(System.getProperty("CUSTOM_KEYSTORE_PASSWORD", "changeit"));
+            sslContextFactory.setKeyManagerPassword(System.getProperty("CUSTOM_KEYSTORE_PASSWORD", "changeit"));
         } else {
             sslContextFactory.setCertAlias("localhost-ssl");
             sslContextFactory.setKeyStorePath(getKeystoreFilePath());
