@@ -52,7 +52,7 @@ public class MockServer {
     private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
 
     public static void main(String[] args) throws Exception {
-        if (null == System.getenv("ENABLE_CUSTOM_TRUSTSTORE")) {
+        if (null == System.getenv("ENABLE_CUSTOM_TRUSTSTORE") || System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("false")) {
             TestCertificates.setupKeyAndTrustStore();
         }
 
