@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +63,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
 
-        hackForÅkommeForbiØkonomi(saksnummer);
+        hackForÅKommeForbiØkonomi(saksnummer);
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
@@ -94,7 +93,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
-        hackForÅkommeForbiØkonomi(saksnummer);
+        hackForÅKommeForbiØkonomi(saksnummer);
 
         //verifiserer uttak
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
@@ -113,7 +112,6 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
-    @Disabled
     public void morSøkerFødselMedToArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("56");
 
@@ -127,8 +125,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
+        hackForÅKommeForbiØkonomi(saksnummer);
 
         //verifiserer uttak
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
@@ -242,7 +239,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         fordel.sendInnInntektsmelding(inntektsmelding, testscenario, saksnummer);
 
-        hackForÅkommeForbiØkonomi(saksnummer);
+        hackForÅKommeForbiØkonomi(saksnummer);
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
@@ -306,7 +303,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         }
     }
 
-    private void hackForÅkommeForbiØkonomi(long saksnummer) throws Exception {
+    private void hackForÅKommeForbiØkonomi(long saksnummer) throws Exception {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
