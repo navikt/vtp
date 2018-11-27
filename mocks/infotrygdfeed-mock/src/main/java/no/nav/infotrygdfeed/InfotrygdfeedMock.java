@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.FeedRepositoryImpl;
 
 
-@Api(tags = {"Infotrygdmock/hendelse"})
+@Api(tags = {"Infotrygdmock/hendelser"})
 @Path("/infotrygd/hendelser")
 public class InfotrygdfeedMock {
 

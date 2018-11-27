@@ -3,34 +3,6 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-/*
-            <inntektListe xsi:type="ns4:Loennsinntekt" xmlns:ns4="http://nav.no/tjeneste/virksomhet/inntekt/v3/informasjon/inntekt" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                    <beloep>0</beloep>
-                    <fordel>naturalytelse</fordel>
-                    <inntektskilde>A-ordningen</inntektskilde>
-                    <inntektsperiodetype>Maaned</inntektsperiodetype>
-                    <inntektsstatus>LoependeInnrapportert</inntektsstatus>
-                    <levereringstidspunkt>2018-09-03T14:23:38.324+02:00</levereringstidspunkt>
-                    <opptjeningsperiode>
-                    <startDato>2017-01-01+01:00</startDato>
-                    </opptjeningsperiode>
-                    <utbetaltIPeriode>2017-01</utbetaltIPeriode>
-                    <opplysningspliktig xsi:type="ns4:OrganisasjonModell">
-                    <orgnummer>864950582</orgnummer>
-                    </opplysningspliktig>
-                    <virksomhet xsi:type="ns4:OrganisasjonModell">
-                    <orgnummer>972223794</orgnummer>
-                    </virksomhet>
-                    <inntektsmottaker xsi:type="ns4:PersonIdent">
-                    <personIdent>26049726650</personIdent>
-                    </inntektsmottaker>
-                    <inngaarIGrunnlagForTrekk>true</inngaarIGrunnlagForTrekk>
-                    <utloeserArbeidsgiveravgift>true</utloeserArbeidsgiveravgift>
-                    <informasjonsstatus>InngaarAlltid</informasjonsstatus>
-                    <beskrivelse>skattepliktigDelForsikringer</beskrivelse>
-                    </inntektListe>
-*/
-
 
 public class Inntektsperiode {
 

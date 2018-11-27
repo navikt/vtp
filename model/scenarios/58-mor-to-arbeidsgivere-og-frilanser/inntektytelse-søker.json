@@ -21,7 +21,6 @@
 			},
 			{
 				"fom": "now() - P15M",
-				"tom": "now() - P1D",
 				"beløp": 60000,
 				"orgnr": "979191200",
 				"type": "Lønnsinntekt",
@@ -32,7 +31,6 @@
 		"frilansarbeidsforholdperioder": [
 			{
 				"frilansFom":"now() - P1Y",
-				"frilansTom":"now() - P1M",
 				"orgnr":"979191300",
 				"stillingsprosent":"10"
 			}
