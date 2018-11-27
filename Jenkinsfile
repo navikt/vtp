@@ -1,2 +1,2 @@
 @Library('vl-jenkins')_
-naisPipeline {}
+vtpLokalDocker {}
