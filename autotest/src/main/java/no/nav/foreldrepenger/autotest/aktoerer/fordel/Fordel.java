@@ -10,6 +10,7 @@ import java.util.UUID;
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostId;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnyttning;
@@ -75,9 +76,12 @@ public class Fordel extends Aktoer {
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
-
-        Vent.til(() -> behandlingerKlient.alle(sakId).size() > 0, 60, "Saken hadde ingen behandlinger");
-
+        
+        Vent.til(() -> {
+            List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
+            return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
+        }, 60, "Saken hadde ingen behandlinger");
+        
         return sakId;
     }
 
