@@ -29,12 +29,12 @@ public class InntektsperiodeDeserializer extends JsonDeserializer {
 
         for (JsonNode nodeElement : node){
             Inntektsperiode inntektsperiodeIkkeMånedlig = objectMapper.treeToValue(nodeElement, Inntektsperiode.class);
-            inntektsperioder.addAll(getSplitInntektsperiodeToMonthly(inntektsperiodeIkkeMånedlig));
+            inntektsperioder.addAll(splittInntektsperioderTilMånedligeIntervall(inntektsperiodeIkkeMånedlig));
         }
         return inntektsperioder;
     }
 
-    private static List<Inntektsperiode> getSplitInntektsperiodeToMonthly(Inntektsperiode ip) {
+    private static List<Inntektsperiode> splittInntektsperioderTilMånedligeIntervall(Inntektsperiode ip) {
         List<Inntektsperiode> inntektsperioderPaaMaaned = new ArrayList<>();
         Stream.iterate(ip.getFom(), d -> d.plusMonths(1))
                 .limit(ChronoUnit.MONTHS.between(ip.getFom(), ip.getTom()) + 1).forEach(p -> {

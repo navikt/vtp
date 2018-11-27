@@ -19,6 +19,15 @@ public class FrilansArbeidsforholdsperiode {
     @JsonProperty("stillingsprosent")
     private Integer stillingsprosent;
 
+    public FrilansArbeidsforholdsperiode(){}
+
+    public FrilansArbeidsforholdsperiode(LocalDateTime frilansFom, LocalDateTime frilansTom, String orgnr, Integer stillingsprosent){
+        this.frilansFom = frilansFom;
+        this.frilansTom = frilansTom;
+        this.orgnr = orgnr;
+        this.stillingsprosent = stillingsprosent;
+    }
+
     public LocalDateTime getFrilansFom() {
         return frilansFom;
     }

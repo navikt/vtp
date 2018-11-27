@@ -15,6 +15,7 @@ public class InntektskomponentModell {
     List<Inntektsperiode> inntektsperioder = new ArrayList<>();
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonDeserialize(using = FrilansArbeidsforholdsperiodeDeserializer.class)
     @JsonProperty("frilansarbeidsforholdperioder")
     List<FrilansArbeidsforholdsperiode> frilansarbeidsforholdperioder = new ArrayList<>();
 
