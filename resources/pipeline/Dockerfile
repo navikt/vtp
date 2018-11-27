@@ -1,4 +1,4 @@
-FROM docker.adeo.no:5000/fpmock2:autotest
+FROM docker.adeo.no:5000/fpmock2:latest
 
 COPY enablecustomcerts.sh /init-scripts
 RUN mkdir /app/testcerts
