@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.AsyncPollingStatus;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingByttEnhet;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingHenlegg;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
@@ -116,6 +117,17 @@ public class BehandlingerKlient extends FpsakKlient{
     /*
      * Hent status for behandling
      */
+    public AsyncPollingStatus statusAsObject(int behandlingId, Integer gruppe) throws IOException {
+        HttpResponse response = status(behandlingId, gruppe);
+        
+        if(StatusRange.STATUS_REDIRECT.inRange(response.getStatusLine().getStatusCode())) {
+            return null;
+        }
+        else {
+            return hentObjectMapper().readValue(hentResponseBody(response), AsyncPollingStatus.class);
+        }
+    }
+    
     public HttpResponse status(int behandlingId, Integer gruppe) throws IOException {
         session.setRedirect(false);
         String url = hentRestRotUrl() + String.format(BEHANDLINGER_STATUS_URL, behandlingId, gruppe);

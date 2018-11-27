@@ -10,4 +10,9 @@ public class SokeFilterDto {
     protected List<ProsessTaskStatusDto> prosessTaskStatuser;
     protected LocalDateTime sisteKjoeretidspunktFraOgMed;
     protected LocalDateTime sisteKjoeretidspunktTilOgMed;
+    
+    public SokeFilterDto setSisteKjoeretidspunktFraOgMed(LocalDateTime tid) {
+        this.sisteKjoeretidspunktTilOgMed = tid;
+        return this;
+    }
 }

@@ -2,15 +2,19 @@ package no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.AsyncPollingStatus;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingHenlegg;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
@@ -37,6 +41,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeL
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsesstaskDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
+import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
@@ -66,7 +72,6 @@ public class Saksbehandler extends Aktoer{
     public KodeListe henleggArsakerInnsyn;
     
     public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
-    
     
     public Saksbehandler() {
         super();
@@ -157,9 +162,8 @@ public class Saksbehandler extends Aktoer{
         dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
         
-        Vent.til(() -> {
-            return ikkeVentPåStatus || behandlingerKlient.erStatusOk(behandling.id, null);
-        }, 60, "Behandling status var ikke klar");
+        ventPåStatus(behandling);
+        
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
         valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
         
@@ -180,6 +184,35 @@ public class Saksbehandler extends Aktoer{
         
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
+        }
+    }
+    
+    private void ventPåStatus(Behandling behandling) throws Exception {
+        if(!ikkeVentPåStatus) {
+            Vent.til(() -> {
+                return verifiserStatusForBehandling(behandling);
+            }, 60, () -> {
+                List<ProsessTaskListItemDto> prosessTasker = hentProsesstaskerForBehandling(behandling);
+                String prosessTaskList = "";
+                for (ProsessTaskListItemDto prosessTaskListItemDto : prosessTasker) {
+                    prosessTaskList += prosessTaskListItemDto.getTaskType() + " - " + prosessTaskListItemDto.getStatus() + "\n";
+                }
+                return "Behandling status var ikke klar men har ikke feilet\n" + prosessTaskList;
+            });
+        }
+    }
+    
+    private boolean verifiserStatusForBehandling(Behandling behandling) throws Exception {
+        AsyncPollingStatus status = behandlingerKlient.statusAsObject(behandling.id, null);
+        
+        if(status == null) {
+            return true;
+        }
+        else if(status.isPending()) {
+            return false;
+        }
+        else {
+            throw new RuntimeException("Status for behandling " + behandling.id + " feilet: " + status.getMessage());
         }
     }
 
@@ -454,6 +487,11 @@ public class Saksbehandler extends Aktoer{
     private void opprettBehandling(Kode behandlingstype, Kode årsak, Fagsak fagsak) throws Exception {
         behandlingerKlient.putBehandlinger(new BehandlingNy(fagsak.saksnummer, behandlingstype.kode, årsak == null ? null : årsak.kode));
         velgFagsak(valgtFagsak); //Henter fagsaken på ny
+    }
+    
+    private List<ProsessTaskListItemDto> hentProsesstaskerForBehandling(Behandling behandling) throws IOException {
+        List<ProsessTaskListItemDto> prosesstasker = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(5)));
+        return prosesstasker.stream().filter(p -> p.getTaskParametre().getBehandlingId() == "" + behandling.id).collect(Collectors.toList());
     }
 
 }
