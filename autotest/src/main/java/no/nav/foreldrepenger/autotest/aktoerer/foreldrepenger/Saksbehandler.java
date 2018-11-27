@@ -464,11 +464,11 @@ public class Saksbehandler extends Aktoer{
     @Step("Godkjenner økonomioppdrag")
     public boolean godkjennØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
-        List<ProsessTaskListItemDto> list = prosesstaskKlient.list(null);
+        List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
         
         for (ProsessTaskListItemDto prosessTaskListItemDto : list) {
-            if(prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
-               && prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
+            if(prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
+               && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
                && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
                 prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));
                 ventTilBehandlingsstatus("AVSLU");
