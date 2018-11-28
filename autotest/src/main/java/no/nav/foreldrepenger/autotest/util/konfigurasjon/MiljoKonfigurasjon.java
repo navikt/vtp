@@ -22,6 +22,7 @@ public class MiljoKonfigurasjon extends KonfigurasjonBase{
      */
     public void loadEnv(String env) {
         String resource = String.format(ENV_PROPERTY_LOCATION_FORMAT, env, env);
+        System.out.println("Parset filsti for properties: " + resource);
         File envFile = new File(MiljoKonfigurasjon.class.getClassLoader().getResource(resource).getFile());
         loadFile(envFile);
     }
@@ -31,6 +32,7 @@ public class MiljoKonfigurasjon extends KonfigurasjonBase{
         if(null == env){
             env = System.getProperty(AUTOTEST_ENV);
         }
+        System.out.println("Valgt env:" + env);
         return env == null ? "localhost" : env;
     }
         
