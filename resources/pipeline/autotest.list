@@ -58,7 +58,10 @@ VIRKSOMHET_OPPGAVE_V3_WSDLURL=http://maven.adeo.no/nexus/content/groups/public/n
 VIRKSOMHET_KODEVERK_V2_WSDLURL=http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/fim/nav-fim-kodeverk-v2-tjenestespesifikasjon/2.0.0-alpha004/nav-fim-kodeverk-v2-tjenestespesifikasjon-2.0.0-alpha004.zip
 VIRKSOMHET_KODEVERK_V2_SECURITYTOKEN=NONE
 JOURNAL_V2.URL=https://fpmock2:8063/joark/Journal/v2
-JOURNAL_V3.URL=https://fpmock2:8063/joark/Journal/v3
+JOURNAL_V3_SECURITYTOKEN=SAML
+JOURNAL_V3_URL=https://fpmock2:8063/services/journal/v3
+JOURNAL_V3_DESCRIPTION=Virksomhetstjeneste for henting av journalposter og dokumenter fra arkivet.
+JOURNAL_V3_WSDLURL=http://maven.adeo.no/nexus/service/local/artifact/maven/redirect?a=nav-journal-v3-
 AKTOER_V2.URL=https://fpmock2:8063/aktoerregister/ws/Aktoer/v2
 KODEVERK_V2_URL=https://fpmock2:8063/kodeverk/ws/Kodeverk/v2
 infotrygd.hendelser.api.url=https://fpmock2:8063/infotrygd/hendelser
