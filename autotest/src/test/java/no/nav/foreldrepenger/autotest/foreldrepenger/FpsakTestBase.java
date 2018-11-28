@@ -3,10 +3,12 @@ package no.nav.foreldrepenger.autotest.foreldrepenger;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -79,7 +81,7 @@ public class FpsakTestBase extends TestScenarioTestBase{
                     .max(Comparator.comparing(Inntektsperiode::getTom))
                     .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
             Integer beløp = sisteInntektsperiode.getBeløp();
-            inntektsmeldinger.add(lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, arbeidsgiverOrgnr, startDatoForeldrepenger));
+            inntektsmeldinger.add(lagInntektsmeldingBuilder(beløp, fnr, startDatoForeldrepenger, arbeidsgiverOrgnr, Optional.empty(), Optional.empty()));
         }
 
         return inntektsmeldinger;
@@ -98,33 +100,31 @@ public class FpsakTestBase extends TestScenarioTestBase{
         return new ArrayList<>(periodeMap.values());
     }
 
-    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp,
-                                                                                 String fnr,
-                                                                                 String orgnummer,
-                                                                                 LocalDate startDatoForeldrepenger) {
-        return lagInntektsmeldingBuilderFraInntektsperiode(beløp, fnr, orgnummer, startDatoForeldrepenger, null);
-    }
-
-    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp,
-                                                                                 String fnr,
-                                                                                 String orgnummer,
-                                                                                 LocalDate startDatoForeldrepenger,
-                                                                                 String arbeidsforholdId) {
-        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilder(Integer beløp, String fnr, LocalDate fpStartdato, String orgNr,
+                                                               Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon) {
+        String inntektsmeldingID = UUID.randomUUID().toString().substring(0, 7);
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(inntektsmeldingID,
                 YtelseKodeliste.FORELDREPENGER,
                 ÅrsakInnsendingKodeliste.NY,
                 fnr,
-                startDatoForeldrepenger);
-        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
-        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
+                fpStartdato);
+        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem(
+                "FS22",
+                "1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
-                arbeidsforholdId,
+                arbeidsforholdId.orElse(null),
                 null,
                 new BigDecimal(beløp),
                 new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>()));
-
+        builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(
+                orgNr,
+                "41925090"));
+        refusjon.ifPresent(_refusjon -> builder.setRefusjon(InntektsmeldingBuilder.createRefusjon(
+                _refusjon,
+                null,
+                Collections.emptyList())));
         return builder;
     }
 

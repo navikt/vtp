@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Tag;
@@ -35,18 +36,15 @@ public class Inntektsmelding extends FpsakTestBase{
     @Test
     public void opprettInntektsmeldingEgendefinert() throws IOException {
         TestscenarioDto testscenario = opprettScenario("50");
-        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilderFraInntektsperiode(60000,
-                testscenario.getPersonopplysninger().getSøkerIdent(),
-                testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr(),
-                LocalDate.now().minusDays(3));
+        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        LocalDate fpStartdato = LocalDate.now().minusDays(3);
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(60000, fnr, fpStartdato,
+                orgNr, Optional.empty(), Optional.empty());
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, null);
-
         System.out.println(inntektsmeldingBuilder.createInntektesmeldingXML());
-
-
         Assert.assertTrue(saksnummer > 0);
-
     }
 
 

@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +67,7 @@ public class ProofOfConceptTest extends FpsakTestBase {
     }
 
     @Test
+    @Disabled
     public void engangsttønadFødselFunnetStedKunMor() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

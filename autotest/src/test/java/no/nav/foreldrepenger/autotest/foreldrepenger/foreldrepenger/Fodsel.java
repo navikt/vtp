@@ -9,18 +9,27 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettBruttoBeregningsgrunnlagSNBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderBeregnetInntektsAvvikBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderVarigEndringEllerNyoppstartetSNBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaUttakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.papirsoknad.PapirSoknadForeldrepengerBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatMedUttaksplan;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatPeriode;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatPeriodeAndel;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.FordelingDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.PermisjonPeriodeDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
@@ -38,6 +47,155 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.I
 public class Fodsel extends ForeldrepengerTestBase {
 
     @Test
+    public void morSøkerFødselSomSelvstendingNæringsdrivende_AvvikIBeregning() throws Exception {
+
+        TestscenarioDto testscenario = opprettScenario("48");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorMedEgenNaering(søkerAktørIdent, fpStartdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        saksbehandler.hentAksjonspunktbekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class)
+                .setErVarigEndretNaering(true)
+                .setBegrunnelse("Endring eller nyoppstartet begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class);
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettBruttoBeregningsgrunnlagSNBekreftelse.class)
+                .setBruttoBeregningsgrunnlag(1_000_000)
+                .setBegrunnelse("Grunnlag begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettBruttoBeregningsgrunnlagSNBekreftelse.class);
+
+        saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        Aksjonspunkt ap1 = beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDER_VARIG_ENDRET_ELLER_NYOPPSTARTET_NÆRING_SELVSTENDIG_NÆRINGSDRIVENDE);
+        Aksjonspunkt ap2 = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_SELVSTENDIG_NÆRINGSDRIVENDE);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkter(Arrays.asList(ap1, ap2));
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+
+        verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
+        verifiser(beslutter.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, false);
+
+    }
+
+    @Test
+    public void morSøkerFødselMedToArbeidsforhold_AvvikIBeregning() throws Exception {
+
+        TestscenarioDto testscenario = opprettScenario("57");
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+
+        int inntektPrMåned = 50_000;
+        int overstyrtInntekt = inntektPrMåned * 12;
+        Optional<BigDecimal> refusjon = Optional.of(BigDecimal.valueOf(inntektPrMåned));
+
+        Arbeidsforhold arbeidsforhold_1 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0);
+        Arbeidsforhold arbeidsforhold_2 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(1);
+        Optional<String> arbeidsforholdId_1 = Optional.of(arbeidsforhold_1.getArbeidsforholdId());
+        Optional<String> arbeidsforholdId_2 = Optional.of(arbeidsforhold_2.getArbeidsforholdId());
+        String orgNr_1 = arbeidsforhold_1.getArbeidsgiverOrgnr();
+        String orgNr_2 = arbeidsforhold_2.getArbeidsgiverOrgnr();
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fpStartdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingBuilder_1 = lagInntektsmeldingBuilder(inntektPrMåned, fnr, fpStartdato, orgNr_1, arbeidsforholdId_1, refusjon);
+        InntektsmeldingBuilder inntektsmeldingBuilder_2 = lagInntektsmeldingBuilder(inntektPrMåned, fnr, fpStartdato, orgNr_2, arbeidsforholdId_2, refusjon);
+        fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
+                .leggTilInntekt(overstyrtInntekt, 1L)
+                .leggTilInntekt(overstyrtInntekt, 2L)
+                .setBegrunnelse("Begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class);
+
+        saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(ap);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+
+        verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
+        verifiser(beslutter.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(2, beslutter.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, true);
+
+    }
+
+    @Test
+    public void morSøkerFødselMedEttArbeidsforhold_AvvikIBeregning() throws Exception {
+
+        TestscenarioDto testscenario = opprettScenario("49");
+
+        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+
+        int inntektPrMåned = 15_000;
+        BigDecimal refusjon = BigDecimal.valueOf(inntektPrMåned);
+        int overstyrtInntekt = inntektPrMåned * 12;
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent(), fpStartdato);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPrMåned, fnr, fpStartdato, orgNr, Optional.empty(), Optional.of(refusjon));
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
+                .leggTilInntekt(overstyrtInntekt, 1L)
+                .setBegrunnelse("Begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class);
+
+        saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(ap);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+
+        verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
+        verifiser(beslutter.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, true);
+
+    }
+
+    @Test
     public void morSøkerFødselMedToArbeidsforholdISammeOrganisasjon() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("57");
@@ -47,20 +205,21 @@ public class Fodsel extends ForeldrepengerTestBase {
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fpStartdato);
-
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
 
         Arbeidsforhold arbeidsforhold_1 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0);
         Arbeidsforhold arbeidsforhold_2 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(1);
+        String arbeidsgiverOrgnr_1 = arbeidsforhold_1.getArbeidsgiverOrgnr();
+        String arbeidsgiverOrgnr_2 = arbeidsforhold_2.getArbeidsgiverOrgnr();
 
         List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
 
-        InntektsmeldingBuilder inntektsmeldingBuilder_1 = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(0), fnr,
-                arbeidsforhold_1.getArbeidsgiverOrgnr(), fpStartdato, arbeidsforhold_1.getArbeidsforholdId());
-        InntektsmeldingBuilder inntektsmeldingBuilder_2 = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(1), fnr,
-                arbeidsforhold_2.getArbeidsgiverOrgnr(), fpStartdato, arbeidsforhold_2.getArbeidsforholdId());
+        InntektsmeldingBuilder inntektsmeldingBuilder_1 = lagInntektsmeldingBuilder(inntekter.get(0), fnr,
+                fpStartdato, arbeidsgiverOrgnr_1, Optional.of(arbeidsforhold_1.getArbeidsforholdId()), Optional.empty());
+        InntektsmeldingBuilder inntektsmeldingBuilder_2 = lagInntektsmeldingBuilder(inntekter.get(1), fnr,
+                fpStartdato, arbeidsgiverOrgnr_2, Optional.of(arbeidsforhold_2.getArbeidsforholdId()), Optional.empty());
 
         fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
 
@@ -69,26 +228,21 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
-
-        //verifiserer uttak
-        List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        assertThat(perioder).hasSize(3);
-        verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, 2);
-        verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, 2);
-        verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 2);
-        // TODO : Asserts
+        verifiserUttak(2, saksbehandler.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
 
     }
 
     @Test
     public void morSøkerFødselMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
 
+        TestscenarioDto testscenario = opprettScenario("49");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent(), startDatoForeldrepenger);
 
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, startDatoForeldrepenger);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
@@ -96,60 +250,50 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         hackForÅKommeForbiØkonomi(saksnummer);
 
-        //verifiserer uttak
-        List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        assertThat(perioder).hasSize(3);
-        verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, 1);
-        verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, 1);
-        verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 1);
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
+        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
 
-        //verifiser historikkinnslag
-
-        //Fatte vedtak
-
-        //verifiser økonomi?
-
-        //verifiser brev
     }
 
     @Test
     public void morSøkerFødselMedToArbeidsforhold() throws Exception {
+
         TestscenarioDto testscenario = opprettScenario("56");
 
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
 
-        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent(), startDatoForeldrepenger);
-
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fpStartdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         hackForÅKommeForbiØkonomi(saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
 
-        //verifiserer uttak
-        List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        assertThat(perioder).hasSize(3);
-        verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, 2);
-        verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, 2);
-        verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 2);
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
+        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(2, saksbehandler.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
 
-        //verifiser historikkinnslag
-
-        //Fatte vedtak
-
-        //verifiser økonomi?
-
-        //verifiser brev
     }
 
     @Test
     public void farSøkerFødselMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("60");
-        LocalDate startDatoForeldrepenger = testscenario.getPersonopplysninger().getFødselsdato().plusWeeks(3);
 
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunFar(testscenario.getPersonopplysninger().getSøkerAktørIdent(), startDatoForeldrepenger);
+        TestscenarioDto testscenario = opprettScenario("60");
+
+        LocalDate startDatoForeldrepenger = testscenario.getPersonopplysninger().getFødselsdato().plusWeeks(3);
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunFar(søkerAktørIdent, startDatoForeldrepenger);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
@@ -158,8 +302,9 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
 
-
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2), saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).
+                godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2),
+                        saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.class);
 
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
@@ -176,6 +321,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
+
     }
     
     @Test
@@ -226,7 +372,6 @@ public class Fodsel extends ForeldrepengerTestBase {
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fpStartdato);
-
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -234,9 +379,8 @@ public class Fodsel extends ForeldrepengerTestBase {
         List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
 
         String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(0) + inntekter.get(1), fnr,
-                orgnr, fpStartdato);
-
+        InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilder(inntekter.get(0) + inntekter.get(1), fnr,
+                fpStartdato, orgnr, Optional.empty(), Optional.empty());
 
         fordel.sendInnInntektsmelding(inntektsmelding, testscenario, saksnummer);
 
@@ -245,14 +389,8 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
-
-        //verifiserer uttak
-        List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        assertThat(perioder).hasSize(3);
-        verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, 1);
-        verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, 1);
-        verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 1);
-        // TODO : Asserts
+        verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
 
     }
 
@@ -292,15 +430,45 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 1);
     }
 
+    private void verifiserUttak(int antallAktiviteter, List<UttakResultatPeriode> uttakResultatPeriodes) {
+        List<UttakResultatPeriode> perioder = uttakResultatPeriodes.stream()
+                .sorted(Comparator.comparing(UttakResultatPeriode::getFom))
+                .collect(Collectors.toList());
+        assertThat(perioder).hasSize(3);
+        verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, antallAktiviteter);
+        verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, antallAktiviteter);
+        verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, antallAktiviteter);
+    }
+
     private void verifiserUttaksperiode(UttakResultatPeriode uttakResultatPeriode, String stønadskontotype, int antallAktiviteter) {
         assertThat(uttakResultatPeriode.getPeriodeResultatType().kode).isEqualTo("INNVILGET");
         assertThat(uttakResultatPeriode.getUtsettelseType().kode).isEqualTo("-");
-
         assertThat(uttakResultatPeriode.getAktiviteter()).hasSize(antallAktiviteter);
         for (UttakResultatPeriodeAktivitet aktivitet : uttakResultatPeriode.getAktiviteter()) {
             assertThat(aktivitet.getStønadskontoType().kode).isEqualTo(stønadskontotype);
             assertThat(aktivitet.getTrekkdager()).isGreaterThan(0);
             assertThat(aktivitet.getUtbetalingsgrad()).isGreaterThan(BigDecimal.ZERO);
+        }
+    }
+
+    private void verifiserTilkjentYtelse(BeregningsresultatMedUttaksplan beregningResultatForeldrepenger, boolean medRefusjon){
+        BeregningsresultatPeriode[] perioder = beregningResultatForeldrepenger.getPerioder();
+        assertThat(beregningResultatForeldrepenger.isSokerErMor()).isTrue();
+        assertThat(perioder.length).isGreaterThan(0);
+        for (var periode : perioder) {
+            assertThat(periode.getDagsats()).isGreaterThan(0);
+            BeregningsresultatPeriodeAndel[] andeler = periode.getAndeler();
+            for (var andel : andeler){
+                if (medRefusjon){
+                    assertThat(andel.getTilSoker()).isZero();
+                    assertThat(andel.getRefusjon()).isGreaterThan(0);
+                } else {
+                    assertThat(andel.getTilSoker()).isGreaterThan(0);
+                    assertThat(andel.getRefusjon()).isZero();
+                }
+                assertThat(andel.getUttak().isGradering()).isFalse();
+                assertThat(andel.getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(100));
+            }
         }
     }
 
@@ -319,4 +487,5 @@ public class Fodsel extends ForeldrepengerTestBase {
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.toList());
     }
+
 }

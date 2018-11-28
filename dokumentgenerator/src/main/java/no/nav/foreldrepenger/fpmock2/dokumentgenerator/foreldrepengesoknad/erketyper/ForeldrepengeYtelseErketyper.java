@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import java.time.LocalDate;import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelder;
+import java.time.LocalDate;
+
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelderMedNorskIdent;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Dekningsgrad;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
@@ -87,6 +89,11 @@ public class ForeldrepengeYtelseErketyper {
         return forelder;
     }
 
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering(LocalDate startDatoForeldrepenger) {
+        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger);
+        foreldrepenger.setOpptjening(OpptjeningErketyper.medEgenNaeringOpptjening());
+        return foreldrepenger;
+    }
 
     public static Dekningsgrad standardDekningsgrader(){
         Dekningsgrad dekningsgrad = new Dekningsgrad();

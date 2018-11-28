@@ -8,18 +8,18 @@ public class Oppføring {
     private String tekniskNavn;
 
     @JsonProperty("beløp")
-    private Integer belop;
+    private String verdi;
 
     public String getTekniskNavn() { return tekniskNavn; }
 
     public void setTekniskNavn(String tekniskNavn) { this.tekniskNavn = tekniskNavn; }
 
-    public Integer getBelop() { return belop; }
+    public String getVerdi() { return verdi; }
 
-    public void setBelop(Integer belop) { this.belop = belop; }
+    public void setVerdi(String verdi) { this.verdi = verdi; }
 
     @Override
     public String toString(){
-        return "{\n" + "\"tekniskNavn\"" + ": \""+ tekniskNavn + "\"," + "\n" + "\"beløp\"" + ": \"" + belop +"\"\n}";
+        return "{\n" + "\"tekniskNavn\"" + ": \""+ tekniskNavn + "\"," + "\n" + "\"verdi\"" + ": \"" + verdi +"\"\n}";
     }
 }

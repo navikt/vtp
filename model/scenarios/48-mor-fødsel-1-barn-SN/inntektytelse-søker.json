@@ -1,0 +1,70 @@
+{
+	"arena": {
+		"saker": [
+			{
+				"saksnummer": "${arenasak1}",
+				"tema": "AAP",
+				"status": "AKTIV",
+				"vedtak": [
+					{
+						"fom": "now() - P1M",
+						"tom": "now() + P2M",
+						"vedtakDato": "now() - P1M1D",
+						"kravMottattDato": "now() - P1M5D",
+						"status": "IVERK",
+						"meldekort": [
+							{
+								"fom": "now() - P1M",
+								"tom": "now() + P2M",
+								"dagsats": 10000,
+								"beløp": 10,
+								"utbetalingsgrad": 1
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"inntektskomponent": {
+		"inntektsperioder": [
+
+		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+
+		]
+	},
+	"sigrun": {
+		"inntektsår": [
+			{
+				"år": "2015",
+				"oppføring": [
+					{
+						"tekniskNavn": "personinntektNaering",
+						"beløp": "1000000"
+					}
+				]
+			},
+			{
+				"år": "2016",
+				"oppføring": [
+					{
+						"tekniskNavn": "personinntektNaering",
+						"beløp": "1000000"
+					}
+				]
+			},
+			{
+				"år": "2017",
+				"oppføring": [
+					{
+						"tekniskNavn": "personinntektNaering",
+						"beløp": "1000000"
+					}
+				]
+			}
+		]
+	}
+ }
