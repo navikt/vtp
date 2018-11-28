@@ -1,3 +1,4 @@
+APP_NAME=fpsak
 tjenestespesifikasjon&e=zip&g=no.nav.tjenester&r=m2internal&v=3.1.5
 INNGAAENDEJOURNAL_V1_SECURITYTOKEN=SAML
 INNGAAENDEJOURNAL_V1_URL=https://fpmock2:8063/services/inngaaendejournal/v1
