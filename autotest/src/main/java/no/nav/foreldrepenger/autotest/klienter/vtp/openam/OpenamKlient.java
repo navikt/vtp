@@ -15,7 +15,10 @@ import no.nav.modig.testcertificates.TestCertificates;
 public class OpenamKlient extends VTPKlient {
 
     static {
-        TestCertificates.setupKeyAndTrustStore();
+
+        if (null == System.getenv("ENABLE_CUSTOM_TRUSTSTORE") || System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("false")) {
+            TestCertificates.setupKeyAndTrustStore();
+        }
     }
 
     public OpenamKlient(HttpSession session) {
