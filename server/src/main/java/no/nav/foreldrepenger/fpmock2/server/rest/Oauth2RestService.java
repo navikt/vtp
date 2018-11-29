@@ -216,7 +216,7 @@ public class Oauth2RestService {
             LOG.info("Setter issuer-url fra naisconfig: " + issuer);
         } else {
             issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
-            LOG.info("Setter issuer-url fra implisit localhost: " + issuer);
+            LOG.info("Setter issuer-url fra implisit localhost: " + issuer + " for bruker " + username);
         }
         String token = new OidcTokenGenerator(username).withIssuer(issuer).create();
         return token;
