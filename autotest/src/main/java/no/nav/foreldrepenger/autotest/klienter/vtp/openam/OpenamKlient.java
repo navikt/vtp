@@ -31,7 +31,14 @@ public class OpenamKlient extends VTPKlient {
     }
 
     private void loginBypass(String rolle) {
-        String issuer = System.getProperty("isso.oauth2.issuer", "https://localhost:8063/isso/oauth2");
+
+        String issuer;
+        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
+            issuer = System.getProperty("isso.oauth2.issuer", "https://fpmock2:8063/isso/oauth2");
+        } else {
+            issuer = System.getProperty("isso.oauth2.issuer", "https://localhost:8063/isso/oauth2"); //fixme med propertyutils
+        }
+
         String token = new OidcTokenGenerator(rolle).withIssuer(issuer).create();
 
         BasicClientCookie cookie = new BasicClientCookie("ID_token", token);
