@@ -31,7 +31,7 @@ APPDYNAMICS_CONTROLLER_PORT=443
 APPDYNAMICS_CONTROLLER_SSL_ENABLED=true
 APPDYNAMICS_AGENT_ACCOUNT_NAME=NON-PROD
 APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=5ed4d975-ed5b-40b2-8ac6-9e0c0e61a67e
-LDAP_URL=ldaps://fpmock2:636/
+LDAP_URL=ldaps://fpmock2:8636/
 LDAP_USERNAME=srvSSOLinux
 LDAP_USER_BASEDN=ou=NAV,ou=BusinessUnits,dc=test,dc=local
 LDAP_SERVICEUSER_BASEDN=ou=ServiceAccounts,dc=test,dc=local
@@ -54,11 +54,11 @@ AKTOER_V2_SECURITYTOKEN=SAML
 AKTOER_V2_URL=https://fpmock2:8063/aktoerregister/ws/Aktoer/v2
 AKTOER_V2_WSDLURL=http://maven.adeo.no/nexus/content/groups/public/no/nav/tjenester/fim/nav-fim-aktoer-v2-tjenestespesifikasjon/2.0.1/nav-fim-aktoer-v2-tjenestespesifikasjon-2.0.1.zip
 JOURNAL_V3_SECURITYTOKEN=SAML
-JOURNAL_V3_URL=https://fpmock2:8063/services/journal/v3
+JOURNAL_V3_URL=https://fpmock2:8063/joark/Journal/v3
 JOURNAL_V3_DESCRIPTION=Virksomhetstjeneste for henting av journalposter og dokumenter fra arkivet.
 JOURNAL_V3_WSDLURL=http://maven.adeo.no/nexus/service/local/artifact/maven/redirect?a=nav-journal-v3-tjenestespesifikasjon&e=zip&g=no.nav.tjenester&r=m2internal&v=3.1.5
 INNGAAENDEJOURNAL_V1_SECURITYTOKEN=SAML
-INNGAAENDEJOURNAL_V1_URL=https://fpmock2:8063/services/inngaaendejournal/v1
+INNGAAENDEJOURNAL_V1_URL=https://fpmock2:8063/joark/InngaaendeJournal/v1
 INNGAAENDEJOURNAL_V1_DESCRIPTION=Virksomhetstjeneste for henting av metadata om inngående journalposter.
 VIRKSOMHET_ARBEIDSFORDELING_V1_SECURITYTOKEN=SAML
 ARBEIDSFORDELING_V1_URL=https://fpmock2:8063/norg2/ws/Arbeidsfordeling/v1
