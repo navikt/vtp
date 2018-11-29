@@ -150,4 +150,16 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
 
         return soeknad;
     }
+
+    public Soeknad buildEndring() {
+        Soeknad soeknad = new Soeknad();
+        soeknad.setMottattDato(this.mottattDato);
+
+        OmYtelse omYtelse = new OmYtelse();
+        omYtelse.getAny().add(this.omYtelse);
+        soeknad.setOmYtelse(omYtelse);
+        soeknad.setSoeker(this.soeker);
+
+        return soeknad;
+    }
 }

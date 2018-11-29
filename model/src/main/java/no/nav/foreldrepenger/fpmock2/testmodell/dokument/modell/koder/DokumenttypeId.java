@@ -48,6 +48,7 @@ public class DokumenttypeId {
         koder.add("000080");
         koder.add("000096");
         koder.add("000056");
+        koder.add("I000050");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -86,6 +87,7 @@ public class DokumenttypeId {
     public static DokumenttypeId FPPROD_AVSLAGSBREV_FORELDREPENGER = new DokumenttypeId("000080");
     public static DokumenttypeId FPPROD_FRITEKSTBREV = new DokumenttypeId("000096");
     public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID__TIDLIG_SØKNAD = new DokumenttypeId("000056");
+    public static DokumenttypeId FORELDREPENGER_ENDRING_SØKNAD = new DokumenttypeId("I000050");
 
     public DokumenttypeId(String kode){
         this.kode = kode == null ? this.kode : kode;

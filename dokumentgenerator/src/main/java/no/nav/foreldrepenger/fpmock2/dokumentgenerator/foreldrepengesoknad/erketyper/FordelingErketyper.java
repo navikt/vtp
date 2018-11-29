@@ -1,15 +1,11 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import java.time.LocalDate;
-
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Gradering;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Utsettelsesperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.*;
+
+import java.time.LocalDate;
 
 public class FordelingErketyper {
 
@@ -31,6 +27,13 @@ public class FordelingErketyper {
         return fordeling;
     }
 
+    public static Fordeling fordelingMorHappyCaseMedEkstraUttak(LocalDate familiehendelseDato) {
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familiehendelseDato.plusWeeks(10).plusDays(1), familiehendelseDato.plusWeeks(12)));
+        return fordeling;
+    }
+
     public static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, double arbeidstidsprosent) {
         Gradering gradering = new Gradering();
         gradering.setArbeidsforholdSomSkalGraderes(true);
@@ -48,6 +51,9 @@ public class FordelingErketyper {
         Utsettelsesaarsaker årsaker = new Utsettelsesaarsaker();
         årsaker.setKode(årsak);
         utsettelse.setAarsak(årsaker);
+        Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
+        uttaksperiodetyper.setKode(STØNADSKONTOTYPE_FELLESPERIODE);
+        utsettelse.setUtsettelseAv(uttaksperiodetyper);
         utsettelse.setErArbeidstaker(true);
         Uttaksperiodetyper typer = new Uttaksperiodetyper();
         typer.setKode(STØNADSKONTOTYPE_MØDREKVOTE);

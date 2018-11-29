@@ -198,6 +198,36 @@ public class Fordel extends Aktoer {
         return sakId;
     }
 
+    @Step("Sender inn endringsmelding for bruker")
+    public long sendInnEndringssøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws IOException, Exception {
+        String xml = null;
+        if(null != søknad) {
+            xml = ForeldrepengesoknadBuilder.tilXML(søknad);
+        }
+
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, scenario.getPersonopplysninger().getSøkerIdent(), dokumenttypeId);
+        if (saksnummer != null && saksnummer.longValue() != 0L) {
+            journalpostModell.setSakId(saksnummer.toString());
+        }
+        String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
+
+        //TODO (MV): obs! mapping dokumenttypeId og behandlingsTema - kun fødsel
+        String behandlingstemaOffisiellKode = ControllerHelper.translateSøknadDokumenttypeToBehandlingstema(dokumenttypeId).getKode();
+        String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
+
+        String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
+
+        long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
+        System.out.println("Opprettet søknad: " + sakId);
+
+        Vent.til(() -> {
+            List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
+            return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
+        }, 60, "Saken hadde ingen behandlinger");
+
+        return sakId;
+    }
+
 
     /*
      * Sender inn journalpost og returnerer saksnummer

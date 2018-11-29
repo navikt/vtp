@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspu
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 
-@BekreftelseKode(kode="")
+@BekreftelseKode(kode="5028")
 public class ForesloVedtakManueltBekreftelse extends AksjonspunktBekreftelse {
 
     public ForesloVedtakManueltBekreftelse(Fagsak fagsak, Behandling behandling) {

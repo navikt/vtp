@@ -16,6 +16,7 @@ public class Behandlingstema {
         koder.add("ab0050");
         koder.add("ab0047");
         koder.add("ab0072");
+        koder.add("ab0326");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -24,6 +25,7 @@ public class Behandlingstema {
     public static Behandlingstema ENGANGSSTONAD_FOEDSEL = new Behandlingstema("ab0050");
     public static Behandlingstema FORELDREPENGER_FOEDSEL = new Behandlingstema("ab0047");
     public static Behandlingstema FORELDREPENGER_ADOPSJON = new Behandlingstema("ab0072");
+    public static Behandlingstema FORELDREPENGER = new Behandlingstema("ab0326");
 
     private String kode;
 
