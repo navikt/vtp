@@ -27,6 +27,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
+import no.nav.foreldrepenger.fpmock2.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.sak.SakRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
@@ -36,6 +37,7 @@ import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
 import no.nav.foreldrepenger.fpmock2.server.rest.PdpRestTjeneste;
+import no.nav.fpmock2.personfeed.PersonfeedMock;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.sigrun.SigrunMock;
 
@@ -60,12 +62,14 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
+        classes.add(PersonfeedMock.class);
         classes.add(InfotrygdfeedMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
-
+        classes.add(PersonfeedMock.class);
+        classes.add(FeedRestTjeneste.class);
         // tester
         classes.add(AutotestRestService.class);
 

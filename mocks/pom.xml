@@ -26,6 +26,7 @@
 		<module>sigrun-mock</module>
         <module>kodeverk-mock</module>
         <module>infotrygdfeed-mock</module>
+        <module>personfeed-mock</module>
     </modules>
 
     <dependencies>

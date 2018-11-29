@@ -27,7 +27,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepository
 @Api(tags = {"Sigrun/beregnetskatt"})
 @Path("/api/beregnetskatt")
 public class SigrunMock {
-
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
 
     TestscenarioRepositoryImpl testscenarioRepository;
@@ -45,8 +44,6 @@ public class SigrunMock {
     @ApiOperation(value = "beregnetskatt", notes = ("Returnerer beregnetskatt fra Sigrun"))
     public Response buildPermitResponse(@Context UriInfo ui, @Context HttpHeaders httpHeaders) {
 
-        LOG.info("sigrun.");
-
         String brukerFnr = null;
         String inntektsAar = null;
         String aktørId = null;
@@ -60,6 +57,8 @@ public class SigrunMock {
         if (httpHeaders.getRequestHeader("x-aktoerid").size() > 0) {
             aktørId = httpHeaders.getRequestHeader("x-aktoerid").get(0);
         }
+
+        LOG.info("Sigrun for aktørId: {} ", aktørId);
 
         if (brukerFnr == null && aktørId != null) {
             brukerFnr = testscenarioRepository.getPersonIndeks().finnByAktørIdent(aktørId).getIdent();

@@ -59,12 +59,21 @@ public class PersonIndeks {
 
     @SuppressWarnings("unchecked")
     public <V extends BrukerModell> V finnByIdent(String ident) {
-        return (V) byIdent.get(ident);
+        if(byIdent.containsKey(ident)) {
+            return (V) byIdent.get(ident);
+        } else {
+            throw new RuntimeException("Finner ikke bruker med ident: "+ ident);
+        }
     }
 
     @SuppressWarnings("unchecked")
     public <V extends BrukerModell> V finnByAktørIdent(String ident) {
-        return (V) byAktørIdent.get(ident);
+        if(byAktørIdent.containsKey(ident)){
+            return (V) byAktørIdent.get(ident);
+        } else {
+            throw new RuntimeException("Finner ikke bruker med AktørId: "+ident);
+        }
+
     }
     
     public Personopplysninger finnPersonopplysningerByIdent(String ident) {
