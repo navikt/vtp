@@ -68,7 +68,7 @@ public class Oauth2RestService {
                               @QueryParam("state") String state,
                               @QueryParam("redirect_uri") String redirectUri)
             throws Exception {
-
+        LOG.info("kall mot oauth2/authorize med redirecturi " + redirectUri);
         Objects.requireNonNull(scope, "scope");
         if (!Objects.equals(scope, "openid")) {
             throw new IllegalArgumentException("Unsupported scope [" + scope + "], should be 'openid'");
@@ -201,6 +201,7 @@ public class Oauth2RestService {
                                 @FormParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
         String token = createIdToken(req, code);
+        LOG.info("kall på /oauth2/access_token, opprettet token: " + token + " med reidrect-url: " + redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token, UUID.randomUUID().toString());
         return Response.ok(oauthResponse).build();
     }
@@ -242,7 +243,9 @@ public class Oauth2RestService {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av Oauth2 jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
+        LOG.info("kall på /oauth2/connect/jwk_uri");
         String jwks = KeyStoreTool.getJwks();
+        LOG.info("JWKS: " + jwks);
         return Response.ok(jwks).build();
     }
 
@@ -254,7 +257,7 @@ public class Oauth2RestService {
     @ApiOperation(value = "json/authenticate", notes = ("Mock impl av OpenAM autenticate for service bruker innlogging"))
     public Response serviceBrukerAuthenticate(@SuppressWarnings("unused") @Context HttpServletRequest req,
                                               @ApiParam("Liste over aksjonspunkt som skal bekreftes, inklusiv data som trengs for å løse de.") EndUserAuthenticateTemplate enduserTemplate) {
-
+        LOG.info("kall på /json/authenticate");
         if (enduserTemplate == null) {
             EndUserAuthenticateTemplate template = new EndUserAuthenticateTemplate();
             template.setAuthId(UUID.randomUUID().toString());
@@ -271,6 +274,7 @@ public class Oauth2RestService {
             Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
 
             template.setCallbacks(Arrays.asList(nameCallback, passwordCallback));
+
             return Response.ok(template).build();
         } else {
             // generer token som brukes til å bekrefte innlogging ovenfor openam
