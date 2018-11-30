@@ -9,7 +9,7 @@ public abstract class KlageFormkravBekreftelse extends AksjonspunktBekreftelse {
     protected boolean erFristOverholdt;
     protected boolean erKonkret;
     protected boolean erSignert;
-    protected Long vedtak; // påKlagdBehandlingsId;
+    protected String vedtak; // påklagdBehandlingsId;
 
     public KlageFormkravBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
@@ -35,26 +35,26 @@ public abstract class KlageFormkravBekreftelse extends AksjonspunktBekreftelse {
         return this;
     }
 
-    public KlageFormkravBekreftelse setPåklagdVedtak(Long vedtakId) {
+    public KlageFormkravBekreftelse setPåklagdVedtak(String vedtakId) {
         this.vedtak = vedtakId;
         return this;
     }
 
-    public KlageFormkravBekreftelse godkjennAlleFormkrav(Long vedtakId) {
+    public KlageFormkravBekreftelse godkjennAlleFormkrav(String vedtakId) {
         erKlagerPart(true);
         erFristOverholdt(true);
         erKonkret(true);
         erSignert(true);
-        this.vedtak = vedtakId;
+        setPåklagdVedtak(vedtakId);
         return this;
     }
 
-    public KlageFormkravBekreftelse klageErIkkeKonkret(Long vedtakId) {
+    public KlageFormkravBekreftelse klageErIkkeKonkret(String vedtakId) {
         erKlagerPart(true);
         erFristOverholdt(true);
         erKonkret(false);
         erSignert(true);
-        this.vedtak = vedtakId;
+        setPåklagdVedtak(vedtakId);
         return this;
     }
 

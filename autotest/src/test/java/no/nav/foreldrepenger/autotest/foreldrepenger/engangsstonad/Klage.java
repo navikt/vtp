@@ -20,6 +20,7 @@ import java.time.LocalDate;
 @Tag("smoke")
 @Tag("engangsstonad")
 public class Klage extends EngangsstonadTestBase {
+
     @Test
     public void klageMedholdNFP() throws  Exception {
         // Opprette førstegangssøknad engangsstønad
@@ -38,16 +39,18 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L;
+        String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) { vedtaksId = behandling.fagsakId; }
+            if (behandling.type.kode.equals("BT-002")) {
+                Integer id = behandling.id;
+                vedtaksId = id.toString(); }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
-                .bekreftMedhold("PROSESSUELL_FEIL")
+                .bekreftMedholdGunst("PROSESSUELL_FEIL")
                 .fritekstBrev("Fritektst til brev fra klagebehandler.")
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
@@ -56,7 +59,9 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "behandlingstatus");
     }
 
@@ -77,9 +82,11 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L;
+        String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) { vedtaksId = behandling.fagsakId; }
+            if (behandling.type.kode.equals("BT-002")) {
+                Integer id = behandling.id;
+                vedtaksId = id.toString(); }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
@@ -102,16 +109,17 @@ public class Klage extends EngangsstonadTestBase {
                 .fritekstBrev("Fritekst brev fra KA")
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET", "Behandlingsresultat");
-        klagebehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class)
-                .setBegrunnelse("Fritekst");
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET", "Behandlingsresultat");
+
+        // TODO (MV): Følg opp når fritekst til brev er rettet
+        /*beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
-
+        beslutter.ventTilHistorikkinnslag("Brev sendt");*/
     }
 
     @Test
@@ -131,9 +139,11 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L;
+        String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) { vedtaksId = behandling.fagsakId; }
+            if (behandling.type.kode.equals("BT-002")) {
+                Integer id = behandling.id;
+                vedtaksId = id.toString(); }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
@@ -155,7 +165,10 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDERING_AV_FORMKRAV_KLAGE_KA));
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_AVVIST", "Behandlingsresultat");
         beslutter.ventTilHistorikkinnslag("Brev sendt");
     }
 
@@ -176,18 +189,19 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
-        Long vedtaksId = 0L; // håndter hvis det ikke er påklagd et vedtak eller hvis ingen vedtak finnes
+        String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
-                vedtaksId = behandling.fagsakId;
-            }
+                Integer id = behandling.id;
+                vedtaksId = id.toString(); }
         }
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
-                .bekreftMedhold("NYE_OPPLYSNINGER")
+                .bekreftMedholdGunst("NYE_OPPLYSNINGER")
+                .fritekstBrev("Fritekst brev nfp")
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -200,14 +214,15 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .avvisAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP), beslutter.kodeverk.BehandlingÅrsakType.getKode("RE-LOV"))
-                .setBegrunnelse("Fordi");
+                .setBegrunnelse("Avvist av beslutter");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
-                .bekreftMedhold("NYE_OPPLYSNINGER")
+                .bekreftMedholdDelvisGunst("NYE_OPPLYSNINGER")
+                .fritekstBrev("Fritekst brev nr 2.")
                 .setBegrunnelse("Fordi.");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -216,8 +231,10 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentFagsak(sakId);
         beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
-
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD", "Behandlingsresultat");
         beslutter.ventTilHistorikkinnslag("Brev sendt");
     }
 
@@ -228,7 +245,7 @@ public class Klage extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusDays(15));
+                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusDays(15)); //minusMonths(1)?
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);

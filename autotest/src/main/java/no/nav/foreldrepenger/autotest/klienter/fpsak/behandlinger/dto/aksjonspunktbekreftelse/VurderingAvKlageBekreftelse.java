@@ -9,6 +9,10 @@ public abstract class VurderingAvKlageBekreftelse extends AksjonspunktBekreftels
 
     private static final String VURDERING_STADFEST = "STADFESTE_YTELSESVEDTAK";
     private static final String VURDERING_MEDHOLD = "MEDHOLD_I_KLAGE";
+
+    private static final String OMGJØR_GUNST = "GUNST_MEDHOLD_I_KLAGE";
+    private static final String OMGJØR_DELVISGUNST = "DELVIS_MEDHOLD_I_KLAGE";
+    private static final String OMGJØR_UGUNST = "UGUNST_MEDHOLD_I_KLAGE";
     
     protected String klageVurdering;
     protected String klageMedholdArsak;
@@ -18,12 +22,27 @@ public abstract class VurderingAvKlageBekreftelse extends AksjonspunktBekreftels
     
     public VurderingAvKlageBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
-        this.vedtaksdatoPaklagdBehandling = LocalDate.now(); //TODO: hent dato til påklagd vedtak. Nødvendig?
+        this.vedtaksdatoPaklagdBehandling = LocalDate.now();
     }
 
     // Omgjør vedtaket
-    public VurderingAvKlageBekreftelse bekreftMedhold(String årsak) {
+    public VurderingAvKlageBekreftelse bekreftMedholdGunst(String årsak) {
         klageVurdering  = VURDERING_MEDHOLD;
+        klageVurderingOmgjoer = OMGJØR_GUNST;
+        klageMedholdArsak = årsak;
+        return this;
+    }
+
+    public VurderingAvKlageBekreftelse bekreftMedholdDelvisGunst(String årsak) {
+        klageVurdering  = VURDERING_MEDHOLD;
+        klageVurderingOmgjoer = OMGJØR_DELVISGUNST;
+        klageMedholdArsak = årsak;
+        return this;
+    }
+
+    public VurderingAvKlageBekreftelse bekreftMedholdUGunst(String årsak) {
+        klageVurdering  = VURDERING_MEDHOLD;
+        klageVurderingOmgjoer = OMGJØR_UGUNST;
         klageMedholdArsak = årsak;
         return this;
     }
