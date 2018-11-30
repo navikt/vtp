@@ -32,7 +32,6 @@ import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestT
 import no.nav.foreldrepenger.fpmock2.server.api.sak.SakRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioTemplateRestTjeneste;
-import no.nav.foreldrepenger.fpmock2.server.rest.AutotestRestService;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
@@ -70,9 +69,6 @@ public class ApplicationConfig extends Application {
         classes.add(SakRestTjeneste.class);
         classes.add(PersonfeedMock.class);
         classes.add(FeedRestTjeneste.class);
-        // tester
-        classes.add(AutotestRestService.class);
-
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);

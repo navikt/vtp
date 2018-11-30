@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FødselsmeldingOpprettetHendelse extends PersonHendelse {
     private static final String TYPE = "FOEDSELSMELDINGOPPRETTET";
 

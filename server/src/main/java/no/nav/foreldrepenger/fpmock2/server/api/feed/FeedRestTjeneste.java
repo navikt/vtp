@@ -29,8 +29,9 @@ public class FeedRestTjeneste {
             personHendelse = personhendelseAdapter.fra(fødselshendelseDto);
             FeedRepositoryImpl.getInstance().leggTilHendelse(personHendelse);
         } catch (RuntimeException re){
+            re.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST).entity(String.format("{\"error\": \"%s\"}",re.getMessage())).build();
         }
-        return Response.status(201).entity(String.format("{\"success\": \"Personhendelse med sekvens: %s opprettet\"}",personHendelse.getSekvensnummer())).build();
+        return Response.status(201).entity(String.format("{\"success\": \"Personhendelse med sekvens: %s opprettet\"}",personHendelse.getSequence())).build();
     }
 }

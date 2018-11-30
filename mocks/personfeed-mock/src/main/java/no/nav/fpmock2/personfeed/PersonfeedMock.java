@@ -40,12 +40,36 @@ public class PersonfeedMock {
         LOG.info("Kall mot personfeed fra {} for sekvens {} med pageSize {}", consumerId, sequenceId, pageSize);
 
 
-        List<PersonHendelse> hendelser = feedRepository.hentAlleHendelser();
-        return Response.status(200).entity(hendelser).build();
+        Feed feed = new Feed(feedRepository.hentAlleHendelser());
+        return Response.status(200).entity(feed).build();
 
     }
 
 
+    private static class Feed {
+        private String title = "PersonFeed_v1";
+        private List<PersonHendelse> items;
+
+        public Feed(List<PersonHendelse> items){
+            this.items = items;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public List<PersonHendelse> getItems() {
+            return items;
+        }
+
+        public void setItems(List<PersonHendelse> items) {
+            this.items = items;
+        }
+    }
 
 
 }

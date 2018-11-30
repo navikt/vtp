@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,25 +25,25 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     private FeedRepositoryImpl(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
         hendelser = new ArrayList<>();
-        sekvensnummer = Long.parseLong(LocalDateTime.now().format(formatter)) * 10;
+        sekvensnummer = 1L;
     }
 
     @Override
     public Long leggTilHendelse(PersonHendelse personHendelse){
 
-        if(personHendelse.getSekvensnummer() == null || personHendelse.getSekvensnummer().longValue() <= 0){
-            personHendelse.setSekvensnummer(genererSekvensnummer());
+        if(personHendelse.getSequence() == null || personHendelse.getSequence().longValue() <= 0){
+            personHendelse.setSequence(genererSekvensnummer());
         }
         hendelser.add(personHendelse);
-        return personHendelse.getSekvensnummer();
+        return personHendelse.getSequence();
     }
 
     @Override
     public Long genererSekvensnummer(){
         return ++sekvensnummer;
     }
+
 
     @Override
     public List<PersonHendelse> hentAlleHendelser(){
