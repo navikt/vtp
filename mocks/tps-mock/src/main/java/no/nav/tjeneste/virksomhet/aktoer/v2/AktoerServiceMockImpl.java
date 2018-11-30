@@ -65,6 +65,7 @@ public class AktoerServiceMockImpl implements AktoerV2 {
         }
         HentIdentForAktoerIdResponse response = new HentIdentForAktoerIdResponse();
         response.setIdent(brukerModell.getIdent());
+        LOG.info("Respons ident for aktørid: " + response.getIdent());
         return response;
     }
 
