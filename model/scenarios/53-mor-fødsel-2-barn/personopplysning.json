@@ -82,7 +82,7 @@
 		{
 			"rolle": "EKTE",
 			"til": {
-				"@type": "ident",
+				"@type": "annenPart",
 				"ident": "${for2}"
 			}
 		}
