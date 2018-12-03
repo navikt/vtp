@@ -374,12 +374,14 @@ public class Fodsel extends ForeldrepengerTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         String fnr = testscenario.getPersonopplysninger().getAnnenpartIdent();
         
+        /*
         List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
         String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
         InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(0) + inntekter.get(1), fnr,
                 orgnr, fødselsdato.plusWeeks(3));
         
         fordel.sendInnInntektsmelding(inntektsmelding, søkerAktørid, testscenario.getPersonopplysninger().getAnnenpartIdent(), saksnummer);
+        */
     }
 
     @Test
