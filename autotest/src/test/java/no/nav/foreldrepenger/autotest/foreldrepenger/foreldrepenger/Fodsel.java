@@ -329,24 +329,24 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
     
     @Test
-    @Disabled
     public void farOgMorSøkerFødselMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("60");
+        TestscenarioDto testscenario = opprettScenario("80");
         
-        behandleSøknadForMor(testscenario);
+        //behandleSøknadForMor(testscenario);
         behandleSøknadForFar(testscenario);
     }
     
     public void behandleSøknadForMor(TestscenarioDto testscenario) throws Exception {
-        String søkerAktørid = testscenario.getPersonopplysninger().getAnnenpartIdent();
-        String annenPartAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String søkerIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String annenPartAktørid = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
         
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
@@ -358,12 +358,28 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
     
     public void behandleSøknadForFar(TestscenarioDto testscenario) throws Exception {
-        String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent(); //Aktørid far
-        String annenPartAktørid = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        String søkerAktørid = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
+        String søkerIdent = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        String annenPartAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String annenPartIdent = testscenario.getPersonopplysninger().getSøkerIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+        
+        System.out.println("søkerAktørid: " + søkerAktørid);
+        System.out.println("annenPartAktørid: " + annenPartAktørid);
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        String fnr = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        
+        List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilderFraInntektsperiode(inntekter.get(0) + inntekter.get(1), fnr,
+                orgnr, fødselsdato.plusWeeks(3));
+        
+        fordel.sendInnInntektsmelding(inntektsmelding, søkerAktørid, testscenario.getPersonopplysninger().getAnnenpartIdent(), saksnummer);
     }
 
     @Test
@@ -386,6 +402,8 @@ public class Fodsel extends ForeldrepengerTestBase {
         InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilder(inntekter.get(0) + inntekter.get(1), fnr,
                 fpStartdato, orgnr, Optional.empty(), Optional.empty());
 
+        System.out.println();
+        
         fordel.sendInnInntektsmelding(inntektsmelding, testscenario, saksnummer);
 
         hackForÅKommeForbiØkonomi(saksnummer);

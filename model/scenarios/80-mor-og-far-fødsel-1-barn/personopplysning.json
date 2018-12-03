@@ -76,5 +76,25 @@
 				"ident": "${for2}"
 			}
 		}
+	],
+	
+	"familierelasjonerAnnenPart": [
+		{
+			"rolle": "BARN",
+			"til": {
+				"@type": "barn",
+				"ident": "${barn1}",
+				"fornavn": "${nevø1}",
+				"etternavn": "Duck",
+				"fødselsdato": "now()-P2D"
+			}
+		},
+		{
+			"rolle": "EKTE",
+			"til": {
+				"@type": "annenPart",
+				"ident": "${for1}"
+			}
+		}
 	]
 }

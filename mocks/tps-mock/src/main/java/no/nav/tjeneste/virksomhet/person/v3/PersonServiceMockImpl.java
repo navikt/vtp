@@ -83,13 +83,20 @@ public class PersonServiceMockImpl implements PersonV3 {
         HentPersonResponse response = new HentPersonResponse();
         Bruker person = new PersonAdapter().fra(bruker);
         
+        
         Personopplysninger pers = repo.getPersonIndeks().finnPersonopplysningerByIdent(bruker.getIdent());
         
-        List<Familierelasjon> familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjoner());
-        familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
+        List<Familierelasjon> familierelasjoner;
+        if(pers.getAnnenPart().getAktørIdent().equals(bruker.getAktørIdent())) { //TODO HACK for annenpart (annenpart burde ha en egen personopplysning fil eller liknende)
+            familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjonerForAnnenPart());
+            familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
+        }
+        else {
+            familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjoner());
+            familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
+        }
         
         response.setPerson(person);
-
         return response;
     }
 

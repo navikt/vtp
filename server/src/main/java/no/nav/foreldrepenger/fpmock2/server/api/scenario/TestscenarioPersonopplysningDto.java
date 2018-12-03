@@ -48,6 +48,10 @@ public class TestscenarioPersonopplysningDto {
     public String getSøkerAktørIdent() {
         return søkerAktørIdent;
     }
+    
+    public String getAnnenPartAktørIdent() {
+        return annenpartAktørIdent;
+    }
 
     public LocalDate getFødselsdato() {
         return fødselsdato;

@@ -27,6 +27,9 @@ public class Personopplysninger {
     @JsonInclude(Include.NON_EMPTY)
     @JsonProperty("familierelasjoner")
     private List<FamilierelasjonModell> familierelasjoner = new ArrayList<>();
+    
+    @JsonProperty("familierelasjonerAnnenPart")
+    private List<FamilierelasjonModell> familierelasjonerAnnenPart = new ArrayList<>();
 
     /**
      * identity cache for dette scenario. Medfører at identer kan genereres dynamisk basert på lokal id referanse i scenarioet.
@@ -57,6 +60,10 @@ public class Personopplysninger {
 
     public Collection<FamilierelasjonModell> getFamilierelasjoner() {
         return Collections.unmodifiableList(familierelasjoner);
+    }
+    
+    public Collection<FamilierelasjonModell> getFamilierelasjonerForAnnenPart() {
+        return Collections.unmodifiableList(familierelasjonerAnnenPart);
     }
 
     public Stream<FamilierelasjonModell> getFamilierelasjoner(Rolle rolle) {

@@ -1,0 +1,133 @@
+{
+	"arena": {
+		"saker": [
+			{
+				"saksnummer": "${arenasak1}",
+				"tema": "AAP",
+				"status": "AKTIV",
+				"vedtak": [
+					{
+						"fom": "now() - P1M",
+						"tom": "now() + P2M",
+						"vedtakDato": "now() - P1M1D",
+						"kravMottattDato": "now() - P1M5D",
+						"status": "IVERK",
+						"meldekort": [
+							{
+								"fom": "now() - P1M",
+								"tom": "now() + P2M",
+								"dagsats": 10000,
+								"beløp": 10,
+								"utbetalingsgrad": 1
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"inntektskomponent": {
+		"inntektsperioder": [
+			{
+				"fom": "now() - P12M",
+				"tom": "now() - P10M",
+				"beløp": 50000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			},
+			{
+				"fom": "now() - P10M",
+				"tom": "now() - P2M",
+				"beløp": 60000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			},
+			{
+				"fom": "now() - P4M",
+				"tom": "now() - P1M",
+				"beløp": 60000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
+			}
+		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+			{
+				"arbeidsforholdId": "ARB001-001",
+				"arbeidsforholdIdNav": "1238161",
+				"ansettelsesperiodeFom": "now() - P4M",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "979191138",
+
+
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "now() - P2M",
+						"sisteLønnsendringsdato": "now() - P1M",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 100,
+						"beregnetAntallTimerPerUke": "30"
+					},
+					{
+						"fomGyldighetsperiode": "now() - P4M",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "30",
+						"stillingsprosent" : 50,
+						"beregnetAntallTimerPerUke": "20"
+					}
+				]
+
+			},
+			{
+				"arbeidsforholdId": "ARB001-002",
+				"arbeidsforholdIdNav": "1238162",
+				"ansettelsesperiodeFom": "now() - P4Y",
+				"ansettelsesperiodeTom": "now() - P4M",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "now() - P4Y",
+						"sisteLønnsendringsdato": "now() - P1Y",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 100,
+						"beregnetAntallTimerPerUke": "30"
+					},
+					{
+						"fomGyldighetsperiode": "now() - P10M",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "30",
+						"stillingsprosent" : 50,
+						"beregnetAntallTimerPerUke": "20"
+					}
+				]
+			}
+		]
+	},
+	"sigrun": {
+		"inntektsår": [
+			{
+				"år": "2016",
+				"oppføring": [
+					{
+						"tekniskNavn": "ettellerannet",
+						"beløp": 5000
+					},
+					{
+						"tekniskNavn": "noeannet",
+						"beløp": 6000
+					}
+				]
+			}
+		]
+	}
+ }
