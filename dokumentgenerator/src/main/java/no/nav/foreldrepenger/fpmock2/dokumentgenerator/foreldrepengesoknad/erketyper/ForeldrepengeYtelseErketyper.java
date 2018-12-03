@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
+import java.time.LocalDate;
+
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.Endringssoeknad;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelderMedNorskIdent;
@@ -7,8 +9,6 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Dekningsgrad;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Dekningsgrader;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-
-import java.time.LocalDate;
 
 public class ForeldrepengeYtelseErketyper {
 
@@ -32,7 +32,7 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(termindato));
         return foreldrepenger;
     }
-    
+
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate fødselsdato) {
         return foreldrepengerYtelseNorskBorgerINorgeFødselMor(FordelingErketyper.fordelingMorHappyCase(fødselsdato), fødselsdato);
     }
@@ -46,7 +46,7 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(fordeling);
         return foreldrepenger;
     }
-    
+
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(LocalDate fødselsdato, String aktørIdFar, Fordeling fordeling) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
@@ -65,7 +65,7 @@ public class ForeldrepengeYtelseErketyper {
         endringssoeknad.setFordeling(FordelingErketyper.fordelingMorHappyCaseMedEkstraUttak(fødselsdato));
         return endringssoeknad;
     }
-    
+
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFar(LocalDate fødselsdato) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
@@ -75,7 +75,7 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(fødselsdato));
         return foreldrepenger;
     }
-    
+
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(String aktørIdMor, LocalDate fødselsdato, Fordeling fordeling) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
@@ -108,8 +108,8 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
-    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans() {
-        Foreldrepenger foreldrepenger = foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate.now().plusWeeks(3));
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeFodselMedFrilans(LocalDate fodselsdato) {
+        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fodselsdato);
         foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
         return foreldrepenger;
     }
@@ -120,8 +120,8 @@ public class ForeldrepengeYtelseErketyper {
         return forelder;
     }
 
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering(LocalDate fødselsdato) {
-        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fødselsdato);
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering(LocalDate fodselsdato) {
+        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fodselsdato);
         foreldrepenger.setOpptjening(OpptjeningErketyper.medEgenNaeringOpptjening());
         return foreldrepenger;
     }

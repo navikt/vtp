@@ -17,25 +17,29 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Virksomhetstyper;
 
 public class OpptjeningErketyper {
 
-    public static Opptjening medFrilansOpptjening(){
-        Opptjening opptjening = new Opptjening();
-        Frilans frilans = new Frilans();
+    private OpptjeningErketyper(){}
 
+    public static Opptjening medFrilansOpptjening(){
+
+        Periode periode = new Periode();
+        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(2)));
+        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
+
+        Frilansoppdrag frilansoppdrag = new Frilansoppdrag();
+        frilansoppdrag.setOppdragsgiver("Tims BBQ og fotmassasje");
+        frilansoppdrag.setPeriode(periode);
+
+        Frilans frilans = new Frilans();
         frilans.setHarInntektFraFosterhjem(false);
         frilans.setErNyoppstartet(false);
         frilans.setNaerRelasjon(false);
-        Frilansoppdrag frilansoppdrag = new Frilansoppdrag();
-        frilansoppdrag.setOppdragsgiver("Tims BBQ og fotmassasje");
-        Periode periode = new Periode();
-        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(1)));
-        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
         frilans.getPeriode().add(periode);
-        frilansoppdrag.setPeriode(periode);
-
         frilans.getFrilansoppdrag().add(frilansoppdrag);
 
+        Opptjening opptjening = new Opptjening();
         opptjening.setFrilans(frilans);
         return opptjening;
+
     }
 
     public static Opptjening medEgenNaeringOpptjening(){

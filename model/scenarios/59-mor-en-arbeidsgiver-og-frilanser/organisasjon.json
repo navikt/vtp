@@ -1,0 +1,28 @@
+{
+  "modeller": [
+    {
+      "orgnummer": "979191138",
+      "navn": {
+        "navnelinje": [
+          "ACANDO AS"
+        ]
+      },
+      "organisasjonDetaljer": {
+        "registreringsDato": "now() - P10Y",
+        "datoSistEndret": "now() - P1Y"
+      }
+    },
+    {
+      "orgnummer": "979191300",
+      "navn": {
+        "navnelinje": [
+          "KJELLTECH"
+        ]
+      },
+      "organisasjonDetaljer": {
+        "registreringsDato": "now() - P10Y",
+        "datoSistEndret": "now() - P1Y"
+      }
+    }
+  ]
+}

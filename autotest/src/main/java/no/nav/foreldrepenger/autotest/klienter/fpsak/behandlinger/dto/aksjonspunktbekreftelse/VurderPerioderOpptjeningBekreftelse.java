@@ -39,7 +39,10 @@ public class VurderPerioderOpptjeningBekreftelse extends AksjonspunktBekreftelse
         aktivitet.setErManueltOpprettet(true);
         opptjeningAktivitetList.add(aktivitet);
     }
-    
-    
+
+    public void godkjennAllOpptjening(){
+        opptjeningAktivitetList.forEach(aktivitet -> aktivitet.vurder(true, "Godkjent", false));
+    }
+
     
 }

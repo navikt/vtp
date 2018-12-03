@@ -1,0 +1,54 @@
+{
+	"inntektskomponent": {
+		"inntektsperioder": [
+			{
+				"fom": "now() - P1Y",
+				"tom": "now() - P1M",
+				"beløp": 40000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			},
+			{
+				"fom": "now() - P1Y",
+				"tom": "now() - P1M",
+				"beløp": 10000,
+				"orgnr": "979191300",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			}
+		],
+		"frilansarbeidsforholdperioder": [
+			{
+				"frilansFom":"now() - P1Y",
+				"frilansTom":"now() - P1M",
+				"orgnr":"979191300",
+				"stillingsprosent":"25"
+			}
+		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+			{
+				"arbeidsforholdId": "ARB001-001",
+				"arbeidsforholdIdNav": "1238161",
+				"ansettelsesperiodeFom": "now() - P1Y",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "now() - P1Y",
+						"sisteLønnsendringsdato": "now() - P1M",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 75,
+						"beregnetAntallTimerPerUke": "40"
+					}
+				]
+
+			}
+		]
+	}
+ }
