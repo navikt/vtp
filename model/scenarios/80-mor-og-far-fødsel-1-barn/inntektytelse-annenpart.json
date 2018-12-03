@@ -31,7 +31,7 @@
 			{
 				"fom": "now() - P12M",
 				"tom": "now() - P10M",
-				"beløp": 50000,
+				"beløp": 60000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
@@ -39,21 +39,12 @@
 			},
 			{
 				"fom": "now() - P10M",
-				"tom": "now() - P2M",
+				"tom": "now()",
 				"beløp": 60000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
-			},
-			{
-				"fom": "now() - P4M",
-				"tom": "now() - P1M",
-				"beløp": 60000,
-				"orgnr": "979191138",
-				"type": "Lønnsinntekt",
-				"fordel": "kontantytelse",
-				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
 			}
 		]
 	},

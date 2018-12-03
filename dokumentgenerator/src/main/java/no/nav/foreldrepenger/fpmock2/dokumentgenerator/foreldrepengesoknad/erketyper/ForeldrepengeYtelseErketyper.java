@@ -56,6 +56,7 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
         foreldrepenger.setFordeling(FordelingErketyper.fordelingMorHappyCase(fødselsdato));
+        foreldrepenger.setAnnenForelder(standardAnnenForelder(aktørIdFar));
         return foreldrepenger;
     }
 
