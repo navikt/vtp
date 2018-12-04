@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class ProofOfConceptTest extends FpsakTestBase {
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(0);
-        inntektsmeldingsBuilder.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
+        inntektsmeldingsBuilder.addGradertperiode(BigDecimal.TEN, LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5));
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerIdent(), LocalDate.now().plusWeeks(3));
 
 

@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -66,7 +64,6 @@ public class FpsakTestBase extends TestScenarioTestBase{
 
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
 
-        List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
         List<Inntektsperiode> inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder();
         List<Arbeidsforhold> arbeidsforholdEtterStartdatoFP = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().stream()
@@ -74,6 +71,7 @@ public class FpsakTestBase extends TestScenarioTestBase{
                         arbeidsforhold.getAnsettelsesperiodeTom() == null ||
                         !arbeidsforhold.getAnsettelsesperiodeTom().isBefore(startDatoForeldrepenger))
                 .collect(Collectors.toList());
+        List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
         for (var arbeidsforhold : arbeidsforholdEtterStartdatoFP) {
             String arbeidsgiverOrgnr = arbeidsforhold.getArbeidsgiverOrgnr();
             Inntektsperiode sisteInntektsperiode = inntektsperioder.stream()
@@ -85,19 +83,6 @@ public class FpsakTestBase extends TestScenarioTestBase{
         }
 
         return inntektsmeldinger;
-    }
-
-    private List<Inntektsperiode> hentGjeldendeInntektsperioder(List<Inntektsperiode> perioder){
-        Map<String, Inntektsperiode> periodeMap = new HashMap<>();
-
-        for (Inntektsperiode periode : perioder) {
-
-            if(periodeMap.get(periode.getOrgnr()) == null || periode.getTom().isAfter(periodeMap.get(periode.getOrgnr()).getTom())) {
-                periodeMap.put(periode.getOrgnr(), periode);
-            }
-        }
-
-        return new ArrayList<>(periodeMap.values());
     }
 
     protected InntektsmeldingBuilder lagInntektsmeldingBuilder(Integer beløp, String fnr, LocalDate fpStartdato, String orgNr,

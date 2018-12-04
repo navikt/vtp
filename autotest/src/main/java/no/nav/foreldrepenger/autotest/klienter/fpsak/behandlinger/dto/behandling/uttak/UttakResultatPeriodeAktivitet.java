@@ -12,9 +12,6 @@ public class UttakResultatPeriodeAktivitet {
     protected Kode stønadskontoType = null;
     protected Integer trekkdager = null;
     protected BigDecimal prosentArbeid = null;
-    protected String arbeidsforholdId = null;
-    protected String arbeidsforholdNavn = null;
-    protected String arbeidsforholdOrgnr = null;
     protected BigDecimal utbetalingsgrad = null;
     protected Kode uttakArbeidType = null;
     protected Arbeidsgiver arbeidsgiver;
@@ -36,5 +33,17 @@ public class UttakResultatPeriodeAktivitet {
     }
     public void setStønadskontoType(Kode stønadskontoType) {
         this.stønadskontoType = stønadskontoType;
+    }
+
+    public Arbeidsgiver getArbeidsgiver() {
+        return arbeidsgiver;
+    }
+
+    public Kode getUttakArbeidType() {
+        return uttakArbeidType;
+    }
+
+    public BigDecimal getProsentArbeid() {
+        return prosentArbeid;
     }
 }

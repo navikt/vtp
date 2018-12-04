@@ -12,10 +12,9 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 
 import java.time.LocalDate;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 
 public class ForeldrepengesoknadXmlErketyper {
 
@@ -43,11 +42,21 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate startDatoForeldrepenger) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate startDatoForeldrepenger) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger))
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, Fordeling fordeling, LocalDate fødselsdato) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato.minusMonths(1)))
+                .withBegrunnelseForSenSoeknad(null)
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(fordeling, fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);

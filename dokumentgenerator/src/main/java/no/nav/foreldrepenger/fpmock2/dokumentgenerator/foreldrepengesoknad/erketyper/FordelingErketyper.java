@@ -1,9 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import javax.xml.datatype.DatatypeConfigurationException;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
@@ -19,6 +16,9 @@ public class FordelingErketyper {
     public static final String STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL = "FORELDREPENGER_FØR_FØDSEL";
     public static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
     public static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
+    public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
+    public static final String UTSETTELSETYPE_ARBEID = "ARBEID";
+
 
     public static Fordeling fordelingMorHappyCase(LocalDate familehendelseDato) {
         Fordeling fordeling = new Fordeling();
@@ -30,18 +30,11 @@ public class FordelingErketyper {
         return fordeling;
     }
 
-    public static Fordeling fordelingMorHappyCaseMedUtsettelseOgGradering(LocalDate familehendelseDato, String arbeidsgiverIdentifikator) {
-        Fordeling fordeling = fordelingMorHappyCase(familehendelseDato);
-        fordeling.getPerioder().add(utsettelsePeriode(familehendelseDato.plusWeeks(10).plusDays(1), familehendelseDato.plusWeeks(10)));
-        fordeling.getPerioder().add(graderingPeriode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(10).plusDays(1), familehendelseDato.plusWeeks(13), arbeidsgiverIdentifikator));
-        return fordeling;
-    }
-
-    private static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator) {
+    public static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, double arbeidstidsprosent) {
         Gradering gradering = new Gradering();
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setVirksomhetsnummer(arbeidsgiverIdentifikator);
-        gradering.setArbeidtidProsent(BigDecimal.TEN.doubleValue());
+        gradering.setArbeidtidProsent(arbeidstidsprosent);
         gradering.setErArbeidstaker(true);
         addStønadskontotype(stønadskontotype, gradering);
 
@@ -49,18 +42,21 @@ public class FordelingErketyper {
         return gradering;
     }
 
-    private static Utsettelsesperiode utsettelsePeriode(LocalDate fom, LocalDate tom) {
+    public static Utsettelsesperiode utsettelsePeriode(String årsak, LocalDate fom, LocalDate tom) {
         Utsettelsesperiode utsettelse = new Utsettelsesperiode();
         Utsettelsesaarsaker årsaker = new Utsettelsesaarsaker();
-        årsaker.setKode("FERIE");
+        årsaker.setKode(årsak);
         utsettelse.setAarsak(årsaker);
         utsettelse.setErArbeidstaker(true);
+        Uttaksperiodetyper typer = new Uttaksperiodetyper();
+        typer.setKode(STØNADSKONTOTYPE_MØDREKVOTE);
+        utsettelse.setUtsettelseAv(typer);
 
         addPeriode(fom, tom, utsettelse);
         return utsettelse;
     }
 
-    private static Uttaksperiode uttaksperiode(String stønadskontotype, LocalDate fom, LocalDate tom) {
+    public static Uttaksperiode uttaksperiode(String stønadskontotype, LocalDate fom, LocalDate tom) {
         Uttaksperiode uttaksperiode = new Uttaksperiode();
         addStønadskontotype(stønadskontotype, uttaksperiode);
 

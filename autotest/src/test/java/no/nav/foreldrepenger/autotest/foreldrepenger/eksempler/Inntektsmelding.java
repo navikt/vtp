@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class Inntektsmelding extends FpsakTestBase{
         TestscenarioDto testscenario = opprettScenario("50");
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
         InntektsmeldingBuilder inntektsmelding = inntektsmeldinger.get(0);
-        inntektsmelding.addGradertperiode(100, InntektsmeldingBuilder.createPeriode(LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5)));
+        inntektsmelding.addGradertperiode(BigDecimal.TEN, LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5));
         
         System.out.println(inntektsmelding.createInntektesmeldingXML());
         

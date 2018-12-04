@@ -1,6 +1,24 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper;
 
 
+import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
@@ -29,21 +47,6 @@ import no.seres.xsd.nav.inntektsmelding_m._20180924.Skjemainnhold;
 import no.seres.xsd.nav.inntektsmelding_m._20180924.SykepengerIArbeidsgiverperioden;
 import no.seres.xsd.nav.inntektsmelding_m._20180924.UtsettelseAvForeldrepenger;
 import no.seres.xsd.nav.inntektsmelding_m._20180924.UtsettelseAvForeldrepengerListe;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.StringWriter;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 
 public class InntektsmeldingBuilder {
@@ -204,18 +207,22 @@ public class InntektsmeldingBuilder {
         return this;
     }
 
+    public Arbeidsgiver getArbeidsgiver() {
+        return arbeidsgiver;
+    }
+
     public InntektsmeldingBuilder setNaaerRelasjon(Boolean naerRelasjon){
         this.naerRelasjon = naerRelasjon;
         return this;
     }
     
-    public InntektsmeldingBuilder addGradertperiode(int arbeidsprosent, Periode periode) {
+    public InntektsmeldingBuilder addGradertperiode(BigDecimal arbeidsprosent, LocalDate fom, LocalDate tom) {
         if(null == this.arbeidsforhold.getGraderingIForeldrepengerListe()) {
             ObjectFactory objectFactory = new ObjectFactory();
             arbeidsforhold.setGraderingIForeldrepengerListe(objectFactory.createArbeidsforholdGraderingIForeldrepengerListe(objectFactory.createGraderingIForeldrepengerListe()));
         }
-        
-        GraderingIForeldrepenger gradering = createGraderingIForeldrepenger(new BigDecimal(arbeidsprosent), periode);
+
+        GraderingIForeldrepenger gradering = createGraderingIForeldrepenger(arbeidsprosent, createPeriode(fom, tom));
         this.arbeidsforhold.getGraderingIForeldrepengerListe().getValue().getGraderingIForeldrepenger().add(gradering);
         return this;
     }
@@ -537,5 +544,26 @@ public class InntektsmeldingBuilder {
                 fnr,
                 startDatoForeldrepenger);
         return builder;
+    }
+
+    public InntektsmeldingBuilder addUtsettelseperiode(String årsak, LocalDate fom, LocalDate tom) {
+        if(null == this.arbeidsforhold.getUtsettelseAvForeldrepengerListe()) {
+            ObjectFactory objectFactory = new ObjectFactory();
+            arbeidsforhold.setUtsettelseAvForeldrepengerListe(objectFactory.createArbeidsforholdUtsettelseAvForeldrepengerListe(objectFactory.createUtsettelseAvForeldrepengerListe()));
+        }
+
+        UtsettelseAvForeldrepenger utsettelse = createUtsettelseAvForeldrepenger(map(årsak), createPeriode(fom, tom));
+        this.arbeidsforhold.getUtsettelseAvForeldrepengerListe().getValue().getUtsettelseAvForeldrepenger().add(utsettelse);
+        return this;
+    }
+
+    private ÅrsakUtsettelseKodeliste map(String årsak) {
+        if (FordelingErketyper.UTSETTELSETYPE_LOVBESTEMT_FERIE.equals(årsak)) {
+            return ÅrsakUtsettelseKodeliste.LOVBESTEMT_FERIE;
+        }
+        if (FordelingErketyper.UTSETTELSETYPE_ARBEID.equals(årsak)) {
+            return ÅrsakUtsettelseKodeliste.ARBEID;
+        }
+        throw new IllegalStateException("Ukjent utsettelseårsak " + årsak);
     }
 }

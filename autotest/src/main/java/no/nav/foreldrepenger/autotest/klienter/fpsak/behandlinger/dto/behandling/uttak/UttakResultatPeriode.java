@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -96,8 +97,8 @@ public class UttakResultatPeriode {
         this.graderingInnvilget = graderingInnvilget;
     }
 
-    public Object getGradertArbeidsprosent() {
-        return gradertAktivitet.prosentArbeid.longValue();
+    public BigDecimal getGradertArbeidsprosent() {
+        return gradertAktivitet.prosentArbeid;
     }
     
 

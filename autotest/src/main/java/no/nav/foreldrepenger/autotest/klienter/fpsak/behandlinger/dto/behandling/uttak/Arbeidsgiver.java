@@ -9,4 +9,20 @@ public class Arbeidsgiver {
     protected String navn;
     protected String aktørId;
     protected Boolean virksomhet;
+
+    public String getIdentifikator() {
+        return identifikator;
+    }
+
+    public String getNavn() {
+        return navn;
+    }
+
+    public String getAktørId() {
+        return aktørId;
+    }
+
+    public Boolean getVirksomhet() {
+        return virksomhet;
+    }
 }
