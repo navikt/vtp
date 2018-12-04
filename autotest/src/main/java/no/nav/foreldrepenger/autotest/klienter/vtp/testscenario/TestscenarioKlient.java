@@ -22,7 +22,9 @@ public class TestscenarioKlient extends VTPKlient{
     
     public TestscenarioDto opprettTestscenario(String key) throws IOException {
         String url = hentRestRotUrl() + String.format(TESTSCENARIO_POST_URL, key);
-        return postOgHentJson(url, null, TestscenarioDto.class, StatusRange.STATUS_SUCCESS);
+        TestscenarioDto testscenarioDto = postOgHentJson(url, null, TestscenarioDto.class, StatusRange.STATUS_SUCCESS);
+        System.out.println("Testscenario opprettet: [" + key + "] med hovedsøker: [" + testscenarioDto.getPersonopplysninger().getSøkerIdent() + "]");
+        return testscenarioDto;
     }
     
 }
