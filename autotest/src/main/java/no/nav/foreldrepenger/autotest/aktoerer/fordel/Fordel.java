@@ -18,6 +18,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnytt
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.HistorikkKlient;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.SakKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakRequestDTO;
@@ -33,6 +35,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModel
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
+import oracle.net.aso.h;
 
 public class Fordel extends Aktoer {
 
@@ -43,6 +46,7 @@ public class Fordel extends Aktoer {
     BehandlingerKlient behandlingerKlient;
     SakKlient sakKlient;
     FagsakKlient fagsakKlient;
+    HistorikkKlient historikkKlient;
 
     //Vtp Klienter
     JournalforingKlient journalpostKlient;
@@ -53,6 +57,7 @@ public class Fordel extends Aktoer {
         journalpostKlient = new JournalforingKlient(new HttpSession());
         sakKlient = new SakKlient(session);
         fagsakKlient = new FagsakKlient(session);
+        historikkKlient = new HistorikkKlient(session);
     }
 
 
@@ -154,9 +159,16 @@ public class Fordel extends Aktoer {
         return saksnummer;
     }
     
-    public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario, Long saksnummer) throws IOException {
+    public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario, Long saksnummer) throws Exception {
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, scenario, saksnummer);
+        }
+        if(saksnummer != null) {
+            final long saksnummerF = saksnummer;
+            Vent.til(() ->{
+                List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
+                return historikk.stream().anyMatch(h -> h.getTekst().equals("Vedlegg mottatt"));
+            }, 5, "Saken har ikke mottatt inntektsmeldingen");
         }
         return saksnummer;
 
