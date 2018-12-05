@@ -50,6 +50,8 @@ public class Saksbehandler extends Aktoer{
     public List<Behandling> behandlinger;
     public Behandling valgtBehandling;
     
+    public Behandling annenPartBehandling;
+    
     private FagsakKlient fagsakKlient;
     private BehandlingerKlient behandlingerKlient;
     private KodeverkKlient kodeverkKlient;
@@ -134,6 +136,8 @@ public class Saksbehandler extends Aktoer{
         if(behandlinger.size() == 1) { //ellers må en velge explisit
             velgBehandling(behandlinger.get(0));
         }
+        
+        annenPartBehandling = behandlingerKlient.annenPartBehandling(fagsak.saksnummer);
     }
     
     /*
@@ -491,6 +495,10 @@ public class Saksbehandler extends Aktoer{
         filter.setSisteKjoeretidspunktTilOgMed(LocalDateTime.now());
         List<ProsessTaskListItemDto> prosesstasker = prosesstaskKlient.list(filter);
         return prosesstasker.stream().filter(p -> p.getTaskParametre().getBehandlingId() == "" + behandling.id).collect(Collectors.toList());
+    }
+
+    public boolean sakErKobletTilAnnenpart() {
+        return annenPartBehandling != null;
     }
 
 }

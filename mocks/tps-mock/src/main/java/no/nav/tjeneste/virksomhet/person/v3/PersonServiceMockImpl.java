@@ -20,8 +20,10 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkSikkerhetsbegrensning;
@@ -86,14 +88,30 @@ public class PersonServiceMockImpl implements PersonV3 {
         
         Personopplysninger pers = repo.getPersonIndeks().finnPersonopplysningerByIdent(bruker.getIdent());
         
+        boolean erBarnet = false;
+        for (FamilierelasjonModell relasjon : pers.getFamilierelasjoner()) {
+            if(relasjon.getRolle().equals(Rolle.BARN) && relasjon.getTil().getAktørIdent().equals(bruker.getAktørIdent())) {
+                erBarnet = true;
+            }
+        }
+        
         List<Familierelasjon> familierelasjoner;
         if(pers.getAnnenPart().getAktørIdent().equals(bruker.getAktørIdent())) { //TODO HACK for annenpart (annenpart burde ha en egen personopplysning fil eller liknende)
             familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjonerForAnnenPart());
             familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
         }
+        else if(erBarnet) { //TODO HACK Familierelasjon for barnet
+            familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjonerForBarnet());
+            familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
+        }
         else {
             familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjoner());
             familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
+        }
+
+        System.out.println("Relasjoner for person: " + hentPersonRequest.getAktoer().toString());
+        for (Familierelasjon familierelasjon : familierelasjoner) {
+            System.out.println("    " + familierelasjon.getTilPerson().getAktoer().toString());
         }
         
         response.setPerson(person);

@@ -30,6 +30,9 @@ public class Personopplysninger {
     
     @JsonProperty("familierelasjonerAnnenPart")
     private List<FamilierelasjonModell> familierelasjonerAnnenPart = new ArrayList<>();
+    
+    @JsonProperty("familierelasjonerBarn")
+    private List<FamilierelasjonModell> familierelasjonerBarn = new ArrayList<>();
 
     /**
      * identity cache for dette scenario. Medfører at identer kan genereres dynamisk basert på lokal id referanse i scenarioet.
@@ -65,6 +68,10 @@ public class Personopplysninger {
     public Collection<FamilierelasjonModell> getFamilierelasjonerForAnnenPart() {
         return Collections.unmodifiableList(familierelasjonerAnnenPart);
     }
+    
+    public Collection<FamilierelasjonModell> getFamilierelasjonerForBarnet() {
+        return Collections.unmodifiableList(familierelasjonerBarn);
+    }
 
     public Stream<FamilierelasjonModell> getFamilierelasjoner(Rolle rolle) {
         return getFamilierelasjoner().stream().filter(f -> rolle.equals(f.getRolle()));
@@ -93,5 +100,4 @@ public class Personopplysninger {
             this.annenPart.setIdenter(identer);
         }
     }
-
 }

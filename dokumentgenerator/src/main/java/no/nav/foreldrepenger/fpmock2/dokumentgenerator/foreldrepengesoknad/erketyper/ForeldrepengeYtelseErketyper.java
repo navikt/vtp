@@ -78,8 +78,21 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(fødselsdato));
         return foreldrepenger;
     }
-
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(LocalDate startDatoForeldrepenger, String aktørIdMor) {
+    
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMorMedOverlapp(LocalDate startDatoForeldrepenger, String aktørIdMor) {
+        LocalDate fødselsdato = startDatoForeldrepenger.minusWeeks(3);
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(fødselsdato));
+        foreldrepenger.setAnnenForelder(standardAnnenForelder(aktørIdMor));
+        
+        return foreldrepenger;
+    }
+    
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMorUtenOverlapp(LocalDate startDatoForeldrepenger, String aktørIdMor) {
         LocalDate fødselsdato = startDatoForeldrepenger.minusWeeks(3);
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
