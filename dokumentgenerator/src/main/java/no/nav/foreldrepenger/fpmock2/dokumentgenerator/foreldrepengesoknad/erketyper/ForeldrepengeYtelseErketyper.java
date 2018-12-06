@@ -33,8 +33,7 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
     
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate startDatoForeldrepenger) {
-        LocalDate fødselsdato = startDatoForeldrepenger.plusWeeks(3);
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate fødselsdato) {
         return foreldrepengerYtelseNorskBorgerINorgeFødselMor(FordelingErketyper.fordelingMorHappyCase(fødselsdato), fødselsdato);
     }
 
