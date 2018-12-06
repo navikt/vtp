@@ -38,11 +38,12 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate startDatoForeldrepenger) {
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate startDatoForeldrepenger, LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
@@ -175,21 +176,21 @@ public class ForeldrepengesoknadXmlErketyper {
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunFar(String aktoerId,
-            LocalDate startDatoForeldrepenger) {
+            LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.minusWeeks(3)))
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFar(startDatoForeldrepenger))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFar(fødselsdato))
                 .withSoeker(farSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate startDatoForeldrepenger) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(startDatoForeldrepenger, farAktørId))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(fødselsdato, farAktørId, fordeling))
                 .withSoeker(morSoeker(morAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
@@ -204,32 +205,22 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
-
-    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMorMedOverlapp(String farAktørId, String morAktørId, LocalDate startDatoForeldrepenger) {
-        return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.minusWeeks(3)))
-                .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMorMedOverlapp(startDatoForeldrepenger, morAktørId))
-                .withSoeker(farSoeker(farAktørId))
-                .withAndreVedlegg(null)
-                .withPaakrevdeVedlegg(null);
-    }
     
-    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMorUtenOverlapp(String farAktørId, String morAktørId, LocalDate startDatoForeldrepenger) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String farAktørId, String morAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.minusWeeks(3)))
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMorUtenOverlapp(startDatoForeldrepenger, morAktørId))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(morAktørId, fødselsdato, fordeling))
                 .withSoeker(farSoeker(farAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorMedEgenNaering(String aktoerId, LocalDate startDatoForeldrepenger) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorMedEgenNaering(String aktoerId, LocalDate fødselsdato, LocalDate mottattdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering(startDatoForeldrepenger))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering(fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);

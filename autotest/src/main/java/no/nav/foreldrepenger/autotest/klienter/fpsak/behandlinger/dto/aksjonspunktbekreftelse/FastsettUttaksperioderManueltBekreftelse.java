@@ -42,6 +42,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     public void godkjennPeriode(UttakResultatPeriode periode, int utbetalingsgrad) {
         periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
         periode.setPeriodeResultatÅrsak(new Kode("INNVILGET_AARSAK", "2001", "§14-6: Uttak er oppfylt"));
+        periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
         
         //Utsettelses perioder trenger ikke trekkdager. set dem til 0
         for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {

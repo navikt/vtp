@@ -101,12 +101,11 @@ public class UttakResultatPeriode {
     public BigDecimal getGradertArbeidsprosent() {
         return gradertAktivitet.prosentArbeid;
     }
-
-    public Kode getOppholdÅrsak() {
-        return oppholdÅrsak;
-    }
-
+    
     public void setOppholdÅrsak(Kode oppholdÅrsak) {
         this.oppholdÅrsak = oppholdÅrsak;
+    }
+    public Kode getOppholdÅrsak() {
+        return oppholdÅrsak;
     }
 }

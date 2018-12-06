@@ -18,13 +18,9 @@ public class FordelingErketyper {
 
 
     public static Fordeling fordelingMorHappyCase(LocalDate familehendelseDato) {
-        Fordeling fordeling = new Fordeling();
-        fordeling.setAnnenForelderErInformert(true);
-
-        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)));
-        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familehendelseDato, familehendelseDato.plusWeeks(6)));
-
-        return fordeling;
+        return generiskFordeling(
+                uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)),
+                uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familehendelseDato, familehendelseDato.plusWeeks(6)));
     }
 
     public static Fordeling fordelingMorHappyCaseMedEkstraUttak(LocalDate familiehendelseDato) {
@@ -83,10 +79,20 @@ public class FordelingErketyper {
     }
 
     public static Fordeling fordelingFarHappyCase(LocalDate familehendelseDato) {
+        return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(5)));
+    }
+
+    public static Fordeling fordelingFarUtenOverlapp(LocalDate familehendelseDato) {
+        return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(6).plusDays(1), familehendelseDato.plusWeeks(8)));
+    }
+    
+    public static Fordeling generiskFordeling(Uttaksperiode... perioder) {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
 
-        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(5)));
+        for (Uttaksperiode uttaksperiode : perioder) {
+            fordeling.getPerioder().add(uttaksperiode);
+        }
 
         return fordeling;
     }

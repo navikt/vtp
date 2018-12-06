@@ -66,7 +66,7 @@
 				"ident": "${barn1}",
 				"fornavn": "${nevø1}",
 				"etternavn": "Duck",
-				"fødselsdato": "now()-P4W"
+				"fødselsdato": "now()-P8W"
 			}
 		},
 		{
@@ -86,7 +86,7 @@
 				"ident": "${barn1}",
 				"fornavn": "${nevø1}",
 				"etternavn": "Duck",
-				"fødselsdato": "now()-P4W"
+				"fødselsdato": "now()-P8W"
 			}
 		},
 		{

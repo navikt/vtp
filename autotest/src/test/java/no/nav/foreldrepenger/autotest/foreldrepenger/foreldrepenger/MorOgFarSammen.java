@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
-import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerBosattBekreftelse;
@@ -15,10 +15,12 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 
 public class MorOgFarSammen extends ForeldrepengerTestBase{
 
@@ -40,10 +42,10 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         TestscenarioDto testscenario = opprettScenario("81");
         
         long saksnummer = behandleSøknadForMor(testscenario);
-        behandleSøknadForFar(testscenario);
+        behandleSøknadForFarUtenOverlapp(testscenario);
         
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilSakHarBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
+        verifiser(saksbehandler.harIkkeBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har fått revurdering");
     }
     
     public long behandleSøknadForMor(TestscenarioDto testscenario) throws Exception {
@@ -53,7 +55,13 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
         
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
+        Fordeling fordeling = FordelingErketyper.fordelingMorHappyCase(fødselsdato);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(
+                søkerAktørid,
+                annenPartAktørid,
+                fødselsdato,
+                startDatoForeldrepenger.plusWeeks(2),
+                fordeling);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -87,7 +95,13 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         System.out.println("Fødselsdato: " + fødselsdato);
         System.out.println("startDatoForeldrepenger: " + startDatoForeldrepenger);
 
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMorMedOverlapp(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
+        
+        Fordeling fordeling = fordeling(uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE, startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2)));
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(søkerAktørid,
+                annenPartAktørid,
+                fødselsdato,
+                fødselsdato.plusWeeks(3),
+                fordeling);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -141,15 +155,14 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         String annenPartAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String annenPartIdent = testscenario.getPersonopplysninger().getSøkerIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-        LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
-       
-        
-        System.out.println("søkerAktørid: " + søkerAktørid);
-        System.out.println("annenPartAktørid: " + annenPartAktørid);
-        System.out.println("Fødselsdato: " + fødselsdato);
-        System.out.println("startDatoForeldrepenger: " + startDatoForeldrepenger);
+        LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(6).plusDays(1);
 
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMorUtenOverlapp(søkerAktørid, annenPartAktørid, startDatoForeldrepenger);
+        Fordeling fordeling = fordeling(uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE, startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2)));
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(søkerAktørid,
+                annenPartAktørid,
+                fødselsdato,
+                fødselsdato.plusWeeks(3),
+                fordeling);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -161,7 +174,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilder(
                 inntekter.get(0),
                 fnr,
-                fødselsdato.plusWeeks(3),
+                startDatoForeldrepenger,
                 orgnr,
                 Optional.empty(),
                 Optional.empty());
@@ -176,10 +189,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
             .bekreftBrukerErBosatt();
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerBosattBekreftelse.class);
         
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class)
-            .godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2),
-                saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.class);
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
+            .godkjennAllePerioder();
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
         
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
         verifiserLikhet(perioder.size(), 1);
@@ -190,7 +202,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         
         beslutter.hentFagsak(saksnummer);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK))
+            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         

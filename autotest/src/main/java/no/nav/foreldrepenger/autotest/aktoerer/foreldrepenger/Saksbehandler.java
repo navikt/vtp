@@ -427,14 +427,18 @@ public class Saksbehandler extends Aktoer{
             return harBehandling(behandlingType);
         }, 10, "Saken har ikke fått behandling av type: " + behandlingType);
     }
-
-    private boolean harBehandling(Kode behandlingType){
+    
+    public boolean harBehandling(Kode behandlingType){
         for (Behandling behandling: behandlinger) {
             if (behandling.type.kode.equals(behandlingType.kode)){
                 return true;
             }
         }
         return false;
+    }
+    
+    public boolean harIkkeBehandling(Kode behandlingType) {
+        return !harBehandling(behandlingType);
     }
 
     private Behandling getBehandling(Kode behandlingstype) {
