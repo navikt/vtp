@@ -1,29 +1,13 @@
 package no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
-
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.AsyncPollingStatus;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingHenlegg;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.*;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
@@ -42,9 +26,17 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlie
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsesstaskDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
-import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
+import org.apache.http.HttpResponse;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Saksbehandler extends Aktoer{
 
@@ -180,7 +172,7 @@ public class Saksbehandler extends Aktoer{
         valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
         valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(request);
         valgtBehandling.uttakResultatPerioder = behandlingerKlient.behandlingUttakResultatPerioder(request);
-
+        valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
         
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));

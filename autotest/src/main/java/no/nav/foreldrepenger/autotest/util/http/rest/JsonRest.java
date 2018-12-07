@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -107,14 +105,14 @@ public abstract class JsonRest extends Rest{
         HttpResponse response = getJson(url, headers);
         String json = hentResponseBody(response);
         ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
-        return hentObjectMapper().readValue(json, returnType);
+        return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
     
     protected <T> T getOgHentJson(String url, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
         HttpResponse response = getJson(url, headers);
         String json = hentResponseBody(response);
         ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
-        return hentObjectMapper().readValue(json, returnType);
+        return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
     
     

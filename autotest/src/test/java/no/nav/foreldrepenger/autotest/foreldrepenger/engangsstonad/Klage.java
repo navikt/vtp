@@ -1,9 +1,11 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravNfp;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravKa;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravNfp;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNfpBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNkBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
@@ -14,6 +16,7 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 
 @Tag("pending")
@@ -55,14 +58,15 @@ public class Klage extends EngangsstonadTestBase {
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD", "behandlingsresultat");
+        verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD");
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "behandlingstatus");
+        verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
+
     }
 
     @Test
@@ -97,7 +101,7 @@ public class Klage extends EngangsstonadTestBase {
                 .fritekstBrev("Fritekst brev fra nfp")
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET", "Behandlingsresultat");
+        verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET");
 
         // KA - klage kommer rett til KA uten totrinnsbehanling. Kan fortsette med samme klagebehandler.
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
@@ -110,16 +114,16 @@ public class Klage extends EngangsstonadTestBase {
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET", "Behandlingsresultat");
+        verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET");
 
-        // TODO (MV): Følg opp når fritekst til brev er rettet
+        // TODO (MV): vent til brev er ferdig
         /*beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
-        beslutter.ventTilHistorikkinnslag("Brev sendt");*/
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();*/
+
     }
 
     @Test
@@ -153,7 +157,7 @@ public class Klage extends EngangsstonadTestBase {
                 .bekreftStadfestet()
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
-        verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET", "Behandlingsresultat");
+        verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET");
 
         // Behandle klage - KA
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
@@ -167,9 +171,8 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDERING_AV_FORMKRAV_KLAGE_KA));
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_AVVIST", "Behandlingsresultat");
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_AVVIST");
     }
 
     @Test
@@ -199,13 +202,16 @@ public class Klage extends EngangsstonadTestBase {
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
+        String fritekstbrev1 = "Fritekst brev nfp.";
+        String begrunnelse1 = "Fordi.";
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
                 .bekreftMedholdGunst("NYE_OPPLYSNINGER")
-                .fritekstBrev("Fritekst brev nfp")
-                .setBegrunnelse("Fordi");
+                .fritekstBrev(fritekstbrev1)
+                .setBegrunnelse(begrunnelse1);
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         verifiserLikhet(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD", "Behandlingsresultat");
+        verifiserKlageVurderingOmgjoer(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getKlageVurderingOmgjoer(), "GUNST_MEDHOLD_I_KLAGE");
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
@@ -220,10 +226,14 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        verifiserFritekst(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getFritekstTilBrev(), fritekstbrev1);
+        verifiserFritekst(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getBegrunnelse(), begrunnelse1);
+        String fritekstbrev2 = "Fritekst brev nr 2 .";
+        String begrunnelse2 = "Fordi.";
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
                 .bekreftMedholdDelvisGunst("NYE_OPPLYSNINGER")
-                .fritekstBrev("Fritekst brev nr 2.")
-                .setBegrunnelse("Fordi.");
+                .fritekstBrev(fritekstbrev2)
+                .setBegrunnelse(begrunnelse2);
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
@@ -233,9 +243,12 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class);
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD", "Behandlingsresultat");
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD");
+        verifiserFritekst(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getFritekstTilBrev(), fritekstbrev2);
+        verifiserFritekst(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getBegrunnelse(), begrunnelse2);
+        verifiserKlageVurderingOmgjoer(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getKlageVurderingOmgjoer(), "DELVIS_MEDHOLD_I_KLAGE");
+        verifiserBehandlingsstatus(beslutter.valgtBehandling.status.navn, "Avsluttet");
     }
 
     private void opprettForstegangssoknadVedtak(long saksnummer)throws Exception{
@@ -245,7 +258,7 @@ public class Klage extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusDays(15)); //minusMonths(1)?
+                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusDays(15));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -258,7 +271,23 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.ikkeVentPåStatus = true;
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET");
         beslutter.ventTilHistorikkinnslag("Brev sendt");
+    }
+
+    private void verifiserBehandlingsresultat(String verdiFaktisk, String verdiForventet) {
+        verifiserLikhet(verdiFaktisk, verdiForventet, "Behandlingsresultat");
+    }
+
+    private void verifiserBehandlingsstatus(String verdiFaktisk, String verdiForventet) {
+        verifiserLikhet(verdiFaktisk, verdiForventet, "Behandlingsstatus");
+    }
+
+    private void verifiserFritekst(String verdiFaktisk, String verdiForventet) {
+        verifiserLikhet(verdiFaktisk, verdiForventet, "Fritekst");
+    }
+
+    private void verifiserKlageVurderingOmgjoer(String verdiFaktisk, String verdiForventet) {
+        verifiserLikhet(verdiFaktisk, verdiForventet, "KlageVurderingOmgjoer");
     }
 }
