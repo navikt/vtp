@@ -6,10 +6,10 @@ import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BeregningDto {
-    Integer id;
-    BeregningsgrunnlagDto beregningsgrunnlag;
-    String saksnummer;
-    Kode tema;
+    protected Integer id;
+    protected BeregningsgrunnlagDto beregningsgrunnlag;
+    protected String saksnummer;
+    protected Kode tema;
     
     public BeregningDto() {
     }

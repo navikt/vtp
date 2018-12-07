@@ -7,13 +7,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BeregningsgrunnlagDto {
-    LocalDate skjaeringstidspunktBeregning;
-    List<AktivitetStatusDto> aktivitetStatus;
-    List<BeregningsgrunnlagPeriodeDto> beregningsgrunnlagPeriode;
-    SammenligningsgrunnlagDto sammenligningsgrunnlag;
-    String ledetekstBrutto;
-    String oppgaveBeskrivelse;
-    Long id;
+    protected LocalDate skjaeringstidspunktBeregning;
+    protected List<AktivitetStatusDto> aktivitetStatus;
+    protected List<BeregningsgrunnlagPeriodeDto> beregningsgrunnlagPeriode;
+    protected SammenligningsgrunnlagDto sammenligningsgrunnlag;
+    protected String ledetekstBrutto;
+    protected String oppgaveBeskrivelse;
+    protected Long id;
     
     public BeregningsgrunnlagDto() {
     }

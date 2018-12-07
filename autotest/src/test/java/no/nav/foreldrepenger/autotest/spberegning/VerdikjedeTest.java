@@ -32,7 +32,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(testscenario, saksnummer);
 
-        verifiser(saksbehandler.beregning.getTema().kode.equals("SYK"));
+        verifiser(saksbehandler.beregning.getTema().kode.equals("SYK")); 
+        
+        System.out.println(saksbehandler.beregning.getBeregningsgrunnlag());
     }
 
 }
