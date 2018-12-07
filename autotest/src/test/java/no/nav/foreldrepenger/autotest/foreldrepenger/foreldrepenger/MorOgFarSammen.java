@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -22,6 +24,8 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 
+@Tag("smoke")
+@Tag("foreldrepenger")
 public class MorOgFarSammen extends ForeldrepengerTestBase{
 
     @Test
@@ -38,6 +42,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
     }
     
     @Test
+    @Disabled
     public void farOgMorSøkerFødselMedEttArbeidsforholdUtenOverlappendePeriode() throws Exception {
         TestscenarioDto testscenario = opprettScenario("81");
         

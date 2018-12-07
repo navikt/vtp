@@ -17,6 +17,7 @@ import java.util.List;
 
 
 
+@Tag("smoke")
 @Tag("foreldrepenger")
 public class Revurdering extends ForeldrepengerTestBase {
 
@@ -54,16 +55,15 @@ public class Revurdering extends ForeldrepengerTestBase {
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
 
-        // TODO MV: finn ut av "iverksetteVedtak.oppdragTilØkonomi" error
-        /*beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Revurdering"));
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
-        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus"); */
+        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
 
     }
 

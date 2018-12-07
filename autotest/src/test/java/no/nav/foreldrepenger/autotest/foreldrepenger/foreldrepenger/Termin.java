@@ -13,6 +13,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
+@Tag("smoke")
 @Tag("foreldrepenger")
 public class Termin extends ForeldrepengerTestBase{
 
