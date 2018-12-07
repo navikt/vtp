@@ -16,6 +16,7 @@ public class FordelingErketyper {
     public static final String STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL = "FORELDREPENGER_FØR_FØDSEL";
     public static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
     public static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
+    public static final String STØNADSKONTOTYPE_FORELDREPENGER = "FORELDREPENGER";
     public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
     public static final String UTSETTELSETYPE_ARBEID = "ARBEID";
 
@@ -80,6 +81,25 @@ public class FordelingErketyper {
         fordeling.setAnnenForelderErInformert(true);
 
         fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(5)));
+
+        return fordeling;
+    }
+
+    public static Fordeling fordelingMorAleneomsorgHappyCase(LocalDate familehendelseDato) {
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(false);
+
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)));
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER, familehendelseDato, familehendelseDato.plusWeeks(100)));
+
+        return fordeling;
+    }
+
+    public static Fordeling fordelingFarAleneomsorg(LocalDate familehendelseDato) {
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(false);
+
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER, familehendelseDato, familehendelseDato.plusWeeks(20)));
 
         return fordeling;
     }

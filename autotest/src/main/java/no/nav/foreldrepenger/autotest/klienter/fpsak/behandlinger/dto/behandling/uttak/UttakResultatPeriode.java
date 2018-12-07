@@ -26,6 +26,7 @@ public class UttakResultatPeriode {
     protected Boolean graderingInnvilget;
     protected Kode periodeType = null;
     protected Kode utsettelseType = null;
+    protected Kode oppholdÅrsak = null;
 
     protected UttakResultatPeriodeAktivitet gradertAktivitet = null;
 
@@ -100,6 +101,12 @@ public class UttakResultatPeriode {
     public BigDecimal getGradertArbeidsprosent() {
         return gradertAktivitet.prosentArbeid;
     }
-    
 
+    public Kode getOppholdÅrsak() {
+        return oppholdÅrsak;
+    }
+
+    public void setOppholdÅrsak(Kode oppholdÅrsak) {
+        this.oppholdÅrsak = oppholdÅrsak;
+    }
 }

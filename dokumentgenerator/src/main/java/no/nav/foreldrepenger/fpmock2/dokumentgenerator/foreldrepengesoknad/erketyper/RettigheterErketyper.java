@@ -12,7 +12,7 @@ public class RettigheterErketyper {
         return rettigheter;
     }
 
-    public static Rettigheter morHarAleneOmsorgOgEnerett(){
+    public static Rettigheter harAleneOmsorgOgEnerett(){
         Rettigheter rettigheter = new Rettigheter();
         rettigheter.setHarOmsorgForBarnetIPeriodene(true);
         rettigheter.setHarAnnenForelderRett(false);

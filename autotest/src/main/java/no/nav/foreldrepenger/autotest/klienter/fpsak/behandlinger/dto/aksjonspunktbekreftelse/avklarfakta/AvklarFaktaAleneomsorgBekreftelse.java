@@ -12,33 +12,17 @@ import java.util.List;
 public class AvklarFaktaAleneomsorgBekreftelse extends AksjonspunktBekreftelse{
 
     protected Boolean aleneomsorg;
-    protected Boolean omsorg;
-    protected List<PeriodeOmsorg> ikkeOmsorgPerioder;
 
     public AvklarFaktaAleneomsorgBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
     }
 
-    public AvklarFaktaAleneomsorgBekreftelse harAleneomsorg() {
+    public void  bekreftBrukerHarAleneomsorg() {
         this.aleneomsorg = true;
-        return this;
     }
 
-    public AvklarFaktaAleneomsorgBekreftelse harIkkeAleneomsorg() {
-        this.omsorg = true;
-        return this;
+    public void  bekreftBrukerHarIkkeAleneomsorg() {
+        this.aleneomsorg = false;
     }
 
-    public class PeriodeOmsorg {
-        protected LocalDate periodeFom;
-        protected LocalDate periodeTom;
-
-        public LocalDate getPeriodeFom() { return periodeFom;}
-
-        public void setPeriodeFom(LocalDate periodeFom) { this.periodeFom = periodeFom; }
-
-        public LocalDate getPeriodeTom() { return periodeTom; }
-
-        public void setPeriodeTom(LocalDate periodeTom) { this.periodeTom = periodeTom; }
-    }
 }

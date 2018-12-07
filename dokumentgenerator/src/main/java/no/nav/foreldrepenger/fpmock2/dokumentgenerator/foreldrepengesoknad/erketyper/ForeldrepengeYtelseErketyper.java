@@ -82,6 +82,26 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeFødselMorAleneomsorg(LocalDate fødselsdato) {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.harAleneOmsorgOgEnerett());
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        foreldrepenger.setFordeling(FordelingErketyper.fordelingMorAleneomsorgHappyCase(fødselsdato));
+        return foreldrepenger;
+    }
+
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeFødselFarAleneomsorg(LocalDate fødselsdato) {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.harAleneOmsorgOgEnerett());
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        foreldrepenger.setFordeling(FordelingErketyper.fordelingFarAleneomsorg(fødselsdato));
+        return foreldrepenger;
+    }
+
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMedFrilans() {
         Foreldrepenger foreldrepenger = foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate.now().plusWeeks(3));
         foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
