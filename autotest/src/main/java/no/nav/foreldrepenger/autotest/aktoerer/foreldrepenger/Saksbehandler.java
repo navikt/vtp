@@ -158,21 +158,24 @@ public class Saksbehandler extends Aktoer{
         
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
         valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
-        
-        BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
-        valgtBehandling.personopplysning = behandlingerKlient.behandlingPersonopplysninger(request);
-        valgtBehandling.verge = behandlingerKlient.behandlingVerge(request);
-        valgtBehandling.beregningsgrunnlag = behandlingerKlient.behandlingBeregningsgrunnlag(request);
-        valgtBehandling.beregningResultatEngangsstonad = behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
-        valgtBehandling.beregningResultatForeldrepenger = behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
-        valgtBehandling.soknad = behandlingerKlient.behandlingSøknad(request);
-        valgtBehandling.familiehendelse = behandlingerKlient.behandlingFamiliehendelse(request);
-        valgtBehandling.opptjening = behandlingerKlient.behandlingOpptjening(request);
-        valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(request);
-        valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
-        valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(request);
-        valgtBehandling.uttakResultatPerioder = behandlingerKlient.behandlingUttakResultatPerioder(request);
-        valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
+
+        if (behandling.type.navn.equals("Klage")) {
+            valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
+        } else {
+            BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
+            valgtBehandling.personopplysning = behandlingerKlient.behandlingPersonopplysninger(request);
+            valgtBehandling.verge = behandlingerKlient.behandlingVerge(request);
+            valgtBehandling.beregningsgrunnlag = behandlingerKlient.behandlingBeregningsgrunnlag(request);
+            valgtBehandling.beregningResultatEngangsstonad = behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
+            valgtBehandling.beregningResultatForeldrepenger = behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
+            valgtBehandling.soknad = behandlingerKlient.behandlingSøknad(request);
+            valgtBehandling.familiehendelse = behandlingerKlient.behandlingFamiliehendelse(request);
+            valgtBehandling.opptjening = behandlingerKlient.behandlingOpptjening(request);
+            valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(request);
+            valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
+            valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(request);
+            valgtBehandling.uttakResultatPerioder = behandlingerKlient.behandlingUttakResultatPerioder(request);
+        }
         
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
