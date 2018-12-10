@@ -85,6 +85,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
         saksbehandler.ventOgGodkjennØkonomioppdrag();
         saksbehandler.ikkeVentPåStatus = false;
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger");
@@ -94,8 +95,6 @@ public class Revurdering extends ForeldrepengerTestBase {
         ForeldrepengesoknadBuilder søknadE = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEndring(søkerAktørIdent, fpStartdato, saksnummer.toString());
         fordel. erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummerE = fordel.sendInnEndringssøknad(søknadE.buildEndring(), testscenario, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
-        List<InntektsmeldingBuilder> inntektsmeldingerE = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
-        fordel.sendInnInntektsmeldinger(inntektsmeldingerE, testscenario, saksnummerE);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);

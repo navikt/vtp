@@ -18,7 +18,7 @@ public class ControllerHelper {
         } else if (dokumenttypeId == ADOPSJONSSOKNAD_ENGANGSSTONAD) {
             return Behandlingstema.ENGANGSSTONAD_ADOPSJON;
         } else if (dokumenttypeId == FORELDREPENGER_ENDRING_SØKNAD) {
-            return Behandlingstema.FORELDREPENGER_FOEDSEL; //TODO (MV): holder denne mappingen? kan vel mappes til adopsjon også?
+            return Behandlingstema.FORELDREPENGER;
         } else {
             throw new Exception("Kunne ikke matche på dokumenttype.");
         }

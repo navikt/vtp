@@ -1,23 +1,12 @@
 package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
-
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostId;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnyttning;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.*;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.HistorikkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlient;
@@ -35,7 +24,13 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModel
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
-import oracle.net.aso.h;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
 public class Fordel extends Aktoer {
 
@@ -211,10 +206,8 @@ public class Fordel extends Aktoer {
         }
         String journalpostId = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
 
-        //TODO (MV): obs! mapping dokumenttypeId og behandlingsTema - kun fødsel
         String behandlingstemaOffisiellKode = ControllerHelper.translateSøknadDokumenttypeToBehandlingstema(dokumenttypeId).getKode();
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
-
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
 
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
