@@ -146,6 +146,11 @@
                 <version>${project.version}</version>
             </dependency>
 
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>kafka-embedded-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
             <dependency>
                 <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -736,5 +741,6 @@
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
+
 
 </project>

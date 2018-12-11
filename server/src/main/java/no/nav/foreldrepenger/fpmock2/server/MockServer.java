@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
+import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.fpmock2.ldap.LdapServer;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
@@ -86,6 +87,11 @@ public class MockServer {
     public void start() throws Exception {
         startLdapServer();
         startWebServer();
+        startKafkaServer();
+    }
+
+    private void startKafkaServer() {
+        LocalKafkaServer.startKafka(2181,9092,List.of("privat-foreldrepenger-mottatBehandling-fpsak"));
     }
 
     private void startWebServer() throws IOException, Exception {
