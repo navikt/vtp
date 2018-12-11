@@ -17,6 +17,8 @@ public interface TestscenarioBuilderRepository {
 
     Optional<InntektYtelseModell> getInntektYtelseModell(String ident);
 
+    Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId);
+
     Optional<OrganisasjonModell> getOrganisasjon(String orgnr);
 
     LokalIdentIndeks getIdenter(String unikScenarioId);

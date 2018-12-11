@@ -105,4 +105,9 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         return inntektYtelseIndeks.getModellForIdent(ident);
     }
 
+    @Override
+    public Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId){
+        return inntektYtelseIndeks.getModellForIdent(aktørId.substring(aktørId.length() - 11));
+    }
+
 }

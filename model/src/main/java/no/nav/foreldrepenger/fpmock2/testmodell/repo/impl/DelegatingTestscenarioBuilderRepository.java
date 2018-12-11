@@ -43,6 +43,11 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     }
 
     @Override
+    public Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId) {
+        return delegate.getInntektYtelseModellFraAktørId(aktørId);
+    }
+
+    @Override
     public BasisdataProvider getBasisdata() {
         return delegate.getBasisdata();
     }

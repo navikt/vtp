@@ -68,14 +68,14 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
 
         FinnMeldekortUtbetalingsgrunnlagListeResponse response = of.createFinnMeldekortUtbetalingsgrunnlagListeResponse();
         AktoerId aktoerId = (AktoerId) finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent();
-        String ident = aktoerId.getAktoerId();
-        LOG.info("finnMeldekortUtbetalingsgrunnlagListe. AktoerIdent: " + ident);
+        String aktørId = aktoerId.getAktoerId();
+        LOG.info("finnMeldekortUtbetalingsgrunnlagListe. AktoerIdent: " + aktørId);
 
-        if (ident == null) {
-            UgyldigInput faultInfo = lagUgyldigInput(ident);
+        if (aktørId == null) {
+            UgyldigInput faultInfo = lagUgyldigInput(aktørId);
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
-        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModell(ident);
+        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModellFraAktørId(aktørId);
         if (!iyIndeksOpt.isPresent()) {
             return response;
         }
@@ -84,7 +84,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         Feilkode feilkode = arenaModell.getFeilkode();
         if (feilkode != null) {
             try {
-                haandterExceptions(feilkode.getKode(), ident);
+                haandterExceptions(feilkode.getKode(), aktørId);
             } catch (Exception e) {
                 LOG.error("Error ", e);
                 throw e;
