@@ -618,12 +618,12 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         //uttak gå til manuell behandling
         UttakResultatPeriode foreldrepengerFørste6Ukene = uttaksperioder.get(0);
-        assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"));
+        assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getUtbetalingsgrad()).isNull();
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
         UttakResultatPeriode foreldrepengerEtterUke6 = uttaksperioder.get(1);
-        assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"));
+        assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getUtbetalingsgrad()).isNull();
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isGreaterThan(0);
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
@@ -643,11 +643,11 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         //Alle periodene er avslått
         foreldrepengerFørste6Ukene = uttaksperioder.get(0);
-        assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode.equals("AVSLÅTT"));
+        assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode).isEqualTo("AVSLÅTT");
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
         foreldrepengerEtterUke6 = uttaksperioder.get(1);
-        assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode.equals("AVSLÅTT"));
+        assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode).isEqualTo("AVSLÅTT");
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
     }
