@@ -2,10 +2,13 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SammenligningsgrunnlagDto {
-    LocalDate sammenligningsgrunnlagFom;
-    LocalDate sammenligningsgrunnlagTom;
-    Double rapportertPrAar;
+    protected LocalDate sammenligningsgrunnlagFom;
+    protected LocalDate sammenligningsgrunnlagTom;
+    protected Double rapportertPrAar;
     
     public SammenligningsgrunnlagDto() {
     }

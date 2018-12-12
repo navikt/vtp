@@ -2,17 +2,20 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kode;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BeregningsgrunnlagPrStatusOgAndelDto {
-    Kode aktivitetStatus;
-    Double beregnetPrAar;
-    Double bruttoPrAar;
-    String elementNavn;
-    String orgNummer;
-    String inntektsmeldingID;
-    List<AktivitetsAvtaleDto> aktivitetsAvtaleDto;
-    Boolean frilans;
+    protected Kode aktivitetStatus;
+    protected Double beregnetPrAar;
+    protected Double bruttoPrAar;
+    protected String elementNavn;
+    protected String orgNummer;
+    protected String inntektsmeldingID;
+    protected List<AktivitetsAvtaleDto> aktivitetsAvtaleDto;
+    protected Boolean frilans;
     
     public BeregningsgrunnlagPrStatusOgAndelDto() {
     }

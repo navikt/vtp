@@ -25,4 +25,8 @@ public class BeregningDto {
     public Kode getTema() {
         return tema;
     }
+    
+    public int getId() {
+        return id;
+    }
 }

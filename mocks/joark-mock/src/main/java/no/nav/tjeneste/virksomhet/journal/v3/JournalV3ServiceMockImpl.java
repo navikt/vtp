@@ -71,6 +71,9 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
                 response.getJournalpostListe().add(JournalpostV3Bulider.buildFrom(modell));
             }
         }
+        
+        LOG.info("Fant antal journalposter: " + response.getJournalpostListe().size());
+        
         // TODO: sett sisteIntervall?
         return response;
     }

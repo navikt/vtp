@@ -3,13 +3,16 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BeregningsgrunnlagPeriodeDto {
-    LocalDate beregningsgrunnlagPeriodeFom;
-    LocalDate beregningsgrunnlagPeriodeTom;
-    Double beregnetPrAar;
-    Double bruttoPrAar;
-    Double bruttoInkludertBortfaltNaturalytelsePrAar;
-    List<BeregningsgrunnlagPrStatusOgAndelDto> beregningsgrunnlagPrStatusOgAndel;
+    protected LocalDate beregningsgrunnlagPeriodeFom;
+    protected LocalDate beregningsgrunnlagPeriodeTom;
+    protected Double beregnetPrAar;
+    protected Double bruttoPrAar;
+    protected Double bruttoInkludertBortfaltNaturalytelsePrAar;
+    protected List<BeregningsgrunnlagPrStatusOgAndelDto> beregningsgrunnlagPrStatusOgAndel;
     
     public BeregningsgrunnlagPeriodeDto() {
     }

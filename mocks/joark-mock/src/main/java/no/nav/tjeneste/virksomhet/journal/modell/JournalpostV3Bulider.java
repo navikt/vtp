@@ -81,9 +81,11 @@ public class JournalpostV3Bulider {
             DokumentInnhold dokumentInnhold = new DokumentInnhold();
             Arkivfiltyper at = new Arkivfiltyper();
             at.setKodeverksRef(arkivfiltype);
+            at.setValue(arkivfiltype);
             dokumentInnhold.setArkivfiltype(at);
             Variantformater vf = new Variantformater();
             vf.setKodeverksRef(variantformat);
+            vf.setValue(variantformat);
             dokumentInnhold.setVariantformat(vf);
             detaljertDokumentinformasjon.getDokumentInnholdListe().add(dokumentInnhold);
         }

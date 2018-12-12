@@ -5,8 +5,14 @@ public class JournalpostId {
 
     protected String journalpostId;
 
+    
+
     public JournalpostId(String journalpostId) {
         super();
         this.journalpostId = journalpostId;
+    }
+    
+    public String getJournalpostId() {
+        return journalpostId;
     }
 }

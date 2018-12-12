@@ -2,11 +2,14 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AktivitetsAvtaleDto {
-    String id;
-    LocalDate opphørArbeidsforhold;
-    LocalDate oppstartArbeidsforhold;
-    Double arbeidsprosent;
+    protected String id;
+    protected LocalDate opphørArbeidsforhold;
+    protected LocalDate oppstartArbeidsforhold;
+    protected Double arbeidsprosent;
     
     public AktivitetsAvtaleDto() {
     }

@@ -198,7 +198,11 @@ public class Fordel extends Aktoer {
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, aktørId, DokumenttypeId.INNTEKTSMELDING);
         journalpostModell.setSakId(saksnummer.toString());
-        return journalpostKlient.journalfør(journalpostModell).getJournalpostId();
+        String id = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
+        if(saksnummer != null) {
+            journalpostKlient.knyttSakTilJournalpost(id, "" + saksnummer);
+        }
+        return id;
     }
 
     @Step("Sender inn klage for bruker")

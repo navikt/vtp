@@ -566,4 +566,5 @@ public class InntektsmeldingBuilder {
         }
         throw new IllegalStateException("Ukjent utsettelseårsak " + årsak);
     }
+
 }
