@@ -2,6 +2,8 @@ package no.nav.foreldrepenger.autotest.klienter.vtp.journalpost;
 
 import java.io.IOException;
 
+import org.apache.http.HttpResponse;
+
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.dto.JournalpostId;
@@ -23,7 +25,10 @@ public class JournalforingKlient extends VTPKlient{
     @Step("Journalfører sak i VTP")
     public JournalpostId journalfør(JournalpostModell journalpostModell) throws IOException {
         String url = hentRestRotUrl() + String.format(JOURNALFØR_FORELDREPENGER_SØKNAD_URL_FORMAT, journalpostModell.getAvsenderFnr(), journalpostModell.getDokumentModellList().get(0).getDokumentType().getKode());
-        return postOgHentJson(url, null, JournalpostId.class, StatusRange.STATUS_SUCCESS);
+        //Hack for innhold
+        HttpResponse response = post(url, journalpostModell.getDokumentModellList().get(0).getInnhold());
+        String json = hentResponseBody(response);
+        return json.equals("") ? null : hentObjectMapper().readValue(json, JournalpostId.class);
     }
 
     @Step("Knytter journalpost id {journalpostId} til sak {saksnummer} i VTP")

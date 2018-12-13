@@ -72,6 +72,7 @@ public class JournalpostV3Bulider {
         DokumenttypeIder dokumenttypeIder = new DokumenttypeIder();
         if (dokumentModell.getDokumentType() != null) {
             dokumenttypeIder.setKodeverksRef(dokumentModell.getDokumentType().getKode());
+            dokumenttypeIder.setValue(dokumentModell.getDokumentType().getKode());
         }
         detaljertDokumentinformasjon.setDokumentTypeId(dokumenttypeIder);
 
