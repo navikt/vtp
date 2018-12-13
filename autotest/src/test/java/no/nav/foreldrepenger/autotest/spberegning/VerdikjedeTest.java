@@ -48,9 +48,12 @@ public class VerdikjedeTest extends SpberegningTestBase {
     public void sykAtFlMedAvvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("110");
         
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        String saksnummer = fordel.opprettSak(testscenario,"SYK");
+        
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, YtelseKodeliste.SYKEPENGER, LocalDate.now());
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(1);
-        inntektsmeldingsBuilder.setRefusjon(InntektsmeldingBuilder.createRefusjon(BigDecimal.valueOf(450000), LocalDate.now().plusMonths(10), null));
+        inntektsmeldingsBuilder.setRefusjon(InntektsmeldingBuilder.createRefusjon(BigDecimal.valueOf(45000), LocalDate.now().plusMonths(10), null));
         
         List<Periode> perioder = new ArrayList<>();
         perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.now().minusDays(5), LocalDate.now()));
@@ -59,20 +62,19 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(37500), LocalDate.now().minusMonths(2), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String saksnummer = fordel.opprettSak(testscenario,"SYK");
-        System.out.println("Saksnummer: " + saksnummer);
         
+        System.out.println("Saksnummer: " + saksnummer);
+        fordel.journalførInnektsmelding(inntektsmeldingsBuilder,testscenario, Long.parseLong(saksnummer));
         
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(testscenario, saksnummer);
         
-        //fordel.journalførInnektsmelding(inntektsmeldingsBuilder,testscenario, Long.parseLong(saksnummer));
-        
         saksbehandler.oppdaterBeregning(LocalDate.now(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
         
-        
         System.out.println(saksbehandler.beregning.getTema().kode);
+        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 444000D, "beregnet årsinntekt");
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 1404000D, "sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 68.4D, "avvik");
     }
 
 }

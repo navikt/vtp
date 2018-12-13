@@ -64,4 +64,16 @@ public class Saksbehandler extends Aktoer{
         beregningKlient.oppdaterBeregning(request);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
     }
+
+    public Double beregnetÅrsinntekt() {
+        return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregnetPrAar();
+    }
+
+    public Double getSammenligningsgrunnlag() {
+        return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getRapportertPrAar();
+    }
+
+    public Double getAvvikIProsent() {
+        return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getAvvikPromille() / 10;
+    }
 }

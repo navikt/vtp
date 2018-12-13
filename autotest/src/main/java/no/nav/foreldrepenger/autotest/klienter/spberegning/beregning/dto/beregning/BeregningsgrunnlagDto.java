@@ -17,4 +17,30 @@ public class BeregningsgrunnlagDto {
     
     public BeregningsgrunnlagDto() {
     }
+
+    public List<AktivitetStatusDto> getAktivitetStatus() {
+        return aktivitetStatus;
+    }
+
+    public List<BeregningsgrunnlagPeriodeDto> getBeregningsgrunnlagPeriode() {
+        return beregningsgrunnlagPeriode;
+    }
+
+    public SammenligningsgrunnlagDto getSammenligningsgrunnlag() {
+        return sammenligningsgrunnlag;
+    }
+
+    public String getLedetekstBrutto() {
+        return ledetekstBrutto;
+    }
+
+    public String getOppgaveBeskrivelse() {
+        return oppgaveBeskrivelse;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    
+    
 }

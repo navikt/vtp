@@ -45,15 +45,13 @@
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
-			},
+			}
+		],
+		"frilansarbeidsforholdperioder": [
 			{
-				"fom": "now() - P36M",
-				"tom": "now()",
-				"beløp": 0,
-				"orgnr": "979191138",
-				"type": "Lønnsinntekt",
-				"fordel": "kontantytelse",
-				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
+				"frilansFom":"now() - P36M",
+				"orgnr":"979191138",
+				"stillingsprosent":"10"
 			}
 		]
 	},

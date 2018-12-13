@@ -16,4 +16,30 @@ public class BeregningsgrunnlagPeriodeDto {
     
     public BeregningsgrunnlagPeriodeDto() {
     }
+
+    public LocalDate getBeregningsgrunnlagPeriodeFom() {
+        return beregningsgrunnlagPeriodeFom;
+    }
+
+    public LocalDate getBeregningsgrunnlagPeriodeTom() {
+        return beregningsgrunnlagPeriodeTom;
+    }
+
+    public Double getBeregnetPrAar() {
+        return beregnetPrAar;
+    }
+
+    public Double getBruttoPrAar() {
+        return bruttoPrAar;
+    }
+
+    public Double getBruttoInkludertBortfaltNaturalytelsePrAar() {
+        return bruttoInkludertBortfaltNaturalytelsePrAar;
+    }
+
+    public List<BeregningsgrunnlagPrStatusOgAndelDto> getBeregningsgrunnlagPrStatusOgAndel() {
+        return beregningsgrunnlagPrStatusOgAndel;
+    }
+    
+    
 }
