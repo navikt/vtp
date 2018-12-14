@@ -58,6 +58,10 @@ public class SpberegningTestBase extends TestBase{
     }
     
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, YtelseKodeliste ytelse, LocalDate startDatoForeldrepenger) {
+        return makeInntektsmeldingFromTestscenario(testscenario, "", ytelse, startDatoForeldrepenger);
+    }
+    
+    protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, String arbeidsforholdId, YtelseKodeliste ytelse, LocalDate startDatoForeldrepenger) {
 
         List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -66,7 +70,7 @@ public class SpberegningTestBase extends TestBase{
             String orgnummer = periode.getOrgnr();
             Integer belop = periode.getBeløp();
 
-            inntektsmeldinger.add(inntektsmeldingGrunnlag(belop, fnr, orgnummer, startDatoForeldrepenger, ytelse, ÅrsakInnsendingKodeliste.NY));
+            inntektsmeldinger.add(inntektsmeldingGrunnlag(belop, fnr, orgnummer, arbeidsforholdId, startDatoForeldrepenger, ytelse, ÅrsakInnsendingKodeliste.NY));
         }
 
         return inntektsmeldinger;
@@ -85,7 +89,7 @@ public class SpberegningTestBase extends TestBase{
         return new ArrayList<>(periodeMap.values());
     }
     
-    protected InntektsmeldingBuilder inntektsmeldingGrunnlag(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger, YtelseKodeliste ytelse, ÅrsakInnsendingKodeliste årsak) {
+    protected InntektsmeldingBuilder inntektsmeldingGrunnlag(Integer beløp, String fnr, String orgnummer, String arbeidsforholdId, LocalDate startDatoForeldrepenger, YtelseKodeliste ytelse, ÅrsakInnsendingKodeliste årsak) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
                 ytelse,
                 årsak,
@@ -94,7 +98,7 @@ public class SpberegningTestBase extends TestBase{
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
-                "", //TODO arbeidsforhold id
+                arbeidsforholdId,
                 null,
                 new BigDecimal(beløp),
                 new ArrayList<>(),
@@ -105,7 +109,7 @@ public class SpberegningTestBase extends TestBase{
     }
 
     protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
-        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, startDatoForeldrepenger, YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
+        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, "", startDatoForeldrepenger, YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
     }
 
 }

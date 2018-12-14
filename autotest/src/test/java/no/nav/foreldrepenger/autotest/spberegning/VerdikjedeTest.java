@@ -1,11 +1,11 @@
 package no.nav.foreldrepenger.autotest.spberegning;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -16,14 +16,15 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
+import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.seres.xsd.nav.inntektsmelding_m._20180924.Periode;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.Refusjon;
 
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
     BeregningKlient klient;
 
     @Test
+    @Disabled
     public void grunnleggendeSykepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
@@ -47,18 +48,21 @@ public class VerdikjedeTest extends SpberegningTestBase {
     @Test
     public void sykAtFlMedAvvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("110");
+        int inntektsmeldingMånedsbeløp = 37000;
+        BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
+        LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
+        
         
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         String saksnummer = fordel.opprettSak(testscenario,"SYK");
         
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, YtelseKodeliste.SYKEPENGER, LocalDate.now());
-        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldinger.get(1);
-        inntektsmeldingsBuilder.setRefusjon(InntektsmeldingBuilder.createRefusjon(BigDecimal.valueOf(45000), LocalDate.now().plusMonths(10), null));
-        
         List<Periode> perioder = new ArrayList<>();
         perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.now().minusDays(5), LocalDate.now()));
-        inntektsmeldingsBuilder.setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
-                BigDecimal.valueOf(0), perioder, BegrunnelseIngenEllerRedusertUtbetalingKodeliste.LOVLIG_FRAVAER));
+        
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", LocalDate.now(), YtelseKodeliste.SYKEPENGER, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
+                .setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
+                        BigDecimal.valueOf(0), perioder, BegrunnelseIngenEllerRedusertUtbetalingKodeliste.LOVLIG_FRAVAER));
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(37500), LocalDate.now().minusMonths(2), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         
@@ -72,9 +76,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
         
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
-        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 444000D, "Beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 1404000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 68.4D, "Avvik");
+        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 2308000D, "Beregnet årsinntekt");
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 1630000D, "Sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 41.6D, "Avvik");
     }
 
 }

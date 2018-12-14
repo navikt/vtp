@@ -30,8 +30,17 @@
 		"inntektsperioder": [
 			{
 				"fom": "now() - P36M",
-				"tom": "now()",
+				"tom": "now() - P3M",
 				"beløp": 37000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			},
+			{
+				"fom": "now() - P3M",
+				"tom": "now()",
+				"beløp": 100000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
