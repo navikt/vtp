@@ -42,5 +42,9 @@ public class BeregningsgrunnlagDto {
         return id;
     }
     
+    public LocalDate getSkjaeringstidspunktBeregning() {
+        return skjaeringstidspunktBeregning;
+    }
+    
     
 }

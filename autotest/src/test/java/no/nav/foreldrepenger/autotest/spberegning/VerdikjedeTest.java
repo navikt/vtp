@@ -62,19 +62,19 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(37500), LocalDate.now().minusMonths(2), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         
-        
         System.out.println("Saksnummer: " + saksnummer);
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder,testscenario, Long.parseLong(saksnummer));
         
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(testscenario, saksnummer);
         
-        saksbehandler.oppdaterBeregning(LocalDate.now(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
+        verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.now().minusDays(5), "Skjæringstidspunkt");
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
         
-        System.out.println(saksbehandler.beregning.getTema().kode);
-        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 444000D, "beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 1404000D, "sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 68.4D, "avvik");
+        verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
+        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 444000D, "Beregnet årsinntekt");
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 1404000D, "Sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 68.4D, "Avvik");
     }
 
 }
