@@ -18,30 +18,14 @@
 
     <profiles>
     	<profile>
-            <id>SpBeregning</id>
+            <id>spberegning</id>
             <properties>
                 <testsTags>spberegning</testsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.spberegning.**</testPackage>
             </properties>
         </profile>
         <profile>
-        	<id>SmokeProd</id>
-        	<properties>
-                <includeTestsTags>smokeprod</includeTestsTags>
-                <excludeTestsTags>pending</excludeTestsTags>
-                <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
-            </properties>
-        </profile>
-        <profile>
-        	<id>SmokeFeature</id>
-        	<properties>
-                <includeTestsTags>smokefeature</includeTestsTags>
-                <excludeTestsTags>pending</excludeTestsTags>
-                <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
-            </properties>
-        </profile>
-        <profile>
-            <id>Smoke</id>
+            <id>fpsak</id>
             <properties>
                 <includeTestsTags>smoke</includeTestsTags>
                 <excludeTestsTags>pending</excludeTestsTags>
