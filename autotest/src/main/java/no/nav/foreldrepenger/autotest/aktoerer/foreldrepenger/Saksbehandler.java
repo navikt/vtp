@@ -486,7 +486,10 @@ public class Saksbehandler extends Aktoer{
     }
     
     private List<ProsessTaskListItemDto> hentProsesstaskerForBehandling(Behandling behandling) throws IOException {
-        List<ProsessTaskListItemDto> prosesstasker = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(5)));
+        SokeFilterDto filter = new SokeFilterDto();
+        filter.setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(5));
+        filter.setSisteKjoeretidspunktTilOgMed(LocalDateTime.now());
+        List<ProsessTaskListItemDto> prosesstasker = prosesstaskKlient.list(filter);
         return prosesstasker.stream().filter(p -> p.getTaskParametre().getBehandlingId() == "" + behandling.id).collect(Collectors.toList());
     }
 
