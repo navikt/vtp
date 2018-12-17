@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.I
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AapenPeriode;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektInformasjon;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
@@ -29,11 +30,11 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
 public class HentInntektlistBolkMapper {
 
 
-    public static ArbeidsInntektIdent makeArbeidsInntektIdent(InntektskomponentModell modell, String fnr) {
+    public static ArbeidsInntektIdent makeArbeidsInntektIdent(InntektskomponentModell modell, Aktoer aktoer) {
         ArbeidsInntektIdent arbeidsInntektIdent = new ArbeidsInntektIdent();
-        arbeidsInntektIdent.setIdent(lagPersonIdent(fnr));
-        List<Inntekt> inntektsliste = mapInntektFraModell(modell.getInntektsperioder(), fnr);
-        List<ArbeidsforholdFrilanser> arbeidsforholdFrilansereListe = mapArbeidsforholdFrilansFraModell(modell.getFrilansarbeidsforholdperioder(), fnr);
+        arbeidsInntektIdent.setIdent(aktoer);
+        List<Inntekt> inntektsliste = mapInntektFraModell(modell.getInntektsperioder(), aktoer);
+        List<ArbeidsforholdFrilanser> arbeidsforholdFrilansereListe = mapArbeidsforholdFrilansFraModell(modell.getFrilansarbeidsforholdperioder(), aktoer);
         Map<String, List<Inntekt>> inntektsMåneder = new HashMap<>();
 
         for (Inntekt inntekt : inntektsliste) {
@@ -66,7 +67,7 @@ public class HentInntektlistBolkMapper {
         return arbeidsInntektIdent;
     }
 
-    private static List<ArbeidsforholdFrilanser> mapArbeidsforholdFrilansFraModell(List<FrilansArbeidsforholdsperiode> modellPeriodeListe, String fnr) {
+    private static List<ArbeidsforholdFrilanser> mapArbeidsforholdFrilansFraModell(List<FrilansArbeidsforholdsperiode> modellPeriodeListe, Aktoer aktoer) {
         List<ArbeidsforholdFrilanser> arbeidsforholdliste = new ArrayList<>();
 
         for(FrilansArbeidsforholdsperiode modellPeriode: modellPeriodeListe){
@@ -84,12 +85,12 @@ public class HentInntektlistBolkMapper {
     }
 
 
-    private static List<Inntekt> mapInntektFraModell(List<Inntektsperiode> modellList, String fnr) {
+    private static List<Inntekt> mapInntektFraModell(List<Inntektsperiode> modellList, Aktoer aktoer) {
         List<Inntekt> inntektListe = new ArrayList<>();
 
         for (Inntektsperiode modellPeriode : modellList) {
             if (modellPeriode.getType().equals(InntektType.LØNNSINNTEKT)) {
-                Loennsinntekt inntekt = lagLoennsinntekt(modellPeriode, fnr);
+                Loennsinntekt inntekt = lagLoennsinntekt(modellPeriode, aktoer);
                 inntektListe.add(inntekt);
             } else if (modellPeriode.getType().equals(InntektType.NÆRINGSINNTEKT)) {
                 throw new UnsupportedOperationException("Ikke implementert ennå");
@@ -103,7 +104,7 @@ public class HentInntektlistBolkMapper {
     }
 
 
-    private static Loennsinntekt lagLoennsinntekt(Inntektsperiode ip, String fnr) {
+    private static Loennsinntekt lagLoennsinntekt(Inntektsperiode ip, Aktoer aktoer) {
         Loennsinntekt loennsinntekt = new Loennsinntekt();
         loennsinntekt.setBeloep(new BigDecimal(ip.getBeløp()));
         Loennsbeskrivelse loennsbeskrivelse = new Loennsbeskrivelse();
@@ -111,7 +112,7 @@ public class HentInntektlistBolkMapper {
         loennsinntekt.setBeskrivelse(loennsbeskrivelse);
         loennsinntekt.setUtloeserArbeidsgiveravgift(true);
         loennsinntekt.setInngaarIGrunnlagForTrekk(true);
-        loennsinntekt.setInntektsmottaker(lagPersonIdent(fnr));
+        loennsinntekt.setInntektsmottaker(aktoer);
         loennsinntekt.setVirksomhet(lagOrganisation(ip.getOrgnr()));
         loennsinntekt.setOpplysningspliktig(lagOrganisation(ip.getOrgnr()));
         loennsinntekt.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(ip.getFom()));

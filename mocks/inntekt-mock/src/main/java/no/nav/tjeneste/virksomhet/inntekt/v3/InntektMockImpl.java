@@ -16,7 +16,6 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +41,11 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeHarIkkeTilg
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.InntektV3;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkRequest;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkResponse;
 import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentDetaljerteAbonnerteInntekterRequest;
@@ -98,13 +102,19 @@ public class InntektMockImpl implements InntektV3 {
                 tom = LocalDate.now();
             } else { tom = tom.plusMonths(1);}
 
+            Optional<InntektYtelseModell> inntektYtelseModell = Optional.empty();
             for (Aktoer aktoer : request.getIdentListe()) {
-                String fnr = getIdentFromAktoer(aktoer);
-                Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+                if(aktoer instanceof PersonIdent){
+                    String fnr = getIdentFromAktoer(aktoer);
+                    inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+                } else if (aktoer instanceof AktoerId){
+                    String aktoerId = getIdentFromAktoer(aktoer);
+                    inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(aktoerId);
+                }
                 if (inntektYtelseModell.isPresent()) {
                     InntektskomponentModell modell = inntektYtelseModell.get().getInntektskomponentModell();
 
-                    ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlistBolkMapper.makeArbeidsInntektIdent(modell, fnr);
+                    ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlistBolkMapper.makeArbeidsInntektIdent(modell, aktoer);
                     List<ArbeidsInntektMaaned> listeOnskedeMnd = new ArrayList<>();
                     for (ArbeidsInntektMaaned aarMaaned : arbeidsInntektIdent.getArbeidsInntektMaaned()) {
                         XMLGregorianCalendar am = aarMaaned.getAarMaaned();
@@ -196,7 +206,7 @@ public class InntektMockImpl implements InntektV3 {
             return ((PersonIdent) aktoer).getPersonIdent();
         } else if (aktoer instanceof AktoerId) {
             //TODO: Konverter AktoerId til PersonIdent
-            throw new UnsupportedOperationException("AktoerId ikke støttet PT");
+            return ((AktoerId) aktoer).getAktoerId();
         } else {
             throw new UnsupportedOperationException("Aktoertype ikke støttet");
         }
