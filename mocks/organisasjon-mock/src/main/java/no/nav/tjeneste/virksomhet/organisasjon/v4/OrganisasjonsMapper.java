@@ -8,18 +8,21 @@ import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Organisasjon;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.OrganisasjonsDetaljer;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.UstrukturertNavn;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Virksomhet;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.VirksomhetDetaljer;
 
 public class OrganisasjonsMapper {
     public OrganisasjonsMapper() {
     }
 
     public static Organisasjon mapOrganisasjonFraModell(OrganisasjonModell modell) {
-        Organisasjon organisasjon = new Organisasjon();
+        Virksomhet organisasjon = new Virksomhet();
         organisasjon.setOrgnummer(modell.getOrgnummer());
         UstrukturertNavn ustrukturertNavn = new UstrukturertNavn();
         ustrukturertNavn.getNavnelinje().addAll(Arrays.asList(modell.getNavn().getNavnelinje()));
         organisasjon.setNavn(ustrukturertNavn);
         organisasjon.setOrganisasjonDetaljer(mapOrganisasjonDetaljerFraModell(modell.getOrganisasjonDetaljer()));
+        organisasjon.setVirksomhetDetaljer(new VirksomhetDetaljer());
         return organisasjon;
     }
 
