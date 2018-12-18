@@ -39,9 +39,9 @@ public class ForeldrepengesoknadXmlErketyper {
     }
 
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate startDatoForeldrepenger, LocalDate fødselsdato) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(2)))
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
