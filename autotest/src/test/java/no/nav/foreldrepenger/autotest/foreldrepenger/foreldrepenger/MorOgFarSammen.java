@@ -48,6 +48,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
     }
     
     @Test
+    @Disabled
     public void farOgMorSøkerFødselMedEttArbeidsforholdUtenOverlappendePeriode() throws Exception {
         TestscenarioDto testscenario = opprettScenario("81");
         
