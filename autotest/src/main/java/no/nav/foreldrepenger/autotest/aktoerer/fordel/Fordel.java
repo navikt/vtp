@@ -69,7 +69,6 @@ public class Fordel extends Aktoer {
         String xml = null;
         if(null != søknad) {
             xml = ForeldrepengesoknadBuilder.tilXML(søknad);
-            System.out.println(xml);
         }
 
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, fnr, dokumenttypeId);

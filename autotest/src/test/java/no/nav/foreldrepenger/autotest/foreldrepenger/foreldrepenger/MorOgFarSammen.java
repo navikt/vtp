@@ -14,6 +14,8 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +46,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         * saksbehandler.hentFagsak(saksnummerFar);
         * saksbehandler.harIkkeBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         * */
-        
     }
     
     @Test
@@ -104,13 +105,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         String annenPartAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
-       
-        
-        System.out.println("søkerAktørid: " + søkerAktørid);
-        System.out.println("annenPartAktørid: " + annenPartAktørid);
-        System.out.println("Fødselsdato: " + fødselsdato);
-        System.out.println("startDatoForeldrepenger: " + startDatoForeldrepenger);
-
         
         Fordeling fordeling = fordeling(uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE, startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2)));
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(søkerAktørid,
@@ -160,7 +154,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
-
         return saksnummer;
     }
     
@@ -218,8 +211,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
-
-        System.out.println("Done");
         return saksnummer;
     }
     
