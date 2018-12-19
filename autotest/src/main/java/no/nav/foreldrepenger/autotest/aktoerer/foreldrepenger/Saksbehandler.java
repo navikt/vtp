@@ -245,16 +245,19 @@ public class Saksbehandler extends Aktoer{
     /*
      * Setter behandling på vent
      */
+    @Step("Setter behandling på vent")
     public void settBehandlingPåVent(LocalDate frist, Kode årsak) throws Exception {
         behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, årsak));
         velgBehandling(valgtBehandling);
     }
     
+    @Step("Gjenopptar Behandling")
     public void gjenopptaBehandling() throws Exception {
         behandlingerKlient.gjenoppta(new BehandlingIdPost(valgtBehandling));
         velgBehandling(valgtBehandling);
     }
     
+    @Step("Henlegger behandling")
     public void henleggBehandling(Kode årsak) throws Exception {
         behandlingerKlient.henlegg(new BehandlingHenlegg(valgtBehandling.id, valgtBehandling.versjon, årsak.kode, "Henlagt"));
         velgBehandling(valgtBehandling);
@@ -332,6 +335,7 @@ public class Saksbehandler extends Aktoer{
         overstyr(bekreftelser);
     }
     
+    @Step("Overstyrer Aksonspunkt")
     public void overstyr(List<AksjonspunktBekreftelse> bekreftelser) throws Exception {
         OverstyrAksjonspunkter aksjonspunkter = new OverstyrAksjonspunkter(valgtFagsak, valgtBehandling, bekreftelser);
         behandlingerKlient.overstyr(aksjonspunkter);
@@ -358,6 +362,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Brev
      */
+    @Step("Sender breev med malkode {brevmalKode} til mottaker {mottaker}")
     public void sendBrev(String brevmalKode, String mottaker, String fritekst) throws IOException {
         brevKlient.bestill(new BestillBrev(valgtBehandling.id,
                                            mottaker,
@@ -369,7 +374,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Dokumenter
      */
-    
+    @Step("Venter på dokument {dokument}")
     public void ventTilDokument(String dokument) throws Exception{
         Vent.til(() -> {
             velgBehandling(valgtBehandling);
