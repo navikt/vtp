@@ -56,9 +56,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
     /*
      * Har problemer med prosesstask
      */
-    @Tag("pending")
     @Test
-    @Disabled
     public void behenadleOmsorgsovertakelseMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -76,7 +74,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaOmsorgOgForeldreansvarBekreftelse.class);
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvOmsorgsvilkoret.class)
-            .bekreftAvvist(saksbehandler.kodeverk.Avslagsårsak.get("FP_VK_33").getKode("1018"));
+            .bekreftAvvist(saksbehandler.kodeverk.Avslagsårsak.get("FP_VK_5").getKode("1009"));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvOmsorgsvilkoret.class);
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
