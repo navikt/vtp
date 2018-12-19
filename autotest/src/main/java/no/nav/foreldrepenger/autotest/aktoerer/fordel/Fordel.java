@@ -171,8 +171,8 @@ public class Fordel extends Aktoer {
 
         return nyttSaksnummer;
     }
-
-
+    
+    @Step("Sender inn inntektsmelding")
     public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto testscenario, Long saksnummer) throws Exception {
         return sendInnInntektsmelding(inntektsmelding, testscenario.getPersonopplysninger().getSøkerAktørIdent(), testscenario.getPersonopplysninger().getSøkerIdent(), saksnummer);
     }
