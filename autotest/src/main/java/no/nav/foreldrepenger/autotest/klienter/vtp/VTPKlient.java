@@ -1,6 +1,10 @@
 package no.nav.foreldrepenger.autotest.klienter.vtp;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,8 +13,11 @@ import no.nav.foreldrepenger.autotest.util.http.rest.JsonRest;
 
 public class VTPKlient extends JsonRest{
 
+    protected Logger log;
+    
     public VTPKlient(HttpSession session) {
         super(session);
+        log = LoggerFactory.getLogger(this.getClass());
     }
     
     @Override
