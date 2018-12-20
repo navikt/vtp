@@ -7,9 +7,6 @@ import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class TestscenarioKlient extends VTPKlient{
 
     private static final String TESTSCENARIO_URL = "/testscenario";

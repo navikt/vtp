@@ -53,9 +53,6 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         beslutter.ventTilHistorikkinnslag("Brev sendt");
     }
     
-    /*
-     * Har problemer med prosesstask
-     */
     @Test
     public void behenadleOmsorgsovertakelseMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
