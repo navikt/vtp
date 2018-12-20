@@ -16,8 +16,6 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 
 import java.time.LocalDate;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
@@ -79,7 +77,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEndring(String aktoerId, LocalDate startDatoForeldrepenger, String saksnummer) throws DatatypeConfigurationException {
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEndring(String aktoerId, LocalDate startDatoForeldrepenger, String saksnummer) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(3)))
                 .withEndringssoeknadYtelse(endringssoeknadForeldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger, saksnummer))

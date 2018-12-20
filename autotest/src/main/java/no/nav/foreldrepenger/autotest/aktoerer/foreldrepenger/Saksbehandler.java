@@ -469,6 +469,8 @@ public class Saksbehandler extends Aktoer{
         ventPåFerdigstiltØkonomioppdrag();
         ikkeVentPåStatus = false;
         velgBehandling(valgtBehandling);
+        hentFagsak(valgtFagsak.saksnummer);
+
     }
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {

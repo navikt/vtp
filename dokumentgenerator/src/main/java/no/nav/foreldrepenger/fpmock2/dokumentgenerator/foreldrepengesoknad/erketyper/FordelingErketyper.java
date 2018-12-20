@@ -13,6 +13,7 @@ public class FordelingErketyper {
     public static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
     public static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
     public static final String STØNADSKONTOTYPE_FORELDREPENGER = "FORELDREPENGER";
+    //public static final String STØNADSKONTOTYPE_FEDREKVOTE = "FEDREKVOTE";
     public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
     public static final String UTSETTELSETYPE_ARBEID = "ARBEID";
 
@@ -27,6 +28,14 @@ public class FordelingErketyper {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
         fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familiehendelseDato.plusWeeks(10).plusDays(1), familiehendelseDato.plusWeeks(12)));
+        return fordeling;
+    }
+
+    public static Fordeling fordelingMorMedAksjonspunkt(LocalDate familiehendelseDato) {
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familiehendelseDato.minusWeeks(3), familiehendelseDato.minusDays(1)));
+        //fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familiehendelseDato))
         return fordeling;
     }
 
@@ -80,6 +89,10 @@ public class FordelingErketyper {
 
     public static Fordeling fordelingFarHappyCase(LocalDate familehendelseDato) {
         return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(3), familehendelseDato.plusWeeks(5)));
+    }
+
+    public static Fordeling fordelingFarHappyCaseMedMor(LocalDate familiehendelseDato) {
+        return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familiehendelseDato.plusWeeks(6), familiehendelseDato.plusWeeks(9)));
     }
 
     public static Fordeling fordelingFarUtenOverlapp(LocalDate familehendelseDato) {

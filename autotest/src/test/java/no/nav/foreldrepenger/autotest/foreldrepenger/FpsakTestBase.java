@@ -1,17 +1,5 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.BeforeEach;
-
 import no.nav.foreldrepenger.autotest.TestScenarioTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
@@ -24,6 +12,12 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arb
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FpsakTestBase extends TestScenarioTestBase{
 
@@ -80,6 +74,28 @@ public class FpsakTestBase extends TestScenarioTestBase{
                     .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
             Integer beløp = sisteInntektsperiode.getBeløp();
             inntektsmeldinger.add(lagInntektsmeldingBuilder(beløp, fnr, startDatoForeldrepenger, arbeidsgiverOrgnr, Optional.empty(), Optional.empty()));
+        }
+
+        return inntektsmeldinger;
+    }
+
+    protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenarioMedIdent(TestscenarioDto testscenario, String søkerIdent, LocalDate startDatoForeldrepenger) {
+
+        List<Inntektsperiode> inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder();
+        List<Arbeidsforhold> arbeidsforholdEtterStartdatoFP = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().stream()
+                .filter(arbeidsforhold ->
+                        arbeidsforhold.getAnsettelsesperiodeTom() == null ||
+                                !arbeidsforhold.getAnsettelsesperiodeTom().isBefore(startDatoForeldrepenger))
+                .collect(Collectors.toList());
+        List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
+        for (var arbeidsforhold : arbeidsforholdEtterStartdatoFP) {
+            String arbeidsgiverOrgnr = arbeidsforhold.getArbeidsgiverOrgnr();
+            Inntektsperiode sisteInntektsperiode = inntektsperioder.stream()
+                    .filter(inntektsperiode -> inntektsperiode.getOrgnr().equals(arbeidsgiverOrgnr))
+                    .max(Comparator.comparing(Inntektsperiode::getTom))
+                    .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
+            Integer beløp = sisteInntektsperiode.getBeløp();
+            inntektsmeldinger.add(lagInntektsmeldingBuilder(beløp, søkerIdent, startDatoForeldrepenger, arbeidsgiverOrgnr, Optional.empty(), Optional.empty()));
         }
 
         return inntektsmeldinger;
