@@ -50,6 +50,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
+        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke fått revurdering.");
         overstyrer.velgBehandling(overstyrer.kodeverk.BehandlingType.getKode("Revurdering"));
         OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak,overstyrer.valgtBehandling);
         overstyrMedlemskapsvilkaaret.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
@@ -77,6 +78,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         // Førstegangssøknad
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate fpStartdato = fødselsdato.minusWeeks(3);
 
@@ -98,14 +100,15 @@ public class Revurdering extends ForeldrepengerTestBase {
         // Endringssøknad
         ForeldrepengesoknadBuilder søknadE = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEndring(søkerAktørIdent, fpStartdato, saksnummer.toString());
         fordel. erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        Long saksnummerE = fordel.sendInnEndringssøknad(søknadE.buildEndring(), testscenario, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
+        Long saksnummerE = fordel.sendInnSøknad(søknadE.buildEndring(), søkerAktørIdent, søkerIdent, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
-        verifiserLikhet(saksbehandler.behandlinger.get(1).type.kode, "BT-004", "Behandlingstype");
+        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Det er ikke opprettet revurdering.");
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
 
         // TODO (MV): avslutt behandlingen når økonomisteg er fikset
+        // saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakManueltBekreftelse.class);
 
     }
 
@@ -136,9 +139,10 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        verifiserLikhet(saksbehandler.behandlinger.get(1).type.kode, "BT-004", "Behandlingstype");
+        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke opprettet revurdering.");
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakManueltBekreftelse.class);
+        // TODO (MV): Endre når revurdering går automatisk gjennom når resultat er ingen endring.
     }
 
     @Test
@@ -154,7 +158,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         long saksnummerFar = opprettSøknadFar(testscenario);
         saksbehandler.hentFagsak(saksnummerFar);
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "UBEH", "Fagsakstatus sak far");
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingPaaVent.booleanValue(), true, "Behandling på vent");
+        verifiser(saksbehandler.valgtBehandling.behandlingPaaVent.booleanValue(), "Behandlingen er ikke på vent.");
         //Behandle ferdig mor sin sak
         saksbehandler.hentFagsak(saksnummerMor);
         saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
@@ -196,7 +200,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         // Sjekke at revurdering er opprettet på mor uten endring
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        verifiserLikhet(saksbehandler.behandlinger.get(1).type.navn, "Revurdering", "Revurdering er opprettet");
+        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
         // TODO (MV): Endre når espen har merget rettelse i fpsak -> bekreftelse skal gå automatisk

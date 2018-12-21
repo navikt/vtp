@@ -29,6 +29,7 @@ public class DokumenttypeId {
         koder.add("I000038");
         koder.add("I000007");
         koder.add("I000006");
+        koder.add("I000050");
         koder.add("000049");
         koder.add("000048");
         koder.add("000050");
@@ -48,7 +49,6 @@ public class DokumenttypeId {
         koder.add("000080");
         koder.add("000096");
         koder.add("000056");
-        koder.add("I000050");
         koder.add("000114");
 
         VALID_KODER = Collections.unmodifiableList(koder);
@@ -69,6 +69,7 @@ public class DokumenttypeId {
     public static DokumenttypeId DOK_MORS_UTDANNING_ARBEID_SYKDOM = new DokumenttypeId("I000038");
     public static DokumenttypeId INNTEKTSKJEMA_SN_FL = new DokumenttypeId("I000007");
     public static DokumenttypeId UTSETTELSE_ELLER_GRADERTUTTAK_SOKNAD = new DokumenttypeId("I000006");
+    public static DokumenttypeId FORELDREPENGER_ENDRING_SØKNAD = new DokumenttypeId("I000050");
     public static DokumenttypeId FPPROD_INNHENT_DOKUMENTASJON = new DokumenttypeId("000049");
     public static DokumenttypeId FPPROD_POSITIVT_VEDTAKSBREV = new DokumenttypeId("000048");
     public static DokumenttypeId FPPROD_BEHANDLING_AVBRUTT = new DokumenttypeId("000050");
@@ -88,7 +89,6 @@ public class DokumenttypeId {
     public static DokumenttypeId FPPROD_AVSLAGSBREV_FORELDREPENGER = new DokumenttypeId("000080");
     public static DokumenttypeId FPPROD_FRITEKSTBREV = new DokumenttypeId("000096");
     public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID__TIDLIG_SØKNAD = new DokumenttypeId("000056");
-    public static DokumenttypeId FORELDREPENGER_ENDRING_SØKNAD = new DokumenttypeId("I000050");
     public static DokumenttypeId FPPROD_VEDTAK_MEDHOLD = new DokumenttypeId("000114");
 
     public DokumenttypeId(String kode){
