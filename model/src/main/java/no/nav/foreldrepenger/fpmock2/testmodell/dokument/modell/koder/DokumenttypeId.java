@@ -49,6 +49,7 @@ public class DokumenttypeId {
         koder.add("000096");
         koder.add("000056");
         koder.add("I000050");
+        koder.add("000114");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -88,11 +89,12 @@ public class DokumenttypeId {
     public static DokumenttypeId FPPROD_FRITEKSTBREV = new DokumenttypeId("000096");
     public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID__TIDLIG_SØKNAD = new DokumenttypeId("000056");
     public static DokumenttypeId FORELDREPENGER_ENDRING_SØKNAD = new DokumenttypeId("I000050");
+    public static DokumenttypeId FPPROD_VEDTAK_MEDHOLD = new DokumenttypeId("000114");
 
     public DokumenttypeId(String kode){
         this.kode = kode == null ? this.kode : kode;
         if(kode != null && !VALID_KODER.contains(kode)){
-            throw new IllegalArgumentException("Kode er ikke implementert i Joark arkivfiltype: " + kode);
+            throw new IllegalArgumentException("Kode er ikke implementert i Joark dokumenttytpeId: " + kode);
         }
     }
 
