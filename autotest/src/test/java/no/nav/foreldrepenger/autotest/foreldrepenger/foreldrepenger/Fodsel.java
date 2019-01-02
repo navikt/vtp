@@ -115,6 +115,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
     }
 
+    @Disabled
     @Test
     public void morSøkerFødselSomSelvstendingNæringsdrivende_AvvikIBeregning() throws Exception {
 
