@@ -1,0 +1,1 @@
+FROM docker.adeo.no:5000/fpsak:${FPSAK_VERSION}
