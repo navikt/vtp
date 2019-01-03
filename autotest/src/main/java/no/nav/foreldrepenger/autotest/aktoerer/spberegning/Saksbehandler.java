@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.aktoerer.spberegning;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -9,7 +10,9 @@ import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKl
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.ForeslaaDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.ForslagDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.OppdaterBeregningDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.AktivitetsAvtaleDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kodeverk;
@@ -67,6 +70,16 @@ public class Saksbehandler extends Aktoer{
 
     public Double beregnetÅrsinntekt() {
         return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregnetPrAar();
+    }
+    public Double BruttoInkludertBortfaltNaturalytelsePrAar(){
+        return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBruttoInkludertBortfaltNaturalytelsePrAar();
+    }
+    public LocalDate sammenligningsperiodeTom (){
+        return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getSammenligningsgrunnlagTom();
+    }
+
+    public List <AktivitetsAvtaleDto>getAktivitetsAvtaler(){
+        return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregningsgrunnlagPrStatusOgAndel().get(0).getAktivitetsAvtaleDto();
     }
 
     public Double getSammenligningsgrunnlag() {

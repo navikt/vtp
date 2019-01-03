@@ -15,12 +15,16 @@ public class Arbeidsforholdstype {
     static {
         List<String> koder = new ArrayList<>();
         koder.add("ordinaertArbeidsforhold");
+        koder.add("maritimtArbeidsforhold");
+        koder.add("forenkletOppgjorsordning");
         //TODO: Fyll ut denne
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
 
     public static final Arbeidsforholdstype ORDINÆRT_ARBEIDSFORHOLD = new Arbeidsforholdstype("ordinaertArbeidsforhold");
+    public static final Arbeidsforholdstype MARITIMT_ARBEIDSFORHOLD = new Arbeidsforholdstype("maritimtArbeidsforhold");
+    public static final Arbeidsforholdstype FORENKLET_OPPGJØRSORDNING = new Arbeidsforholdstype("forenkletOppgjorsordning");
 
     private String kode;
 
