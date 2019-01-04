@@ -56,17 +56,12 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         
         saksbehandler.hentFagsak(saksnummerMor);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har fått revurdering");
-
-        /*
-        * TODO etter fix espen.
-        * saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
-        * verifiser at behandlingsresultat er INGEN_ENDRING
+        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat.");
         verifiserLikhet(saksbehandler.valgtBehandling.status.navn, "Avsluttet", "Behandlingsstatus");
 
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.harIkkeBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Far har fått revurdering han ikke skal ha");
-
-        * */
 
     }
     
