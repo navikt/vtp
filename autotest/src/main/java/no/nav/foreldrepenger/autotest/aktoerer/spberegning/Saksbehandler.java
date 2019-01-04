@@ -77,7 +77,7 @@ public class Saksbehandler extends Aktoer{
     public LocalDate sammenligningsperiodeTom (){
         return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getSammenligningsgrunnlagTom();
     }
-
+    
     public List <AktivitetsAvtaleDto>getAktivitetsAvtaler(){
         return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregningsgrunnlagPrStatusOgAndel().get(0).getAktivitetsAvtaleDto();
     }

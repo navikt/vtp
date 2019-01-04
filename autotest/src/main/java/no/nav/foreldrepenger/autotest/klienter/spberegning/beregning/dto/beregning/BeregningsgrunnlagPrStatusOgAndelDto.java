@@ -24,4 +24,8 @@ public class BeregningsgrunnlagPrStatusOgAndelDto {
     
     public BeregningsgrunnlagPrStatusOgAndelDto() {
     }
+    
+    public String getOrgNummer() {
+        return orgNummer;
+    }
 }

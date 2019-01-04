@@ -12,8 +12,11 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.AktivitetsAvtaleDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPeriodeDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
@@ -87,7 +90,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @Disabled
     public void forAtAuto() throws Exception {
         TestscenarioDto testscenario = opprettScenario("111");
         int inntektsmeldingMånedsbeløp = 37000;
@@ -123,16 +125,41 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 864000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 63.1D, "Avvik");
+        
+        verifiserPerioder(saksbehandler.beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode(), testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold());
 
-        AktivitetsAvtaleDto aktivitetsAvtale1 = saksbehandler.getAktivitetsAvtaler().get(0);
-//        verifiserLikhet(aktivitetsAvtale1.getOpphørArbeidsforhold(),null);
-        verifiserLikhet(aktivitetsAvtale1.getOppstartArbeidsforhold(), LocalDate.of(2017, 1,1));
-        testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsavtaler().get(0).getStillingsprosent();
-        verifiserLikhet(aktivitetsAvtale1.getArbeidsprosent(), 50.0);
-
-
-//        AktivitetsAvtaleDto aktivitetsAvtale2 = saksbehandler.getAktivitetsAvtaler().get(1);
-//        verifiserLikhet(aktivitetsAvtale2.getArbeidsprosent(), 50.0);
-
+    }
+    
+    public void verifiserPerioder(List<BeregningsgrunnlagPeriodeDto> perioder, List<Arbeidsforhold> arbeidsforholdListe) {
+        for(BeregningsgrunnlagPeriodeDto periode : perioder) {
+            verifiserBeregningsgrunnlagPrStatusOgAndel(periode.getBeregningsgrunnlagPrStatusOgAndel(), arbeidsforholdListe);
+        }
+    }
+    
+    public void verifiserBeregningsgrunnlagPrStatusOgAndel(List<BeregningsgrunnlagPrStatusOgAndelDto> grunnlagListe, List<Arbeidsforhold> arbeidsforholdListe) {
+        for (BeregningsgrunnlagPrStatusOgAndelDto grunnlag : grunnlagListe) {
+            
+            String orgNr = grunnlag.getOrgNummer();
+            
+            //Søk frem arbeidsforhold fra testmodellen
+            Arbeidsforhold arbeidsforhold = null;
+            for (Arbeidsforhold item : arbeidsforholdListe) {
+                if(item.getArbeidsgiverOrgnr().equals(orgNr)) {
+                    arbeidsforhold = item;
+                }
+            }
+            
+            verifiser(arbeidsforhold != null, "Fant ikke arbeidsforhold i testmodellen: " + orgNr);
+            
+            verifiserAktivitetsAvtaler(grunnlag.getAktivitetsAvtaleDto(), arbeidsforhold);
+        }
+    }
+    
+    
+    public void verifiserAktivitetsAvtaler(List<AktivitetsAvtaleDto> arbeidsavtaler, Arbeidsforhold arbeidsforhold) {
+        for (AktivitetsAvtaleDto arbeidsavtale : arbeidsavtaler) {
+            verifiserLikhet(arbeidsavtale.getArbeidsprosent().intValue(), arbeidsforhold.getArbeidsavtaler().get(0).getStillingsprosent(), "feil arbeidsprosent");
+            verifiserLikhet(arbeidsavtale.getOppstartArbeidsforhold(), arbeidsforhold.getAnsettelsesperiodeFom(), "feil Oppstartsdato");
+        }
     }
 }
