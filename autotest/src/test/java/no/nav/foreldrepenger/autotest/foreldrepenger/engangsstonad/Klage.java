@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-@Tag("pending")
 @Tag("smoke")
 @Tag("engangsstonad")
 public class Klage extends EngangsstonadTestBase {

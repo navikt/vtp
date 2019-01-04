@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +30,7 @@ import java.util.List;
 public class Revurdering extends ForeldrepengerTestBase {
 
     @Test
+    @Disabled
     public void opprettRevurderingManuelt() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("50");
@@ -51,6 +53,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
 
 
+        // TODO (MV): Ta bort disabled når resten fungerer. Feil i fpsak (topas)
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke fått revurdering.");
@@ -77,7 +80,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
     @Test
     public void endringssøknad() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50"); // 51?
+        TestscenarioDto testscenario = opprettScenario("50");
 
         // Førstegangssøknad
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -108,11 +111,9 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Det er ikke opprettet revurdering.");
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
 
-        // TODO (MV): avslutt behandlingen når økonomisteg er fikset
-        // saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakManueltBekreftelse.class);
-
+        //TODO (MV): verifiser resultat og status når økonomi er fikset
+        // saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
     }
 
     @Test
