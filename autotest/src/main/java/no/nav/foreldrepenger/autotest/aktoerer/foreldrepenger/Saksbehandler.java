@@ -473,7 +473,10 @@ public class Saksbehandler extends Aktoer{
     public boolean ventPåFerdigstiltØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
-        
+
+        ventTilBehandlingsstatus("AVSLU");
+        return true;
+        /*
         for (ProsessTaskListItemDto prosessTaskListItemDto : list) {
             if(prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
                && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
@@ -484,6 +487,7 @@ public class Saksbehandler extends Aktoer{
             }
         }
         return true;
+        */
     }
     
     /*
