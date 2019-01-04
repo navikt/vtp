@@ -237,10 +237,17 @@ public class Fordel extends Aktoer {
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
         System.out.println("Opprettet søknad: " + sakId);
 
-        Vent.til(() -> {
-            List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
-            return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
-        }, 60, "Saken hadde ingen behandlinger");
+        if(saksnummer == null || saksnummer == 0L) {
+            Vent.til(() -> {
+                List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
+                return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
+            }, 60, "Saken hadde ingen behandlinger");
+        } else {
+            Vent.til(() -> {
+                List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
+                return !behandlinger.isEmpty() && behandlinger.size() > 1 && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
+            }, 60, "Saken hadde kun én behandling");
+        }
 
         return sakId;
     }
