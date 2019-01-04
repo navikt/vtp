@@ -57,6 +57,7 @@ public class HentInntektlisteBolkMapperRest {
             ArbeidsforholdFrilanser res = new ArbeidsforholdFrilanser();
             res.setFrilansPeriodeFom(temp.getFrilansFom());
             res.setFrilansPeriodeTom(temp.getFrilansTom());
+            res.setArbeidsforholdstype(temp.getArbeidsforholdstype());
             res.setStillingsprosent((double)temp.getStillingsprosent());
             res.setArbeidsgiver(Aktoer.newOrganisasjon(temp.getOrgnr()));
             return res;

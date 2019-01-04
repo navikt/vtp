@@ -2,10 +2,13 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FrilansArbeidsforholdsperiode {
 
+    private static final String FRILANS_ARBEIDSFORHOLDSTYPE = "frilanserOppdragstakerHonorarPersonerMm";
 
     @JsonProperty("frilansFom")
     private LocalDate frilansFom;
@@ -59,6 +62,11 @@ public class FrilansArbeidsforholdsperiode {
     public void setStillingsprosent(Integer stillingsprosent) {
         this.stillingsprosent = stillingsprosent;
     }
+
+    public String getArbeidsforholdstype() {
+        return FRILANS_ARBEIDSFORHOLDSTYPE;
+    }
+
 }
 
 

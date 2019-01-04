@@ -14,7 +14,7 @@
 				"fom": "now() - P1Y",
 				"tom": "now() - P1M",
 				"beløp": 10000,
-				"orgnr": "979191300",
+				"orgnr": "973861778",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -24,7 +24,7 @@
 			{
 				"frilansFom":"now() - P1Y",
 				"frilansTom":"now() - P1M",
-				"orgnr":"979191300",
+				"orgnr":"973861778",
 				"stillingsprosent":"25"
 			}
 		]
