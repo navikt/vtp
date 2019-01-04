@@ -139,7 +139,7 @@ public class Fordel extends Aktoer {
      * Sender inn inntektsmelding og returnerer saksnummer
      */
     @Step("Sender inn inntektsmelding")
-    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, String aktørId, String fnr, Long saksnummer) throws IOException {
+    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, String aktørId, String fnr, Long saksnummer) throws Exception {
         String xml = inntektsmelding.createInntektesmeldingXML();
         String behandlingstemaOffisiellKode = "ab0047";
         String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
@@ -150,19 +150,31 @@ public class Fordel extends Aktoer {
 
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, dokumentKategori, aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
+        
+        //vent til inntektsmelding er mottatt
+        if(saksnummer != null) {
+            final long saksnummerF = saksnummer;
+            Vent.til(() ->{
+                List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
+                return historikk.stream().anyMatch(h -> h.getTekst().equals("Vedlegg mottatt"));
+            }, 10, "Saken har ikke mottatt inntektsmeldingen");
+        }
+        else {
+            Vent.til(() ->{
+                return fagsakKlient.søk("" + saksnummer).size() > 0;
+            }, 10, "Oprettet ikke fagsag for inntektsmelding");
+        }
+        
         return sakId;
     }
-    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto testscenario, Long saksnummer) throws IOException {
+    
+    
+    public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto testscenario, Long saksnummer) throws Exception {
         return sendInnInntektsmelding(inntektsmelding, testscenario.getPersonopplysninger().getSøkerAktørIdent(), testscenario.getPersonopplysninger().getSøkerIdent(), saksnummer);
     }
     
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario) throws Exception {
         Long saksnummer = sendInnInntektsmeldinger(inntektsmeldinger, scenario, null);
-        
-        Vent.til(() ->{
-            return fagsakKlient.søk("" + saksnummer).size() > 0;
-        }, 4, "Oprettet ikke fagsag for inntektsmelding");
-        
         return saksnummer;
     }
 
@@ -170,15 +182,7 @@ public class Fordel extends Aktoer {
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, aktørId, fnr, saksnummer);
         }
-        if(saksnummer != null) {
-            final long saksnummerF = saksnummer;
-            Vent.til(() ->{
-                List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
-                return historikk.stream().anyMatch(h -> h.getTekst().equals("Vedlegg mottatt"));
-            }, 5, "Saken har ikke mottatt inntektsmeldingen");
-        }
         return saksnummer;
-
     }
 
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto testscenario, Long saksnummer) throws Exception {

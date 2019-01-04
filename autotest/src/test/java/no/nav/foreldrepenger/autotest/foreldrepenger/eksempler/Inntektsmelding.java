@@ -19,7 +19,7 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 public class Inntektsmelding extends FpsakTestBase{
 
     @Test
-    public void oppretteInntektsmeldingerBasertPåTestscenarioUtenFagsak() throws IOException {
+    public void oppretteInntektsmeldingerBasertPåTestscenarioUtenFagsak() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
         InntektsmeldingBuilder inntektsmelding = inntektsmeldinger.get(0);
@@ -35,7 +35,7 @@ public class Inntektsmelding extends FpsakTestBase{
 
 
     @Test
-    public void opprettInntektsmeldingEgendefinert() throws IOException {
+    public void opprettInntektsmeldingEgendefinert() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
