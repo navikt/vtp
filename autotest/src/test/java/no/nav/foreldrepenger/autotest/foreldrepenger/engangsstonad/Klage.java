@@ -116,13 +116,12 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET");
 
-        // TODO (MV): vent til brev er ferdig
-        /*beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();*/
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
 
     }
 

@@ -1,7 +1,10 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerManueltOpprettetRevurdering;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerBosattBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
@@ -28,7 +31,7 @@ public class Revurdering extends ForeldrepengerTestBase {
     @Test
     public void opprettRevurderingManuelt() throws Exception {
 
-        TestscenarioDto testscenario = opprettScenario("50"); // 51?
+        TestscenarioDto testscenario = opprettScenario("50");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -141,8 +144,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke opprettet revurdering.");
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakManueltBekreftelse.class);
-        // TODO (MV): Endre når revurdering går automatisk gjennom når resultat er ingen endring.
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
+        verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
     }
 
     @Test
@@ -203,8 +206,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
-        // TODO (MV): Endre når espen har merget rettelse i fpsak -> bekreftelse skal gå automatisk
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakManueltBekreftelse.class);
+        verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
 
         // Sjekke at det ikke er opprettet revurdering på far
         saksbehandler.hentFagsak(saksnummerFar);
