@@ -1,9 +1,24 @@
 package no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.http.HttpResponse;
+
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.*;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.AsyncPollingStatus;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingHenlegg;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingIdPost;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -24,19 +39,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeListe;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsesstaskDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
-import org.apache.http.HttpResponse;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Saksbehandler extends Aktoer{
 
@@ -453,19 +458,19 @@ public class Saksbehandler extends Aktoer{
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        godkjennØkonomioppdrag();
+        ventPåFerdigstiltØkonomioppdrag();
         ikkeVentPåStatus = false;
         velgBehandling(valgtBehandling);
     }
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {
        Vent.til(() ->  {
-           return godkjennØkonomioppdrag();
-       }, 10, "Fant ingen økonomioppdag og godkjenne");
+           return ventPåFerdigstiltØkonomioppdrag();
+       }, 10, "Fant ingen økonomioppdag å godkjenne");
     }
 
     @Step("Godkjenner økonomioppdrag")
-    public boolean godkjennØkonomioppdrag() throws Exception {
+    public boolean ventPåFerdigstiltØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
         
@@ -473,12 +478,12 @@ public class Saksbehandler extends Aktoer{
             if(prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
                && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
                && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
-                prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));
+                //prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR")); TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
                 ventTilBehandlingsstatus("AVSLU");
                 return true;
             }
         }
-        return false;
+        return true;
     }
     
     /*
