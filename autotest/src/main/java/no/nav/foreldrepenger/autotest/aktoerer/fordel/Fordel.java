@@ -206,7 +206,7 @@ public class Fordel extends Aktoer {
         String xml = xmlstring;
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
         String behandlingstemaOffisiellKode = "ab0047";
-        String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
+        String dokumentKategori = Dokumentkategori.KLAGE_ANKE.getKode();
         String dokumentTypeIdOffisiellKode = DokumenttypeId.KLAGEANKE.getKode();
 
         JournalpostModell journalpostModell = JournalpostModellGenerator.makeUstrukturertDokumentJournalpost(scenario.getPersonopplysninger().getSøkerIdent(), DokumenttypeId.KLAGEANKE);

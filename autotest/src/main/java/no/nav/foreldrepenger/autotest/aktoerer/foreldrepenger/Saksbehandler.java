@@ -268,6 +268,14 @@ public class Saksbehandler extends Aktoer{
      */
     @SuppressWarnings("unchecked")
     public <T extends AksjonspunktBekreftelse> T hentAksjonspunktbekreftelse(Class<T> type) {
+
+        StringBuilder aksjonspunkter = new StringBuilder();
+        aksjonspunkter.append("Aksjonspunkter for: " + valgtBehandling.fagsakId+"\n");
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter){
+            aksjonspunkter.append(aksjonspunkt.getDefinisjon().kode+"\t"+aksjonspunkt.getStatus().kode+"\n");
+        }
+        System.out.println(aksjonspunkter.toString());
+
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             if(type.isInstance(aksjonspunkt.getBekreftelse())) {
                 return (T) aksjonspunkt.getBekreftelse();
