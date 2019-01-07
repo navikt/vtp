@@ -39,6 +39,7 @@ import no.nav.foreldrepenger.fpmock2.server.rest.PdpRestTjeneste;
 import no.nav.fpmock2.personfeed.PersonfeedMock;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.sigrun.SigrunMock;
+import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
 
 public class ApplicationConfig extends Application {
 
@@ -69,6 +70,7 @@ public class ApplicationConfig extends Application {
         classes.add(SakRestTjeneste.class);
         classes.add(PersonfeedMock.class);
         classes.add(FeedRestTjeneste.class);
+        classes.add(HentInntektlisteBolkREST.class);
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);
