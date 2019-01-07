@@ -211,7 +211,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         // Sjekke at det ikke er opprettet revurdering på far
         saksbehandler.hentFagsak(saksnummerFar);
-        verifiser(saksbehandler.behandlinger.size() == 1, "Fagsaken til far har flere behandlinger enn 1 behandling.");
+        verifiser(saksbehandler.harIkkeBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Behandlingen har fått opprettet revurdering.");
 
     }
 

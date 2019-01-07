@@ -13,7 +13,6 @@ public class FordelingErketyper {
     public static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
     public static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
     public static final String STØNADSKONTOTYPE_FORELDREPENGER = "FORELDREPENGER";
-    //public static final String STØNADSKONTOTYPE_FEDREKVOTE = "FEDREKVOTE";
     public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
     public static final String UTSETTELSETYPE_ARBEID = "ARBEID";
 
