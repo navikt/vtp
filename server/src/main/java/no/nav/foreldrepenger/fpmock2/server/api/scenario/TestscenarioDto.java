@@ -31,7 +31,7 @@ public class TestscenarioDto extends TestscenarioReferanse {
 
     @JsonInclude(content = Include.NON_EMPTY)
     @JsonProperty("scenariodataAnnenpart")
-    private TestscenariodataAnnenpartDto scenariodataAnnenpartDto;
+    private TestscenariodataDto scenariodataAnnenpartDto;
     
     public TestscenarioDto() {
         super(null,  null);
@@ -39,7 +39,7 @@ public class TestscenarioDto extends TestscenarioReferanse {
 
     public TestscenarioDto(TestscenarioTemplate template, String testscenarioId, Map<String, String> variabler,
                            TestscenarioPersonopplysningDto scenarioPersonopplysninger, TestscenariodataDto scenariodataDto,
-                            TestscenariodataAnnenpartDto scenariodataAnnenpartDto) {
+                            TestscenariodataDto scenariodataAnnenpartDto) {
         super(testscenarioId, template.getTemplateKey());
         this.personopplysninger = scenarioPersonopplysninger;
         Objects.requireNonNull(variabler, "variabler");
@@ -59,5 +59,5 @@ public class TestscenarioDto extends TestscenarioReferanse {
 
     public TestscenariodataDto getScenariodata() { return scenariodataDto;}
 
-    public TestscenariodataAnnenpartDto getScenariodataAnnenpart() { return scenariodataAnnenpartDto;}
+    public TestscenariodataDto getScenariodataAnnenpart() { return scenariodataAnnenpartDto;}
 }

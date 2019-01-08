@@ -65,11 +65,11 @@ public class TestscenarioRestTjeneste {
         InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
         TestscenariodataDto scenariodata = new TestscenariodataDto(inntektskomponentModell, arbeidsforholdModell);
 
-        TestscenariodataAnnenpartDto scenariodataAnnenpart = null;
+        TestscenariodataDto scenariodataAnnenpart = null;
         if (testscenario.getAnnenpartInntektYtelse() != null) {
             ArbeidsforholdModell arbeidsforholdModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getArbeidsforholdModell();
             InntektskomponentModell inntektskomponentModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getInntektskomponentModell();
-            scenariodataAnnenpart = new TestscenariodataAnnenpartDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
+            scenariodataAnnenpart = new TestscenariodataDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
 
         }
 
