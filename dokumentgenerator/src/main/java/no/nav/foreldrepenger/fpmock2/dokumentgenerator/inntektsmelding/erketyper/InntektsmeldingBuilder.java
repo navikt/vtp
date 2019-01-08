@@ -242,8 +242,9 @@ public class InntektsmeldingBuilder {
 
 
 
-    public void setStartdatoForeldrepengeperiodenFOM(LocalDate startdatoForeldrepengeperiodenFOM) {
+    public InntektsmeldingBuilder setStartdatoForeldrepengeperiodenFOM(LocalDate startdatoForeldrepengeperiodenFOM) {
         this.startdatoForeldrepengeperiodenFOM = startdatoForeldrepengeperiodenFOM;
+        return this;
     }
 
     public OpphoerAvNaturalytelseListe getOpphoerAvNaturalytelsesList() {
