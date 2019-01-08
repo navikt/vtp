@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +36,12 @@ public class InntektsperiodeDeserializer extends JsonDeserializer {
 
     private static List<Inntektsperiode> splittInntektsperioderTilMånedligeIntervall(Inntektsperiode ip) {
         List<Inntektsperiode> inntektsperioderPaaMaaned = new ArrayList<>();
-        LocalDateTime tomDato = (ip.getTom() != null) ? ip.getTom() : LocalDateTime.now();
+        LocalDate tomDato = (ip.getTom() != null) ? ip.getTom() : LocalDate.now();
         Stream.iterate(ip.getFom(), d -> d.plusMonths(1))
                 .limit(ChronoUnit.MONTHS.between(ip.getFom(), tomDato) + 1).forEach(p -> {
             LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
-            inntektsperioderPaaMaaned.add(new Inntektsperiode(init.withDayOfMonth(1).atStartOfDay()
-                    , init.withDayOfMonth(init.lengthOfMonth()).atStartOfDay(),
+            inntektsperioderPaaMaaned.add(new Inntektsperiode(init.withDayOfMonth(1)
+                    , init.withDayOfMonth(init.lengthOfMonth()),
                     ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse()));
 
         });

@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,10 +8,10 @@ public class Inntektsperiode {
 
 
     @JsonProperty("fom")
-    private LocalDateTime fom;
+    private LocalDate fom;
 
     @JsonProperty("tom")
-    private LocalDateTime tom;
+    private LocalDate tom;
 
     @JsonProperty("beløp")
     private Integer beløp;
@@ -30,7 +30,7 @@ public class Inntektsperiode {
 
     public Inntektsperiode(){ }
 
-    public Inntektsperiode(LocalDateTime fom, LocalDateTime tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel, String beskrivelse){
+    public Inntektsperiode(LocalDate fom, LocalDate tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel, String beskrivelse){
         this.fom = fom;
         this.tom = tom;
         this.beløp = beløp;
@@ -40,19 +40,19 @@ public class Inntektsperiode {
         this.beskrivelse = beskrivelse;
     }
 
-    public LocalDateTime getFom() {
+    public LocalDate getFom() {
         return fom;
     }
 
-    public void setFom(LocalDateTime fom) {
+    public void setFom(LocalDate fom) {
         this.fom = fom;
     }
 
-    public LocalDateTime getTom() {
+    public LocalDate getTom() {
         return tom;
     }
 
-    public void setTom(LocalDateTime tom) {
+    public void setTom(LocalDate tom) {
         this.tom = tom;
     }
 

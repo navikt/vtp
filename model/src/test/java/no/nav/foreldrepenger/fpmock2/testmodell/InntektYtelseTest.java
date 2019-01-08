@@ -74,7 +74,7 @@ public class InntektYtelseTest {
     }
 
     private Inntektsperiode lagInntektsperiode() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         Inntektsperiode inntektsperiode = new Inntektsperiode();
         inntektsperiode.setBeløp(5000);
         inntektsperiode.setFom(now.minusMonths(10));

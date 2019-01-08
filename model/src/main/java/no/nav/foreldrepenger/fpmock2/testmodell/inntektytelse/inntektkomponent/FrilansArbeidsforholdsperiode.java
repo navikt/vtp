@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -8,10 +8,10 @@ public class FrilansArbeidsforholdsperiode {
 
 
     @JsonProperty("frilansFom")
-    private LocalDateTime frilansFom;
+    private LocalDate frilansFom;
 
     @JsonProperty("frilansTom")
-    private LocalDateTime frilansTom;
+    private LocalDate frilansTom;
 
     @JsonProperty("orgnr")
     private String orgnr;
@@ -21,26 +21,26 @@ public class FrilansArbeidsforholdsperiode {
 
     public FrilansArbeidsforholdsperiode(){}
 
-    public FrilansArbeidsforholdsperiode(LocalDateTime frilansFom, LocalDateTime frilansTom, String orgnr, Integer stillingsprosent){
+    public FrilansArbeidsforholdsperiode(LocalDate frilansFom, LocalDate frilansTom, String orgnr, Integer stillingsprosent){
         this.frilansFom = frilansFom;
         this.frilansTom = frilansTom;
         this.orgnr = orgnr;
         this.stillingsprosent = stillingsprosent;
     }
 
-    public LocalDateTime getFrilansFom() {
+    public LocalDate getFrilansFom() {
         return frilansFom;
     }
 
-    public void setFrilansFom(LocalDateTime frilansFom) {
+    public void setFrilansFom(LocalDate frilansFom) {
         this.frilansFom = frilansFom;
     }
 
-    public LocalDateTime getFrilansTom() {
+    public LocalDate getFrilansTom() {
         return frilansTom;
     }
 
-    public void setFrilansTom(LocalDateTime frilansTom) {
+    public void setFrilansTom(LocalDate frilansTom) {
         this.frilansTom = frilansTom;
     }
 

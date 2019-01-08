@@ -2,7 +2,6 @@ package no.nav.tjeneste.virksomhet.inntekt.v3.modell;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -49,7 +48,7 @@ public class HentInntektlistBolkMapper {
             }
         }
 
-        for (LocalDateTime monthYearDate : getMonthYearsWithData(modell)) {
+        for (LocalDate monthYearDate : getMonthYearsWithData(modell)) {
             ArbeidsInntektMaaned arbeidsInntektMaaned = new ArbeidsInntektMaaned();
             ArbeidsInntektInformasjon arbeidsInntektInformasjon = new ArbeidsInntektInformasjon();
             arbeidsInntektMaaned.setArbeidsInntektInformasjon(arbeidsInntektInformasjon);
@@ -141,7 +140,7 @@ public class HentInntektlistBolkMapper {
         return personIdent;
     }
 
-    private static AapenPeriode lagÅpenPeriode(LocalDateTime fom, LocalDateTime tom){
+    private static AapenPeriode lagÅpenPeriode(LocalDate fom, LocalDate tom){
         AapenPeriode åpenPeriode = new AapenPeriode();
         if(fom != null){
             åpenPeriode.setFom(ConversionUtils.convertToXMLGregorianCalendar(fom));
@@ -154,25 +153,25 @@ public class HentInntektlistBolkMapper {
 
 
     //TODO: Skriv om til å både inntekt og arbeidsforhold
-    private static List<LocalDateTime> getMonthYearsWithData(InntektskomponentModell modell) {
+    private static List<LocalDate> getMonthYearsWithData(InntektskomponentModell modell) {
         if (modell.getInntektsperioder().size() == 0) {
             return new ArrayList<>();
         }
-        LocalDateTime minDate = getMinimumMonth(modell);
-        LocalDateTime maxDate = getMaximumMonth(modell);
-        List<LocalDateTime> monthList = new ArrayList<>();
+        LocalDate minDate = getMinimumMonth(modell);
+        LocalDate maxDate = getMaximumMonth(modell);
+        List<LocalDate> monthList = new ArrayList<>();
 
-        for (LocalDateTime date = minDate; date.isBefore(maxDate); date = date.plusMonths(1)) {
+        for (LocalDate date = minDate; date.isBefore(maxDate); date = date.plusMonths(1)) {
             monthList.add(date);
         }
         return monthList;
     }
 
-    private static LocalDateTime getMinimumMonth(InntektskomponentModell modell) {
+    private static LocalDate getMinimumMonth(InntektskomponentModell modell) {
         return modell.getInntektsperioder().stream().min(Comparator.comparing(t -> t.getFom())).get().getFom();
     }
 
-    private static LocalDateTime getMaximumMonth(InntektskomponentModell modell) {
+    private static LocalDate getMaximumMonth(InntektskomponentModell modell) {
         return modell.getInntektsperioder().stream().max(Comparator.comparing(t -> t.getTom())).get().getTom();
     }
 

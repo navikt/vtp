@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +37,12 @@ public class FrilansArbeidsforholdsperiodeDeserializer extends JsonDeserializer 
 
     private static List<FrilansArbeidsforholdsperiode> splittFrilansArbeidsforholdTilMånedligeIntervall(FrilansArbeidsforholdsperiode fap) {
         List<FrilansArbeidsforholdsperiode> frilansArbeidsforholdsperioderPerMåned = new ArrayList<>();
-        LocalDateTime tomDato = (fap.getFrilansTom() != null) ? fap.getFrilansTom() : LocalDateTime.now();
+        LocalDate tomDato = (fap.getFrilansTom() != null) ? fap.getFrilansTom() : LocalDate.now();
         Stream.iterate(fap.getFrilansFom(), d -> d.plusMonths(1))
                 .limit(ChronoUnit.MONTHS.between(fap.getFrilansFom(), tomDato) + 1).forEach(p -> {
             LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
-            frilansArbeidsforholdsperioderPerMåned.add(new FrilansArbeidsforholdsperiode(init.withDayOfMonth(1).atStartOfDay(),
-                    init.withDayOfMonth(init.lengthOfMonth()).atStartOfDay(),
+            frilansArbeidsforholdsperioderPerMåned.add(new FrilansArbeidsforholdsperiode(init.withDayOfMonth(1),
+                    init.withDayOfMonth(init.lengthOfMonth()),
                     fap.getOrgnr(), fap.getStillingsprosent()));
         });
         return frilansArbeidsforholdsperioderPerMåned;

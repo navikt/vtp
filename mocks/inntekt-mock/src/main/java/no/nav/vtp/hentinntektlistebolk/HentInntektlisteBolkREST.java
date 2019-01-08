@@ -3,6 +3,7 @@ package no.nav.vtp.hentinntektlistebolk;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.tjeneste.virksomhet.inntekt.v3.modell.HentInntektlisteBolkMapperRest;
+import no.nav.vtp.hentinntektlistebolk.modell.HentInntektlisteBolkMapperRest;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;
 import no.nav.tjenester.aordningen.inntektsinformasjon.request.HentInntektListeBolkRequest;
@@ -44,6 +45,7 @@ public class HentInntektlisteBolkREST {
         //TODO: (OL) implementer representasjon av Inntekt
 
         List<Aktoer> identListe = request.getIdentListe();
+        LOG.info("Henter inntekter for personer: {}", identListe.stream().map(t-> t.getIdentifikator()).collect(Collectors.joining(",")));
 
         request.getMaanedFom();
         request.getMaanedTom();
