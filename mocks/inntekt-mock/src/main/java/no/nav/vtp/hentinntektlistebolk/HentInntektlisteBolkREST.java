@@ -42,7 +42,6 @@ public class HentInntektlisteBolkREST {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public HentInntektListeBolkResponse hentInntektlisteBolk(HentInntektListeBolkRequest request){
-        //TODO: (OL) implementer representasjon av Inntekt
 
         List<Aktoer> identListe = request.getIdentListe();
         LOG.info("Henter inntekter for personer: {}", identListe.stream().map(t-> t.getIdentifikator()).collect(Collectors.joining(",")));
