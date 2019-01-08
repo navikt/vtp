@@ -70,7 +70,7 @@ public class SpberegningTestBase extends TestBase{
             String orgnummer = periode.getOrgnr();
             Integer belop = periode.getBeløp();
 
-            inntektsmeldinger.add(inntektsmeldingGrunnlag(belop, fnr, orgnummer, arbeidsforholdId, startDatoForeldrepenger, ytelse, ÅrsakInnsendingKodeliste.NY));
+            inntektsmeldinger.add(inntektsmeldingGrunnlag(belop, fnr, orgnummer, arbeidsforholdId, ytelse, ÅrsakInnsendingKodeliste.NY));
         }
 
         return inntektsmeldinger;
@@ -89,12 +89,11 @@ public class SpberegningTestBase extends TestBase{
         return new ArrayList<>(periodeMap.values());
     }
     
-    protected InntektsmeldingBuilder inntektsmeldingGrunnlag(Integer beløp, String fnr, String orgnummer, String arbeidsforholdId, LocalDate startDatoForeldrepenger, YtelseKodeliste ytelse, ÅrsakInnsendingKodeliste årsak) {
+    protected InntektsmeldingBuilder inntektsmeldingGrunnlag(Integer beløp, String fnr, String orgnummer, String arbeidsforholdId, YtelseKodeliste ytelse, ÅrsakInnsendingKodeliste årsak) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
                 ytelse,
                 årsak,
-                fnr,
-                startDatoForeldrepenger);
+                fnr);
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22","1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
@@ -109,7 +108,7 @@ public class SpberegningTestBase extends TestBase{
     }
 
     protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
-        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, "", startDatoForeldrepenger, YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
+        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, "", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
     }
 
 }

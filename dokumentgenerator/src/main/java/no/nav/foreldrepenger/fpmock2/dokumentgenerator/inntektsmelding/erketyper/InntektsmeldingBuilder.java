@@ -136,6 +136,7 @@ public class InntektsmeldingBuilder {
 
 
 
+
     public InntektsmeldingBuilder(String inntektsmeldingID,
                                   YtelseKodeliste ytelse,
                                   ÅrsakInnsendingKodeliste aarsakTilInnsending,
@@ -148,7 +149,19 @@ public class InntektsmeldingBuilder {
         this.aarsakTilInnsending = aarsakTilInnsending;
         this.arbeidstakerFNR = arbeidstakerFNR;
         this.startdatoForeldrepengeperiodenFOM = startdatoForeldrepengeperiodenFOM;
+    }
 
+    public InntektsmeldingBuilder(String inntektsmeldingID,
+                                  YtelseKodeliste ytelse,
+                                  ÅrsakInnsendingKodeliste aarsakTilInnsending,
+                                  String arbeidstakerFNR){
+        this.inntektsmelding = new InntektsmeldingM();
+        this.opphoerAvNaturalytelseListe = new OpphoerAvNaturalytelseListe();
+        this.inntektsmeldingID = inntektsmeldingID;
+        this.ytelse = isNull(ytelse) ? YtelseKodeliste.FORELDREPENGER: ytelse;
+        this.aarsakTilInnsending = aarsakTilInnsending;
+        this.arbeidstakerFNR = arbeidstakerFNR;
+        this.startdatoForeldrepengeperiodenFOM = null;
     }
 
 
@@ -493,7 +506,8 @@ public class InntektsmeldingBuilder {
     }
     
     public static InntektsmeldingBuilder createDefaultForeldrepenger(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
-        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(
+                UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.FORELDREPENGER,
                 ÅrsakInnsendingKodeliste.NY.NY,
                 fnr,
@@ -510,12 +524,12 @@ public class InntektsmeldingBuilder {
         return builder;
     }
     
-    public static InntektsmeldingBuilder createDefaultSykepenger(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger, String arbeidsgiverFnr, int bruttoUtbetalt, LocalDate sykepengerFra, LocalDate sykepengerTil) {
-        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+    public static InntektsmeldingBuilder createDefaultSykepenger(Integer beløp, String fnr, String orgnummer, String arbeidsgiverFnr, int bruttoUtbetalt, LocalDate sykepengerFra, LocalDate sykepengerTil) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(
+                UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.SYKEPENGER,
                 ÅrsakInnsendingKodeliste.NY.NY,
-                fnr,
-                startDatoForeldrepenger);
+                fnr);
         
         List<Periode> perioder = new ArrayList<>();
         perioder.add(InntektsmeldingBuilder.createPeriode(sykepengerFra, sykepengerTil));
