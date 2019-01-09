@@ -36,6 +36,18 @@
             <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
         </dependency>
+		<dependency>
+			<groupId>no.nav.tjenester</groupId>
+			<artifactId>person-api-feed-v1</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.tjenester</groupId>
+			<artifactId>person-api-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.tjenester</groupId>
+			<artifactId>person-api-feed-common-v1</artifactId>
+		</dependency>
 
     </dependencies>
 </project>

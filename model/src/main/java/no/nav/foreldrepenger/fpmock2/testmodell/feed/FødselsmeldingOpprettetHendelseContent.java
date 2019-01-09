@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FødselsmeldingOpprettetHendelse extends PersonHendelse {
+public class FødselsmeldingOpprettetHendelseContent implements HendelseContent {
     private static final String TYPE = "FOEDSELSMELDINGOPPRETTET";
 
     private List<String> personIdenterBarn;
@@ -12,7 +12,7 @@ public class FødselsmeldingOpprettetHendelse extends PersonHendelse {
     private List<String> personIdenterFar;
     private LocalDate foedselsdato;
 
-    private FødselsmeldingOpprettetHendelse(Builder builder){
+    private FødselsmeldingOpprettetHendelseContent(Builder builder){
         this.personIdenterBarn = builder.personIdenterBarn;
         this.personIdenterMor = builder.personIdenterMor;
         this.personIdenterFar = builder.personIdenterFar;
@@ -20,7 +20,7 @@ public class FødselsmeldingOpprettetHendelse extends PersonHendelse {
     }
 
     @Override
-    public String getType() {
+    public String hentType() {
         return TYPE;
     }
 
@@ -73,8 +73,8 @@ public class FødselsmeldingOpprettetHendelse extends PersonHendelse {
             return this;
         }
 
-        public FødselsmeldingOpprettetHendelse build(){
-            return new FødselsmeldingOpprettetHendelse(this);
+        public FødselsmeldingOpprettetHendelseContent build(){
+            return new FødselsmeldingOpprettetHendelseContent(this);
         }
 
 

@@ -1,18 +1,24 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.feed.PersonHendelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.feed.HendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.FeedRepository;
+import no.nav.tjenester.person.feed.common.v1.Feed;
+import no.nav.tjenester.person.feed.common.v1.FeedEntry;
+import no.nav.tjenester.person.feed.common.v1.Metadata;
 
 public class FeedRepositoryImpl implements FeedRepository {
     private static final Logger LOG = LoggerFactory.getLogger(FeedRepositoryImpl.class);
 
-    private List<PersonHendelse> hendelser;
+    private List<FeedEntry> feedEntries;
     private Long sekvensnummer;
 
     private static FeedRepositoryImpl instance;
@@ -25,30 +31,49 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     private FeedRepositoryImpl(){
-        hendelser = new ArrayList<>();
+        feedEntries = new ArrayList<>();
         sekvensnummer = 1L;
     }
 
-    @Override
-    public Long leggTilHendelse(PersonHendelse personHendelse){
 
-        if(personHendelse.getSequence() == null || personHendelse.getSequence().longValue() <= 0){
-            personHendelse.setSequence(genererSekvensnummer());
-        }
-        hendelser.add(personHendelse);
-        return personHendelse.getSequence();
+    public FeedEntry leggTilHendelse(HendelseContent hendelseContent){
+        FeedEntry feedEntry = FeedEntry.builder()
+                .sequence(genererSekvensnummer())
+                .metadata(genererMetaData())
+                .content(hendelseContent)
+                .type(hendelseContent.hentType())
+                .build();
+        feedEntries.add(feedEntry);
+        return feedEntry;
     }
+
+    public Feed hentFeed(Integer sequenceId, Integer pageSize){
+        Optional<FeedEntry> feedEntry = feedEntries.stream().filter(entry -> sequenceId.longValue() == entry.getSequence()).findFirst();
+        List<FeedEntry> returnEntries = new ArrayList<>();
+        if(feedEntry.isPresent()){
+            Integer indxOfEntry = feedEntries.indexOf(feedEntry.get());
+            Integer endIndx = indxOfEntry + pageSize;
+            endIndx = feedEntries.size()  < endIndx ? feedEntries.size() : endIndx;
+            returnEntries = feedEntries.subList(indxOfEntry,endIndx);
+        }
+
+        return Feed.builder()
+                .title("PersonFeed_v1")
+                .items(returnEntries)
+                .build();
+    }
+
+    private static Metadata genererMetaData() {
+        return Metadata.builder()
+                .guid(UUID.randomUUID())
+                .createdDate(LocalDateTime.now())
+                .build();
+    }
+
 
     @Override
     public Long genererSekvensnummer(){
-        return ++sekvensnummer;
+        return sekvensnummer++;
     }
-
-
-    @Override
-    public List<PersonHendelse> hentAlleHendelser(){
-        return List.copyOf(hendelser);
-    }
-
 
 }

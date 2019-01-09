@@ -1,8 +1,6 @@
 package no.nav.fpmock2.personfeed;
 
 
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.fpmock2.testmodell.feed.PersonHendelse;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.FeedRepositoryImpl;
+import no.nav.tjenester.person.feed.common.v1.Feed;
 
 @Api(tags = {"PersonFeed"})
 @Path("/api/v1/personfeed/")
@@ -40,36 +38,9 @@ public class PersonfeedMock {
         LOG.info("Kall mot personfeed fra {} for sekvens {} med pageSize {}", consumerId, sequenceId, pageSize);
 
 
-        Feed feed = new Feed(feedRepository.hentAlleHendelser());
+        Feed feed = feedRepository.hentFeed(sequenceId,pageSize);
         return Response.status(200).entity(feed).build();
 
     }
-
-
-    private static class Feed {
-        private String title = "PersonFeed_v1";
-        private List<PersonHendelse> items;
-
-        public Feed(List<PersonHendelse> items){
-            this.items = items;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public List<PersonHendelse> getItems() {
-            return items;
-        }
-
-        public void setItems(List<PersonHendelse> items) {
-            this.items = items;
-        }
-    }
-
 
 }

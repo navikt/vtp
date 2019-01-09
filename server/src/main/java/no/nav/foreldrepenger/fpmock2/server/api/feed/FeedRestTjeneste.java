@@ -11,8 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.fpmock2.testmodell.feed.PersonHendelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.feed.HendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.FeedRepositoryImpl;
+import no.nav.tjenester.person.feed.common.v1.FeedEntry;
 
 @Api(tags = "Legge til data i feeds")
 @Path("/api/feed")
@@ -22,16 +23,16 @@ public class FeedRestTjeneste {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Legg til personhendelser")
-    public Response leggTilFødselshendelse(FødselshendelseDto fødselshendelseDto){
-        PersonHendelse personHendelse;
+    @ApiOperation(value = "", notes = "Legg til hendelse")
+    public Response leggTilHendelse(PersonhendelseDto personhendelseDto){
+        FeedEntry feedEntry;
         try {
-            personHendelse = personhendelseAdapter.fra(fødselshendelseDto);
-            FeedRepositoryImpl.getInstance().leggTilHendelse(personHendelse);
+            HendelseContent hendelseContent = personhendelseAdapter.fra(personhendelseDto);
+            feedEntry = FeedRepositoryImpl.getInstance().leggTilHendelse(hendelseContent);
         } catch (RuntimeException re){
             re.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST).entity(String.format("{\"error\": \"%s\"}",re.getMessage())).build();
         }
-        return Response.status(201).entity(String.format("{\"success\": \"Personhendelse med sekvens: %s opprettet\"}",personHendelse.getSequence())).build();
+        return Response.status(201).entity(String.format("{\"success\": \"Personhendelse med sekvens: %s opprettet\"}",feedEntry.getSequence())).build();
     }
 }

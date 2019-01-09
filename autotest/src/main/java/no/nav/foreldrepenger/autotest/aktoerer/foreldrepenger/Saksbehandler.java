@@ -503,10 +503,21 @@ public class Saksbehandler extends Aktoer{
         }, 10, "Saken  hadde ikke historikkinslag " + tekst);
     }
 
+    /*
+     * Historikkinnslag
+     */
+    @Step("Venter sekunder antall sekunder på historikkinnslag {tekst}")
+    public void ventTilAntallHistorikkinnslag(String tekst, Integer sekunder, Integer antallHistorikkInnslag) throws Exception {
+        Vent.til( () -> {
+            velgBehandling(valgtBehandling);
+            return harAntallHistorikkinnslag(tekst) == antallHistorikkInnslag;
+        }, sekunder, "Saken  hadde ikke historikkinslag " + tekst);
+    }
+
     public boolean harHistorikkinnslag(String tekst) {
         return getHistorikkInnslag(tekst) != null; 
     }
-    
+
     private HistorikkInnslag getHistorikkInnslag(String tekst) {
         for (HistorikkInnslag innslag : historikkInnslag) {
             if(innslag.getTekst().contains(tekst)) {
@@ -541,6 +552,18 @@ public class Saksbehandler extends Aktoer{
     public void ventTilFagsakstatus(String status) throws Exception {
         ventTilFagsakstatus(kodeverk.FagsakStatus.getKode(status));
     }
+
+    public int harAntallHistorikkinnslag(String tekst) {
+        int antall = 0;
+        for (HistorikkInnslag innslag : historikkInnslag) {
+            if(innslag.getTekst().contains(tekst)) {
+                antall++;
+            }
+        }
+        return antall;
+    }
+
+
 
     
     /*

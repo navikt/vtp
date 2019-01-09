@@ -27,10 +27,12 @@ import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlie
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.SakKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakRequestDTO;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakResponseDTO;
+import no.nav.foreldrepenger.autotest.klienter.vtp.tpsFeed.TpsFeedKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
+import no.nav.foreldrepenger.fpmock2.server.api.feed.PersonhendelseDto;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.ControllerHelper;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
@@ -49,6 +51,8 @@ public class Fordel extends Aktoer {
     SakKlient sakKlient;
     FagsakKlient fagsakKlient;
     HistorikkKlient historikkKlient;
+    TpsFeedKlient tpsFeedKlient;
+
 
     //Vtp Klienter
     JournalforingKlient journalpostKlient;
@@ -60,8 +64,8 @@ public class Fordel extends Aktoer {
         sakKlient = new SakKlient(session);
         fagsakKlient = new FagsakKlient(session);
         historikkKlient = new HistorikkKlient(session);
+        tpsFeedKlient = new TpsFeedKlient(session);
     }
-
 
     /*
      * Sender inn søkand og returnerer saksinformasjon
@@ -208,7 +212,7 @@ public class Fordel extends Aktoer {
         int antall = historikk.stream().filter(h -> h.getTekst().equals("Vedlegg mottatt")).collect(Collectors.toList()).size();
         return antall;
     }
-    
+
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto testscenario, Long saksnummer) throws Exception {
         return sendInnInntektsmeldinger(inntektsmeldinger, testscenario.getPersonopplysninger().getSøkerAktørIdent(), testscenario.getPersonopplysninger().getSøkerIdent(), saksnummer);
     }
@@ -276,5 +280,11 @@ public class Fordel extends Aktoer {
         return saksnummer;
     }
 
-
+    /*
+     * Opretter en personhendelse
+     */
+    @Step("Oppretter tps-hendelse")
+    public void opprettTpsHendelse(PersonhendelseDto personhendelseDto) throws Exception{
+        tpsFeedKlient.leggTilHendelse(personhendelseDto);
+    }
 }

@@ -1,15 +1,14 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo;
 
-import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.feed.PersonHendelse;
+import no.nav.foreldrepenger.fpmock2.testmodell.feed.HendelseContent;
+import no.nav.tjenester.person.feed.common.v1.FeedEntry;
 
 public interface FeedRepository {
 
 
-    Long leggTilHendelse(PersonHendelse personHendelse);
+    FeedEntry leggTilHendelse(HendelseContent hendelseContent);
 
     Long genererSekvensnummer();
 
-    List<PersonHendelse> hentAlleHendelser();
 }
