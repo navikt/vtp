@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +29,15 @@ public class HentInntektlisteBolkMapperRest {
     public static ArbeidsInntektIdent makeArbeidsInntektIdent(InntektskomponentModell modell, Aktoer aktoer, YearMonth fom, YearMonth tom) {
         ArbeidsInntektIdent arbeidsInntektIdent = new ArbeidsInntektIdent();
         arbeidsInntektIdent.setIdent(aktoer);
+        arbeidsInntektIdent.setArbeidsInntektMaaned(new ArrayList<>());
 
         YearMonth runningMonth = fom;
         while (runningMonth.isBefore(tom)) {
             ArbeidsInntektInformasjon arbeidsInntektInformasjon = makeArbeidsInntektInformasjonForMåned(modell, runningMonth);
             ArbeidsInntektMaaned arbeidsInntektMaaned = new ArbeidsInntektMaaned();
             arbeidsInntektMaaned.setArbeidsInntektInformasjon(arbeidsInntektInformasjon);
-            arbeidsInntektIdent.setArbeidsInntektMaaned(new ArrayList(Arrays.asList(arbeidsInntektMaaned)));
+            arbeidsInntektMaaned.setAarMaaned(runningMonth);
+            arbeidsInntektIdent.getArbeidsInntektMaaned().add(arbeidsInntektMaaned);
             runningMonth = runningMonth.plusMonths(1);
         }
 
