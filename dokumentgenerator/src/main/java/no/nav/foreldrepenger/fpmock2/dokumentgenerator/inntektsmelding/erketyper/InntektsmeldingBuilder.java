@@ -157,6 +157,7 @@ public class InntektsmeldingBuilder {
                                   String arbeidstakerFNR){
         this.inntektsmelding = new InntektsmeldingM();
         this.opphoerAvNaturalytelseListe = new OpphoerAvNaturalytelseListe();
+        this.gjenopptakelseNaturalytelseListe = new GjenopptakelseNaturalytelseListe();
         this.inntektsmeldingID = inntektsmeldingID;
         this.ytelse = isNull(ytelse) ? YtelseKodeliste.FORELDREPENGER: ytelse;
         this.aarsakTilInnsending = aarsakTilInnsending;

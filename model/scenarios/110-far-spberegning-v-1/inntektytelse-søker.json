@@ -2,8 +2,8 @@
 	"inntektskomponent": {
 		"inntektsperioder": [
 			{
-				"fom": "2017-01-01T00:00:00",
-				"tom": "2018-12-31T00:00:00",
+				"fom": "2017-01-01",
+				"tom": "2018-12-31",
 				"beløp": 37000,
 				"orgnr": "979191139",
 				"type": "Lønnsinntekt",

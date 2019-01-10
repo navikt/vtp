@@ -2,8 +2,8 @@
 	"inntektskomponent": {
 		"inntektsperioder": [
 			{
-				"fom": "2017-01-01T00:00:00",
-				"tom": "2018-08-30T00:00:00",
+				"fom": "2017-01-01",
+				"tom": "2018-08-30",
 				"beløp": 20000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
@@ -11,8 +11,8 @@
 				"beskrivelse": "fastloenn"
 			},
 			{
-				"fom": "2018-09-01T00:00:00",
-				"tom": "2018-12-31T00:00:00",
+				"fom": "2018-09-01",
+				"tom": "2018-12-31",
 				"beløp": 200000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
@@ -20,20 +20,13 @@
 				"beskrivelse": "fastloenn"
 			},
 			{
-				"fom": "2017-01-01T00:00:00",
-				"tom": "2018-12-31T00:00:00",
+				"fom": "2017-01-01",
+				"tom": "2018-12-31",
 				"beløp": 37000,
 				"orgnr": "979191139",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
-			}
-		],
-		"frilansarbeidsforholdperioder": [
-			{
-				"frilansFom":"2017-01-01T00:00:00",
-				"orgnr":"979191140",
-				"stillingsprosent":"10"
 			}
 		]
 	},
