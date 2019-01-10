@@ -3,24 +3,6 @@
 		"inntektsperioder": [
 			{
 				"fom": "2017-01-01T00:00:00",
-				"tom": "2018-08-30T00:00:00",
-				"beløp": 20000,
-				"orgnr": "979191138",
-				"type": "Lønnsinntekt",
-				"fordel": "kontantytelse",
-				"beskrivelse": "fastloenn"
-			},
-			{
-				"fom": "2018-09-01T00:00:00",
-				"tom": "2018-12-31T00:00:00",
-				"beløp": 200000,
-				"orgnr": "979191138",
-				"type": "Lønnsinntekt",
-				"fordel": "kontantytelse",
-				"beskrivelse": "fastloenn"
-			},
-			{
-				"fom": "2017-01-01T00:00:00",
 				"tom": "2018-12-31T00:00:00",
 				"beløp": 37000,
 				"orgnr": "979191139",
@@ -28,37 +10,10 @@
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
 			}
-		],
-		"frilansarbeidsforholdperioder": [
-			{
-				"frilansFom":"2017-01-01T00:00:00",
-				"orgnr":"979191140",
-				"stillingsprosent":"10"
-			}
 		]
 	},
 	"aareg": {
 		"arbeidsforhold": [
-			{
-				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1238161",
-				"ansettelsesperiodeFom": "2017-01-01",
-				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
-
-
-				"arbeidsavtaler" : [
-					{
-						"fomGyldighetsperiode": "2017-01-01",
-						"sisteLønnsendringsdato": "2018-01-01",
-						"avlønningstype": "fastlønn",
-						"avtaltArbeidstimerPerUke": "20",
-						"stillingsprosent" : 50,
-						"beregnetAntallTimerPerUke": "15"
-					}
-				]
-
-			},
 			{
 				"arbeidsforholdId": "ARB001-002",
 				"arbeidsforholdIdNav": "1238162",

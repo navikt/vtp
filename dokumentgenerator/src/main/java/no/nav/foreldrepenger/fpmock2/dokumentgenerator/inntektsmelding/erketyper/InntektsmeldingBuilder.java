@@ -251,6 +251,11 @@ public class InntektsmeldingBuilder {
         return opphoerAvNaturalytelseListe;
     }
 
+    public GjenopptakelseNaturalytelseListe getGjenopptakelseNaturalytelseListe() {
+        return gjenopptakelseNaturalytelseListe;
+    }
+
+
     public void setOpphoerAvNaturalytelsesList(List<NaturalytelseDetaljer> naturalytelsesList) {
         if(naturalytelsesList != null && naturalytelsesList.size() > 0){
             ObjectFactory objectFactory = new ObjectFactory();
@@ -356,9 +361,7 @@ public class InntektsmeldingBuilder {
         return arbeidsgiverperiodeListe;
     }
 
-
-
-    public static Arbeidsforhold createArbeidsforhold(String arbeidsforholdId,
+        public static Arbeidsforhold createArbeidsforhold(String arbeidsforholdId,
                                                       ÅrsakBeregnetInntektEndringKodeliste aarsakVedEndring,
                                                       BigDecimal beregnetInntektBelop,
                                                       List<UtsettelseAvForeldrepenger> utsettelseAvForeldrepengerList,

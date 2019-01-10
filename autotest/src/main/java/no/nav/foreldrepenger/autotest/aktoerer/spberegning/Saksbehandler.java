@@ -53,12 +53,15 @@ public class Saksbehandler extends Aktoer{
      * Foreslår og henter forslag fra beregning
      */
     @Step("Foreslår beregning for Gosyssak {gosysSakId}")
-    public void foreslåBeregning(String tema, TestscenarioDto testscenario, String gosysSakId) throws IOException {
+    public String foreslåBeregning(String tema, TestscenarioDto testscenario, String gosysSakId) throws IOException {
         ForeslaaDto foreslå = new ForeslaaDto(tema, Long.parseLong(testscenario.getPersonopplysninger().getSøkerAktørIdent()), gosysSakId);
         forslag = beregningKlient.foreslaBeregningPost(foreslå);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
         System.out.println("Oprettet beregning: " + beregning.getId());
+        return String.format("http://localhost:9999/#/foresla-beregning/%s/%s/%s/", testscenario.getPersonopplysninger().getSøkerAktørIdent(), gosysSakId, tema); // "Legg til oppgaveid /%s"
     }
+
+//    http://localhost:9999/#/foresla-beregning/9906107945480/1813015/FOR/
     
     public void oppdaterBeregning(LocalDate skjæringstidspunkt, Kode status) throws IOException {
         OppdaterBeregningDto request = new OppdaterBeregningDto(beregning.getId());
