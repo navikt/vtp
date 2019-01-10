@@ -122,7 +122,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         
         List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
-        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        String orgnr = testscenario.getScenariodataAnnenpart().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
         
         InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilder(
                 inntekter.get(0),

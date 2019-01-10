@@ -26,7 +26,7 @@
 			{
 				"arbeidsforholdId": "ARB001-001",
 				"arbeidsforholdIdNav": "1238161",
-				"ansettelsesperiodeFom": "now() - P4M",
+				"ansettelsesperiodeFom": "now() - P4Y",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
 
@@ -41,39 +41,14 @@
 						"beregnetAntallTimerPerUke": "30"
 					},
 					{
-						"fomGyldighetsperiode": "now() - P4M",
+						"fomGyldighetsperiode": "now() - P10M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "30",
-						"stillingsprosent" : 50,
+						"stillingsprosent" : 100,
 						"beregnetAntallTimerPerUke": "20"
 					}
 				]
 
-			},
-			{
-				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1238162",
-				"ansettelsesperiodeFom": "now() - P4Y",
-				"ansettelsesperiodeTom": "now() - P4M",
-				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
-				"arbeidsavtaler" : [
-					{
-						"fomGyldighetsperiode": "now() - P4Y",
-						"sisteLønnsendringsdato": "now() - P1Y",
-						"avlønningstype": "fastlønn",
-						"avtaltArbeidstimerPerUke": "40",
-						"stillingsprosent" : 100,
-						"beregnetAntallTimerPerUke": "30"
-					},
-					{
-						"fomGyldighetsperiode": "now() - P10M",
-						"avlønningstype": "fastlønn",
-						"avtaltArbeidstimerPerUke": "30",
-						"stillingsprosent" : 50,
-						"beregnetAntallTimerPerUke": "20"
-					}
-				]
 			}
 		]
 	},

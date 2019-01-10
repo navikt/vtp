@@ -15,7 +15,6 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +29,6 @@ import java.util.List;
 public class Revurdering extends ForeldrepengerTestBase {
 
     @Test
-    @Disabled
     public void opprettRevurderingManuelt() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("50");
@@ -52,8 +50,6 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ikkeVentPåStatus = false;
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
 
-
-        // TODO (MV): Ta bort disabled når resten fungerer. Feil i fpsak (topas)
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke fått revurdering.");
@@ -66,7 +62,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
 
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        // TODO (MV): venter på økonomisteget
+        /*beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Revurdering"));
 
@@ -74,7 +71,7 @@ public class Revurdering extends ForeldrepengerTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
-        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
+        verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");*/
 
     }
 
@@ -200,6 +197,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(aksjonspunkter);
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU");
         // Sjekke at revurdering er opprettet på mor uten endring
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
@@ -229,7 +227,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), morAktørid, morIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
 
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, morIdent, fpStartdato);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, morIdent, fpStartdato, false);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, morAktørid, morIdent, saksnummer);
 
         return saksnummer;
@@ -259,7 +257,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate fpStartdato = fødselsdato.plusWeeks(6);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fpStartdato);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fpStartdato, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, farAktørid, farIdent, saksnummer);
     }
 

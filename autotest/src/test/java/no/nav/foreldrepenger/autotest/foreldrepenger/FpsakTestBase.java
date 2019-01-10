@@ -57,32 +57,22 @@ public class FpsakTestBase extends TestScenarioTestBase{
     }
 
     protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenario(TestscenarioDto testscenario, LocalDate startDatoForeldrepenger) {
-
-        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
-        List<Inntektsperiode> inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder();
-        List<Arbeidsforhold> arbeidsforholdEtterStartdatoFP = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().stream()
-                .filter(arbeidsforhold ->
-                        arbeidsforhold.getAnsettelsesperiodeTom() == null ||
-                        !arbeidsforhold.getAnsettelsesperiodeTom().isBefore(startDatoForeldrepenger))
-                .collect(Collectors.toList());
-        List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
-        for (var arbeidsforhold : arbeidsforholdEtterStartdatoFP) {
-            String arbeidsgiverOrgnr = arbeidsforhold.getArbeidsgiverOrgnr();
-            Inntektsperiode sisteInntektsperiode = inntektsperioder.stream()
-                    .filter(inntektsperiode -> inntektsperiode.getOrgnr().equals(arbeidsgiverOrgnr))
-                    .max(Comparator.comparing(Inntektsperiode::getTom))
-                    .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
-            Integer beløp = sisteInntektsperiode.getBeløp();
-            inntektsmeldinger.add(lagInntektsmeldingBuilder(beløp, fnr, startDatoForeldrepenger, arbeidsgiverOrgnr, Optional.empty(), Optional.empty()));
-        }
-
-        return inntektsmeldinger;
+        String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
+        return makeInntektsmeldingFromTestscenarioMedIdent(testscenario, søkerIdent, startDatoForeldrepenger, false);
     }
 
-    protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenarioMedIdent(TestscenarioDto testscenario, String søkerIdent, LocalDate startDatoForeldrepenger) {
+    protected List<InntektsmeldingBuilder> makeInntektsmeldingFromTestscenarioMedIdent(TestscenarioDto testscenario, String søkerIdent, LocalDate startDatoForeldrepenger, boolean erAnnenpart) {
 
-        List<Inntektsperiode> inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder();
-        List<Arbeidsforhold> arbeidsforholdEtterStartdatoFP = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().stream()
+        List<Inntektsperiode> inntektsperioder;
+        List<Arbeidsforhold> arbeidsforholdEtterStartdatoFP;
+        if (erAnnenpart == true) {
+            inntektsperioder = testscenario.getScenariodataAnnenpart().getInntektskomponentModell().getInntektsperioder();
+            arbeidsforholdEtterStartdatoFP = testscenario.getScenariodataAnnenpart().getArbeidsforholdModell().getArbeidsforhold();
+        } else {
+            inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder();
+            arbeidsforholdEtterStartdatoFP = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold();
+        }
+        arbeidsforholdEtterStartdatoFP.stream()
                 .filter(arbeidsforhold ->
                         arbeidsforhold.getAnsettelsesperiodeTom() == null ||
                                 !arbeidsforhold.getAnsettelsesperiodeTom().isBefore(startDatoForeldrepenger))
