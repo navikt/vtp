@@ -16,6 +16,8 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
@@ -43,6 +45,7 @@ public class BehandleSak2ServiceMockImpl implements BehandleSakV2 {
                                                                                      @WebParam(name = "opprettSakRequest", targetNamespace = "") no.nav.tjeneste.virksomhet.behandlesak.v2.WSOpprettSakRequest request)
             throws WSSikkerhetsbegrensningException, WSSakEksistererAlleredeException, WSUgyldigInputException {
         LOG.info("opprettSak. Saktype: {}. Fagområde: {}. Fagsystem: {}", request.getSak().getSaktype(), request.getSak().getFagomrade(), request.getSak().getFagsystem());
+        ExpectRepository.hit(Mock.GSAK, "opprettSak");
         Set<String> identer = request.getSak().getGjelderBrukerListe().stream().map(a -> a.getIdent()).collect(Collectors.toSet());
 
         List<PersonModell> personer = identer.stream().map(i -> (PersonModell) repository.getPersonIndeks().finnByIdent(i))

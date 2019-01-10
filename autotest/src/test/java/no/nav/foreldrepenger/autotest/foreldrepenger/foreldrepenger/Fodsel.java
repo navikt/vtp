@@ -429,6 +429,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     @DisplayName("Far søker fødsel med 1 arbeidsforhold")
     public void farSøkerFødselMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("62");
+        ExpectTokenDto token = expectKlient.createExpectation(new ExpectRequestDto(Mock.GSAK.toString(), "opprettSak"));
 
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
@@ -468,7 +469,9 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
-
+        
+        ExpectResultDto result = expectKlient.checkExpectation(token);
+        verifiser(result.isExpectationMet(), "Forventningen er ikke møtt");
     }
 
     @Test
