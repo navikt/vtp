@@ -14,6 +14,8 @@ public class BeregningsgrunnlagDto {
     protected String ledetekstBrutto;
     protected String oppgaveBeskrivelse;
     protected Long id;
+    protected String opprettet;
+    protected Boolean sjømann;
     
     public BeregningsgrunnlagDto() {
     }
@@ -28,6 +30,10 @@ public class BeregningsgrunnlagDto {
 
     public SammenligningsgrunnlagDto getSammenligningsgrunnlag() {
         return sammenligningsgrunnlag;
+    }
+
+    public Boolean getSjømann() {
+        return sjømann;
     }
 
     public String getLedetekstBrutto() {

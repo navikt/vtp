@@ -96,4 +96,8 @@ public class Saksbehandler extends Aktoer{
     public LocalDate getSkjæringstidspunkt() {
         return beregning.getBeregningsgrunnlag().getSkjaeringstidspunktBeregning();
     }
+
+    public Boolean getSjømann(){
+        return beregning.getBeregningsgrunnlag().getSjømann();
+    }
 }
