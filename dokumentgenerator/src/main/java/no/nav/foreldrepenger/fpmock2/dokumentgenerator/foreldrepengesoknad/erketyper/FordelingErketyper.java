@@ -34,7 +34,6 @@ public class FordelingErketyper {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
         fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familiehendelseDato.minusWeeks(3), familiehendelseDato.minusDays(1)));
-        //fordeling.getPerioder().add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familiehendelseDato))
         return fordeling;
     }
 
