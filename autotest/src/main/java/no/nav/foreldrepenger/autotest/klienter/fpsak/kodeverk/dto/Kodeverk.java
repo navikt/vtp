@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Kodeverk{
@@ -36,6 +36,7 @@ public class Kodeverk{
     public KodeListe VergeType;
     public KodeListe UttakPeriodeVurderingType;
     public KodeListe IkkeOppfyltÅrsak;
+    public KodeListe SkatteOgAvgiftsregelType;
     
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KodeListe extends ArrayList<Kode>{

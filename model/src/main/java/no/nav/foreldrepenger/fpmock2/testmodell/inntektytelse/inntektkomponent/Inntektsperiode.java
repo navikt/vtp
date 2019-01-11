@@ -1,8 +1,9 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
-import java.time.LocalDate;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
 
 public class Inntektsperiode {
 
@@ -28,9 +29,22 @@ public class Inntektsperiode {
     @JsonProperty("beskrivelse")
     private String beskrivelse;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("skatteOgAvgiftsregel")
+    private String skatteOgAvgiftsregel;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("inngaarIGrunnlagForTrekk")
+    private Boolean inngaarIGrunnlagForTrekk;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty("utloeserArbeidsgiveravgift")
+    private Boolean utloeserArbeidsgiveravgift;
+
     public Inntektsperiode(){ }
 
-    public Inntektsperiode(LocalDate fom, LocalDate tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel, String beskrivelse){
+    public Inntektsperiode(LocalDate fom, LocalDate tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel,
+                           String beskrivelse, String skatteOgAvgiftsregel, Boolean inngaarIGrunnlagForTrekk, Boolean utloeserArbeidsgiveravgift){
         this.fom = fom;
         this.tom = tom;
         this.beløp = beløp;
@@ -38,6 +52,9 @@ public class Inntektsperiode {
         this.type = inntektType;
         this.fordel = inntektFordel;
         this.beskrivelse = beskrivelse;
+        this.skatteOgAvgiftsregel = skatteOgAvgiftsregel;
+        this.inngaarIGrunnlagForTrekk = inngaarIGrunnlagForTrekk;
+        this.utloeserArbeidsgiveravgift = utloeserArbeidsgiveravgift;
     }
 
     public LocalDate getFom() {
@@ -95,4 +112,16 @@ public class Inntektsperiode {
     public void setBeskrivelse(String beskrivelse) {
         this.beskrivelse = beskrivelse;
     }
+
+    public String getSkatteOgAvgiftsregel() { return skatteOgAvgiftsregel;}
+
+    public void setSkatteOgAvgiftsregel(String skatteOgAvgiftsregel) { this.skatteOgAvgiftsregel = skatteOgAvgiftsregel;}
+
+    public Boolean getInngaarIGrunnlagForTrekk() { return inngaarIGrunnlagForTrekk;}
+
+    public void setInngaarIGrunnlagForTrekk(Boolean inngaarIGrunnlagForTrekk) { this.inngaarIGrunnlagForTrekk = inngaarIGrunnlagForTrekk;}
+
+    public Boolean getUtloeserArbeidsgiveravgift() { return utloeserArbeidsgiveravgift;}
+
+    public void setUtloeserArbeidsgiveravgift(Boolean utloeserArbeidsgiveravgift) { this.utloeserArbeidsgiveravgift = utloeserArbeidsgiveravgift; }
 }

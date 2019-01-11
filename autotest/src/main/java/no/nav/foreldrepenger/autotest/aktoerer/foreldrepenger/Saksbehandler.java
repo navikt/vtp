@@ -24,6 +24,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeListe;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsesstaskDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
@@ -485,7 +486,7 @@ public class Saksbehandler extends Aktoer{
             if(prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
                && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
                && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
-                //prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR")); TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
+                prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR")); //TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
                 ventTilBehandlingsstatus("AVSLU");
                 return true;
             }

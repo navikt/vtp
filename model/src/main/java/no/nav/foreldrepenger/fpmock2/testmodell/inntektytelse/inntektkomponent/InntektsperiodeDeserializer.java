@@ -1,12 +1,5 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -14,8 +7,14 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class InntektsperiodeDeserializer extends JsonDeserializer {
 
@@ -42,7 +41,8 @@ public class InntektsperiodeDeserializer extends JsonDeserializer {
             LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
             inntektsperioderPaaMaaned.add(new Inntektsperiode(init.withDayOfMonth(1)
                     , init.withDayOfMonth(init.lengthOfMonth()),
-                    ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse()));
+                    ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse(), ip.getSkatteOgAvgiftsregel(),
+                    ip.getInngaarIGrunnlagForTrekk(), ip.getUtloeserArbeidsgiveravgift()));
 
         });
         return inntektsperioderPaaMaaned;

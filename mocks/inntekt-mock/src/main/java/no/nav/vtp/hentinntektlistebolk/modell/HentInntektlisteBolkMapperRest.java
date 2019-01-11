@@ -1,25 +1,20 @@
 package no.nav.vtp.hentinntektlistebolk.modell;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.tjenester.aordningen.inntektsinformasjon.*;
+import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.Inntekt;
+import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.InntektType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
-import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
-import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;
-import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektInformasjon;
-import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektMaaned;
-import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsforholdFrilanser;
-import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.Inntekt;
-import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.InntektType;
 
 
 public class HentInntektlisteBolkMapperRest {
@@ -76,6 +71,9 @@ public class HentInntektlisteBolkMapperRest {
             inntekt.setOpptjeningsperiodeFom(temp.getFom());
             inntekt.setOpptjeningsperiodeTom(temp.getTom());
             inntekt.setUtbetaltIMaaned(måned);
+            inntekt.setSkatteOgAvgiftsregel(temp.getSkatteOgAvgiftsregel());
+            inntekt.setInngaarIGrunnlagForTrekk(temp.getInngaarIGrunnlagForTrekk());
+            inntekt.setUtloeserArbeidsgiveravgift(temp.getUtloeserArbeidsgiveravgift());
             return inntekt;
         }).collect(Collectors.toList());
     }
