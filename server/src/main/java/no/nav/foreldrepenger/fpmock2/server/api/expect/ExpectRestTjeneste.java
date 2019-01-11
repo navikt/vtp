@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository;
 
 @Api(tags = { "Expect" })
