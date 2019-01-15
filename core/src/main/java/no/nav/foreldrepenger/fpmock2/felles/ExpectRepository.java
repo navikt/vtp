@@ -26,7 +26,7 @@ public class ExpectRepository {
         List<TokenEntry> tokens = getTokenList(mock, webMethod);
         
         for (TokenEntry tokenEntry : tokens) {
-            if(predicate == null || predicate.entrySet().containsAll(tokenEntry.predicate.entrySet())) {
+            if(predicate == null || tokenEntry.predicate == null || predicate.entrySet().containsAll(tokenEntry.predicate.entrySet())) {
                 tokenEntry.hit();
             }
         }
