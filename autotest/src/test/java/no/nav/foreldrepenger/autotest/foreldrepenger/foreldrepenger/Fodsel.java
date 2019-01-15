@@ -55,6 +55,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erket
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectPredicate;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
@@ -435,7 +436,11 @@ public class Fodsel extends ForeldrepengerTestBase {
         LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
+        System.out.println("Ident: " + søkerIdent);
 
+        ExpectTokenDto token = expectKlient.createExpectation(new ExpectRequestDto(Mock.GSAK.toString(), "opprettSak", new ExpectPredicate("aktør", søkerIdent)));
+        
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunFar(søkerAktørIdent, fødselsdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
 

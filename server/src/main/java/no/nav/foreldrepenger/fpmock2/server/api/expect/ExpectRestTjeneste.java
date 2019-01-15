@@ -35,7 +35,7 @@ public class ExpectRestTjeneste {
         }
         
         ExpectTokenDto response = new ExpectTokenDto(expect.mock, expect.webMethod);
-        ExpectRepository.registerToken(expect.mock, expect.webMethod, response.getToken());
+        ExpectRepository.registerToken(expect.mock, expect.webMethod, response.getToken(), expect.predicate);
         return response;
     }
     

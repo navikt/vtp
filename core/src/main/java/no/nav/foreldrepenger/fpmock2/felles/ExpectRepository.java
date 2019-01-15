@@ -22,17 +22,19 @@ public class ExpectRepository {
     
     private static final Logger LOG = LoggerFactory.getLogger(ExpectRepository.class);
     
-    public static void hit(Mock mock, String webMethod) {
+    public static void hit(Mock mock, String webMethod, ExpectPredicate predicate) {
         List<TokenEntry> tokens = getTokenList(mock, webMethod);
         
         for (TokenEntry tokenEntry : tokens) {
-            tokenEntry.hit();
+            if(predicate == null || predicate.entrySet().containsAll(tokenEntry.predicate.entrySet())) {
+                tokenEntry.hit();
+            }
         }
     }
 
-    public static void registerToken(Mock mock, String webMethod, String token) {
+    public static void registerToken(Mock mock, String webMethod, String token, ExpectPredicate predicate) {
         List<TokenEntry> tokens = getTokenList(mock, webMethod);
-        TokenEntry tokenEntry = new TokenEntry(token);
+        TokenEntry tokenEntry = new TokenEntry(token, predicate);
         tokens.add(tokenEntry);
         cleanupTokens(tokens);
     }
@@ -72,12 +74,14 @@ public class ExpectRepository {
     private static class TokenEntry{
         
         public String token;
+        public Map<String, String> predicate;
         public LocalDateTime expires = LocalDateTime.now().plusMinutes(5);
         public boolean isHit = false;
         
-        public TokenEntry(String token) {
+        public TokenEntry(String token, ExpectPredicate predicate) {
             super();
             this.token = token;
+            this.predicate = predicate;
         }
         
         public void hit() {
