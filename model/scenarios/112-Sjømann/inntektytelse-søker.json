@@ -8,7 +8,10 @@
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
-				"beskrivelse": "fastloenn"
+				"beskrivelse": "fastloenn",
+                "skatteOgAvgiftsregel": "nettoloennForSjoefolk",
+                "inngaarIGrunnlagForTrekk": true,
+                "utloeserArbeidsgiveravgift": true
 			}
 		]
 	},

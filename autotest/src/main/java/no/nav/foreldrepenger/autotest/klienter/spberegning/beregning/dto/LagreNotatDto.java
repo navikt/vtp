@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LagreNotatDto {
 
-    protected int beregningId;
+    protected long beregningId;
     protected String notat;
-    protected int beregningsgrunnlagId;
+    protected long beregningsgrunnlagId;
     
     
-    public LagreNotatDto(int beregningId, String notat, int beregningsgrunnlagId) {
+    public LagreNotatDto(long beregningId, String notat, long beregningsgrunnlagId) {
         super();
         this.beregningId = beregningId;
         this.notat = notat;

@@ -12,6 +12,7 @@ import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.Forslag
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.OppdaterBeregningDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.AktivitetsAvtaleDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.LagreNotatDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kode;
@@ -36,7 +37,8 @@ public class Saksbehandler extends Aktoer{
      */
     public ForslagDto forslag;
     public BeregningDto beregning;
-    
+    public LagreNotatDto lagreNotat;
+
     public Saksbehandler() {
         kodeverkKlient = new KodeverkKlient(session);
         beregningKlient = new BeregningKlient(session);
@@ -53,22 +55,28 @@ public class Saksbehandler extends Aktoer{
      * Foreslår og henter forslag fra beregning
      */
     @Step("Foreslår beregning for Gosyssak {gosysSakId}")
-    public String foreslåBeregning(String tema, TestscenarioDto testscenario, String gosysSakId) throws IOException {
+    public BeregningDto foreslåBeregning(String tema, TestscenarioDto testscenario, String gosysSakId) throws IOException {
         ForeslaaDto foreslå = new ForeslaaDto(tema, Long.parseLong(testscenario.getPersonopplysninger().getSøkerAktørIdent()), gosysSakId);
         forslag = beregningKlient.foreslaBeregningPost(foreslå);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
-        System.out.println("Oprettet beregning: " + beregning.getId());
-        return String.format("http://localhost:9999/#/foresla-beregning/%s/%s/%s/", testscenario.getPersonopplysninger().getSøkerAktørIdent(), gosysSakId, tema); // "Legg til oppgaveid /%s"
+        beregning.getBeregningsgrunnlag().getId();
+        System.out.println("Opprettet beregning: " + beregning.getId());
+        System.out.println(String.format("http://localhost:9999/#/foresla-beregning/%s/%s/%s/", testscenario.getPersonopplysninger().getSøkerAktørIdent(), gosysSakId, tema));
+        return beregning;
     }
 
-//    http://localhost:9999/#/foresla-beregning/9906107945480/1813015/FOR/
-    
+
     public void oppdaterBeregning(LocalDate skjæringstidspunkt, Kode status) throws IOException {
         OppdaterBeregningDto request = new OppdaterBeregningDto(beregning.getId());
         request.setSkjæringstidspunkt(skjæringstidspunkt);
         request.setAktivitetStatusKode(status.kode);
         beregningKlient.oppdaterBeregning(request);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
+    }
+
+    public void lagreNotat (long beregningId, String notat, Long beregningsgrunnlagId) throws IOException {
+        LagreNotatDto request = new LagreNotatDto(beregningId, notat, beregningsgrunnlagId);
+        beregningKlient.lagrenotat(request);
     }
 
     public Double beregnetÅrsinntekt() {
@@ -80,7 +88,7 @@ public class Saksbehandler extends Aktoer{
     public LocalDate sammenligningsperiodeTom (){
         return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getSammenligningsgrunnlagTom();
     }
-    
+
     public List <AktivitetsAvtaleDto>getAktivitetsAvtaler(){
         return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregningsgrunnlagPrStatusOgAndel().get(0).getAktivitetsAvtaleDto();
     }

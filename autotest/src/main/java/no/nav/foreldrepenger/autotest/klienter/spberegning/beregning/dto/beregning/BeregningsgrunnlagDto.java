@@ -47,10 +47,11 @@ public class BeregningsgrunnlagDto {
     public Long getId() {
         return id;
     }
-    
+
     public LocalDate getSkjaeringstidspunktBeregning() {
+
         return skjaeringstidspunktBeregning;
     }
-    
-    
+
+
 }

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.AktivitetsAvtaleDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPeriodeDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -55,11 +56,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String url = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        System.out.println("Webside: " + url);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
-//        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 684000D, "Sum inntekt");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 689400D, "Beregnet årsinntekt inkl naturalytelse");
@@ -98,11 +97,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String url = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        System.out.println("Webside: " + url);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
-//        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 684000D, "Sum inntekt");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 689400D, "Beregnet årsinntekt inkl naturalytelse");
@@ -140,12 +137,10 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String url = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        System.out.println("Webside: " + url);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-//        verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
+
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
-//        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 444000D, "Sum inntekt");
@@ -154,7 +149,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 0D, "Avvik");
     }
-    
+
     @Test
     public void For2AtOver25Avvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("111");
@@ -181,8 +176,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String url = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        System.out.println("Webside: " + url);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
@@ -234,8 +228,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String url = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        System.out.println("Webside: " + url);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
@@ -248,39 +241,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 104.6D, "Avvik");
         verifiserPerioder(saksbehandler.beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode(), testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold());
 
-    }
-    
-    public void verifiserPerioder(List<BeregningsgrunnlagPeriodeDto> perioder, List<Arbeidsforhold> arbeidsforholdListe) {
-        for(BeregningsgrunnlagPeriodeDto periode : perioder) {
-            verifiserBeregningsgrunnlagPrStatusOgAndel(periode.getBeregningsgrunnlagPrStatusOgAndel(), arbeidsforholdListe);
-        }
-    }
-    
-    public void verifiserBeregningsgrunnlagPrStatusOgAndel(List<BeregningsgrunnlagPrStatusOgAndelDto> grunnlagListe, List<Arbeidsforhold> arbeidsforholdListe) {
-        for (BeregningsgrunnlagPrStatusOgAndelDto grunnlag : grunnlagListe) {
-            
-            String orgNr = grunnlag.getOrgNummer();
-            
-            //Søk frem arbeidsforhold fra testmodellen
-            Arbeidsforhold arbeidsforhold = null;
-            for (Arbeidsforhold item : arbeidsforholdListe) {
-                if(item.getArbeidsgiverOrgnr().equals(orgNr)) {
-                    arbeidsforhold = item;
-                }
-            }
-            
-            verifiser(arbeidsforhold != null, "Fant ikke arbeidsforhold i testmodellen: " + orgNr);
-            
-            verifiserAktivitetsAvtaler(grunnlag.getAktivitetsAvtaleDto(), arbeidsforhold);
-        }
-    }
-    
-    
-    public void verifiserAktivitetsAvtaler(List<AktivitetsAvtaleDto> arbeidsavtaler, Arbeidsforhold arbeidsforhold) {
-        for (AktivitetsAvtaleDto arbeidsavtale : arbeidsavtaler) {
-            verifiserLikhet(arbeidsavtale.getArbeidsprosent().intValue(), arbeidsforhold.getArbeidsavtaler().get(0).getStillingsprosent(), "feil arbeidsprosent");
-            verifiserLikhet(arbeidsavtale.getOppstartArbeidsforhold(), arbeidsforhold.getAnsettelsesperiodeFom(), "feil Oppstartsdato");
-        }
     }
 
     @Test
@@ -309,11 +269,11 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        String url = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        System.out.println("Webside: " + url);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
+        saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 444000D, "Sum inntekt");
@@ -321,6 +281,39 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 0D, "Avvik");
-//        verifiserLikhet(saksbehandler.getSjømann(), true);
+        verifiserLikhet(saksbehandler.getSjømann(), true);
+    }
+
+    public void verifiserPerioder(List<BeregningsgrunnlagPeriodeDto> perioder, List<Arbeidsforhold> arbeidsforholdListe) {
+        for(BeregningsgrunnlagPeriodeDto periode : perioder) {
+            verifiserBeregningsgrunnlagPrStatusOgAndel(periode.getBeregningsgrunnlagPrStatusOgAndel(), arbeidsforholdListe);
+        }
+    }
+
+    public void verifiserBeregningsgrunnlagPrStatusOgAndel(List<BeregningsgrunnlagPrStatusOgAndelDto> grunnlagListe, List<Arbeidsforhold> arbeidsforholdListe) {
+        for (BeregningsgrunnlagPrStatusOgAndelDto grunnlag : grunnlagListe) {
+
+            String orgNr = grunnlag.getOrgNummer();
+
+            //Søk frem arbeidsforhold fra testmodellen
+            Arbeidsforhold arbeidsforhold = null;
+            for (Arbeidsforhold item : arbeidsforholdListe) {
+                if(item.getArbeidsgiverOrgnr().equals(orgNr)) {
+                    arbeidsforhold = item;
+                }
+            }
+
+            verifiser(arbeidsforhold != null, "Fant ikke arbeidsforhold i testmodellen: " + orgNr);
+
+            verifiserAktivitetsAvtaler(grunnlag.getAktivitetsAvtaleDto(), arbeidsforhold);
+        }
+    }
+
+
+    public void verifiserAktivitetsAvtaler(List<AktivitetsAvtaleDto> arbeidsavtaler, Arbeidsforhold arbeidsforhold) {
+        for (AktivitetsAvtaleDto arbeidsavtale : arbeidsavtaler) {
+            verifiserLikhet(arbeidsavtale.getArbeidsprosent().intValue(), arbeidsforhold.getArbeidsavtaler().get(0).getStillingsprosent(), "feil arbeidsprosent");
+            verifiserLikhet(arbeidsavtale.getOppstartArbeidsforhold(), arbeidsforhold.getAnsettelsesperiodeFom(), "feil Oppstartsdato");
+        }
     }
 }
