@@ -425,7 +425,6 @@ public class Fodsel extends ForeldrepengerTestBase {
 
     }
 
-    @Disabled
     @Test
     public void morSøkerFødselMedEttArbeidsforhold_papirsøknad() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");

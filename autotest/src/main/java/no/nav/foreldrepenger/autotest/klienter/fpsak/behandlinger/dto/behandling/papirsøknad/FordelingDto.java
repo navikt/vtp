@@ -6,8 +6,4 @@ import java.util.List;
 public class FordelingDto {
 
     public List<PermisjonPeriodeDto> permisjonsPerioder = new ArrayList<>();
-
-    public boolean sokerHarAleneomsorg = false;
-
-    public boolean denAndreForelderenHarRettPaForeldrepenger = true;
 }

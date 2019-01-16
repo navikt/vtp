@@ -7,6 +7,7 @@ import java.util.List;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftelseKode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.AnnenForelderDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.DekningsgradDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.EgenVirksomhetDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.FordelingDto;
@@ -39,6 +40,10 @@ public class PapirSoknadForeldrepengerBekreftelse extends AksjonspunktBekreftels
     protected FordelingDto tidsromPermisjon = new FordelingDto();
 
     protected FrilansDto frilans = new FrilansDto();
+
+    protected AnnenForelderDto annenForelder = new AnnenForelderDto();
+
+    protected boolean annenForelderInformert = true;
 
     public PapirSoknadForeldrepengerBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
