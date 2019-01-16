@@ -21,5 +21,5 @@ wget "http://maven.adeo.no/nexus/service/local/repositories/m2internal/content/n
 echo "Henter okonomi..."
 wget "http://maven.adeo.no/nexus/service/local/repositories/m2internal/content/no/nav/vedtak/felles/integrasjon/okonomistotte-jms/$oversion/okonomistotte-jms-$oversion-tests.jar" -O okonomi.jar
 
-echo "Henter jms"
+echo "Henter felles-integrasjon-jms"
 wget "http://maven.adeo.no/nexus/service/local/repositories/m2internal/content/no/nav/vedtak/felles/integrasjon/felles-integrasjon-jms/$jmsversion/felles-integrasjon-jms-$jmsversion-tests.jar" -O felles-integrasjon-jms.jar
