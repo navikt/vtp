@@ -238,7 +238,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 2136600D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 1044000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 104.6D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 104.7D, "Avvik");
         verifiserPerioder(saksbehandler.beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode(), testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold());
 
     }
@@ -284,6 +284,49 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getSjømann(), true);
     }
 
+    @Test
+    public void FlereATFLiSammeVirksomhet() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("113");
+        int inntektsmeldingMånedsbeløpNr1 = 15000;
+        int inntektsmeldingMånedsbeløpNr2 = 40000;
+        BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
+        LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        String Tema = "FOR";
+        String saksnummer = fordel.opprettSak(testscenario, Tema);
+
+
+        InntektsmeldingBuilder inntektsmeldingsBuilder1 = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløpNr1, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 6));
+
+        InntektsmeldingBuilder inntektsmeldingsBuilder2 = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløpNr2, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 6));
+
+        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder1.createInntektesmeldingXML());
+        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder2.createInntektesmeldingXML());
+        System.out.println("Saksnummer: " + saksnummer);
+
+        fordel.journalførInnektsmelding(inntektsmeldingsBuilder1, testscenario, Long.parseLong(saksnummer));
+        fordel.journalførInnektsmelding(inntektsmeldingsBuilder2, testscenario, Long.parseLong(saksnummer));
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+
+        verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
+
+        verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
+        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 2160000D, "Sum inntekt");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 2160000D, "Beregnet årsinntekt inkl naturalytelse");
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 2100000D, "Sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 2.9D, "Avvik");
+    }
+
+
     public void verifiserPerioder(List<BeregningsgrunnlagPeriodeDto> perioder, List<Arbeidsforhold> arbeidsforholdListe) {
         for(BeregningsgrunnlagPeriodeDto periode : perioder) {
             verifiserBeregningsgrunnlagPrStatusOgAndel(periode.getBeregningsgrunnlagPrStatusOgAndel(), arbeidsforholdListe);
@@ -316,4 +359,11 @@ public class VerdikjedeTest extends SpberegningTestBase {
             verifiserLikhet(arbeidsavtale.getOppstartArbeidsforhold(), arbeidsforhold.getAnsettelsesperiodeFom(), "feil Oppstartsdato");
         }
     }
+
+//    Mangler test
+//    OMS Motorvei
+//    FOS
+//    SYK/FOR - AT/FL
+//
+
 }
