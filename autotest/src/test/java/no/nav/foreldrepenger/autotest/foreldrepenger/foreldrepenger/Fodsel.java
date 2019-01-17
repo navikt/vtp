@@ -8,7 +8,9 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -61,7 +63,6 @@ public class Fodsel extends ForeldrepengerTestBase {
     @DisplayName("Mor fødsel med arbeidsforhold og frilans. Vurderer opptjening og beregning. Finner avvik")
     @Description("Mor søker fødsel med ett arbeidsforhold og frilans. Vurder opptjening. Vurder fakta om beregning. Avvik i beregning")
     public void morSøkerFødselMedEttArbeidsforholdOgFrilans_VurderOpptjening_VurderFaktaOmBeregning_AvvikIBeregning() throws Exception {
-
         TestscenarioDto testscenario = opprettScenario("59");
 
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -80,6 +81,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
                 orgNr, Optional.empty(), Optional.of(refusjon));
+        
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
@@ -370,6 +372,8 @@ public class Fodsel extends ForeldrepengerTestBase {
     @Test
     public void farSøkerFødselMedEttArbeidsforhold() throws Exception {
 
+        Timing timing = new Timing();
+        
         TestscenarioDto testscenario = opprettScenario("60");
 
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -379,29 +383,51 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunFar(søkerAktørIdent, fødselsdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        
+        timing.startTiming();
+        
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        
+        timing.endInterval("Send inn søknad");
+        
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
+        
+        timing.startTiming();
+        
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+        
+        timing.endInterval("Send inn inntektsmelding");
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        
+        timing.endInterval("behandlingsklar er klar");
 
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).
                 godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2),
                         saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.class);
+        
+        timing.endInterval("Avklart AvklarFaktaUttakBekreftelse");
 
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
         verifiserLikhet(perioder.size(), 1);
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+        
+        timing.endInterval("Avklart ForesloVedtakBekreftelse");
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK));
+        
+        timing.endInterval("Avklart AVKLAR_FAKTA_UTTAK");
+        
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        
+        timing.endInterval("Økonomi godkjent");
         
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
@@ -745,5 +771,22 @@ public class Fodsel extends ForeldrepengerTestBase {
                 assertThat(andel.getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(100));
             }
         }
+    }
+    
+    public class Timing {
+        
+        LocalDateTime intervalStart;
+        
+        public void startTiming() {
+            intervalStart = LocalDateTime.now();
+        }
+        
+        public void endInterval (String intervalAction){
+            LocalDateTime intervalEnd = LocalDateTime.now();
+            Duration duration = Duration.between(intervalStart, intervalEnd);
+            System.out.println("Ferdig " + intervalAction + ". Tok " + duration.toSeconds() + " sekunder - " + intervalEnd);
+            intervalStart = intervalEnd;
+        }
+        
     }
 }

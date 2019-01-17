@@ -43,6 +43,17 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterD
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
+import org.apache.http.HttpResponse;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Saksbehandler extends Aktoer{
 
     
@@ -161,6 +172,8 @@ public class Saksbehandler extends Aktoer{
 
     @Step("Velger behandling {behandling}")
     public void velgBehandling(Behandling behandling) throws Exception {
+        LocalDateTime start = LocalDateTime.now();
+        
         dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
         
@@ -190,6 +203,8 @@ public class Saksbehandler extends Aktoer{
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
         }
+        
+        System.out.println("Refresh tok " + Duration.between(start, LocalDateTime.now()).toSeconds() + " sekunder");
     }
     
     private void ventPåStatus(Behandling behandling) throws Exception {
@@ -465,12 +480,20 @@ public class Saksbehandler extends Aktoer{
     
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
         ikkeVentPåStatus = true;
+        System.out.println("Bekrefter aksjonspunkt - " + LocalDateTime.now());
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        System.out.println("bekreftet aksjonspunkt - " + LocalDateTime.now());
         ventPåFerdigstiltØkonomioppdrag();
         ikkeVentPåStatus = false;
         Behandling behandling = valgtBehandling;
+        System.out.println("Henter Fagsak - " + LocalDateTime.now());
         hentFagsak(valgtFagsak.saksnummer);
-        velgBehandling(behandling);
+        System.out.println("Hentet Fagsak - " + LocalDateTime.now());
+        System.out.println("Velger behandling - " + LocalDateTime.now());
+        if(valgtBehandling == null) {
+            velgBehandling(behandling);
+        }
+        System.out.println("Valget behandling - " + LocalDateTime.now());
     }
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {
@@ -490,8 +513,10 @@ public class Saksbehandler extends Aktoer{
             if(prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
                && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
                && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
-                prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR")); //TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
+                prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));// TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
+                System.out.println("Ventert på avsluttet - " + LocalDateTime.now());
                 ventTilBehandlingsstatus("AVSLU");
+                System.out.println("Ventet på avsluttet - " + LocalDateTime.now());
                 return true;
             }
         }
