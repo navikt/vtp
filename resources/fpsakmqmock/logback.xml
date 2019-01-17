@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}, %X{prosess}] - %replace(%msg){'[\r\n]+', '\\n'}{''}%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- Application log -->
+    <appender name="APP_FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${APP_LOG_HOME}/fpsak.log</File>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}, %X{prosess}] - %replace(%msg){'[\r\n]+', '\\n'}%n</pattern>
+            <!--
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %class %mdc %m\n</pattern>
+            -->
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover, (%d gir filnavn med default pattern yyyy-MM-dd) -->
+            <fileNamePattern>${APP_LOG_HOME}/fpsak.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- Keep 30 days of history: -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Sporbarhetslog -->
+    <appender name="SPORING_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${APP_LOG_HOME}/fpsak_sporing.log</File>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{MMM dd yyyy HH:mm:ss.SSS} [%-5level] consumerId=%X{consumerId} callId=%X{callId} userId=%X{userId} %replace(%msg){'[\r\n]+', '\\n'}%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover, (%d gir filnavn med default pattern yyyy-MM-dd) -->
+            <fileNamePattern>${APP_LOG_HOME}/fpsak_sporing.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- Keep 30 days of history: -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Sikkerhetslogg -->
+    <appender name="SIKKERHET_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${APP_LOG_HOME}/fpsak_sikkerhet.log</File>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}] - %replace(%msg){'[\r\n]+', '\\n'}%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <prudent>false</prudent>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rollover, (%d gir filnavn med default pattern yyyy-MM-dd) -->
+            <fileNamePattern>${APP_LOG_HOME}/fpsak_sikkerhet.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- Keep 30 days of history: -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="no.nav" level="${log.level.no.nav:-INFO}" />
+
+    <!-- skru paa for aa logge all sql statements med parametere -->
+    <logger name="jdbc.sql" level="${log.level.jdbc.sql:-ERROR}" />
+    <logger name="org.hibernate.SQL" level="${log.level.org.hibernate.SQL:-INFO}" />
+    <logger name="com.zaxxer.hikari" level="${log.level.com.zaxxer.hikari:-WARN}" />
+    <logger name="org.hibernate.type" level="${log.level.org.hibernate.type:-WARN}" />
+    <logger name="org.hibernate" level="${log.level.org.hibernate:-WARN}" />
+    <logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-WARN}" />
+    <logger name="org.flywaydb" level="${log.level.org.flywaydb:-INFO}" />
+    <logger name="org.apache" level="${log.level.org.apache:-ERROR}" />
+    <!-- ESSV: genererer en del støy for webservice -->
+    <logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
+    <logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
+
+    <logger name="no.nav.modig" level="${log.level.no.nav.modig:-WARN}" />
+    <!-- denne logger passord på INFO nivå!-->
+    <logger name="no.nav.modig.core.test.PropertySetter" level="${log.level.no.nav.modig.core.test.PropertySetter:-WARN}" />
+
+    <logger name="sporing" level="INFO" additivity="false">
+        <appender-ref ref="SPORING_LOG" />
+    </logger>
+
+    <logger name="sikkerhet" level="INFO" additivity="false">
+        <appender-ref ref="SIKKERHET_LOG" />
+    </logger>
+
+    <root level="${log.level.root:-INFO}">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="APP_FILE_LOG" />
+    </root>
+</configuration>
