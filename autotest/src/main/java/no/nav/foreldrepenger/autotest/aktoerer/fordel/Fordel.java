@@ -74,7 +74,7 @@ public class Fordel extends Aktoer {
             xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         }
 
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, fnr, dokumenttypeId);
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml == null ? "" : xml, fnr, dokumenttypeId);
         if (saksnummer != null && saksnummer.longValue() != 0L) {
             journalpostModell.setSakId(saksnummer.toString());
         }
