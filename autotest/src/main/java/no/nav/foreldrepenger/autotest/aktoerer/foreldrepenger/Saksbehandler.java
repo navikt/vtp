@@ -25,6 +25,18 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Familiehendelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.KontrollerFaktaData;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Personopplysning;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Soknad;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Verge;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsgrunnlag;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatMedUttaksplan;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.medlem.Medlem;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.opptjening.Opptjening;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPerioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.dto.BestillBrev;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.dokument.DokumentKlient;
@@ -40,8 +52,10 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeL
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
+import no.nav.foreldrepenger.autotest.util.deferred.Deffered;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 
 import org.apache.http.HttpResponse;
 
@@ -52,6 +66,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Saksbehandler extends Aktoer{
@@ -153,8 +169,6 @@ public class Saksbehandler extends Aktoer{
         if(behandlinger.size() == 1) { //ellers må en velge explisit
             velgBehandling(behandlinger.get(0));
         }
-        
-        annenPartBehandling = behandlingerKlient.annenPartBehandling(fagsak.saksnummer);
     }
     
     /*
@@ -174,37 +188,92 @@ public class Saksbehandler extends Aktoer{
     public void velgBehandling(Behandling behandling) throws Exception {
         LocalDateTime start = LocalDateTime.now();
         
-        dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
-        historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
+        Deffered<List<HistorikkInnslag>> dHistorikkInnslag = new Deffered<>(() -> {
+            return historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
+        });
+        Deffered<List<DokumentListeEnhet>> dDokumentListeEnhet = new Deffered<>(() -> {
+            return dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
+        });
+        Deffered<Behandling> dAnnenPartBehandling = new Deffered<>(() -> {
+            return behandlingerKlient.annenPartBehandling(valgtFagsak.saksnummer);
+        });
         
         ventPåStatus(behandling);
-        
         valgtBehandling = behandlingerKlient.getBehandling(behandling.id);
-        valgtBehandling.aksjonspunkter = behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
-
+        populateBehandling(valgtBehandling);
+        
+        dokumenter = dDokumentListeEnhet.get();
+        historikkInnslag = dHistorikkInnslag.get();
+        annenPartBehandling = dAnnenPartBehandling.get();
+        
+        System.out.println("Refresh tok " + Duration.between(start, LocalDateTime.now()).toSeconds() + " sekunder");
+    }
+    
+    private void populateBehandling(Behandling behandling) throws Exception {
+        Deffered<List<Aksjonspunkt>> dAksonspunkter = new Deffered<>(() -> {
+            return behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
+        });
+        
         if (behandling.type.navn.equals("Klage")) {
             valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
         } else {
             BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
-            valgtBehandling.personopplysning = behandlingerKlient.behandlingPersonopplysninger(request);
-            valgtBehandling.verge = behandlingerKlient.behandlingVerge(request);
-            valgtBehandling.beregningsgrunnlag = behandlingerKlient.behandlingBeregningsgrunnlag(request);
-            valgtBehandling.beregningResultatEngangsstonad = behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
-            valgtBehandling.beregningResultatForeldrepenger = behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
-            valgtBehandling.soknad = behandlingerKlient.behandlingSøknad(request);
-            valgtBehandling.familiehendelse = behandlingerKlient.behandlingFamiliehendelse(request);
-            valgtBehandling.opptjening = behandlingerKlient.behandlingOpptjening(request);
-            valgtBehandling.inntektArbeidYtelse = behandlingerKlient.behandlingInntektArbeidYtelse(request);
-            valgtBehandling.kontrollerFaktaData = behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
-            valgtBehandling.medlem = behandlingerKlient.behandlingMedlemskap(request);
-            valgtBehandling.uttakResultatPerioder = behandlingerKlient.behandlingUttakResultatPerioder(request);
+            
+            Deffered<Personopplysning> dPersonopplysninger = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingPersonopplysninger(request);
+            });
+            Deffered<Verge> dVerge = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingVerge(request);
+            });
+            Deffered<Beregningsgrunnlag> dBeregningsgrunnlag = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingBeregningsgrunnlag(request);
+            });
+            Deffered<Beregningsresultat> dBeregningsresultat = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
+            });
+            Deffered<BeregningsresultatMedUttaksplan> dBeregningsresultatMedUttaksplan = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
+            });
+            Deffered<Soknad> dSoknad = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingSøknad(request);
+            });
+            Deffered<Familiehendelse> dFamiliehendelse = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingFamiliehendelse(request);
+            });
+            Deffered<Opptjening> dOpptjening = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingOpptjening(request);
+            });
+            Deffered<InntektArbeidYtelse> dInntektArbeidYtelse = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingInntektArbeidYtelse(request);
+            });
+            Deffered<KontrollerFaktaData> dKontrollerFaktaData = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
+            });
+            Deffered<Medlem> dMedlem = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingMedlemskap(request);
+            });
+            Deffered<UttakResultatPerioder> dUttakResultatPerioder = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingUttakResultatPerioder(request);
+            });
+            
+            valgtBehandling.personopplysning = dPersonopplysninger.get();
+            valgtBehandling.verge = dVerge.get();
+            valgtBehandling.beregningsgrunnlag = dBeregningsgrunnlag.get();
+            valgtBehandling.beregningResultatEngangsstonad = dBeregningsresultat.get();
+            valgtBehandling.beregningResultatForeldrepenger = dBeregningsresultatMedUttaksplan.get();
+            valgtBehandling.soknad = dSoknad.get();
+            valgtBehandling.familiehendelse = dFamiliehendelse.get();
+            valgtBehandling.opptjening = dOpptjening.get();
+            valgtBehandling.inntektArbeidYtelse = dInntektArbeidYtelse.get();
+            valgtBehandling.kontrollerFaktaData = dKontrollerFaktaData.get();
+            valgtBehandling.medlem = dMedlem.get();
+            valgtBehandling.uttakResultatPerioder = dUttakResultatPerioder.get();
         }
         
+        valgtBehandling.aksjonspunkter = dAksonspunkter.get();
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
         }
-        
-        System.out.println("Refresh tok " + Duration.between(start, LocalDateTime.now()).toSeconds() + " sekunder");
     }
     
     private void ventPåStatus(Behandling behandling) throws Exception {
@@ -480,20 +549,14 @@ public class Saksbehandler extends Aktoer{
     
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
         ikkeVentPåStatus = true;
-        System.out.println("Bekrefter aksjonspunkt - " + LocalDateTime.now());
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        System.out.println("bekreftet aksjonspunkt - " + LocalDateTime.now());
         ventPåFerdigstiltØkonomioppdrag();
         ikkeVentPåStatus = false;
         Behandling behandling = valgtBehandling;
-        System.out.println("Henter Fagsak - " + LocalDateTime.now());
         hentFagsak(valgtFagsak.saksnummer);
-        System.out.println("Hentet Fagsak - " + LocalDateTime.now());
-        System.out.println("Velger behandling - " + LocalDateTime.now());
         if(valgtBehandling == null) {
             velgBehandling(behandling);
         }
-        System.out.println("Valget behandling - " + LocalDateTime.now());
     }
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {
