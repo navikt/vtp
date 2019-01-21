@@ -1,5 +1,13 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -13,17 +21,14 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Tag("smoke")
 @Tag("foreldrepenger")
 public class Klage extends ForeldrepengerTestBase {
 
     @Test
+    @DisplayName("Klage med Medhold Ugunst NFP")
+    @Description("Sender inn klage på førstegangsbehandling. Bekrefter medhold i Ugunst. Beslutter og avslutter.")
     public void klageMedholUgunstNFP() throws Exception {
         // opprette førstegangsbehandling til vedtak
         TestscenarioDto testscenario = opprettScenario("50");
