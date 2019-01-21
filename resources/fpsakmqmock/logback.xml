@@ -8,7 +8,7 @@
             <pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}, %X{prosess}] - %replace(%msg){'[\r\n]+', '\\n'}{''}%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>DEBUG</level>
         </filter>
     </appender>
 
@@ -23,7 +23,7 @@
             -->
         </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>DEBUG</level>
         </filter>
         <prudent>false</prudent>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -99,7 +99,7 @@
         <appender-ref ref="SIKKERHET_LOG" />
     </logger>
 
-    <root level="${log.level.root:-INFO}">
+    <root level="${log.level.root:-DEBUG}">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="APP_FILE_LOG" />
     </root>
