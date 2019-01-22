@@ -159,7 +159,7 @@ public class Saksbehandler extends Aktoer{
         }
     }
 
-    @Step("Velger behandling {behandlingstype}")
+    @Step("Velger behandling {behandling}")
     public void velgBehandling(Behandling behandling) throws Exception {
         dokumenter = dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         historikkInnslag = historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
