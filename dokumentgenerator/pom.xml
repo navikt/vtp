@@ -16,7 +16,7 @@
 
     <properties>
         <vl-kontrakt-soeknad.version>1.0_20181102085631_678475a</vl-kontrakt-soeknad.version>
-        <vl-kontrakt-inntektsmelding.version>2.4_20180925124533_8df3d6a</vl-kontrakt-inntektsmelding.version>
+        <vl-kontrakt-inntektsmelding.version>2.4_20190107145722_7dd4e25</vl-kontrakt-inntektsmelding.version>
     </properties>
 
     <dependencies>

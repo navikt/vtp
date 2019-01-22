@@ -10,11 +10,11 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.Eksem
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto.InntektsmeldingDTO;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.EndringIRefusjon;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.GraderingIForeldrepenger;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.NaturalytelseDetaljer;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.Periode;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.UtsettelseAvForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.EndringIRefusjon;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.GraderingIForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.NaturalytelseDetaljer;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.UtsettelseAvForeldrepenger;
 
 
 public class InntektsmeldingErketype {
