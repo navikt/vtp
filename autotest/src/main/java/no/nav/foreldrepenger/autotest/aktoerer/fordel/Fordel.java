@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -186,9 +187,19 @@ public class Fordel extends Aktoer {
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, aktørId, fnr, saksnummer);
         }
+        final long saksnummerF = saksnummer;
+        Vent.til(() -> {
+            return antallInntektsmeldingerMottatt(saksnummerF) >= inntektsmeldinger.size();
+        }, 10, "har ikke mottat alle inntektsmeldinger");
         return saksnummer;
     }
 
+    private int antallInntektsmeldingerMottatt(long saksnummer) throws IOException {
+        List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummer);
+        int antall = historikk.stream().filter(h -> h.getTekst().equals("Vedlegg mottatt")).collect(Collectors.toList()).size();
+        return antall;
+    }
+    
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto testscenario, Long saksnummer) throws Exception {
         return sendInnInntektsmeldinger(inntektsmeldinger, testscenario.getPersonopplysninger().getSøkerAktørIdent(), testscenario.getPersonopplysninger().getSøkerIdent(), saksnummer);
     }
