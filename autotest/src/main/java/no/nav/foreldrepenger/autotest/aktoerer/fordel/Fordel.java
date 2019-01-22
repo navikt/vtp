@@ -79,7 +79,7 @@ public class Fordel extends Aktoer {
 
         String behandlingstemaOffisiellKode = ControllerHelper.translateSøknadDokumenttypeToBehandlingstema(dokumenttypeId).getKode();
         String dokumentTypeIdOffisiellKode = dokumenttypeId.getKode();
-
+        debugSenderInnDokument("Foreldrepengesøknad", xml);
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
@@ -145,6 +145,7 @@ public class Fordel extends Aktoer {
     @Step("Sender inn inntektsmelding")
     public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, String aktørId, String fnr, Long gammeltSaksnummer) throws Exception {
         String xml = inntektsmelding.createInntektesmeldingXML();
+        debugSenderInnDokument("Inntektsmelding", xml);
         String behandlingstemaOffisiellKode = "ab0047";
         String dokumentKategori = Dokumentkategori.IKKE_TOLKBART_SKJEMA.getKode();
         String dokumentTypeIdOffisiellKode = DokumenttypeId.INNTEKTSMELDING.getKode();
@@ -264,5 +265,10 @@ public class Fordel extends Aktoer {
         fordelKlient.journalpost(journalpostMottak);
 
         return saksnummer;
+    }
+
+    @Step("Sender inn dokument {} med innhold: {xml}")
+    public void debugSenderInnDokument(String type, String xml){
+
     }
 }
