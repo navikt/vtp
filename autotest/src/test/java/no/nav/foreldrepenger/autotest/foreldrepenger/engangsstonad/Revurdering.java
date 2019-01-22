@@ -123,7 +123,7 @@ public class Revurdering extends EngangsstonadTestBase{
         beslutter.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtak();
         
         beslutter.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingsresultat");

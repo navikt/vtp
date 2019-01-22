@@ -617,6 +617,13 @@ public class Saksbehandler extends Aktoer{
         return null;
     }
     
+    public void fattVedtak() throws Exception {
+        ikkeVentPåStatus = true;
+        bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        ventTilBehandlingsstatus("AVSLU");
+        ikkeVentPåStatus = false;
+    }
+    
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
         Behandling behandling = valgtBehandling;
         ikkeVentPåStatus = true;
@@ -627,12 +634,13 @@ public class Saksbehandler extends Aktoer{
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {
        Vent.til(() ->  {
-           return ferdigstilØkonomioppdragOgVent();
+           return ferdigstilØkonomioppdrag();
        }, 10, "Fant ingen økonomioppdag å godkjenne");
+       ventTilBehandlingsstatus("AVSLU");
     }
 
     @Step("Godkjenner økonomioppdrag")
-    public boolean ferdigstilØkonomioppdragOgVent() throws Exception {
+    private boolean ferdigstilØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
         ventTilBehandlingsstatus("AVSLU");
@@ -643,7 +651,6 @@ public class Saksbehandler extends Aktoer{
                && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
                && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
                 prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));// TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
-                ventTilBehandlingsstatus("AVSLU");
                 return true;
             }
         }
