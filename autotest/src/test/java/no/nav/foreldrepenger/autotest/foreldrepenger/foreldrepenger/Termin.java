@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Termin extends ForeldrepengerTestBase{
 
     @Test
+    @DisplayName("Mor søker med ett arbeidsforhold")
     public void MorSøkerMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         LocalDate termindato = LocalDate.now().plusWeeks(3);
@@ -31,11 +33,6 @@ public class Termin extends ForeldrepengerTestBase{
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.ikkeVentPåStatus = true;
-        saksbehandler.hentFagsak(saksnummer);
-        debugListUtBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
-        saksbehandler.ikkeVentPåStatus = false;
         
         saksbehandler.hentFagsak(saksnummer);
         debugListUtBehandling(saksbehandler.valgtBehandling);
@@ -55,17 +52,15 @@ public class Termin extends ForeldrepengerTestBase{
         
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent(), termindato);
         fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER, saksnummer);
-        
+
+
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.ikkeVentPåStatus = true;
+
+        //TODO: Flyttet til ventende sjekk - OK?
+        saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.hentFagsak(saksnummer);
         debugListUtBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
-        saksbehandler.ikkeVentPåStatus = false;
-        
-        saksbehandler.hentFagsak(saksnummer);
-        debugListUtBehandling(saksbehandler.valgtBehandling);
-        verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
+        //verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
     }
     
