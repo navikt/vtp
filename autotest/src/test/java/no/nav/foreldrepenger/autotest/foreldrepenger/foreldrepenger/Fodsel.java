@@ -45,6 +45,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.PermisjonPeriodeDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriodeAktivitet;
+import no.nav.foreldrepenger.autotest.util.timing.Timing;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -318,9 +319,12 @@ public class Fodsel extends ForeldrepengerTestBase {
 
     @Test
     public void morSøkerFødselMedEttArbeidsforhold() throws Exception {
+        Timing timing = new Timing();
+        timing.startTiming();
 
         TestscenarioDto testscenario = opprettScenario("49");
-
+        timing.endInterval("Testscenario");
+        
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
@@ -328,10 +332,13 @@ public class Fodsel extends ForeldrepengerTestBase {
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        timing.endInterval("søknad");
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+        timing.endInterval("inntektsmeldinger");
 
         hackForÅKommeForbiØkonomi(saksnummer);
+        timing.endInterval("hackForÅKommeForbiØkonomi");
 
         debugListUtBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -339,12 +346,14 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
         verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
         verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+        timing.endInterval("verifiser");
 
     }
 
     @Test
     public void morSøkerFødselMedToArbeidsforhold() throws Exception {
-
+        Timing timing = new Timing();
+        
         TestscenarioDto testscenario = opprettScenario("56");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -353,19 +362,28 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        
+        timing.startTiming();
+        
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        timing.endInterval("Send inn søknad");
+        
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+        timing.endInterval("Send inn inntektsmeldinger");
 
         hackForÅKommeForbiØkonomi(saksnummer);
+        timing.endInterval("Økoniomioppdrag");
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        timing.endInterval("hent sak");
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
         verifiserUttak(2, saksbehandler.valgtBehandling.hentUttaksperioder());
         verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+        timing.endInterval("Verifiser");
 
     }
 
@@ -391,8 +409,6 @@ public class Fodsel extends ForeldrepengerTestBase {
         timing.endInterval("Send inn søknad");
         
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
-        
-        timing.startTiming();
         
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         
@@ -771,22 +787,5 @@ public class Fodsel extends ForeldrepengerTestBase {
                 assertThat(andel.getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(100));
             }
         }
-    }
-    
-    public class Timing {
-        
-        LocalDateTime intervalStart;
-        
-        public void startTiming() {
-            intervalStart = LocalDateTime.now();
-        }
-        
-        public void endInterval (String intervalAction){
-            LocalDateTime intervalEnd = LocalDateTime.now();
-            Duration duration = Duration.between(intervalStart, intervalEnd);
-            System.out.println("Ferdig " + intervalAction + ". Tok " + duration.toSeconds() + " sekunder - " + intervalEnd);
-            intervalStart = intervalEnd;
-        }
-        
     }
 }

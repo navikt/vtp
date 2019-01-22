@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +20,12 @@ public class ForeldrepengerTestBase extends FpsakTestBase {
     protected void hackForÅKommeForbiØkonomi(long saksnummer) throws Exception {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
-        saksbehandler.hentFagsak(saksnummer);
+        if(null == saksbehandler.valgtFagsak) {
+            saksbehandler.hentFagsak(saksnummer);
+        }
+        if(null == saksbehandler.valgtBehandling) {
+            saksbehandler.velgBehandling(saksbehandler.behandlinger.get(0));
+        }
         saksbehandler.ventOgGodkjennØkonomioppdrag();
         saksbehandler.ikkeVentPåStatus = false;
     }
