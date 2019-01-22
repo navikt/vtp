@@ -23,9 +23,9 @@ import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedus
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.NaturalytelseDetaljer;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.OpphoerAvNaturalytelseListe;
-import no.seres.xsd.nav.inntektsmelding_m._20180924.Periode;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.NaturalytelseDetaljer;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.OpphoerAvNaturalytelseListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
 
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
