@@ -621,18 +621,18 @@ public class Saksbehandler extends Aktoer{
         Behandling behandling = valgtBehandling;
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        ventPåFerdigstiltØkonomioppdrag();
+        ventOgGodkjennØkonomioppdrag();
         ikkeVentPåStatus = false;
     }
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {
        Vent.til(() ->  {
-           return ventPåFerdigstiltØkonomioppdrag();
+           return ferdigstilØkonomioppdragOgVent();
        }, 10, "Fant ingen økonomioppdag å godkjenne");
     }
 
     @Step("Godkjenner økonomioppdrag")
-    public boolean ventPåFerdigstiltØkonomioppdrag() throws Exception {
+    public boolean ferdigstilØkonomioppdragOgVent() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
         ventTilBehandlingsstatus("AVSLU");
