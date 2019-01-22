@@ -98,6 +98,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("blabla");
+        debugListUtBehandling(klagebehandler.valgtBehandling);
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
                 .bekreftStadfestet()
@@ -149,6 +150,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("Begrunnelse NFP.");
+        debugListUtBehandling(klagebehandler.valgtBehandling);
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
                 .bekreftStadfestet()

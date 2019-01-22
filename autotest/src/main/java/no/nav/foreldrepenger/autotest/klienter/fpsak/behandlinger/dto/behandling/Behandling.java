@@ -85,21 +85,21 @@ public class Behandling {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Behandlingsid: %s\n",this.id));
-        sb.append(String.format("Behandlingsstatus: %s\n", this.status.navn));
+        sb.append(String.format("{Behandlingsid: %s}\n",this.id));
+        sb.append(String.format("{Behandlingsstatus: %s}\n", this.status.navn));
         if(this.behandlingsresultat != null && this.behandlingsresultat.avslagsarsak != null) {
-            sb.append(String.format("Årsak avslag: %s\n", this.behandlingsresultat.avslagsarsak.navn));
+            sb.append(String.format("{Årsak avslag: %s}\n", this.behandlingsresultat.avslagsarsak.navn));
         }
         sb.append("Aksjonspunkter:\n");
         if(aksjonspunkter != null) {
             for (Aksjonspunkt aksjonspunkt : aksjonspunkter) {
-                sb.append(String.format("\t%s : %s", aksjonspunkt.definisjon.navn, aksjonspunkt.status.navn));
+                sb.append(String.format("{\t%s : %s}\n", aksjonspunkt.definisjon.navn, aksjonspunkt.status.navn));
             }
         }
         sb.append("Vilkår:\n");
         if(vilkar != null) {
             for (Vilkar vilkar : vilkar) {
-                sb.append(String.format("\t%s :  %s", vilkar.vilkarType.navn, vilkar.vilkarStatus.navn));
+                sb.append(String.format("\t{%s :  %s}\n", vilkar.vilkarType.navn, vilkar.vilkarStatus.navn));
             }
         }
         return sb.toString();
