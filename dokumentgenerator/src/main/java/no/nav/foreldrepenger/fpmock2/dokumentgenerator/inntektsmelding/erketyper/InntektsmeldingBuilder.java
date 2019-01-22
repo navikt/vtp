@@ -627,7 +627,7 @@ public class InntektsmeldingBuilder {
         return delvisFravaersListe;
     }
 
-    public Periode createFravaersPeriode(LocalDate fom, LocalDate tom) {
+    public Periode createInntektsmeldingPeriode(LocalDate fom, LocalDate tom) {
         ObjectFactory objectFactory = new ObjectFactory();
         Periode periode = new Periode();
         periode.setFom(objectFactory.createPeriodeFom(DateUtil.convertToXMLGregorianCalendar(fom)));
@@ -662,6 +662,16 @@ public class InntektsmeldingBuilder {
         return omsorgspenger;
     }
 
-    //todo lag pleiepenger etter delvisfravær og fravær i omsorg
+    public PleiepengerPeriodeListe createPleiepenger(List<Periode> perioder){
+        ObjectFactory objectFactory = new ObjectFactory();
+        PleiepengerPeriodeListe pleiepengerPeriodeListe = new PleiepengerPeriodeListe();
+        Periode periode = new Periode();
+        perioder.forEach(pp -> {
+            pleiepengerPeriodeListe.getPeriode().add(pp);
+
+        });
+
+        return pleiepengerPeriodeListe;
+    }
 
 }

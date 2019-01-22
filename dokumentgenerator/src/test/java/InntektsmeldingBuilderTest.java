@@ -3,7 +3,6 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.DelvisFravaer;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.FravaersPeriodeListe;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.Omsorgspenger;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
 import org.junit.Assert;
@@ -54,7 +53,7 @@ public class InntektsmeldingBuilderTest{
         Assert.assertTrue(inntektesmeldingXML2.contains("delvisFravaer"));
         Assert.assertTrue(inntektesmeldingXML2.contains("<timer>10</timer>"));
 
-        Periode fravaersPeriode = inntektsmeldingBuilder.createFravaersPeriode(LocalDate.now().minusWeeks(3), LocalDate.now().minusWeeks(2));
+        Periode fravaersPeriode = inntektsmeldingBuilder.createInntektsmeldingPeriode(LocalDate.now().minusWeeks(3), LocalDate.now().minusWeeks(2));
         List<Periode> fravaersPerioder = new ArrayList<Periode>();
         fravaersPerioder.add(fravaersPeriode);
         omsorgspenger.setFravaersPerioder(inntektsmeldingBuilder.createFravaersPeriodeListeForOmsorgspenger(fravaersPerioder));
@@ -74,8 +73,18 @@ public class InntektsmeldingBuilderTest{
         String inntektesmeldingXML = inntektsmeldingBuilder.createInntektesmeldingXML();
         Assert.assertNotEquals(0, inntektesmeldingXML.length());
 
+        List<Periode> perioder = new ArrayList<>();
 
+        Periode pleiePeriode = inntektsmeldingBuilder.createInntektsmeldingPeriode(LocalDate.now().minusWeeks(3), LocalDate.now().minusWeeks(2));
+        perioder.add(pleiePeriode);
 
+        inntektsmeldingBuilder.setPleiepengerPeriodeListe(
+                inntektsmeldingBuilder.createPleiepenger(perioder)
+        );
+
+        String inntektesmeldingXML1 = inntektsmeldingBuilder.createInntektesmeldingXML();
+
+        Assert.assertTrue(inntektesmeldingXML1.contains("pleiepengerPerioder"));
     }
 
 }
