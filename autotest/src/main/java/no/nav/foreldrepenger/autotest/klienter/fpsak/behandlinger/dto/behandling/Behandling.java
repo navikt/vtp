@@ -1,6 +1,14 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsgrunnlag;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
@@ -10,13 +18,6 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPerioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Behandling {
@@ -80,4 +81,25 @@ public class Behandling {
     public String hentBehandlingsresultat() {
         return behandlingsresultat.type.navn;
     }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Behandlingsid: %s\n",this.id));
+        sb.append(String.format("Behandlingsstatus: %s\n", this.status.navn));
+        if(this.behandlingsresultat != null && this.behandlingsresultat.avslagsarsak != null) {
+            sb.append(String.format("Årsak avslag: %s\n", this.behandlingsresultat.avslagsarsak.navn));
+        }
+        sb.append("Aksjonspunkter:\n");
+        for(Aksjonspunkt aksjonspunkt : aksjonspunkter){
+            sb.append(String.format("\t%s : %s", aksjonspunkt.definisjon.navn, aksjonspunkt.status.navn));
+        }
+        sb.append("Vilkår:\n");
+        for(Vilkar vilkar : vilkar){
+            sb.append(String.format("\t%s :  %s", vilkar.vilkarType.navn, vilkar.vilkarStatus.navn));
+        }
+        return sb.toString();
+    }
+
+
 }

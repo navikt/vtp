@@ -88,6 +88,7 @@ public class Fodsel extends ForeldrepengerTestBase {
                 .godkjennAllOpptjening();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
 
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class)
                 .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.VURDER_MOTTAR_YTELSE)
                 .leggTilMottarYtelse(false, Collections.emptyList());
@@ -109,6 +110,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -244,6 +246,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
 
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
                 .leggTilInntekt(overstyrtInntekt, 1L)
                 .setBegrunnelse("Begrunnelse");
@@ -298,6 +301,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         hackForÅKommeForbiØkonomi(saksnummer);
 
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
@@ -323,6 +327,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         hackForÅKommeForbiØkonomi(saksnummer);
 
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
