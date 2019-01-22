@@ -54,14 +54,11 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTask
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
 import no.nav.foreldrepenger.autotest.util.deferred.Deffered;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
-import no.nav.foreldrepenger.autotest.util.timing.Timing;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 
 import org.apache.http.HttpResponse;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -156,21 +153,15 @@ public class Saksbehandler extends Aktoer{
      * Refresh
      */
     public void refreshBehandling() throws Exception {
-        Timing timing = new Timing();
-        timing.startTiming();
         velgBehandling(valgtBehandling);
-        timing.endInterval("Refresh behandling");
     }
     
     public void refreshFagsak() throws Exception {
-        LocalDateTime start = LocalDateTime.now();
-        //System.out.println("Start refresh - " + start);
         Behandling behandling = valgtBehandling;
         hentFagsak(valgtFagsak.saksnummer);
         if(valgtBehandling == null && behandling != null) {
             velgBehandling(behandling);
         }
-        //System.out.println("refreshFagsak tok: " + Duration.between(start, LocalDateTime.now()).toMillis() + " - " + LocalDateTime.now());
     }
     
     /*
@@ -178,7 +169,6 @@ public class Saksbehandler extends Aktoer{
      */
     @Step("Velger fagsak {fagsak}")
     public void velgFagsak(Fagsak fagsak) throws Exception {
-        //LocalDateTime start = LocalDateTime.now();
         if(fagsak == null) {
             throw new RuntimeException("Kan ikke velge fagsak. fagsak er null");
         }
@@ -190,7 +180,6 @@ public class Saksbehandler extends Aktoer{
         if(behandlinger.size() == 1) { //ellers må en velge explisit
             velgBehandling(behandlinger.get(0));
         }
-        //System.out.println("velg fagsak tok: " + Duration.between(start, LocalDateTime.now()).toMillis());
     }
     
     /*
@@ -208,11 +197,7 @@ public class Saksbehandler extends Aktoer{
 
     @Step("Velger behandling {behandling}")
     public void velgBehandling(Behandling behandling) throws Exception {
-        //Timing timing = new Timing();
-        //timing.startTiming();
-        
         ventPåStatus(behandling);
-        //timing.endInterval("    velgBehandling - ventPåStatus");
         
         Deffered<Behandling> dBehandling = new Deffered<>(() -> {
             return behandlingerKlient.getBehandling(behandling.id);
@@ -230,21 +215,16 @@ public class Saksbehandler extends Aktoer{
         
         valgtBehandling = dBehandling.get();
         populateBehandling(valgtBehandling);
-        //timing.endInterval("    velgBehandling - populateBehandling");
         
         dokumenter = dDokumentListeEnhet.get();
         historikkInnslag = dHistorikkInnslag.get();
         annenPartBehandling = dAnnenPartBehandling.get();
-        //timing.endInterval("    velgBehandling - get");
     }
     
     private void populateBehandling(Behandling behandling) throws Exception {
-        //Timing timing = new Timing();
-        //timing.startTiming();
         Deffered<List<Aksjonspunkt>> dAksonspunkter = new Deffered<>(() -> {
             return behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
         });
-        //timing.endInterval("getBehandlingAksjonspunkt");
         
         if (behandling.type.navn.equals("Klage")) {
             valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
@@ -254,85 +234,59 @@ public class Saksbehandler extends Aktoer{
             Deffered<Personopplysning> dPersonopplysninger = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingPersonopplysninger(request);
             });
-            //timing.endInterval("behandlingPersonopplysninger");
             Deffered<Verge> dVerge = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingVerge(request);
             });
-            //timing.endInterval("behandlingVerge");
             Deffered<Beregningsgrunnlag> dBeregningsgrunnlag = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingBeregningsgrunnlag(request);
             });
-            //timing.endInterval("behandlingBeregningsgrunnlag");
             Deffered<Beregningsresultat> dBeregningsresultat = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
             });
-            //timing.endInterval("behandlingBeregningsresultatEngangsstønad");
             Deffered<BeregningsresultatMedUttaksplan> dBeregningsresultatMedUttaksplan = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
             });
-            //timing.endInterval("behandlingBeregningsresultatForeldrepenger");
             Deffered<Soknad> dSoknad = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingSøknad(request);
             });
-            //timing.endInterval("behandlingSøknad");
             Deffered<Familiehendelse> dFamiliehendelse = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingFamiliehendelse(request);
             });
-            //timing.endInterval("behandlingFamiliehendelse");
             Deffered<Opptjening> dOpptjening = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingOpptjening(request);
             });
-            //timing.endInterval("behandlingOpptjening");
             Deffered<InntektArbeidYtelse> dInntektArbeidYtelse = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingInntektArbeidYtelse(request);
             });
-            //timing.endInterval("behandlingInntektArbeidYtelse");
             Deffered<KontrollerFaktaData> dKontrollerFaktaData = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
             });
-            //timing.endInterval("behandlingKontrollerFaktaPerioder");
             Deffered<Medlem> dMedlem = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingMedlemskap(request);
             });
-            //timing.endInterval("behandlingMedlemskap");
             Deffered<UttakResultatPerioder> dUttakResultatPerioder = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingUttakResultatPerioder(request);
             });
-            //timing.endInterval("behandlingUttakResultatPerioder");
             
             
             valgtBehandling.personopplysning = dPersonopplysninger.get();
-            //timing.endInterval("dPersonopplysninger");
             valgtBehandling.verge = dVerge.get();
-            //timing.endInterval("dVerge");
             valgtBehandling.beregningsgrunnlag = dBeregningsgrunnlag.get();
-            //timing.endInterval("dBeregningsgrunnlag");
             valgtBehandling.beregningResultatEngangsstonad = dBeregningsresultat.get();
-            //timing.endInterval("dBeregningsresultat");
             valgtBehandling.beregningResultatForeldrepenger = dBeregningsresultatMedUttaksplan.get();
-            //timing.endInterval("dBeregningsresultatMedUttaksplan");
             valgtBehandling.soknad = dSoknad.get();
-            //timing.endInterval("dSoknad");
             valgtBehandling.familiehendelse = dFamiliehendelse.get();
-            //timing.endInterval("dFamiliehendelse");
             valgtBehandling.opptjening = dOpptjening.get();
-            //timing.endInterval("dOpptjening");
             valgtBehandling.inntektArbeidYtelse = dInntektArbeidYtelse.get();
-            //timing.endInterval("dInntektArbeidYtelse");
             valgtBehandling.kontrollerFaktaData = dKontrollerFaktaData.get();
-            //timing.endInterval("dKontrollerFaktaData");
             valgtBehandling.medlem = dMedlem.get();
-            //timing.endInterval("dMedlem");
             valgtBehandling.uttakResultatPerioder = dUttakResultatPerioder.get();
-            //timing.endInterval("dUttakResultatPerioder");
         }
         
         valgtBehandling.aksjonspunkter = dAksonspunkter.get();
-        //timing.endInterval("dAksonspunkter");
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
         }
-        //timing.endInterval("valgtBehandling.aksjonspunkter");
     }
     
     private void ventPåStatus(Behandling behandling) throws Exception {
@@ -625,7 +579,6 @@ public class Saksbehandler extends Aktoer{
     }
     
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
-        Behandling behandling = valgtBehandling;
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         ventOgGodkjennØkonomioppdrag();
