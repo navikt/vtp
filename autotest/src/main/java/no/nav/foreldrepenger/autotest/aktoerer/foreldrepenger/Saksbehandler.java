@@ -268,6 +268,7 @@ public class Saksbehandler extends Aktoer{
      * Henter aksjonspunkt bekreftelse av gitt klasse
      */
     @SuppressWarnings("unchecked")
+    @Step("Henter aksjonspunktbekreftelse for {type}")
     public <T extends AksjonspunktBekreftelse> T hentAksjonspunktbekreftelse(Class<T> type) {
 
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {

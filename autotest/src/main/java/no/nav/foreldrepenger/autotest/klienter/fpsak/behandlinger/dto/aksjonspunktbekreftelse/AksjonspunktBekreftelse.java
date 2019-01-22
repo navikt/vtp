@@ -54,4 +54,9 @@ public abstract class AksjonspunktBekreftelse {
     public void setBegrunnelse(String begrunnelse) {
         this.begrunnelse = begrunnelse;
     }
+
+    @Override
+    public String toString(){
+        return String.format("%s : %s", kode != null ? kode : "", begrunnelse != null ? begrunnelse : "");
+    }
 }

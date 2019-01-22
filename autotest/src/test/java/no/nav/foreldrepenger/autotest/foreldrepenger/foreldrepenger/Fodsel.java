@@ -195,8 +195,9 @@ public class Fodsel extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
 
+        saksbehandler.hentFagsak(saksnummer);
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
                 .leggTilInntekt(overstyrtInntekt, 1L)
                 .leggTilInntekt(overstyrtInntekt, 2L)
@@ -299,6 +300,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
 
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         hackForÅKommeForbiØkonomi(saksnummer);
 
         debugListUtBehandling(saksbehandler.valgtBehandling);
