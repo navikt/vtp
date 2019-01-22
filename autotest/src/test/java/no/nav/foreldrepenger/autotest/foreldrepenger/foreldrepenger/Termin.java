@@ -33,11 +33,12 @@ public class Termin extends ForeldrepengerTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventOgGodkjennØkonomioppdrag();
         saksbehandler.ikkeVentPåStatus = false;
         
         saksbehandler.hentFagsak(saksnummer);
-        
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
     }
@@ -58,11 +59,12 @@ public class Termin extends ForeldrepengerTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventOgGodkjennØkonomioppdrag();
         saksbehandler.ikkeVentPåStatus = false;
         
         saksbehandler.hentFagsak(saksnummer);
-        
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
     }

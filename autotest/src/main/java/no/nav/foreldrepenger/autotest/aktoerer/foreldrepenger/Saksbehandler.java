@@ -110,6 +110,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Hent enkel fagsak
      */
+    @Step("Hent fagsak {saksnummer}")
     public void hentFagsak(long saksnummer) throws Exception {
         hentFagsak("" + saksnummer);
     }
@@ -476,7 +477,6 @@ public class Saksbehandler extends Aktoer{
     public boolean ventPåFerdigstiltØkonomioppdrag() throws Exception {
         //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
         List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
-
         ventTilBehandlingsstatus("AVSLU");
         return true;
         /*

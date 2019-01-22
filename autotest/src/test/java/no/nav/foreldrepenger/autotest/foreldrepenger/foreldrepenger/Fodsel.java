@@ -590,7 +590,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startdatoForeldrePenger);
 
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
-
+        debugListUtBehandling(saksbehandler.valgtBehandling);
         hackForÅKommeForbiØkonomi(saksnummer);
 
         //verifiserer uttak
