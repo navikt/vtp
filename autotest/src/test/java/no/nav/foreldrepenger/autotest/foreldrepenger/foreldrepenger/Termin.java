@@ -57,8 +57,8 @@ public class Termin extends ForeldrepengerTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
 
         //TODO: Flyttet til ventende sjekk - OK?
-        saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         debugListUtBehandling(saksbehandler.valgtBehandling);
         //verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
