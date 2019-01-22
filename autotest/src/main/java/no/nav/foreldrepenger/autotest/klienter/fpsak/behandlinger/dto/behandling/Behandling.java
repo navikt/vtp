@@ -91,12 +91,16 @@ public class Behandling {
             sb.append(String.format("Årsak avslag: %s\n", this.behandlingsresultat.avslagsarsak.navn));
         }
         sb.append("Aksjonspunkter:\n");
-        for(Aksjonspunkt aksjonspunkt : aksjonspunkter){
-            sb.append(String.format("\t%s : %s", aksjonspunkt.definisjon.navn, aksjonspunkt.status.navn));
+        if(aksjonspunkter != null) {
+            for (Aksjonspunkt aksjonspunkt : aksjonspunkter) {
+                sb.append(String.format("\t%s : %s", aksjonspunkt.definisjon.navn, aksjonspunkt.status.navn));
+            }
         }
         sb.append("Vilkår:\n");
-        for(Vilkar vilkar : vilkar){
-            sb.append(String.format("\t%s :  %s", vilkar.vilkarType.navn, vilkar.vilkarStatus.navn));
+        if(vilkar != null) {
+            for (Vilkar vilkar : vilkar) {
+                sb.append(String.format("\t%s :  %s", vilkar.vilkarType.navn, vilkar.vilkarStatus.navn));
+            }
         }
         return sb.toString();
     }
