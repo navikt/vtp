@@ -33,7 +33,7 @@ public class Klage extends ForeldrepengerTestBase {
 
     @Test
     @DisplayName("Klage med Medhold Ugunst NFP")
-    @Description("Sender inn klage på førstegangsbehandling. Bekrefter medhold i Ugunst. Beslutter og avslutter.")
+    @Description("Sender inn klage på førstegangsbehandling. Bekrefter medhold i Ugunst hos NFP. Beslutter og avslutter.")
     public void klageMedholUgunstNFP() throws Exception {
         // opprette førstegangsbehandling til vedtak
         TestscenarioDto testscenario = opprettScenario("50");
@@ -82,6 +82,8 @@ public class Klage extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Klage med hjemsende av KA")
+    @Description("Sender inn klage på førstegangsbehandling. NFP sender videre til KA. KA bekrefter hjemsende. Beslutter og avslutter.")
     public void hjemsendeKA() throws Exception {
         // opprette førstegangsbehandling til vedtak
         TestscenarioDto testscenario = opprettScenario("50");
@@ -134,6 +136,8 @@ public class Klage extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Klage med stadfestet av KA")
+    @Description("Sender inn klage på førstegangsbehandling. NFP sender videre til KA. KA bekrefter stadfestet. Beslutter og avslutter.")
     public void stadfesteKA() throws Exception {
         // opprette førstegangsbehandling til vedtak
         TestscenarioDto testscenario = opprettScenario("50");
@@ -187,6 +191,8 @@ public class Klage extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Klage med Medhold Delvis Gunst KA")
+    @Description("Sender inn klage på førstegangsbehandling. NFP sender videre til KA. KA bekrefter medhold med delvis gunst. Beslutter og avslutter.")
     public void medholdDelvisGunstKA() throws Exception {
         // opprette førstegangsbehandling til vedtak
         TestscenarioDto testscenario = opprettScenario("50");
@@ -242,6 +248,8 @@ public class Klage extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Klage avvist i formkrav av NFP")
+    @Description("Sender inn klage på førstegangsbehandling. NFP avslår formkrav (ikke konkret). Beslutter og avslutter.")
     public void avvisFormkravNFP() throws Exception {
         // opprette førstegangsbehandling til vedtak
         TestscenarioDto testscenario = opprettScenario("50");

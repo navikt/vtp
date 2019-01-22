@@ -1,10 +1,5 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftelseKode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
@@ -13,8 +8,13 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
-@BekreftelseKode(kode="5070")
-public class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftelse {
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public abstract class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftelse {
 
     protected List<BekreftetUttakPeriode> bekreftedePerioder = new ArrayList<>();
     protected List<BekreftetUttakPeriode> slettedePerioder = new ArrayList<>();
@@ -102,6 +102,22 @@ public class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftelse {
             this.originalArbeidstidsprosent = originalArbeidstidsprosent;
             this.originalBegrunnelse = originalBegrunnelse;
             this.bekreftetPeriode = bekreftetPeriode;
+        }
+    }
+
+    @BekreftelseKode(kode="5070")
+    public static class AvklarFaktaUttakPerioder extends AvklarFaktaUttakBekreftelse {
+
+        public AvklarFaktaUttakPerioder(Fagsak fagsak, Behandling behandling) {
+            super(fagsak, behandling);
+        }
+    }
+
+    @BekreftelseKode(kode="5081")
+    public static class AvklarFaktaUttakFørsteUttakDato extends AvklarFaktaUttakBekreftelse {
+
+        public AvklarFaktaUttakFørsteUttakDato(Fagsak fagsak, Behandling behandling) {
+            super(fagsak, behandling);
         }
     }
 
