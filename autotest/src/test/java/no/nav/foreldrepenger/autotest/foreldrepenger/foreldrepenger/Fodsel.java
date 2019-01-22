@@ -574,6 +574,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
     }
 
+    @Disabled("Disabler til bug fikset i fpsak")
     @Test
     public void morSøkerFødselAleneomsorgKunEnHarRett() throws Exception {
 
@@ -624,6 +625,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
     }
 
+    @Disabled("Disabler til bug fikset i fpsak")
     @Test
     public void farSøkerFødselAleneomsorgMenErGiftOgBorMedAnnenpart() throws Exception {
 
