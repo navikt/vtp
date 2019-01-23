@@ -63,8 +63,6 @@ public class InntektsmeldingBuilderTest{
 
 
         Assert.assertTrue(inntektesmeldingXML3.contains("fravaerPeriode"));
-        String s = "";
-
     }
 
     @Test
@@ -85,6 +83,21 @@ public class InntektsmeldingBuilderTest{
         String inntektesmeldingXML1 = inntektsmeldingBuilder.createInntektesmeldingXML();
 
         Assert.assertTrue(inntektesmeldingXML1.contains("pleiepengerPerioder"));
+    }
+
+
+    @Test
+    public void arbeidsgiverErPrivatTestr(){
+        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
+        String inntektesmeldingXML = inntektsmeldingBuilder.createInntektesmeldingXML();
+        Assert.assertNotEquals(0, inntektesmeldingXML.length());
+
+
+        inntektsmeldingBuilder.setArbeidsgiverPrivat(inntektsmeldingBuilder.createArbeidsgiverPrivat("123"));
+
+        String inntektesmeldingXML1 = inntektsmeldingBuilder.createInntektesmeldingXML();
+        Assert.assertTrue(inntektesmeldingXML1.contains("arbeidsgiverFnr"));
+
     }
 
 }
