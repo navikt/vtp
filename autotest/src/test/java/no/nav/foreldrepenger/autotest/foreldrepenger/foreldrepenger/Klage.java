@@ -290,6 +290,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
 
         return saksnummer;
