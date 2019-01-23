@@ -569,8 +569,10 @@ public class Saksbehandler extends Aktoer{
     }
     
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
+        ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         ventTilØkonomioppdragFerdigstilles();
+        ikkeVentPåStatus = false;
     }
 
     @Step("Venter på økonomioppdrag")
