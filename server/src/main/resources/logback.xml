@@ -14,25 +14,12 @@
 	<logger name="no.nav" level="${log.level.no.nav:-INFO}" />
 
 	<!-- skru paa for aa logge all sql statements med parametere -->
-	<logger name="jdbc.sql" level="${log.level.jdbc.sql:-ERROR}" />
-	<logger name="org.hibernate.SQL" level="${log.level.org.hibernate.SQL:-WARN}" />
-	<logger name="com.zaxxer.hikari" level="${log.level.com.zaxxer.hikari:-WARN}" />
-	<logger name="org.hibernate.type" level="${log.level.org.hibernate.type:-WARN}" />
-	<logger name="org.hibernate" level="${log.level.org.hibernate:-WARN}" />
-	<logger name="ch.qos.logback" level="${log.level.ch.qos.logback:-WARN}" />
-	<logger name="org.flywaydb" level="${log.level.org.flywaydb:-INFO}" />
-	<logger name="org.apache" level="${log.level.org.apache:-ERROR}" />
-	
+	<logger name="org.apache" level="${log.level.org.apache:-WARN}" />
 	<logger name="org.eclipse.jetty" level="${log.level.org.eclipse.jetty:-INFO}" />
 	
 	<!-- ESSV: genererer en del støy for webservice -->
 	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
 	<logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
-
-	<logger name="no.nav.modig" level="${log.level.no.nav.modig:-WARN}" />
-	<!-- denne logger passord på INFO nivå! -->
-	<logger name="no.nav.modig.core.test.PropertySetter"
-			level="${log.level.no.nav.modig.core.test.PropertySetter:-WARN}" />
 
 	<root level="${log.level.root:-WARN}">
 		<appender-ref ref="STDOUT" />

@@ -1,3 +1,4 @@
+APP_NAME=fpsak
 DEFAULTDS_URL=jdbc:oracle:thin:@d26dbfl020.test.local:1521/fpsak_test
 DEFAULTDS_USERNAME=fpsak_test
 DEFAULTDS_PASSWORD=fGZdvftaXdGt2V059Z5s
