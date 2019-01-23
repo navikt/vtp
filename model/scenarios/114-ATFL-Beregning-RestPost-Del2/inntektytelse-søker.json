@@ -3,17 +3,8 @@
 		"inntektsperioder": [
 			{
 				"fom": "2017-01-01",
-				"tom": "2018-08-30",
-				"beløp": 20000,
-				"orgnr": "979191138",
-				"type": "Lønnsinntekt",
-				"fordel": "kontantytelse",
-				"beskrivelse": "fastloenn"
-			},
-			{
-				"fom": "2018-09-01",
-				"tom": "2018-10-31",
-				"beløp": 200000,
+				"tom": "2018-12-31",
+				"beløp": 40000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
@@ -22,11 +13,19 @@
 			{
 				"fom": "2017-01-01",
 				"tom": "2018-12-31",
-				"beløp": 37000,
-				"orgnr": "979191139",
+				"beløp": 10000,
+				"orgnr": "995428563",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
+			}
+		],
+		"frilansarbeidsforholdperioder": [
+			{
+				"frilansFom":"2018-01-01",
+				"frilansTom":"2018-12-31",
+				"orgnr":"995428563",
+				"stillingsprosent":"25"
 			}
 		]
 	},
@@ -46,28 +45,11 @@
 						"sisteLønnsendringsdato": "2018-01-01",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "20",
-						"stillingsprosent" : 50,
+						"stillingsprosent" : 75,
 						"beregnetAntallTimerPerUke": "15"
 					}
 				]
 
-			},
-			{
-				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1238162",
-				"ansettelsesperiodeFom": "2017-01-01",
-				"arbeidsforholdstype": "maritimtArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191139",
-				"arbeidsavtaler" : [
-					{
-						"fomGyldighetsperiode": "2017-01-01",
-						"sisteLønnsendringsdato": "2018-01-01",
-						"avlønningstype": "fastlønn",
-						"avtaltArbeidstimerPerUke": "20",
-						"stillingsprosent" : 50,
-						"beregnetAntallTimerPerUke": "15"
-					}
-				]
 			}
 		]
 	}
