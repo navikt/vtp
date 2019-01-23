@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
+
 import java.time.LocalDate;
 import java.util.List;
 

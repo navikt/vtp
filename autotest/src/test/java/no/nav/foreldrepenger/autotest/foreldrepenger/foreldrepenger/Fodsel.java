@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListHistorikkinnslag;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
@@ -576,7 +578,8 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
+        debugListHistorikkinnslag(saksbehandler.historikkInnslag);
+        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
     }
 
     @Disabled("Disabler til bug fikset i fpsak")

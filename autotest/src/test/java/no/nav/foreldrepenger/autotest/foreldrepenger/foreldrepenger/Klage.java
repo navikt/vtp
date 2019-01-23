@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -272,6 +275,7 @@ public class Klage extends ForeldrepengerTestBase {
         verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
     }
 
+    @Step("Klage: oppretter førstegangsbehandling")
     private long opprettForstegangsbehandling(TestscenarioDto testscenario) throws Exception {
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();

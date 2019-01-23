@@ -1,12 +1,12 @@
 package no.nav.foreldrepenger.autotest;
 
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.qameta.allure.Step;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 
@@ -60,10 +60,5 @@ public abstract class TestBase {
         }
     }
 
-    @Step("Henter aksjonspunkter: {aksjonspunkter}")
-    public void debugListUtAksjonspunkter(String aksjonspunkter){ }
-
-    @Step("Informasjon om behandling: {behandling}")
-    public void debugListUtBehandling(Behandling behandling){ }
 
 }

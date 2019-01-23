@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugSenderInnDokument;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -184,10 +186,12 @@ public class Fordel extends Aktoer {
     }
 
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, String aktørId, String fnr, Long saksnummer) throws Exception {
+        int count = 0;
+        final long saksnummerF = saksnummer;
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, aktørId, fnr, saksnummer);
         }
-        final long saksnummerF = saksnummer;
+
         Vent.til(() -> {
             return antallInntektsmeldingerMottatt(saksnummerF) >= inntektsmeldinger.size();
         }, 10, "har ikke mottat alle inntektsmeldinger");
@@ -267,8 +271,5 @@ public class Fordel extends Aktoer {
         return saksnummer;
     }
 
-    @Step("Sender inn dokument {} med innhold: {xml}")
-    public void debugSenderInnDokument(String type, String xml){
 
-    }
 }
