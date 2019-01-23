@@ -61,12 +61,9 @@ public abstract class TestBase {
     }
 
     @Step("Henter aksjonspunkter: {aksjonspunkter}")
-    public void debugListUtAksjonspunkter(String aksjonspunkter){
-
-    }
+    public void debugListUtAksjonspunkter(String aksjonspunkter){ }
 
     @Step("Informasjon om behandling: {behandling}")
-    public void debugListUtBehandling(Behandling behandling){
+    public void debugListUtBehandling(Behandling behandling){ }
 
-    }
 }

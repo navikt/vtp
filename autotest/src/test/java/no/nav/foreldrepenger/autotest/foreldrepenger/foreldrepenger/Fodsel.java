@@ -474,6 +474,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker gradering og utsettelse. Med to arbeidsforhold. Uten avvikende inntektsmelding")
     public void morSøkerGraderingOgUtsettelseMedToArbeidsforhold_utenAvvikendeInntektsmeldinger() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("58");
@@ -510,8 +511,10 @@ public class Fodsel extends ForeldrepengerTestBase {
         }
 
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
-
-        hackForÅKommeForbiØkonomi(saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        debugListUtBehandling(saksbehandler.valgtBehandling);
+        //hackForÅKommeForbiØkonomi(saksnummer);
 
         //verifiserer uttak
         List<UttakResultatPeriode> uttaksperioder = saksbehandler.valgtBehandling.hentUttaksperioder();
