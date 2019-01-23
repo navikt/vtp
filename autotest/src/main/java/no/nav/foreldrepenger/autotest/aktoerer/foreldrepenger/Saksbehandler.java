@@ -56,16 +56,6 @@ import no.nav.foreldrepenger.autotest.util.deferred.Deffered;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 
-import org.apache.http.HttpResponse;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class Saksbehandler extends Aktoer{
 
     
@@ -587,28 +577,15 @@ public class Saksbehandler extends Aktoer{
     
     public void ventOgGodkjennØkonomioppdrag() throws Exception {
        Vent.til(() ->  {
-           return ferdigstilØkonomioppdrag();
+           return ventTilØkonomioppdragFerdigstilles();
        }, 10, "Fant ingen økonomioppdag å godkjenne");
        ventTilBehandlingsstatus("AVSLU");
     }
 
-    @Step("Godkjenner økonomioppdrag")
-    private boolean ferdigstilØkonomioppdrag() throws Exception {
-        //Finner økonomioppdrag tasken og starter den slik at behandlinger kan bli avsluttet
-        List<ProsessTaskListItemDto> list = prosesstaskKlient.list(new SokeFilterDto().setSisteKjoeretidspunktFraOgMed(LocalDateTime.now().minusMinutes(10)).setSisteKjoeretidspunktTilOgMed(LocalDateTime.now()));
+    @Step("Venter på økonomioppdrag")
+    private boolean ventTilØkonomioppdragFerdigstilles() throws Exception {
         ventTilBehandlingsstatus("AVSLU");
         return true;
-        /*
-        for (ProsessTaskListItemDto prosessTaskListItemDto : list) {
-            if(prosessTaskListItemDto.getTaskType().equals("iverksetteVedtak.oppdragTilØkonomi")
-               && prosessTaskListItemDto.getTaskParametre().getBehandlingId().equals("" + valgtBehandling.id)
-               && prosessTaskListItemDto.getStatus().equals("VENTER_SVAR")) {
-                prosesstaskKlient.launch(new ProsesstaskDto(prosessTaskListItemDto.getId(), "VENTER_SVAR"));// TODO: O.L. kommentert ut i forbindelse med test av omgåelse av økonomi: PFP-4437
-                return true;
-            }
-        }
-        return false;
-        */
     }
     
     /*

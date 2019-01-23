@@ -200,6 +200,7 @@ public class Fordel extends Aktoer {
     private int antallInntektsmeldingerMottatt(long saksnummer) throws IOException {
         List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummer);
         int antall = historikk.stream().filter(h -> h.getTekst().equals("Vedlegg mottatt")).collect(Collectors.toList()).size();
+        System.out.println("Antall inntektsmeldinger: " + antall);
         return antall;
     }
     
