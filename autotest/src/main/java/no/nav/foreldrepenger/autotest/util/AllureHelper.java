@@ -17,6 +17,9 @@ public class AllureHelper {
     @Step("Sender inn dokument {} med innhold: {xml}")
     public static void debugSenderInnDokument(String type, String xml){ }
 
+    @Step("Fritekstlogg {fritekst}")
+    public static void debugFritekst(String fritekst){}
+
     public static void debugListHistorikkinnslag(List<HistorikkInnslag> historikkInnslagList) {
         StringBuilder sb = new StringBuilder();
         sb.append("Historikkinnslag\n");

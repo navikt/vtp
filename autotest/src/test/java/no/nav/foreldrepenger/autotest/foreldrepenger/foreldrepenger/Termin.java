@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListHistorikkinnslag;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
 
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class Termin extends ForeldrepengerTestBase{
         
         saksbehandler.hentFagsak(saksnummer);
         debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugListHistorikkinnslag(saksbehandler.historikkInnslag);
         saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
         //TODO (OL): Byttet verifisering på historikkinnslag til asynk venting. Feilet med at behandlingen ikke hadde historikkinnslag
@@ -67,9 +69,11 @@ public class Termin extends ForeldrepengerTestBase{
 
         //TODO (OL): Flyttet til ventende sjekk - OK?
         saksbehandler.hentFagsak(saksnummer);
+        debugListHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugListUtBehandling(saksbehandler.valgtBehandling);
+
         saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        debugListUtBehandling(saksbehandler.valgtBehandling);
         //verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         //verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
     }

@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
 
 import java.time.LocalDate;
@@ -107,6 +108,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ikkeVentPåStatus = false;
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger");
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
+        debugFritekst("Ferdig med første behandling");
 
         // Endringssøknad
         ForeldrepengesoknadBuilder søknadE = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEndring(søkerAktørIdent, fpStartdato, saksnummer.toString());
