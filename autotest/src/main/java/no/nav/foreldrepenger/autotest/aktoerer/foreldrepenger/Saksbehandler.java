@@ -569,23 +569,13 @@ public class Saksbehandler extends Aktoer{
     }
     
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
-        ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        ventOgGodkjennØkonomioppdrag();
-        ikkeVentPåStatus = false;
-    }
-    
-    public void ventOgGodkjennØkonomioppdrag() throws Exception {
-       Vent.til(() ->  {
-           return ventTilØkonomioppdragFerdigstilles();
-       }, 10, "Fant ingen økonomioppdag å godkjenne");
-       ventTilBehandlingsstatus("AVSLU");
+        ventTilØkonomioppdragFerdigstilles();
     }
 
     @Step("Venter på økonomioppdrag")
-    private boolean ventTilØkonomioppdragFerdigstilles() throws Exception {
+    public void ventTilØkonomioppdragFerdigstilles() throws Exception {
         ventTilBehandlingsstatus("AVSLU");
-        return true;
     }
     
     /*

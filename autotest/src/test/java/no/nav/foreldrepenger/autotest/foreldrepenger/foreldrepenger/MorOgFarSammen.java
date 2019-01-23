@@ -91,10 +91,8 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         fordel.sendInnInntektsmelding(inntektsmelding, testscenario, saksnummer);
                 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ikkeVentPåStatus = false;
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
+        saksbehandler.ventTilØkonomioppdragFerdigstilles();
         
         return saksnummer;
     }

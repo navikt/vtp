@@ -16,19 +16,6 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
 
 public class ForeldrepengerTestBase extends FpsakTestBase {
-    
-    protected void hackForÅKommeForbiØkonomi(long saksnummer) throws Exception {
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.ikkeVentPåStatus = true;
-        if(null == saksbehandler.valgtFagsak) {
-            saksbehandler.hentFagsak(saksnummer);
-        }
-        if(null == saksbehandler.valgtBehandling) {
-            saksbehandler.velgBehandling(saksbehandler.behandlinger.get(0));
-        }
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
-        saksbehandler.ikkeVentPåStatus = false;
-    }
 
     protected List<Integer> sorterteInntektsbeløp(TestscenarioDto testscenario) {
         return testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().stream()

@@ -51,10 +51,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
-        saksbehandler.ikkeVentPåStatus = false;
+        saksbehandler.ventTilØkonomioppdragFerdigstilles();
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
@@ -104,8 +102,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
         debugListUtBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
-        saksbehandler.ikkeVentPåStatus = false;
+        saksbehandler.ventTilØkonomioppdragFerdigstilles();
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger");
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
         debugFritekst("Ferdig med første behandling");
@@ -140,10 +137,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventOgGodkjennØkonomioppdrag();
-        saksbehandler.ikkeVentPåStatus = false;
+        saksbehandler.ventTilØkonomioppdragFerdigstilles();
 
         // Inntektsmelding
         TestscenarioDto testscenarioEndret = opprettScenario("47");
@@ -190,6 +185,7 @@ public class Revurdering extends ForeldrepengerTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
+        beslutter.refreshFagsak();
         verifiserLikhet(beslutter.valgtFagsak.hentStatus().kode, "LOP", "Fagsakstatus");
         //Behandle ferdig far sin sak
         sendInntektsmeldingFar(testscenario, saksnummerFar);

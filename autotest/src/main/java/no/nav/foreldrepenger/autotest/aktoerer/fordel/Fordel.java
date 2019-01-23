@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
+import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
@@ -200,7 +201,6 @@ public class Fordel extends Aktoer {
     private int antallInntektsmeldingerMottatt(long saksnummer) throws IOException {
         List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummer);
         int antall = historikk.stream().filter(h -> h.getTekst().equals("Vedlegg mottatt")).collect(Collectors.toList()).size();
-        System.out.println("Antall inntektsmeldinger: " + antall);
         return antall;
     }
     
