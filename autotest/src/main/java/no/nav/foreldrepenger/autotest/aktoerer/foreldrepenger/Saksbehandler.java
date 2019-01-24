@@ -529,6 +529,7 @@ public class Saksbehandler extends Aktoer{
         return valgtBehandling.status.kode;
     }
 
+    @Step("Venter på at fagsak får behandlingstype: {behandlingType}")
     public void ventTilSakHarBehandling(Kode behandlingType) throws Exception {
         if(harBehandling(behandlingType)) {
             return;
