@@ -22,4 +22,9 @@ public class Kode {
     public static Kode lagBlankKode() {
         return new Kode(null, "-", null);
     }
+
+    @Override
+    public String toString(){
+        return navn != null ? navn : super.toString();
+    }
 }
