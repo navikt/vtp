@@ -86,7 +86,8 @@ public class Behandling {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("{Behandlingsid: %s}\n",this.id));
-        sb.append(String.format("{Behandlingsstatus: %s}\n", this.status.navn));
+        sb.append(String.format("{Behandlingsstatus: %s [%s]}\n", this.status.navn, this.status.kode));
+        sb.append(String.format("{Behandlingstype: %s [%s]}", this.type.navn, this.type.kode));
         if(this.behandlingsresultat != null && this.behandlingsresultat.avslagsarsak != null) {
             sb.append(String.format("{Årsak avslag: %s}\n", this.behandlingsresultat.avslagsarsak.navn));
         }
