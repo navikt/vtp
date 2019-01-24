@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListHistorikkinnslag;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggHistorikkinnslag;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,8 +41,8 @@ public class Termin extends ForeldrepengerTestBase{
         
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
-        debugListUtBehandling(saksbehandler.valgtBehandling);
-        debugListHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
         saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
         //TODO (OL): Byttet verifisering på historikkinnslag til asynk venting. Feilet med at behandlingen ikke hadde historikkinnslag
@@ -70,8 +70,8 @@ public class Termin extends ForeldrepengerTestBase{
 
         //TODO (OL): Flyttet til ventende sjekk - OK?
         saksbehandler.hentFagsak(saksnummer);
-        debugListHistorikkinnslag(saksbehandler.historikkInnslag);
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
 
         saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");

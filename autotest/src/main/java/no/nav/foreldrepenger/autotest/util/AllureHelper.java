@@ -12,7 +12,7 @@ public class AllureHelper {
     public static void debugListUtAksjonspunkter(String aksjonspunkter){ }
 
     @Step("Informasjon om behandling: {behandling}")
-    public static void debugListUtBehandling(Behandling behandling){ }
+    public static void debugLoggBehandling(Behandling behandling){ }
 
     @Step("Sender inn dokument {} med innhold: {xml}")
     public static void debugSenderInnDokument(String type, String xml){ }
@@ -20,7 +20,7 @@ public class AllureHelper {
     @Step("Fritekstlogg {fritekst}")
     public static void debugFritekst(String fritekst){}
 
-    public static void debugListHistorikkinnslag(List<HistorikkInnslag> historikkInnslagList) {
+    public static void debugLoggHistorikkinnslag(List<HistorikkInnslag> historikkInnslagList) {
         StringBuilder sb = new StringBuilder();
         sb.append("Historikkinnslag\n");
         for(HistorikkInnslag historikkInnslag : historikkInnslagList){
@@ -33,5 +33,9 @@ public class AllureHelper {
     private static void loggHistorikkinnslag(String historikkinnslag){}
 
 
-
+    public static void debugLoggBehandlingsliste(List<Behandling> behandlinger) {
+        for(Behandling behandling : behandlinger){
+            debugLoggBehandling(behandling);
+        }
+    }
 }

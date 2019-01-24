@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -103,7 +103,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("blabla");
-        debugListUtBehandling(klagebehandler.valgtBehandling);
+        debugLoggBehandling(klagebehandler.valgtBehandling);
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
                 .bekreftStadfestet()
@@ -155,7 +155,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav(vedtaksId)
                 .setBegrunnelse("Begrunnelse NFP.");
-        debugListUtBehandling(klagebehandler.valgtBehandling);
+        debugLoggBehandling(klagebehandler.valgtBehandling);
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
                 .bekreftStadfestet()
@@ -291,9 +291,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        for(Behandling behandling : saksbehandler.behandlinger){
-            AllureHelper.debugListUtBehandling(behandling);
-        }
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
 

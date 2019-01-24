@@ -518,7 +518,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshBehandling();
             return harBehandlingsstatus(status);
-        }, 10, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus());
+        }, 20, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus());
     }
     
     public boolean harBehandlingsstatus(String status) {
@@ -560,14 +560,16 @@ public class Saksbehandler extends Aktoer{
         }
         return null;
     }
-    
+
+    @Step("Fatter vedtak")
     public void fattVedtak() throws Exception {
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         ventTilBehandlingsstatus("AVSLU");
         ikkeVentPåStatus = false;
     }
-    
+
+    @Step("Fatter vedtak og godkjenner økonomioppdrag")
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);

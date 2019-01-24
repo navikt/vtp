@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListHistorikkinnslag;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggHistorikkinnslag;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
@@ -90,7 +90,7 @@ public class Fodsel extends ForeldrepengerTestBase {
                 .godkjennAllOpptjening();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
 
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class)
                 .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.VURDER_MOTTAR_YTELSE)
                 .leggTilMottarYtelse(false, Collections.emptyList());
@@ -199,7 +199,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
 
         saksbehandler.hentFagsak(saksnummer);
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
                 .leggTilInntekt(overstyrtInntekt, 1L)
                 .leggTilInntekt(overstyrtInntekt, 2L)
@@ -249,7 +249,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
 
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
                 .leggTilInntekt(overstyrtInntekt, 1L)
                 .setBegrunnelse("Begrunnelse");
@@ -302,13 +302,13 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         fordel.sendInnInntektsmeldinger(Arrays.asList(inntektsmeldingBuilder_1, inntektsmeldingBuilder_2), testscenario, saksnummer);
 
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
 
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
@@ -335,7 +335,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
 
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
@@ -520,7 +520,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         //hackForÅKommeForbiØkonomi(saksnummer);
 
         //verifiserer uttak
@@ -583,7 +583,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
-        debugListHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
     }
 
@@ -603,7 +603,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startdatoForeldrePenger);
 
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilØkonomioppdragFerdigstilles();

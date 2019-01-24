@@ -1,7 +1,8 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandlingsliste;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -53,6 +53,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
@@ -104,7 +105,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
-        debugListUtBehandling(saksbehandler.valgtBehandling);
+        debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
         verifiserLikhet(saksbehandler.behandlinger.size(), 2, "Antall behandlinger"); //revurdering opprettes ved flere arbeidsforhold for nå i autotest
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
@@ -117,9 +118,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
-        for(Behandling behandling : saksbehandler.behandlinger){
-            AllureHelper.debugListUtBehandling(behandling);
-        }
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Det er ikke opprettet revurdering.");
 
         //TODO (MV): verifiser resultat og status når økonomi er fikset
@@ -155,9 +154,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke opprettet revurdering.");
-        for(Behandling behandling : saksbehandler.behandlinger){
-            debugListUtBehandling(behandling);
-        }
+        debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
