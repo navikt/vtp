@@ -645,7 +645,7 @@ public class InntektsmeldingBuilder {
         return objectFactory.createOmsorgspengerFravaersPerioder(fravaersPeriodeListe);
     }
 
-    public Omsorgspenger createOmsorgspenger(DelvisFravaersListe delvisFravaersListe, FravaersPeriodeListe fravaersPeriodeListe, Boolean harUtbetaltPliktigeDager) {
+    public static Omsorgspenger createOmsorgspenger(DelvisFravaersListe delvisFravaersListe, FravaersPeriodeListe fravaersPeriodeListe, Boolean harUtbetaltPliktigeDager) {
         ObjectFactory objectFactory = new ObjectFactory();
         Omsorgspenger omsorgspenger = new Omsorgspenger();
 

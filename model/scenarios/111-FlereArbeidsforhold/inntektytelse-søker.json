@@ -3,7 +3,7 @@
 		"inntektsperioder": [
 			{
 				"fom": "2017-01-01",
-				"tom": "2018-12-31",
+				"tom": "2018-10-31",
 				"beløp": 20000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
@@ -15,7 +15,7 @@
 			},
 			{
 				"fom": "2017-01-01",
-				"tom": "2018-12-31",
+				"tom": "2018-10-31",
 				"beløp": 30000,
 				"orgnr": "979191139",
 				"type": "Lønnsinntekt",
@@ -27,7 +27,7 @@
 			},
 			{
 				"fom": "2017-01-01",
-				"tom": "2018-12-31",
+				"tom": "2018-09-30",
 				"beløp": 10000,
 				"orgnr": "25046401258",
 				"type": "Lønnsinntekt",
@@ -45,7 +45,7 @@
 				"arbeidsforholdId": "ARB001-001",
 				"arbeidsforholdIdNav": "1238161",
 				"ansettelsesperiodeFom": "2017-01-01",
-                "ansettelsesperiodeTom": "2018-01-01",
+                "ansettelsesperiodeTom": "2018-11-15",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
 
@@ -66,7 +66,8 @@
 				"arbeidsforholdId": "ARB001-002",
 				"arbeidsforholdIdNav": "1238162",
 				"ansettelsesperiodeFom": "2017-01-01",
-				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+                "ansettelsesperiodeTom": "2018-11-30",
+				"arbeidsforholdstype": "maritimtArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191139",
 				"arbeidsavtaler" : [
 					{
@@ -83,6 +84,7 @@
 				"arbeidsforholdId": "ARB001-001",
 				"arbeidsforholdIdNav": "1238162",
 				"ansettelsesperiodeFom": "2017-01-01",
+                "ansettelsesperiodeTom": "2018-09-30",
 				"arbeidsforholdstype": "forenkletOppgjoersordning",
 				"arbeidsgiverOrgnr": "25046401258",
 				"arbeidsavtaler" : [
