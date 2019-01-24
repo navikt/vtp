@@ -16,7 +16,7 @@ public class Arbeidsforholdstype {
         List<String> koder = new ArrayList<>();
         koder.add("ordinaertArbeidsforhold");
         koder.add("maritimtArbeidsforhold");
-        koder.add("forenkletOppgjorsordning");
+        koder.add("forenkletOppgjoersordning");
         //TODO: Fyll ut denne
 
         VALID_KODER = Collections.unmodifiableList(koder);
@@ -24,7 +24,7 @@ public class Arbeidsforholdstype {
 
     public static final Arbeidsforholdstype ORDINÆRT_ARBEIDSFORHOLD = new Arbeidsforholdstype("ordinaertArbeidsforhold");
     public static final Arbeidsforholdstype MARITIMT_ARBEIDSFORHOLD = new Arbeidsforholdstype("maritimtArbeidsforhold");
-    public static final Arbeidsforholdstype FORENKLET_OPPGJØRSORDNING = new Arbeidsforholdstype("forenkletOppgjorsordning");
+    public static final Arbeidsforholdstype FORENKLET_OPPGJØRSORDNING = new Arbeidsforholdstype("forenkletOppgjoersordning");
 
     private String kode;
 
