@@ -52,13 +52,14 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har ikke fått revurdering.");
-        overstyrer.velgBehandling(overstyrer.kodeverk.BehandlingType.getKode("Revurdering"));
+        overstyrer.velgBehandling(saksbehandler.behandlinger.get(2)); // finne en bedre måte og velge mellom 2 behandlinger av samme type
         OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak,overstyrer.valgtBehandling);
         overstyrMedlemskapsvilkaaret.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
         overstyrMedlemskapsvilkaaret.setBegrunnelse("avvist");
@@ -100,10 +101,11 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
         debugListUtBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
-        verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger");
+        verifiserLikhet(saksbehandler.behandlinger.size(), 2, "Antall behandlinger"); //revurdering opprettes ved flere arbeidsforhold for nå i autotest
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
         debugFritekst("Ferdig med første behandling");
 

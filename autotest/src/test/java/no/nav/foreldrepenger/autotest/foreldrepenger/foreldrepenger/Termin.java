@@ -40,6 +40,7 @@ public class Termin extends ForeldrepengerTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
         debugListUtBehandling(saksbehandler.valgtBehandling);
         debugListHistorikkinnslag(saksbehandler.historikkInnslag);
         saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
