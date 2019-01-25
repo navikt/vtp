@@ -1,17 +1,5 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
@@ -37,8 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugListUtBehandling;
-
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 
 @Tag("smoke")
@@ -191,9 +178,7 @@ public class Revurdering extends ForeldrepengerTestBase {
                 .leggTilInntekt(480000, 1L)
                 .setBegrunnelse("Endret inntekt.");
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class);
-        for(Behandling behandling : saksbehandler.behandlinger){
-            debugListUtBehandling(behandling);
-        }
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.bekreftAksjonspunktBekreftelse(KontrollerRevuderingsbehandling.class);
         saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class)
                 .setBegrunnelse("Fritektst til brev.");
