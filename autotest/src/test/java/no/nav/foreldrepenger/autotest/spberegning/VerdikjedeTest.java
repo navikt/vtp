@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,8 @@ import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedus
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.NaturalytelseDetaljer;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.OpphoerAvNaturalytelseListe;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
+
+import javax.xml.bind.JAXBElement;
 
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
@@ -121,22 +121,62 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "OMS";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-        List<Periode> perioder = new ArrayList<>();
-        perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 12)));
 
-        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.OMSORGSPENGER, ÅrsakInnsendingKodeliste.NY)
+        /*
+        Megaverbos kommentar til Eivind som han fjerner når han har sett over :)
+
+        inntektsmeldingBuilder.createOmsorgspenger sin signatur ser slik ut (signatur er parameterne som skal inn som argumenter, rekkefølgen og typen):
+        DelvisFravaersListe delvisFravaersListe, FravaersPeriodeListe fravaersPeriodeListe, Boolean harUtbetaltPliktigeDager
+
+        Du har forsøt å sende inn : null, List<Periode, og Boolean true.
+
+        Hvis du setter caret på teksten createOmsorgspenger og trykker ctrl+p så får du et hint om hvilke typer som skal inn.
+
+        Du har også kun jobbet mot statiske metoder på inntektsmeldingBuilderen. Vi går gjennom dette på mandag, men long story short, du må lage en instans av en klasse for at
+        du skal kunne bruke ikke-statiske metoder.
+
+        For å gjøre det enklere så har jeg allerede laget noen hjelpemetoder inne i inntektsMeldingbuilder, med komplett eksempel i InntektsmeldingBuilderTest, men vi snurrer litt eksempel her anyways:
+
+        Det du gjorde:
+
+            List<Periode> perioder = new ArrayList<>();
+            perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 12)));
+
+           InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.OMSORGSPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setOmsorgspenger(InntektsmeldingBuilder.createOmsorgspenger(
                         null, perioder, true));
-        inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
+
+            Fiks under, med kommentarer:
+         */
+
+        // 1. Jobb mot en instans av inntektsmeldingsBuilder, legg merke til forskjell på stor og liten I. Dersom du går rett på Inntektsmeldingbuilder (uten å kjøre new først) så får du kun tilgang til statiske metoder
+        InntektsmeldingBuilder inntektsmeldingBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.OMSORGSPENGER, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null));
+
+        // 2. Definer periodene for fravær. Disse gir du til hjelpemetoden createInntektsmeldingPeriode i inntektsmeldingBuilder som lager objektet FravaersPeriodeList (som inneholder periodene). Kontrakten vil ha det slik.
+        List<Periode> perioder = new ArrayList<Periode>();
+        perioder.add(inntektsmeldingBuilder.createInntektsmeldingPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 12)));
+
+        // 3. Mat periodene inn i hjelpemetoden som lager et fraværsperioden. Her ser du grunnen til hjelpemetoden, den lager et kontraktselement som brukes videre (JAXB)
+        JAXBElement<FravaersPeriodeListe> fravaersPeriodeListeForOmsorgspenger = inntektsmeldingBuilder.createFravaersPeriodeListeForOmsorgspenger(perioder);
+
+        // 4. Lag objektet som representerer omsorgspenger. Fravæærslisten er et objekt som bor under Omsorgspenger, vi setter det her
+        Omsorgspenger omsorgspenger = new Omsorgspenger();
+        omsorgspenger.setFravaersPerioder(fravaersPeriodeListeForOmsorgspenger);
+
+        // 5. Sett hele omsorspenger-objektet inn i builderen, med tilhørende perioder allerede satt på omsorgspenger-objektet
+        inntektsmeldingBuilder.setOmsorgspenger(omsorgspenger);
+
+        inntektsmeldingBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
-        inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
+        inntektsmeldingBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
+        System.out.println("Inntektsmelding: " + inntektsmeldingBuilder.createInntektesmeldingXML());
         System.out.println("Saksnummer: " + saksnummer);
 
-        fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
+        fordel.journalførInnektsmelding(inntektsmeldingBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
