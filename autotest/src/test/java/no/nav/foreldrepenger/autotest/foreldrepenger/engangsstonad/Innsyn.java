@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvInnsynBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
+import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -42,6 +43,8 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
+        AllureHelper.debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_INNVILGET", "Behandlingstatus");
         verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"));
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));

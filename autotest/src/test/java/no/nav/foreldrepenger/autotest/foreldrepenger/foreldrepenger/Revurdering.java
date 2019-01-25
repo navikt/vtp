@@ -217,6 +217,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         // Sjekke at revurdering er opprettet på mor uten endring
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
         saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
