@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
-import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
@@ -89,8 +88,13 @@ public class Fordel extends Aktoer {
         
         Vent.til(() -> {
             List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
+            //TODO: Gjøre denne asynkron
+            if(behandlinger.size() > 1){
+                Thread.sleep(5000);
+            }
             return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
         }, 60, "Saken hadde ingen behandlinger");
+
         
         return sakId;
     }
