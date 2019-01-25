@@ -22,16 +22,16 @@ public class Kode {
     public static Kode lagBlankKode() {
         return new Kode(null, "-", null);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        
+
         System.out.println(((Kode) obj).navn + " : " + navn + " - " + ((Kode) obj).kode + " : " + kode);
         return ((Kode) obj).navn.equals(navn) || ((Kode) obj).kode.equals(kode);
     }
 
     @Override
-    public String toString(){
-        return navn != null ? navn : super.toString();
+    public String toString() {
+        return kodeverk + " - " + kode + " - " + navn;
     }
 }

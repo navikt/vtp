@@ -195,10 +195,11 @@ public class Fordel extends Aktoer {
     }
 
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, String aktørId, String fnr, Long saksnummer) throws Exception {
-        int count = 0;
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, aktørId, fnr, saksnummer);
-            Thread.sleep(4000); //TODO finn ut hva man må vente på her...
+            if(inntektsmeldinger.size() > 1) {
+                Thread.sleep(4000); //TODO finn ut hva man må vente på her...
+            }
         }
         final long saksnummerF = saksnummer;
         Vent.til(() -> {

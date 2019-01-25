@@ -35,6 +35,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         long saksnummerFar = behandleSøknadForFar(testscenario);
         
         saksbehandler.hentFagsak(saksnummerMor);
+        saksbehandler.ventTilSakHarBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Mor har ikke fått revurdering.");
 
         /*

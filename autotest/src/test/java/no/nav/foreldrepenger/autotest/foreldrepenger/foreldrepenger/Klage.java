@@ -1,6 +1,15 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -18,14 +27,6 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 @Tag("smoke")
 @Tag("foreldrepenger")
@@ -36,7 +37,7 @@ public class Klage extends ForeldrepengerTestBase {
     @Description("Sender inn klage på førstegangsbehandling. Bekrefter medhold i Ugunst hos NFP. Beslutter og avslutter.")
     public void klageMedholUgunstNFP() throws Exception {
         // opprette førstegangsbehandling til vedtak
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("49");
         long saksnummer = opprettForstegangsbehandling(testscenario);
 
         // Motta og behandle klage NFP
@@ -86,7 +87,7 @@ public class Klage extends ForeldrepengerTestBase {
     @Description("Sender inn klage på førstegangsbehandling. NFP sender videre til KA. KA bekrefter hjemsende. Beslutter og avslutter.")
     public void hjemsendeKA() throws Exception {
         // opprette førstegangsbehandling til vedtak
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("49");
         long saksnummer = opprettForstegangsbehandling(testscenario);
 
         // Motta og behandle klage NFP
@@ -140,7 +141,7 @@ public class Klage extends ForeldrepengerTestBase {
     @Description("Sender inn klage på førstegangsbehandling. NFP sender videre til KA. KA bekrefter stadfestet. Beslutter og avslutter.")
     public void stadfesteKA() throws Exception {
         // opprette førstegangsbehandling til vedtak
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("49");
         long saksnummer = opprettForstegangsbehandling(testscenario);
 
         // Motta og behandle klage NFP
@@ -195,7 +196,7 @@ public class Klage extends ForeldrepengerTestBase {
     @Description("Sender inn klage på førstegangsbehandling. NFP sender videre til KA. KA bekrefter medhold med delvis gunst. Beslutter og avslutter.")
     public void medholdDelvisGunstKA() throws Exception {
         // opprette førstegangsbehandling til vedtak
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("49");
         long saksnummer = opprettForstegangsbehandling(testscenario);
 
         // Motta og behandle klage NFP
@@ -252,7 +253,7 @@ public class Klage extends ForeldrepengerTestBase {
     @Description("Sender inn klage på førstegangsbehandling. NFP avslår formkrav (ikke konkret). Beslutter og avslutter.")
     public void avvisFormkravNFP() throws Exception {
         // opprette førstegangsbehandling til vedtak
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("49");
         long saksnummer = opprettForstegangsbehandling(testscenario);
 
         // Motta og behandle klage NFP
