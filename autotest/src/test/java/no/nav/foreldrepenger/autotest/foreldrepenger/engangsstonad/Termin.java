@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Termin extends EngangsstonadTestBase{
 
     @Test
-    public void behandleTerminMorGodkjent()  throws Exception {
+    @DisplayName("Mor søker terming - godkjent")
+    public void morSøkerTerminGodkjent()  throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -55,7 +57,8 @@ public class Termin extends EngangsstonadTestBase{
     
     
     @Test
-    public void behandleTerminMorManglerDokumentasjon() throws Exception {
+    @DisplayName("Mor søker terming men mangler dokumentasjon")
+    public void morSøkerTerminManglerDokumentasjon() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -77,7 +80,8 @@ public class Termin extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleTerminMorOvertyrt()  throws Exception {
+    @DisplayName("Mor søker termin overstyrt vilkår")
+    public void morSøkerTerminOvertyrt()  throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -120,7 +124,8 @@ public class Termin extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleTerminFarGodkjent()  throws Exception {
+    @DisplayName("Far søker termin - godkjent")
+    public void farSøkerTerminGodkjent()  throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -141,6 +146,7 @@ public class Termin extends EngangsstonadTestBase{
     }
     
     @Test
+    @DisplayName("Setter behandling på vent og gjennoptar")
     public void settBehandlingPåVentOgGjenoppta() throws Exception {
         //Opprett scenario og søknad
         TestscenarioDto testscenario = opprettScenario("55");

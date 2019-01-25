@@ -14,6 +14,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +26,7 @@ import java.time.LocalDate;
 public class Klage extends EngangsstonadTestBase {
 
     @Test
+    @DisplayName("Behandle klage via NFP - medhold")
     public void klageMedholdNFP() throws  Exception {
         // Opprette førstegangssøknad engangsstønad
         TestscenarioDto testscenario = opprettScenario("50");
@@ -40,7 +43,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -60,7 +63,7 @@ public class Klage extends EngangsstonadTestBase {
         verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD");
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -69,6 +72,7 @@ public class Klage extends EngangsstonadTestBase {
     }
 
     @Test
+    @DisplayName("Behandle klage via NFP - medhold")
     public void klageOppheveAvKA() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -84,7 +88,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -117,7 +121,7 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
         beslutter.fattVedtak();
@@ -125,6 +129,7 @@ public class Klage extends EngangsstonadTestBase {
     }
 
     @Test
+    @DisplayName("Behandle klage via KA - avslag")
     public void klageAvslaattAvKA() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -140,7 +145,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -166,7 +171,7 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDERING_AV_FORMKRAV_KLAGE_KA));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -174,6 +179,7 @@ public class Klage extends EngangsstonadTestBase {
     }
 
     @Test
+    @DisplayName("Behandle klage via NFP - avvist av beslutter")
     public void avvistAvBelutterNFP() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -189,7 +195,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -214,7 +220,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.ventTilSakHarBehandling("Klage");
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .avvisAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP), beslutter.kodeverk.BehandlingÅrsakType.getKode("RE-LOV"))
@@ -223,7 +229,7 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         verifiserFritekst(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getFritekstTilBrev(), fritekstbrev1);
         verifiserFritekst(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getBegrunnelse(), begrunnelse1);
         String fritekstbrev2 = "Fritekst brev nr 2 .";
@@ -238,7 +244,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.ventTilSakHarBehandling("Klage");
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);

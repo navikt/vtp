@@ -22,7 +22,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 @Tag("foreldrepenger")
 public class Termin extends ForeldrepengerTestBase{
 
-
     @Test
     @DisplayName("Mor søker med ett arbeidsforhold. Inntektmelding innsendt før søknad")
     @Description("Mor med ett arbeidsforhold sender inn inntektsmelding før søknad. Forventer at vedtak bli fattet og brev blir sendt")

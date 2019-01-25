@@ -169,6 +169,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 2 arbeidsforhold og avvik i beregning")
     public void morSøkerFødselMedToArbeidsforhold_AvvikIBeregning() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("57");
@@ -226,6 +227,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 1 arbeidsforhold og avvik i beregning")
     public void morSøkerFødselMedEttArbeidsforhold_AvvikIBeregning() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("49");
@@ -275,6 +277,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 2 arbeidsforhold i samme organisasjon")
     public void morSøkerFødselMedToArbeidsforholdISammeOrganisasjon() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("57");
@@ -318,6 +321,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 1 arbeidsforhold")
     public void morSøkerFødselMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("49");
         
@@ -344,6 +348,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 2 arbeidsforhold")
     public void morSøkerFødselMedToArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("56");
 
@@ -371,6 +376,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Far søker fødsel med 1 arbeidsforhold")
     public void farSøkerFødselMedEttArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("60");
 
@@ -415,6 +421,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 2 arbeidsforhold i samme organisasjon med 1 inntektsmelding")
     public void morSøkerFødselMedToArbeidsforholdISammeOrganisasjonEnInntektsmelding() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("57");
@@ -447,6 +454,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor søker fødsel med 1 arbeidsforhold, Papirsøkand")
     public void morSøkerFødselMedEttArbeidsforhold_papirsøknad() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
@@ -480,9 +488,9 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 1);
     }
 
-
     @Disabled("Disabler til bug fikset i fpsak")
     @Test
+    @DisplayName("Far søker fødsel med aleneomsorg men er gift og bor med annenpart")
     public void farSøkerFødselAleneomsorgMenErGiftOgBorMedAnnenpart() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("60");

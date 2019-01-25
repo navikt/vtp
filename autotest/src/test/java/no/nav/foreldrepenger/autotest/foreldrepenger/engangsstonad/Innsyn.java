@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Innsyn extends EngangsstonadTestBase{
 
     @Test
+    @DisplayName("Behandle innsyn for mor - godkjent")
     public void behandleInnsynMorGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -31,7 +33,7 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
         saksbehandler.oprettBehandlingInnsyn(null);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
+        saksbehandler.velgBehandling("BT-006");
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
             .setMottattDato(LocalDate.now())
@@ -51,6 +53,7 @@ public class Innsyn extends EngangsstonadTestBase{
     }
     
     @Test
+    @DisplayName("Behandle innsyn for mor - avvist")
     public void behandleInnsynMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -63,7 +66,7 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
         saksbehandler.oprettBehandlingInnsyn(null);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
+        saksbehandler.velgBehandling("BT-006");
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
             .setMottattDato(LocalDate.now())
@@ -80,6 +83,7 @@ public class Innsyn extends EngangsstonadTestBase{
     }
     
     @Test
+    @DisplayName("Behandle innsyn for far - avvist")
     public void behandleInnsynFarAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -92,7 +96,7 @@ public class Innsyn extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
         saksbehandler.oprettBehandlingInnsyn(null);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("BT-006"));
+        saksbehandler.velgBehandling("BT-006");
         
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
             .setMottattDato(LocalDate.now())

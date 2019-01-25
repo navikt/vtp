@@ -12,6 +12,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 public class Revurdering extends EngangsstonadTestBase{
 
     @Test
+    @DisplayName("Manuelt opprettet revurdering")
     public void manueltOpprettetRevurderingSendVarsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -55,7 +58,7 @@ public class Revurdering extends EngangsstonadTestBase{
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-FEFAKTA"));
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
+        saksbehandler.velgBehandling("Revurdering");
         
         saksbehandler.hentAksjonspunktbekreftelse(VarselOmRevurderingBekreftelse.class)
             .bekreftSendVarsel(saksbehandler.kodeverk.Venteårsak.getKode("UTV_FRIST"), "Send brev");
@@ -67,6 +70,4 @@ public class Revurdering extends EngangsstonadTestBase{
         
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke satt på vent etter varsel for revurdering");
     }
-    
-
 }

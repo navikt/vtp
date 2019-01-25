@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Omsorgsovertakelse extends EngangsstonadTestBase{
 
     @Test
-    public void behenadleOmsorgsovertakelseMorGodkjent() throws Exception {
+    @DisplayName("Mor søker Omsorgsovertakelse - godkjent")
+    public void MorSøkerOmsorgsovertakelseGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -54,7 +56,8 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behenadleOmsorgsovertakelseMorAvvist() throws Exception {
+    @DisplayName("Mor søker Omsorgsovertakelse - avvist")
+    public void morSøkerOmsorgsovertakelseAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -86,6 +89,8 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
+    @Test
+    @Disabled("TODO hvorfor")
     public void behenadleOmsorgsovertakelseMorOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -110,7 +115,8 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase{
     }
 
     @Test
-    public void behenadleOmsorgsovertakelseFarGodkjent() throws Exception {
+    @DisplayName("Far søker Omsorgsovertakelse - godkjent")
+    public void farSøkerOmsorgsovertakelseGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         

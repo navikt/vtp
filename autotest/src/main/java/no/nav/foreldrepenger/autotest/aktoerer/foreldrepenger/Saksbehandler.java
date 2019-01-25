@@ -175,7 +175,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * velger behandling som valgt behandling
      */
-    public void velgBehandling(Kode behandlingstype) throws Exception {
+    protected void velgBehandling(Kode behandlingstype) throws Exception {
         Behandling behandling = getBehandling(behandlingstype);
         if(null != behandling) {
             velgBehandling(behandling);

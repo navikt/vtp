@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Fodsel extends EngangsstonadTestBase{
     
     @Test
-    public void behandleFødselMorGodkjent() throws Exception {
+    @DisplayName("Mor søker fødsel - godkjent")
+    public void morSøkerFødselGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
@@ -53,7 +55,8 @@ public class Fodsel extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleFødselMorAvvist() throws Exception {
+    @DisplayName("Mor søker fødsel - avvist")
+    public void morSøkerFødselAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
@@ -82,7 +85,8 @@ public class Fodsel extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleFødselFarGodkjent() throws Exception {
+    @DisplayName("Far søker fødsel - godkjent")
+    public void farSøkerFødselGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("60");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
@@ -110,7 +114,8 @@ public class Fodsel extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleFødselMorOverstyrFødsel() throws Exception {
+    @DisplayName("Mor søker fødsel overstyrt vilkår")
+    public void morSøkerFødselOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
@@ -145,7 +150,8 @@ public class Fodsel extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleFødselMorFlereBarn() throws Exception {
+    @DisplayName("Mor søker fødsel med flere barn")
+    public void morSøkerFødselFlereBarn() throws Exception {
         TestscenarioDto testscenario = opprettScenario("53");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadFlereBarn(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -178,7 +184,8 @@ public class Fodsel extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleFødselMorMedVerge() throws Exception {
+    @DisplayName("Mor søker fødsel med verge")
+    public void morSøkerFødselMedVerge() throws Exception {
         TestscenarioDto testscenario = opprettScenario("54");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 

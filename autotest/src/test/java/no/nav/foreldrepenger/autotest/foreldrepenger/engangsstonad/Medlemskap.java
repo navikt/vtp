@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Medlemskap extends EngangsstonadTestBase{
 
     @Test
-    public void behandleFødselMorErUtvandret() throws Exception{
+    @DisplayName("Mor søker fødsel er utvandret")
+    public void morSøkerFødselErUtvandret() throws Exception{
         TestscenarioDto testscenario = opprettScenario("51");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 

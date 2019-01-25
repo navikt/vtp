@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
@@ -21,13 +22,17 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+
+
 
 @Tag("smoke")
 @Tag("foreldrepenger")
 public class MorOgFarSammen extends ForeldrepengerTestBase{
 
     @Test
+    @DisplayName("Far og mor søker fødsel med overlappende uttaksperiode")
     public void farOgMorSøkerFødselMedEttArbeidsforholdOverlappendePeriode() throws Exception {
         TestscenarioDto testscenario = opprettScenario("80");
         
@@ -51,6 +56,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
     
     @Test
     @Disabled
+    @DisplayName("Far og mor søker fødsel uten overlappende uttaksperiode")
     public void farOgMorSøkerFødselMedEttArbeidsforholdUtenOverlappendePeriode() throws Exception {
         TestscenarioDto testscenario = opprettScenario("81");
         
@@ -59,7 +65,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         
         saksbehandler.hentFagsak(saksnummerMor);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har fått revurdering");
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
+        saksbehandler.velgBehandling("Revurdering");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat.");
         verifiserLikhet(saksbehandler.valgtBehandling.status.navn, "Avsluttet", "Behandlingsstatus");
 

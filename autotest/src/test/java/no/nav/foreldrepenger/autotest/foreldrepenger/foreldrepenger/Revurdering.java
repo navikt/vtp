@@ -60,14 +60,14 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
+        saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
         saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Saken har ikke fått revurdering.");
-        overstyrer.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        overstyrer.velgBehandling("Revurdering");
         OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak,overstyrer.valgtBehandling);
         overstyrMedlemskapsvilkaaret.avvis(hentKodeverk().Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
         overstyrMedlemskapsvilkaaret.setBegrunnelse("avvist");
@@ -78,7 +78,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
-        beslutter.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        beslutter.velgBehandling("Revurdering");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET));
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
@@ -110,7 +110,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
+        saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
@@ -129,8 +129,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ventTilSakHarBehandling("Revurdering");
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Det er ikke opprettet revurdering.");
-
-        saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        saksbehandler.velgBehandling("Revurdering");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
@@ -138,7 +137,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiser(saksbehandler.valgtFagsak.hentStatus().kode.equals("LOP"), "Status på fagsaken er ikke løpende.");
 
     }
-
+    
     @Test
     @DisplayName("Revurdering og ny IM når behandling er hos beslutter.")
     @Description("Førstegangsbehandling til positivt vedtak. Revurdering, og ny IM kommer når behandling er hos beslutter. Vedtak fortsatt løpende.")
@@ -167,7 +166,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilSakHarBehandling("Revurdering");
         verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
-        saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        saksbehandler.velgBehandling("Revurdering");
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class)
                 .setStartdatoFraSoknad(fpStartdato.plusWeeks(1))
                 .setBegrunnelse("Endret startdato for fp.");
@@ -184,7 +183,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         verifiser(saksbehandler.behandlinger.size() == 2, "Fagsaken har mer enn én revurdering.");
-        saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        saksbehandler.velgBehandling("Revurdering");
         saksbehandler.ventTilHistorikkinnslag("Behandlingen er flyttet");
         verifiser(saksbehandler.harHistorikkinnslag("Behandlingen er flyttet"), "Mangler historikkinnslag om at behandlingen er flyttet.");
         verifiser(saksbehandler.harAksjonspunkt("5045"), "Behandling hopper ikke tilbake til 'Avklar startdato for foreldrepengeperioden'.");
@@ -199,7 +198,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
-        beslutter.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        beslutter.velgBehandling("Revurdering");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FØRSTE_UTTAKSDATO));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -208,16 +207,11 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        saksbehandler.velgBehandling("Revurdering");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         verifiser(saksbehandler.valgtFagsak.hentStatus().kode.equals("LOP"), "Fagsaken er ikke løpende.");
 
 
     }
-
-
-
-
-
 
 }

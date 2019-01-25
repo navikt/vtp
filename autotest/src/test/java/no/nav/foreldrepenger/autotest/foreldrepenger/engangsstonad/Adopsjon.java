@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 import java.time.LocalDate;
 
 import org.junit.Ignore;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,8 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 public class Adopsjon extends EngangsstonadTestBase{
 
     @Test
-    public void behandleAdopsjonMorGodkjent() throws Exception {
+    @DisplayName("Mor søker adopsjon - godkjent")
+    public void morSøkerAdopsjonGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -55,7 +57,8 @@ public class Adopsjon extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleAdopsjonMorAvvist() throws Exception {
+    @DisplayName("Mor søker adopsjon - avvist")
+    public void morSøkerAdopsjonAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -86,7 +89,8 @@ public class Adopsjon extends EngangsstonadTestBase{
     }
 
     @Test
-    public void behandleAdopsjonMorOverstyrt() throws Exception {
+    @DisplayName("Mor søker adopsjon med overstyrt vilkår")
+    public void morSøkerAdopsjonOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         
@@ -126,7 +130,8 @@ public class Adopsjon extends EngangsstonadTestBase{
     }
     
     @Test
-    public void behandleAdopsjonFarGodkjent() throws Exception {
+    @DisplayName("Far søker adopsjon - godkjent")
+    public void farSøkerAdopsjonGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
         

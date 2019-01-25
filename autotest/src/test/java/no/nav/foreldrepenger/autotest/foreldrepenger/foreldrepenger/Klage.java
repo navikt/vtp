@@ -48,7 +48,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -70,7 +70,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -97,7 +97,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -130,10 +130,10 @@ public class Klage extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "HJEMSENDE_UTEN_OPPHEVE");
-        verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
+        verifiserBehandlingsstatus(beslutter.getBehandlingsstatus(), "AVSLU");
     }
 
     @Test
@@ -151,7 +151,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -184,7 +184,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET");
         verifiserKlageVurdering(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNK().getKlageVurdering(), "STADFESTE_YTELSESVEDTAK");
@@ -206,7 +206,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -239,7 +239,7 @@ public class Klage extends ForeldrepengerTestBase {
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.ventTilSakHarBehandling("Klage");
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
         verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD");
@@ -263,7 +263,7 @@ public class Klage extends ForeldrepengerTestBase {
         klagebehandler.hentFagsak(sakId);
 
         klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.velgBehandling("Klage");
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
             if (behandling.type.kode.equals("BT-002")) {
@@ -278,7 +278,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .setBegrunnelse("Godkjent");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -302,7 +302,7 @@ public class Klage extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
+        saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
 
