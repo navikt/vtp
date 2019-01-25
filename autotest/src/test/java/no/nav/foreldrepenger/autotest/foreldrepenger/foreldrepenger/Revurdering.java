@@ -1,8 +1,25 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandlingsliste;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerManueltOpprettetRevurdering;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerRevuderingsbehandling;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderBeregnetInntektsAvvikBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerBosattBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaStartdatoForForeldrepengerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaUttakBekreftelse;
@@ -16,16 +33,6 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 
 @Tag("smoke")
@@ -109,6 +116,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger"); //revurdering opprettes ved flere arbeidsforhold for nå i autotest
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
         debugFritekst("Ferdig med første behandling");
 
         // Endringssøknad
@@ -174,6 +182,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.velgBehandling(saksbehandler.behandlinger.get(2));
+        debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
                 .leggTilInntekt(480000, 1L)
                 .setBegrunnelse("Endret inntekt.");

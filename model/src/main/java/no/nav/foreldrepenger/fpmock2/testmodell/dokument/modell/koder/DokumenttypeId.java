@@ -76,6 +76,11 @@ public class DokumenttypeId {
     }
 
     @Override
+    public String toString(){
+        return getKode();
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(getKode());
     }
