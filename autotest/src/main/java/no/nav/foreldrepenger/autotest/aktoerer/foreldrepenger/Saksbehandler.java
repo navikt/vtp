@@ -179,7 +179,7 @@ public class Saksbehandler extends Aktoer{
         }
     }
     
-    public void velgBehandling(String behandlingstype) {
+    public void velgBehandling(String behandlingstype) throws Exception {
         velgBehandling(kodeverk.BehandlingType.getKode(behandlingstype));
     }
 
