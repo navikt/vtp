@@ -75,6 +75,10 @@
 			<groupId>no.nav.vedtak.fpmock2</groupId>
 			<artifactId>dokumentproduksjon-mock</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>oppdrag-mock</artifactId>
+        </dependency>
 
 		<!-- Tester -->
 		<!--

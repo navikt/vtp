@@ -84,6 +84,9 @@
 		<person-api-common.version>1.0.0</person-api-common.version>
 		<person-api-feed.version>1.0.0</person-api-feed.version>
 		<person-api-feed-common.version>1.0.1</person-api-feed-common.version>
+		<vl-fpoppdrag-integrasjon.version>1.0_20190110115356_1239f94</vl-fpoppdrag-integrasjon.version>
+        <vl-kontrakt-fpoppdrag.version>1.0_20190117140834_70d7fb3</vl-kontrakt-fpoppdrag.version>
+        <vl-kontrakt-okonomistotte.version>2.0_20180730135256_2912e61</vl-kontrakt-okonomistotte.version>
 	</properties>
 
 	<dependencyManagement>
@@ -213,6 +216,12 @@
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>dokumentproduksjon-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>oppdrag-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -395,6 +404,38 @@
 				<artifactId>nav-arbeidsforhold-v3-tjenestespesifikasjon</artifactId>
 				<version>${arbeidsforhold.version}</version>
 				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger.oppdrag</groupId>
+				<artifactId>oppdrag-klient</artifactId>
+				<version>${vl-fpoppdrag-integrasjon.version}</version>
+				<classifier>jaxb</classifier>
+				<exclusions>
+					<exclusion>
+						<groupId>no.nav.vedtak.felles.integrasjon</groupId>
+						<artifactId>felles-integrasjon-webservice</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.xml.bind</groupId>
+						<artifactId>jaxb-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.xml.bind</groupId>
+						<artifactId>jaxb-impl</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger.kontrakter</groupId>
+				<artifactId>fpoppdrag-v2</artifactId>
+				<version>${vl-kontrakt-fpoppdrag.version}</version>
+				<classifier>jaxb</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.foreldrepenger.kontrakter</groupId>
+				<artifactId>okonomistotte-v1</artifactId>
+				<version>${vl-kontrakt-okonomistotte.version}</version>
+				<classifier>jaxb</classifier>
 			</dependency>
 
 			<dependency>

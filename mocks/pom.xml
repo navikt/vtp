@@ -27,6 +27,7 @@
         <module>kodeverk-mock</module>
         <module>infotrygdfeed-mock</module>
         <module>personfeed-mock</module>
+        <module>oppdrag-mock</module>
     </modules>
 
     <dependencies>

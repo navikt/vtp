@@ -12,6 +12,7 @@ import org.eclipse.jetty.http.spi.JettyHttpServer;
 import no.nav.foreldrepenger.fpmock2.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
@@ -77,6 +78,7 @@ public class SoapWebServiceConfig {
         publishWebService(new ArbeidsforholdMockImpl(repo), "/aareg-core/ArbeidsforholdService/v3");
         publishWebService(new OrganisasjonMockImpl(repo), "/ereg/ws/OrganisasjonService/v4");
         publishWebService(new BehandleJournalV3ServiceMockImpl(),"/services/behandlejournal/v3");
+        publishWebService(new SimulerFpServiceMockImpl(), "/cics/services/oppdragService");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

@@ -25,6 +25,13 @@
             </properties>
         </profile>
         <profile>
+            <id>fpoppdrag</id>
+            <properties>
+                <testsTags>fpoppdrag</testsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.fpoppdrag.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
             <id>fpsak</id>
             <properties>
                 <includeTestsTags>smoke</includeTestsTags>
