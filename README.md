@@ -5,13 +5,24 @@ Starte server
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
 * Trenger parameter -Dscenarios.dir="./model/scenarios" dersom denne ikke ligger under working dir (dvs. i IDE).
-* Swagger UI: https://localhost:8063/swagger/
+* Swagger UI: https://localhost:8063/swagger/ - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
+
+Opprette testdata 
+----
+* Opprett testdata ved å lage scenario i ./model/scenarios. Innledende tall brukes som referanse for å få instansiert scenario fra Autotest. 
+
+Kjør tester
+----
+* Tester ligger i autotest-modulen test-scope. Klienter, roller og annen kode som muliggjør testeksevering ligger i autotestmodulen i main-scope
+* Tester kjøres fra IntelliJ eller Eclipse gjennom IDEs innebygde test runner eller gjennom maven 
+* Se autotest-modulen for egen README på Autotest.
+
 
 Koble foreldrepenger til VTP
 ------
 
-*Ved å starte FPSAK med '--vtp' setter du følgende endepunkter.*
+*Ved å starte FPSAK med '--vtp' setter du følgende endepunkter:*
 
 
 * Aktoer_v2.url=https://localhost:8063/aktoerregister/ws/Aktoer/v2

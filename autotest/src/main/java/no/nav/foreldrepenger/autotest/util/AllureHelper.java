@@ -32,7 +32,7 @@ public class AllureHelper {
     @Step("Informasjon om historikkinnslag: {historikkinnslag}")
     private static void loggHistorikkinnslag(String historikkinnslag){}
 
-
+    @Step("Informasjon om behandlinger: ")
     public static void debugLoggBehandlingsliste(List<Behandling> behandlinger) {
         for(Behandling behandling : behandlinger){
             debugLoggBehandling(behandling);
