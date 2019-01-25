@@ -78,8 +78,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.getAvslagsarsak().kode, "1020", "Avslagsårsak");
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
-        verifiser(beslutter.valgtFagsak.hentStatus().kode.equals("AVSLU"), "Fagsaken har ikke status 'Avsluttet'.");
-
+        beslutter.ventTilFagsakstatus("Avsluttet");
+        System.out.println(beslutter.valgtFagsak.hentStatus().kode);
     }
 
     @Test
@@ -123,7 +123,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Det er ikke opprettet revurdering.");
         saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
-        verifiser(saksbehandler.valgtBehandling.status.kode.equals("AVSLU"));
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
         saksbehandler.hentFagsak(saksnummerE);
@@ -227,7 +227,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilSakHarBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
+        saksbehandler.ventTilSakHarBehandling("Revurdering");
         verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
         saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class)
@@ -336,7 +336,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         // Sjekke at revurdering er opprettet på mor uten endring
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
+        saksbehandler.ventTilSakHarBehandling("Revurdering");
         saksbehandler.velgBehandling(hentKodeverk().BehandlingType.getKode("Revurdering"));
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");

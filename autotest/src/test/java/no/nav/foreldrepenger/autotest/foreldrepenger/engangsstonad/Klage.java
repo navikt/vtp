@@ -39,7 +39,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
@@ -83,7 +83,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
@@ -139,7 +139,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
@@ -188,7 +188,7 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
+        klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling(klagebehandler.kodeverk.BehandlingType.getKode("Klage"));
         String vedtaksId = "";
         for (Behandling behandling : klagebehandler.behandlinger) {
@@ -213,7 +213,7 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.ventTilSakHarBehandling("Klage");
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
@@ -237,7 +237,7 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.ventTilSakHarBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
+        beslutter.ventTilSakHarBehandling("Klage");
         beslutter.velgBehandling(beslutter.kodeverk.BehandlingType.getKode("Klage"));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));

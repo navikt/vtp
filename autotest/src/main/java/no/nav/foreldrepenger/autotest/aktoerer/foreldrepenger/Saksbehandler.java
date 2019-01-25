@@ -178,6 +178,10 @@ public class Saksbehandler extends Aktoer{
             throw new RuntimeException("Valgt fagsak har ikke behandling av type: " + behandlingstype.kode);
         }
     }
+    
+    public void velgBehandling(String behandlingstype) {
+        velgBehandling(kodeverk.BehandlingType.getKode(behandlingstype));
+    }
 
     @Step("Velger behandling {behandling}")
     public void velgBehandling(Behandling behandling) throws Exception {
@@ -511,6 +515,32 @@ public class Saksbehandler extends Aktoer{
         }
         return null;
     }
+    
+    /*
+     * Fagsakstatus
+     */
+    
+    public String getFagsakstatus() {
+        return valgtFagsak.hentStatus().kode;
+    }
+    
+    public boolean harFagsakstatus(Kode status) {
+        return valgtFagsak.hentStatus().equals(status);
+    }
+    
+    protected void ventTilFagsakstatus(Kode status) throws Exception {
+        if(harFagsakstatus(status)) {
+            return;
+        }
+        Vent.til(() ->{
+            refreshFagsak();
+            return harFagsakstatus(status);
+        }, 10, "Fagsak har ikke status " + status);
+    }
+    
+    public void ventTilFagsakstatus(String status) throws Exception {
+        ventTilFagsakstatus(kodeverk.FagsakStatus.getKode(status));
+    }
 
     
     /*
@@ -534,9 +564,13 @@ public class Saksbehandler extends Aktoer{
     public String getBehandlingsstatus() {
         return valgtBehandling.status.kode;
     }
+    
+    public void ventTilSakHarBehandling(String behandlingType) throws Exception {
+        ventTilSakHarBehandling(kodeverk.BehandlingType.getKode(behandlingType));
+    }
 
     @Step("Venter på at fagsak får behandlingstype: {behandlingType}")
-    public void ventTilSakHarBehandling(Kode behandlingType) throws Exception {
+    protected void ventTilSakHarBehandling(Kode behandlingType) throws Exception {
         if(harBehandling(behandlingType)) {
             return;
         }
