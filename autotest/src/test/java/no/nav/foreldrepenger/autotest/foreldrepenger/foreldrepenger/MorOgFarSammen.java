@@ -1,5 +1,13 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -15,14 +23,6 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
 @Tag("smoke")
 @Tag("foreldrepenger")
 public class MorOgFarSammen extends ForeldrepengerTestBase{
@@ -35,7 +35,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         long saksnummerFar = behandleSøknadForFar(testscenario);
         
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.ventTilSakHarBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering"));
+        saksbehandler.ventTilSakHarBehandling("Revurdering");
         verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Mor har ikke fått revurdering.");
 
         /*
