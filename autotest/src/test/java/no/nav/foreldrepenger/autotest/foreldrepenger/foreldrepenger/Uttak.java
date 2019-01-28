@@ -7,6 +7,10 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Gradering;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.ObjectFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -52,5 +56,41 @@ public class Uttak extends ForeldrepengerTestBase {
         saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
+    }
+
+    @Test
+    @DisplayName("Testcase for koblet sak")
+    @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. 100% dekningsgrad.")
+    public void testcase_enArbeidstaker_medGradering() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("50");
+
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdatoMor = fødselsdato.minusWeeks(3);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+
+        // Oppretter fordeling med gradering
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, fødselsdato.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(6).minusDays(1)));
+        LocalDate graderingFom = fødselsdato.plusWeeks(6);
+        LocalDate graderingTom = fødselsdato.plusWeeks(12);
+        Gradering gradering = new Gradering();
+        gradering.setArbeidsforholdSomSkalGraderes(true);
+        gradering.setArbeidtidProsent(55);
+        gradering.setErArbeidstaker(true);
+        gradering.setVirksomhetsnummer(orgnr);
+        FordelingErketyper.addStønadskontotype(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, gradering);
+        FordelingErketyper.addPeriode(graderingFom, graderingTom, gradering);
+        perioder.add(gradering);
+
+        // sender inn søknad
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(morAktørId, fordeling, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
 }

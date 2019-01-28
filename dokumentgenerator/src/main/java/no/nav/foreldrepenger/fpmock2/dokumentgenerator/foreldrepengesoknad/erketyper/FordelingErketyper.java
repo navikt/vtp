@@ -75,12 +75,12 @@ public class FordelingErketyper {
         return uttaksperiode;
     }
 
-    private static void addPeriode(LocalDate fom, LocalDate tom, LukketPeriodeMedVedlegg uttaksperiode) {
+    public static void addPeriode(LocalDate fom, LocalDate tom, LukketPeriodeMedVedlegg uttaksperiode) {
         uttaksperiode.setFom(DateUtil.convertToXMLGregorianCalendar(fom));
         uttaksperiode.setTom(DateUtil.convertToXMLGregorianCalendar(tom));
     }
 
-    private static void addStønadskontotype(String stønadskontotype, Uttaksperiode uttaksperiode) {
+    public static void addStønadskontotype(String stønadskontotype, Uttaksperiode uttaksperiode) {
         Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
         uttaksperiodetyper.setKode(stønadskontotype);
         uttaksperiode.setType(uttaksperiodetyper);
