@@ -48,10 +48,9 @@ public class Uttak extends ForeldrepengerTestBase {
         long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørId, farFnr, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
-        saksbehandler.hentFagsak(saksnummerMor);
+        saksbehandler.hentFagsak(saksnummerFar);
         saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
-        String s = " ";
     }
 }
