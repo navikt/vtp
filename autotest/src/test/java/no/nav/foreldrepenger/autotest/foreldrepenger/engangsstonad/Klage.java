@@ -44,14 +44,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
@@ -89,14 +84,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
@@ -108,7 +98,7 @@ public class Klage extends EngangsstonadTestBase {
 
         // KA - klage kommer rett til KA uten totrinnsbehanling. Kan fortsette med samme klagebehandler.
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla begrunnelse");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
@@ -146,14 +136,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
@@ -164,7 +149,7 @@ public class Klage extends EngangsstonadTestBase {
 
         // Behandle klage - KA
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
-                .klageErIkkeKonkret(vedtaksId)
+                .klageErIkkeKonkret()
                 .setBegrunnelse("Begrunnelse formkrav");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -196,14 +181,9 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         String fritekstbrev1 = "Fritekst brev nfp.";

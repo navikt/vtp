@@ -71,7 +71,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
 
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.harIkkeBehandling("Revurdering"), "Far har fått revurdering han ikke skal ha");
-
     }
     
     public long behandleSøknadForMor(TestscenarioDto testscenario) throws Exception {

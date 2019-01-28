@@ -49,14 +49,9 @@ public class Klage extends ForeldrepengerTestBase {
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         String fritekstBrev = "Fritektst til brev fra NFP.";
@@ -98,14 +93,9 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         debugLoggBehandling(klagebehandler.valgtBehandling);
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
@@ -118,7 +108,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         // KA
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla begrunnelse");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
@@ -152,14 +142,9 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("Begrunnelse NFP.");
         debugLoggBehandling(klagebehandler.valgtBehandling);
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
@@ -172,7 +157,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         // KA
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla begrunnelse");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
@@ -207,14 +192,9 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
@@ -226,7 +206,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         // KA
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
-                .godkjennAlleFormkrav(vedtaksId)
+                .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla begrunnelse");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
@@ -264,14 +244,9 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        String vedtaksId = "";
-        for (Behandling behandling : klagebehandler.behandlinger) {
-            if (behandling.type.kode.equals("BT-002")) {
-                Integer id = behandling.id;
-                vedtaksId = id.toString(); }
-        }
+        
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .klageErIkkeKonkret(vedtaksId)
+                .klageErIkkeKonkret()
                 .setBegrunnelse("blabla");
         klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);

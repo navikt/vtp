@@ -40,21 +40,19 @@ public abstract class KlageFormkravBekreftelse extends AksjonspunktBekreftelse {
         return this;
     }
 
-    public KlageFormkravBekreftelse godkjennAlleFormkrav(String vedtakId) {
+    public KlageFormkravBekreftelse godkjennAlleFormkrav() {
         erKlagerPart(true);
         erFristOverholdt(true);
         erKonkret(true);
         erSignert(true);
-        setPåklagdVedtak(vedtakId);
         return this;
     }
 
-    public KlageFormkravBekreftelse klageErIkkeKonkret(String vedtakId) {
+    public KlageFormkravBekreftelse klageErIkkeKonkret() {
         erKlagerPart(true);
         erFristOverholdt(true);
         erKonkret(false);
         erSignert(true);
-        setPåklagdVedtak(vedtakId);
         return this;
     }
 
@@ -64,6 +62,7 @@ public abstract class KlageFormkravBekreftelse extends AksjonspunktBekreftelse {
 
         public KlageFormkravNfp(Fagsak fagsak, Behandling behandling) {
             super(fagsak, behandling);
+            this.setPåklagdVedtak("" + behandling.id);
         }
     }
 
@@ -72,6 +71,7 @@ public abstract class KlageFormkravBekreftelse extends AksjonspunktBekreftelse {
 
         public KlageFormkravKa(Fagsak fagsak, Behandling behandling) {
             super(fagsak, behandling);
+            this.setPåklagdVedtak("" + behandling.id);
         }
     }
 

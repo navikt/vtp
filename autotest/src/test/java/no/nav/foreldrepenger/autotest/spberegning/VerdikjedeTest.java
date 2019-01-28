@@ -26,8 +26,6 @@ import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 
-import javax.xml.bind.JAXBElement;
-
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
     BeregningKlient klient;
@@ -178,7 +176,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 9, 15), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Arbeidstaker");
-        saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
+        saksbehandler.lagreNotat(beregning, "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Tema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 876000D, "Beregnet årsinntekt");
@@ -226,7 +224,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
+        saksbehandler.lagreNotat(beregning, "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
@@ -266,7 +264,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 11, 30), "Arbeidstaker");
-        saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
+        saksbehandler.lagreNotat(beregning, "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 444000D, "Beregnet årsinntekt");
