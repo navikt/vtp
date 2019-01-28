@@ -337,9 +337,13 @@ public class Saksbehandler extends Aktoer{
      * Setter behandling på vent
      */
     @Step("Setter behandling på vent")
-    public void settBehandlingPåVent(LocalDate frist, Kode årsak) throws Exception {
+    protected void settBehandlingPåVent(LocalDate frist, Kode årsak) throws Exception {
         behandlingerKlient.settPaVent(new BehandlingPaVent(valgtBehandling, frist, årsak));
         refreshBehandling();
+    }
+    
+    public void settBehandlingPåVent(LocalDate frist, String årsak) throws Exception {
+        settBehandlingPåVent(frist, kodeverk.Venteårsak.getKode(årsak));
     }
     
     @Step("Gjenopptar Behandling")
@@ -452,8 +456,12 @@ public class Saksbehandler extends Aktoer{
         hentFagsak(valgtFagsak.saksnummer);
     }
 
-    public void opprettBehandlingRevurdering(Kode årsak) throws Exception {
+    protected void opprettBehandlingRevurdering(Kode årsak) throws Exception {
         opprettBehandling(kodeverk.BehandlingType.getKode("Revurdering"), årsak);
+    }
+    
+    public void opprettBehandlingRevurdering(String årsak) throws Exception {
+        opprettBehandlingRevurdering(kodeverk.BehandlingÅrsakType.getKode(årsak));
     }
     
     public void oprettBehandlingInnsyn(Kode årsak) throws Exception {
@@ -609,7 +617,7 @@ public class Saksbehandler extends Aktoer{
         }, 10, "Saken har ikke fått behandling av type: " + behandlingType);
     }
     
-    public boolean harBehandling(Kode behandlingType){
+    protected boolean harBehandling(Kode behandlingType){
         for (Behandling behandling: behandlinger) {
             if (behandling.type.kode.equals(behandlingType.kode)){
                 return true;
@@ -618,7 +626,11 @@ public class Saksbehandler extends Aktoer{
         return false;
     }
     
-    public boolean harIkkeBehandling(Kode behandlingType) {
+    public boolean harBehandling(String behandlingType) {
+        return harBehandling(kodeverk.BehandlingType.getKode(behandlingType));
+    }
+    
+    public boolean harIkkeBehandling(String behandlingType) {
         return !harBehandling(behandlingType);
     }
 

@@ -27,7 +27,7 @@ public class OppretteFagsak extends FpsakTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         
-        saksbehandler.settBehandlingPåVent(LocalDate.now(), saksbehandler.kodeverk.Venteårsak.getKode("AVV_DOK"));
+        saksbehandler.settBehandlingPåVent(LocalDate.now(), "AVV_DOK");
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke satt på vent");
         
         saksbehandler.gjenopptaBehandling();

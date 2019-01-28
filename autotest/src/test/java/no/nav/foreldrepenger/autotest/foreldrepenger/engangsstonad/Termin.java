@@ -70,7 +70,7 @@ public class Termin extends EngangsstonadTestBase{
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
         saksbehandler.sendBrev("INNHEN", "Søker", "Trenger utstedt dato");
-        saksbehandler.settBehandlingPåVent(LocalDate.now().plusDays(2), saksbehandler.kodeverk.Venteårsak.getKode("AVV_DOK"));
+        saksbehandler.settBehandlingPåVent(LocalDate.now().plusDays(2), "AVV_DOK");
         
         //Todo mock brev
         //verifiser(saksbehandler.harDokument(""), "Behandling har ikke dokument");
@@ -159,7 +159,7 @@ public class Termin extends EngangsstonadTestBase{
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         
-        saksbehandler.settBehandlingPåVent(LocalDate.now(), saksbehandler.kodeverk.Venteårsak.getKode("AVV_DOK"));
+        saksbehandler.settBehandlingPåVent(LocalDate.now(), "AVV_DOK");
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke satt på vent");
         
         saksbehandler.gjenopptaBehandling();

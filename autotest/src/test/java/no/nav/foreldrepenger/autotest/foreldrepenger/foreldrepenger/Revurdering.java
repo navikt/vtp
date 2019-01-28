@@ -62,11 +62,11 @@ public class Revurdering extends ForeldrepengerTestBase {
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilØkonomioppdragFerdigstilles();
-        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-MDL"));
+        saksbehandler.opprettBehandlingRevurdering("RE-MDL");
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
-        verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Saken har ikke fått revurdering.");
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Saken har ikke fått revurdering.");
         overstyrer.velgBehandling("Revurdering");
         OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak,overstyrer.valgtBehandling);
         overstyrMedlemskapsvilkaaret.avvis(hentKodeverk().Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
@@ -128,7 +128,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerE);
         saksbehandler.ventTilSakHarBehandling("Revurdering");
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Det er ikke opprettet revurdering.");
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
         saksbehandler.velgBehandling("Revurdering");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"));
@@ -165,7 +165,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilSakHarBehandling("Revurdering");
-        verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Revurdering er ikke opprettet.");
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Revurdering er ikke opprettet.");
         saksbehandler.velgBehandling("Revurdering");
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class)
                 .setStartdatoFraSoknad(fpStartdato.plusWeeks(1))
@@ -213,5 +213,4 @@ public class Revurdering extends ForeldrepengerTestBase {
 
 
     }
-
 }

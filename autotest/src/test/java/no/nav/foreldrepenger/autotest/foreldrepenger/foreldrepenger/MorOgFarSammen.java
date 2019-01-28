@@ -41,7 +41,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         
         saksbehandler.hentFagsak(saksnummerMor);
         saksbehandler.ventTilSakHarBehandling("Revurdering");
-        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Mor har ikke fått revurdering.");
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Mor har ikke fått revurdering.");
 
         /*
         * TODO: Fortsett når økonomi er klar til å koble førstegangsbeh og revurdering. Nå: "Fant ikke forrige oppdrag"
@@ -64,13 +64,13 @@ public class MorOgFarSammen extends ForeldrepengerTestBase{
         long saksnummerFar = behandleSøknadForFarUtenOverlapp(testscenario);
         
         saksbehandler.hentFagsak(saksnummerMor);
-        verifiser(saksbehandler.harBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Saken har fått revurdering");
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Saken har fått revurdering");
         saksbehandler.velgBehandling("Revurdering");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat.");
         verifiserLikhet(saksbehandler.valgtBehandling.status.navn, "Avsluttet", "Behandlingsstatus");
 
         saksbehandler.hentFagsak(saksnummerFar);
-        verifiser(saksbehandler.harIkkeBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Revurdering")), "Far har fått revurdering han ikke skal ha");
+        verifiser(saksbehandler.harIkkeBehandling("Revurdering"), "Far har fått revurdering han ikke skal ha");
 
     }
     

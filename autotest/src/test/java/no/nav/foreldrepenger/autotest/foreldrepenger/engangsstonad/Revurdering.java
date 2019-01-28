@@ -57,7 +57,7 @@ public class Revurdering extends EngangsstonadTestBase{
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         
-        saksbehandler.opprettBehandlingRevurdering(saksbehandler.kodeverk.BehandlingÅrsakType.getKode("RE-FEFAKTA"));
+        saksbehandler.opprettBehandlingRevurdering("RE-FEFAKTA");
         saksbehandler.velgBehandling("Revurdering");
         
         saksbehandler.hentAksjonspunktbekreftelse(VarselOmRevurderingBekreftelse.class)

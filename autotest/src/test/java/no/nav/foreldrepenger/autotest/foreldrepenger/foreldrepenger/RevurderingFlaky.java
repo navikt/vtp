@@ -56,7 +56,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        verifiser(saksbehandler.harBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Saken har ikke opprettet revurdering.");
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Saken har ikke opprettet revurdering.");
         saksbehandler.velgBehandling("Revurdering");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "INGEN_ENDRING", "konsekvensForYtelsen");
@@ -165,7 +165,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
 
         // Sjekke at det ikke er opprettet revurdering på far
         saksbehandler.hentFagsak(saksnummerFar);
-        verifiser(saksbehandler.harIkkeBehandling(hentKodeverk().BehandlingType.getKode("Revurdering")), "Behandlingen har fått opprettet revurdering.");
+        verifiser(saksbehandler.harIkkeBehandling("Revurdering"), "Behandlingen har fått opprettet revurdering.");
 
     }
 

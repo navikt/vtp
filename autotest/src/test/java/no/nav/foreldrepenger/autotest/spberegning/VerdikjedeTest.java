@@ -186,7 +186,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 9, 15), "Skjæringstidspunkt");
-        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Arbeidstaker"));
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Arbeidstaker");
         saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Tema");
@@ -240,7 +240,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
-        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 696600D, "Beregnet årsinntekt");
@@ -278,7 +278,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 11, 30), saksbehandler.kodeverk.AktivitetStatus.getKode("Arbeidstaker"));
+        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 11, 30), "Arbeidstaker");
         saksbehandler.lagreNotat(beregning.getId(), "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
@@ -321,7 +321,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
-        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 2160000D, "Sum inntekt");
@@ -351,16 +351,13 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
-
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
-        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), saksbehandler.kodeverk.AktivitetStatus.getKode("Kombinert arbeidstaker og frilanser"));
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 360000D, "Sum inntekt");
@@ -382,7 +379,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), saksbehandler.kodeverk.AktivitetStatus.getKode("Frilanser"));
+        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Frilanser");
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 120000D, "Beregnet årsinntekt inkl naturalytelse");

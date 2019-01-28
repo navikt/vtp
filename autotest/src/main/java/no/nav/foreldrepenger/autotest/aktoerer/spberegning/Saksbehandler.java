@@ -66,12 +66,16 @@ public class Saksbehandler extends Aktoer{
     }
 
 
-    public void oppdaterBeregning(LocalDate skjæringstidspunkt, Kode status) throws IOException {
+    protected void oppdaterBeregning(LocalDate skjæringstidspunkt, Kode status) throws IOException {
         OppdaterBeregningDto request = new OppdaterBeregningDto(beregning.getId());
         request.setSkjæringstidspunkt(skjæringstidspunkt);
         request.setAktivitetStatusKode(status.kode);
         beregningKlient.oppdaterBeregning(request);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
+    }
+    
+    public void oppdaterBeregning(LocalDate skjæringstidspunkt, String status) throws IOException {
+        oppdaterBeregning(skjæringstidspunkt, kodeverk.AktivitetStatus.getKode(status));
     }
 
     public void lagreNotat (long beregningId, String notat, Long beregningsgrunnlagId) throws IOException {
