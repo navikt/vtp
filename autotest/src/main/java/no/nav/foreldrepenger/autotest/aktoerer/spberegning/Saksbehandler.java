@@ -78,8 +78,8 @@ public class Saksbehandler extends Aktoer{
         oppdaterBeregning(skjæringstidspunkt, kodeverk.AktivitetStatus.getKode(status));
     }
 
-    public void lagreNotat (long beregningId, String notat, Long beregningsgrunnlagId) throws IOException {
-        LagreNotatDto request = new LagreNotatDto(beregningId, notat, beregningsgrunnlagId);
+    public void lagreNotat (BeregningDto beregning, String notat, Long beregningsgrunnlagId) throws IOException {
+        LagreNotatDto request = new LagreNotatDto(beregning.getId(), notat, beregningsgrunnlagId);
         beregningKlient.lagrenotat(request);
     }
 

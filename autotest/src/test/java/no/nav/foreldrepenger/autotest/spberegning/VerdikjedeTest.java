@@ -51,13 +51,10 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
-
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
@@ -91,9 +88,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
-
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
@@ -143,7 +137,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.journalførInnektsmelding(inntektsmeldingBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
@@ -176,9 +170,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         //inntektsmeldingsBuilder.getArbeidsforhold().getGraderingIForeldrepengerListe().add(InntektsmeldingBuilder.createGraderingIForeldrepenger(
           //      BigDecimal.valueOf(50), perode));
-
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
@@ -230,9 +221,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         opphørNaturalYtelseListe.addAll(opphørNaturalytelseList);
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(800), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
-
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
+        
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
@@ -271,8 +260,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
@@ -310,15 +297,11 @@ public class VerdikjedeTest extends SpberegningTestBase {
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 6));
 
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder1.createInntektesmeldingXML());
-        System.out.println("Inntektsmelding: " + inntektsmeldingsBuilder2.createInntektesmeldingXML());
-        System.out.println("Saksnummer: " + saksnummer);
-
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder1, testscenario, Long.parseLong(saksnummer));
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder2, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
@@ -377,7 +360,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         System.out.println("Saksnummer: " + saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Frilanser");
 
