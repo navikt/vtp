@@ -22,34 +22,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 @Tag("foreldrepenger")
 public class Termin extends ForeldrepengerTestBase{
 
-    @Test
-    @DisplayName("Mor søker med ett arbeidsforhold")
-    @Description("Mor søkner med ett arbeidsforhold. Forventer at vedtak blir fattet og brev blir sendt")
-    public void MorSøkerMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("55");
-        LocalDate termindato = LocalDate.now().plusWeeks(3);
-        LocalDate startDatoForeldrepenger = termindato.minusWeeks(3);
-        
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(testscenario.getPersonopplysninger().getSøkerAktørIdent(), termindato);
-        
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
-        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        
-        saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling(saksbehandler.kodeverk.BehandlingType.getKode("Førstegangsbehandling"));
-        debugLoggBehandling(saksbehandler.valgtBehandling);
-        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
-        saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        //TODO (OL): Byttet verifisering på historikkinnslag til asynk venting. Feilet med at behandlingen ikke hadde historikkinnslag
-        //verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
-        //verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
-    }
-    
     @Test
     @DisplayName("Mor søker med ett arbeidsforhold. Inntektmelding innsendt før søknad")
     @Description("Mor med ett arbeidsforhold sender inn inntektsmelding før søknad. Forventer at vedtak bli fattet og brev blir sendt")
