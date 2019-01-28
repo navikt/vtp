@@ -11,6 +11,7 @@ public class FordelingErketyper {
 
     public static final String STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL = "FORELDREPENGER_FØR_FØDSEL";
     public static final String STØNADSKONTOTYPE_MØDREKVOTE = "MØDREKVOTE";
+    public static final String STØNADSKONTOTYPE_FEDREKVOTE = "FEDREKVOTE";
     public static final String STØNADSKONTOTYPE_FELLESPERIODE = "FELLESPERIODE";
     public static final String STØNADSKONTOTYPE_FORELDREPENGER = "FORELDREPENGER";
     public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
@@ -95,6 +96,10 @@ public class FordelingErketyper {
 
     public static Fordeling fordelingFarUtenOverlapp(LocalDate familehendelseDato) {
         return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(6).plusDays(1), familehendelseDato.plusWeeks(8)));
+    }
+
+    public static Fordeling fordelingFarHappycaseKobletMedMorHappycase(LocalDate familehendelseDato) {
+        return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, familehendelseDato.plusWeeks(10).plusDays(1), familehendelseDato.plusWeeks(16)));
     }
     
     public static Fordeling generiskFordeling(Uttaksperiode... perioder) {
