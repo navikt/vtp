@@ -155,6 +155,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @Disabled
     public void For3AtOver25AvvikPrivatArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("111");
         int inntektsmeldingMånedsbeløp = 43000;
