@@ -255,6 +255,7 @@ public class InntektsmeldingBuilder {
     }
 
     public OpphoerAvNaturalytelseListe getOpphoerAvNaturalytelsesList() {
+
         return opphoerAvNaturalytelseListe;
     }
 
@@ -610,8 +611,8 @@ public class InntektsmeldingBuilder {
 
     public DelvisFravaer createDelvisFravaer(LocalDate dato, BigDecimal antallTimer) {
         ObjectFactory objectFactory = new ObjectFactory();
-        DelvisFravaer delvisFravaer = new DelvisFravaer();
-        delvisFravaer.setDato(objectFactory.createDelvisFravaerDato(DateUtil.convertToXMLGregorianCalendar(dato)));
+        DelvisFravaer delvisFravaer = objectFactory.createDelvisFravaer();
+        delvisFravaer.setDato(objectFactory.createDelvisFravaerDato(DateUtil.convertToXMLGregorianCalendarRemoveTimezone(dato)));
         delvisFravaer.setTimer(objectFactory.createDelvisFravaerTimer(antallTimer));
 
         return delvisFravaer;
@@ -629,15 +630,17 @@ public class InntektsmeldingBuilder {
 
     public Periode createInntektsmeldingPeriode(LocalDate fom, LocalDate tom) {
         ObjectFactory objectFactory = new ObjectFactory();
-        Periode periode = new Periode();
-        periode.setFom(objectFactory.createPeriodeFom(DateUtil.convertToXMLGregorianCalendar(fom)));
-        periode.setTom(objectFactory.createPeriodeFom(DateUtil.convertToXMLGregorianCalendar(tom)));
+        Periode periode = objectFactory.createPeriode();
+        periode.setFom(objectFactory.createPeriodeFom(DateUtil.convertToXMLGregorianCalendarRemoveTimezone(fom)));
+        periode.setTom(objectFactory.createPeriodeTom(DateUtil.convertToXMLGregorianCalendarRemoveTimezone(tom)));
         return periode;
     }
 
     public JAXBElement<FravaersPeriodeListe> createFravaersPeriodeListeForOmsorgspenger(List<Periode> perioder) {
         ObjectFactory objectFactory = new ObjectFactory();
-        FravaersPeriodeListe fravaersPeriodeListe = new FravaersPeriodeListe();
+
+        FravaersPeriodeListe fravaersPeriodeListe = objectFactory.createFravaersPeriodeListe();
+
         perioder.forEach(p -> {
             fravaersPeriodeListe.getFravaerPeriode().add(p);
         });
@@ -645,9 +648,13 @@ public class InntektsmeldingBuilder {
         return objectFactory.createOmsorgspengerFravaersPerioder(fravaersPeriodeListe);
     }
 
+    public Omsorgspenger createOmsorgspenger(Boolean harUtbetaltPliktigeDager){
+        return createOmsorgspenger(null, null, harUtbetaltPliktigeDager);
+    }
+
     public Omsorgspenger createOmsorgspenger(DelvisFravaersListe delvisFravaersListe, FravaersPeriodeListe fravaersPeriodeListe, Boolean harUtbetaltPliktigeDager) {
         ObjectFactory objectFactory = new ObjectFactory();
-        Omsorgspenger omsorgspenger = new Omsorgspenger();
+        Omsorgspenger omsorgspenger = objectFactory.createOmsorgspenger();
 
         if (null != delvisFravaersListe && delvisFravaersListe.getDelvisFravaer().size() > 0) {
             omsorgspenger.setDelvisFravaersListe(objectFactory.createOmsorgspengerDelvisFravaersListe(delvisFravaersListe));
@@ -674,4 +681,7 @@ public class InntektsmeldingBuilder {
         return pleiepengerPeriodeListe;
     }
 
+    public void setFravaersPeriodeListeOmsorgspenger(List<Periode> perioder) {
+        this.omsorgspenger.setFravaersPerioder(createFravaersPeriodeListeForOmsorgspenger(perioder));
+    }
 }
