@@ -1,20 +1,19 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
-
 public class RelatertYtelseTema {
     private static Map<String, String> VALID_KODER;
     static {
         Map<String, String> koder = new LinkedHashMap<>();
-        koder.put("AAP", "Arbeidsavklaringspenger");
+        koder.put("AAP", "arbeidsavklaringspenger");
         koder.put("DAG", "Dagpenger");
         koder.put("FA", "Foreldrepenger");
         koder.put("EF", "Enslig forsørger");

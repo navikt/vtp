@@ -18,9 +18,10 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-@Tag("regresjon")
+
 @Tag("foreldrepenger")
 public class Uttak extends ForeldrepengerTestBase {
+    // Testcaser
 
     @Test
     @DisplayName("Testcase for koblet sak")
@@ -59,8 +60,8 @@ public class Uttak extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Testcase for koblet sak")
-    @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. 100% dekningsgrad.")
+    @DisplayName("Mor fødsel med ett arbeidsforhold, med gradering")
+    @Description("Mor søker fødsel med ett arbeidsforhold, en periode med gradering")
     public void testcase_enArbeidstaker_medGradering() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
@@ -119,5 +120,24 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
+
+    @Test
+    @DisplayName("Mor fødsel med Arena")
+    @Description("Mor søker fødsel med arena")
+    public void testcase_morSøkerFødsel_medArena() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("46");
+
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdatoMor = fødselsdato.minusWeeks(3);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(morAktørId, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        // Må fortsette behandling fra behandlingsmeny for å få opp at FP er innvilget og behandlingen er avsluttet (refresh 1-2 ganger)
+
+    }
+
 
 }

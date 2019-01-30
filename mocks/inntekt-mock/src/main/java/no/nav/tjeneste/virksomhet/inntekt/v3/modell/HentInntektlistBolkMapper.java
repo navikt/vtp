@@ -1,30 +1,15 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3.modell;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AapenPeriode;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektInformasjon;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsforholdFrilanser;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Inntekt;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Loennsbeskrivelse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Loennsinntekt;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Organisasjon;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Periode;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
 
 public class HentInntektlistBolkMapper {
 
@@ -96,10 +81,27 @@ public class HentInntektlistBolkMapper {
             } else if (modellPeriode.getType().equals(InntektType.PENSJON_ELLER_TRYGD)) {
                 throw new UnsupportedOperationException("Ikke implementert ennå");
             } else if (modellPeriode.getType().equals(InntektType.YTELSE_FRA_OFFENTLIGE)) {
-                throw new UnsupportedOperationException("Ikke implementert ennå");
+                YtelseFraOffentlige ytelseFraOffentlige = lagYtelseFraOffentlige(modellPeriode, aktoer);
+                inntektListe.add(ytelseFraOffentlige);
             }
         }
         return inntektListe;
+    }
+
+    private static YtelseFraOffentlige lagYtelseFraOffentlige(Inntektsperiode ip, Aktoer aktoer) {
+        YtelseFraOffentlige ytelseFraOffentlige = new YtelseFraOffentlige();
+        ytelseFraOffentlige.setBeloep(new BigDecimal(ip.getBeløp()));
+        YtelseFraOffentligeBeskrivelse beskrivelse = new YtelseFraOffentligeBeskrivelse();
+        beskrivelse.setValue(ip.getBeskrivelse());
+        ytelseFraOffentlige.setBeskrivelse(beskrivelse);
+        ytelseFraOffentlige.setInntektsmottaker(aktoer);
+        ytelseFraOffentlige.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(ip.getFom()));
+        Periode periode = new Periode();
+        periode.setStartDato(ConversionUtils.convertToXMLGregorianCalendar(ip.getFom()));
+        periode.setSluttDato(ConversionUtils.convertToXMLGregorianCalendar(ip.getTom()));
+        ytelseFraOffentlige.setOpptjeningsperiode(periode);
+
+        return ytelseFraOffentlige;
     }
 
 
