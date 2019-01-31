@@ -139,5 +139,28 @@ public class Uttak extends ForeldrepengerTestBase {
 
     }
 
+    @Test
+    @DisplayName("Testcase mor -  fødsel ")
+    @Description("har ikke barn")
+    public void testcase_enArbeidstaker_fødsl_ikkeBarn() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = LocalDate.now().minusWeeks(3);
+        LocalDate fpStartdatoSøker = fødselsdato;
+
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, fpStartdatoSøker, fpStartdatoSøker.plusWeeks(10)));
+
+        ForeldrepengesoknadBuilder søknadSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fordeling, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadSøknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerSøker = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoSøker);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerSøker, testscenario, saksnummerMor);
+    }
+
+
 
 }
