@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingNy;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingPaVent;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.BehandlingResourceRequest;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.KlageVurderingResultatAksjonspunktMellomlagringDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.Ytelsefordeling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
@@ -72,6 +73,8 @@ public class BehandlingerKlient extends FpsakKlient{
     private static final String BEHANDLING_INNTEKT_ARBEID_YTELSE_URL = BEHANDLING_URL + "/inntekt-arbeid-ytelse";
     private static final String BEHANDLING_INNSYN_URL = BEHANDLING_URL + "/innsyn?behandlingId=%s";
     private static final String BEHANDLING_KLAGE_URL = BEHANDLING_URL + "/klage?behandlingId=%s";
+    private static final String BEHANDLING_KLAGE_MELLOMLAGRE_URL = BEHANDLING_URL + "/klage/mellomlagre-klage";
+    private static final String BEHANDLING_KLAGE_MELLOMLAGRE_GJENNÅPNE_URL = BEHANDLING_URL + "/klage/mellomlagre-gjennapne-klage";
     private static final String BEHANDLING_YTELSEFORDELING_URL = BEHANDLING_URL + "/ytelsefordeling";
     
     private static final String BEHANDLING_UTTAK = BEHANDLING_URL + "/uttak";
@@ -327,6 +330,16 @@ public class BehandlingerKlient extends FpsakKlient{
     public KlageInfo klage(int behandlingId) throws IOException {
         String url = hentRestRotUrl() + String.format(BEHANDLING_KLAGE_URL, behandlingId);
         return getOgHentJson(url, KlageInfo.class, StatusRange.STATUS_SUCCESS);
+    }
+    
+    public void mellomlagre(KlageVurderingResultatAksjonspunktMellomlagringDto vurdering) throws IOException {
+        String url = hentRestRotUrl() + BEHANDLING_KLAGE_MELLOMLAGRE_URL;
+        postOgVerifiser(url, vurdering, StatusRange.STATUS_SUCCESS);
+    }
+    
+    public void mellomlagreGjennapne(KlageVurderingResultatAksjonspunktMellomlagringDto vurdering) throws IOException {
+        String url = hentRestRotUrl() + BEHANDLING_KLAGE_MELLOMLAGRE_GJENNÅPNE_URL;
+        postOgVerifiser(url, vurdering, StatusRange.STATUS_SUCCESS);
     }
     
     /*

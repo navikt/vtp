@@ -61,6 +61,20 @@ public class Klage extends ForeldrepengerTestBase {
                 .fritekstBrev(fritekstBrev)
                 .setBegrunnelse(begrunnelse);
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
+        
+        //Mellomlager og tilbakestiller
+        verifiserLikhet(klagebehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP).getStatus().kode, 
+                        "UTFO", "Vurdering av klage");
+        klagebehandler.mellomlagreOgGjennåpneKlage();
+        verifiserLikhet(klagebehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP).getStatus().kode, 
+                        "OPPR", "Vurdering av klage");
+        
+        klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
+            .bekreftMedholdUGunst("ULIK_VURDERING")
+            .fritekstBrev(fritekstBrev)
+            .setBegrunnelse(begrunnelse);
+        klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
+        
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
