@@ -140,8 +140,8 @@ public class Uttak extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Testcase mor -  fødsel ")
-    @Description("har ikke barn")
+    @DisplayName("Testcase mor uten barn søker fødsel ")
+    @Description("Mor har ikke barn registrert i TPS og søker på fødsel som skal ha skjedd 3 uker før.")
     public void testcase_enArbeidstaker_fødsl_ikkeBarn() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
 
@@ -152,7 +152,7 @@ public class Uttak extends ForeldrepengerTestBase {
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
-        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, fpStartdatoSøker, fpStartdatoSøker.plusWeeks(10)));
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, fpStartdatoSøker, fpStartdatoSøker.plusWeeks(15).minusDays(1)));
 
         ForeldrepengesoknadBuilder søknadSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fordeling, fødselsdato);
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
