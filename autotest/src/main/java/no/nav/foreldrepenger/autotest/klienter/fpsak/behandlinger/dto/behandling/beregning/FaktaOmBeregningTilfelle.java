@@ -7,6 +7,7 @@ public class FaktaOmBeregningTilfelle extends Kode {
     private static final String DISCRIMINATOR = "FAKTA_OM_BEREGNING_TILFELLE";
 
     public static final FaktaOmBeregningTilfelle VURDER_MOTTAR_YTELSE = new FaktaOmBeregningTilfelle("VURDER_MOTTAR_YTELSE", "vurder_mottar_ytelse");
+    public static final FaktaOmBeregningTilfelle FASTSETT_MAANEDSINNTEKT_FL = new FaktaOmBeregningTilfelle("FASTSETT_MAANEDSINNTEKT_FL", "");
 
     public FaktaOmBeregningTilfelle() {
         

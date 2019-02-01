@@ -7,5 +7,6 @@ public class ArbeidstakerandelUtenIMMottarYtelse {
 
     protected long andelsnr;
     protected Boolean mottarYtelse;
-
+    
+    
 }
