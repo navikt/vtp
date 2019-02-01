@@ -26,6 +26,13 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.ObjectFactory;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Utsettelsesperiode;
+import org.junit.jupiter.api.Disabled;
 
 
 @Tag("smoke")
@@ -83,7 +90,7 @@ public class Revurdering extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Endringssøknad sendes inn, revurdering opprettes.")
+    @DisplayName("Endringssøknad med ekstra uttaksperiode.")
     @Description("Førstegangsbehandling til positivt vedtak. Søker sender inn endringsøknad. Endring i uttak. Vedtak fortsatt løpende.")
     public void endringssøknad() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
@@ -207,4 +214,83 @@ public class Revurdering extends ForeldrepengerTestBase {
 
 
     }
+
+    @Test
+    @Disabled("Ikke ferdig")
+    @DisplayName("Endringssøknad med utsettelse")
+    @Description("Førstegangsbehandling til positivt vedtak. Endringssøknad med utsettelse fra bruker. Vedtak fortsatt løpende.")
+    public void endringssøknadMedUtsettelse() throws Exception {
+        // TODO: Finn ut av feil i fpsak (ExceptionCauseMessage: Mangler Beregningsgrunnlag for behandling) + inntektsmelding nr 2 sendes kun inn noen ganger
+        // TODO: Bruk debug for å få inn inntektsmelding.
+        TestscenarioDto testscenario = opprettScenario("50");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+
+        // Opprette perioder mor søker om
+        Fordeling fordeling = fordelingFørstegangsbehandlingUtsettelse(fødselsdato, fpStartdato);
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fordeling, fødselsdato);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        Long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
+        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
+
+        LocalDate utsettelseFom = fødselsdato.plusWeeks(16);
+        LocalDate utsettelseTom = fødselsdato.plusWeeks(18);
+        Fordeling fordelingUtsettelse = fordelingEndringssøknadUtsettelse(fødselsdato, orgnr, utsettelseFom, utsettelseTom);
+
+        ForeldrepengesoknadBuilder endretSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEndringUtsettelse(
+                søkerAktørIdent, fordelingUtsettelse, saksnummer.toString());
+        fordel. erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        Long saksnummerE = fordel.sendInnSøknad(endretSøknad.buildEndring(), søkerAktørIdent, søkerIdent,
+                DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
+        // Send inn ny inntektsmelding - med utsettelseperiode
+        List<InntektsmeldingBuilder> inntektsmeldingEndret = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
+        for (InntektsmeldingBuilder im : inntektsmeldingEndret) {
+            im.addUtsettelseperiode(FordelingErketyper.UTSETTELSETYPE_ARBEID, utsettelseFom, utsettelseTom);
+        }
+        fordel.sendInnInntektsmeldinger(inntektsmeldingEndret, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummerE);
+        saksbehandler.ventTilSakHarBehandling("Revurdering");
+        AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
+        verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
+
+    }
+
+    private Fordeling fordelingFørstegangsbehandlingUtsettelse(LocalDate fødselsdato, LocalDate fpStartdato) {
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, fødselsdato.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(15).minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE, fødselsdato.plusWeeks(15), fødselsdato.plusWeeks(23).minusDays(1)));
+        return fordeling;
+    }
+
+    private Fordeling fordelingEndringssøknadUtsettelse(LocalDate fødselsdato, String orgnr, LocalDate utsettelseFom, LocalDate utsettelseTom) {
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        Utsettelsesperiode utsettelsesperiode = new Utsettelsesperiode();
+        utsettelsesperiode.setErArbeidstaker(true);
+        Uttaksperiodetyper typer = new Uttaksperiodetyper();
+        typer.setKode(FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE);
+        utsettelsesperiode.setUtsettelseAv(typer);
+        Utsettelsesaarsaker aarsak = new Utsettelsesaarsaker();
+        aarsak.setKode("ARBEID");
+        utsettelsesperiode.setAarsak(aarsak);
+        utsettelsesperiode.setVirksomhetsnummer(orgnr);
+        perioder.add(FordelingErketyper.utsettelsePeriode(FordelingErketyper.UTSETTELSETYPE_ARBEID, utsettelseFom, utsettelseTom));
+        return fordeling;
+    }
+
 }

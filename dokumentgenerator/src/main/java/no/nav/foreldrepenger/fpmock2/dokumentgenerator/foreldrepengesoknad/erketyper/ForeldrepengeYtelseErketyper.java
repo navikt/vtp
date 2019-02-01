@@ -80,6 +80,13 @@ public class ForeldrepengeYtelseErketyper {
         return endringssoeknad;
     }
 
+    public static Endringssoeknad endringssoeknadUtsettelseForeldrepengerYtelseNorskBorgerINorgeFødselMor(Fordeling fordeling, String saksnummer) {
+        Endringssoeknad endringssoeknad = new Endringssoeknad();
+        endringssoeknad.setSaksnummer(saksnummer);
+        endringssoeknad.setFordeling(fordeling);
+        return endringssoeknad;
+    }
+
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFar(LocalDate fødselsdato) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());

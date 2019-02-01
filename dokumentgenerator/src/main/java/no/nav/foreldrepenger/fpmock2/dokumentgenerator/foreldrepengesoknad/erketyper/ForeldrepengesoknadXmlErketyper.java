@@ -21,6 +21,8 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.*;
+
 public class ForeldrepengesoknadXmlErketyper {
 
 
@@ -82,6 +84,13 @@ public class ForeldrepengesoknadXmlErketyper {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(3)))
                 .withEndringssoeknadYtelse(endringssoeknadForeldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger, saksnummer))
+                .withSoeker(morSoeker(aktoerId));
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEndringUtsettelse(String aktoerId, Fordeling fordeling, String saksnummer) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusDays(1)))
+                .withEndringssoeknadYtelse(endringssoeknadUtsettelseForeldrepengerYtelseNorskBorgerINorgeFødselMor(fordeling, saksnummer))
                 .withSoeker(morSoeker(aktoerId));
     }
 
