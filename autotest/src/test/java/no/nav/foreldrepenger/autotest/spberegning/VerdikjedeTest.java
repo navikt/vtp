@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jdk.jfr.Description;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.cglib.core.Local;
@@ -31,6 +33,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     BeregningKlient klient;
 
     @Test
+    @DisplayName("Motorvei for Tema FOR")
+    @Description("Skjæringstidspunkt og status blir automatisk satt. Oppretter nøkkeloppgave ved avvik over 25%")
     public void ForMotorveiOver25Avvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("110");
         int inntektsmeldingMånedsbeløp = 57000;
@@ -65,6 +69,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @DisplayName("Motorvei for Tema SYK")
+    @Description("Skjæringstidspunkt og status blir automatisk satt. Oppretter nøkkeloppgave grunnet avvik over 25%")
     public void SykMotorveiOver25Avvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("110");
         int inntektsmeldingMånedsbeløp = 57000;
@@ -103,8 +109,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @Disabled
-    public void OmsMotorveiOver25Avvik() throws Exception {
+    @DisplayName("Motorvei for Tema OMS - Omsorgspenger")
+    @Description("Skjæringstidspunkt og status blir automatisk satt. Oppretter nøkkeloppgave grunnet avvik over 25%")
+    public void OmsMotorveiOver25AvvikOmsorgspenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("110");
         int inntektsmeldingMånedsbeløp = 37000;
         BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
@@ -121,9 +128,11 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         List<Periode> perioder = new ArrayList<Periode>();
         perioder.add(inntektsmeldingBuilder.createInntektsmeldingPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 12)));
+
         Omsorgspenger omsorgspenger = inntektsmeldingBuilder.createOmsorgspenger(true);
         inntektsmeldingBuilder.setOmsorgspenger(omsorgspenger);
         inntektsmeldingBuilder.setFravaersPeriodeListeOmsorgspenger(perioder);
+
         inntektsmeldingBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
@@ -142,12 +151,68 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 1.2D, "Avvik");
+
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("Motorvei for Tema OMS - Pleiepenger")
+    @Description("Skjæringstidspunkt og status blir automatisk satt. Oppretter nøkkeloppgave grunnet avvik over 25%")
+    public void OmsMotorveiOver25AvvikPleiepenger() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("110");
+        int inntektsmeldingMånedsbeløp = 37000;
+        BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
+        LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        String Tema = "OMS";
+        String saksnummer = fordel.opprettSak(testscenario, Tema);
+
+        InntektsmeldingBuilder inntektsmeldingBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.PLEIEPENGER_BARN, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null));
+
+        List<Periode> perioder = new ArrayList<Periode>();
+        perioder.add(inntektsmeldingBuilder.createInntektsmeldingPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 12)));
+
+        PleiepengerPeriodeListe pleiepengerPeriodeListe = inntektsmeldingBuilder.createPleiepenger(perioder);
+        inntektsmeldingBuilder.setPleiepengerPeriodeListe(pleiepengerPeriodeListe);
+//        inntektsmeldingBuilder.setPleiepengerPeriodeListe(perioder);
+
+
+        inntektsmeldingBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
+                BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
+        inntektsmeldingBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
+                BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
+
+
+
+
+
+
+
+
+        System.out.println("Inntektsmelding: " + inntektsmeldingBuilder.createInntektesmeldingXML());
+        System.out.println("Saksnummer: " + saksnummer);
+
+        fordel.journalførInnektsmelding(inntektsmeldingBuilder, testscenario, Long.parseLong(saksnummer));
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+
+        verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
+        verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt");
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 0.1D, "Avvik");
 
     }
 
     @Test
     @Disabled
+    @DisplayName("Tema FOR: Flere arbeidsforhold")
+    @Description("Bruker er sjømann, arbeidsforhold hos privatperson, opphørt arbeidsforhold og naturalytelse medregnet i inntekt. Avvik over 25%")
     public void For3AtOver25AvvikPrivatArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("111");
         int inntektsmeldingMånedsbeløp = 43000;
@@ -187,6 +252,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @DisplayName("Tema SYK: Avsluttet arbeidsforhold")
+    @Description("Flere arbeidsforhold, privatperson, sjømann og avsluttet arbeidsforhold")
     public void Syk2AtAvsluttetArbeidsforholdSjømann() throws Exception {
         TestscenarioDto testscenario = opprettScenario("111");
         int inntektsmeldingMånedsbeløp = 37000;
@@ -240,6 +307,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @DisplayName("Tema OMS: Flere arbeidsforhold og manuelt fastsatt skjæringstidspunkt")
+    @Description("Tester manuell fastsettelse av skjæringstidspunkt og inntektsmelding uten perioder")
     public void OmsATOver25AvvikAvsluttetArbeidsforhold() throws Exception {
         TestscenarioDto testscenario = opprettScenario("111");
         int inntektsmeldingMånedsbeløp = 37000;
@@ -275,6 +344,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @DisplayName("Tema FOR: Komplekse beregningsregler")
+    @Description("Tester komplekse beregningsregler med restpost, flere arbeidsforhold, frilanser og arbeidstaker i samme selskap etc.")
     public void FlereATFLiSammeVirksomhet() throws Exception {
         TestscenarioDto testscenario = opprettScenario("113");
         int inntektsmeldingMånedsbeløpNr1 = 15000;
@@ -313,6 +384,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @DisplayName("Tema FOR: Kombinasjon arbeidstaker og frilanser")
+    @Description("Kombinasjon AT/FL, Inntektsmelding uten Arb.ID og test med feriepenger")
     public void ForATFLUnder25Avvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("114");
         int inntektsmeldingMånedsbeløp = 20000;
@@ -349,6 +422,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @DisplayName("Tema FOS: Test ved kun frilanserforhold")
+    @Description("Bruker har kun inntekt som frilanser. Skjæringstidspunkt og status blir manuelt satt")
     public void FosFLUnder25Avvik() throws Exception {
         TestscenarioDto testscenario = opprettScenario("115");
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
