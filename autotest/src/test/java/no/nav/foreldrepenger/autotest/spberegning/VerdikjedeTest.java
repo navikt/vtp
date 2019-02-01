@@ -8,11 +8,14 @@ import java.util.List;
 
 import io.qameta.allure.Description;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.cglib.core.Local;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
@@ -47,7 +50,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
-                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 5));
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 5));
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
@@ -122,7 +125,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
 
-
         InntektsmeldingBuilder inntektsmeldingBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.OMSORGSPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null));
 
@@ -156,7 +158,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Motorvei for Tema OMS - Pleiepenger")
     @Description("Skjæringstidspunkt og status blir automatisk satt. Oppretter nøkkeloppgave grunnet avvik over 25%")
     public void OmsMotorveiOver25AvvikPleiepenger() throws Exception {
@@ -169,7 +170,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "OMS";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-        InntektsmeldingBuilder inntektsmeldingBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.PLEIEPENGER_BARN, ÅrsakInnsendingKodeliste.NY)
+        InntektsmeldingBuilder inntektsmeldingBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.PLEIEPENGER_BARN, ÅrsakInnsendingKodeliste.NY) //TODO YtelseKodeliste må oppdateres til PLEIEPENGER
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null));
 
         List<Periode> perioder = new ArrayList<Periode>();
@@ -177,19 +178,10 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         PleiepengerPeriodeListe pleiepengerPeriodeListe = inntektsmeldingBuilder.createPleiepenger(perioder);
         inntektsmeldingBuilder.setPleiepengerPeriodeListe(pleiepengerPeriodeListe);
-//        inntektsmeldingBuilder.setPleiepengerPeriodeListe(perioder);
-
-
         inntektsmeldingBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
-
-
-
-
-
-
 
 
         System.out.println("Inntektsmelding: " + inntektsmeldingBuilder.createInntektesmeldingXML());
@@ -205,7 +197,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 0.1D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 1.2D, "Avvik");
 
     }
 
@@ -226,13 +218,13 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
-                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    9, 15));
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 9, 15));
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         //inntektsmeldingsBuilder.getArbeidsforhold().getGraderingIForeldrepengerListe().add(InntektsmeldingBuilder.createGraderingIForeldrepenger(
-          //      BigDecimal.valueOf(50), perode));
+        //      BigDecimal.valueOf(50), perode));
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
@@ -241,7 +233,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 9, 15), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Arbeidstaker");
-        saksbehandler.lagreNotat(beregning, "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
+        saksbehandler.lagreNotat(beregning, "Hei på deg", beregning.getBeregningsgrunnlag().getId());
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Tema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 876000D, "Beregnet årsinntekt");
@@ -286,12 +278,12 @@ public class VerdikjedeTest extends SpberegningTestBase {
         opphørNaturalYtelseListe.addAll(opphørNaturalytelseList);
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(800), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
-        
+
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
-        saksbehandler.lagreNotat(beregning, "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
+        saksbehandler.lagreNotat(beregning, "Hei på deg", beregning.getBeregningsgrunnlag().getId());
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
@@ -318,7 +310,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         String Tema = "OMS";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
-        List<Arbeidsforhold> arbeidsforhold=testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold();
+        List<Arbeidsforhold> arbeidsforhold = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold();
 
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.OMSORGSPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null));
@@ -333,7 +325,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 11, 30), "Arbeidstaker");
-        saksbehandler.lagreNotat(beregning, "Hei på deg",  beregning.getBeregningsgrunnlag().getId() );
+        saksbehandler.lagreNotat(beregning, "Hei på deg", beregning.getBeregningsgrunnlag().getId());
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 444000D, "Beregnet årsinntekt");
@@ -360,11 +352,11 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         InntektsmeldingBuilder inntektsmeldingsBuilder1 = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløpNr1, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
-                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 6));
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
 
         InntektsmeldingBuilder inntektsmeldingsBuilder2 = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløpNr2, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
-                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 6));
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder1, testscenario, Long.parseLong(saksnummer));
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder2, testscenario, Long.parseLong(saksnummer));
@@ -399,7 +391,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
-                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018,    10, 6));
+                .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
@@ -445,7 +437,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     public void verifiserPerioder(List<BeregningsgrunnlagPeriodeDto> perioder, List<Arbeidsforhold> arbeidsforholdListe) {
-        for(BeregningsgrunnlagPeriodeDto periode : perioder) {
+        for (BeregningsgrunnlagPeriodeDto periode : perioder) {
             verifiserBeregningsgrunnlagPrStatusOgAndel(periode.getBeregningsgrunnlagPrStatusOgAndel(), arbeidsforholdListe);
         }
     }
@@ -458,7 +450,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
             //Søk frem arbeidsforhold fra testmodellen
             Arbeidsforhold arbeidsforhold = null;
             for (Arbeidsforhold item : arbeidsforholdListe) {
-                if(item.getArbeidsgiverOrgnr().equals(orgNr)) {
+                if (item.getArbeidsgiverOrgnr().equals(orgNr)) {
                     arbeidsforhold = item;
                 }
             }
