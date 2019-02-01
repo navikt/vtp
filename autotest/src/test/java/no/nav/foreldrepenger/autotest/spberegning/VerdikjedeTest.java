@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jdk.jfr.Description;
+import io.qameta.allure.Description;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
