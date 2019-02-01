@@ -19,4 +19,24 @@ public class Beregningsgrunnlag {
     protected String ledetekstRedusert;
     protected SammenligningsgrunnlagDto sammenligningsgrunnlag;
     protected LocalDate skjaeringstidspunktBeregning;
+    
+    public int antallAktivitetStatus() {
+        return aktivitetStatus.size();
+    }
+    
+    public Kode getAktivitetStatus(int index) {
+        return aktivitetStatus.get(index);
+    }
+    
+    public int antallBeregningsgrunnlagPeriodeDto() {
+        return beregningsgrunnlagPeriode.size();
+    }
+    
+    public BeregningsgrunnlagPeriodeDto getBeregningsgrunnlagPeriode(int index) {
+        return beregningsgrunnlagPeriode.get(index);
+    }
+
+    public LocalDate getSkjaeringstidspunktBeregning() {
+        return skjaeringstidspunktBeregning;
+    }
 }

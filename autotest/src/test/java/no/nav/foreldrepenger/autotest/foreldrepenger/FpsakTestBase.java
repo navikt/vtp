@@ -98,7 +98,7 @@ public class FpsakTestBase extends TestScenarioTestBase{
                 YtelseKodeliste.FORELDREPENGER,
                 ÅrsakInnsendingKodeliste.NY,
                 fnr,
-                fpStartdato);
+                fpStartdato.plusWeeks(1));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem(
                 "FS22",
                 "1.0"));

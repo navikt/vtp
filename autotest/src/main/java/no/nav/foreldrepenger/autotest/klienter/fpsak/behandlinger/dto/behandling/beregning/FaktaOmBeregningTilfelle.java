@@ -8,6 +8,10 @@ public class FaktaOmBeregningTilfelle extends Kode {
 
     public static final FaktaOmBeregningTilfelle VURDER_MOTTAR_YTELSE = new FaktaOmBeregningTilfelle("VURDER_MOTTAR_YTELSE", "vurder_mottar_ytelse");
 
+    public FaktaOmBeregningTilfelle() {
+        
+    }
+    
     private FaktaOmBeregningTilfelle(String kode, String navn){
         super(DISCRIMINATOR, kode, navn);
     }

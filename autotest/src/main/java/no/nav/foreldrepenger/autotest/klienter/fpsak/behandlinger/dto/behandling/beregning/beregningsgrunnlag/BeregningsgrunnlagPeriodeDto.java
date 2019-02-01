@@ -18,5 +18,9 @@ public class BeregningsgrunnlagPeriodeDto {
     protected double redusertPrAar;
     protected List<Kode> periodeAarsaker;
     protected int dagsats;
-    //beregningsgrunnlagPrStatusOgAndel
+    protected List<BeregningsgrunnlagPrStatusOgAndelDto> beregningsgrunnlagPrStatusOgAndel;
+    
+    public List<BeregningsgrunnlagPrStatusOgAndelDto> getBeregningsgrunnlagPrStatusOgAndel(){
+        return beregningsgrunnlagPrStatusOgAndel;
+    }
 }
