@@ -145,8 +145,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, true);
 
     }
-
-    @Disabled
+    
     @Test
     public void morSøkerFødselSomSelvstendingNæringsdrivende_AvvikIBeregning() throws Exception {
 
@@ -162,7 +161,17 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class).godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
 
+        //Verifiser at aksjonspunkt 5042 ikke blir oprettet uten varig endring
+        saksbehandler.hentAksjonspunktbekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class)
+            .setErVarigEndretNaering(false)
+            .setBegrunnelse("Ingen endring");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class);
+        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_SELVSTENDIG_NÆRINGSDRIVENDE), "Har uventet aksjonspunkt: 5042");
+        
         saksbehandler.hentAksjonspunktbekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class)
                 .setErVarigEndretNaering(true)
                 .setBegrunnelse("Endring eller nyoppstartet begrunnelse");
@@ -174,6 +183,9 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         //verifiser skjæringstidspunkt i følge søknad
         verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getSkjaeringstidspunktBeregning(), fpStartdato);
+        
+        
+        
         
         saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
