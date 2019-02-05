@@ -23,8 +23,6 @@ public class ExpectRepository {
     private static final Logger LOG = LoggerFactory.getLogger(ExpectRepository.class);
     
     public static void hit(Mock mock, String webMethod, ExpectPredicate predicate, String data) {
-        LOG.info("Is Hit: " + mock.toString() + " - " + webMethod + " - " + predicate.get("aktør"));
-        
         List<TokenEntry> tokens = getTokenList(mock, webMethod);
         
         for (TokenEntry tokenEntry : tokens) {
