@@ -22,14 +22,20 @@ public class ExpectRepository {
     
     private static final Logger LOG = LoggerFactory.getLogger(ExpectRepository.class);
     
-    public static void hit(Mock mock, String webMethod, ExpectPredicate predicate) {
+    public static void hit(Mock mock, String webMethod, ExpectPredicate predicate, String data) {
+        LOG.info("Is Hit: " + mock.toString() + " - " + webMethod + " - " + predicate.get("aktør"));
+        
         List<TokenEntry> tokens = getTokenList(mock, webMethod);
         
         for (TokenEntry tokenEntry : tokens) {
             if(predicate == null || tokenEntry.predicate == null || predicate.entrySet().containsAll(tokenEntry.predicate.entrySet())) {
-                tokenEntry.hit();
+                tokenEntry.hit(data);
             }
         }
+    }
+    
+    public static void hit(Mock mock, String webMethod, ExpectPredicate predicate) {
+        hit(mock, webMethod, predicate, null);
     }
 
     public static void registerToken(Mock mock, String webMethod, String token, ExpectPredicate predicate) {
@@ -39,7 +45,7 @@ public class ExpectRepository {
         cleanupTokens(tokens);
     }
     
-    public static boolean isHit(Mock mock, String webMethod, String token) {
+    public static ExpectResult popToken(Mock mock, String webMethod, String token) {
         List<TokenEntry> tokens = getTokenList(mock, webMethod);
         TokenEntry foundToken = null;
         
@@ -51,8 +57,15 @@ public class ExpectRepository {
         
         tokens.remove(foundToken);
         
+        return new ExpectResult(foundToken.isHit, foundToken.data);
+    }
+    
+    /*
+    public static boolean isHit(Mock mock, String webMethod, String token) {
+        ExpectResult foundToken = popToken(mock, webMethod, token);
         return foundToken != null ? foundToken.isHit : false;
     }
+    */
     
     private static void cleanupTokens(List<TokenEntry> tokens) {
         for(int i = tokens.size() - 1; i >= 0; i--) {
@@ -77,6 +90,7 @@ public class ExpectRepository {
         public Map<String, String> predicate;
         public LocalDateTime expires = LocalDateTime.now().plusMinutes(5);
         public boolean isHit = false;
+        public String data = null;
         
         public TokenEntry(String token, ExpectPredicate predicate) {
             super();
@@ -84,8 +98,9 @@ public class ExpectRepository {
             this.predicate = predicate;
         }
         
-        public void hit() {
-            isHit = true;
+        public void hit(String data) {
+            this.isHit = true;
+            this.data = data;
         }
         
         public boolean hasExpired() {

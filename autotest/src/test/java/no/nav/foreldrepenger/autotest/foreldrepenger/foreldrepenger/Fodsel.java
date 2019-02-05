@@ -7,7 +7,6 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -468,7 +467,9 @@ public class Fodsel extends ForeldrepengerTestBase {
         beslutter.hentFagsak(saksnummer);
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK));
+            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK));
+
+        ExpectTokenDto expectXml = expectKlient.createExpectation(new ExpectRequestDto(Mock.DOKUMENTPRODUKSJON.toString(), "produserIkkeredigerbartDokument", new ExpectPredicate("aktør", søkerIdent)));
 
         beslutter.fattVedtakOgVentTilAvsluttetSak();
 
@@ -477,6 +478,11 @@ public class Fodsel extends ForeldrepengerTestBase {
         
         ExpectResultDto result = expectKlient.checkExpectation(token);
         verifiser(result.isExpectationMet(), "Forventningen er ikke møtt");
+        
+        result = expectKlient.checkExpectation(expectXml);
+        verifiser(result.isExpectationMet(), "xml brev ikke truffet");
+        System.out.println(result.getResultData());
+        verifiser(result.getResultData().equals("Hello World"), "ikke korrekt data");
     }
 
     @Test

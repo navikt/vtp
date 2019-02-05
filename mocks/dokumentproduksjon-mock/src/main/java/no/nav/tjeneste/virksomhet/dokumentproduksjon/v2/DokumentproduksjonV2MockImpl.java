@@ -1,12 +1,24 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 
+import java.io.StringWriter;
+
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import no.nav.foreldrepenger.fpmock2.felles.ExpectPredicate;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
@@ -100,6 +112,12 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     @Override
     public ProduserIkkeredigerbartDokumentResponse produserIkkeredigerbartDokument(ProduserIkkeredigerbartDokumentRequest request) throws ProduserIkkeredigerbartDokumentDokumentErRedigerbart, ProduserIkkeredigerbartDokumentDokumentErVedlegg {
         Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
+        
+        ExpectRepository.hit(Mock.DOKUMENTPRODUKSJON,
+                "produserIkkeredigerbartDokument", 
+                new ExpectPredicate("aktør", ((Person) bruker).getIdent()),
+                xmlToString(((Element)request.getBrevdata()).getOwnerDocument()));
+        
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
 
 
@@ -148,5 +166,23 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     @Override
     public void endreDokumentTilRedigerbart(EndreDokumentTilRedigerbartRequest endreDokumentTilRedigerbartRequest) throws EndreDokumentTilRedigerbartJournalpostIkkeUnderArbeid, EndreDokumentTilRedigerbartJournalpostIkkeFunnet, EndreDokumentTilRedigerbartDokumentIkkeRedigerbart, EndreDokumentTilRedigerbartDokumentIkkeFunnet, EndreDokumentTilRedigerbartDokumentAlleredeRedigerbart, EndreDokumentTilRedigerbartDokumentErAvbrutt {
         throw new UnsupportedOperationException("Ikke implementert");
+    }
+    
+    private String xmlToString(final Document document) {
+        try {
+            StringWriter writer = new StringWriter();
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            
+            transformer.transform(new DOMSource(document), new StreamResult(writer));
+            return writer.toString();
+        } catch (Exception e) {
+            String message = "Kunne ikke produsere text fra xml: " + e.getMessage();
+            LOG.warn(message);
+            return message;
+        }
     }
 }

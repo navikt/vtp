@@ -30,6 +30,7 @@
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>core</artifactId>
         </dependency>
+        
 
     </dependencies>
 

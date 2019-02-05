@@ -6,12 +6,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ExpectResultDto {
 
     protected boolean isExpectationMet;
+    protected String resultData;
     
     public ExpectResultDto() {
     }
 
     public boolean isExpectationMet() {
         return isExpectationMet;
+    }
+    
+    public String getResultData() {
+        return resultData;
     }
     
     

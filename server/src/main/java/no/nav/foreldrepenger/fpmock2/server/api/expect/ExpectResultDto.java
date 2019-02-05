@@ -15,11 +15,16 @@ public class ExpectResultDto {
     @ApiModelProperty
     protected boolean isExpectationMet;
     
+    @JsonProperty("resultData")
+    @ApiModelProperty
+    protected String resultData;
+    
     public ExpectResultDto() {
         
     }
     
-    public ExpectResultDto(boolean result) {
-        isExpectationMet = result;
+    public ExpectResultDto(boolean result, String resultData) {
+        this.isExpectationMet = result;
+        this.resultData = resultData;
     }
 }

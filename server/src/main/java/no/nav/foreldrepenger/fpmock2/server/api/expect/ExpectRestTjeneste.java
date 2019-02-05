@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectResult;
 
 @Api(tags = { "Expect" })
 @Path("/api/expect")
@@ -57,8 +58,9 @@ public class ExpectRestTjeneste {
             throw new Exception("Må angi felt 'token'");
         }
         
-        boolean result = ExpectRepository.isHit(token.getMock(), token.getWebMethod(), token.getToken());
-        ExpectResultDto response = new ExpectResultDto(result);
+        ExpectResult result = ExpectRepository.popToken(token.getMock(), token.getWebMethod(), token.getToken());
+        
+        ExpectResultDto response = new ExpectResultDto(result.isHit(), result.getData());
         return response;
     }
 }
