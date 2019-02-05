@@ -193,7 +193,7 @@ public class InntektsmeldingBuilder {
         this.arbeidsgiverPrivat = arbeidsgiverPrivat;
     }
 
-    public ArbeidsgiverPrivat createArbeidsgiverPrivat(String arbeidsgiverFnr) {
+    public static ArbeidsgiverPrivat createArbeidsgiverPrivat(String arbeidsgiverFnr) {
         ArbeidsgiverPrivat arbeidsgiverPrivat = new ArbeidsgiverPrivat();
         arbeidsgiverPrivat.setArbeidsgiverFnr(arbeidsgiverFnr);
         Kontaktinformasjon kontaktinformasjon = new Kontaktinformasjon();
