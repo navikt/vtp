@@ -180,7 +180,7 @@ public class Fodsel extends EngangsstonadTestBase{
         beslutter.fattVedtakOgGodkjennØkonomioppdrag();
         
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        verifiserLikhet(beslutter.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse(), 2 * SATS_2018);
+        verifiserLikhet(beslutter.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse(), 2 * SATS_2019);
     }
     
     @Test

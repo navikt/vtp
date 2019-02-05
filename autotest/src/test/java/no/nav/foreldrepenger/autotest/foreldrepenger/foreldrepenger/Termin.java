@@ -52,13 +52,11 @@ public class Termin extends ForeldrepengerTestBase{
 
         saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
-        //verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
-        //verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
     }
     
     @Test
     @DisplayName("Mor søker sak behandlet før inntektsmelding mottatt")
-    @Description("Mor søker sak behandlet før inntektsmelding mottatt")
+    @Description("Mor søker og saken  blir behandlet før inntektsmelding er mottat, så blir inntektsmeldingen mottatt")
     public void MorSøkerMedEttArbeidsforholdInntektsmeldingPåGjennopptattSøknad() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         LocalDate termindato = LocalDate.now().plusWeeks(3);
