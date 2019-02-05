@@ -6,8 +6,11 @@ import java.util.Properties;
 import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class ZooKeeperLocal {
+    Logger LOG = LoggerFactory.getLogger(ZooKeeperLocal.class);
 
     ZooKeeperServerMain zooKeeperServer;
 
@@ -28,8 +31,7 @@ class ZooKeeperLocal {
                 try {
                     zooKeeperServer.runFromConfig(configuration);
                 } catch (IOException e) {
-                    System.out.println("ZooKeeper Failed");
-                    e.printStackTrace(System.err);
+                    LOG.error("Zookeeper failed: {}",e.getMessage());
                 }
             }
         ).start();
