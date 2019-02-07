@@ -9,4 +9,12 @@ public class EndringBeregningsgrunnlagDto {
 
     protected List<EndringBeregningsgrunnlagPeriodeDto> endringBeregningsgrunnlagPerioder;
     protected List<EndringBeregningsgrunnlagArbeidsforholdDto> endredeArbeidsforhold;
+
+    public List<EndringBeregningsgrunnlagPeriodeDto> getEndringBeregningsgrunnlagPerioder() {
+        return endringBeregningsgrunnlagPerioder;
+    }
+
+    public List<EndringBeregningsgrunnlagArbeidsforholdDto> getEndredeArbeidsforhold() {
+        return endredeArbeidsforhold;
+    }
 }

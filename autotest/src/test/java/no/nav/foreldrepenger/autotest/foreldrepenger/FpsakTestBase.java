@@ -1,5 +1,17 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.BeforeEach;
+
 import no.nav.foreldrepenger.autotest.TestScenarioTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
@@ -12,12 +24,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arb
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import org.junit.jupiter.api.BeforeEach;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class FpsakTestBase extends TestScenarioTestBase{
 
@@ -116,6 +122,14 @@ public class FpsakTestBase extends TestScenarioTestBase{
                 _refusjon,
                 null,
                 Collections.emptyList())));
+        return builder;
+    }
+
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilderMedGradering(Integer beløp, String fnr, LocalDate fpStartdato, String orgNr,
+                                                               Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon,
+                                                               Integer arbeidsprosent, LocalDate graderingFom, LocalDate graderingTom) {
+        InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(beløp, fnr, fpStartdato, orgNr, arbeidsforholdId, refusjon);
+        builder.addGradertperiode(BigDecimal.valueOf(arbeidsprosent), graderingFom, graderingTom);
         return builder;
     }
 

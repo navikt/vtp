@@ -18,4 +18,40 @@ public class ArbeidstakerUtenInntektsmeldingAndelDto {
     protected boolean lagtTilAvSaksbehandler;
     protected boolean fastsattAvSaksbehandler;
     protected List<Double> andelIArbeid;
+
+    public boolean isMottarYtelse() {
+        return mottarYtelse;
+    }
+
+    public double getInntektPrMnd() {
+        return inntektPrMnd;
+    }
+
+    public int getAndelsnr() {
+        return andelsnr;
+    }
+
+    public BeregningsgrunnlagArbeidsforholdDto getArbeidsforhold() {
+        return arbeidsforhold;
+    }
+
+    public Kode getInntektskategori() {
+        return inntektskategori;
+    }
+
+    public Kode getAktivitetStatus() {
+        return aktivitetStatus;
+    }
+
+    public boolean isLagtTilAvSaksbehandler() {
+        return lagtTilAvSaksbehandler;
+    }
+
+    public boolean isFastsattAvSaksbehandler() {
+        return fastsattAvSaksbehandler;
+    }
+
+    public List<Double> getAndelIArbeid() {
+        return andelIArbeid;
+    }
 }

@@ -13,4 +13,32 @@ public class BeregningsgrunnlagArbeidsforholdDto {
     protected String arbeidsforholdId;
     protected Kode arbeidsforholdType;
     protected AktørId aktørId;
+
+    public String getArbeidsgiverNavn() {
+        return arbeidsgiverNavn;
+    }
+
+    public String getArbeidsgiverId() {
+        return arbeidsgiverId;
+    }
+
+    public String getStartdato() {
+        return startdato;
+    }
+
+    public String getOpphoersdato() {
+        return opphoersdato;
+    }
+
+    public String getArbeidsforholdId() {
+        return arbeidsforholdId;
+    }
+
+    public Kode getArbeidsforholdType() {
+        return arbeidsforholdType;
+    }
+
+    public AktørId getAktørId() {
+        return aktørId;
+    }
 }

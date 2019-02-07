@@ -32,6 +32,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Personopplysning;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Soknad;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Verge;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.VilkarStatusKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatMedUttaksplan;
@@ -580,8 +581,40 @@ public class Saksbehandler extends Aktoer{
     }
 
 
+    /*
+     * Aksjonspunkt
+     */
+    @Step("Venter på aksjonspunkt {tekst}")
+    public void ventTilAksjonspunkt(String kode) throws Exception {
+        if(harAksjonspunkt(kode)) {
+            return;
+        }
+        Vent.til( () -> {
+            refreshBehandling();
+            return harAksjonspunkt(kode);
+        }, 10, "Saken  hadde ikke aksjonspunkt " + kode);
+    }
 
-    
+    /*
+     * Vilkår
+     */
+    @Step("Venter på vilkår {tekst}")
+    public void ventTilVilkårVurdert(String kode) throws Exception {
+        if(harVurdertVilkår(kode)) {
+            return;
+        }
+        Vent.til( () -> {
+            refreshBehandling();
+            return harVurdertVilkår(kode);
+        }, 10, "Saken  hadde ikke aksjonspunkt " + kode);
+    }
+
+    private boolean harVurdertVilkår(String kode) {
+        return valgtBehandling.vilkar != null && valgtBehandling.vilkar.stream().anyMatch(v -> v.getVilkarType().kode.equals(kode) &&
+                !v.getVilkarStatus().kode.equals(VilkarStatusKoder.IKKE_VURDERT));
+    }
+
+
     /*
      * Behandlingsstatus
      */

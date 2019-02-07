@@ -11,4 +11,21 @@ public class VurderMottarYtelseDto {
     protected boolean frilansMottarYtelse;
     protected double frilansInntektPrMnd;
     protected List<ArbeidstakerUtenInntektsmeldingAndelDto> arbeidstakerAndelerUtenIM;
+
+
+    public boolean isErFrilans() {
+        return erFrilans;
+    }
+
+    public boolean isFrilansMottarYtelse() {
+        return frilansMottarYtelse;
+    }
+
+    public double getFrilansInntektPrMnd() {
+        return frilansInntektPrMnd;
+    }
+
+    public List<ArbeidstakerUtenInntektsmeldingAndelDto> getArbeidstakerAndelerUtenIM() {
+        return arbeidstakerAndelerUtenIM;
+    }
 }

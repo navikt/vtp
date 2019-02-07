@@ -39,4 +39,9 @@ public class Beregningsgrunnlag {
     public LocalDate getSkjaeringstidspunktBeregning() {
         return skjaeringstidspunktBeregning;
     }
+
+    public FaktaOmBeregningDto getFaktaOmBeregning() {
+        return faktaOmBeregning;
+    }
+
 }

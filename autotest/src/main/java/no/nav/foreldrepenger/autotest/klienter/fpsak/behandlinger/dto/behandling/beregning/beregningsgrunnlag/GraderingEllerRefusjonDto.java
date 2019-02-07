@@ -11,5 +11,20 @@ public class GraderingEllerRefusjonDto {
     protected boolean erGradering;
     protected LocalDate fom;
     protected LocalDate tom;
-    
+
+    public boolean isErRefusjon() {
+        return erRefusjon;
+    }
+
+    public boolean isErGradering() {
+        return erGradering;
+    }
+
+    public LocalDate getFom() {
+        return fom;
+    }
+
+    public LocalDate getTom() {
+        return tom;
+    }
 }

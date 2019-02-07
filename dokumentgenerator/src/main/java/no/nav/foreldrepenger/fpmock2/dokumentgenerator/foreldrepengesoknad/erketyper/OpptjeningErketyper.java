@@ -6,12 +6,14 @@ import java.util.List;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Periode;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.AnnenOpptjening;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.EgenNaering;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Frilans;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Frilansoppdrag;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.NorskOrganisasjon;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Opptjening;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Regnskapsfoerer;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.AnnenOpptjeningTyper;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Land;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Virksomhetstyper;
 
@@ -80,6 +82,28 @@ public class OpptjeningErketyper {
         naering.setErNyIArbeidslivet(false);
 
         naeringer.add(naering);
+        return opptjening;
+
+    }
+
+    public static Opptjening medVentelonnVartpengerOpptjening(){
+        Opptjening opptjening = new Opptjening();
+        List<AnnenOpptjening> annenOpptjening = opptjening.getAnnenOpptjening();
+        AnnenOpptjening ventelonn = new AnnenOpptjening();
+        AnnenOpptjeningTyper type = new AnnenOpptjeningTyper();
+        type.setKode("VENTELØNN");
+        ventelonn.setType(type);
+        Periode periode = new Periode();
+        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(4)));
+        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
+        ventelonn.setPeriode(periode);
+        annenOpptjening.add(ventelonn);
+        AnnenOpptjening vartpenger = new AnnenOpptjening();
+        AnnenOpptjeningTyper type2 = new AnnenOpptjeningTyper();
+        type2.setKode("VARTPENGER");
+        vartpenger.setType(type2);
+        vartpenger.setPeriode(periode);
+        annenOpptjening.add(vartpenger);
         return opptjening;
 
     }

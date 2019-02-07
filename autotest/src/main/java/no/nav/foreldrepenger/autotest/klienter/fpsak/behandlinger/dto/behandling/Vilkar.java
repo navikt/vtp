@@ -8,4 +8,12 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class Vilkar {
     protected Kode vilkarType;
     protected Kode vilkarStatus;
+
+    public Kode getVilkarType() {
+        return vilkarType;
+    }
+
+    public Kode getVilkarStatus() {
+        return vilkarStatus;
+    }
 }

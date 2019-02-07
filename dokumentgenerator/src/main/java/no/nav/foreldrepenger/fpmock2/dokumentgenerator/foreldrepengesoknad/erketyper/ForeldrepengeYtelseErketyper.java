@@ -140,6 +140,14 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
+
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorVentelonnVartpenger(LocalDate fodselsdato) {
+        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fodselsdato);
+        foreldrepenger.setOpptjening(OpptjeningErketyper.medEgenNaeringOpptjening());
+        foreldrepenger.setOpptjening(OpptjeningErketyper.medVentelonnVartpengerOpptjening());
+        return foreldrepenger;
+    }
+
     public static Dekningsgrad standardDekningsgrader(){
         Dekningsgrad dekningsgrad = new Dekningsgrad();
         Dekningsgrader dekningsgrader = new Dekningsgrader();

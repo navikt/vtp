@@ -84,6 +84,7 @@ public class AksjonspunktKoder {
     public static final String FASTSETT_BEREGNINGSGRUNNLAG_TIDSBEGRENSET_ARBEIDSFORHOLD = new String("5047"); //$NON-NLS-1$
     public static final String FASTSETT_BEREGNINGSGRUNNLAG_FOR_SN_NY_I_ARBEIDSLIVET = new String("5049"); //$NON-NLS-1$
     public static final String AVKLAR_BEREGNINGSGRUNNLAG_OG_INNTEKTSKATEGORI_FOR_BRUKER_MED_TILSTØTENDE_YTELSE = new String("5050"); //$NON-NLS-1$
+    public static final String AVKLAR_AKTIVITETER = new String("5052"); //$NON-NLS-1$
 
     public static final String MANUELL_KONTROLL_AV_OM_BRUKER_HAR_ALENEOMSORG = new String("5060"); //$NON-NLS-1$
     public static final String VURDER_VARIG_ENDRET_ELLER_NYOPPSTARTET_NÆRING_SELVSTENDIG_NÆRINGSDRIVENDE = new String("5039");
