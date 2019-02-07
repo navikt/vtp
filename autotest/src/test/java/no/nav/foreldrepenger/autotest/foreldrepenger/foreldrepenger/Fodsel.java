@@ -25,6 +25,7 @@ import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
+import no.nav.foreldrepenger.autotest.domain.foreldrepenger.BrevMalXml;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettBruttoBeregningsgrunnlagSNBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -481,8 +482,13 @@ public class Fodsel extends ForeldrepengerTestBase {
         
         result = expectKlient.checkExpectation(expectXml);
         verifiser(result.isExpectationMet(), "xml brev ikke truffet");
-        System.out.println(result.getResultData());
-        verifiser(result.getResultData().equals("Hello World"), "ikke korrekt data");
+        
+        String xml = result.getResultData();
+        System.out.println(xml);
+        BrevMalXml mal1 = BrevMalXml.fromString(xml);
+        BrevMalXml mal2 = BrevMalXml.fromString(xml);
+        
+        verifiser(mal1.isComparable(mal2));
     }
 
     @Test
