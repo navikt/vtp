@@ -70,6 +70,7 @@
 		<joark.journalv3.version>3.1.5</joark.journalv3.version>
 		<joark.inngaaendejournal.version>1.1.3</joark.inngaaendejournal.version>
 		<joark.behandleinngaaendejournal.version>1.0.1</joark.behandleinngaaendejournal.version>
+		<joark.behandlejournalv3.version>3.0.2</joark.behandlejournalv3.version>
 		<tps.aktoer.version>2.0.1</tps.aktoer.version>
 		<tps.person.version>3.4.1</tps.person.version>
 		<medlem.version>2.0.6</medlem.version>
@@ -183,6 +184,7 @@
 				<artifactId>sigrun-mock</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
 
 			<dependency>
 				<groupId>no.nav.vedtak.fpmock2</groupId>
@@ -333,6 +335,12 @@
 				<groupId>no.nav.tjenester</groupId>
 				<artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
 				<version>${joark.behandleinngaaendejournal.version}</version>
+				<classifier>jaxws</classifier>
+			</dependency>
+			<dependency>
+				<groupId>no.nav.tjenester.fim</groupId>
+				<artifactId>nav-fim-behandleJournal-v3-tjenestespesifikasjon</artifactId>
+				<version>${joark.behandlejournalv3.version}</version>
 				<classifier>jaxws</classifier>
 			</dependency>
 			<dependency>

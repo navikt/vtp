@@ -16,6 +16,7 @@ import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
+import no.nav.tjeneste.virksomhet.behandlejournal.v3.BehandleJournalV3ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandlesak.v2.BehandleSak2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.DokumentproduksjonV2MockImpl;
@@ -75,6 +76,7 @@ public class SoapWebServiceConfig {
         publishWebService(new OppgaveServiceMockImpl(), "/nav-gsak-ws/OppgaveV3");
         publishWebService(new ArbeidsforholdMockImpl(repo), "/aareg-core/ArbeidsforholdService/v3");
         publishWebService(new OrganisasjonMockImpl(repo), "/ereg/ws/OrganisasjonService/v4");
+        publishWebService(new BehandleJournalV3ServiceMockImpl(),"/services/behandlejournal/v3");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
