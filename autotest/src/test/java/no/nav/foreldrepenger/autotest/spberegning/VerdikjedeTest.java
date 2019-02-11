@@ -218,17 +218,14 @@ public class VerdikjedeTest extends SpberegningTestBase {
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 9, 15));
-
-
-
-
-
-
-
+                inntektsmeldingsBuilder.setNaaerRelasjon(true); //Hvorfor må jeg sette inntektsmeldingBuilder og ikke kun .set på denne?
+        inntektsmeldingsBuilder.addGradertperiode(BigDecimal.valueOf(50), LocalDate.of(2018, 12,10), LocalDate.of(2018,12,15)); //Hvorfor ser jeg ikke denne i inntektsmeldingGrunnlag?
+        inntektsmeldingsBuilder.addUtsettelseperiode("ARBEID", LocalDate.of(2018,12,10),LocalDate.of(2018,12,15));
 
 
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
+//        System.out.println("Inntektsmelding: " + inntektsmeldingBuilder.createInntektesmeldingXML());
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
