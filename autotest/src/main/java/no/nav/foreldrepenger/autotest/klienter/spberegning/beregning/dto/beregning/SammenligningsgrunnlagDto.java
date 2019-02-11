@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SammenligningsgrunnlagDto {
     
-    protected Double avvikPromille;
+    protected Double avvikProsent;
     protected LocalDate sammenligningsgrunnlagFom;
     protected LocalDate sammenligningsgrunnlagTom;
     protected Double rapportertPrAar;
@@ -27,8 +27,9 @@ public class SammenligningsgrunnlagDto {
         return rapportertPrAar;
     }
 
-    public Double getAvvikPromille() {
-        return avvikPromille;
+
+    public Double getAvvikProsent() {
+        return avvikProsent;
     }
     
     

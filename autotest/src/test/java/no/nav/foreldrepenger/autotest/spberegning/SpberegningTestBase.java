@@ -100,15 +100,15 @@ public class SpberegningTestBase extends TestBase{
                 arbeidsforholdId,
                 null,
                 new BigDecimal(beløp),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                new ArrayList<>()));
+                new ArrayList<>(),          //UtsettelseAvForeldrepenger
+                new ArrayList<>(),          //GraderingIForeldrepenger
+                new ArrayList<>()));        //avtaltFerieListe
 
         return builder;
     }
 
-    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
-        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, "", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
-    }
+//    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
+//        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, "", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
+//    }
 
 }

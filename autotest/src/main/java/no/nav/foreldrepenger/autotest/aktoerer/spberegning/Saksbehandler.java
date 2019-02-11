@@ -102,7 +102,7 @@ public class Saksbehandler extends Aktoer{
     }
 
     public Double getAvvikIProsent() {
-        return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getAvvikPromille() / 10;
+        return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getAvvikProsent();
     }
 
     public LocalDate getSkjæringstidspunkt() {
