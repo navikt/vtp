@@ -178,6 +178,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         PleiepengerPeriodeListe pleiepengerPeriodeListe = inntektsmeldingBuilder.createPleiepenger(perioder);
         inntektsmeldingBuilder.setPleiepengerPeriodeListe(pleiepengerPeriodeListe);
+
         inntektsmeldingBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
@@ -222,10 +223,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.addGradertperiode(BigDecimal.valueOf(50), LocalDate.of(2018, 12,10), LocalDate.of(2018,12,15)); //Hvorfor ser jeg ikke denne i inntektsmeldingGrunnlag?
         inntektsmeldingsBuilder.addUtsettelseperiode("ARBEID", LocalDate.of(2018,12,10),LocalDate.of(2018,12,15));
 
-
-
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
-//        System.out.println("Inntektsmelding: " + inntektsmeldingBuilder.createInntektesmeldingXML());
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
@@ -273,6 +271,12 @@ public class VerdikjedeTest extends SpberegningTestBase {
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
                         BigDecimal.valueOf(0), perioder, BegrunnelseIngenEllerRedusertUtbetalingKodeliste.LOVLIG_FRAVAER));
+
+        List<Periode> feriePerioder = new ArrayList<>();
+        feriePerioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 12, 5), LocalDate.of(2018, 12, 9)));
+        inntektsmeldingsBuilder.createAvtaltFerie(feriePerioder);
+
+
         List<NaturalytelseDetaljer> opphørNaturalYtelseListe = inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse();
         opphørNaturalYtelseListe.addAll(opphørNaturalytelseList);
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
@@ -293,8 +297,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 710000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 1.89D, "Avvik");
         verifiserLikhet(saksbehandler.getSjømann(), true);
-//        verifiserPerioder(saksbehandler.beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode(), testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold());
-
     }
 
     @Test
@@ -433,37 +435,5 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 120000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 0D, "Avvik");
-    }
-
-    public void verifiserPerioder(List<BeregningsgrunnlagPeriodeDto> perioder, List<Arbeidsforhold> arbeidsforholdListe) {
-        for (BeregningsgrunnlagPeriodeDto periode : perioder) {
-            verifiserBeregningsgrunnlagPrStatusOgAndel(periode.getBeregningsgrunnlagPrStatusOgAndel(), arbeidsforholdListe);
-        }
-    }
-
-    public void verifiserBeregningsgrunnlagPrStatusOgAndel(List<BeregningsgrunnlagPrStatusOgAndelDto> grunnlagListe, List<Arbeidsforhold> arbeidsforholdListe) {
-        for (BeregningsgrunnlagPrStatusOgAndelDto grunnlag : grunnlagListe) {
-
-            String orgNr = grunnlag.getOrgNummer();
-
-            //Søk frem arbeidsforhold fra testmodellen
-            Arbeidsforhold arbeidsforhold = null;
-            for (Arbeidsforhold item : arbeidsforholdListe) {
-                if (item.getArbeidsgiverOrgnr().equals(orgNr)) {
-                    arbeidsforhold = item;
-                }
-            }
-
-            verifiser(arbeidsforhold != null, "Fant ikke arbeidsforhold i testmodellen: " + orgNr);
-
-            verifiserAktivitetsAvtaler(grunnlag.getAktivitetsAvtaleDto(), arbeidsforhold);
-        }
-    }
-
-    public void verifiserAktivitetsAvtaler(List<AktivitetsAvtaleDto> arbeidsavtaler, Arbeidsforhold arbeidsforhold) {
-        for (AktivitetsAvtaleDto arbeidsavtale : arbeidsavtaler) {
-            verifiserLikhet(arbeidsavtale.getArbeidsprosent().intValue(), arbeidsforhold.getArbeidsavtaler().get(0).getStillingsprosent(), "feil arbeidsprosent");
-            verifiserLikhet(arbeidsavtale.getOppstartArbeidsforhold(), arbeidsforhold.getAnsettelsesperiodeFom(), "feil Oppstartsdato");
-        }
     }
 }

@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper;
 
 
+import java.io.PushbackInputStream;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -248,6 +249,15 @@ public class InntektsmeldingBuilder {
         return this;
     }
 
+    public AvtaltFerieListe createAvtaltFerie(List<Periode> perioder){
+        AvtaltFerieListe avtaltFerieListe = new AvtaltFerieListe();
+        perioder.forEach(av -> {    //TODO Hvorfor bruker vi forkortelsen av og hva betyr ->? se pleiepenger
+            avtaltFerieListe.getAvtaltFerie().add(av);
+        });
+        ObjectFactory objectFactory = new ObjectFactory();
+        arbeidsforhold.setAvtaltFerieListe(objectFactory.createArbeidsforholdAvtaltFerieListe(avtaltFerieListe));
+        return avtaltFerieListe;
+    }
 
     public InntektsmeldingBuilder setStartdatoForeldrepengeperiodenFOM(LocalDate startdatoForeldrepengeperiodenFOM) {
         this.startdatoForeldrepengeperiodenFOM = startdatoForeldrepengeperiodenFOM;
