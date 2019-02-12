@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.qameta.allure.Description;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
-import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.AktivitetsAvtaleDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
-import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPeriodeDto;
-import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
@@ -157,9 +156,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
+    @Disabled //TODO YtelseKodeliste må oppdateres til PLEIEPENGER
     @DisplayName("Motorvei for Tema OMS - Pleiepenger")
     @Description("Skjæringstidspunkt og status blir automatisk satt. Oppretter nøkkeloppgave grunnet avvik over 25%")
-    @Disabled //TODO YtelseKodeliste må oppdateres til PLEIEPENGER
     public void OmsMotorveiOver25AvvikPleiepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("110");
         int inntektsmeldingMånedsbeløp = 37000;
@@ -203,7 +202,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @Disabled
+    @Disabled //TODO VTP mangler støtte for validering av privat arbeidsgiver(TPS mock)
     @DisplayName("Tema FOR: Flere arbeidsforhold")
     @Description("Bruker er sjømann, arbeidsforhold hos privatperson, opphørt arbeidsforhold og naturalytelse medregnet i inntekt. Avvik over 25%")
     public void For3AtOver25AvvikPrivatArbeidsforhold() throws Exception {
@@ -274,8 +273,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         List<Periode> feriePerioder = new ArrayList<>();
         feriePerioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 12, 5), LocalDate.of(2018, 12, 9)));
-        inntektsmeldingsBuilder.createAvtaltFerie(feriePerioder);
-
+        inntektsmeldingsBuilder.addAvtaltFerie(feriePerioder);
 
         List<NaturalytelseDetaljer> opphørNaturalYtelseListe = inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse();
         opphørNaturalYtelseListe.addAll(opphørNaturalytelseList);
@@ -374,6 +372,48 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 2100000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 2.86D, "Avvik");
+    }
+
+    @Test
+    @DisplayName("Tema FOR: Svangerskapspenger")
+    @Description("Kombinasjon AT/FL, Status arbeidstaker, Full inntektsmelding for Svangerskapspenger")
+    public void ForATFLSvangerskapsPenger() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("114");
+        int inntektsmeldingMånedsbeløp = 37000;
+        BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(37000);
+        LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
+
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        String Tema = "FOR";
+        String saksnummer = fordel.opprettSak(testscenario, Tema);
+
+
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.SVANGERSKAPSPENGER, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
+                .setFoersfravaersdag(LocalDate.of(2018, 10, 6));
+
+        List<Periode> feriePerioder = new ArrayList<>();
+        feriePerioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 12, 5), LocalDate.of(2018, 12, 9)));
+        inntektsmeldingsBuilder.addAvtaltFerie(feriePerioder);
+
+        inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
+                BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
+        inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
+                BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
+
+        fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+
+        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Arbeidstaker");
+
+        verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt inkl naturalytelse");
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 600000D, "Sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 25.1D, "Avvik");
     }
 
     @Test

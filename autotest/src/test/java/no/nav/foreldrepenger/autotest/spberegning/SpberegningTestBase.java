@@ -102,13 +102,9 @@ public class SpberegningTestBase extends TestBase{
                 new BigDecimal(beløp),
                 new ArrayList<>(),          //UtsettelseAvForeldrepenger
                 new ArrayList<>(),          //GraderingIForeldrepenger
-                new ArrayList<>()));        //avtaltFerieListe
+                new ArrayList<>()
+        ));        //avtaltFerieListe
 
         return builder;
     }
-
-//    protected InntektsmeldingBuilder lagInntektsmeldingBuilderFraInntektsperiode(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
-//        return inntektsmeldingGrunnlag(beløp, fnr, orgnummer, "", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY);
-//    }
-
 }
