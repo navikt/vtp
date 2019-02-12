@@ -20,4 +20,13 @@ public class RettigheterErketyper {
 
         return rettigheter;
     }
+
+    public static Rettigheter harIkkeAleneomsorgOgAnnenpartIkkeRett() {
+        Rettigheter rettigheter = new Rettigheter();
+        rettigheter.setHarOmsorgForBarnetIPeriodene(true);
+        rettigheter.setHarAnnenForelderRett(false);
+        rettigheter.setHarAleneomsorgForBarnet(false);
+
+        return rettigheter;
+    }
 }

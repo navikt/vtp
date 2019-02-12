@@ -1,14 +1,16 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import java.time.LocalDate;
-
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.Endringssoeknad;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelderMedNorskIdent;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.Rettigheter;
+import no.nav.vedtak.felles.xml.soeknad.felles.v1.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Dekningsgrad;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Dekningsgrader;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+
+import java.time.LocalDate;
 
 public class ForeldrepengeYtelseErketyper {
 
@@ -35,6 +37,18 @@ public class ForeldrepengeYtelseErketyper {
 
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate fødselsdato) {
         return foreldrepengerYtelseNorskBorgerINorgeFødselMor(FordelingErketyper.fordelingMorHappyCase(fødselsdato), fødselsdato);
+    }
+
+    public static Foreldrepenger foreldrepengerYtelseNorskBorger(Rettigheter rettigheter, SoekersRelasjonTilBarnet relasjonTilBarnet,
+                                                                 Fordeling fordeling, AnnenForelder annenForelder) {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(rettigheter);
+        foreldrepenger.setRelasjonTilBarnet(relasjonTilBarnet);
+        foreldrepenger.setFordeling(fordeling);
+        foreldrepenger.setAnnenForelder(annenForelder);
+        return foreldrepenger;
     }
 
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(Fordeling fordeling, LocalDate fødselsdato) {
