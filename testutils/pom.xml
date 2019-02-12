@@ -41,6 +41,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <deployAtEnd>true</deployAtEnd>
+                    <skip>false</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
