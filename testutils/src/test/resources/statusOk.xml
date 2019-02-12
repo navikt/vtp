@@ -1,0 +1,27 @@
+<oppdrag xmlns="http://www.trygdeetaten.no/skjema/oppdrag">
+	<mmel>
+		<systemId>systemId</systemId>
+		<alvorlighetsgrad>00</alvorlighetsgrad>
+		<beskrMelding>Oppdrag behandlet</beskrMelding>
+	</mmel>
+	<oppdrag-110>
+		<kodeAksjon>1</kodeAksjon>
+		<kodeEndring>NY</kodeEndring>
+		<kodeFagomraade>REFUTG</kodeFagomraade>
+		<fagsystemId>%s</fagsystemId>
+		<oppdragGjelderId>%s</oppdragGjelderId>
+		<datoOppdragGjelderFom>2000-01-01+01:00</datoOppdragGjelderFom>
+		<saksbehId>E2354345</saksbehId>
+		<oppdrags-linje-150>
+			<kodeEndringLinje>NY</kodeEndringLinje>
+			<kodeKlassifik>KODEKLASSIFIK</kodeKlassifik>
+			<datoVedtakFom>1995-05-30+02:00</datoVedtakFom>
+			<sats>13371337</sats>
+			<fradragTillegg>T</fradragTillegg>
+			<typeSats>ENG</typeSats>
+			<saksbehId>E2354345</saksbehId>
+			<utbetalesTilId>12345678901</utbetalesTilId>
+			<henvisning>%s</henvisning>
+		</oppdrags-linje-150>
+	</oppdrag-110>
+</oppdrag>

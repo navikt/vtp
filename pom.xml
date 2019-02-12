@@ -24,6 +24,7 @@
 		<module>server</module>
 		<module>dokumentgenerator</module>
 		<module>autotest</module>
+		<module>testutils</module>
 	</modules>
 
 	<properties>
@@ -87,6 +88,8 @@
 		<vl-fpoppdrag-integrasjon.version>1.0_20190110115356_1239f94</vl-fpoppdrag-integrasjon.version>
         <vl-kontrakt-fpoppdrag.version>1.0_20190117140834_70d7fb3</vl-kontrakt-fpoppdrag.version>
         <vl-kontrakt-okonomistotte.version>2.0_20180730135256_2912e61</vl-kontrakt-okonomistotte.version>
+		<felles-integrasjon.version>1.0.0_20190242075108_0094b19</felles-integrasjon.version>
+
 	</properties>
 
 	<dependencyManagement>
@@ -241,6 +244,14 @@
 				<groupId>no.nav.vedtak.fpmock2</groupId>
 				<artifactId>server</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
+				<artifactId>felles-integrasjon-pom</artifactId>
+				<version>${felles-integrasjon.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
 			</dependency>
 
 			<!-- CXF - for å kunne stubbe WS-trust -->
@@ -692,7 +703,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.1.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
