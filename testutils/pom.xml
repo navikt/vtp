@@ -21,6 +21,12 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
             <artifactId>sakogbehandling-klient</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
+                    <artifactId>felles-integrasjon-webservice</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -37,14 +43,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <deployAtEnd>true</deployAtEnd>
-                    <skip>false</skip>
-                </configuration>
             </plugin>
         </plugins>
     </build>
