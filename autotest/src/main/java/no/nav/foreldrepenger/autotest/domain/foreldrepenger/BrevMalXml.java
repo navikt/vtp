@@ -4,9 +4,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,5 +81,27 @@ public abstract class BrevMalXml {
             return null;
         }
         return node.getTextContent();
+    }
+    
+    @Override
+    public String toString() {
+        try {
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            
+            StringWriter stringwriter = new StringWriter();
+            StreamResult streamResult = new StreamResult(stringwriter);
+            transformer.transform(new DOMSource(doc), streamResult);
+            return stringwriter.toString();
+            
+        }catch (Exception e) {
+            return "" + e.getMessage();
+        }
+        
     }
 }

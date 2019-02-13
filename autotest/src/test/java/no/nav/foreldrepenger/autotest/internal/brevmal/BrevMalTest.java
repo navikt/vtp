@@ -41,4 +41,10 @@ public class BrevMalTest {
         
         assertTrue(!xml1.isComparable(xml2));
     }
+    
+    @Test
+    public void skalKunnePrintes() throws Exception {
+        BrevMalXml xml1 = KlageMedholUgunstNFP.fromResource("klageMedholUgunstNFP61.xml");
+        System.out.println(xml1.toString());
+    }
 }
