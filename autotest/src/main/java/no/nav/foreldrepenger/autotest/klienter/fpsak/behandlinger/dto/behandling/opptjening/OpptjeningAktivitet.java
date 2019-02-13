@@ -22,6 +22,32 @@ public class OpptjeningAktivitet {
     protected boolean erEndret;
     protected boolean erGodkjent;
     protected boolean erManueltOpprettet;
+    protected String oppdragsgiverOrg;
+
+
+    public String getOppdragsgiverOrg() {
+        return oppdragsgiverOrg;
+    }
+
+    public void setOppdragsgiverOrg(String oppdragsgiverOrg) {
+        this.oppdragsgiverOrg = oppdragsgiverOrg;
+    }
+
+    public Kode getAktivitetType() {
+        return aktivitetType;
+    }
+
+    public void setAktivitetType(Kode aktivitetType) {
+        this.aktivitetType = aktivitetType;
+    }
+
+    public String getArbeidsforholdRef() {
+        return arbeidsforholdRef;
+    }
+
+    public void setArbeidsforholdRef(String arbeidsforholdRef) {
+        this.arbeidsforholdRef = arbeidsforholdRef;
+    }
 
     public LocalDate getOpptjeningFom() {
         return opptjeningFom;

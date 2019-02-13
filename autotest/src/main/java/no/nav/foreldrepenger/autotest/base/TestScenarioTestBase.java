@@ -19,4 +19,9 @@ public abstract class TestScenarioTestBase extends TestBase {
     protected TestscenarioDto opprettScenario(String id) throws IOException {
         return testscenarioKlient.opprettTestscenario(id);
     }
+
+    @Step("Oppretter testscenario {id}")
+    protected TestscenarioDto opprettScenarioMedPrivatArbeidsgiver(String id, String aktorId) throws IOException {
+        return testscenarioKlient.opprettTestscenarioMedAktorId(id, aktorId);
+    }
 }

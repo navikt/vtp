@@ -48,9 +48,17 @@ public class ArbeidsforholdAdapter {
             arbeidsforhold.getArbeidsavtale().add(fra(arbeidsavtale));
         }
 
-        Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
-        arbeidsgiver.setOrgnummer(arbeidsforholdModell.getArbeidsgiverOrgnr());
-        arbeidsforhold.setArbeidsgiver(arbeidsgiver);
+        if (arbeidsforholdModell.getArbeidsgiverOrgnr() != null && !arbeidsforholdModell.getArbeidsgiverOrgnr().equals("")) {
+            Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
+            arbeidsgiver.setOrgnummer(arbeidsforholdModell.getArbeidsgiverOrgnr());
+            arbeidsforhold.setArbeidsgiver(arbeidsgiver);
+        } else if (arbeidsforholdModell.getArbeidsgiverAktorId() != null && !arbeidsforholdModell.getArbeidsgiverAktorId().equals("")) {
+            Person arbeidsgiverPrivatperson = objectFactory.createPerson();
+            NorskIdent ident = new NorskIdent();
+            ident.setIdent(arbeidsforholdModell.getArbeidsgiverAktorId());
+            arbeidsgiverPrivatperson.setIdent(ident);
+            arbeidsforhold.setArbeidsgiver(arbeidsgiverPrivatperson);
+        }
 
         Organisasjon opplyser = objectFactory.createOrganisasjon();
         opplyser.setOrgnummer(arbeidsforholdModell.getOpplyserOrgnr());

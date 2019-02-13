@@ -131,8 +131,10 @@ public class HentInntektlistBolkMapper {
         loennsinntekt.setUtloeserArbeidsgiveravgift(true);
         loennsinntekt.setInngaarIGrunnlagForTrekk(true);
         loennsinntekt.setInntektsmottaker(aktoer);
-        loennsinntekt.setVirksomhet(lagOrganisation(ip.getOrgnr()));
-        loennsinntekt.setOpplysningspliktig(lagOrganisation(ip.getOrgnr()));
+        Aktoer arbeidsgiver = ip.getOrgnr() != null && !ip.getOrgnr().equals("") ?
+                lagOrganisation(ip.getOrgnr()) : lagPersonIdent(ip.getAktorId());
+        loennsinntekt.setVirksomhet(arbeidsgiver);
+        loennsinntekt.setOpplysningspliktig(arbeidsgiver);
         loennsinntekt.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(ip.getFom()));
         //loennsinntekt.setLevereringstidspunkt();
         //loennsinntekt.setInntektsstatus();
@@ -146,6 +148,7 @@ public class HentInntektlistBolkMapper {
 
         return loennsinntekt;
     }
+
 
     private static Organisasjon lagOrganisation(String orgNummer) {
         Organisasjon organisasjon = new Organisasjon();

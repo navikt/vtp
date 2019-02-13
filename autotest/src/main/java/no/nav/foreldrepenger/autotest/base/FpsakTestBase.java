@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arb
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.EndringIRefusjon;
 
 public class FpsakTestBase extends TestScenarioTestBase {
 
@@ -131,6 +133,51 @@ public class FpsakTestBase extends TestScenarioTestBase {
         InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(beløp, fnr, fpStartdato, orgNr, arbeidsforholdId, refusjon);
         builder.addGradertperiode(BigDecimal.valueOf(arbeidsprosent), graderingFom, graderingTom);
         return builder;
+    }
+
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilderPrivatArbeidsgiver(Integer beløp, String fnr, LocalDate fpStartdato, String fnrArbeidsgiver,
+                                                               Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon) {
+        String inntektsmeldingID = UUID.randomUUID().toString().substring(0, 7);
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(inntektsmeldingID,
+                YtelseKodeliste.FORELDREPENGER,
+                ÅrsakInnsendingKodeliste.NY,
+                fnr,
+                fpStartdato);
+        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem(
+                "FS22",
+                "1.0"));
+        builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+                arbeidsforholdId.orElse(null),
+                null,
+                new BigDecimal(beløp),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()));
+        builder.setArbeidsgiverPrivat(InntektsmeldingBuilder.createArbeidsgiverPrivat(
+                fnrArbeidsgiver,
+                "41925090"));
+        refusjon.ifPresent(_refusjon -> builder.setRefusjon(InntektsmeldingBuilder.createRefusjon(
+                _refusjon,
+                null,
+                Collections.emptyList())));
+        return builder;
+    }
+
+    protected InntektsmeldingBuilder lagInntektsmeldingBuilderMedEndringIRefusjonPrivatArbeidsgiver(Integer beløp, String fnr,
+                                                                                                    LocalDate fpStartdato, String fnrArbeidsgiver,
+                                                                           Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon, Map<LocalDate, BigDecimal> endringRefusjonMap) {
+        InntektsmeldingBuilder builder = lagInntektsmeldingBuilderPrivatArbeidsgiver(beløp, fnr, fpStartdato, fnrArbeidsgiver, arbeidsforholdId, refusjon);
+        refusjon.ifPresent(_refusjon -> builder.setRefusjon(InntektsmeldingBuilder.createRefusjon(
+                _refusjon,
+                null,
+                mapToEndringIRefusjon(endringRefusjonMap))));
+        return builder;
+    }
+
+    private List<EndringIRefusjon> mapToEndringIRefusjon(Map<LocalDate,BigDecimal> endringRefusjonMap) {
+        return endringRefusjonMap.entrySet().stream().map(entry ->
+                InntektsmeldingBuilder.createEndringIRefusjon(entry.getKey(), entry.getValue())
+        ).collect(Collectors.toList());
     }
 
 }

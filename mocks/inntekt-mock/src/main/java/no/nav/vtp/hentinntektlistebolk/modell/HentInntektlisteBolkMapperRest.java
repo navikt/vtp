@@ -72,7 +72,9 @@ public class HentInntektlisteBolkMapperRest {
             inntekt.setBeloep(new BigDecimal(temp.getBeløp()));
             inntekt.setBeskrivelse(temp.getBeskrivelse());
             inntekt.setFordel(temp.getFordel().getKode());
-            inntekt.setVirksomhet(Aktoer.newOrganisasjon(temp.getOrgnr()));
+            Aktoer arbeidsgiver = temp.getOrgnr() != null && !temp.getOrgnr().equals("") ?
+                    Aktoer.newOrganisasjon(temp.getOrgnr()) : Aktoer.newAktoerId(temp.getAktorId());
+            inntekt.setVirksomhet(arbeidsgiver);
             inntekt.setOpptjeningsperiodeFom(temp.getFom());
             inntekt.setOpptjeningsperiodeTom(temp.getTom());
             inntekt.setUtbetaltIMaaned(måned);

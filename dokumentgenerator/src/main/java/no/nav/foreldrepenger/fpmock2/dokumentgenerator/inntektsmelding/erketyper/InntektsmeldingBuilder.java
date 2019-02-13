@@ -334,6 +334,22 @@ public class InntektsmeldingBuilder {
         return arbeidsgiver;
     }
 
+    public static ArbeidsgiverPrivat createArbeidsgiverPrivat(String arbeidsgiverFnr,
+                                                  String kontaktinformasjonTLF) {
+
+        ArbeidsgiverPrivat arbeidsgiver = new ArbeidsgiverPrivat();
+        arbeidsgiver.setArbeidsgiverFnr(arbeidsgiverFnr);
+
+        Kontaktinformasjon kontaktinformasjon = new Kontaktinformasjon();
+        kontaktinformasjon.setTelefonnummer(kontaktinformasjonTLF);
+        kontaktinformasjon.setKontaktinformasjonNavn("Corpolarsen");
+
+        arbeidsgiver.setKontaktinformasjon(kontaktinformasjon);
+
+        return arbeidsgiver;
+    }
+
+
     public static Periode createPeriode(LocalDate periodeFom, LocalDate periodeTom) {
         ObjectFactory objectFactory = new ObjectFactory();
         Periode periode = objectFactory.createPeriode();

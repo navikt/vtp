@@ -6,9 +6,11 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -522,6 +524,205 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserUttaksperiode(perioder.get(0), STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, 1);
         verifiserUttaksperiode(perioder.get(1), STØNADSKONTOTYPE_MØDREKVOTE, 1);
         verifiserUttaksperiode(perioder.get(2), STØNADSKONTOTYPE_MØDREKVOTE, 1);
+    }
+
+    @Test
+    @Description("Mor søker fødsel med 2 arbeidsforhold")
+    @DisplayName("Mor søker fødsel med 2 arbeidsforhold")
+    public void morSøkerFødselMed2ArbeidsforholdArbeidsforholdIdMatcherIkke() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("56");
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        String orgNr2 = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(1).getArbeidsgiverOrgnr();
+
+        int inntektPerMåned = 20_000;
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, startDatoForeldrepenger,
+                orgNr, Optional.of("1"), Optional.empty());
+        InntektsmeldingBuilder inntektsmeldingBuilder2 = lagInntektsmeldingBuilder(inntektPerMåned, fnr, startDatoForeldrepenger,
+                orgNr2, Optional.of("9"), Optional.empty());
+
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
+        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+    }
+
+    @Test
+    @Description("Mor søker fødsel med privatperson som arbeidsgiver")
+    @DisplayName("Mor søker fødsel med privatperson som arbeidsgiver")
+    public void morSøkerFødselMedPrivatpersonSomArbeidsgiver() throws Exception {
+
+        int overstyrtInntekt = 250_000;
+
+        // Lag privat arbeidsgiver
+        TestscenarioDto arbeidsgiverScenario = opprettScenario("59");
+        String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
+
+        // Lag testscenario
+        TestscenarioDto testscenario = opprettScenarioMedPrivatArbeidsgiver("152", arbeidsgiverFnr);
+
+        // Send inn søknad
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = LocalDate.now().minusDays(2);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        // Send inn inntektsmelding
+        int inntektPerMaaned = 20_000;
+        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilderPrivatArbeidsgiver(inntektPerMaaned, fnr,
+                startDatoForeldrepenger, arbeidsgiverFnr, Optional.empty(), Optional.empty());
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+
+        // Bekreft Opptjening
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
+                .godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
+
+        //Verifiser Beregningsgrunnlag
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallAktivitetStatus(), 1);//ikke sikker på denne
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getAktivitetStatus(0).kode, "AT");
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto(), 1);
+        List<BeregningsgrunnlagPrStatusOgAndelDto> andeler = saksbehandler.valgtBehandling.beregningsgrunnlag.getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
+        verifiserLikhet(andeler.size(), 1);
+        verifiserLikhet(andeler.get(0).getAktivitetStatus().kode, "AT");
+
+        // Bekreft inntekt i beregning
+        saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
+                .leggTilInntekt(overstyrtInntekt, 1L)
+                .setBegrunnelse("Begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class);
+
+        // Foreslå vedtak
+        saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        // Totrinnskontroll
+        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+        Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkter(Collections.singletonList(ap));
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+
+
+        verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
+        verifiser(beslutter.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, false);
+    }
+
+    @Test
+    @Description("Mor søker fødsel med privatperson som arbeidsgiver med endring i refusjon")
+    @DisplayName("Mor søker fødsel med privatperson som arbeidsgiver med endring i refusjon")
+    public void morSøkerFødselMedPrivatpersonSomArbeidsgiverMedEndringIRefusjon() throws Exception {
+
+        int overstyrtInntekt = 250_000;
+
+        // Lag privat arbeidsgiver
+        TestscenarioDto arbeidsgiverScenario = opprettScenario("59");
+        String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
+
+        // Lag testscenario
+        TestscenarioDto testscenario = opprettScenarioMedPrivatArbeidsgiver("152", arbeidsgiverFnr);
+
+        // Send inn søknad
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = LocalDate.now().minusDays(2);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        // Send inn inntektsmelding
+        int inntektPerMaaned = 20_000;
+        int refusjon = 25_000;
+        int endret_refusjon = 10_000;
+        LocalDate endringsdato = fødselsdato.plusMonths(1);
+        HashMap<LocalDate, BigDecimal> endringRefusjonMap = new HashMap<>();
+        endringRefusjonMap.put(endringsdato, BigDecimal.valueOf(endret_refusjon));
+        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilderMedEndringIRefusjonPrivatArbeidsgiver(inntektPerMaaned, fnr,
+                startDatoForeldrepenger, arbeidsgiverFnr, Optional.empty(), Optional.of(BigDecimal.valueOf(refusjon)), endringRefusjonMap);
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+
+        // Bekreft Opptjening
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
+                .godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
+
+        //Verifiser Beregningsgrunnlag
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallAktivitetStatus(), 1);//ikke sikker på denne
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getAktivitetStatus(0).kode, "AT");
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto(), 2);
+        List<BeregningsgrunnlagPrStatusOgAndelDto> andelerFørstePeriode = saksbehandler.valgtBehandling.beregningsgrunnlag
+                .getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
+        verifiserLikhet(andelerFørstePeriode.size(), 1);
+        verifiserLikhet(andelerFørstePeriode.get(0).getAktivitetStatus().kode, "AT");
+
+        // Bekreft inntekt i beregning
+        saksbehandler.hentAksjonspunktbekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class)
+                .leggTilInntekt(overstyrtInntekt, 1L)
+                .setBegrunnelse("Begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class);
+
+        // Assert refusjon
+        BeregningsresultatPeriode[] resultatPerioder = saksbehandler.valgtBehandling.beregningResultatForeldrepenger.getPerioder();
+        assertThat(resultatPerioder.length).isEqualTo(4);
+        BigDecimal forventetDagsats = BigDecimal.valueOf(overstyrtInntekt).divide(BigDecimal.valueOf(260), RoundingMode.HALF_EVEN);
+        assertThat(resultatPerioder[0].getAndeler()[0].getRefusjon()).isEqualTo(forventetDagsats.intValue());
+        assertThat(resultatPerioder[1].getAndeler()[0].getRefusjon()).isEqualTo(forventetDagsats.intValue());
+        BigDecimal forventetRefusjon = BigDecimal.valueOf(endret_refusjon*12).divide(BigDecimal.valueOf(260), RoundingMode.HALF_EVEN);
+        assertThat(resultatPerioder[2].getAndeler()[0].getRefusjon()).isEqualTo(forventetRefusjon.intValue());
+        assertThat(resultatPerioder[3].getAndeler()[0].getRefusjon()).isEqualTo(forventetRefusjon.intValue());
+
+        // Foreslå vedtak
+        saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        // Totrinnskontroll
+        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+        Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkter(Collections.singletonList(ap));
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+
+
+        verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
+        verifiser(beslutter.harHistorikkinnslag("Brev sendt"));
+        verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, false);
     }
 
     @Disabled("Disabler til bug fikset i fpsak")

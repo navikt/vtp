@@ -22,7 +22,10 @@ public class VurderPerioderOpptjeningBekreftelse extends AksjonspunktBekreftelse
             
             opptjeningAktivitet.setOriginalFom(opptjeningAktivitet.getOpptjeningFom());
             opptjeningAktivitet.setOriginalTom(opptjeningAktivitet.getOpptjeningTom());
-            
+            opptjeningAktivitet.setOppdragsgiverOrg(opptjeningAktivitet.getOppdragsgiverOrg());
+            opptjeningAktivitet.setArbeidsforholdRef(opptjeningAktivitet.getArbeidsforholdRef());
+            opptjeningAktivitet.setAktivitetType(opptjeningAktivitet.getAktivitetType());
+
             opptjeningAktivitetList.add(opptjeningAktivitet);
         }
     }

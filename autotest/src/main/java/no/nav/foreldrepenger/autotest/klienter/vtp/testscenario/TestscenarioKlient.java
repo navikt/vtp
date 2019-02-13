@@ -27,4 +27,10 @@ public class TestscenarioKlient extends VTPKlient{
         return testscenarioDto;
     }
 
+    public TestscenarioDto opprettTestscenarioMedAktorId(String key, String aktorId) throws IOException {
+        String url = hentRestRotUrl() + String.format(TESTSCENARIO_POST_URL, key) + "?aktor1=" + aktorId;
+        TestscenarioDto testscenarioDto = postOgHentJson(url, null, TestscenarioDto.class, StatusRange.STATUS_SUCCESS);
+        System.out.println("Testscenario opprettet: [" + key + "] med hovedsøker: [" + testscenarioDto.getPersonopplysninger().getSøkerIdent() + "]");
+        return testscenarioDto;
+    }
 }

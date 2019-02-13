@@ -31,4 +31,8 @@ public class BeregningsgrunnlagPrStatusOgAndelDto {
     public Kode getAktivitetStatus() {
         return aktivitetStatus;
     }
+
+    public BeregningsgrunnlagArbeidsforholdDto getArbeidsforhold() {
+        return arbeidsforhold;
+    }
 }

@@ -34,6 +34,8 @@ public class Arbeidsforhold {
     @JsonProperty("opplyserOrgnr")
     private String opplyserOrgnr;
 
+    @JsonProperty("arbeidsgiverAktorId")
+    private String arbeidsgiverAktorId;
 
     public List<Arbeidsavtale> getArbeidsavtaler() {
         return arbeidsavtaler;
@@ -89,6 +91,14 @@ public class Arbeidsforhold {
 
     public void setTimeposteringer(List<AntallTimerIPerioden> timeposteringer) {
         this.timeposteringer = timeposteringer;
+    }
+
+    public String getArbeidsgiverAktorId() {
+        return arbeidsgiverAktorId;
+    }
+
+    public void setArbeidsgiverAktorId(String arbeidsgiverAktorId) {
+        this.arbeidsgiverAktorId = arbeidsgiverAktorId;
     }
 
     public String getArbeidsgiverOrgnr() {
