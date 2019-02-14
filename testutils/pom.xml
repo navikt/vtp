@@ -21,12 +21,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
             <artifactId>sakogbehandling-klient</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
-                    <artifactId>felles-integrasjon-webservice</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
