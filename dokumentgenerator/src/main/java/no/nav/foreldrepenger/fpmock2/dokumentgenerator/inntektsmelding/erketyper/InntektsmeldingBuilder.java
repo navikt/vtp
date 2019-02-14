@@ -278,7 +278,7 @@ public class InntektsmeldingBuilder {
 
     public InntektsmeldingBuilder addAvtaltFerie(List<Periode> perioder){
         AvtaltFerieListe avtaltFerieListe = new AvtaltFerieListe();
-        perioder.forEach(av -> {    //TODO Hvorfor bruker vi forkortelsen av og hva betyr ->? se pleiepenger
+        perioder.forEach(av -> {
             avtaltFerieListe.getAvtaltFerie().add(av);
         });
         ObjectFactory objectFactory = new ObjectFactory();
