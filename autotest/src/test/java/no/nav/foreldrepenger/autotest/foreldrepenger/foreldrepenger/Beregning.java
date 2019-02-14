@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.qameta.allure.Description;
+import io.qameta.allure.Flaky;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderPerioderOpptjeningBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarArbeidsforholdBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.VilkarTypeKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.FaktaOmBeregningTilfelle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagArbeidsforholdDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -31,6 +31,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med ventelønn og vartpenger")
     @Description("Mor med ventelønn og vartpenger")
+    @Flaky
     public void mor_med_ventelønn_og_vartpenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("150");
 
@@ -58,6 +59,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med kortvarig arbeidsforhold")
     @Description("Mor med kortvarig arbeidsforhold")
+    @Flaky
     public void vurder_tidsbegrenset_uten_inntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -118,6 +120,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med kortvarig arbeidsforhold med inntektsmelding")
     @Description("Mor med kortvarig arbeidsforhold med inntektsmelding")
+    @Flaky
     public void vurder_tidsbegrenset_med_inntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -159,6 +162,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Endret beregningsgrunnlag med kortvarig")
     @Description("Endret beregningsgrunnlag med kortvarig")
+    @Flaky
     public void endret_beregningsgrunnlag_med_kortvarig() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
