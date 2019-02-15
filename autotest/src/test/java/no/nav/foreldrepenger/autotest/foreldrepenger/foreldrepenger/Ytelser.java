@@ -1,12 +1,10 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
@@ -18,7 +16,7 @@ public class Ytelser extends ForeldrepengerTestBase {
 
     @Test
     public void morSøkerFødselMottarSykepenger() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("100");
+        TestscenarioDto testscenario = opprettScenario("70");
         
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
