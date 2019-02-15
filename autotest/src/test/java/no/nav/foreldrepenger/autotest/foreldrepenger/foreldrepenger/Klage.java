@@ -15,6 +15,7 @@ import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
+import no.nav.foreldrepenger.autotest.domain.foreldrepenger.Felles;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravKa;
@@ -27,6 +28,15 @@ import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
+import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectRequestDto;
+import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectResultDto;
+import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectTokenDto;
+import no.nav.foreldrepenger.autotest.util.AllureHelper;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectPredicate;
+import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("fpsak")
@@ -81,6 +91,9 @@ public class Klage extends ForeldrepengerTestBase {
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
         beslutter.velgBehandling("Klage");
+        
+        ExpectTokenDto expectXml = expectKlient.createExpectation(new ExpectRequestDto(Mock.DOKUMENTPRODUKSJON.toString(), "produserIkkeredigerbartDokument", new ExpectPredicate("aktør", testscenario.getPersonopplysninger().getSøkerIdent())));
+        
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -90,6 +103,11 @@ public class Klage extends ForeldrepengerTestBase {
         verifiserFritekst(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getFritekstTilBrev(), fritekstBrev);
         verifiserLikhet(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getKlageMedholdArsak(), "ULIK_VURDERING", "Årsak");
         verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
+        
+        ExpectResultDto result = expectKlient.checkExpectation(expectXml);
+        Felles fellesxml = Felles.fromFile(result.getResultData());
+        fellesxml.valider();
+        
     }
 
     @Test
