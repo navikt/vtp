@@ -42,13 +42,13 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_PERIODER_MED_OPPTJENING);
         saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
                 .godkjennAllOpptjening();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
-
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.AVKLAR_AKTIVITETER);
         verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
                 .anyMatch(ap -> ap.erUbekreftet() && ap.getDefinisjon().kode.equals(AksjonspunktKoder.AVKLAR_AKTIVITETER)), true);
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
@@ -81,12 +81,11 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         debugLoggBehandling(saksbehandler.valgtBehandling);
 
         saksbehandler.gjenopptaBehandling();
-
-
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_ARBEIDSFORHOLD);
         saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
                 .bekreftArbeidsforholdErRelevant("THOMAS AS", true);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
-
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
         verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
                 .anyMatch(ap -> ap.erUbekreftet() &&
                         ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
@@ -144,6 +143,7 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
         verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
                 .anyMatch(ap -> ap.erUbekreftet() &&
                         ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
