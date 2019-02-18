@@ -1,17 +1,19 @@
 package no.nav.foreldrepenger.autotest.util.http.rest;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 
 public abstract class JsonRest extends Rest{
     
@@ -104,7 +106,6 @@ public abstract class JsonRest extends Rest{
     protected <T> T getOgHentJson(String url, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
         HttpResponse response = getJson(url, headers);
         String json = hentResponseBody(response);
-        System.out.println(json);
         ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
         return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
