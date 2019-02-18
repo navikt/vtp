@@ -22,7 +22,7 @@ public class Vent {
             if (LocalDateTime.now().isAfter(end)) {
                 throw new RuntimeException(String.format("Async venting timet ut etter %s sekunder fordi: %s", timeoutInSeconds, errorMessageProducer.call()));
             }
-            Thread.sleep(100);
+            Thread.sleep(300);
         }
     }
 }
