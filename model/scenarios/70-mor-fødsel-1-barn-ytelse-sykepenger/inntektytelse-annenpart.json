@@ -30,16 +30,15 @@
 		"ytelser": [
 			{
 				"sakId": "9999",
-				"registrert": "now() - P9M",
-				"iverksatt": "now() - P9M",
+				"registrert": "now()",
+				"iverksatt": "now()",
 				"endret": "now()",
 				"opphør": "now() + PT2400H",
 				"saksbehandlerId": "helloworld",
 				"tema": "FA",
 				"behandlingstema": "FØ",
 				"type": "S",
-				"status": "FI",
-				"resultat": "I"
+				"status": "FI"
 			}
 		],
 		"grunnlag": [
@@ -50,7 +49,7 @@
 				"behandlingstema": "FØ",
 				"vedtak": [
 					{
-						"fom": "now() - P9M",
+						"fom": "now()",
 						"utbetalingsgrad": 100
 					}
 				],

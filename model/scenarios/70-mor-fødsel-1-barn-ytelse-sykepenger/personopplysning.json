@@ -21,7 +21,7 @@
 		"personstatus": [
 			{
 				"kode": "BOSA",
-                "fom": "now()-P50Y"
+				"fom": "now()-P50Y"
 			}
 		],
 		"sivilstand": [
@@ -36,7 +36,7 @@
 					"tom": "now() + P3Y",
 					"besluttetDato": "now() - P1Y",
 					"land": "DEU",
-					"trygdedekning": "Full",
+					"trygdedekning": "IHT_Avtale",
 					"kilde": "ANNEN",
 					"lovvalgType": "ENDL",
 					"status": "GYLD"

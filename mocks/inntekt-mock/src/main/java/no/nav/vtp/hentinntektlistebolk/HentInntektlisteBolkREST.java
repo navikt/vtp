@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.POST;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -59,13 +61,17 @@ public class HentInntektlisteBolkREST {
         response.setArbeidsInntektIdentListe(new ArrayList<>());
 
         for(Aktoer aktoer : identListe){
-            InntektskomponentModell inntektskomponentModell = testscenarioRepository.getInntektYtelseModellFraAktørId(aktoer.getIdentifikator()).get().getInntektskomponentModell();
-            ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlisteBolkMapperRest.makeArbeidsInntektIdent(
-                    inntektskomponentModell
-                    , aktoer
-                    , fom
-                    , tom);
-            response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
+            Optional<InntektYtelseModell> inntektYtelseModell = testscenarioRepository.getInntektYtelseModellFraAktørId(aktoer.getIdentifikator());
+            if(inntektYtelseModell.isPresent()) {
+                InntektskomponentModell inntektskomponentModell = inntektYtelseModell.get().getInntektskomponentModell();
+                ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlisteBolkMapperRest.makeArbeidsInntektIdent(
+                        inntektskomponentModell
+                        , aktoer
+                        , fom
+                        , tom);
+                response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
+            }
+            
         }
 
         return response;

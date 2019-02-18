@@ -19,6 +19,16 @@ public class Ytelser extends ForeldrepengerTestBase {
         TestscenarioDto testscenario = opprettScenario("70");
         
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String annenpartAktørIdent = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
+        String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
+        String annenpartIdent = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        
+        log.info("Søker: " + søkerIdent);
+        log.info("Søker aktør: " + søkerAktørIdent);
+        log.info("Annen part: " + annenpartIdent);
+        log.info("Annen part aktør: " + annenpartAktørIdent);
+        
+        
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
 
