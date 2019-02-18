@@ -173,12 +173,12 @@ public class Fordel extends Aktoer {
             Vent.til(() ->{
                 List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
                 return historikk.stream().anyMatch(h -> h.getTekst().equals("Vedlegg mottatt"));
-            }, 10, "Saken har ikke mottatt inntektsmeldingen");
+            }, 20, "Saken har ikke mottatt inntektsmeldingen");
         }
         else {
             Vent.til(() ->{
                 return fagsakKlient.søk("" + nyttSaksnummer).size() > 0;
-            }, 10, "Oprettet ikke fagsag for inntektsmelding");
+            }, 20, "Oprettet ikke fagsag for inntektsmelding");
         }
 
         return nyttSaksnummer;
@@ -204,7 +204,7 @@ public class Fordel extends Aktoer {
         final long saksnummerF = saksnummer;
         Vent.til(() -> {
             return antallInntektsmeldingerMottatt(saksnummerF) >= inntektsmeldinger.size();
-        }, 10, "har ikke mottat alle inntektsmeldinger");
+        }, 20, "har ikke mottat alle inntektsmeldinger");
         return saksnummer;
     }
 

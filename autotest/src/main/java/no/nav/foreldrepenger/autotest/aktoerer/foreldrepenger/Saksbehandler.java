@@ -495,7 +495,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshBehandling();
             return harDokument(dokument);
-        }, 5, "Behandling har ikke dokument: " + dokument);
+        }, 10, "Behandling har ikke dokument: " + dokument);
     }
     
     public boolean harDokument(String dokument) {
@@ -626,7 +626,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshBehandling();
             return harBehandlingsstatus(status);
-        }, 20, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus());
+        }, 60, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus());
     }
     
     public boolean harBehandlingsstatus(String status) {
