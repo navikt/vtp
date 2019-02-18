@@ -741,7 +741,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.0</version>
+                    <version>3.0.0-M2</version>
                     <configuration>
                         <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
                     </configuration>
@@ -770,7 +770,6 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <forkCount>1</forkCount>
                         <reuseForks>true</reuseForks>
                         <useFile>true</useFile>
                         <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dsurefire.forkNumber=${surefire.forkNumber}
