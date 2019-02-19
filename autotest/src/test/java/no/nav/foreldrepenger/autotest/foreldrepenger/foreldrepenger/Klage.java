@@ -14,6 +14,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
+import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KlageFormkravBekreftelse.KlageFormkravKa;
@@ -21,11 +22,10 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNfpBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNkBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("smoke")
@@ -49,7 +49,7 @@ public class Klage extends ForeldrepengerTestBase {
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        
+
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
@@ -61,20 +61,20 @@ public class Klage extends ForeldrepengerTestBase {
                 .fritekstBrev(fritekstBrev)
                 .setBegrunnelse(begrunnelse);
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
-        
+
         //Mellomlager og tilbakestiller
-        verifiserLikhet(klagebehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP).getStatus().kode, 
-                        "UTFO", "Vurdering av klage");
+        verifiserLikhet(klagebehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP).getStatus().kode,
+                "UTFO", "Vurdering av klage");
         klagebehandler.mellomlagreOgGjennåpneKlage();
-        verifiserLikhet(klagebehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP).getStatus().kode, 
-                        "OPPR", "Vurdering av klage");
-        
+        verifiserLikhet(klagebehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP).getStatus().kode,
+                "OPPR", "Vurdering av klage");
+
         klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
-            .bekreftMedholdUGunst("ULIK_VURDERING")
-            .fritekstBrev(fritekstBrev)
-            .setBegrunnelse(begrunnelse);
+                .bekreftMedholdUGunst("ULIK_VURDERING")
+                .fritekstBrev(fritekstBrev)
+                .setBegrunnelse(begrunnelse);
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
-        
+
         klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
@@ -107,7 +107,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        
+
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
@@ -156,7 +156,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        
+
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
                 .setBegrunnelse("Begrunnelse NFP.");
@@ -206,7 +206,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        
+
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
                 .setBegrunnelse("blabla");
@@ -258,7 +258,7 @@ public class Klage extends ForeldrepengerTestBase {
 
         klagebehandler.ventTilSakHarBehandling("Klage");
         klagebehandler.velgBehandling("Klage");
-        
+
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .klageErIkkeKonkret()
                 .setBegrunnelse("blabla");

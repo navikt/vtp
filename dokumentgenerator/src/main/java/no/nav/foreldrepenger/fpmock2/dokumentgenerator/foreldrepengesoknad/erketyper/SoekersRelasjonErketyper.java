@@ -2,8 +2,6 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import java.time.LocalDate;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Adopsjon;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Foedsel;
@@ -19,11 +17,11 @@ public class SoekersRelasjonErketyper {
     public static Foedsel søkerFødselEtterFødsel(){
         return fødsel(1, LocalDate.now().minusMonths(1));
     }
-    
+
     public static Foedsel søkerFødselEtterFødselFlereBarn() {
         return fødsel(2, LocalDate.now().minusMonths(1));
     }
-    
+
     public static Foedsel søkerFødselEtterSøknadsfrist() {
         return fødsel(1, LocalDate.now().minusMonths(20));
     }
@@ -36,7 +34,7 @@ public class SoekersRelasjonErketyper {
 
         return soekersRelasjonTilBarnet;
     }
-    
+
     public static Termin søkerTermin(LocalDate termindato) {
         return termin(1, termindato);
     }

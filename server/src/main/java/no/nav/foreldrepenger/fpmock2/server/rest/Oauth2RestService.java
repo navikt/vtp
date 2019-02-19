@@ -43,9 +43,11 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import no.nav.foreldrepenger.fpmock2.server.rest.EndUserAuthenticateTemplate.Callback;
+import no.nav.foreldrepenger.fpmock2.felles.KeyStoreTool;
+import no.nav.foreldrepenger.fpmock2.felles.OidcTokenGenerator;
 
-@Api(tags = { "Openam" })
+
+@Api(tags = {"Openam"})
 @Path("/isso")
 public class Oauth2RestService {
 
@@ -53,20 +55,20 @@ public class Oauth2RestService {
 
     @GET
     @Path("/oauth2/authorize")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
+    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
     @ApiOperation(value = "oauth2/authorize", notes = ("Mock impl av Oauth2 authorize"))
     @SuppressWarnings("unused")
     public Response authorize(
-                              @Context HttpServletRequest req,
-                              @Context HttpServletResponse resp,
-                              @QueryParam("session") @DefaultValue("winssochain") String session,
-                              @QueryParam("authIndexType") @DefaultValue("service") String authIndexType,
-                              @QueryParam("authIndexValue") @DefaultValue("winssochain") String authIndexValue,
-                              @QueryParam("response_type") @DefaultValue("code") String responseType,
-                              @QueryParam("scope") @DefaultValue("openid") String scope,
-                              @QueryParam("client_id") String clientId,
-                              @QueryParam("state") String state,
-                              @QueryParam("redirect_uri") String redirectUri)
+            @Context HttpServletRequest req,
+            @Context HttpServletResponse resp,
+            @QueryParam("session") @DefaultValue("winssochain") String session,
+            @QueryParam("authIndexType") @DefaultValue("service") String authIndexType,
+            @QueryParam("authIndexValue") @DefaultValue("winssochain") String authIndexValue,
+            @QueryParam("response_type") @DefaultValue("code") String responseType,
+            @QueryParam("scope") @DefaultValue("openid") String scope,
+            @QueryParam("client_id") String clientId,
+            @QueryParam("state") String state,
+            @QueryParam("redirect_uri") String redirectUri)
             throws Exception {
         LOG.info("kall mot oauth2/authorize med redirecturi " + redirectUri);
         Objects.requireNonNull(scope, "scope");
@@ -105,37 +107,37 @@ public class Oauth2RestService {
         query.put("code", "im-just-a-fake-code");
 
         URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
-            null);
+                null);
         return Response.status(HttpServletResponse.SC_FOUND).location(location).build();
     }
 
     private Response authorizeHtmlPage(URI locationUri, Map<String, String> query) throws URISyntaxException, NamingException {
         // LAG HTML SIDE
         URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
-            null);
+                null);
 
         List<Entry<String, String>> usernames = getUsernames();
 
         String html = "<!DOCTYPE html>\n"
-            + "<html>\n" +
-            "<head>\n" +
-            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
-            "<title>Velg bruker</title>\n" +
-            "</head>\n" +
-            "    <body>\n" +
-            "    <div style=\"text-align:center;width:100%;\">\n" +
-            "       <caption><h3>Velg bruker:</h3></caption>\n" +
-            "        <table>\r\n" +
-            "            <tbody>\r\n" +
-            usernames.stream().map(
-                username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
-                .collect(Collectors.joining("\n"))
-            +
-            "            </tbody>\n" +
-            "        </table>\n" +
-            "    </div>\n" +
-            "</body>\n" +
-            "</html>";
+                + "<html>\n" +
+                "<head>\n" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "<title>Velg bruker</title>\n" +
+                "</head>\n" +
+                "    <body>\n" +
+                "    <div style=\"text-align:center;width:100%;\">\n" +
+                "       <caption><h3>Velg bruker:</h3></caption>\n" +
+                "        <table>\r\n" +
+                "            <tbody>\r\n" +
+                usernames.stream().map(
+                        username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
+                        .collect(Collectors.joining("\n"))
+                +
+                "            </tbody>\n" +
+                "        </table>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "</html>";
 
         return Response.ok(html, MediaType.TEXT_HTML).build();
     }
@@ -147,11 +149,11 @@ public class Oauth2RestService {
         // pass derfor på at CN er definert med maks 8 bokstaver.
 
         List<Map.Entry<String, String>> usernames = allUsers.stream()
-            .map(u -> {
-                String cn = getAttribute(u, "cn");
-                String displayName = getAttribute(u, "displayName");
-                return new SimpleEntry<String, String>(cn, displayName);
-            }).collect(Collectors.toList());
+                .map(u -> {
+                    String cn = getAttribute(u, "cn");
+                    String displayName = getAttribute(u, "displayName");
+                    return new SimpleEntry<String, String>(cn, displayName);
+                }).collect(Collectors.toList());
         return usernames;
     }
 
@@ -190,15 +192,15 @@ public class Oauth2RestService {
     // TODO (FC): Trengs denne fortsatt?
     @POST
     @Path("/oauth2/access_token")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     @ApiOperation(value = "oauth2/access_token", notes = ("Mock impl av Oauth2 access_token"))
     @SuppressWarnings("unused")
     public Response accessToken(
-                                @Context HttpServletRequest req,
-                                @FormParam("grant_type") String grantType,
-                                @FormParam("realm") String realm,
-                                @FormParam("code") String code,
-                                @FormParam("redirect_uri") String redirectUri) {
+            @Context HttpServletRequest req,
+            @FormParam("grant_type") String grantType,
+            @FormParam("realm") String realm,
+            @FormParam("code") String code,
+            @FormParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
         String token = createIdToken(req, code);
         LOG.info("kall på /oauth2/access_token, opprettet token: " + token + " med reidrect-url: " + redirectUri);
@@ -210,9 +212,9 @@ public class Oauth2RestService {
         String issuer;
         if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME")) {
             issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME") + "://"
-                + System.getenv("AUTOTEST_OAUTH2_ISSUER_URL") + ":"
-                + System.getenv("AUTOTEST_OAUTH2_ISSUER_PORT")
-                + System.getenv("AUTOTEST_OAUTH2_ISSUER_PATH");
+                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_URL") + ":"
+                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_PORT")
+                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_PATH");
             LOG.info("Setter issuer-url fra naisconfig: " + issuer);
         } else {
             issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
@@ -249,7 +251,9 @@ public class Oauth2RestService {
         return Response.ok(jwks).build();
     }
 
-    /** brukes til autentisere bruker slik at en slipper å autentisere senere. OpenAM mikk-makk . */
+    /**
+     * brukes til autentisere bruker slik at en slipper å autentisere senere. OpenAM mikk-makk .
+     */
     @POST
     @Path("/json/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
@@ -267,11 +271,11 @@ public class Oauth2RestService {
 
             EndUserAuthenticateTemplate.Name namePrompt = new EndUserAuthenticateTemplate.Name("prompt", "User Name:");
             EndUserAuthenticateTemplate.Name usernameInput = new EndUserAuthenticateTemplate.Name("IDToken1", "");
-            Callback nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt, usernameInput);
+            EndUserAuthenticateTemplate.Callback nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt, usernameInput);
 
             EndUserAuthenticateTemplate.Name passwordPrompt = new EndUserAuthenticateTemplate.Name("prompt", "Password:");
             EndUserAuthenticateTemplate.Name passwordInput = new EndUserAuthenticateTemplate.Name("IDToken2", "");
-            Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
+            EndUserAuthenticateTemplate.Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
 
             template.setCallbacks(Arrays.asList(nameCallback, passwordCallback));
 
@@ -290,9 +294,9 @@ public class Oauth2RestService {
 
     protected String formatQueryParams(Map<String, String> params) {
         return params.entrySet().stream()
-            .map(p -> urlEncodeUTF8(p.getKey()) + "=" + urlEncodeUTF8(p.getValue()))
-            .reduce((p1, p2) -> p1 + "&" + p2)
-            .orElse("");
+                .map(p -> urlEncodeUTF8(p.getKey()) + "=" + urlEncodeUTF8(p.getValue()))
+                .reduce((p1, p2) -> p1 + "&" + p2)
+                .orElse("");
     }
 
     private static String urlEncodeUTF8(String s) {

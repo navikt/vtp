@@ -6,19 +6,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.qameta.allure.Description;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
-
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
+import no.nav.foreldrepenger.autotest.base.SpberegningTestBase;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
@@ -218,9 +217,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 9, 15));
-                inntektsmeldingsBuilder.setNaaerRelasjon(true); //Hvorfor må jeg sette inntektsmeldingBuilder og ikke kun .set på denne?
-        inntektsmeldingsBuilder.addGradertperiode(BigDecimal.valueOf(50), LocalDate.of(2018, 12,10), LocalDate.of(2018,12,15)); //Hvorfor ser jeg ikke denne i inntektsmeldingGrunnlag?
-        inntektsmeldingsBuilder.addUtsettelseperiode("ARBEID", LocalDate.of(2018,12,10),LocalDate.of(2018,12,15));
+        inntektsmeldingsBuilder.setNaaerRelasjon(true); //Hvorfor må jeg sette inntektsmeldingBuilder og ikke kun .set på denne?
+        inntektsmeldingsBuilder.addGradertperiode(BigDecimal.valueOf(50), LocalDate.of(2018, 12, 10), LocalDate.of(2018, 12, 15)); //Hvorfor ser jeg ikke denne i inntektsmeldingGrunnlag?
+        inntektsmeldingsBuilder.addUtsettelseperiode("ARBEID", LocalDate.of(2018, 12, 10), LocalDate.of(2018, 12, 15));
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 

@@ -1,11 +1,15 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
+import java.time.LocalDate;
+
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.*;
-
-import java.time.LocalDate;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Gradering;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Utsettelsesperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
 
 public class FordelingErketyper {
 
@@ -101,7 +105,7 @@ public class FordelingErketyper {
     public static Fordeling fordelingFarHappycaseKobletMedMorHappycase(LocalDate familehendelseDato) {
         return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, familehendelseDato.plusWeeks(10).plusDays(1), familehendelseDato.plusWeeks(16)));
     }
-    
+
     public static Fordeling generiskFordeling(Uttaksperiode... perioder) {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);

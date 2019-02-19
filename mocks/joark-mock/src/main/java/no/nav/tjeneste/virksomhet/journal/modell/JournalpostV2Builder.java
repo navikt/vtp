@@ -2,7 +2,6 @@ package no.nav.tjeneste.virksomhet.journal.modell;
 
 import java.time.LocalDate;
 
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;

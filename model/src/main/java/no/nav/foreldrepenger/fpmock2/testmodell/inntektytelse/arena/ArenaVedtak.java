@@ -6,23 +6,23 @@ import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ArenaVedtak {
-    
+
     @JsonProperty("kravMottattDato")
     private LocalDate kravMottattDato;
-    
+
     @JsonProperty("fom")
     private LocalDate fom;
-    
+
     @JsonProperty("tom")
     private LocalDate tom;
-    
+
     @JsonProperty("vedtakDato")
     private LocalDate vedtakDato;
-    
+
     @JsonProperty("status")
     private VedtakStatus status;
 
@@ -69,11 +69,11 @@ public class ArenaVedtak {
     public void setStatus(VedtakStatus status) {
         this.status = status;
     }
-    
+
     public List<ArenaMeldekort> getMeldekort() {
         return Collections.unmodifiableList(meldekort);
     }
-    
+
     public void leggTil(ArenaMeldekort meldekort) {
         this.meldekort.add(meldekort);
     }

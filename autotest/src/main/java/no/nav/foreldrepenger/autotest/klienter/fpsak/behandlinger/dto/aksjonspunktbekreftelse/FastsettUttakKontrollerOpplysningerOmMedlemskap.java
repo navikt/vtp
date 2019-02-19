@@ -1,11 +1,11 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @BekreftelseKode(kode="5074")
 public class FastsettUttakKontrollerOpplysningerOmMedlemskap extends AksjonspunktBekreftelse {

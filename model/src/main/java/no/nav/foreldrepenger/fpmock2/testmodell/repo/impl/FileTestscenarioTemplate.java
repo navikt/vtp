@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
@@ -14,8 +17,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.TemplateVariable;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.FindTemplateVariables;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FileTestscenarioTemplate implements TestscenarioTemplate {
 

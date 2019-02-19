@@ -7,17 +7,18 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
+import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvInnsynBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("smoke")
 @Tag("engangsstonad")
-public class Innsyn extends EngangsstonadTestBase{
+public class Innsyn extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Behandle innsyn for mor - godkjent")
@@ -27,23 +28,23 @@ public class Innsyn extends EngangsstonadTestBase{
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
-        
+
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-        
+
         saksbehandler.oprettBehandlingInnsyn(null);
         saksbehandler.velgBehandling("BT-006");
-        
+
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
-            .setMottattDato(LocalDate.now())
-            .setInnsynResultatType(saksbehandler.kodeverk.InnsynResultatType.getKode("INNV"))
-            .skalSetteSakPåVent(false)
-            .setBegrunnelse("Test");
+                .setMottattDato(LocalDate.now())
+                .setInnsynResultatType(saksbehandler.kodeverk.InnsynResultatType.getKode("INNV"))
+                .skalSetteSakPåVent(false)
+                .setBegrunnelse("Test");
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvInnsynBekreftelse.class);
-        
+
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        
+
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         AllureHelper.debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
@@ -51,7 +52,7 @@ public class Innsyn extends EngangsstonadTestBase{
         verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"));
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
     }
-    
+
     @Test
     @DisplayName("Behandle innsyn for mor - avvist")
     public void behandleInnsynMorAvvist() throws Exception {
@@ -60,52 +61,52 @@ public class Innsyn extends EngangsstonadTestBase{
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
-        
+
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-        
+
         saksbehandler.oprettBehandlingInnsyn(null);
         saksbehandler.velgBehandling("BT-006");
-        
+
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
-            .setMottattDato(LocalDate.now())
-            .setInnsynResultatType(saksbehandler.kodeverk.InnsynResultatType.getKode("AVVIST"))
-            .setBegrunnelse("Test");
+                .setMottattDato(LocalDate.now())
+                .setInnsynResultatType(saksbehandler.kodeverk.InnsynResultatType.getKode("AVVIST"))
+                .setBegrunnelse("Test");
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvInnsynBekreftelse.class);
-        
+
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        
+
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_AVVIST", "Behandlingstatus");
         verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"));
         verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
     }
-    
+
     @Test
     @DisplayName("Behandle innsyn for far - avvist")
     public void behandleInnsynFarAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
-        
+
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
-        
+
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-        
+
         saksbehandler.oprettBehandlingInnsyn(null);
         saksbehandler.velgBehandling("BT-006");
-        
+
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
-            .setMottattDato(LocalDate.now())
-            .setInnsynResultatType(saksbehandler.kodeverk.InnsynResultatType.getKode("AVVIST"))
-            .setBegrunnelse("Test");
+                .setMottattDato(LocalDate.now())
+                .setInnsynResultatType(saksbehandler.kodeverk.InnsynResultatType.getKode("AVVIST"))
+                .setBegrunnelse("Test");
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvInnsynBekreftelse.class);
-        
+
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        
+
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_AVVIST", "Behandlingstatus");
         verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"));

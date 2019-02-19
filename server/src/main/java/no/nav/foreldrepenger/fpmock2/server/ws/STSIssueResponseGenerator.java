@@ -34,7 +34,7 @@ import org.apache.wss4j.common.ext.WSSecurityException;
 import org.apache.wss4j.common.principal.CustomTokenPrincipal;
 import org.apache.wss4j.dom.engine.WSSConfig;
 
-import no.nav.foreldrepenger.fpmock2.server.rest.KeyStoreTool;
+import no.nav.foreldrepenger.fpmock2.felles.KeyStoreTool;
 
 public class STSIssueResponseGenerator {
 

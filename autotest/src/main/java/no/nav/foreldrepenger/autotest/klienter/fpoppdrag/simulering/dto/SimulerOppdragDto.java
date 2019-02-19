@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.autotest.klienter.fpoppdrag.simulering.dto;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.List;

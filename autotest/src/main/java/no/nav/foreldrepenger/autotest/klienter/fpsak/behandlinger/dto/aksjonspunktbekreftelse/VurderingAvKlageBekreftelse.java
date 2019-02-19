@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse;
 
+import java.time.LocalDate;
+
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
-
-import java.time.LocalDate;
 
 public abstract class VurderingAvKlageBekreftelse extends AksjonspunktBekreftelse {
 
@@ -13,13 +13,13 @@ public abstract class VurderingAvKlageBekreftelse extends AksjonspunktBekreftels
     private static final String OMGJØR_GUNST = "GUNST_MEDHOLD_I_KLAGE";
     private static final String OMGJØR_DELVISGUNST = "DELVIS_MEDHOLD_I_KLAGE";
     private static final String OMGJØR_UGUNST = "UGUNST_MEDHOLD_I_KLAGE";
-    
+
     protected String klageVurdering;
     protected String klageMedholdArsak;
     protected String klageVurderingOmgjoer;
     protected String fritekstTilBrev;
     protected LocalDate vedtaksdatoPaklagdBehandling;
-    
+
     public VurderingAvKlageBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         this.vedtaksdatoPaklagdBehandling = LocalDate.now();

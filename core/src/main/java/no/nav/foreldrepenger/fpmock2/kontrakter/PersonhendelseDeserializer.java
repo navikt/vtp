@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.server.api.feed;
+package no.nav.foreldrepenger.fpmock2.kontrakter;
 
 import java.io.IOException;
 

@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.LagreNotatDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -26,7 +25,7 @@ public class BeregningDto {
     public Kode getTema() {
         return tema;
     }
-    
+
     public int getId() {
         return id;
     }

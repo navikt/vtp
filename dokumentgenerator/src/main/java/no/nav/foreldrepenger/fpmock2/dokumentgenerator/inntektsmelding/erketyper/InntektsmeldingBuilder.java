@@ -16,19 +16,45 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakBeregnetInntektEndringKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakUtsettelseKodeliste;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Arbeidsforhold;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Arbeidsgiver;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.ArbeidsgiverPrivat;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.ArbeidsgiverperiodeListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Avsendersystem;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.AvtaltFerieListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.DelvisFravaer;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.DelvisFravaersListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.EndringIRefusjon;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.EndringIRefusjonsListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.FravaersPeriodeListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.GjenopptakelseNaturalytelseListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.GraderingIForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.GraderingIForeldrepengerListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Inntekt;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.InntektsmeldingM;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Kontaktinformasjon;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.NaturalytelseDetaljer;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.ObjectFactory;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Omsorgspenger;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.OpphoerAvNaturalytelseListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.PleiepengerPeriodeListe;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Refusjon;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.Skjemainnhold;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.SykepengerIArbeidsgiverperioden;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.UtsettelseAvForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.UtsettelseAvForeldrepengerListe;
 
 
 public class InntektsmeldingBuilder {

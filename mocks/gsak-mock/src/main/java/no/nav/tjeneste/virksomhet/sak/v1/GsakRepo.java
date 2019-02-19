@@ -3,7 +3,11 @@ package no.nav.tjeneste.virksomhet.sak.v1;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
@@ -54,7 +58,7 @@ public class GsakRepo {
         sak.setFagomraade(fagomraader);
         Sakstyper sakstyper = new Sakstyper();
         sakstyper.setValue(saktype);
-        
+
         sak.setSakstype(sakstyper);
         Fagsystemer fagsystemer = new Fagsystemer();
         fagsystemer.setValue(fagsystem);
@@ -79,7 +83,7 @@ public class GsakRepo {
         sak.setVersjonsnummer("1");
 
         bySakId.put(sakId, sak);
-        
+
         return sak;
     }
 

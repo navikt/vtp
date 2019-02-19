@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
-import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.base.FpsakTestBase;
 
 @Tag("eksempel")
-public class Loginn extends FpsakTestBase{
-    
+public class Loginn extends FpsakTestBase {
+
     @Test
     void loginnUtenRolle() throws Exception {
         saksbehandler.erLoggetInnUtenRolle();
     }
-    
+
     @Test
     void loginnMedRolle() throws Exception {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);

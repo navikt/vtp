@@ -1,8 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.dto;
 
-import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
-
 import java.util.List;
+
+import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 
 public class InntektsmeldingSykepengerIArbeidsgiverperiodenDTO {
 

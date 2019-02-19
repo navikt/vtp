@@ -1,17 +1,13 @@
 package no.nav.foreldrepenger.fpmock2.server.api.scenario;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BarnModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,10 +17,25 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
-import java.time.LocalDate;
-import java.util.*;
 
-@Api(tags = { "Testscenario" })
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioPersonopplysningDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenariodataDto;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BarnModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplateRepository;
+
+@Api(tags = {"Testscenario"})
 @Path("/api/testscenario")
 public class TestscenarioRestTjeneste {
 
@@ -38,26 +49,33 @@ public class TestscenarioRestTjeneste {
     @Context
     private TestscenarioRepository testscenarioRepository;
 
+    public void setTemplateRepository(TestscenarioTemplateRepository templateRepository) {
+        this.templateRepository = templateRepository;
+    }
+
+    public void setTestscenarioRepository(TestscenarioRepository testscenarioRepository) {
+        this.testscenarioRepository = testscenarioRepository;
+    }
     @POST
     @Path("/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key"), response = TestscenarioDto.class)
     public TestscenarioDto initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
         TestscenarioTemplate template = templateRepository.finn(templateKey);
-        
+
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
 
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
         Map<String, String> variabler = testscenario.getVariabelContainer().getVars();
-        
+
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
         String aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
 
-        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker ,fnrAnnenPart, aktørIdSøker, aktørIdAnnenPart, fødselsdato.orElse(null));
+        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker, fnrAnnenPart, aktørIdSøker, aktørIdAnnenPart, fødselsdato.orElse(null));
 
         LOG.info("Testscenario med templateKey: {}, for søker: {}, med aktørId: {}.", templateKey, fnrSøker, aktørIdSøker);
 
@@ -81,7 +99,7 @@ public class TestscenarioRestTjeneste {
         Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
                 .stream()
                 .filter(modell -> modell.getTil() instanceof BarnModell)
-                .map(modell -> ((BarnModell)modell.getTil()))
+                .map(modell -> ((BarnModell) modell.getTil()))
                 .findFirst();
 
         return barnModell.map(PersonModell::getFødselsdato);

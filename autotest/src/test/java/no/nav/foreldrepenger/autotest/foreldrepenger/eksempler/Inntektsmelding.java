@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.eksempler;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -11,12 +10,12 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
-import no.nav.foreldrepenger.autotest.foreldrepenger.FpsakTestBase;
+import no.nav.foreldrepenger.autotest.base.FpsakTestBase;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 
 @Tag("eksempel")
-public class Inntektsmelding extends FpsakTestBase{
+public class Inntektsmelding extends FpsakTestBase {
 
     @Test
     public void oppretteInntektsmeldingerBasertPåTestscenarioUtenFagsak() throws Exception {
@@ -24,12 +23,12 @@ public class Inntektsmelding extends FpsakTestBase{
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, LocalDate.now());
         InntektsmeldingBuilder inntektsmelding = inntektsmeldinger.get(0);
         inntektsmelding.addGradertperiode(BigDecimal.TEN, LocalDate.now().plusWeeks(3), LocalDate.now().plusWeeks(5));
-        
+
         System.out.println(inntektsmelding.createInntektesmeldingXML());
-        
+
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmelding, testscenario, null);
-        
+
         System.out.println(saksnummer);
     }
 

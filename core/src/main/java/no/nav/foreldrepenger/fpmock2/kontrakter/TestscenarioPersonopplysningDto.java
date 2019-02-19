@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.server.api.scenario;
+package no.nav.foreldrepenger.fpmock2.kontrakter;
 
 import java.time.LocalDate;
 
@@ -11,13 +11,13 @@ public class TestscenarioPersonopplysningDto {
 
     @JsonProperty("søkerIdent")
     private String søkerIdent;
-    
+
     @JsonProperty("søkerAktørIdent")
     private String søkerAktørIdent;
 
     @JsonProperty("annenpartIdent")
     private String annenpartIdent;
-    
+
     @JsonProperty("annenpartAktørIdent")
     private String annenpartAktørIdent;
 
@@ -25,7 +25,7 @@ public class TestscenarioPersonopplysningDto {
     private LocalDate fødselsdato;
 
     public TestscenarioPersonopplysningDto() {
-        
+
     }
 
 
@@ -48,7 +48,7 @@ public class TestscenarioPersonopplysningDto {
     public String getSøkerAktørIdent() {
         return søkerAktørIdent;
     }
-    
+
     public String getAnnenPartAktørIdent() {
         return annenpartAktørIdent;
     }

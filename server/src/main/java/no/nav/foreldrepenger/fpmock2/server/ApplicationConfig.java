@@ -27,6 +27,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
+import no.nav.foreldrepenger.fpmock2.server.api.cases.CasesRestService;
 import no.nav.foreldrepenger.fpmock2.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.sak.SakRestTjeneste;
@@ -68,20 +69,20 @@ public class ApplicationConfig extends Application {
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
-        classes.add(PersonfeedMock.class);
+        classes.add(CasesRestService.class);
         classes.add(FeedRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);
-        
+
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
         classes.add(JacksonConfigResolver.class);
         classes.add(MyExceptionMapper.class);
-        
+
 
         return classes;
     }
@@ -106,14 +107,14 @@ public class ApplicationConfig extends Application {
 
     @Provider
     public static class MyExceptionMapper implements ExceptionMapper<NotFoundException> {
-        
+
         private static final Logger log = LoggerFactory.getLogger(MyExceptionMapper.class);
 
-        @Context HttpServletRequest req; 
+        @Context HttpServletRequest req;
 
         @Override
         public Response toResponse(NotFoundException exception) {
-            
+
             String fullUrl = getFullURL(req);
 
             Response response = exception.getResponse();
@@ -138,7 +139,7 @@ public class ApplicationConfig extends Application {
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
         }
     }
-    
+
 
     public static String getFullURL(HttpServletRequest request) {
         StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());

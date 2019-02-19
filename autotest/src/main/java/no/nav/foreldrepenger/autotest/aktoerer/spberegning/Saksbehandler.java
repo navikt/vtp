@@ -9,29 +9,28 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.BeregningKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.ForeslaaDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.ForslagDto;
+import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.LagreNotatDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.OppdaterBeregningDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.AktivitetsAvtaleDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningDto;
-import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.LagreNotatDto;
-import no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregning.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.spberegning.kodeverk.dto.Kodeverk;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 
-public class Saksbehandler extends Aktoer{
+public class Saksbehandler extends Aktoer {
 
     /*
      * Klienter
      */
     protected KodeverkKlient kodeverkKlient;
     protected BeregningKlient beregningKlient;
-    
+
     /*
      * Kodeverk
      */
     public Kodeverk kodeverk;
-    
+
     /*
      * Beregning
      */
@@ -42,15 +41,15 @@ public class Saksbehandler extends Aktoer{
     public Saksbehandler() {
         kodeverkKlient = new KodeverkKlient(session);
         beregningKlient = new BeregningKlient(session);
-	}
-    
+    }
+
     @Override
     public void erLoggetInnMedRolle(Rolle rolle) throws IOException {
         super.erLoggetInnMedRolle(rolle);
         kodeverk = kodeverkKlient.kodeverk();
         //throw new RuntimeException("erLoggetInnMedRolle ikke ferdig implementert");
     }
-    
+
     /*
      * Foreslår og henter forslag fra beregning
      */
@@ -73,12 +72,12 @@ public class Saksbehandler extends Aktoer{
         beregningKlient.oppdaterBeregning(request);
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
     }
-    
+
     public void oppdaterBeregning(LocalDate skjæringstidspunkt, String status) throws IOException {
         oppdaterBeregning(skjæringstidspunkt, kodeverk.AktivitetStatus.getKode(status));
     }
 
-    public void lagreNotat (BeregningDto beregning, String notat, Long beregningsgrunnlagId) throws IOException {
+    public void lagreNotat(BeregningDto beregning, String notat, Long beregningsgrunnlagId) throws IOException {
         LagreNotatDto request = new LagreNotatDto(beregning.getId(), notat, beregningsgrunnlagId);
         beregningKlient.lagrenotat(request);
     }
@@ -86,14 +85,16 @@ public class Saksbehandler extends Aktoer{
     public Double beregnetÅrsinntekt() {
         return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregnetPrAar();
     }
-    public Double BruttoInkludertBortfaltNaturalytelsePrAar(){
+
+    public Double BruttoInkludertBortfaltNaturalytelsePrAar() {
         return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBruttoInkludertBortfaltNaturalytelsePrAar();
     }
-    public LocalDate sammenligningsperiodeTom (){
+
+    public LocalDate sammenligningsperiodeTom() {
         return beregning.getBeregningsgrunnlag().getSammenligningsgrunnlag().getSammenligningsgrunnlagTom();
     }
 
-    public List <AktivitetsAvtaleDto>getAktivitetsAvtaler(){
+    public List<AktivitetsAvtaleDto> getAktivitetsAvtaler() {
         return beregning.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode().get(0).getBeregningsgrunnlagPrStatusOgAndel().get(0).getAktivitetsAvtaleDto();
     }
 
@@ -109,7 +110,7 @@ public class Saksbehandler extends Aktoer{
         return beregning.getBeregningsgrunnlag().getSkjaeringstidspunktBeregning();
     }
 
-    public Boolean getSjømann(){
+    public Boolean getSjømann() {
         return beregning.getBeregningsgrunnlag().getSjømann();
     }
 }

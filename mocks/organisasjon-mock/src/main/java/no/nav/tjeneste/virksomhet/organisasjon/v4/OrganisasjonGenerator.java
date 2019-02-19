@@ -5,11 +5,11 @@ import java.time.LocalDate;
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Enhetstyper;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Naering;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.ObjectFactory;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Organisasjon;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.OrganisasjonsDetaljer;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Organisasjonsnavn;
 import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.UstrukturertNavn;
-import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.Organisasjon;
-import no.nav.tjeneste.virksomhet.organisasjon.v4.informasjon.ObjectFactory;
 
 /**
  * Genererer tilfeldige organisasjoner til testformål. Første utgave gir et enkelt navn og enhetstype til innkommende orgnr. Vi ikke feile.

@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
@@ -23,14 +23,14 @@ public class Personopplysninger {
 
     @JsonProperty("annenPart")
     private AnnenPartModell annenPart;
-    
+
     @JsonInclude(Include.NON_EMPTY)
     @JsonProperty("familierelasjoner")
     private List<FamilierelasjonModell> familierelasjoner = new ArrayList<>();
-    
+
     @JsonProperty("familierelasjonerAnnenPart")
     private List<FamilierelasjonModell> familierelasjonerAnnenPart = new ArrayList<>();
-    
+
     @JsonProperty("familierelasjonerBarn")
     private List<FamilierelasjonModell> familierelasjonerBarn = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class Personopplysninger {
      */
     @JacksonInject
     private LokalIdentIndeks identer;
-    
+
     @JacksonInject
     private VariabelContainer vars;
 
@@ -64,11 +64,11 @@ public class Personopplysninger {
     public Collection<FamilierelasjonModell> getFamilierelasjoner() {
         return Collections.unmodifiableList(familierelasjoner);
     }
-    
+
     public Collection<FamilierelasjonModell> getFamilierelasjonerForAnnenPart() {
         return Collections.unmodifiableList(familierelasjonerAnnenPart);
     }
-    
+
     public Collection<FamilierelasjonModell> getFamilierelasjonerForBarnet() {
         return Collections.unmodifiableList(familierelasjonerBarn);
     }

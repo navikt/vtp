@@ -1,13 +1,14 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Landkode;
 
 public class RelatertYtelseTema {
     private static Map<String, String> VALID_KODER;
@@ -26,7 +27,7 @@ public class RelatertYtelseTema {
     public static final RelatertYtelseTema FA = new RelatertYtelseTema("FA");
     public static final RelatertYtelseTema SP = new RelatertYtelseTema("SP");
     public static final RelatertYtelseTema DAG = new RelatertYtelseTema("DAG");
-    
+
     private String kode;
 
     @JsonCreator

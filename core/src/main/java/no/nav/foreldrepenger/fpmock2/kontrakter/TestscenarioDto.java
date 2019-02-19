@@ -1,4 +1,8 @@
-package no.nav.foreldrepenger.fpmock2.server.api.scenario;
+package no.nav.foreldrepenger.fpmock2.kontrakter;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -6,11 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
+import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioTemplate;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class TestscenarioDto extends TestscenarioReferanse {
@@ -32,14 +33,19 @@ public class TestscenarioDto extends TestscenarioReferanse {
     @JsonInclude(content = Include.NON_EMPTY)
     @JsonProperty("scenariodataAnnenpart")
     private TestscenariodataDto scenariodataAnnenpartDto;
-    
+
     public TestscenarioDto() {
-        super(null,  null);
+        super(null, null);
     }
 
-    public TestscenarioDto(TestscenarioTemplate template, String testscenarioId, Map<String, String> variabler,
-                           TestscenarioPersonopplysningDto scenarioPersonopplysninger, TestscenariodataDto scenariodataDto,
-                            TestscenariodataDto scenariodataAnnenpartDto) {
+    public TestscenarioDto(
+            TestscenarioTemplate template,
+            String testscenarioId,
+            Map<String, String> variabler,
+            TestscenarioPersonopplysningDto scenarioPersonopplysninger,
+            TestscenariodataDto scenariodataDto,
+            TestscenariodataDto scenariodataAnnenpartDto
+    ) {
         super(testscenarioId, template.getTemplateKey());
         this.personopplysninger = scenarioPersonopplysninger;
         Objects.requireNonNull(variabler, "variabler");
@@ -57,7 +63,11 @@ public class TestscenarioDto extends TestscenarioReferanse {
         return Collections.unmodifiableMap(variabler);
     }
 
-    public TestscenariodataDto getScenariodata() { return scenariodataDto;}
+    public TestscenariodataDto getScenariodata() {
+        return scenariodataDto;
+    }
 
-    public TestscenariodataDto getScenariodataAnnenpart() { return scenariodataAnnenpartDto;}
+    public TestscenariodataDto getScenariodataAnnenpart() {
+        return scenariodataAnnenpartDto;
+    }
 }

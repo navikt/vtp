@@ -5,15 +5,14 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
-import no.nav.foreldrepenger.fpmock2.server.rest.OidcTokenGenerator;
+import no.nav.foreldrepenger.fpmock2.felles.OidcTokenGenerator;
 import no.nav.modig.testcertificates.TestCertificates;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class OpenamKlient extends VTPKlient {
 

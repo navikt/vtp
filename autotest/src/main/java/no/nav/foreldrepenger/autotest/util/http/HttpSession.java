@@ -1,5 +1,10 @@
 package no.nav.foreldrepenger.autotest.util.http;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -7,18 +12,21 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.HttpCoreContext;
 import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class HttpSession{
 
@@ -37,11 +45,11 @@ public class HttpSession{
         return client.execute(request, context);
     }
 
-    
+
     public HttpResponse get(String url) throws IOException {
         return get(url, new HashMap<>());
     }
-    
+
     public HttpResponse get(String url, Map<String, String> headers) throws IOException {
         HttpGet request = new HttpGet(url);
         return execute(request, headers);
@@ -88,7 +96,7 @@ public class HttpSession{
         requestBuilder = requestBuilder.setConnectTimeout(connectTimeoutMillis * 6);
         requestBuilder = requestBuilder.setSocketTimeout(connectTimeoutMillis * 6);
         requestBuilder = requestBuilder.setConnectionRequestTimeout(connectTimeoutMillis);
-        
+
         return requestBuilder.build();
     }
 
@@ -137,11 +145,11 @@ public class HttpSession{
     public void leggTilCookie(Cookie cookie) {
         hentCookieStore().addCookie(cookie);
     }
-    
+
     public String getCurrentUrl() {
         return ((HttpUriRequest) context.getAttribute(HttpCoreContext.HTTP_REQUEST)).getURI().toString();
     }
-    
+
     public static String readResponse(HttpResponse response){
         try{
             HttpEntity entity = response.getEntity();

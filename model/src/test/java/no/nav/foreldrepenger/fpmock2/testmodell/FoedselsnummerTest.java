@@ -1,14 +1,15 @@
 package no.nav.foreldrepenger.fpmock2.testmodell;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.identer.FiktiveFnr;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Assert;
+import org.junit.Test;
+
+import no.nav.foreldrepenger.fpmock2.testmodell.identer.FiktiveFnr;
 
 public class FoedselsnummerTest {
 

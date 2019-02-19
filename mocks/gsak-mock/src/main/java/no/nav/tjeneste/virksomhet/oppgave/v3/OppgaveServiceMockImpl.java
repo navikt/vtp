@@ -10,18 +10,22 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.slf4j.Logger;
 import no.nav.tjeneste.virksomhet.oppgave.v3.binding.HentOppgaveOppgaveIkkeFunnet;
 import no.nav.tjeneste.virksomhet.oppgave.v3.binding.OppgaveV3;
 import no.nav.tjeneste.virksomhet.oppgave.v3.informasjon.oppgave.Fagomrade;
 import no.nav.tjeneste.virksomhet.oppgave.v3.informasjon.oppgave.Oppgave;
-import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.*;
+import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnFeilregistrertOppgaveListeRequest;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnFeilregistrertOppgaveListeResponse;
+import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnFerdigstiltOppgaveListeRequest;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnFerdigstiltOppgaveListeResponse;
+import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnMappeListeRequest;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnMappeListeResponse;
+import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnOppgaveListeRequest;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.FinnOppgaveListeResponse;
+import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.HentOppgaveRequest;
 import no.nav.tjeneste.virksomhet.oppgave.v3.meldinger.HentOppgaveResponse;
 
 

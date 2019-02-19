@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import io.qameta.allure.Description;
 import io.qameta.allure.Flaky;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
+import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderPerioderOpptjeningBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarArbeidsforholdBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
@@ -21,7 +22,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagArbeidsforholdDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("flaky")
@@ -106,12 +107,12 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
                 .getVurderMottarYtelse().getArbeidstakerAndelerUtenIM().size()).isEqualTo(1);
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getVurderMottarYtelse().getArbeidstakerAndelerUtenIM().get(0)
-        .getAndelsnr()).isEqualTo(2L);
+                .getAndelsnr()).isEqualTo(2L);
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getVurderMottarYtelse().getArbeidstakerAndelerUtenIM().get(0)
                 .getInntektPrMnd()).isEqualTo(30000);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderMottarYtelse().getArbeidstakerAndelerUtenIM().get(0).getArbeidsforhold(),
+                        .getVurderMottarYtelse().getArbeidstakerAndelerUtenIM().get(0).getArbeidsforhold(),
                 "THOMAS AS", "973861778");
     }
 

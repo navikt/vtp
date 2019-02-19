@@ -1,9 +1,13 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.dokument;
 
+import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD;
+import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId.ADOPSJONSSOKNAD_FORELDREPENGER;
+import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD;
+import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER;
+import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Behandlingstema;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-
-import static no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId.*;
 
 public class ControllerHelper {
 

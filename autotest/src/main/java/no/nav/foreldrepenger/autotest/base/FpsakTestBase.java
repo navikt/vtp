@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest.foreldrepenger;
+package no.nav.foreldrepenger.autotest.base;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,20 +12,20 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import no.nav.foreldrepenger.autotest.TestScenarioTestBase;
+import no.nav.foreldrepenger.autotest.base.TestScenarioTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengesoknadXmlErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 
-public class FpsakTestBase extends TestScenarioTestBase{
+public class FpsakTestBase extends TestScenarioTestBase {
 
     /*
      * Aktører
@@ -44,19 +44,19 @@ public class FpsakTestBase extends TestScenarioTestBase{
 
 
     @BeforeEach
-    void setUp() throws Exception{
+    public void setUp() {
         fordel = new Fordel();
         saksbehandler = new Saksbehandler();
         overstyrer = new Saksbehandler();
         beslutter = new Saksbehandler();
         klagebehandler = new Saksbehandler();
-        
+
         foreldrepengeSøknadErketyper = new ForeldrepengesoknadXmlErketyper();
         inntektsmeldingErketype = new InntektsmeldingErketype();
     }
 
     protected Kodeverk hentKodeverk() {
-        if(saksbehandler != null && saksbehandler.kodeverk != null) {
+        if (saksbehandler != null && saksbehandler.kodeverk != null) {
             return saksbehandler.kodeverk;
         }
         return null;
@@ -126,8 +126,8 @@ public class FpsakTestBase extends TestScenarioTestBase{
     }
 
     protected InntektsmeldingBuilder lagInntektsmeldingBuilderMedGradering(Integer beløp, String fnr, LocalDate fpStartdato, String orgNr,
-                                                               Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon,
-                                                               Integer arbeidsprosent, LocalDate graderingFom, LocalDate graderingTom) {
+                                                                           Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon,
+                                                                           Integer arbeidsprosent, LocalDate graderingFom, LocalDate graderingTom) {
         InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(beløp, fnr, fpStartdato, orgNr, arbeidsforholdId, refusjon);
         builder.addGradertperiode(BigDecimal.valueOf(arbeidsprosent), graderingFom, graderingTom);
         return builder;

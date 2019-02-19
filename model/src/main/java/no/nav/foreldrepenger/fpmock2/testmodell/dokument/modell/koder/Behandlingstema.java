@@ -1,11 +1,11 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Behandlingstema {
 

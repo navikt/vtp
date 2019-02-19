@@ -1,8 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.sigrun;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Inntektsår {
 

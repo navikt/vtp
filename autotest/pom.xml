@@ -139,11 +139,22 @@
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>dokumentgenerator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
-            <artifactId>server</artifactId>
-        </dependency>
 
+        <!-- NAV biblioteker -->
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-testcertificates</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+            <artifactId>okonomistotte-v1</artifactId>
+            <classifier>jaxb</classifier>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.oppdrag</groupId>
+            <artifactId>oppdrag-klient</artifactId>
+            <classifier>jaxb</classifier>
+        </dependency>
         <!-- External dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

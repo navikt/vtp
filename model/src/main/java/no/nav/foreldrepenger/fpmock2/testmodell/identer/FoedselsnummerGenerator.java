@@ -3,11 +3,12 @@ package no.nav.foreldrepenger.fpmock2.testmodell.identer;
 import java.time.LocalDate;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.enums.IdentType;
 import no.nav.foreldrepenger.fpmock2.testmodell.enums.Kjonn;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.TestdataUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FoedselsnummerGenerator {
     private final static Logger LOG = LoggerFactory.getLogger(FoedselsnummerGenerator.class);

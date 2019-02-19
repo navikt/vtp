@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.oppgavebehandling.v3;
 
+import java.util.stream.Collectors;
+
 import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -38,8 +40,6 @@ import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.SlettMappeReque
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.TildelOppgaveRequest;
 import no.nav.tjeneste.virksomhet.oppgavebehandling.v3.meldinger.TildelOppgaveResponse;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
-
-import java.util.stream.Collectors;
 
 @Addressing
 @WebService(name = "Oppgavebehandling_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/oppgavebehandling/v3")

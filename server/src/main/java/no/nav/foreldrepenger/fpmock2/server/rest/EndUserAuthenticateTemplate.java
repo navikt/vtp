@@ -12,7 +12,7 @@ class EndUserAuthenticateTemplate {
         Name() {
             // må ha default ctor
         }
-        
+
         Name(String name, String value) {
             super();
             this.name = name;
@@ -44,13 +44,13 @@ class EndUserAuthenticateTemplate {
         Callback() {
             // må ha default ctor
         }
-        
+
         Callback(String type, Name output, Name input){
             this.type=type;
             this.input = Arrays.asList(input);
             this.output=Arrays.asList(output);
         }
-        
+
         public String getType() {
             return type;
         }
@@ -85,7 +85,7 @@ class EndUserAuthenticateTemplate {
     private List<Callback> callbacks = new ArrayList<>();
     private String header;
     private String stage;
-    
+
     public EndUserAuthenticateTemplate() {
         // må ha default ctor
     }

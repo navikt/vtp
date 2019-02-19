@@ -4,9 +4,12 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.nav.foreldrepenger.fpmock2.kontrakter.DødshendelseDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.FødselshendelseDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.PersonhendelseDto;
+import no.nav.foreldrepenger.fpmock2.testmodell.feed.DødsmeldingOpprettetHendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.feed.FødselsmeldingOpprettetHendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.feed.HendelseContent;
-import no.nav.foreldrepenger.fpmock2.testmodell.feed.DødsmeldingOpprettetHendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
@@ -28,7 +31,7 @@ public class PersonhendelseAdapter {
         if(personhendelseDto instanceof FødselshendelseDto){
             return fødselshendelseFra((FødselshendelseDto) personhendelseDto);
         }
-        if(personhendelseDto instanceof  DødshendelseDto){
+        if(personhendelseDto instanceof DødshendelseDto){
             return dødshendelseFra((DødshendelseDto) personhendelseDto);
         }
         return null;

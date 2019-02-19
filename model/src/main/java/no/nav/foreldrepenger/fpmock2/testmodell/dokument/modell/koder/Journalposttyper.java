@@ -4,12 +4,12 @@ package no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder;
     Hentet fra: https://modapp.adeo.no/kodeverksklient/viskodeverk/Journalposttyper/1?5
 */
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Journalposttyper {
     private static List<String> VALID_KODE;

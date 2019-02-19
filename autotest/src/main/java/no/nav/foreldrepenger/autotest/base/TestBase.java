@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.autotest;
+package no.nav.foreldrepenger.autotest.base;
 
 import java.util.List;
 
@@ -11,14 +11,14 @@ import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 
 public abstract class TestBase {
-    
+
     //Logger for testruns
     protected Logger log;
-    
+
     public TestBase() {
         log = LoggerFactory.getLogger(this.getClass());
     }
-    
+
     /*
      * Global setup
      */
@@ -28,19 +28,19 @@ public abstract class TestBase {
         PropertiesUtils.initProperties(propertiesDir == null ? ".." : propertiesDir);
         MiljoKonfigurasjon.initProperties();
     }
-    
+
     /*
      * Verifisering
      */
     protected void verifiserListeInneholder(List<Object> liste, Object object1) {
         for (Object object2 : liste) {
-            if(object1.equals(object2)) {
+            if (object1.equals(object2)) {
                 return;
-             }
+            }
         }
         verifiser(false, "Listen: " + liste.toString() + " inneholdt ikke: " + object1.toString());
     }
-    
+
     protected void verifiserLikhet(Object verdiGjeldende, Object verdiForventet) {
         verifiserLikhet(verdiGjeldende, verdiForventet, "Object");
     }
@@ -53,9 +53,9 @@ public abstract class TestBase {
     protected void verifiser(boolean statement) {
         verifiser(statement, "ingen melding");
     }
-    
+
     protected void verifiser(boolean statement, String message) {
-        if(!statement) {
+        if (!statement) {
             throw new RuntimeException("Verifisering feilet: " + message);
         }
     }

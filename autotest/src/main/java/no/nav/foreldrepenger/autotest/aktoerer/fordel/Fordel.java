@@ -32,8 +32,8 @@ import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.server.api.feed.PersonhendelseDto;
-import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.PersonhendelseDto;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.ControllerHelper;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
@@ -73,7 +73,7 @@ public class Fordel extends Aktoer {
     @Step("Sender inn søknad")
     public long sendInnSøknad(Soeknad søknad, String aktørId, String fnr, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception {
         String xml = null;
-        if(null != søknad) {
+        if (null != søknad) {
             xml = ForeldrepengesoknadBuilder.tilXML(søknad);
         }
 
@@ -89,32 +89,32 @@ public class Fordel extends Aktoer {
         long sakId = sendInnJournalpost(xml, journalpostId, behandlingstemaOffisiellKode, dokumentTypeIdOffisiellKode, "SOK", aktørId, saksnummer);
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
-        
+
         Vent.til(() -> {
             List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
             //TODO: Gjøre denne asynkron
-            if(behandlinger.size() > 1){
+            if (behandlinger.size() > 1) {
                 Thread.sleep(5000);
             }
             return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
         }, 60, "Saken hadde ingen behandlinger");
 
-        
+
         return sakId;
     }
 
     /*
      * Sender inn søknad og opretter ny sak
      */
-    
+
     public long sendInnSøknad(Soeknad søknad, String aktørId, String fnr, DokumenttypeId dokumenttypeId) throws Exception {
         return sendInnSøknad(søknad, aktørId, fnr, dokumenttypeId, null);
     }
-    
+
     public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId) throws Exception {
         return sendInnSøknad(søknad, scenario, dokumenttypeId, null);
     }
-    
+
     public long sendInnSøknad(Soeknad søknad, TestscenarioDto scenario, DokumenttypeId dokumenttypeId, Long saksnummer) throws Exception {
         String aktørId = scenario.getPersonopplysninger().getSøkerAktørIdent();
         String fnr = scenario.getPersonopplysninger().getSøkerIdent();
@@ -125,7 +125,7 @@ public class Fordel extends Aktoer {
      * Sender inn søknad og returnerer saksinformasjon
      */
     @Step("Sender inn papirsøknad")
-    public long sendInnPapirsøkand(TestscenarioDto testscenario, DokumenttypeId dokumenttypeId) throws  Exception {
+    public long sendInnPapirsøkand(TestscenarioDto testscenario, DokumenttypeId dokumenttypeId) throws Exception {
         return sendInnSøknad(null, testscenario, dokumenttypeId);
     }
 
@@ -133,11 +133,11 @@ public class Fordel extends Aktoer {
      * Opprett sak
      */
 
-    public String opprettSak(TestscenarioDto testscenarioDto, String fagområde) throws IOException{
+    public String opprettSak(TestscenarioDto testscenarioDto, String fagområde) throws IOException {
 
         List<String> aktører = new ArrayList<>();
         aktører.add(testscenarioDto.getPersonopplysninger().getSøkerIdent());
-        if(testscenarioDto.getPersonopplysninger().getAnnenpartIdent() != null){
+        if (testscenarioDto.getPersonopplysninger().getAnnenpartIdent() != null) {
             aktører.add(testscenarioDto.getPersonopplysninger().getAnnenpartIdent());
         }
 
@@ -168,27 +168,26 @@ public class Fordel extends Aktoer {
         journalpostModell.setSakId(String.valueOf(nyttSaksnummer));
 
         //vent til inntektsmelding er mottatt
-        if(gammeltSaksnummer != null) {
+        if (gammeltSaksnummer != null) {
             final long saksnummerF = gammeltSaksnummer;
-            Vent.til(() ->{
+            Vent.til(() -> {
                 List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
                 return historikk.stream().anyMatch(h -> h.getTekst().equals("Vedlegg mottatt"));
             }, 20, "Saken har ikke mottatt inntektsmeldingen");
-        }
-        else {
-            Vent.til(() ->{
+        } else {
+            Vent.til(() -> {
                 return fagsakKlient.søk("" + nyttSaksnummer).size() > 0;
             }, 20, "Oprettet ikke fagsag for inntektsmelding");
         }
 
         return nyttSaksnummer;
     }
-    
+
     @Step("Sender inn inntektsmelding")
     public long sendInnInntektsmelding(InntektsmeldingBuilder inntektsmelding, TestscenarioDto testscenario, Long saksnummer) throws Exception {
         return sendInnInntektsmelding(inntektsmelding, testscenario.getPersonopplysninger().getSøkerAktørIdent(), testscenario.getPersonopplysninger().getSøkerIdent(), saksnummer);
     }
-    
+
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, TestscenarioDto scenario) throws Exception {
         Long saksnummer = sendInnInntektsmeldinger(inntektsmeldinger, scenario, null);
         return saksnummer;
@@ -197,7 +196,7 @@ public class Fordel extends Aktoer {
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, String aktørId, String fnr, Long saksnummer) throws Exception {
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, aktørId, fnr, saksnummer);
-            if(inntektsmeldinger.size() > 1) {
+            if (inntektsmeldinger.size() > 1) {
                 Thread.sleep(4000); //TODO finn ut hva man må vente på her...
             }
         }
@@ -224,7 +223,7 @@ public class Fordel extends Aktoer {
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, aktørId, DokumenttypeId.INNTEKTSMELDING);
         journalpostModell.setSakId(saksnummer.toString());
         String id = journalpostKlient.journalfør(journalpostModell).getJournalpostId();
-        if(saksnummer != null) {
+        if (saksnummer != null) {
             journalpostKlient.knyttSakTilJournalpost(id, "" + saksnummer);
         }
         return id;
@@ -255,7 +254,7 @@ public class Fordel extends Aktoer {
         if (saksnummer == null || saksnummer.longValue() == 0L) {
             OpprettSak journalpost = new OpprettSak(journalpostId, behandlingstemaOffisiellKode, aktørId);
             saksnummer = fordelKlient.fagsakOpprett(journalpost).saksnummer;
-            journalpostKlient.knyttSakTilJournalpost(journalpostId,saksnummer.toString());
+            journalpostKlient.knyttSakTilJournalpost(journalpostId, saksnummer.toString());
         }
 
 
@@ -285,7 +284,7 @@ public class Fordel extends Aktoer {
      * Opretter en personhendelse
      */
     @Step("Oppretter tps-hendelse")
-    public void opprettTpsHendelse(PersonhendelseDto personhendelseDto) throws Exception{
+    public void opprettTpsHendelse(PersonhendelseDto personhendelseDto) throws Exception {
         tpsFeedKlient.leggTilHendelse(personhendelseDto);
     }
 }

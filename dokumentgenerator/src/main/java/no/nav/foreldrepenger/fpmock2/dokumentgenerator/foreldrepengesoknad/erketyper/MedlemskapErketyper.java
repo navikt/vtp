@@ -2,8 +2,6 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import java.time.LocalDate;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.Medlemskap;
 import no.nav.vedtak.felles.xml.soeknad.felles.v1.OppholdNorge;

@@ -13,7 +13,6 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +20,9 @@ import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkPersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentEkteskapshistorikkSikkerhetsbegrensning;
@@ -40,6 +39,13 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.HentVergePersonIkkeFunnet;
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentVergeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3;
 import no.nav.tjeneste.virksomhet.person.v3.feil.PersonIkkeFunnet;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonstatusPeriode;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.StatsborgerskapPeriode;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentEkteskapshistorikkRequest;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentEkteskapshistorikkResponse;
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentGeografiskTilknytningRequest;
@@ -84,17 +90,17 @@ public class PersonServiceMockImpl implements PersonV3 {
 
         HentPersonResponse response = new HentPersonResponse();
         Bruker person = new PersonAdapter().fra(bruker);
-        
-        
+
+
         Personopplysninger pers = repo.getPersonIndeks().finnPersonopplysningerByIdent(bruker.getIdent());
-        
+
         boolean erBarnet = false;
         for (FamilierelasjonModell relasjon : pers.getFamilierelasjoner()) {
             if(relasjon.getRolle().equals(Rolle.BARN) && relasjon.getTil().getAktørIdent().equals(bruker.getAktørIdent())) {
                 erBarnet = true;
             }
         }
-        
+
         List<Familierelasjon> familierelasjoner;
         if(pers.getAnnenPart().getAktørIdent().equals(bruker.getAktørIdent())) { //TODO HACK for annenpart (annenpart burde ha en egen personopplysning fil eller liknende)
             familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjonerForAnnenPart());
@@ -113,7 +119,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         for (Familierelasjon familierelasjon : familierelasjoner) {
             System.out.println("    " + familierelasjon.getTilPerson().getAktoer().toString());
         }
-        
+
         response.setPerson(person);
         return response;
     }

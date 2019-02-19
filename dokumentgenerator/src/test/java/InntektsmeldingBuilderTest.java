@@ -1,3 +1,11 @@
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
@@ -5,13 +13,6 @@ import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.DelvisFravaer;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.Omsorgspenger;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InntektsmeldingBuilderTest{
 

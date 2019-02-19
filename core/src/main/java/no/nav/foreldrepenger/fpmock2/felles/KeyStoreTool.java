@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.server.rest;
+package no.nav.foreldrepenger.fpmock2.felles;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public class KeyStoreTool {
     private static RsaJsonWebKey jwk = null;
-    
+
     private static KeyStore keystore = null;
 
     private static final Logger log = LoggerFactory.getLogger(KeyStoreTool.class);
@@ -46,7 +46,7 @@ public class KeyStoreTool {
             myPrivateKey = pk.getPrivateKey();
             Certificate cert = ks.getCertificate(keyAndCertAlias);
             myPublicKey = cert.getPublicKey();
-            
+
             KeyStoreTool.keystore = ks;
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableEntryException e) {
             log.error("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
@@ -88,8 +88,8 @@ public class KeyStoreTool {
             return System.getProperty("no.nav.modig.security.appkey", "app-key");
         }
     }
-    
-    
+
+
     public static synchronized Credential getDefaultCredential() {
         if (keystore == null) {
             init();
@@ -98,7 +98,7 @@ public class KeyStoreTool {
         KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(),  getKeyStoreAndKeyPassword());
         return credentialAdapter;
     }
-    
+
     public static synchronized RsaJsonWebKey getJsonWebKey() {
         if (jwk == null) {
             init();
