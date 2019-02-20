@@ -244,7 +244,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         LocalDate utsettelseTom = fødselsdato.plusWeeks(18);
         Fordeling fordelingUtsettelse = fordelingEndringssøknadUtsettelse(fødselsdato, orgnr, utsettelseFom, utsettelseTom);
 
-        ForeldrepengesoknadBuilder endretSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEndringUtsettelse(
+        ForeldrepengesoknadBuilder endretSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedKunMorEndring(
                 søkerAktørIdent, fordelingUtsettelse, saksnummer.toString());
         fordel. erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummerE = fordel.sendInnSøknad(endretSøknad.buildEndring(), søkerAktørIdent, søkerIdent,
