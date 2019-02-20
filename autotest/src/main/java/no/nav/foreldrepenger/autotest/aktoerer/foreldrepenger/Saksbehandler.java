@@ -32,6 +32,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Personopplysning;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Soknad;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Verge;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Vilkar;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.VilkarStatusKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
@@ -223,6 +224,10 @@ public class Saksbehandler extends Aktoer{
             return behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
         });
         
+        Deffered<List<Vilkar>> dVilkår = new Deffered<>(() -> {
+            return behandlingerKlient.behandlingVilkår(behandling.id);
+        });
+        
         if (behandling.type.navn.equals("Klage")) {
             valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
         } else {
@@ -281,6 +286,7 @@ public class Saksbehandler extends Aktoer{
         }
         
         valgtBehandling.aksjonspunkter = dAksonspunkter.get();
+        valgtBehandling.vilkar = dVilkår.get();
         for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
         }
@@ -612,6 +618,24 @@ public class Saksbehandler extends Aktoer{
     private boolean harVurdertVilkår(String kode) {
         return valgtBehandling.vilkar != null && valgtBehandling.vilkar.stream().anyMatch(v -> v.getVilkarType().kode.equals(kode) &&
                 !v.getVilkarStatus().kode.equals(VilkarStatusKoder.IKKE_VURDERT));
+    }
+    
+    private Vilkar hentVilkår(Kode vilkårKode) {
+        Vilkar returnVilkår = null;
+        for (Vilkar vilkår : valgtBehandling.vilkar) {
+            if(vilkår.getVilkarType().equals(vilkårKode)) {
+                returnVilkår = vilkår;
+            }
+        }
+        return returnVilkår;
+    }
+    
+    public Vilkar hentVilkår(String vilkårKode) {
+        return hentVilkår(new Kode(vilkårKode, vilkårKode, vilkårKode));
+    }
+    
+    public Kode vilkårStatus(String vilkårKode) {
+        return hentVilkår(vilkårKode).getVilkarStatus();
     }
 
 

@@ -26,7 +26,7 @@ public class Kode {
     @Override
     public boolean equals(Object obj) {
 
-        System.out.println(((Kode) obj).navn + " : " + navn + " - " + ((Kode) obj).kode + " : " + kode);
+        //System.out.println(((Kode) obj).navn + " : " + navn + " - " + ((Kode) obj).kode + " : " + kode);
         return ((Kode) obj).navn.equals(navn) || ((Kode) obj).kode.equals(kode);
     }
 
