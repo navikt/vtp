@@ -1,15 +1,12 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import java.time.LocalDate;
-
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Oppholdsaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Gradering;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Utsettelsesperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Uttaksperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v1.*;
+
+import java.time.LocalDate;
 
 public class FordelingErketyper {
 
@@ -20,6 +17,12 @@ public class FordelingErketyper {
     public static final String STØNADSKONTOTYPE_FORELDREPENGER = "FORELDREPENGER";
     public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
     public static final String UTSETTELSETYPE_ARBEID = "ARBEID";
+    public static final String OPPHOLDSPTYPE_UDEFINERT = "-";
+    public static final String OPPHOLDSTYPE_INGEN = "INGEN";
+    public static final String OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER = "UTTAK_MØDREKVOTE_ANNEN_FORELDER";
+    public static final String OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER = "UTTAK_FEDREKVOTE_ANNEN_FORELDER";
+    public static final String OPPHOLDSTYPE_KVOTE_FELLESPERIODE_ANNEN_FORELDER = "UTTAK_FELLESP_ANNEN_FORELDER";
+    public static final String OPPHOLDSTYPE_KVOTE_FORELDREPENGER_ANNEN_FORELDER = "UTTAK_FORELDREPENGER_ANNEN_FORELDER";
 
 
     public static Fordeling fordelingMorHappyCase(LocalDate familehendelseDato) {
@@ -77,6 +80,16 @@ public class FordelingErketyper {
 
         addPeriode(fom, tom, uttaksperiode);
         return uttaksperiode;
+    }
+
+    public static Oppholdsperiode oppholdsperiode(String oppholdsårsak, LocalDate fom, LocalDate tom) {
+        Oppholdsperiode oppholdsperiode = new Oppholdsperiode();
+        Oppholdsaarsaker oppholdsaarsaker = new Oppholdsaarsaker();
+        oppholdsaarsaker.setKode(oppholdsårsak);
+        oppholdsperiode.setAarsak(oppholdsaarsaker);
+        addPeriode(fom, tom, oppholdsperiode);
+        return oppholdsperiode;
+
     }
 
     public static void addPeriode(LocalDate fom, LocalDate tom, LukketPeriodeMedVedlegg uttaksperiode) {
