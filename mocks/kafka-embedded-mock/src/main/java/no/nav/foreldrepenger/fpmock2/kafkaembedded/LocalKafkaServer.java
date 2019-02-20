@@ -32,6 +32,7 @@ public class LocalKafkaServer {
         kafkaProperties.put("logs.dirs", "target/kafka-logs");
         kafkaProperties.put("listeners", "PLAINTEXT://localhost:" + kafkaBrokerPort);
         kafkaProperties.put("advertised.host.name", "localhost");
+        kafkaProperties.put("socket.request.max.bytes","480000000");
         kafkaProperties.put("port", "9092");
 
 
