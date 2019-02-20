@@ -42,19 +42,12 @@
 
 				"arbeidsavtaler" : [
 					{
-						"fomGyldighetsperiode": "now() - P2M",
+						"fomGyldighetsperiode": "now() - P4Y",
 						"sisteLønnsendringsdato": "now() - P1M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "40",
 						"stillingsprosent" : 100,
-						"beregnetAntallTimerPerUke": "30"
-					},
-					{
-						"fomGyldighetsperiode": "now() - P4M",
-						"avlønningstype": "fastlønn",
-						"avtaltArbeidstimerPerUke": "30",
-						"stillingsprosent" : 50,
-						"beregnetAntallTimerPerUke": "20"
+						"beregnetAntallTimerPerUke": "40"
 					}
 				]
 

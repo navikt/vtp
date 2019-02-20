@@ -1,15 +1,5 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
 import io.qameta.allure.Description;
 import io.qameta.allure.Flaky;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -21,7 +11,9 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaUttakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
@@ -32,7 +24,15 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.ObjectFactory;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Utsettelsesperiode;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 
 @Tag("smoke")
@@ -216,12 +216,9 @@ public class Revurdering extends ForeldrepengerTestBase {
     }
 
     @Test
-    @Disabled("Ikke ferdig")
     @DisplayName("Endringssøknad med utsettelse")
     @Description("Førstegangsbehandling til positivt vedtak. Endringssøknad med utsettelse fra bruker. Vedtak fortsatt løpende.")
     public void endringssøknadMedUtsettelse() throws Exception {
-        // TODO: Finn ut av feil i fpsak (ExceptionCauseMessage: Mangler Beregningsgrunnlag for behandling) + inntektsmelding nr 2 sendes kun inn noen ganger
-        // TODO: Bruk debug for å få inn inntektsmelding.
         TestscenarioDto testscenario = opprettScenario("50");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -241,6 +238,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
+        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 4, "Feil antall perioder.");
 
         LocalDate utsettelseFom = fødselsdato.plusWeeks(16);
         LocalDate utsettelseTom = fødselsdato.plusWeeks(18);
@@ -263,6 +261,18 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ventTilSakHarBehandling("Revurdering");
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
+        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
+        saksbehandler.refreshFagsak();
+        verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus er ikke avsluttet");
+        verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "LOP", "Saken er ikke løpende.");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "FORELDREPENGER_ENDRET");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK");
+        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 5, "Feil antall perioder.");
+        for (UttakResultatPeriode periode : saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker()) {
+            verifiser(periode.getAktiviteter().size() == 1, "Periode har mer enn én aktivitet");
+        }
+        verifiserLikhet(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().get(4).getUtsettelseType().kode, "ARBEID", "Feil utsettelsesperiode.");
 
     }
 
@@ -289,7 +299,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         aarsak.setKode("ARBEID");
         utsettelsesperiode.setAarsak(aarsak);
         utsettelsesperiode.setVirksomhetsnummer(orgnr);
-        perioder.add(FordelingErketyper.utsettelsePeriode(FordelingErketyper.UTSETTELSETYPE_ARBEID, utsettelseFom, utsettelseTom));
+        FordelingErketyper.addPeriode(utsettelseFom, utsettelseTom, utsettelsesperiode);
+        perioder.add(utsettelsesperiode);
         return fordeling;
     }
 

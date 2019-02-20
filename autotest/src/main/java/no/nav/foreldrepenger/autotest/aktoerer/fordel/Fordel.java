@@ -1,26 +1,12 @@
 package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugSenderInnDokument;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostId;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnyttning;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.*;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.HistorikkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlient;
@@ -40,6 +26,16 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModel
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugSenderInnDokument;
 
 public class Fordel extends Aktoer {
 
@@ -194,15 +190,20 @@ public class Fordel extends Aktoer {
     }
 
     public Long sendInnInntektsmeldinger(List<InntektsmeldingBuilder> inntektsmeldinger, String aktørId, String fnr, Long saksnummer) throws Exception {
+        int gammelAntallIM = 0;
+        if (saksnummer != null) {
+            gammelAntallIM = antallInntektsmeldingerMottatt(saksnummer);
+        }
         for (InntektsmeldingBuilder builder : inntektsmeldinger) {
             saksnummer = sendInnInntektsmelding(builder, aktørId, fnr, saksnummer);
             if (inntektsmeldinger.size() > 1) {
                 Thread.sleep(4000); //TODO finn ut hva man må vente på her...
             }
         }
+        final int gammelAntallIMF = gammelAntallIM;
         final long saksnummerF = saksnummer;
         Vent.til(() -> {
-            return antallInntektsmeldingerMottatt(saksnummerF) >= inntektsmeldinger.size();
+            return (antallInntektsmeldingerMottatt(saksnummerF) - gammelAntallIMF == inntektsmeldinger.size());
         }, 20, "har ikke mottat alle inntektsmeldinger");
         return saksnummer;
     }
