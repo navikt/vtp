@@ -16,14 +16,20 @@ public class ForeldrepengeYtelseErketyper {
 
     //todo builder?
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate termindato) {
+        return foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato, FordelingErketyper.fordelingMorHappyCase(termindato));
+    }
+
+    //todo builder?
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate termindato, Fordeling value) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.søkerTermin(termindato));
-        foreldrepenger.setFordeling(FordelingErketyper.fordelingMorHappyCase(termindato));
+        foreldrepenger.setFordeling(value);
         return foreldrepenger;
     }
+
 
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminFar(LocalDate termindato) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
@@ -34,6 +40,8 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(termindato));
         return foreldrepenger;
     }
+
+
 
     public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate fødselsdato) {
         return foreldrepengerYtelseNorskBorgerINorgeFødselMor(FordelingErketyper.fordelingMorHappyCase(fødselsdato), fødselsdato);
