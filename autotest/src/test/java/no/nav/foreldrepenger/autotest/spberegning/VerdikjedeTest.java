@@ -564,6 +564,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
+
        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 12, 20),  "Kombinert arbeidstaker og frilanser");
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
@@ -586,6 +587,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+
+        Thread.sleep(5000);
 
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Frilanser");
 

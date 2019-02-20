@@ -74,7 +74,13 @@ public class Saksbehandler extends Aktoer {
     }
 
     public void oppdaterBeregning(LocalDate skjæringstidspunkt, String status) throws IOException {
-        oppdaterBeregning(skjæringstidspunkt, kodeverk.AktivitetStatus.getKode(status));
+        try {
+            Thread.sleep(5000);
+            oppdaterBeregning(skjæringstidspunkt, kodeverk.AktivitetStatus.getKode(status));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void lagreNotat(BeregningDto beregning, String notat, Long beregningsgrunnlagId) throws IOException {
