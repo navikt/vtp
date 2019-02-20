@@ -2,6 +2,8 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 
 import java.time.LocalDate;
 
+import org.hibernate.id.IdentifierGeneratorHelper;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -9,7 +11,7 @@ public class AktivitetsAvtaleDto {
     protected String id;
     protected LocalDate opphørArbeidsforhold;
     protected LocalDate oppstartArbeidsforhold;
-    protected Double arbeidsprosent;
+    protected Arbeidsprosent arbeidsprosent;
 
     public LocalDate getOpphørArbeidsforhold() {
         return opphørArbeidsforhold;
@@ -17,7 +19,7 @@ public class AktivitetsAvtaleDto {
     public LocalDate getOppstartArbeidsforhold() {
         return oppstartArbeidsforhold;
     }
-    public Double getArbeidsprosent() {
+    public Arbeidsprosent getArbeidsprosent() {
         return arbeidsprosent;
     }
 //    protected String yrkestittel; #TODO
