@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.beregning.dto.beregn
 
 import java.time.LocalDate;
 
-import org.hibernate.id.IdentifierGeneratorHelper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
