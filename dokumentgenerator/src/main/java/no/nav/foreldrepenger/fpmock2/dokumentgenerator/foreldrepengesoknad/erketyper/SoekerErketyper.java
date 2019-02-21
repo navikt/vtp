@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Bruker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Brukerroller;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Bruker;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Brukerroller;
 
 public class SoekerErketyper {
 

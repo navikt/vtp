@@ -2,12 +2,11 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import java.time.LocalDate;
 
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Adopsjon;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Foedsel;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Omsorgsovertakelse;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Termin;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Omsorgsovertakelseaarsaker;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Omsorgsovertakelse;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Omsorgsovertakelseaarsaker;
 
 public class SoekersRelasjonErketyper {
     public static Foedsel søkerFødselFørFødsel(){
@@ -30,7 +29,7 @@ public class SoekersRelasjonErketyper {
     public static Foedsel fødsel(int antall, LocalDate fødselsdato){
         Foedsel soekersRelasjonTilBarnet = new Foedsel();
         soekersRelasjonTilBarnet.setAntallBarn(antall);
-        soekersRelasjonTilBarnet.setFoedselsdato(DateUtil.convertToXMLGregorianCalendar(fødselsdato));
+        soekersRelasjonTilBarnet.setFoedselsdato((fødselsdato));
 
         return soekersRelasjonTilBarnet;
     }
@@ -50,8 +49,8 @@ public class SoekersRelasjonErketyper {
     private static Termin termin(int antall, LocalDate termindato){
         Termin termin = new Termin();
         termin.setAntallBarn(antall);
-        termin.setTermindato(DateUtil.convertToXMLGregorianCalendar(termindato));
-        termin.setUtstedtdato(DateUtil.convertToXMLGregorianCalendar(termindato.minusMonths(1)));
+        termin.setTermindato((termindato));
+        termin.setUtstedtdato((termindato.minusMonths(1)));
         return termin;
     }
 
@@ -68,9 +67,9 @@ public class SoekersRelasjonErketyper {
         Adopsjon adopsjon = new Adopsjon();
         adopsjon.setAntallBarn(1);
         adopsjon.setAdopsjonAvEktefellesBarn(ektefellesBarn);
-        adopsjon.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(10)));
-        adopsjon.setAnkomstdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-        adopsjon.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
+        adopsjon.getFoedselsdato().add((LocalDate.now().minusYears(10)));
+        adopsjon.setAnkomstdato((LocalDate.now().plusMonths(1)));
+        adopsjon.setOmsorgsovertakelsesdato((LocalDate.now().plusMonths(1)));
 
         return adopsjon;
     }
@@ -88,8 +87,8 @@ public class SoekersRelasjonErketyper {
         omsorgsovertakelseaarsaker.setKode(aarsak);
         omsorgsovertakelseaarsaker.setKodeverk("FAR_SOEKER_TYPE");
         omsorgsovertakelse.setOmsorgsovertakelseaarsak(omsorgsovertakelseaarsaker);
-        omsorgsovertakelse.setOmsorgsovertakelsesdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().plusMonths(1)));
-        omsorgsovertakelse.getFoedselsdato().add(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusMonths(6)));
+        omsorgsovertakelse.setOmsorgsovertakelsesdato((LocalDate.now().plusMonths(1)));
+        omsorgsovertakelse.getFoedselsdato().add((LocalDate.now().minusMonths(6)));
 
         return omsorgsovertakelse;
     }

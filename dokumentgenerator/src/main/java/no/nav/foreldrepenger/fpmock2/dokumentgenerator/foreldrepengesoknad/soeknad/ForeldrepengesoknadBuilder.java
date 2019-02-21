@@ -1,24 +1,24 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.xml.sax.SAXException;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.JaxbHelper;
-import no.nav.foreldrepenger.søknad.v1.SøknadConstants;
-import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.Endringssoeknad;
-import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v1.Engangsstønad;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Bruker;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Vedlegg;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Ytelse;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
-import no.nav.vedtak.felles.xml.soeknad.v1.ObjectFactory;
-import no.nav.vedtak.felles.xml.soeknad.v1.OmYtelse;
-import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
+import no.nav.foreldrepenger.søknad.v3.SøknadConstants;
+import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
+import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Bruker;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Ytelse;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
+import no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory;
+import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
+import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class ForeldrepengesoknadBuilder implements MottattDatoStep<ForeldrepengesoknadBuilder>,
         BegrunnelseForSenSoeknadStep<ForeldrepengesoknadBuilder>,
@@ -29,7 +29,7 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
         PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
         BuildStep {
 
-    private XMLGregorianCalendar mottattDato;
+    private LocalDate mottattDato;
     private String begrunnelseForSenSoeknad;
     private String tilleggsopplysninger;
     private JAXBElement<? extends Ytelse> omYtelse;
@@ -70,7 +70,7 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
     }
 
     @Override
-    public ForeldrepengesoknadBuilder withMottattDato(XMLGregorianCalendar mottattDato) {
+    public ForeldrepengesoknadBuilder withMottattDato(LocalDate mottattDato) {
         this.mottattDato = mottattDato;
         return this;
     }
@@ -89,19 +89,19 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
 
     @Override
     public ForeldrepengesoknadBuilder withForeldrepengerYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.ObjectFactory().createForeldrepenger((Foreldrepenger) omYtelse);
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory().createForeldrepenger((Foreldrepenger) omYtelse);
         return this;
     }
 
     @Override
     public ForeldrepengesoknadBuilder withEndringssoeknadYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.ObjectFactory().createEndringssoeknad((Endringssoeknad) omYtelse);
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory().createEndringssoeknad((Endringssoeknad) omYtelse);
         return this;
     }
 
     @Override
     public ForeldrepengesoknadBuilder withEngangsstoenadYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v1.ObjectFactory().createEngangsstønad((Engangsstønad) omYtelse);
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.ObjectFactory().createEngangsstønad((Engangsstønad) omYtelse);
         return this;
     }
 

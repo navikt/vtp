@@ -1,14 +1,14 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v1.Endringssoeknad;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelder;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelderMedNorskIdent;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Rettigheter;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.SoekersRelasjonTilBarnet;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Dekningsgrad;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Foreldrepenger;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Dekningsgrader;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Dekningsgrad;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Dekningsgrader;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
 import java.time.LocalDate;
 

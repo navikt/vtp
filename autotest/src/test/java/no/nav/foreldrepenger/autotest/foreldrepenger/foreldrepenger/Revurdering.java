@@ -18,12 +18,12 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.ObjectFactory;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Utsettelsesperiode;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -299,7 +299,6 @@ public class Revurdering extends ForeldrepengerTestBase {
         Utsettelsesaarsaker aarsak = new Utsettelsesaarsaker();
         aarsak.setKode("ARBEID");
         utsettelsesperiode.setAarsak(aarsak);
-        utsettelsesperiode.setVirksomhetsnummer(orgnr);
         FordelingErketyper.addPeriode(utsettelseFom, utsettelseTom, utsettelsesperiode);
         perioder.add(utsettelsesperiode);
         return fordeling;

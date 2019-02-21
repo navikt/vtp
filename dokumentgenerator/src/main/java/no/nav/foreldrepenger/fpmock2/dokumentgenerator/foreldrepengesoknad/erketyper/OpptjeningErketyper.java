@@ -4,18 +4,16 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Periode;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.AnnenOpptjening;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.EgenNaering;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Frilans;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Frilansoppdrag;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.NorskOrganisasjon;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Opptjening;
-import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v1.Regnskapsfoerer;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.AnnenOpptjeningTyper;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Land;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Virksomhetstyper;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Periode;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.AnnenOpptjening;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.EgenNaering;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Frilans;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Frilansoppdrag;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.NorskOrganisasjon;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Opptjening;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Regnskapsfoerer;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.AnnenOpptjeningTyper;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Virksomhetstyper;
 
 public class OpptjeningErketyper {
 
@@ -24,8 +22,8 @@ public class OpptjeningErketyper {
     public static Opptjening medFrilansOpptjening(){
 
         Periode periode = new Periode();
-        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(2)));
-        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
+        periode.setFom((LocalDate.now().minusYears(2)));
+        periode.setTom((LocalDate.now()));
 
         Frilansoppdrag frilansoppdrag = new Frilansoppdrag();
         frilansoppdrag.setOppdragsgiver("Tims BBQ og fotmassasje");
@@ -50,19 +48,14 @@ public class OpptjeningErketyper {
         List<EgenNaering> naeringer = opptjening.getEgenNaering();
         NorskOrganisasjon naering = new NorskOrganisasjon();
 
-        Land land = new Land();
-        land.setKode("NOR");
-        land.setKodeverk("LANDKODER");
-        naering.setArbeidsland(land);
-
         Regnskapsfoerer regnskapsfoerer = new Regnskapsfoerer();
         regnskapsfoerer.setNavn("Regnar Regnskap");
         regnskapsfoerer.setTelefon("99999999");
         naering.setRegnskapsfoerer(regnskapsfoerer);
 
         Periode periode = new Periode();
-        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(4)));
-        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
+        periode.setFom((LocalDate.now().minusYears(4)));
+        periode.setTom((LocalDate.now()));
         naering.setPeriode(periode);
 
         List<Virksomhetstyper> typer = naering.getVirksomhetstype();
@@ -70,13 +63,13 @@ public class OpptjeningErketyper {
         type.setKode("ANNEN");
         typer.add(type);
 
-        naering.setOppstartsdato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(4)));
+        naering.setOppstartsdato((LocalDate.now().minusYears(4)));
         naering.setOrganisasjonsnummer("979191138");
         naering.setNaerRelasjon(false);
         naering.setNavn("Navnet Organisasjon");
         naering.setErVarigEndring(true);
         naering.setBeskrivelseAvEndring("Endringsbeskrivelse");
-        naering.setEndringsDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusWeeks(1)));
+        naering.setEndringsDato((LocalDate.now().minusWeeks(1)));
         naering.setNaeringsinntektBrutto(BigInteger.valueOf(1_500_000));
         naering.setErNyoppstartet(false);
         naering.setErNyIArbeidslivet(false);
@@ -94,8 +87,8 @@ public class OpptjeningErketyper {
         type.setKode("VENTELØNN");
         ventelonn.setType(type);
         Periode periode = new Periode();
-        periode.setFom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusYears(4)));
-        periode.setTom(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()));
+        periode.setFom((LocalDate.now().minusYears(4)));
+        periode.setTom((LocalDate.now()));
         ventelonn.setPeriode(periode);
         annenOpptjening.add(ventelonn);
         AnnenOpptjening vartpenger = new AnnenOpptjening();

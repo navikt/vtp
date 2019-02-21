@@ -289,6 +289,13 @@
 
             <!-- Kontraktsavhengigheter -->
             <dependency>
+                <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                <artifactId>foreldrepenger-kontrakter-root</artifactId>
+                <version>5.0_20190242140110_c052926</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
                 <groupId>no.nav.tjenester.fim</groupId>
                 <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
                 <version>${tps.aktoer.version}</version>

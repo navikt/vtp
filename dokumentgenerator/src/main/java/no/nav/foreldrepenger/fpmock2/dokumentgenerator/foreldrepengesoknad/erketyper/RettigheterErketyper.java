@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Rettigheter;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
 
 public class RettigheterErketyper {
     public static Rettigheter beggeForeldreRettIkkeAleneomsorg(){

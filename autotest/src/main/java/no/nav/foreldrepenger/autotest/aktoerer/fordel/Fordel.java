@@ -39,7 +39,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenera
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
+import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 public class Fordel extends Aktoer {
 

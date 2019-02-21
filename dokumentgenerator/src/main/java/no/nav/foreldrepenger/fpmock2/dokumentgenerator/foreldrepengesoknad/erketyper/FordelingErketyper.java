@@ -1,12 +1,17 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Oppholdsaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Utsettelsesaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.*;
-
 import java.time.LocalDate;
+
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Oppholdsaarsaker;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
 
 public class FordelingErketyper {
 
@@ -48,7 +53,11 @@ public class FordelingErketyper {
     public static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, double arbeidstidsprosent) {
         Gradering gradering = new Gradering();
         gradering.setArbeidsforholdSomSkalGraderes(true);
-        gradering.setVirksomhetsnummer(arbeidsgiverIdentifikator);
+
+        Virksomhet virksomhet = new Virksomhet();
+        virksomhet.setIdentifikator(arbeidsgiverIdentifikator);
+
+        gradering.setArbeidsgiver(virksomhet);
         gradering.setArbeidtidProsent(arbeidstidsprosent);
         gradering.setErArbeidstaker(true);
         addStønadskontotype(stønadskontotype, gradering);
@@ -93,8 +102,8 @@ public class FordelingErketyper {
     }
 
     public static void addPeriode(LocalDate fom, LocalDate tom, LukketPeriodeMedVedlegg uttaksperiode) {
-        uttaksperiode.setFom(DateUtil.convertToXMLGregorianCalendar(fom));
-        uttaksperiode.setTom(DateUtil.convertToXMLGregorianCalendar(tom));
+        uttaksperiode.setFom((fom));
+        uttaksperiode.setTom((tom));
     }
 
     public static void addStønadskontotype(String stønadskontotype, Uttaksperiode uttaksperiode) {

@@ -12,15 +12,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.NaturalytelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
@@ -136,9 +132,7 @@ public class InntektsmeldingBuilder {
 
         if (this.startdatoForeldrepengeperiodenFOM != null) {
             skjemainnhold.setStartdatoForeldrepengeperiode(
-                    objectFactory.createSkjemainnholdStartdatoForeldrepengeperiode(
-                            makeXMLGregorianCalenderFromLocalDate(startdatoForeldrepengeperiodenFOM)
-                    ));
+                    objectFactory.createSkjemainnholdStartdatoForeldrepengeperiode(startdatoForeldrepengeperiodenFOM));
         }
 
 
@@ -275,8 +269,7 @@ public class InntektsmeldingBuilder {
     }
 
 
-
-    public InntektsmeldingBuilder addAvtaltFerie(List<Periode> perioder){
+    public InntektsmeldingBuilder addAvtaltFerie(List<Periode> perioder) {
         AvtaltFerieListe avtaltFerieListe = new AvtaltFerieListe();
         perioder.forEach(av -> {
             avtaltFerieListe.getAvtaltFerie().add(av);
@@ -286,13 +279,11 @@ public class InntektsmeldingBuilder {
         return this;
     }
 
-    public InntektsmeldingBuilder setFoersfravaersdag(LocalDate foersteFravaersdag){
-        XMLGregorianCalendar foersteFravaersdagXML = makeXMLGregorianCalenderFromLocalDate(foersteFravaersdag);
+    public InntektsmeldingBuilder setFoersfravaersdag(LocalDate foersteFravaersdag) {
         ObjectFactory objectFactory = new ObjectFactory();
-        arbeidsforhold.setFoersteFravaersdag(objectFactory.createArbeidsforholdFoersteFravaersdag(foersteFravaersdagXML));
+        arbeidsforhold.setFoersteFravaersdag(objectFactory.createArbeidsforholdFoersteFravaersdag(foersteFravaersdag));
         return this;
     }
-
 
 
     public InntektsmeldingBuilder setStartdatoForeldrepengeperiodenFOM(LocalDate startdatoForeldrepengeperiodenFOM) {
@@ -347,8 +338,8 @@ public class InntektsmeldingBuilder {
         ObjectFactory objectFactory = new ObjectFactory();
         Periode periode = objectFactory.createPeriode();
 
-        periode.setTom(objectFactory.createPeriodeTom(makeXMLGregorianCalenderFromLocalDate(periodeTom)));
-        periode.setFom(objectFactory.createPeriodeFom(makeXMLGregorianCalenderFromLocalDate(periodeFom)));
+        periode.setTom(objectFactory.createPeriodeTom(periodeTom));
+        periode.setFom(objectFactory.createPeriodeFom(periodeFom));
 
         return periode;
     }
@@ -490,9 +481,7 @@ public class InntektsmeldingBuilder {
 
 
         if (refusjonsOpphordato != null) {
-            refusjon.setRefusjonsopphoersdato(objectFactory.createRefusjonRefusjonsopphoersdato(
-                    makeXMLGregorianCalenderFromLocalDate(refusjonsOpphordato)
-            ));
+            refusjon.setRefusjonsopphoersdato(objectFactory.createRefusjonRefusjonsopphoersdato(                   refusjonsOpphordato));
         }
         return refusjon;
     }
@@ -504,7 +493,7 @@ public class InntektsmeldingBuilder {
         ObjectFactory objectFactory = new ObjectFactory();
         NaturalytelseDetaljer naturalytelseDetaljer = objectFactory.createNaturalytelseDetaljer();
         naturalytelseDetaljer.setBeloepPrMnd(objectFactory.createNaturalytelseDetaljerBeloepPrMnd(belopPrMnd));
-        naturalytelseDetaljer.setFom(objectFactory.createNaturalytelseDetaljerFom(makeXMLGregorianCalenderFromLocalDate(fom)));
+        naturalytelseDetaljer.setFom(objectFactory.createNaturalytelseDetaljerFom(fom));
         naturalytelseDetaljer.setNaturalytelseType(objectFactory.createNaturalytelseDetaljerNaturalytelseType(kodelisteNaturalytelse.value()));
 
         return naturalytelseDetaljer;
@@ -514,7 +503,7 @@ public class InntektsmeldingBuilder {
     public static EndringIRefusjon createEndringIRefusjon(LocalDate endringsdato, BigDecimal refusjonsbeloepPrMnd) {
         ObjectFactory objectFactory = new ObjectFactory();
         EndringIRefusjon endringIRefusjon = objectFactory.createEndringIRefusjon();
-        endringIRefusjon.setEndringsdato(objectFactory.createEndringIRefusjonEndringsdato(makeXMLGregorianCalenderFromLocalDate(endringsdato)));
+        endringIRefusjon.setEndringsdato(objectFactory.createEndringIRefusjonEndringsdato(endringsdato));
         endringIRefusjon.setRefusjonsbeloepPrMnd(objectFactory.createEndringIRefusjonRefusjonsbeloepPrMnd(refusjonsbeloepPrMnd));
         return endringIRefusjon;
     }
@@ -542,20 +531,6 @@ public class InntektsmeldingBuilder {
         }
         return null; //TODO: Håndtere på en bedre måte.
 
-    }
-
-
-    private static XMLGregorianCalendar makeXMLGregorianCalenderFromLocalDate(LocalDate localDate) {
-        if (localDate == null) {
-            return null;
-        }
-        try {
-            XMLGregorianCalendar xcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(localDate.toString());
-            return xcal;
-        } catch (DatatypeConfigurationException dtce) {
-            LOG.warn("Error while handling date: " + dtce.getMessage());
-        }
-        return null; //TODO: Håndtere på en bedre måte.
     }
 
     private boolean isNull(Object o) {
@@ -658,7 +633,7 @@ public class InntektsmeldingBuilder {
     public DelvisFravaer createDelvisFravaer(LocalDate dato, BigDecimal antallTimer) {
         ObjectFactory objectFactory = new ObjectFactory();
         DelvisFravaer delvisFravaer = objectFactory.createDelvisFravaer();
-        delvisFravaer.setDato(objectFactory.createDelvisFravaerDato(DateUtil.convertToXMLGregorianCalendarRemoveTimezone(dato)));
+        delvisFravaer.setDato(objectFactory.createDelvisFravaerDato(dato));
         delvisFravaer.setTimer(objectFactory.createDelvisFravaerTimer(antallTimer));
 
         return delvisFravaer;
@@ -677,8 +652,8 @@ public class InntektsmeldingBuilder {
     public Periode createInntektsmeldingPeriode(LocalDate fom, LocalDate tom) {
         ObjectFactory objectFactory = new ObjectFactory();
         Periode periode = objectFactory.createPeriode();
-        periode.setFom(objectFactory.createPeriodeFom(DateUtil.convertToXMLGregorianCalendarRemoveTimezone(fom)));
-        periode.setTom(objectFactory.createPeriodeTom(DateUtil.convertToXMLGregorianCalendarRemoveTimezone(tom)));
+        periode.setFom(objectFactory.createPeriodeFom(fom));
+        periode.setTom(objectFactory.createPeriodeTom(tom));
         return periode;
     }
 
@@ -694,7 +669,7 @@ public class InntektsmeldingBuilder {
         return objectFactory.createOmsorgspengerFravaersPerioder(fravaersPeriodeListe);
     }
 
-    public Omsorgspenger createOmsorgspenger(Boolean harUtbetaltPliktigeDager){
+    public Omsorgspenger createOmsorgspenger(Boolean harUtbetaltPliktigeDager) {
         return createOmsorgspenger(null, null, harUtbetaltPliktigeDager);
     }
 
@@ -715,7 +690,7 @@ public class InntektsmeldingBuilder {
         return omsorgspenger;
     }
 
-    public PleiepengerPeriodeListe createPleiepenger(List<Periode> perioder){
+    public PleiepengerPeriodeListe createPleiepenger(List<Periode> perioder) {
         ObjectFactory objectFactory = new ObjectFactory();
         PleiepengerPeriodeListe pleiepengerPeriodeListe = new PleiepengerPeriodeListe();
         Periode periode = new Periode();

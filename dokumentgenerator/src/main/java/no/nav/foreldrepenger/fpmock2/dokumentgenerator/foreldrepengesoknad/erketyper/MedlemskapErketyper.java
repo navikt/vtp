@@ -2,12 +2,11 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import java.time.LocalDate;
 
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Medlemskap;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.OppholdNorge;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.OppholdUtlandet;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Periode;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v1.Land;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Medlemskap;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.OppholdNorge;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.OppholdUtlandet;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Periode;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Land;
 
 public class MedlemskapErketyper {
     public static Medlemskap medlemskapNorge(){
@@ -23,8 +22,8 @@ public class MedlemskapErketyper {
     public static OppholdNorge oppholdNorge(LocalDate fom, LocalDate tom){
         OppholdNorge oppholdNorge = new OppholdNorge();
         Periode periode = new Periode();
-        periode.setFom(DateUtil.convertToXMLGregorianCalendar(fom));
-        periode.setTom(DateUtil.convertToXMLGregorianCalendar(tom));
+        periode.setFom(fom);
+        periode.setTom(tom);
 
         oppholdNorge.setPeriode(periode);
         return oppholdNorge;

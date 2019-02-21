@@ -1,5 +1,26 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.addPeriode;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.addStønadskontotype;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.fordelingFarHappycaseKobletMedMorHappycase;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorger;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -8,29 +29,17 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erket
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.RettigheterErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekersRelasjonErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelderMedNorskIdent;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Rettigheter;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Termin;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Gradering;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.ObjectFactory;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.*;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorger;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 
 
 @Tag("foreldrepenger")
@@ -60,7 +69,7 @@ public class Uttak extends ForeldrepengerTestBase {
         String farFnr = testscenario.getPersonopplysninger().getAnnenpartIdent();
         LocalDate fpStartDatoFar = fødselsdato.plusWeeks(10).plusDays(1);
 
-        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId,morAktørId,
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId, morAktørId,
                 fødselsdato, LocalDate.now(), fordelingFarHappycaseKobletMedMorHappycase(fødselsdato));
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørId, farFnr, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -70,6 +79,7 @@ public class Uttak extends ForeldrepengerTestBase {
         saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
+
     @Test
     @DisplayName("Testcase for koblet sak med AP i uttak")
     @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. 100% dekningsgrad. Med AP i uttak")
@@ -97,10 +107,10 @@ public class Uttak extends ForeldrepengerTestBase {
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
-        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fpStartDatoFar,fpStartDatoFar.plusWeeks(6).minusDays(1) ));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fpStartDatoFar, fpStartDatoFar.plusWeeks(6).minusDays(1)));
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fpStartDatoFar.plusWeeks(6), fpStartDatoFar.plusWeeks(10)));
 
-        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId,morAktørId,fødselsdato,LocalDate.now(), fordeling);
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId, morAktørId, fødselsdato, LocalDate.now(), fordeling);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
 
         long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørId, farFnr, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -111,6 +121,7 @@ public class Uttak extends ForeldrepengerTestBase {
 //        saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
     }
+
     @Test
     @DisplayName("Testcase for koblet sak hvor far stjeler dager")
     @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. Far stjeler dager.")
@@ -138,9 +149,9 @@ public class Uttak extends ForeldrepengerTestBase {
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
-        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fpStartDatoFar,fpStartDatoFar.plusWeeks(1).minusDays(1) ));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fpStartDatoFar, fpStartDatoFar.plusWeeks(1).minusDays(1)));
 
-        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId,morAktørId,fødselsdato,LocalDate.now(), fordeling);
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId, morAktørId, fødselsdato, LocalDate.now(), fordeling);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
 
         long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørId, farFnr, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -150,6 +161,7 @@ public class Uttak extends ForeldrepengerTestBase {
         saksbehandler.velgBehandling("Førstegangsbehandling");
 //        saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
+
     @Test
     @DisplayName("Mor fødsel med ett arbeidsforhold, med gradering")
     @Description("Mor søker fødsel med ett arbeidsforhold, en periode med gradering")
@@ -173,7 +185,9 @@ public class Uttak extends ForeldrepengerTestBase {
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setArbeidtidProsent(55);
         gradering.setErArbeidstaker(true);
-        gradering.setVirksomhetsnummer(orgnr);
+        Virksomhet virksomhet = new Virksomhet();
+        virksomhet.setIdentifikator(orgnr);
+        gradering.setArbeidsgiver(virksomhet);
         addStønadskontotype(STØNADSKONTOTYPE_MØDREKVOTE, gradering);
         addPeriode(graderingFom, graderingTom, gradering);
         perioder.add(gradering);
@@ -185,6 +199,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
+
     @Test
     @DisplayName("Testcase mor tom for dager med gradering")
     @Description("Mor går tom for stønadsdager i en graderingsperiode")
@@ -209,7 +224,9 @@ public class Uttak extends ForeldrepengerTestBase {
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setArbeidtidProsent(20);
         gradering.setErArbeidstaker(true);
-        gradering.setVirksomhetsnummer(orgnr);
+        Virksomhet virksomhet = new Virksomhet();
+        virksomhet.setIdentifikator(orgnr);
+        gradering.setArbeidsgiver(virksomhet);
         addStønadskontotype(STØNADSKONTOTYPE_MØDREKVOTE, gradering);
         addPeriode(graderingFom, graderingTom, gradering);
         perioder.add(gradering);
@@ -221,6 +238,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
+
     @Test
     @DisplayName("Testcase mor termin med gradering i uke 7")
     @Description("Mor søker på termin, graderer i uke 7")
@@ -246,7 +264,9 @@ public class Uttak extends ForeldrepengerTestBase {
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setArbeidtidProsent(50);
         gradering.setErArbeidstaker(true);
-        gradering.setVirksomhetsnummer(orgnr);
+        Virksomhet virksomhet = new Virksomhet();
+        virksomhet.setIdentifikator(orgnr);
+        gradering.setArbeidsgiver(virksomhet);
         addStønadskontotype(STØNADSKONTOTYPE_MØDREKVOTE, gradering);
         addPeriode(graderingFom, graderingTom, gradering);
         perioder.add(gradering);
@@ -255,8 +275,8 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         //Lager IM med graderingsperiode
-        InntektsmeldingBuilder inntektsmeldingerMor = lagInntektsmeldingBuilder(beløp, fnrMor, fpStartdatoMor, orgnr, Optional.empty(),Optional.empty());
-        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(50),graderingFom,graderingTom);
+        InntektsmeldingBuilder inntektsmeldingerMor = lagInntektsmeldingBuilder(beløp, fnrMor, fpStartdatoMor, orgnr, Optional.empty(), Optional.empty());
+        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(50), graderingFom, graderingTom);
         fordel.sendInnInntektsmelding(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
 
@@ -373,7 +393,7 @@ public class Uttak extends ForeldrepengerTestBase {
         //UkjentForelder annenpart = new UkjentForelder();
 
         ForeldrepengesoknadBuilder søknad = ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato.minusMonths(1)))
+                .withMottattDato((fødselsdato.minusMonths(1)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorger(rettigheter, fødsel, fordeling, annenpart))
                 .withSoeker(morSoeker(søkerAktørIdent))
@@ -386,6 +406,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerSøker, testscenario, saksnummerMor);
 
     }
+
     @Test
     @DisplayName("Mor fødsel med arbeidsforhold og frilans. AP i Fakta om uttak")
     @Description("Mor søker fødsel med ett arbeidsforhold og frilans. Vurder fakta om beregning. Avvik i beregning")
@@ -476,7 +497,6 @@ public class Uttak extends ForeldrepengerTestBase {
 
 
     }
-
 
 
 }

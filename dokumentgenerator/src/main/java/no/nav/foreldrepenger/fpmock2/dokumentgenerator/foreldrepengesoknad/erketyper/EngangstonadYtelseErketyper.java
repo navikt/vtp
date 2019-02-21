@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v1.Engangsstønad;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.AnnenForelder;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.UkjentForelder;
-import no.nav.vedtak.felles.xml.soeknad.felles.v1.Ytelse;
+import no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.Engangsstønad;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.UkjentForelder;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Ytelse;
 
 class EngangstonadYtelseErketyper {
 

@@ -1,8 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v1.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
 import java.time.LocalDate;
 
@@ -16,7 +15,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder termindatoUttakKunMor(String aktoerId, LocalDate termindato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("")
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato))
@@ -27,7 +26,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder termindatoUttakKunFar(String aktoerId, LocalDate termindato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("")
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminFar(termindato))
@@ -38,7 +37,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder termindatoUttakKunMor(String aktoerId,Fordeling fordeling, LocalDate termindato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("")
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato, fordeling))
@@ -51,7 +50,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato))
+                .withMottattDato((fødselsdato))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
@@ -61,7 +60,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMor(String aktoerId, Fordeling fordeling, LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato.minusMonths(1)))
+                .withMottattDato((fødselsdato.minusMonths(1)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(fordeling, fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
@@ -71,7 +70,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakMorAleneomsorg(String aktoerId, LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato.minusMonths(1)))
+                .withMottattDato((fødselsdato.minusMonths(1)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeFødselMorAleneomsorg(fødselsdato))
                 .withSoeker(morSoeker(aktoerId))
@@ -81,21 +80,21 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEndring(String aktoerId, LocalDate startDatoForeldrepenger, String saksnummer) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(startDatoForeldrepenger.plusWeeks(3)))
+                .withMottattDato((startDatoForeldrepenger.plusWeeks(3)))
                 .withEndringssoeknadYtelse(endringssoeknadForeldrepengerYtelseNorskBorgerINorgeFødselMor(startDatoForeldrepenger, saksnummer))
                 .withSoeker(morSoeker(aktoerId));
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedKunMorEndring(String aktoerId, Fordeling fordeling, String saksnummer) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now().minusDays(1)))
+                .withMottattDato((LocalDate.now().minusDays(1)))
                 .withEndringssoeknadYtelse(endringssoeknadYtelse(fordeling, saksnummer))
                 .withSoeker(morSoeker(aktoerId));
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeFødselEtterFødsel())
@@ -106,7 +105,7 @@ public class ForeldrepengesoknadXmlErketyper {
     
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadFlereBarn(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeFødselEtterFødselFlereBarn())
@@ -117,7 +116,7 @@ public class ForeldrepengesoknadXmlErketyper {
     
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadSøktForSent(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeFødselEtterSøknadsfrist())
@@ -128,7 +127,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder adopsjonMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på adopsjon")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeAdopsjon())
@@ -139,7 +138,7 @@ public class ForeldrepengesoknadXmlErketyper {
     
     public ForeldrepengesoknadBuilder adopsjonFarEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på adopsjon")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeAdopsjon())
@@ -150,7 +149,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder terminMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeTerminFørTermin())
@@ -161,7 +160,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder terminFarEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeTerminFørTermin())
@@ -172,7 +171,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder omsorgsovertakelseFarEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest far søker på omsorgsovertakelse")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeOmsorgsovertakelse())
@@ -183,7 +182,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder omsorgsovertakelseMorEngangstonad(String aktoerId) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(LocalDate.now()))
+                .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("Autogenerert erketypetest far søker på omsorgsovertakelse")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeOmsorgsovertakelse())
@@ -195,7 +194,7 @@ public class ForeldrepengesoknadXmlErketyper {
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunFar(String aktoerId,
             LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato))
+                .withMottattDato((fødselsdato))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFar(fødselsdato))
                 .withSoeker(farSoeker(aktoerId))
@@ -205,7 +204,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(mottattdato))
+                .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(fødselsdato, farAktørId, fordeling))
                 .withSoeker(morSoeker(morAktørId))
@@ -215,7 +214,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakFarAleneomsorg(String aktoerId, LocalDate fødselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fødselsdato.minusMonths(1)))
+                .withMottattDato((fødselsdato.minusMonths(1)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeFødselFarAleneomsorg(fødselsdato))
                 .withSoeker(farSoeker(aktoerId))
@@ -225,7 +224,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String farAktørId, String morAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(mottattdato))
+                .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(morAktørId, fødselsdato, fordeling))
                 .withSoeker(farSoeker(farAktørId))
@@ -235,7 +234,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorMedEgenNaering(String aktoerId, LocalDate fodselsdato, LocalDate mottattdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(mottattdato))
+                .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering(fodselsdato))
                 .withSoeker(morSoeker(aktoerId))
@@ -245,7 +244,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorMedFrilans(String aktoerId, LocalDate fodselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fodselsdato.plusDays(2)))
+                .withMottattDato((fodselsdato.plusDays(2)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeFodselMedFrilans(fodselsdato))
                 .withSoeker(morSoeker(aktoerId))
@@ -255,7 +254,7 @@ public class ForeldrepengesoknadXmlErketyper {
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorVentelonnVartpenger(String aktoerId, LocalDate fodselsdato) {
         return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato(DateUtil.convertToXMLGregorianCalendar(fodselsdato.plusDays(2)))
+                .withMottattDato((fodselsdato.plusDays(2)))
                 .withBegrunnelseForSenSoeknad(null)
                 .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorVentelonnVartpenger(fodselsdato))
                 .withSoeker(morSoeker(aktoerId))
