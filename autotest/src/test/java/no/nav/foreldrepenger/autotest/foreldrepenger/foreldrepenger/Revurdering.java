@@ -237,6 +237,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 4, "Feil antall perioder.");
 
@@ -246,7 +248,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         ForeldrepengesoknadBuilder endretSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedKunMorEndring(
                 søkerAktørIdent, fordelingUtsettelse, saksnummer.toString());
-        fordel. erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummerE = fordel.sendInnSøknad(endretSøknad.buildEndring(), søkerAktørIdent, søkerIdent,
                 DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
         // Send inn ny inntektsmelding - med utsettelseperiode
@@ -262,8 +264,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
         saksbehandler.velgBehandling("Revurdering");
-        saksbehandler.ventTilBehandlingsstatus("AVSLU");
         saksbehandler.refreshFagsak();
+        saksbehandler.refreshBehandling();
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus er ikke avsluttet");
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "LOP", "Saken er ikke løpende.");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "FORELDREPENGER_ENDRET");
