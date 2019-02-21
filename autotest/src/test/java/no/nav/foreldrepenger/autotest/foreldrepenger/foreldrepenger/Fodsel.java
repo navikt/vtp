@@ -589,6 +589,43 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
     }
+    
+    @Test
+    @DisplayName("Mor søker fødsel har stillingsprosent 0")
+    public void morSøkerFødselStillingsprosent0() throws Exception { //TODO
+        TestscenarioDto testscenario = opprettScenario("45");
+        
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
+        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
+            .godkjennAllOpptjening();
+        
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
+            .godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
+        
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDER_PERIODER_MED_OPPTJENING));
+
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+    }
 
     private void verifiserUttak(int antallAktiviteter, List<UttakResultatPeriode> perioder) {
         assertThat(perioder).hasSize(3);

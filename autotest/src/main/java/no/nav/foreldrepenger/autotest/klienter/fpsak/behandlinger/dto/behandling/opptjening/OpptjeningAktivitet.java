@@ -10,12 +10,17 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class OpptjeningAktivitet {
 
     protected Kode aktivitetType;
+    protected String arbeidsforholdRef;
+    protected String arbeidsgiver;
+    protected String arbeidsgiverIdentifikator;
+    protected String begrunnelse;
+    
     protected LocalDate originalFom;
     protected LocalDate originalTom;
     protected LocalDate opptjeningFom;
     protected LocalDate opptjeningTom;
+    protected boolean erEndret;
     protected boolean erGodkjent;
-    protected String begrunnelse;
     protected boolean erManueltOpprettet;
 
     public LocalDate getOpptjeningFom() {
@@ -45,6 +50,7 @@ public class OpptjeningAktivitet {
     public void vurder(boolean erGodkjent, String begrunnelse, boolean erManueltOpprettet) {
         this.erGodkjent = erGodkjent;
         this.begrunnelse = begrunnelse;
+        this.erEndret = true;
         this.setErManueltOpprettet(erManueltOpprettet);
     }
 
