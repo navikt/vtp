@@ -229,7 +229,6 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         // Opprette perioder mor søker om
         Fordeling fordeling = fordelingFørstegangsbehandlingUtsettelse(fødselsdato, fpStartdato);
-
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fordeling, fødselsdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -242,10 +241,10 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 4, "Feil antall perioder.");
 
+        // Endringssøknad
         LocalDate utsettelseFom = fødselsdato.plusWeeks(16);
         LocalDate utsettelseTom = fødselsdato.plusWeeks(18);
         Fordeling fordelingUtsettelse = fordelingEndringssøknadUtsettelse(fødselsdato, orgnr, utsettelseFom, utsettelseTom);
-
         ForeldrepengesoknadBuilder endretSøknad = foreldrepengeSøknadErketyper.fodselfunnetstedKunMorEndring(
                 søkerAktørIdent, fordelingUtsettelse, saksnummer.toString());
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);

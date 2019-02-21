@@ -1,24 +1,5 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.addPeriode;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.addStønadskontotype;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.fordelingFarHappycaseKobletMedMorHappycase;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorger;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -257,9 +238,10 @@ public class Uttak extends ForeldrepengerTestBase {
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, fødselsdato.minusDays(1)));
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(6).minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødselsdato.plusWeeks(6), fødselsdato.plusWeeks(14).minusDays(1)));
         // Gradering søknad fordeling med med gradering
         LocalDate graderingFom = fødselsdato.plusWeeks(6);
-        LocalDate graderingTom = fødselsdato.plusWeeks(24).minusDays(1);
+        LocalDate graderingTom = fødselsdato.plusWeeks(14).minusDays(1);
         Gradering gradering = new Gradering();
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setArbeidtidProsent(50);
@@ -491,10 +473,6 @@ public class Uttak extends ForeldrepengerTestBase {
         ForeldrepengesoknadBuilder søknadMorEndring = foreldrepengeSøknadErketyper.fodselfunnetstedKunMorEndring(morAktørId, fordelingMorEndring, saksnummerMorS);
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         Long saksnummerMorE = fordel.sendInnSøknad(søknadMorEndring.build(), morAktørId, morIdent, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummerMor);
-        //List<InntektsmeldingBuilder> inntektsmeldingerMorEndring = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
-        //fordel.sendInnInntektsmeldinger(inntektsmeldingerMorEndring, testscenario, saksnummerMor);
-
-
 
 
     }
