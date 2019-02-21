@@ -232,7 +232,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @DisplayName("Testcase mor termin med gradering i uke 7")
     @Description("Mor søker på termin, graderer i uke 7")
     public void testcase_mor_termin_gradering() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("70");
+        TestscenarioDto testscenario = opprettScenario("74");
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String fnrMor = testscenario.getPersonopplysninger().getSøkerIdent();
         LocalDate fødselsdato = LocalDate.now().minusWeeks(3);
