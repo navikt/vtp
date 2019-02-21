@@ -501,7 +501,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshBehandling();
             return harDokument(dokument);
-        }, 10, "Behandling har ikke dokument: " + dokument);
+        }, 30, "Behandling har ikke dokument: " + dokument);
     }
     
     public boolean harDokument(String dokument) {
@@ -612,7 +612,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             refreshBehandling();
             return harVurdertVilkår(kode);
-        }, 10, "Saken  hadde ikke aksjonspunkt " + kode);
+        }, 20, "Saken  hadde ikke aksjonspunkt " + kode);
     }
 
     private boolean harVurdertVilkår(String kode) {
@@ -673,7 +673,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshFagsak();
             return harBehandling(behandlingType);
-        }, 10, "Saken har ikke fått behandling av type: " + behandlingType);
+        }, 30, "Saken har ikke fått behandling av type: " + behandlingType);
     }
     
     protected boolean harBehandling(Kode behandlingType){

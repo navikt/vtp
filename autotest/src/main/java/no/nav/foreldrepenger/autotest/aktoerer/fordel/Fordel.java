@@ -1,12 +1,26 @@
 package no.nav.foreldrepenger.autotest.aktoerer.fordel;
 
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugSenderInnDokument;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.BehandlingerKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.FagsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.FordelKlient;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.*;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostId;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostKnyttning;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.JournalpostMottak;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.OpprettSak;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.fordel.dto.Saksnummer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.HistorikkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.klienter.vtp.journalpost.JournalforingKlient;
@@ -26,16 +40,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModel
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.vedtak.felles.xml.soeknad.v1.Soeknad;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugSenderInnDokument;
 
 public class Fordel extends Aktoer {
 
@@ -169,11 +173,11 @@ public class Fordel extends Aktoer {
             Vent.til(() -> {
                 List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
                 return historikk.stream().anyMatch(h -> h.getTekst().equals("Vedlegg mottatt"));
-            }, 20, "Saken har ikke mottatt inntektsmeldingen");
+            }, 30, "Saken har ikke mottatt inntektsmeldingen");
         } else {
             Vent.til(() -> {
                 return fagsakKlient.søk("" + nyttSaksnummer).size() > 0;
-            }, 20, "Oprettet ikke fagsag for inntektsmelding");
+            }, 30, "Oprettet ikke fagsag for inntektsmelding");
         }
 
         return nyttSaksnummer;
