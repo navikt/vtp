@@ -382,7 +382,7 @@ public class Saksbehandler extends Aktoer{
                 return (T) aksjonspunkt.getBekreftelse();
             }
         }
-        throw new RuntimeException("Valgt behandling har ikke aksjonspunktbekreftelse: " + type.getName());
+        throw new RuntimeException("Valgt behandling (" + valgtBehandling.id + " - " + valgtFagsak.saksnummer + ") har ikke aksjonspunktbekreftelse: " + type.getName());
     }
     
     /*
