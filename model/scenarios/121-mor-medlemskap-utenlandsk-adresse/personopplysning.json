@@ -14,8 +14,8 @@
 			{
 				"@type": "ref",
 				"fom": "now() - P1Y",
-				"adresseType": "MIDLERTIDIG_POSTADRESSE",
-				"land": "USA"
+				"adresseType": "POSTADRESSE",
+				"land": "NLD"
 			}
 		],
 		"personstatus": [
@@ -31,16 +31,6 @@
 		],
 		"medlemskap": {
 			"perioder": [
-				{
-					"fom": "now() - P1Y",
-					"tom": "now() + P3Y",
-					"besluttetDato": "now() - P1Y",
-					"land": "DEU",
-					"trygdedekning": "Full",
-					"kilde": "ANNEN",
-					"lovvalgType": "ENDL",
-					"status": "GYLD"
-				}
 			]
 		}
 	},
