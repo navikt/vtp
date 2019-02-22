@@ -10,6 +10,7 @@ public class AvklarFaktaPersonstatusBekreftelse extends AksjonspunktBekreftelse 
 
     protected String erEosBorger;
     protected String oppholdsrettVurdering;
+    protected Boolean fortsettBehandling;
     
     public AvklarFaktaPersonstatusBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
@@ -29,5 +30,9 @@ public class AvklarFaktaPersonstatusBekreftelse extends AksjonspunktBekreftelse 
     
     public void bekreftHarIkkeOppholdsrett() {
         erEosBorger = "" + false;
+    }
+
+    public void bekreftHenleggBehandling() {
+        fortsettBehandling = false;
     }
 }

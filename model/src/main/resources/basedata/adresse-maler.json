@@ -27,4 +27,11 @@
   "adresseLinje1" : "President Avenue",
   "adresseLinje2" : "Central district",
   "adresseLinje3" : "USA"
+}, {
+  "@type" : "ustrukturert",
+  "adresseType" : "MIDLERTIDIG_POSTADRESSE",
+  "land" : "NLD",
+  "adresseLinje1" : "Nedergate",
+  "adresseLinje2" : "Amsterdam",
+  "adresseLinje3" : "Nederland"
 } ]

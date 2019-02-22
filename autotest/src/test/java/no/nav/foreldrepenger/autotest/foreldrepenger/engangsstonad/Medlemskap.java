@@ -6,12 +6,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerHarGyldigPeriodeBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaPersonstatusBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
@@ -65,5 +67,85 @@ public class Medlemskap extends EngangsstonadTestBase {
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+    }
+    
+    @Test
+    @DisplayName("Mor søker med personstatus uregistrert")
+    @Description("Mor søker med personstatus uregistrert, får askjonspunkt så hennlegges")
+    public void morSøkerFødselUregistrert() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("120");
+        
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaPersonstatusBekreftelse.class)
+            .bekreftHenleggBehandling();
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaPersonstatusBekreftelse.class);
+        
+        verifiser(saksbehandler.valgtBehandling.erHenlagt(), "Behandling er ikke henlagt");
+    }
+    
+    @Test
+    @DisplayName("Mor søker med utelandsk adresse")
+    @Description("Mor søker med utelandsk adresse")
+    public void morSøkerFødselUtenlandsadresse() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("121");
+        
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+    }
+    
+    @Test
+    @DisplayName("Mor søker med eøs vurdert som ikke oppholdsrett")
+    @Description("Mor søker med eøs vurdert som ikke oppholdsrett")
+    public void morSøkerFødselEøsVurderIkkeOppholdsrett() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("122");
+        
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+    }
+    
+    @Test
+    @DisplayName("Mor søker med eøs vurdert som ikke oppholdsrett")
+    @Description("Mor søker med eøs vurdert som ikke oppholdsrett")
+    public void morSøkerFødselEøsVurderIkkeEøsBorgerUtenOppholdsrett() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("123");
+        
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+    }
+    
+    @Test
+    @DisplayName("Mor søker med eøs med inntekt over 3 måneder")
+    @Description("Mor søker med eøs med inntekt over 3 måneder")
+    public void morSøkerFødselEøsMedInntekt() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("124");
+        
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
     }
 }
