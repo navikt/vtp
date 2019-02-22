@@ -523,7 +523,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             refreshBehandling();
             return harHistorikkinnslag(tekst);
-        }, 10, "Saken  hadde ikke historikkinslag " + tekst);
+        }, 20, "Saken  hadde ikke historikkinslag " + tekst);
     }
 
     /*
