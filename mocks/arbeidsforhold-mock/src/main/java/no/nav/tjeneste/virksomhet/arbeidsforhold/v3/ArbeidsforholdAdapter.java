@@ -55,9 +55,9 @@ public class ArbeidsforholdAdapter {
             arbeidsforhold.setArbeidsgiver(lagOrganisasjonsAktoer(arbeidsforholdModell.getArbeidsgiverOrgnr()));
         }
 
-        if (arbeidsforholdModell.getOpplyserOrgnr().length() > 9){
+        if (arbeidsforholdModell.getArbeidsgiverOrgnr() != null && arbeidsforholdModell.getOpplyserOrgnr().length() > 9){
             arbeidsforhold.setOpplysningspliktig(lagPersonAktoer(arbeidsforholdModell.getOpplyserOrgnr()));
-        } else {
+        } else if (arbeidsforholdModell.getArbeidsgiverOrgnr() != null) {
             arbeidsforhold.setOpplysningspliktig(lagOrganisasjonsAktoer(arbeidsforholdModell.getOpplyserOrgnr()));
         }
 
