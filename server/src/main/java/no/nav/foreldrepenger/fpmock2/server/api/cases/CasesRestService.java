@@ -42,6 +42,33 @@ public class CasesRestService extends FpsakTestBase {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Aksjonspunkt stopper på fødsel", notes = (""))
+    @Path("/aksjonspunktStoppFoedsel")
+    public Response aksjonspunktStoppFoedsel(){
+        try {
+            TestscenarioDto testscenario = opprettScenario("160");
+
+            String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+            LocalDate fødselsdato = LocalDate.now().minusWeeks(4);
+            LocalDate fpStartdatoMor = fødselsdato.minusWeeks(4);
+
+            ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(morAktørId, fødselsdato);
+            fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+            long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+            List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
+            fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
+            saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+            saksbehandler.hentFagsak(saksnummerMor);
+            return Response.ok(saksnummerMor).build();
+        } catch (Exception e) {
+            String message = "Error: " + e.toString();
+            return Response.ok(message).build();
+        }
+
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Mor og far søker etter fødselen, kant til kant.", notes = ("sender et case til FPSAK"))
     @Path("/mor-og-far-søker-etter-fødsel-kant-til-kant")
     public Response testcase_morOgFarSøkerEtterFødsel_kantTilKantsøknad(@Context UriInfo uriInfo) {
