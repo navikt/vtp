@@ -16,4 +16,12 @@ public class Vilkar {
     public Kode getVilkarStatus() {
         return vilkarStatus;
     }
+
+    public void setVilkarType(Kode vilkarType) {
+        this.vilkarType = vilkarType;
+    }
+
+    public void setVilkarStatus(Kode vilkarStatus) {
+        this.vilkarStatus = vilkarStatus;
+    }
 }

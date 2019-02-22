@@ -8,6 +8,7 @@ public class FaktaOmBeregningTilfelle extends Kode {
 
     public static final FaktaOmBeregningTilfelle VURDER_MOTTAR_YTELSE = new FaktaOmBeregningTilfelle("VURDER_MOTTAR_YTELSE", "vurder_mottar_ytelse");
     public static final FaktaOmBeregningTilfelle FASTSETT_MAANEDSINNTEKT_FL = new FaktaOmBeregningTilfelle("FASTSETT_MAANEDSINNTEKT_FL", "");
+    public static final FaktaOmBeregningTilfelle FASTSETT_MAANEDSLONN_ARBEIDSTAKER_UTEN_INNTEKTSMELDING = new FaktaOmBeregningTilfelle("FASTSETT_MÅNEDSLØNN_ARBEIDSTAKER_UTEN_INNTEKTSMELDING", "");
 
     public static final FaktaOmBeregningTilfelle FASTSETT_ETTERLØNN_SLUTTPAKKE = new FaktaOmBeregningTilfelle("FASTSETT_ETTERLØNN_SLUTTPAKKE", "fastsett_etterlønn_sluttpakke");
     public static final FaktaOmBeregningTilfelle VURDER_TIDSBEGRENSET_ARBEIDSFORHOLD = new FaktaOmBeregningTilfelle("VURDER_TIDSBEGRENSET_ARBEIDSFORHOLD", "vurder_tidsbegrenset_arbeidsforhold"); //$NON-NLS-1$

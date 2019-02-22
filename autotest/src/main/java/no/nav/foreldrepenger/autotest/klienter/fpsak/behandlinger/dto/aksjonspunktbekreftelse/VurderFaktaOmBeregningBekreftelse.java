@@ -13,6 +13,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class VurderFaktaOmBeregningBekreftelse extends AksjonspunktBekreftelse {
 
     protected FastsettMaanedsinntektFL fastsettMaanedsinntektFL;
+    protected FastsettMaanedsinntektUtenInntektsmelding fastsattUtenInntektsmelding;
     protected List<String> faktaOmBeregningTilfeller = new ArrayList<>();
     protected MottarYtelse mottarYtelse;
     
@@ -29,6 +30,12 @@ public class VurderFaktaOmBeregningBekreftelse extends AksjonspunktBekreftelse {
 
     public VurderFaktaOmBeregningBekreftelse leggTilMottarYtelse(boolean mottarYtelse, List<ArbeidstakerandelUtenIMMottarYtelse> arbeidstakerandelUtenIMMottarYtelses){
         this.mottarYtelse = new MottarYtelse(mottarYtelse, arbeidstakerandelUtenIMMottarYtelses);
+        return this;
+    }
+
+
+    public VurderFaktaOmBeregningBekreftelse leggTilMaanedsinntektUtenInntektsmelding(List<FastsettMaanedsinntektUtenInntektsmeldingAndel> andelListe){
+        this.fastsattUtenInntektsmelding = new FastsettMaanedsinntektUtenInntektsmelding(andelListe);
         return this;
     }
 

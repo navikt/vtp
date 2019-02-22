@@ -612,7 +612,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             refreshBehandling();
             return harVurdertVilkår(kode);
-        }, 20, "Saken  hadde ikke aksjonspunkt " + kode);
+        }, 10, "Saken  hadde ikke vilkår " + kode);
     }
 
     private boolean harVurdertVilkår(String kode) {

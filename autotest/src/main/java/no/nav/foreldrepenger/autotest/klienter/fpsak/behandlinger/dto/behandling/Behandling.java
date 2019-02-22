@@ -106,5 +106,11 @@ public class Behandling {
         return sb.toString();
     }
 
+    public List<Vilkar> getVilkar() {
+        return vilkar;
+    }
 
+    public void setVilkar(List<Vilkar> vilkar) {
+        this.vilkar = vilkar;
+    }
 }
