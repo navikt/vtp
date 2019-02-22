@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Aktoer;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AnsettelsesPeriode;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AntallTimerIPerioden;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsavtale;
@@ -48,27 +49,19 @@ public class ArbeidsforholdAdapter {
             arbeidsforhold.getArbeidsavtale().add(fra(arbeidsavtale));
         }
 
-        if (arbeidsforholdModell.getArbeidsgiverOrgnr() != null && !arbeidsforholdModell.getArbeidsgiverOrgnr().equals("")) {
-            Organisasjon arbeidsgiver = objectFactory.createOrganisasjon();
-            arbeidsgiver.setOrgnummer(arbeidsforholdModell.getArbeidsgiverOrgnr());
-            arbeidsforhold.setArbeidsgiver(arbeidsgiver);
-        } else if (arbeidsforholdModell.getArbeidsgiverAktorId() != null && !arbeidsforholdModell.getArbeidsgiverAktorId().equals("")) {
-            Person arbeidsgiverPrivatperson = objectFactory.createPerson();
-            NorskIdent ident = new NorskIdent();
-            ident.setIdent(arbeidsforholdModell.getArbeidsgiverAktorId());
-            arbeidsgiverPrivatperson.setIdent(ident);
-            arbeidsforhold.setArbeidsgiver(arbeidsgiverPrivatperson);
+        if (arbeidsforholdModell.getArbeidsgiverOrgnr().length() > 9){
+            arbeidsforhold.setArbeidsgiver(lagPersonAktoer(arbeidsforholdModell.getArbeidsgiverOrgnr()));
+        } else {
+            arbeidsforhold.setArbeidsgiver(lagOrganisasjonsAktoer(arbeidsforholdModell.getArbeidsgiverOrgnr()));
         }
 
-        Organisasjon opplyser = objectFactory.createOrganisasjon();
-        opplyser.setOrgnummer(arbeidsforholdModell.getOpplyserOrgnr());
-        arbeidsforhold.setOpplysningspliktig(opplyser);
+        if (arbeidsforholdModell.getOpplyserOrgnr().length() > 9){
+            arbeidsforhold.setOpplysningspliktig(lagPersonAktoer(arbeidsforholdModell.getOpplyserOrgnr()));
+        } else {
+            arbeidsforhold.setOpplysningspliktig(lagOrganisasjonsAktoer(arbeidsforholdModell.getOpplyserOrgnr()));
+        }
 
-        Person person = objectFactory.createPerson();
-        NorskIdent norskIdent = new NorskIdent();
-        norskIdent.setIdent(fnr);
-        person.setIdent(norskIdent);
-        arbeidsforhold.setArbeidstaker(person);
+        arbeidsforhold.setArbeidstaker((Person)lagPersonAktoer(fnr));
         arbeidsforhold.setArbeidsforholdInnrapportertEtterAOrdningen(true);
 
         return arbeidsforhold;
@@ -102,6 +95,20 @@ public class ArbeidsforholdAdapter {
     private BigDecimal lagBD(Integer number) {
         BigDecimal bd = new BigDecimal(number);
         return bd;
+    }
+
+    private Aktoer lagPersonAktoer(String ident){
+        Person arbeidsgiverPerson = objectFactory.createPerson();
+        NorskIdent norskIdent = new NorskIdent();
+        norskIdent.setIdent(ident);
+        arbeidsgiverPerson.setIdent(norskIdent);
+        return arbeidsgiverPerson;
+    }
+
+    private Aktoer lagOrganisasjonsAktoer(String orgnummer){
+        Organisasjon arbeidsgiverOrganisasjon = objectFactory.createOrganisasjon();
+        arbeidsgiverOrganisasjon.setOrgnummer(orgnummer);
+        return arbeidsgiverOrganisasjon;
     }
 
     AntallTimerIPerioden lagTimePostering(String timer, XMLGregorianCalendar gperiode) {
