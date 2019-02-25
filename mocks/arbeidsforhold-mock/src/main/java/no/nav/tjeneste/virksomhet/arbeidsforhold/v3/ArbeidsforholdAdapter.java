@@ -75,7 +75,7 @@ public class ArbeidsforholdAdapter {
         arbeidsavtale.setBeregnetAntallTimerPrUke(lagBD(arbeidsavtaleModell.getBeregnetAntallTimerPerUke()));
         arbeidsavtale.setSisteLoennsendringsdato(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getSisteLønnnsendringsdato()));
         arbeidsavtale.setFomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getFomGyldighetsperiode()));
-
+        arbeidsavtale.setTomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getTomGyldighetsperiode()));
         Yrker yrker = new Yrker();
         yrker.setKodeRef("SnekkerKode");
         yrker.setValue("SnekkerValue");

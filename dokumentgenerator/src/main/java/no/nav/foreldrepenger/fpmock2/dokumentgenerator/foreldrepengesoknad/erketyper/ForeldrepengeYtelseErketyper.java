@@ -19,6 +19,10 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato, FordelingErketyper.fordelingMorHappyCase(termindato));
     }
 
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMorEkstraUttakFørFødsel(LocalDate termindato) {
+        return foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato, FordelingErketyper.fordelingMorHappyCaseEkstraUttakFørFødsel(termindato));
+    }
+
     //todo builder?
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminMor(LocalDate termindato, Fordeling value) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
@@ -29,7 +33,6 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(value);
         return foreldrepenger;
     }
-
 
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminFar(LocalDate termindato) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();

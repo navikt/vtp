@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import no.nav.foreldrepenger.autotest.base.TestScenarioTestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
@@ -93,14 +92,14 @@ public class FpsakTestBase extends TestScenarioTestBase {
                     .max(Comparator.comparing(Inntektsperiode::getTom))
                     .orElseThrow(() -> new IllegalStateException("Utvikler feil: Arbeidsforhold mangler inntektsperiode"));
             Integer beløp = sisteInntektsperiode.getBeløp();
-            inntektsmeldinger.add(lagInntektsmeldingBuilder(beløp, søkerIdent, startDatoForeldrepenger, arbeidsgiverOrgnr, Optional.empty(), Optional.empty()));
+            inntektsmeldinger.add(lagInntektsmeldingBuilder(beløp, søkerIdent, startDatoForeldrepenger, arbeidsgiverOrgnr, Optional.empty(), Optional.empty(), Optional.empty()));
         }
 
         return inntektsmeldinger;
     }
 
     protected InntektsmeldingBuilder lagInntektsmeldingBuilder(Integer beløp, String fnr, LocalDate fpStartdato, String orgNr,
-                                                               Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon) {
+                                                               Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon, Optional<LocalDate> refusjonOpphørsdato) {
         String inntektsmeldingID = UUID.randomUUID().toString().substring(0, 7);
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(inntektsmeldingID,
                 YtelseKodeliste.FORELDREPENGER,
@@ -122,7 +121,7 @@ public class FpsakTestBase extends TestScenarioTestBase {
                 "41925090"));
         refusjon.ifPresent(_refusjon -> builder.setRefusjon(InntektsmeldingBuilder.createRefusjon(
                 _refusjon,
-                null,
+                refusjonOpphørsdato.orElse(null),
                 Collections.emptyList())));
         return builder;
     }
@@ -130,7 +129,7 @@ public class FpsakTestBase extends TestScenarioTestBase {
     protected InntektsmeldingBuilder lagInntektsmeldingBuilderMedGradering(Integer beløp, String fnr, LocalDate fpStartdato, String orgNr,
                                                                            Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon,
                                                                            Integer arbeidsprosent, LocalDate graderingFom, LocalDate graderingTom) {
-        InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(beløp, fnr, fpStartdato, orgNr, arbeidsforholdId, refusjon);
+        InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(beløp, fnr, fpStartdato, orgNr, arbeidsforholdId, refusjon, Optional.empty());
         builder.addGradertperiode(BigDecimal.valueOf(arbeidsprosent), graderingFom, graderingTom);
         return builder;
     }

@@ -8,14 +8,21 @@
 				"vedtak": [
 					{
 						"fom": "now() - P12M",
-						"tom": "now() - P12W",
+						"tom": "now() - P2M",
 						"vedtakDato": "now() - P12M",
 						"kravMottattDato": "now() - P12M",
 						"status": "IVERK",
 						"meldekort": [
 							{
-								"fom": "now() - P12M",
-								"tom": "now() - P12W",
+								"fom": "now() - P3M2W",
+								"tom": "now() - P3M",
+								"dagsats": 1000,
+								"beløp": 10000,
+								"utbetalingsgrad": 100
+							},
+							{
+								"fom": "now() - P2M2W",
+								"tom": "now() - P2M",
 								"dagsats": 1000,
 								"beløp": 10000,
 								"utbetalingsgrad": 100
@@ -30,7 +37,7 @@
 		"inntektsperioder": [
 			{
 				"fom": "now() - P12M",
-				"tom": "now() - P12W",
+				"tom": "now() - P3M",
 				"beløp": 30000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
@@ -45,7 +52,7 @@
 				"arbeidsforholdId": "ARB001-001",
 				"arbeidsforholdIdNav": "1238161",
 				"ansettelsesperiodeFom": "now() - P12M",
-				"ansettelsesperiodeTom": "now()",
+				"ansettelsesperiodeTom": "now() - P3M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
 				"arbeidsavtaler" : [

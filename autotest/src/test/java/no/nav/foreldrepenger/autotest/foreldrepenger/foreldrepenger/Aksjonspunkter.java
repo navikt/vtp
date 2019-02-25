@@ -48,9 +48,9 @@ public class Aksjonspunkter  extends ForeldrepengerTestBase {
 
 
         InntektsmeldingBuilder inntektsmeldingBuilder_1 = lagInntektsmeldingBuilder(inntekter.get(0), fnr,
-                fpStartdato, arbeidsgiverOrgnr_1, Optional.of(arbeidsforhold_1.getArbeidsforholdId()), Optional.empty());
+                fpStartdato, arbeidsgiverOrgnr_1, Optional.of(arbeidsforhold_1.getArbeidsforholdId()), Optional.empty(), Optional.empty());
         InntektsmeldingBuilder inntektsmeldingBuilder_2 = lagInntektsmeldingBuilder(inntekter.get(1), fnr,
-                fpStartdato, arbeidsgiverOrgnr_2, Optional.of(arbeidsforhold_2.getArbeidsforholdId()), Optional.empty());
+                fpStartdato, arbeidsgiverOrgnr_2, Optional.of(arbeidsforhold_2.getArbeidsforholdId()), Optional.empty(), Optional.empty());
 
         inntektsmeldingBuilder_1.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
                 inntektsmeldingBuilder_1.getArbeidsforhold().getArbeidsforholdId().getValue(),

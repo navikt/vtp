@@ -64,7 +64,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
         debugFritekst("Ferdig med andre behandling (revurdering nr 1)");
 
         // Inntektsmelding - endring i inntekt
-        InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(50000, søkerIdent, fpStartdato, orgNr, Optional.of(arbeidsforholdId), Optional.empty());
+        InntektsmeldingBuilder builder = lagInntektsmeldingBuilder(50000, søkerIdent, fpStartdato, orgNr, Optional.of(arbeidsforholdId), Optional.empty(), Optional.empty());
         builder.createInntektsmelding();
         List<InntektsmeldingBuilder> inntektsmeldingerEndret = new ArrayList<>();
         inntektsmeldingerEndret.add(builder);

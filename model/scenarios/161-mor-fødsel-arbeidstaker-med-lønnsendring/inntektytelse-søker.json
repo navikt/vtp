@@ -1,29 +1,6 @@
 {
 	"arena": {
 		"saker": [
-			{
-				"saksnummer": "${arenasak1}",
-				"tema": "DAG",
-				"status": "AKTIV",
-				"vedtak": [
-					{
-						"fom": "now() - P12M",
-						"tom": "now() - P12W",
-						"vedtakDato": "now() - P12M",
-						"kravMottattDato": "now() - P12M",
-						"status": "IVERK",
-						"meldekort": [
-							{
-								"fom": "now() - P12M",
-								"tom": "now() - P12W",
-								"dagsats": 1000,
-								"beløp": 10000,
-								"utbetalingsgrad": 100
-							}
-						]
-					}
-				]
-			}
 		]
 	},
 	"inntektskomponent": {
@@ -51,6 +28,7 @@
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P12M",
+						"sisteLønnsendringsdato": "now() - P2M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "40",
 						"stillingsprosent" : 100,

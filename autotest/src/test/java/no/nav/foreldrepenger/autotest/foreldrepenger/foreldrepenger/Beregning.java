@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
+import static java.time.LocalDate.now;
 import static java.util.Collections.singletonList;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -89,7 +90,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr, Optional.empty(), Optional.empty());
+                orgNr, Optional.empty(), Optional.empty(), Optional.empty());
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
@@ -136,9 +137,9 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr, Optional.empty(), Optional.empty());
+                orgNr, Optional.empty(), Optional.empty(), Optional.empty());
         InntektsmeldingBuilder inntektsmeldingBuilder2 = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr2, Optional.empty(), Optional.empty());
+                orgNr2, Optional.empty(), Optional.empty(), Optional.empty());
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
@@ -180,7 +181,7 @@ public class Beregning extends ForeldrepengerTestBase {
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
 
         List<InntektsmeldingBuilder> inntektsmeldinger = List.of(
-                lagInntektsmeldingBuilder(20000, fnr, fpStartdato, "979191138", Optional.of("ARB001-001"), Optional.empty()),
+                lagInntektsmeldingBuilder(20000, fnr, fpStartdato, "979191138", Optional.of("ARB001-001"), Optional.empty(), Optional.empty()),
                 lagInntektsmeldingBuilderMedGradering(10000, fnr, fpStartdato, "973861778", Optional.of("ARB001-002"), Optional.of(BigDecimal.valueOf(1000)), 50, fpStartdato, fpStartdato.plusWeeks(3)));
 
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
@@ -211,7 +212,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr, Optional.empty(), Optional.of(refusjon));
+                orgNr, Optional.empty(), Optional.of(refusjon), Optional.empty());
         InntektsmeldingBuilder inntektsmeldingBuilder2 = lagInntektsmeldingBuilderMedGradering(inntektPerMåned, fnr, fpStartdato,
                 orgNr2, Optional.empty(), Optional.empty(), 50, fpStartdato, fpStartdato.plusMonths(2));
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
@@ -253,6 +254,226 @@ public class Beregning extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto()).isEqualTo(1);
     }
 
+    @Test
+    @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden")
+    @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden.")
+    public void vurder_besteberegning() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("156");
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        int inntektPerMåned = 30_000;
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
+                orgNr, Optional.empty(), Optional.empty(), Optional.empty());
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
+                .contains(FaktaOmBeregningTilfelle.VURDER_BESTEBEREGNING), true);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getSkalHaBesteberegning()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAndelsnr()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getFastsattBelopPrMnd()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAktivitetStatus().kode).isEqualTo("AT");
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getInntektskategori().kode).isEqualTo("ARBEIDSTAKER");
+        assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getArbeidsforhold(), "ACANDO AS", "979191138");
+    }
+
+
+    @Test
+    @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden. Uten inntektsmelding.")
+    @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden. Uten inntektsmelding")
+    public void vurder_besteberegning_vurder_mottar_ytelse() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("156");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.gjenopptaBehandling();
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_ARBEIDSFORHOLD);
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
+                .bekreftArbeidsforholdErRelevant("ACANDO AS", true);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
+                .contains(FaktaOmBeregningTilfelle.VURDER_BESTEBEREGNING), true);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getSkalHaBesteberegning()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAndelsnr()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getFastsattBelopPrMnd()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAktivitetStatus().kode).isEqualTo("AT");
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getInntektskategori().kode).isEqualTo("ARBEIDSTAKER");
+        assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getArbeidsforhold(), "ACANDO AS", "979191138");
+    }
+
+    @Test
+    @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden. Uten inntektsmelding, med lønnsendring")
+    @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden. Uten inntektsmelding, med lønnsendring")
+    public void vurder_besteberegning_vurder_mottar_ytelse_vurder_lonnsendring() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("159");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.gjenopptaBehandling();
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_ARBEIDSFORHOLD);
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
+                .bekreftArbeidsforholdErRelevant("ACANDO AS", true);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
+                .contains(FaktaOmBeregningTilfelle.VURDER_BESTEBEREGNING), true);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getSkalHaBesteberegning()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAndelsnr()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getFastsattBelopPrMnd()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAktivitetStatus().kode).isEqualTo("AT");
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getInntektskategori().kode).isEqualTo("ARBEIDSTAKER");
+        assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getArbeidsforhold(), "ACANDO AS", "979191138");
+    }
+
+    @Test
+    @DisplayName("Uten inntektsmelding, med lønnsendring")
+    @Description("Uten inntektsmelding, med lønnsendring")
+    public void vurder_mottar_ytelse_vurder_lonnsendring() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("161");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.gjenopptaBehandling();
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_ARBEIDSFORHOLD);
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
+                .bekreftArbeidsforholdErRelevant("ACANDO AS", true);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+    }
+
+    @Test
+    @DisplayName("ATFL i samme org med lønnsendring")
+    @Description("ATFL i samme org med lønnsendring")
+    public void ATFL_samme_org_med_lønnendring_uten_inntektsmelding() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("163");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorMedFrilans(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.gjenopptaBehandling();
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_ARBEIDSFORHOLD);
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
+                .bekreftArbeidsforholdErRelevant("ACANDO AS", true);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
+
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_PERIODER_MED_OPPTJENING);
+
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
+                .godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
+
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+    }
+
+    @Test
+    @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger på skjæringstidspunktet")
+    @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger på skjæringstidspunktet.")
+    public void vurder_besteberegning_dagpenger_på_skjæringstidspunktet() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("158");
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        int inntektPerMåned = 30_000;
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
+                orgNr, Optional.empty(), Optional.empty(), Optional.empty());
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
+                .contains(FaktaOmBeregningTilfelle.VURDER_BESTEBEREGNING), true);
+    }
+
 
     @Test
     @DisplayName("Mor med arbeidsforhold uten inntektsmelding som mottar ytelse")
@@ -263,7 +484,7 @@ public class Beregning extends ForeldrepengerTestBase {
 
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
-        LocalDate termindato = LocalDate.now().minusMonths(1).plusWeeks(3);
+        LocalDate termindato = now().minusMonths(1).plusWeeks(3);
         LocalDate startDatoForeldrepenger = termindato.minusWeeks(3);
         String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
         int inntektPerMåned = 30_000;
@@ -286,7 +507,6 @@ public class Beregning extends ForeldrepengerTestBase {
                 .anyMatch(ap -> ap.erUbekreftet() &&
                         ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
         assertMottarYtelse(1L, "ACANDO AS", "979191138");
-
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class)
                 .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.VURDER_MOTTAR_YTELSE.kode)
@@ -314,12 +534,12 @@ public class Beregning extends ForeldrepengerTestBase {
 
         assertMottarYtelse(1L, "ACANDO AS", "979191138");
 
-        saksbehandler.settBehandlingPåVent(LocalDate.now().plusWeeks(1), "VENT_OPDT_INNTEKTSMELDING");
+        saksbehandler.settBehandlingPåVent(now().plusWeeks(1), "VENT_OPDT_INNTEKTSMELDING");
 
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.AUTO_MANUELT_SATT_PÅ_VENT);
 
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, startDatoForeldrepenger,
-        orgNr, Optional.empty(), Optional.empty());
+        orgNr, Optional.empty(), Optional.empty(), Optional.empty());
         inntektsmeldingBuilder.addUtsettelseperiode(FordelingErketyper.UTSETTELSETYPE_ARBEID, startDatoForeldrepenger, startDatoForeldrepenger.plusMonths(1));
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
 
@@ -327,7 +547,7 @@ public class Beregning extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.erSattPåVent()).isTrue();
 
         InntektsmeldingBuilder inntektsmeldingBuilder2 = lagInntektsmeldingBuilder(inntektPerMåned, fnr, startDatoForeldrepenger,
-                orgNr, Optional.empty(), Optional.empty());
+                orgNr, Optional.empty(), Optional.empty(), Optional.empty());
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
 
         saksbehandler.gjenopptaBehandling();
@@ -365,9 +585,9 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr, Optional.empty(), Optional.of(refusjon));
+                orgNr, Optional.empty(), Optional.of(refusjon), Optional.empty());
         InntektsmeldingBuilder inntektsmeldingBuilder2 = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr2, Optional.empty(), Optional.empty());
+                orgNr2, Optional.empty(), Optional.empty(), Optional.empty());
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
@@ -447,52 +667,6 @@ public class Beregning extends ForeldrepengerTestBase {
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                         .getVurderMottarYtelse().getArbeidstakerAndelerUtenIM().get(0).getArbeidsforhold(),
                 s, s2);
-    }
-
-
-    @Test
-    @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden")
-    @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden.")
-    public void vurder_besteberegning() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("156");
-
-        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
-        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
-        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
-        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        int inntektPerMåned = 30_000;
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
-        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
-        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
-                orgNr, Optional.empty(), Optional.empty());
-        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
-        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
-
-        debugLoggBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
-        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
-                .anyMatch(ap -> ap.erUbekreftet() &&
-                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
-                .contains(FaktaOmBeregningTilfelle.VURDER_BESTEBEREGNING), true);
-        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getSkalHaBesteberegning()).isNull();
-        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getAndeler().size()).isEqualTo(1);
-        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getAndeler().get(0).getAndelsnr()).isEqualTo(1);
-        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getAndeler().get(0).getFastsattBelopPrMnd()).isNull();
-        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getAndeler().get(0).getAktivitetStatus().kode).isEqualTo("AT");
-        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getAndeler().get(0).getInntektskategori().kode).isEqualTo("ARBEIDSTAKER");
-        assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getVurderBesteberegning().getAndeler().get(0).getArbeidsforhold(), "ACANDO AS", "979191138");
     }
 
 

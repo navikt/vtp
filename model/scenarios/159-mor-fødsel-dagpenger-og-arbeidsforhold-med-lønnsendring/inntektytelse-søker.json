@@ -51,6 +51,7 @@
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P12M",
+						"sisteLønnsendringsdato": "now() - P2M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "40",
 						"stillingsprosent" : 100,

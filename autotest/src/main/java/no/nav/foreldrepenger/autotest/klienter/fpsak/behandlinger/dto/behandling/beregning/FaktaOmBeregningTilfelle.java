@@ -14,6 +14,7 @@ public class FaktaOmBeregningTilfelle extends Kode {
     public static final FaktaOmBeregningTilfelle VURDER_TIDSBEGRENSET_ARBEIDSFORHOLD = new FaktaOmBeregningTilfelle("VURDER_TIDSBEGRENSET_ARBEIDSFORHOLD", "vurder_tidsbegrenset_arbeidsforhold"); //$NON-NLS-1$
     public static final FaktaOmBeregningTilfelle FASTSETT_ENDRET_BEREGNINGSGRUNNLAG = new FaktaOmBeregningTilfelle("FASTSETT_ENDRET_BEREGNINGSGRUNNLAG", "fastsettt_endret_beregningsgrunnlag"); //$NON-NLS-1$
     public static final FaktaOmBeregningTilfelle VURDER_BESTEBEREGNING = new FaktaOmBeregningTilfelle("VURDER_BESTEBEREGNING", ""); //$NON-NLS-1$
+    public static final FaktaOmBeregningTilfelle FASTSETT_BESTEBEREGNING_FØDENDE_KVINNE = new FaktaOmBeregningTilfelle("FASTSETT_BESTEBEREGNING_FØDENDE_KVINNE", ""); //$NON-NLS-1$
 
 
     public FaktaOmBeregningTilfelle() {

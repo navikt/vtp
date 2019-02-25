@@ -29,6 +29,8 @@ public class Arbeidsavtale {
     @JsonProperty("fomGyldighetsperiode")
     public LocalDate fomGyldighetsperiode;
 
+    @JsonProperty("tomGyldighetsperiode")
+    public LocalDate tomGyldighetsperiode;
 
 
     public Yrke getYrke() {
@@ -85,5 +87,13 @@ public class Arbeidsavtale {
 
     public void setFomGyldighetsperiode(LocalDate fomGyldighetsperiode) {
         this.fomGyldighetsperiode = fomGyldighetsperiode;
+    }
+
+    public LocalDate getTomGyldighetsperiode() {
+        return tomGyldighetsperiode;
+    }
+
+    public void setTomGyldighetsperiode(LocalDate tomGyldighetsperiode) {
+        this.tomGyldighetsperiode = tomGyldighetsperiode;
     }
 }

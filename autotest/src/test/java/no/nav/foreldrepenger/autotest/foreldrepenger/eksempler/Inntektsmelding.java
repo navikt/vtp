@@ -40,7 +40,7 @@ public class Inntektsmelding extends FpsakTestBase {
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
         LocalDate fpStartdato = LocalDate.now().minusDays(3);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(60000, fnr, fpStartdato,
-                orgNr, Optional.empty(), Optional.empty());
+                orgNr, Optional.empty(), Optional.empty(), Optional.empty());
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, null);
         System.out.println(inntektsmeldingBuilder.createInntektesmeldingXML());
