@@ -1,31 +1,7 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggHistorikkinnslag;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriodeAktivitet;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
+import org.junit.jupiter.api.Tag;
 
 @Tag("flaky")
 public class FodselFlaky extends ForeldrepengerTestBase {
@@ -185,12 +161,4 @@ public class FodselFlaky extends ForeldrepengerTestBase {
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
 
-        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
-        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
-    }
-
-    private UttakResultatPeriodeAktivitet finnAktivitetForArbeidsgiver(UttakResultatPeriode uttakResultatPeriode, String identifikator) {
-        return uttakResultatPeriode.getAktiviteter().stream().filter(a -> a.getArbeidsgiver().getIdentifikator().equals(identifikator)).findFirst().get();
-    }
 }

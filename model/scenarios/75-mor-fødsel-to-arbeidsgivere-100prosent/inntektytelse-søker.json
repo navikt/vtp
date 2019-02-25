@@ -1,0 +1,86 @@
+{
+	"inntektskomponent": {
+		"inntektsperioder": [
+			{
+				"fom": "now() - P12M",
+				"tom": "now() - P10M",
+				"beløp": 50000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			},
+			{
+				"fom": "now() - P10M",
+				"tom": "now() - P2M",
+				"beløp": 60000,
+				"orgnr": "979191138",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			},
+			{
+				"fom": "now() - P15M",
+				"beløp": 60000,
+				"orgnr": "979191200",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn"
+			}
+		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+			{
+				"arbeidsforholdId": "ARB001-001",
+				"arbeidsforholdIdNav": "1238161",
+				"ansettelsesperiodeFom": "now() - P4M",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "now() - P4M",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "30",
+						"stillingsprosent" : 40,
+						"beregnetAntallTimerPerUke": "20"
+					}
+				]
+
+			},
+			{
+				"arbeidsforholdId": "ARB001-002",
+				"arbeidsforholdIdNav": "1238162",
+				"ansettelsesperiodeFom": "now() - P4Y",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "979191200",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "now() - P4Y",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 60,
+						"beregnetAntallTimerPerUke": "30"
+					}
+				]
+			}
+		]
+	},
+	"sigrun": {
+		"inntektsår": [
+			{
+				"år": "2017",
+				"oppføring": [
+					{
+						"tekniskNavn": "personinntektNaering",
+						"beløp": 500000
+					},
+					{
+						"tekniskNavn": "personinntektLoenn",
+						"beløp": 600000
+					}
+				]
+			}
+		]
+	}
+ }
