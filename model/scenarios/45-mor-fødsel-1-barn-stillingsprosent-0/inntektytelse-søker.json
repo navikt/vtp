@@ -5,7 +5,7 @@
 				"fom": "now() - P12M",
 				"tom": "now() - P1M",
 				"beløp": 30000,
-				"orgnr": "979191138",
+				"orgnr": "979191146",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
@@ -15,11 +15,11 @@
 	"aareg": {
 		"arbeidsforhold": [
 			{
-				"arbeidsforholdId": "ARB001-003",
+				"arbeidsforholdId": "ARB001-004",
 				"arbeidsforholdIdNav": "1238161",
 				"ansettelsesperiodeFom": "now() - P12M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "979191146",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P12M",
