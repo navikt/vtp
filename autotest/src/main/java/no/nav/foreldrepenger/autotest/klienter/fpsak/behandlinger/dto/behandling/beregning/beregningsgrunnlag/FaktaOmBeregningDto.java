@@ -20,6 +20,7 @@ public class FaktaOmBeregningDto {
     protected List<TilstøtendeYtelseAndelDto> besteberegningAndeler;
     protected VurderMottarYtelseDto vurderMottarYtelse;
     protected AvklarAktiviteterDto avklarAktiviteter;
+    protected VurderBesteberegning vurderBesteberegning;
 
 
     public List<KortvarigeArbeidsforholdDto> getKortvarigeArbeidsforhold() {
@@ -64,5 +65,13 @@ public class FaktaOmBeregningDto {
 
     public AvklarAktiviteterDto getAvklarAktiviteter() {
         return avklarAktiviteter;
+    }
+
+    public VurderBesteberegning getVurderBesteberegning() {
+        return vurderBesteberegning;
+    }
+
+    public void setVurderBesteberegning(VurderBesteberegning vurderBesteberegning) {
+        this.vurderBesteberegning = vurderBesteberegning;
     }
 }

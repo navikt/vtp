@@ -450,6 +450,53 @@ public class Beregning extends ForeldrepengerTestBase {
     }
 
 
+    @Test
+    @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden")
+    @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden.")
+    @Flaky
+    public void vurder_besteberegning() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("156");
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        int inntektPerMåned = 30_000;
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
+                orgNr, Optional.empty(), Optional.empty());
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
+                .contains(FaktaOmBeregningTilfelle.VURDER_BESTEBEREGNING), true);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getSkalHaBesteberegning()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAndelsnr()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getFastsattBelopPrMnd()).isNull();
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getAktivitetStatus().kode).isEqualTo("AT");
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getInntektskategori().kode).isEqualTo("ARBEIDSTAKER");
+        assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getVurderBesteberegning().getAndeler().get(0).getArbeidsforhold(), "ACANDO AS", "979191138");
+    }
+
+
     private void assertArbeidsforhold(BeregningsgrunnlagArbeidsforholdDto arbeidsforhold, String navn, String arbeidsgiverId) {
         assertThat(arbeidsforhold.getArbeidsgiverNavn()).isEqualTo(navn);
         assertThat(arbeidsforhold.getArbeidsgiverId()).isEqualTo(arbeidsgiverId);

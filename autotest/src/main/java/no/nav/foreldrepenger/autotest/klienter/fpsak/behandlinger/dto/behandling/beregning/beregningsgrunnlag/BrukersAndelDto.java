@@ -16,5 +16,38 @@ public class BrukersAndelDto {
     protected boolean lagtTilAvSaksbehandler;
     protected boolean fastsattAvSaksbehandler;
     protected List<Double> andelIArbeid;
-    protected double fastsattBelopPrMnd;
+    protected Double fastsattBelopPrMnd;
+
+
+    public int getAndelsnr() {
+        return andelsnr;
+    }
+
+    public BeregningsgrunnlagArbeidsforholdDto getArbeidsforhold() {
+        return arbeidsforhold;
+    }
+
+    public Kode getInntektskategori() {
+        return inntektskategori;
+    }
+
+    public Kode getAktivitetStatus() {
+        return aktivitetStatus;
+    }
+
+    public boolean isLagtTilAvSaksbehandler() {
+        return lagtTilAvSaksbehandler;
+    }
+
+    public boolean isFastsattAvSaksbehandler() {
+        return fastsattAvSaksbehandler;
+    }
+
+    public List<Double> getAndelIArbeid() {
+        return andelIArbeid;
+    }
+
+    public Double getFastsattBelopPrMnd() {
+        return fastsattBelopPrMnd;
+    }
 }
