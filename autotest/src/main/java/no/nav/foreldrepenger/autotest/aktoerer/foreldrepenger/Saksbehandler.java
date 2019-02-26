@@ -650,7 +650,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshBehandling();
             return harBehandlingsstatus(status);
-        }, 60, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus());
+        }, 60, "Behandlingsstatus var ikke " + status + " men var " + getBehandlingsstatus() + " i sak: " + valgtFagsak.saksnummer);
     }
     
     public boolean harBehandlingsstatus(String status) {
