@@ -133,6 +133,14 @@ public class Medlemskap extends EngangsstonadTestBase {
         
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
+        
+        
+        /*
+        saksbehandler.ikkeVentPåStatus = true;
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+        saksbehandler.ikkeVentPåStatus = false;
+        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        */
     }
     
     @Test

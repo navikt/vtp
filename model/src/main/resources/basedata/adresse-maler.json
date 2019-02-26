@@ -29,7 +29,7 @@
   "adresseLinje3" : "USA"
 }, {
   "@type" : "ustrukturert",
-  "adresseType" : "MIDLERTIDIG_POSTADRESSE",
+  "adresseType" : "POSTADRESSE",
   "land" : "NLD",
   "adresseLinje1" : "Nedergate",
   "adresseLinje2" : "Amsterdam",
