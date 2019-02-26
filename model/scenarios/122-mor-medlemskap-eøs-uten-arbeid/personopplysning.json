@@ -15,7 +15,7 @@
 				"@type": "ref",
 				"fom": "now() - P1Y",
 				"adresseType": "POSTADRESSE",
-				"land": "NLD"
+				"land": "NOR"
 			}
 		],
 		"personstatus": [
