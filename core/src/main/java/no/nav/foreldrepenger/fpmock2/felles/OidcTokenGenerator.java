@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.felles;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +13,34 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 
+import com.google.common.base.Strings;
+
 
 public class OidcTokenGenerator {
-    private List<String> aud = Collections.singletonList("OIDC");
-    private NumericDate expiration = NumericDate.fromSeconds(NumericDate.now().getValue() + 3600);
+
+
+    private List<String> aud = Arrays.asList(
+            "OIDC"
+    );
+    private NumericDate expiration = NumericDate.fromSeconds(NumericDate.now().getValue() + 3600*6);
     private String issuer;
     private NumericDate issuedAt = NumericDate.now();
     private final String subject;
     private String kid = KeyStoreTool.getJsonWebKey().getKeyId();
-
+    private String nonce;
     private Map<String, String> additionalClaims = new HashMap<>();
 
-    public OidcTokenGenerator(String brukerId) {
+    public OidcTokenGenerator(String brukerId, String nonce) {
         additionalClaims.put("azp", "OIDC");
-        additionalClaims.put("acr","Level4");
+        additionalClaims.put("acr", "Level4");
         this.subject = brukerId;
+        this.nonce = nonce;
+
+    }
+
+    public void addAud(String e) {
+        this.aud = new ArrayList(aud);
+        this.aud.add(e);
     }
 
     OidcTokenGenerator withoutAzp() {
@@ -72,6 +86,9 @@ public class OidcTokenGenerator {
         claims.setGeneratedJwtId();
         claims.setIssuedAt(issuedAt);
         claims.setSubject(subject);
+        if (!Strings.isNullOrEmpty(nonce)) {
+            claims.setClaim("nonce", nonce);
+        }
         if (aud.size() == 1) {
             claims.setAudience(aud.get(0));
         } else {
@@ -87,7 +104,6 @@ public class OidcTokenGenerator {
         jws.setAlgorithmHeaderValue("RS256");
         jws.setKey(senderJwk.getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
-
         try {
             return jws.getCompactSerialization();
         } catch (JoseException e) {

@@ -1,14 +1,11 @@
 package no.nav.foreldrepenger.fpmock2.server.rest;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,6 +34,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +50,10 @@ import no.nav.foreldrepenger.fpmock2.felles.OidcTokenGenerator;
 public class Oauth2RestService {
 
     private static final Logger LOG = LoggerFactory.getLogger(Oauth2RestService.class);
+
+    private static final Map<String, String> nonceCache = new HashMap<>();
+
+    private static final Map<String, String> clientIdCache = new HashMap<>();
 
     @GET
     @Path("/oauth2/authorize")
@@ -84,38 +86,33 @@ public class Oauth2RestService {
         Objects.requireNonNull(state, "state");
         Objects.requireNonNull(redirectUri, "redirectUri");
 
-        URI locationUri = new URI(redirectUri);
-
-        Map<String, String> query = new LinkedHashMap<>();
-        query.put("scope", scope);
-        query.put("state", state);
-        query.put("client_id", clientId);
-        query.put("iss", new URI(req.getScheme(), req.getServerName(), "/isso/oauth2", null).toASCIIString());
-
-        query.put("redirect_uri", redirectUri);
+        URIBuilder uriBuilder = new URIBuilder(redirectUri);
+        uriBuilder.addParameter("scope", scope);
+        uriBuilder.addParameter("state", state);
+        uriBuilder.addParameter("client_id", clientId);
+        uriBuilder.addParameter("iss", getIssuer(req));
+        uriBuilder.addParameter("redirect_uri", redirectUri);
+        clientIdCache.put(state, clientId);
+        if (req.getParameter("nonce") != "") {
+            nonceCache.put(state, req.getParameter("nonce"));
+        }
 
         String acceptHeader = req.getHeader("Accept-Header");
         if ((null == req.getContentType() || req.getContentType().equals("text/html")) && (acceptHeader == null || !acceptHeader.contains("json"))) {
-            return authorizeHtmlPage(locationUri, query);
+            return authorizeHtmlPage(uriBuilder);
         } else {
-            return authorizeRedirect(locationUri, query);
+            return authorizeRedirect(uriBuilder);
         }
     }
 
-    private Response authorizeRedirect(URI locationUri, Map<String, String> query) throws URISyntaxException {
+    private Response authorizeRedirect(URIBuilder location) throws URISyntaxException {
         // SEND JSON RESPONSE TIL OPENAM HELPER
-        query.put("code", "im-just-a-fake-code");
-
-        URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
-                null);
-        return Response.status(HttpServletResponse.SC_FOUND).location(location).build();
+        location.addParameter("code", "im-just-a-fake-code");
+        return Response.status(HttpServletResponse.SC_FOUND).location(location.build()).build();
     }
 
-    private Response authorizeHtmlPage(URI locationUri, Map<String, String> query) throws URISyntaxException, NamingException {
+    private Response authorizeHtmlPage(URIBuilder location) throws URISyntaxException, NamingException {
         // LAG HTML SIDE
-        URI location = new URI(locationUri.getScheme(), null, locationUri.getHost(), locationUri.getPort(), locationUri.getPath(), formatQueryParams(query),
-                null);
-
         List<Entry<String, String>> usernames = getUsernames();
 
         String html = "<!DOCTYPE html>\n"
@@ -203,12 +200,13 @@ public class Oauth2RestService {
             @FormParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
         String token = createIdToken(req, code);
-        LOG.info("kall på /oauth2/access_token, opprettet token: " + token + " med reidrect-url: " + redirectUri);
-        Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token, UUID.randomUUID().toString());
+        LOG.info("Fikk parametere:" + req.getParameterMap().toString());
+        LOG.info("kall på /oauth2/access_token, opprettet token: " + token + " med redirect-url: " + redirectUri);
+        Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
         return Response.ok(oauthResponse).build();
     }
 
-    private String createIdToken(HttpServletRequest req, String username) {
+    private String getIssuer(HttpServletRequest req) {
         String issuer;
         if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME")) {
             issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME") + "://"
@@ -218,10 +216,21 @@ public class Oauth2RestService {
             LOG.info("Setter issuer-url fra naisconfig: " + issuer);
         } else {
             issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
-            LOG.info("Setter issuer-url fra implisit localhost: " + issuer + " for bruker " + username);
+            LOG.info("Setter issuer-url fra implisit localhost: " + issuer);
         }
-        String token = new OidcTokenGenerator(username).withIssuer(issuer).create();
-        return token;
+        return issuer;
+    }
+
+    private String createIdToken(HttpServletRequest req, String username) {
+        String issuer = getIssuer(req);
+        String state = req.getParameter("state");
+        String nonce = nonceCache.get(state);
+        OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, nonce).withIssuer(issuer);
+        if (clientIdCache.containsKey(state)) {
+            String clientId = clientIdCache.get(state);
+            tokenGenerator.addAud(clientId);
+        }
+        return tokenGenerator.create();
     }
 
     @GET
@@ -292,19 +301,15 @@ public class Oauth2RestService {
 
     }
 
-    protected String formatQueryParams(Map<String, String> params) {
-        return params.entrySet().stream()
-                .map(p -> urlEncodeUTF8(p.getKey()) + "=" + urlEncodeUTF8(p.getValue()))
-                .reduce((p1, p2) -> p1 + "&" + p2)
-                .orElse("");
-    }
-
-    private static String urlEncodeUTF8(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedOperationException(e);
-        }
+    @GET
+    @Path("/oauth2/.well-known/openid-configuration")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
+    public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
+        LOG.info("kall på /oauth2/.well-known/openid-configuration");
+        String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, getIssuer(req));
+        return Response.ok(wellKnownResponse).build();
     }
 
 }

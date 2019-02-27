@@ -44,7 +44,7 @@ public class OpenamKlient extends VTPKlient {
         }
 
         LOG.info("Issuer satt til " + issuer);
-        String token = new OidcTokenGenerator(rolle).withIssuer(issuer).create();
+        String token = new OidcTokenGenerator(rolle, "notcetnonce").withIssuer(issuer).create();
 
         BasicClientCookie cookie = new BasicClientCookie("ID_token", token);
         cookie.setPath("/");
