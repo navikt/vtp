@@ -124,8 +124,8 @@ public class Termin extends EngangsstonadTestBase {
     }
 
     @Test
-    @DisplayName("Far søker termin - godkjent")
-    public void farSøkerTerminGodkjent() throws Exception {
+    @DisplayName("Far søker termin")
+    public void farSøkerTermin() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 

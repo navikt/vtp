@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Omsorgsovertakelse;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Omsorgsovertakelseaarsaker;
 
@@ -91,5 +92,9 @@ public class SoekersRelasjonErketyper {
         omsorgsovertakelse.getFoedselsdato().add((LocalDate.now().minusMonths(6)));
 
         return omsorgsovertakelse;
+    }
+
+    public static SoekersRelasjonTilBarnet søkerFødsel4DagerEtterFødsel() {
+        return fødsel(1, LocalDate.now().minusDays(4));
     }
 }

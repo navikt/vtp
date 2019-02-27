@@ -293,4 +293,37 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorEngangstonadIGår(String aktoerId) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((LocalDate.now()))
+                .withBegrunnelseForSenSoeknad(null)
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeFødsel4DagerEtterFødsel())
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+
+    public ForeldrepengesoknadBuilder terminMorEngangstonadEtter26Uke(String aktoerId) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((LocalDate.now()))
+                .withBegrunnelseForSenSoeknad("Begrunnelse")
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeTerminFørTermin())
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+
+    public ForeldrepengesoknadBuilder terminEngangstonadFarPåVegneAvMor(String aktoerId, String annenpartAktoerId) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((LocalDate.now()))
+                .withBegrunnelseForSenSoeknad(null)
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadTerminKjentAnnenForelder(annenpartAktoerId))
+                .withSoeker(morSoeker(aktoerId))//Far søker på vegne av mor
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+
 }

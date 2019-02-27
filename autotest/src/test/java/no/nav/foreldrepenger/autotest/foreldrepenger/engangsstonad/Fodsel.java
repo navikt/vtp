@@ -224,5 +224,25 @@ public class Fodsel extends EngangsstonadTestBase {
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
     }
 
+    @Test
+    @DisplayName("Mor søker uregistrert fødsel mindre enn 14 dager etter fødsel")
+    public void morSøkerUregistrertFødselMindreEnn14DagerEtter() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadIGår(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+        
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        
+        verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "behandling er ikke satt på vent");
+    }
+    
+    @Test
+    @DisplayName("Medmor søker fødsel")
+    public void farSøkerTermin() throws Exception {
+        
+    }
+    
 }
