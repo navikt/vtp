@@ -527,8 +527,9 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
-    @Description("Mor søker fødsel med 2 arbeidsforhold")
-    @DisplayName("Mor søker fødsel med 2 arbeidsforhold")
+    @Description("Mor søker fødsel med 2 arbeidsforhold med arbeidsforhold som ikke matcher på ID")
+    @DisplayName("Mor søker fødsel med 2 arbeidsforhold med arbeidsforhold som ikke matcher på ID")
+    @Disabled // Behandlingen blir satt på vent, som er riktig oppførsel. Testen har ikke tatt hensyn til det. Testen må skrives om.
     public void morSøkerFødselMed2ArbeidsforholdArbeidsforholdIdMatcherIkke() throws Exception {
         TestscenarioDto testscenario = opprettScenario("56");
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -790,12 +791,12 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
     }
-    
+
     @Test
     @DisplayName("Mor søker fødsel har stillingsprosent 0")
     public void morSøkerFødselStillingsprosent0() throws Exception { //TODO
         TestscenarioDto testscenario = opprettScenario("45");
-        
+
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate fpStartdato = fødselsdato.minusWeeks(3);
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -803,17 +804,17 @@ public class Fodsel extends ForeldrepengerTestBase {
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        
+
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
-        
+
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        
+
         saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
             .godkjennAllOpptjening();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
-        
+
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
