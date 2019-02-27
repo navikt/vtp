@@ -453,7 +453,6 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden")
     @Description("Vurder besteberegning: Mor med arbeidsforhold og dagpenger i opptjeningsperioden.")
-    @Flaky
     public void vurder_besteberegning() throws Exception {
         TestscenarioDto testscenario = opprettScenario("156");
 
