@@ -6,6 +6,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Flaky;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsatteVerdier;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettMaanedsinntektUtenInntektsmeldingAndel;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -27,19 +29,22 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.ArbeidstakerandelUtenIMMottarYtelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.FaktaOmBeregningTilfelle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagArbeidsforholdDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagPeriodeDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagPrStatusOgAndelDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 
-@Tag("flaky")
-public class BeregningFlaky extends ForeldrepengerTestBase {
+@Tag("smoke")
+@Tag("foreldrepenger")
+public class Beregning extends ForeldrepengerTestBase {
 
     @Test
     @DisplayName("Mor med ventelønn og vartpenger")
     @Description("Mor med ventelønn og vartpenger")
-    @Flaky
     public void mor_med_ventelønn_og_vartpenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("150");
 
@@ -67,7 +72,6 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med kortvarig arbeidsforhold")
     @Description("Mor med kortvarig arbeidsforhold")
-    @Flaky
     public void vurder_tidsbegrenset_uten_inntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -92,7 +96,7 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         saksbehandler.gjenopptaBehandling();
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_ARBEIDSFORHOLD);
         saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
-                .bekreftArbeidsforholdErRelevant("THOMAS AS", true);
+                .bekreftArbeidsforholdErRelevant("STATOIL", true);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
         verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
@@ -105,15 +109,14 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getAndelsnr()).isEqualTo(2L);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "THOMAS AS", "973861778");
+                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "973861778");
 
-        assertMottarYtelse(2L, "THOMAS AS", "973861778");
+        assertMottarYtelse(2L, "STATOIL", "973861778");
     }
 
     @Test
     @DisplayName("Mor med kortvarig arbeidsforhold med inntektsmelding")
     @Description("Mor med kortvarig arbeidsforhold med inntektsmelding")
-    @Flaky
     public void vurder_tidsbegrenset_med_inntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -149,14 +152,13 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getAndelsnr()).isEqualTo(2L);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "THOMAS AS", "973861778");
+                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "973861778");
     }
 
 
     @Test
     @DisplayName("Endret beregningsgrunnlag med kortvarig")
     @Description("Endret beregningsgrunnlag med kortvarig")
-    @Flaky
     public void endret_beregningsgrunnlag_med_kortvarig() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -194,7 +196,7 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getAndelsnr()).isEqualTo(2L);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "THOMAS AS", "973861778");
+                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "973861778");
 
 
         verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
@@ -202,7 +204,7 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().size()).isEqualTo(1);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0), "THOMAS AS", "973861778");
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0), "STATOIL", "973861778");
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0).getPerioderMedGraderingEllerRefusjon().size()).isEqualTo(1);
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
@@ -219,7 +221,6 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med arbeidsforhold uten inntektsmelding som mottar ytelse")
     @Description("Mor med arbeidsforhold uten inntektsmelding som mottar ytelse. Produksjonshendelse som feilet i frontend.")
-    @Flaky
     public void vurder_mottar_ytelse() throws Exception {
         TestscenarioDto testscenario = opprettScenario("155");
 
@@ -302,6 +303,95 @@ public class BeregningFlaky extends ForeldrepengerTestBase {
 
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()).isNull();
     }
+
+
+    @Test
+    @DisplayName("Arbeidsforhold tilkommer etter stp")
+    @Description("Arbeidsforhold tilkommer etter stp")
+    public void arbeidsforhold_tilkommer_etter_stp() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("157");
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        List<Arbeidsforhold> arbeidsforhold = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold();
+        Arbeidsforhold tilkommet = arbeidsforhold.get(1);
+        LocalDate tilkommetDato = tilkommet.getAnsettelsesperiodeFom();
+        String orgNr = tilkommet.getArbeidsgiverOrgnr();
+        String orgNr2 = arbeidsforhold.get(2).getArbeidsgiverOrgnr();
+        int inntektPerMåned = 30_000;
+        BigDecimal refusjon = BigDecimal.valueOf(10_000);
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
+                orgNr, Optional.empty(), Optional.of(refusjon));
+        InntektsmeldingBuilder inntektsmeldingBuilder2 = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
+                orgNr2, Optional.empty(), Optional.empty());
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+        fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+
+        debugLoggBehandling(saksbehandler.valgtBehandling);
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+        verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
+                .anyMatch(ap -> ap.erUbekreftet() &&
+                        ap.getDefinisjon().kode.equals(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN)), true);
+
+
+        assertEndretArbeidsforhold(tilkommetDato);
+
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto()).isEqualTo(2);
+
+        BeregningsgrunnlagPeriodeDto manuellPeriode = saksbehandler.valgtBehandling.beregningsgrunnlag.getBeregningsgrunnlagPeriode(1);
+        BeregningsgrunnlagPrStatusOgAndelDto tilkommetAndel = manuellPeriode.getBeregningsgrunnlagPrStatusOgAndel().stream()
+                .filter(andel -> andel.getArbeidsforhold().getArbeidsgiverId().equals(orgNr)).findFirst().get();
+        BeregningsgrunnlagPrStatusOgAndelDto eksisterendeAndel = manuellPeriode.getBeregningsgrunnlagPrStatusOgAndel().stream()
+                .filter(andel -> andel.getArbeidsforhold().getArbeidsgiverId().equals(orgNr2)).findFirst().get();
+        VurderFaktaOmBeregningBekreftelse bekreftelse = saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class);
+        int fastsattBeløp = 15_000;
+        FastsatteVerdier fastsatteVerdier = new FastsatteVerdier(10_000, fastsattBeløp,
+                saksbehandler.kodeverk.Inntektskategori.getKode("ARBEIDSTAKER"));
+        FastsatteVerdier fastsatteVerdier2 = new FastsatteVerdier(0, fastsattBeløp,
+                saksbehandler.kodeverk.Inntektskategori.getKode("ARBEIDSTAKER"));
+        bekreftelse
+                .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.FASTSETT_ENDRET_BEREGNINGSGRUNNLAG.kode)
+                .leggTilAndelerEndretBg(manuellPeriode, tilkommetAndel, fastsatteVerdier)
+                .leggTilAndelerEndretBg(manuellPeriode, eksisterendeAndel, fastsatteVerdier2);
+        saksbehandler.bekreftAksjonspunktBekreftelse(bekreftelse);
+
+        assertEndretArbeidsforhold(tilkommetDato);
+
+        BeregningsgrunnlagPeriodeDto behandletPeriode = saksbehandler.valgtBehandling.beregningsgrunnlag.getBeregningsgrunnlagPeriode(1);
+        tilkommetAndel = behandletPeriode.getBeregningsgrunnlagPrStatusOgAndel().stream()
+                .filter(andel -> andel.getArbeidsforhold().getArbeidsgiverId().equals(orgNr)).findFirst().get();
+        eksisterendeAndel = behandletPeriode.getBeregningsgrunnlagPrStatusOgAndel().stream()
+                .filter(andel -> andel.getArbeidsforhold().getArbeidsgiverId().equals(orgNr2)).findFirst().get();
+        assertThat(tilkommetAndel.getBeregnetPrAar()).isEqualTo((double)12*fastsattBeløp);
+        assertThat(eksisterendeAndel.getBeregnetPrAar()).isEqualTo((double)12*fastsattBeløp);
+    }
+
+    private void assertEndretArbeidsforhold(LocalDate tilkommetDato) {
+        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
+                .contains(FaktaOmBeregningTilfelle.FASTSETT_ENDRET_BEREGNINGSGRUNNLAG), true);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().size()).isEqualTo(1);
+        assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0), "ACANDO AS", "979191138");
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0).getPerioderMedGraderingEllerRefusjon().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0)
+                .getPerioderMedGraderingEllerRefusjon().get(0).getFom()).isEqualTo(tilkommetDato);
+        assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0)
+                .getPerioderMedGraderingEllerRefusjon().get(0).getTom()).isNull();
+    }
+
 
     private void assertMottarYtelse(long l, String s, String s2) {
         verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()

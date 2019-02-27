@@ -37,6 +37,8 @@ public class Kodeverk{
     public KodeListe UttakPeriodeVurderingType;
     public KodeListe IkkeOppfyltÅrsak;
     public KodeListe SkatteOgAvgiftsregelType;
+    public KodeListe Inntektskategori;
+
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class KodeListe extends ArrayList<Kode>{

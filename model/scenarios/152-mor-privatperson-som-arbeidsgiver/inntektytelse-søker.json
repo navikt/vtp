@@ -5,7 +5,6 @@
         "fom": "now() - P12M",
         "tom": "now() - P11M",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -15,7 +14,6 @@
         "fom": "now() - P10M",
         "tom": "now() - P9M",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -25,7 +23,6 @@
         "fom": "now() - P7M",
         "tom": "now() - P6M",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -35,7 +32,6 @@
         "fom": "now() - P4M",
         "tom": "now() - P3M",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -45,7 +41,6 @@
         "fom": "now() - P3M",
         "tom": "now() - P2M",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -55,7 +50,6 @@
         "fom": "now() - P2M",
         "tom": "now() - P1M",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -65,7 +59,6 @@
         "fom": "now() - P1M",
         "tom": "now()",
         "beløp": 30000,
-        "orgnr": "",
         "aktorId": "${aktor1}",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
@@ -81,7 +74,6 @@
         "ansettelsesperiodeFom": "now() - P12M",
         "ansettelsesperiodeTom": "now() - P11M",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {
@@ -99,7 +91,6 @@
         "ansettelsesperiodeFom": "now() - P10M",
         "ansettelsesperiodeTom": "now() - P9M",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {
@@ -117,7 +108,6 @@
         "ansettelsesperiodeFom": "now() - P7M",
         "ansettelsesperiodeTom": "now() - P6M",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {
@@ -135,7 +125,6 @@
         "ansettelsesperiodeFom": "now() - P4M",
         "ansettelsesperiodeTom": "now() - P3M",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {
@@ -153,7 +142,6 @@
         "ansettelsesperiodeFom": "now() - P3M",
         "ansettelsesperiodeTom": "now() - P2M",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {
@@ -171,7 +159,6 @@
         "ansettelsesperiodeFom": "now() - P2M",
         "ansettelsesperiodeTom": "now() - P1M",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {
@@ -189,7 +176,6 @@
         "ansettelsesperiodeFom": "now() - P1M",
         "ansettelsesperiodeTom": "now()",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "",
         "arbeidsgiverAktorId": "${aktor1}",
         "arbeidsavtaler": [
           {

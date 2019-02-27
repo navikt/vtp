@@ -35,4 +35,12 @@ public class BeregningsgrunnlagPrStatusOgAndelDto {
     public BeregningsgrunnlagArbeidsforholdDto getArbeidsforhold() {
         return arbeidsforhold;
     }
+
+    public int getAndelsnr() {
+        return andelsnr;
+    }
+
+    public double getBeregnetPrAar() {
+        return beregnetPrAar;
+    }
 }

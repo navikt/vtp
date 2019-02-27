@@ -84,19 +84,13 @@ public class OpptjeningErketyper {
         List<AnnenOpptjening> annenOpptjening = opptjening.getAnnenOpptjening();
         AnnenOpptjening ventelonn = new AnnenOpptjening();
         AnnenOpptjeningTyper type = new AnnenOpptjeningTyper();
-        type.setKode("VENTELØNN");
+        type.setKode("VENTELØNN_VARTPENGER");
         ventelonn.setType(type);
         Periode periode = new Periode();
         periode.setFom((LocalDate.now().minusYears(4)));
         periode.setTom((LocalDate.now()));
         ventelonn.setPeriode(periode);
         annenOpptjening.add(ventelonn);
-        AnnenOpptjening vartpenger = new AnnenOpptjening();
-        AnnenOpptjeningTyper type2 = new AnnenOpptjeningTyper();
-        type2.setKode("VARTPENGER");
-        vartpenger.setType(type2);
-        vartpenger.setPeriode(periode);
-        annenOpptjening.add(vartpenger);
         return opptjening;
 
     }

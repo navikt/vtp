@@ -434,6 +434,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
 
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK);
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).
                 godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2),
                         saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
@@ -723,7 +724,6 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"));
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, false);
     }
 
     @Disabled("Disabler til bug fikset i fpsak")

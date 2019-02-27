@@ -23,4 +23,12 @@ public class BeregningsgrunnlagPeriodeDto {
     public List<BeregningsgrunnlagPrStatusOgAndelDto> getBeregningsgrunnlagPrStatusOgAndel(){
         return beregningsgrunnlagPrStatusOgAndel;
     }
+
+    public LocalDate getBeregningsgrunnlagPeriodeFom() {
+        return beregningsgrunnlagPeriodeFom;
+    }
+
+    public LocalDate getBeregningsgrunnlagPeriodeTom() {
+        return beregningsgrunnlagPeriodeTom;
+    }
 }

@@ -49,8 +49,8 @@ public class ArbeidsforholdAdapter {
             arbeidsforhold.getArbeidsavtale().add(fra(arbeidsavtale));
         }
 
-        if (arbeidsforholdModell.getArbeidsgiverOrgnr().length() > 9){
-            arbeidsforhold.setArbeidsgiver(lagPersonAktoer(arbeidsforholdModell.getArbeidsgiverOrgnr()));
+        if (arbeidsforholdModell.getArbeidsgiverAktorId() != null && !arbeidsforholdModell.getArbeidsgiverAktorId().equals("")){
+            arbeidsforhold.setArbeidsgiver(lagPersonAktoer(arbeidsforholdModell.getArbeidsgiverAktorId()));
         } else {
             arbeidsforhold.setArbeidsgiver(lagOrganisasjonsAktoer(arbeidsforholdModell.getArbeidsgiverOrgnr()));
         }

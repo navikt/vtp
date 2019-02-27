@@ -598,7 +598,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             refreshBehandling();
             return harAksjonspunkt(kode);
-        }, 10, "Saken  hadde ikke aksjonspunkt " + kode);
+        }, 20, "Saken  hadde ikke aksjonspunkt " + kode);
     }
 
     /*
