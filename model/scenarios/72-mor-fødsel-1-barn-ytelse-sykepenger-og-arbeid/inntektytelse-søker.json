@@ -3,8 +3,8 @@
 		"ytelser": [
 			{
 				"sakId": "9999",
-				"registrert": "now() - P4M",
-				"iverksatt": "now() - P4M",
+				"registrert": "now() - P9M",
+				"iverksatt": "now() - P9M",
 				"endret": "now()",
 				"opphør": "now() + PT2400H",
 				"saksbehandlerId": "helloworld",
@@ -18,12 +18,12 @@
 		"grunnlag": [
 			{
 				"@type": "foreldrepenger",
-				"startdato": "now() - P4M",
-				"fom": "now() - P4M",
+				"startdato": "now() - P9M",
+				"fom": "now() - P9M",
 				"behandlingstema": "FØ",
 				"vedtak": [
 					{
-						"fom": "now() - P4M",
+						"fom": "now() - P9M",
 						"utbetalingsgrad": 100
 					}
 				],
@@ -31,7 +31,7 @@
 				"arbeidsforhold": [
 					{
 						"orgnr": "1",
-						"beløp": 5000,
+						"beløp": 10000,
 						"inntektsperiode": "M"
 					}
 				],
@@ -58,7 +58,7 @@
 		"arbeidsforhold": [
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1238161",
+				"arbeidsforholdIdNav": "728161",
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",

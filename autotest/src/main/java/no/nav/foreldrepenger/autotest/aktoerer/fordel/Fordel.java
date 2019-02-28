@@ -212,7 +212,7 @@ public class Fordel extends Aktoer {
         final long saksnummerF = saksnummer;
         Vent.til(() -> {
             return (antallInntektsmeldingerMottatt(saksnummerF) - gammelAntallIMF == inntektsmeldinger.size());
-        }, 20, "har ikke mottat alle inntektsmeldinger");
+        }, 20, "har ikke mottat alle inntektsmeldinger. Sak: " + saksnummer);
         return saksnummer;
     }
 

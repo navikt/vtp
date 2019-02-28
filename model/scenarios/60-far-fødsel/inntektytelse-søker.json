@@ -34,7 +34,7 @@
 		"arbeidsforhold": [
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1238161",
+				"arbeidsforholdIdNav": "608161",
 				"ansettelsesperiodeFom": "now() - P4M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191138",
@@ -61,7 +61,7 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1238162",
+				"arbeidsforholdIdNav": "608162",
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"ansettelsesperiodeTom": "now() - P4M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
