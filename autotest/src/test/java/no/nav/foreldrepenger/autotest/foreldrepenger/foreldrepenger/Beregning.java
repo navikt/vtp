@@ -110,7 +110,7 @@ public class Beregning extends ForeldrepengerTestBase {
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "892850372");
 
-        assertMottarYtelse(2L, "STATOIL", "973861778");
+        assertMottarYtelse(2L, "STATOIL", "892850372");
     }
 
     @Test
