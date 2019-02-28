@@ -14,7 +14,7 @@
 				"fom": "now() - P5M",
 				"tom": "now() - P1M",
 				"beløp": 30000,
-				"orgnr": "973861778",
+				"orgnr": "892850372",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -46,7 +46,7 @@
 				"ansettelsesperiodeFom": "now() - P5M",
 				"ansettelsesperiodeTom": "now()",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "973861778",
+				"arbeidsgiverOrgnr": "892850372",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "2017-01-01",
