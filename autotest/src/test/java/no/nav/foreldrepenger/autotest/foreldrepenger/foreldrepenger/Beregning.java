@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Flaky;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsatteVerdier;
@@ -109,7 +108,7 @@ public class Beregning extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getAndelsnr()).isEqualTo(2L);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "973861778");
+                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "892850372");
 
         assertMottarYtelse(2L, "STATOIL", "973861778");
     }
@@ -152,7 +151,7 @@ public class Beregning extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getAndelsnr()).isEqualTo(2L);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "973861778");
+                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "892850372");
     }
 
 
@@ -196,7 +195,7 @@ public class Beregning extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getKortvarigeArbeidsforhold().get(0).getAndelsnr()).isEqualTo(2L);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "973861778");
+                .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "892850372");
 
 
         verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
@@ -204,7 +203,7 @@ public class Beregning extends ForeldrepengerTestBase {
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().size()).isEqualTo(1);
         assertArbeidsforhold(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
-                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0), "STATOIL", "973861778");
+                .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0), "STATOIL", "892850372");
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
                 .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().get(0).getPerioderMedGraderingEllerRefusjon().size()).isEqualTo(1);
         assertThat(saksbehandler.valgtBehandling.beregningsgrunnlag.getFaktaOmBeregning()
