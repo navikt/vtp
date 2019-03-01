@@ -77,13 +77,13 @@ public class Termin extends ForeldrepengerTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
 
 
-        verifiser(saksbehandler.harAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN), "");
+        verifiser(saksbehandler.harAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN), "Mangler aksonspunkt for vurdering av fakta arbeid frilands (5058)");
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startDatoForeldrepenger);
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         saksbehandler.refreshBehandling();
-        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN), "");
+        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN), "Har uventet aksonspunkt - vurdering av fakta arbeid frilands (5058)");
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
     }
