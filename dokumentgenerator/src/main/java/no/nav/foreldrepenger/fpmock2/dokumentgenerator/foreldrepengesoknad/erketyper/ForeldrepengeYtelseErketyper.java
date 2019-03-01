@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
+import java.time.LocalDate;
+
 import no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.Endringssoeknad;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelderMedNorskIdent;
@@ -9,8 +11,6 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Dekningsgrad;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Dekningsgrader;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
-
-import java.time.LocalDate;
 
 public class ForeldrepengeYtelseErketyper {
 
@@ -139,6 +139,11 @@ public class ForeldrepengeYtelseErketyper {
 
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeFodselMedFrilans(LocalDate fodselsdato) {
         Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fodselsdato);
+        foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
+        return foreldrepenger;
+    }
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeFodselMedFrilans(Fordeling fordeling,LocalDate fodselsdato) {
+        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fordeling,fodselsdato);
         foreldrepenger.setOpptjening(OpptjeningErketyper.medFrilansOpptjening());
         return foreldrepenger;
     }
