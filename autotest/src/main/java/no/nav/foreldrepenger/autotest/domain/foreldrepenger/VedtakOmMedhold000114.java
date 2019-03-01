@@ -23,10 +23,10 @@ public class VedtakOmMedhold000114 extends BrevMalXml{
     public boolean isComparable(BrevMalXml otherXml) {
         boolean result = true;
         
-        result = result && isComparableNode("fag ytelseType", otherXml);
-        result = result && isComparableNode("fag opphavType", otherXml);
-        result = result && isComparableNode("fag fritekst", otherXml);
-        result = result && isComparableNode("fag klageFristUker", otherXml);
+        result = result && isComparableNode("fag behandlingsType", otherXml);
+        result = result && isComparableNode("fag graderingFinnes", otherXml);
+        result = result && isComparableNode("fag disponibleDager", otherXml);
+        result = result && isComparableNode("fag antallPerioder", otherXml);
         
         return result;
     }
