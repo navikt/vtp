@@ -629,10 +629,10 @@ public class Uttak extends ForeldrepengerTestBase {
         return gradering;
     }
     public Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker, String orgNr){
-            Virksomhet virksomhet = new Virksomhet();
-            virksomhet.setIdentifikator(orgNr);
-            gradering.setArbeidsgiver(virksomhet);
-            return graderingSøknadBuilder(gradering,STØNADSKONTOTYPE, graderingFom,graderingTom, arbeidtidProsent, setErArbeidstaker);
+        Virksomhet virksomhet = new Virksomhet();
+        virksomhet.setIdentifikator(orgNr);
+        gradering.setArbeidsgiver(virksomhet);
+        return graderingSøknadBuilder(gradering,STØNADSKONTOTYPE, graderingFom,graderingTom, arbeidtidProsent, setErArbeidstaker);
     }
     public Utsettelsesperiode utsettelseSøknadBuilder (Utsettelsesperiode utsettelse,LocalDate utsettelseFom,LocalDate utsettelseTom, String UTSETTELSETYPE, boolean setErArbeidstaker){
         Utsettelsesaarsaker årsak = new Utsettelsesaarsaker();
