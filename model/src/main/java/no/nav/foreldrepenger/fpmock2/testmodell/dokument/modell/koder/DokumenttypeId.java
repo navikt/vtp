@@ -72,7 +72,7 @@ public class DokumenttypeId {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Arkivfiltype) obj).getKode());
+        return Objects.equals(getKode(), ((DokumenttypeId) obj).getKode());
     }
 
     @Override

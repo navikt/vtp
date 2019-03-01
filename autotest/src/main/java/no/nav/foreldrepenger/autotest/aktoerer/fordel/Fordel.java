@@ -99,6 +99,10 @@ public class Fordel extends Aktoer {
             return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
         }, 60, "Saken hadde ingen behandlinger");
 
+        if (DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD.equals(dokumenttypeId)) {
+            //TODO: Vent.til fungerer ikke med endringssøknad. Venter ikke til behandlingen er opprettet
+            Thread.sleep(5000);
+        }
 
         return sakId;
     }
