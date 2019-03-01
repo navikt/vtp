@@ -586,20 +586,23 @@ public class Uttak extends ForeldrepengerTestBase {
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familieHendelse, familieHendelse.plusWeeks(6).minusDays(1)));
         // Gradering søknad fordeling med med gradering
         Gradering gradering = new Gradering();
-        graderingSøknadBuilder(gradering,STØNADSKONTOTYPE_MØDREKVOTE,familieHendelse.plusWeeks(6),familieHendelse.plusWeeks(14).minusDays(1),50,true,orgNrAT);
+        graderingSøknadBuilder(gradering,STØNADSKONTOTYPE_MØDREKVOTE,familieHendelse.plusWeeks(6),familieHendelse.plusWeeks(14).minusDays(1),45,true,orgNrAT);
         perioder.add(gradering);
         Gradering gradering2 = new Gradering();
         graderingSøknadBuilder(gradering2,STØNADSKONTOTYPE_FELLESPERIODE,familieHendelse.plusWeeks(14),familieHendelse.plusWeeks(16).minusDays(1),42,false);
         perioder.add(gradering2);
+
+        Utsettelsesperiode utsettelse = new Utsettelsesperiode();
+        utsettelseSøknadBuilder (utsettelse,familieHendelse.plusWeeks(16),familieHendelse.plusWeeks(17), UTSETTELSETYPE_ARBEID, true);
+        perioder.add(utsettelse);          utsettelseSøknadBuilder (utsettelse,familieHendelse.plusWeeks(16),familieHendelse.plusWeeks(17), UTSETTELSETYPE_ARBEID, true);
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorMedFrilans(fordeling,søkerAktørIdent, familieHendelse);
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
                 orgNrAT, Optional.empty(), Optional.empty());
-
+        inntektsmeldingBuilder.addGradertperiode(BigDecimal.valueOf(50), familieHendelse.plusWeeks(6), familieHendelse.plusWeeks(14).minusDays(1));
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
-
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
@@ -625,11 +628,18 @@ public class Uttak extends ForeldrepengerTestBase {
 
         return gradering;
     }
-
     public Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker, String orgNr){
             Virksomhet virksomhet = new Virksomhet();
             virksomhet.setIdentifikator(orgNr);
             gradering.setArbeidsgiver(virksomhet);
             return graderingSøknadBuilder(gradering,STØNADSKONTOTYPE, graderingFom,graderingTom, arbeidtidProsent, setErArbeidstaker);
+    }
+    public Utsettelsesperiode utsettelseSøknadBuilder (Utsettelsesperiode utsettelse,LocalDate utsettelseFom,LocalDate utsettelseTom, String UTSETTELSETYPE, boolean setErArbeidstaker){
+        Utsettelsesaarsaker årsak = new Utsettelsesaarsaker();
+        årsak.setKode(UTSETTELSETYPE);
+        utsettelse.setAarsak(årsak);
+        utsettelse.setErArbeidstaker(setErArbeidstaker);
+        addPeriode(utsettelseFom, utsettelseTom, utsettelse);
+        return utsettelse;
     }
 }
