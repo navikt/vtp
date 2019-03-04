@@ -42,7 +42,7 @@
         <profile>
             <id>utvikling</id>
             <properties>
-                <includeTestsTags>test</includeTestsTags>
+                <includeTestsTags>utvikling</includeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
             </properties>
         </profile>
