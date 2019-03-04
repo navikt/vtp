@@ -50,7 +50,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 
-@Tag("test")
+@Tag("utvikling")
 @Tag("foreldrepenger")
 public class Uttak extends ForeldrepengerTestBase {
     // Testcaser

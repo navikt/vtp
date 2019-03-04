@@ -40,7 +40,7 @@
             </properties>
         </profile>
         <profile>
-            <id>test</id>
+            <id>utvikling</id>
             <properties>
                 <includeTestsTags>test</includeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>

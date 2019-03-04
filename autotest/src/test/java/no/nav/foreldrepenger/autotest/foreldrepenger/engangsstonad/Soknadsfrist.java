@@ -13,7 +13,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
-@Tag("test")
+@Tag("utvikling")
 public class Soknadsfrist extends EngangsstonadTestBase {
 
 
