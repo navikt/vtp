@@ -619,7 +619,7 @@ public class Uttak extends ForeldrepengerTestBase {
 
     }
 
-    public Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker){
+    private Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker){
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setArbeidtidProsent(arbeidtidProsent);
         addStønadskontotype(STØNADSKONTOTYPE, gradering);
@@ -628,13 +628,13 @@ public class Uttak extends ForeldrepengerTestBase {
 
         return gradering;
     }
-    public Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker, String orgNr){
+    private Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker, String orgNr){
         Virksomhet virksomhet = new Virksomhet();
         virksomhet.setIdentifikator(orgNr);
         gradering.setArbeidsgiver(virksomhet);
         return graderingSøknadBuilder(gradering,STØNADSKONTOTYPE, graderingFom,graderingTom, arbeidtidProsent, setErArbeidstaker);
     }
-    public Utsettelsesperiode utsettelseSøknadBuilder (Utsettelsesperiode utsettelse,LocalDate utsettelseFom,LocalDate utsettelseTom, String UTSETTELSETYPE, boolean setErArbeidstaker){
+    private Utsettelsesperiode utsettelseSøknadBuilder(Utsettelsesperiode utsettelse, LocalDate utsettelseFom, LocalDate utsettelseTom, String UTSETTELSETYPE, boolean setErArbeidstaker){
         Utsettelsesaarsaker årsak = new Utsettelsesaarsaker();
         årsak.setKode(UTSETTELSETYPE);
         utsettelse.setAarsak(årsak);
