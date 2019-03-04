@@ -57,7 +57,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase for koblet sak")
     @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. 100% dekningsgrad.")
-    public void testcase_morOgFarSøkerEtterFødsel_kantTilKantsøknad() throws Exception {
+    public void testcase_morOgFar_etterFødsel_kantTilKant() throws Exception {
         TestscenarioDto testscenario = opprettScenario("82");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -92,7 +92,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase for koblet sak med AP i uttak")
     @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. 100% dekningsgrad. Med AP i uttak")
-    public void testcase_morOgFarSøkerEtterFødsel_kantTilKantsøknad_farAp() throws Exception {
+    public void testcase_morOgFar_etterFødsel_kantTilKant_APfar() throws Exception {
         TestscenarioDto testscenario = opprettScenario("82");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -134,7 +134,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase for koblet sak hvor far stjeler dager")
     @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. Far stjeler dager.")
-    public void testcase_morOgFarSøkerEtterFødsel_overlapp() throws Exception {
+    public void testcase_morOgFar_etterFødsel_overlapp() throws Exception {
         TestscenarioDto testscenario = opprettScenario("82");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -174,7 +174,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor fødsel med ett arbeidsforhold, med gradering")
     @Description("Mor søker fødsel med ett arbeidsforhold, en periode med gradering")
-    public void testcase_enArbeidstaker_medGradering() throws Exception {
+    public void testcase_mor_fødsel_AT_gradering() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -213,7 +213,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase mor tom for dager med gradering")
     @Description("Mor går tom for stønadsdager i en graderingsperiode")
-    public void testcase_mor_tomForDager_gradering() throws Exception {
+    public void testcase_mor_fødsel_AT_gradering_tomForDager() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -253,7 +253,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase mor termin med gradering i uke 7")
     @Description("Mor søker på termin, graderer i uke 7")
-    public void testcase_mor_termin_gradering() throws Exception {
+    public void testcase_mor_termin_AT_gradering() throws Exception {
         TestscenarioDto testscenario = opprettScenario("74");
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String fnrMor = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -294,7 +294,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase mor tom for dager")
     @Description("Mor går tom for dager, søker mer av kontoen senere også")
-    public void testcase_mor_tomForDager() throws Exception {
+    public void testcase_mor_fødsel_tomForDager() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("50");
 
@@ -321,7 +321,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase mor - søker med manglende perioder")
     @Description("Mor søker med manglende perioder i starten")
-    public void testcase_mor_manglerPerioder() throws Exception {
+    public void testcase_mor_fødsel_manglerPerioder() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -346,7 +346,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor fødsel med Arena")
     @Description("Mor søker fødsel med arena")
-    public void testcase_morSøkerFødsel_medArena() throws Exception {
+    public void testcase_mor_fødsel_ARENA() throws Exception {
         TestscenarioDto testscenario = opprettScenario("46");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -362,7 +362,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Testcase mor uten barn søker fødsel ")
     @Description("Mor har ikke barn registrert i TPS og søker på fødsel som skal ha skjedd 3 uker før.")
-    public void testcase_enArbeidstaker_fødsel_ikkeBarn() throws Exception {
+    public void testcase_mor_fødsel_ikkeBarn() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -384,7 +384,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("PFP-5069")
     @Description("AnnenForelder, kjent eller ikke kjent")
-    public void testcase_PFP5069() throws Exception {
+    public void testcase_mor_farIkkeKjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("83");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -422,7 +422,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor fødsel med arbeidsforhold og frilans. AP i Fakta om uttak")
     @Description("Mor søker fødsel med ett arbeidsforhold og frilans. Vurder fakta om beregning. Avvik i beregning")
-    public void mor_fødsel_ATFL_medAP() throws Exception {
+    public void testcase_mor_fødsel_ATFL_medAP() throws Exception {
         TestscenarioDto testscenario = opprettScenario("59");
 
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
