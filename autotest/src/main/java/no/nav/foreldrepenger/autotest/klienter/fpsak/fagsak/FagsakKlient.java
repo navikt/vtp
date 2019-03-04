@@ -23,7 +23,7 @@ public class FagsakKlient extends FpsakKlient{
 
     public Status status(int saksnummer, int gruppe) throws IOException {
         String url = hentRestRotUrl() + String.format(STATUS_URL_FORMAT, saksnummer, gruppe);
-        return getOgHentJson(url, Status.class, StatusRange.STATUS_NO_SERVER_ERROR);
+        return getOgHentJson(url, Status.class, StatusRange.STATUS_SUCCESS);
     }
 
     public Fagsak getFagsak(String saksnummer) throws IOException {

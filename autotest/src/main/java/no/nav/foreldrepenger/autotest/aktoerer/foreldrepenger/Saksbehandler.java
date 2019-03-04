@@ -56,6 +56,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeL
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
+import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.autotest.util.deferred.Deffered;
 import no.nav.foreldrepenger.autotest.util.konfigurasjon.MiljoKonfigurasjon;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
@@ -313,10 +314,15 @@ public class Saksbehandler extends Aktoer{
         if(status == null) {
             return true;
         }
+        else if(status.getStatus() == 418){
+            AllureHelper.debugFritekst("Prosesstask feilet i behandlingsverifisering: " + status.getMessage());
+            throw new IllegalStateException("Prosesstask i vrang tilstand: " + status.getMessage());
+        }
         else if(status.isPending()) {
             return false;
         }
         else {
+            AllureHelper.debugFritekst("Prosesstask feilet for behandling[" + behandling.id + "] i behandlingsverifisering: " + status.getMessage());
             throw new RuntimeException("Status for behandling " + behandling.id + " feilet: " + status.getMessage());
         }
     }
