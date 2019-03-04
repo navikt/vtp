@@ -37,13 +37,14 @@ import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 
-@Tag("smoke")
+@Tag("beregning")
 @Tag("foreldrepenger")
 public class Beregning extends ForeldrepengerTestBase {
 
     @Test
     @DisplayName("Mor med ventelønn og vartpenger")
     @Description("Mor med ventelønn og vartpenger")
+    @Tag("beregning")
     public void mor_med_ventelønn_og_vartpenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("150");
 
@@ -71,6 +72,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med kortvarig arbeidsforhold")
     @Description("Mor med kortvarig arbeidsforhold")
+    @Tag("beregning")
     public void vurder_tidsbegrenset_uten_inntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -116,6 +118,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med kortvarig arbeidsforhold med inntektsmelding")
     @Description("Mor med kortvarig arbeidsforhold med inntektsmelding")
+    @Tag("beregning")
     public void vurder_tidsbegrenset_med_inntektsmelding() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -158,6 +161,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Endret beregningsgrunnlag med kortvarig")
     @Description("Endret beregningsgrunnlag med kortvarig")
+    @Tag("beregning")
     public void endret_beregningsgrunnlag_med_kortvarig() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 
@@ -220,12 +224,13 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor med arbeidsforhold uten inntektsmelding som mottar ytelse")
     @Description("Mor med arbeidsforhold uten inntektsmelding som mottar ytelse. Produksjonshendelse som feilet i frontend.")
+    @Tag("beregning")
     public void vurder_mottar_ytelse() throws Exception {
         TestscenarioDto testscenario = opprettScenario("155");
 
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
-        LocalDate termindato = LocalDate.now().plusWeeks(3);
+        LocalDate termindato = LocalDate.now().minusMonths(1).plusWeeks(3);
         LocalDate startDatoForeldrepenger = termindato.minusWeeks(3);
         String orgNr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
         int inntektPerMåned = 30_000;
@@ -307,6 +312,7 @@ public class Beregning extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Arbeidsforhold tilkommer etter stp")
     @Description("Arbeidsforhold tilkommer etter stp")
+    @Tag("beregning")
     public void arbeidsforhold_tilkommer_etter_stp() throws Exception {
         TestscenarioDto testscenario = opprettScenario("157");
 
