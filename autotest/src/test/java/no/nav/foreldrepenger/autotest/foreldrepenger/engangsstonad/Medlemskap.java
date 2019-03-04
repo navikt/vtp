@@ -87,7 +87,7 @@ public class Medlemskap extends EngangsstonadTestBase {
             .bekreftHenleggBehandling();
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaPersonstatusBekreftelse.class);
         
-        verifiser(saksbehandler.valgtBehandling.erHenlagt(), "Behandling er ikke henlagt");
+        verifiser(saksbehandler.valgtBehandling.erHenlagt(), "Behandlingen ble ikke henlagt etter bekreftet ugyldig status");
     }
     
     @Test
