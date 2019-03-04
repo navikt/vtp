@@ -241,8 +241,32 @@ public class Fodsel extends EngangsstonadTestBase {
     
     @Test
     @DisplayName("Medmor søker fødsel")
-    public void farSøkerTermin() throws Exception {
+    public void medmorSøkerFødsel() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("90");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakMedmorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
         
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+        
+        saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
+            .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
+        
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+        
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
+        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
     }
     
 }

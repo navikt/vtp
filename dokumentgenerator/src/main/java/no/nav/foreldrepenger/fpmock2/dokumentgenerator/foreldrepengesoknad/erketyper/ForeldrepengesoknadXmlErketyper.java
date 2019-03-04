@@ -14,8 +14,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorVentelonnVartpenger;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.farSoeker;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.*;
 
 import java.time.LocalDate;
 
@@ -322,6 +321,17 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
                 .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadTerminKjentAnnenForelder(annenpartAktoerId))
                 .withSoeker(morSoeker(aktoerId))//Far søker på vegne av mor
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakMedmorEngangstonad(String søkerAktørIdent) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((LocalDate.now()))
+                .withBegrunnelseForSenSoeknad(null)
+                .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
+                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeFødselEtterFødsel())
+                .withSoeker(medSoeker(søkerAktørIdent))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
