@@ -6,6 +6,8 @@ ENV JAVA_OPTS="-Dscenarios.dir=/app/model/scenarios/"
 ENV DUMMYPROP=fraDockerfile
 
 ARG JAR_FILE
+RUN mkdir /app/testcerts
+COPY resources/pipeline/keystore/vtpkeystore /app/testcerts/vtpkeystore.jks
 
 RUN mkdir /app/lib
 COPY server/lib/*.jar /app/lib/

@@ -58,17 +58,18 @@ public class MockServer {
 
         PropertiesUtils.initProperties();
 
-        
+
         MockServer mockServer = new MockServer();
-        
+
         mockServer.start();
 
     }
 
     public MockServer() throws Exception {
         LOG.info("Dummyprop er satt til: " + System.getenv("DUMMYPROP"));
-        this.port = Integer.valueOf(System.getProperty("server.port", SERVER_PORT));
+        this.port = Integer.valueOf(System.getProperty("autotest.vtp.port", SERVER_PORT));
 
+        // Bør denne settes fra ENV_VAR?
         System.setProperty("server.url", "https://localhost:" + getSslPort());
 
         server = new Server();
@@ -76,7 +77,7 @@ public class MockServer {
 
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
-        
+
         ldapServer = new LdapServer(new File(getKeystoreFilePath()), getKeyStorePassword().toCharArray());
 
     }
@@ -136,11 +137,11 @@ public class MockServer {
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
-        
+
         DefaultServlet defaultServlet = new DefaultServlet();
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
-        
+
         ctx.addServlet(servletHolder, "/");
     }
 

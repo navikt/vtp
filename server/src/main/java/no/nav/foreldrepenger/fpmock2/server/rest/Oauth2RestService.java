@@ -208,11 +208,8 @@ public class Oauth2RestService {
 
     private String getIssuer(HttpServletRequest req) {
         String issuer;
-        if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME")) {
-            issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER_SCHEME") + "://"
-                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_URL") + ":"
-                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_PORT")
-                    + System.getenv("AUTOTEST_OAUTH2_ISSUER_PATH");
+        if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER")) {
+            issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER");
             LOG.info("Setter issuer-url fra naisconfig: " + issuer);
         } else {
             issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";

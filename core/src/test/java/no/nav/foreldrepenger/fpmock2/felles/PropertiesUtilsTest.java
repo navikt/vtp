@@ -6,12 +6,12 @@ public class PropertiesUtilsTest {
 
     @Test
     public void kanLeseGloApplicationsProperties() {
-        System.clearProperty("server.port");
+        System.clearProperty("autotest.vtp.port");
         PropertiesUtils.initProperties("../");
-        
-        if(null == System.getProperty("server.port")) {
+
+        if(null == System.getProperty("autotest.vtp.port")) {
             throw new RuntimeException("Kan ikke lese properties fil");
         }
-        
+
     }
 }

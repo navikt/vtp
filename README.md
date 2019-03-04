@@ -72,3 +72,16 @@ I tillegg, for å overstyre sikkerhet (PDP, STS, OpenAM):
 Utvikling, wsdl
 ----
 Se MockServer for liste over url til genererte wsdl'er for test via SoapUi eller lignende.
+
+
+### Kjøre via Docker
+Lagt til noen forenklinger på environment variabler når vi kjører opp VTP + Autotest i docker. Se
+`./resources/pipeline/readme.md` for mer info.
+
+```
+AUTOTEST_FPSAK_BASE_URL=https://fpsak:8443
+AUTOTEST_VTP_BASE_URL=https://fpmock2:8063
+ENABLE_CUSTOM_TRUSTSTORE=true
+CUSTOM_KEYSTORE_PATH=/var/run/secrets/naisd.io/nav_truststore_path
+CUSTOM_KEYSTORE_PASSWORD=changeit
+```
