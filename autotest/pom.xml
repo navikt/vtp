@@ -34,21 +34,20 @@
         <profile>
             <id>fpsak</id>
             <properties>
-                <includeTestsTags>smoke</includeTestsTags>
-                <excludeTestsTags>pending</excludeTestsTags>
+                <includeTestsTags>fpsak</includeTestsTags>
+                <excludeTestsTags>test, pending</excludeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
             </properties>
         </profile>
         <profile>
-            <id>Regresjon</id>
+            <id>test</id>
             <properties>
-                <includeTestsTags>regresjon,smoke</includeTestsTags>
-                <excludeTestsTags>pending</excludeTestsTags>
+                <includeTestsTags>test</includeTestsTags>
                 <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
             </properties>
         </profile>
         <profile>
-            <id>Internal</id>
+            <id>internal</id>
             <properties>
                 <includeTestsTags>internal</includeTestsTags>
                 <excludeTestsTags>pending</excludeTestsTags>

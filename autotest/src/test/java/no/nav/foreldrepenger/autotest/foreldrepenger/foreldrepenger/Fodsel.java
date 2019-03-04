@@ -52,7 +52,7 @@ import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 
-@Tag("smoke")
+@Tag("fpsak")
 @Tag("foreldrepenger")
 public class Fodsel extends ForeldrepengerTestBase {
 

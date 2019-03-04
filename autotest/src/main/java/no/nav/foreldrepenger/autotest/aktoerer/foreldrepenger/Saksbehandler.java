@@ -590,7 +590,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Aksjonspunkt
      */
-    @Step("Venter på aksjonspunkt {tekst}")
+    @Step("Venter på aksjonspunkt {kode}")
     public void ventTilAksjonspunkt(String kode) throws Exception {
         if(harAksjonspunkt(kode)) {
             return;

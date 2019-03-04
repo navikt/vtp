@@ -1,8 +1,6 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Tag;
@@ -23,7 +21,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
-@Tag("smoke")
+@Tag("fpsak")
 @Tag("foreldrepenger")
 public class Ytelser extends ForeldrepengerTestBase {
 

@@ -66,8 +66,9 @@ Tester
 Tester kan tagges med annotations @Tag på metoder eller klasser for å vise hvilket område de tilhører
 
 Eksempler:
-	+ Smoke
-	+ Regresjon
+	+ spberegning
+	+ fpsak
+	+ test
 
 ### 3.3 Aktører
 

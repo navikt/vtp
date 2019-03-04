@@ -18,7 +18,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
-@Tag("smoke")
+@Tag("fpsak")
 @Tag("engangsstonad")
 public class Termin extends EngangsstonadTestBase {
 

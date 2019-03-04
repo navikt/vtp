@@ -37,6 +37,7 @@ import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 
+@Tag("fpsak")
 @Tag("beregning")
 @Tag("foreldrepenger")
 public class Beregning extends ForeldrepengerTestBase {

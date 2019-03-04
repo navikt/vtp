@@ -13,9 +13,10 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
+@Tag("test")
 public class Soknadsfrist extends EngangsstonadTestBase {
 
-    @Tag("utvikling")
+
     @Test
     public void behandleFødselEngangstønadSøknadsfristGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("52");

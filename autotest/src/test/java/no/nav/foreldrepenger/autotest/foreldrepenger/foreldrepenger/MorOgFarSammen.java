@@ -26,7 +26,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
 
-@Tag("smoke")
+@Tag("fpsak")
 @Tag("foreldrepenger")
 public class MorOgFarSammen extends ForeldrepengerTestBase {
 
