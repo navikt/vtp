@@ -3,8 +3,8 @@ package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,19 +48,18 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     public Feed hentFeed(Integer sequenceId, Integer pageSize){
-        Optional<FeedEntry> feedEntry = feedEntries.stream().filter(entry -> sequenceId.longValue() == entry.getSequence()).findFirst();
-        List<FeedEntry> returnEntries = new ArrayList<>();
-        if(feedEntry.isPresent()){
-            Integer indxOfEntry = feedEntries.indexOf(feedEntry.get());
-            Integer endIndx = indxOfEntry + pageSize;
-            endIndx = feedEntries.size()  < endIndx ? feedEntries.size() : endIndx;
-            returnEntries = feedEntries.subList(indxOfEntry,endIndx);
-        }
+        List<FeedEntry> returnEntries = feedEntries.stream()
+                .filter(entry -> entryHarSequenceIVindu(entry, sequenceId, pageSize))
+                .collect(Collectors.toList());
 
         return Feed.builder()
                 .title("PersonFeed_v1")
                 .items(returnEntries)
                 .build();
+    }
+
+    private boolean entryHarSequenceIVindu(FeedEntry entry, Integer sequenceId, Integer pageSize) {
+        return entry.getSequence() >= sequenceId.longValue() && entry.getSequence() < sequenceId+pageSize;
     }
 
     private static Metadata genererMetaData() {

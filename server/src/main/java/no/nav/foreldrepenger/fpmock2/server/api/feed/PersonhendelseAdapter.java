@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import no.nav.foreldrepenger.fpmock2.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.fpmock2.kontrakter.DødshendelseDto;
 import no.nav.foreldrepenger.fpmock2.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.fpmock2.kontrakter.PersonhendelseDto;
+import no.nav.foreldrepenger.fpmock2.testmodell.feed.DødfødselOpprettetHendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.feed.DødsmeldingOpprettetHendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.feed.FødselsmeldingOpprettetHendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.feed.HendelseContent;
@@ -26,15 +28,29 @@ public class PersonhendelseAdapter {
         }
     }
 
-
     public HendelseContent fra(PersonhendelseDto personhendelseDto) {
-        if(personhendelseDto instanceof FødselshendelseDto){
+        if (personhendelseDto instanceof FødselshendelseDto) {
             return fødselshendelseFra((FødselshendelseDto) personhendelseDto);
         }
-        if(personhendelseDto instanceof DødshendelseDto){
+        if (personhendelseDto instanceof DødshendelseDto) {
             return dødshendelseFra((DødshendelseDto) personhendelseDto);
         }
+        if (personhendelseDto instanceof DødfødselhendelseDto) {
+            return dødfødselhendelseFra((DødfødselhendelseDto) personhendelseDto);
+        }
         return null;
+    }
+
+    private HendelseContent dødfødselhendelseFra(DødfødselhendelseDto dødfødselhendelseDto) {
+        DødfødselOpprettetHendelseContent.Builder builder = new DødfødselOpprettetHendelseContent.Builder();
+
+        if (erSatt(dødfødselhendelseDto.getFnr())) {
+            builder.setPersonIdenter(dødfødselhendelseDto.getFnr(), aktørIdFraFnr(dødfødselhendelseDto.getFnr()));
+        }
+        if (erSatt(dødfødselhendelseDto.getDoedfoedselsdato())) {
+            builder.setDoedfoedselsdato(dødfødselhendelseDto.getDoedfoedselsdato());
+        }
+        return builder.build();
     }
 
     private HendelseContent dødshendelseFra(DødshendelseDto dødshendelseDto) {
@@ -66,8 +82,6 @@ public class PersonhendelseAdapter {
         return builder.build();
     }
 
-
-
     private boolean erSatt(Object object) {
         if (object == null) return false;
         if (object instanceof String && ((String) object).length() == 0) {
@@ -83,6 +97,4 @@ public class PersonhendelseAdapter {
     private String aktørIdFraFnr(String fnr){
         return testscenarioRepository.getPersonIndeks().finnByIdent(fnr).getAktørIdent();
     }
-
-
 }
