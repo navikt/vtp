@@ -1,16 +1,20 @@
 package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KlageFormkravResultat {
+    protected List<Kode> avvistArsaker;
     protected Long paKlagdBehandlingId;
     protected String begrunnelse;
     protected boolean erKlagerPart;
     protected boolean erKlageKonkret;
     protected boolean erKlagefirstOverholdt;
     protected boolean erSignert;
-    //protected List<KlageAvvistÅrsak> avvistArsaker;
 
 
     public Long getPaKlagdBehandlingId() {
@@ -60,4 +64,7 @@ public class KlageFormkravResultat {
     public void setErSignert(boolean erSignert) {
         this.erSignert = erSignert;
     }
+
+    public List<Kode> getAvvistArsaker() {return avvistArsaker;}
+
 }

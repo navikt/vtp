@@ -272,7 +272,7 @@ public class Klage extends ForeldrepengerTestBase {
                 .setBegrunnelse("Godkjent");
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "KLAGE_AVVIST");
-        verifiserLikhet(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getKlageAvvistArsak(), "IKKE_KONKRET", "Avvist årsak");
+        verifiserLikhet(beslutter.valgtBehandling.klagevurdering.getKlageFormkravResultatNFP().getAvvistArsaker().get(0).kode, "IKKE_KONKRET", "Avvist årsak");
         verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
     }
 
