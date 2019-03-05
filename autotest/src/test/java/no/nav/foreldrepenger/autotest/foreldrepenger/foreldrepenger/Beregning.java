@@ -160,6 +160,36 @@ public class Beregning extends ForeldrepengerTestBase {
                 .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "892850372");
     }
 
+    @Test
+    @DisplayName("Tilkommer nytt arbeidsforhold med refusjonskrav på STP")
+    @Description("Tilkommer nytt arbeidsforhold med refusjonskrav på STP")
+    @Tag("beregning")
+    public void morSøkerFødselMedToArbeidsforholdDerDetEneTilkommerPåSTP() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("161");
+
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+
+        List<InntektsmeldingBuilder> inntektsmeldinger = List.of(
+                lagInntektsmeldingBuilder(20000, fnr, fpStartdato, "979191138", Optional.of("ARB001-001"), Optional.empty()),
+                lagInntektsmeldingBuilderMedGradering(10000, fnr, fpStartdato, "973861778", Optional.of("ARB001-002"), Optional.of(BigDecimal.valueOf(1000)), 50, fpStartdato, fpStartdato.plusWeeks(3)));
+
+        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
+    }
 
     @Test
     @DisplayName("Endret beregningsgrunnlag med kortvarig")
