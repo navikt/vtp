@@ -28,6 +28,7 @@ import no.nav.foreldrepenger.autotest.klienter.vtp.sak.SakKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakRequestDTO;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakResponseDTO;
 import no.nav.foreldrepenger.autotest.klienter.vtp.tpsFeed.TpsFeedKlient;
+import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -90,12 +91,14 @@ public class Fordel extends Aktoer {
         journalpostModell.setSakId(String.valueOf(sakId));
         System.out.println("Opprettet søknad: " + sakId);
 
+        //TODO: feiler, men sak og behandling er OK.
         Vent.til(() -> {
             List<Behandling> behandlinger = behandlingerKlient.alle(sakId);
             //TODO: Gjøre denne asynkron
             if (behandlinger.size() > 1) {
                 Thread.sleep(5000);
             }
+            AllureHelper.debugLoggBehandlingsliste(behandlinger);
             return !behandlinger.isEmpty() && behandlingerKlient.statusAsObject(behandlinger.get(0).id, null) == null;
         }, 60, "Saken hadde ingen behandlinger");
 

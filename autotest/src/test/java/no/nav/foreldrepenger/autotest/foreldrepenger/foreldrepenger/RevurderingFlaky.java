@@ -52,7 +52,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        saksbehandler.ventTilAvsluttetSak();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
 

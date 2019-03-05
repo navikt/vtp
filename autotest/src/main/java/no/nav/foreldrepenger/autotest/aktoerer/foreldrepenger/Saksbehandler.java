@@ -413,6 +413,7 @@ public class Saksbehandler extends Aktoer{
                 return true;
             }
         }
+        AllureHelper.debugLoggBehandling(valgtBehandling);
         return false;
     }
     
@@ -720,12 +721,12 @@ public class Saksbehandler extends Aktoer{
     public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        ventTilØkonomioppdragFerdigstilles();
+        ventTilAvsluttetSak();
         ikkeVentPåStatus = false;
     }
 
-    @Step("Venter på økonomioppdrag")
-    public void ventTilØkonomioppdragFerdigstilles() throws Exception {
+    @Step("Venter til saken er avsluttet")
+    public void ventTilAvsluttetSak() throws Exception {
         ventTilBehandlingsstatus("AVSLU");
     }
     

@@ -97,7 +97,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        saksbehandler.ventTilAvsluttetSak();
 
         return saksnummer;
     }

@@ -68,7 +68,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling("Førstegangsbehandling");
-        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        saksbehandler.ventTilAvsluttetSak();
         saksbehandler.opprettBehandlingRevurdering("RE-MDL");
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
@@ -120,7 +120,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
         debugLoggBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        saksbehandler.ventTilAvsluttetSak();
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger"); //revurdering opprettes ved flere arbeidsforhold for nå i autotest
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");

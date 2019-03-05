@@ -114,4 +114,22 @@ public class JournalpostModell {
     public Journalposttyper getJournalposttype() { return journalposttype; }
 
     public void setJournalposttype(Journalposttyper journalposttype) { this.journalposttype = journalposttype;}
+
+    @Override
+    public String toString() {
+        return "JournalpostModell{" +
+                "journalpostId='" + journalpostId + '\'' +
+                ", dokumentModellList=" + dokumentModellList +
+                ", avsenderFnr='" + avsenderFnr + '\'' +
+                ", sakId='" + sakId + '\'' +
+                ", fagsystemId='" + fagsystemId + '\'' +
+                ", journalStatus=" + journalStatus +
+                ", kommunikasjonsretning='" + kommunikasjonsretning + '\'' +
+                ", mottattDato=" + mottattDato +
+                ", mottakskanal='" + mottakskanal + '\'' +
+                ", arkivtema=" + arkivtema +
+                ", journaltilstand='" + journaltilstand + '\'' +
+                ", journalposttype=" + journalposttype +
+                '}';
+    }
 }

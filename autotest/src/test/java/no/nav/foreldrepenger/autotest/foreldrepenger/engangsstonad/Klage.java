@@ -67,7 +67,7 @@ public class Klage extends EngangsstonadTestBase {
     }
 
     @Test
-    @DisplayName("Behandle klage via NFP - medhold")
+    @DisplayName("Behandle klage via NFP - påklaget vedtak opphevet")
     public void klageOppheveAvKA() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

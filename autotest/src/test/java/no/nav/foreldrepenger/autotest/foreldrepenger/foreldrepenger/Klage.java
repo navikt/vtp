@@ -292,7 +292,7 @@ public class Klage extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling("Førstegangsbehandling");
-        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        saksbehandler.ventTilAvsluttetSak();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
 
         return saksnummer;
