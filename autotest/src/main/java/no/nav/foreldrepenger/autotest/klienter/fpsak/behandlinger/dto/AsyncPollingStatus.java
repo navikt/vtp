@@ -19,7 +19,7 @@ public class AsyncPollingStatus {
     }
 
     public Integer getStatus() {
-        return status.getHttpStatus();
+        return status != null ? status.getHttpStatus() : null;
     }
 
     public String getMessage() {
