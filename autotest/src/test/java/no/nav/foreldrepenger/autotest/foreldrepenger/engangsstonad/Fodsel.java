@@ -36,29 +36,16 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+        saksbehandler.ventTilAvsluttetSak();
 
-        saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
-        saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
-
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
-        beslutter.hentFagsak(saksnummer);
-
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.ikkeVentPåStatus = true;
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
     }
 
     @Test
     @DisplayName("Mor søker fødsel - avvist")
     public void morSøkerFødselAvvist() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
@@ -67,9 +54,9 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-
+        
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-                .bekreftDokumentasjonIkkeForeligger();
+            .bekreftDokumentasjonIkkeForeligger();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
@@ -97,7 +84,9 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-
+        
+        saksbehandler.ventTilAvsluttetSak();
+        
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
                 .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
@@ -117,7 +106,7 @@ public class Fodsel extends EngangsstonadTestBase {
     @Test
     @DisplayName("Mor søker fødsel overstyrt vilkår")
     public void morSøkerFødselOverstyrt() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
@@ -126,9 +115,9 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
-
+        
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
+            .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);

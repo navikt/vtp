@@ -41,10 +41,6 @@ public class Medlemskap extends EngangsstonadTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
-        saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
-                .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
-        saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
-
         saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class)
                 .setVurdering(hentKodeverk().MedlemskapManuellVurderingType.getKode("MEDLEM"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerHarGyldigPeriodeBekreftelse.class);
