@@ -50,6 +50,11 @@ public abstract class TestBase {
         verifiser(verdiGjeldende.equals(verdiForventet), String.format("%s har uventet verdi. forventet %s, var %s", verdiNavn, verdiForventet, verdiGjeldende));
     }
 
+    @Step("Verifiserer at {listeGjeldende} inneholder {verdiForventet}")
+    protected void verifiserInneholder(List<?> listeGjeldende, Object verdiForventet){
+        verifiser(listeGjeldende.stream().anyMatch(it -> it.equals(verdiForventet)), String.format("%s inneholder ikke forventet verdi. forventet å finne %s", listeGjeldende, verdiForventet));
+    }
+
     protected void verifiser(boolean statement) {
         verifiser(statement, "ingen melding");
     }

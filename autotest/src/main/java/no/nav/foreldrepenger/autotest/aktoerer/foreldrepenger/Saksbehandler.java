@@ -297,7 +297,7 @@ public class Saksbehandler extends Aktoer{
         if(!ikkeVentPåStatus) {
             Vent.til(() -> {
                 return verifiserStatusForBehandling(behandling);
-            }, 60, () -> {
+            }, 90, () -> {
                 List<ProsessTaskListItemDto> prosessTasker = hentProsesstaskerForBehandling(behandling);
                 String prosessTaskList = "";
                 for (ProsessTaskListItemDto prosessTaskListItemDto : prosessTasker) {
@@ -638,7 +638,7 @@ public class Saksbehandler extends Aktoer{
     }
     
     public Vilkar hentVilkår(String vilkårKode) {
-        return hentVilkår(new Kode(vilkårKode, vilkårKode, vilkårKode));
+        return hentVilkår(new Kode("VILKAR_TYPE", vilkårKode));
     }
     
     public Kode vilkårStatus(String vilkårKode) {
