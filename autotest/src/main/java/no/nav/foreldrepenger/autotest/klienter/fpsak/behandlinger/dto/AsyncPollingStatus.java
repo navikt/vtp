@@ -15,7 +15,7 @@ public class AsyncPollingStatus {
     protected Boolean pending;
     
     public boolean isPending() {
-        return pending.booleanValue();
+        return pending != null ? pending : false;
     }
 
     public Integer getStatus() {
