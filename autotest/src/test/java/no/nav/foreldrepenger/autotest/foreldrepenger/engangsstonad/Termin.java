@@ -169,6 +169,7 @@ public class Termin extends EngangsstonadTestBase {
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU", "behandlingsstatus");
     }
     
+    /*
     @Test
     @DisplayName("Mor søker terming 25 dager etter fødsel")
     public void morSøkerTermin25DagerTilbakeITid() throws Exception {
@@ -181,5 +182,6 @@ public class Termin extends EngangsstonadTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
     }
+    */
 
 }
