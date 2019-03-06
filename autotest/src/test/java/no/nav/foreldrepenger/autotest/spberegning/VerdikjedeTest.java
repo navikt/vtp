@@ -220,7 +220,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
         // Send inn inntektsmelding
-        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlagPrivatperson(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), arbeidsgiverFnr, "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlagPrivatperson(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), arbeidsgiverFnr, null, YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 9, 15));
                 inntektsmeldingsBuilder.setNaaerRelasjon(true);
@@ -237,10 +237,10 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.lagreNotat(beregning, "Hei på deg", beregning.getBeregningsgrunnlag().getId());
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Tema");
-        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 876000D, "Beregnet årsinntekt");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 756000D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 8, 31));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 720000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 21.67D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 5.0D, "Avvik");
         verifiserLikhet(saksbehandler.getSjømann(), true);
     }
 

@@ -334,7 +334,7 @@ public class InntektsmeldingBuilder {
         return arbeidsgiver;
     }
 
-    public static ArbeidsgiverPrivat createArbeidsgiverPrivat(String arbeidsgiverFnr,
+    public ArbeidsgiverPrivat createArbeidsgiverPrivat(String arbeidsgiverFnr,
                                                   String kontaktinformasjonTLF) {
 
         ArbeidsgiverPrivat arbeidsgiver = new ArbeidsgiverPrivat();

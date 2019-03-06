@@ -153,7 +153,7 @@ public class FpsakTestBase extends TestScenarioTestBase {
                 new ArrayList<>(),
                 new ArrayList<>(),
                 new ArrayList<>()));
-        builder.setArbeidsgiverPrivat(InntektsmeldingBuilder.createArbeidsgiverPrivat(
+        builder.setArbeidsgiverPrivat(builder.createArbeidsgiverPrivat(
                 fnrArbeidsgiver,
                 "41925090"));
         refusjon.ifPresent(_refusjon -> builder.setRefusjon(InntektsmeldingBuilder.createRefusjon(

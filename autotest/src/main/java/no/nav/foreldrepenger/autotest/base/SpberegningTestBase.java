@@ -117,7 +117,7 @@ public class SpberegningTestBase extends TestBase {
                 ytelse,
                 årsak,
                 fnr);
-        builder.setArbeidsgiverPrivat(InntektsmeldingBuilder.createArbeidsgiverPrivat(
+        builder.setArbeidsgiverPrivat(builder.createArbeidsgiverPrivat(
                 arbeidsgiverFnr,
                 "41925090"));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22", "1.0"));
