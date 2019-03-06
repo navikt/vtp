@@ -29,7 +29,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-09-30",
 				"beløp": 10000,
-				"orgnr": "979191140",
+				"aktorId": "${aktor1}",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn",
@@ -86,7 +86,7 @@
 				"ansettelsesperiodeFom": "2017-01-01",
                 "ansettelsesperiodeTom": "2018-09-30",
 				"arbeidsforholdstype": "forenkletOppgjoersordning",
-				"arbeidsgiverOrgnr": "979191140",
+				"arbeidsgiverAktorId": "${aktor1}",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "2017-01-01",

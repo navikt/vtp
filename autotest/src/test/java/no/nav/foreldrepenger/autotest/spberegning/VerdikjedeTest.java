@@ -201,11 +201,16 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @Disabled //TODO VTP mangler støtte for validering av privat arbeidsgiver(TPS mock)
-    @DisplayName("Tema FOR: Flere arbeidsforhold")
-    @Description("Bruker er sjømann, arbeidsforhold hos privatperson, opphørt arbeidsforhold og naturalytelse medregnet i inntekt. Avvik over 25%")
+    @DisplayName("Tema FOR: Flere arbeidsforhold og privat arbeidsgiver")
+    @Description("Bruker er sjømann, har et arbeidsforhold hos privatperson hvor det er mottatt inntektsmelding, samtlige arbeidsforhold opphører etter september. Naturalytelse er medregnet i inntekt. Avviket er over 25% og det skal opprettes nøkkelkontroll oppgave.")
     public void For3AtOver25AvvikPrivatArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("111");
+        //Lag privat arbeidsgiver
+        TestscenarioDto arbeidsgiverScenario = opprettScenario("110");
+        String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
+
+        //Lag testscenario
+        TestscenarioDto testscenario = opprettScenarioMedPrivatArbeidsgiver("111", arbeidsgiverFnr);
+
         int inntektsmeldingMånedsbeløp = 43000;
         BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(43000);
         LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
@@ -214,7 +219,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "FOR";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
+        // Send inn inntektsmelding
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlagPrivatperson(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), arbeidsgiverFnr, "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 9, 15));
                 inntektsmeldingsBuilder.setNaaerRelasjon(true);
@@ -232,9 +238,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Tema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 876000D, "Beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 8, 31));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 720000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 38.3D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 21.67D, "Avvik");
         verifiserLikhet(saksbehandler.getSjømann(), true);
     }
 
@@ -242,7 +248,12 @@ public class VerdikjedeTest extends SpberegningTestBase {
     @DisplayName("Tema SYK: Avsluttet arbeidsforhold")
     @Description("Flere arbeidsforhold, privatperson, sjømann og avsluttet arbeidsforhold")
     public void Syk2AtAvsluttetArbeidsforholdSjømann() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("111");
+        //Lag privat arbeidsgiver
+        TestscenarioDto arbeidsgiverScenario = opprettScenario("110");
+        String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
+
+        //Lag testscenario
+        TestscenarioDto testscenario = opprettScenarioMedPrivatArbeidsgiver("111", arbeidsgiverFnr);
         int inntektsmeldingMånedsbeløp = 37000;
         BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
         LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
@@ -300,7 +311,12 @@ public class VerdikjedeTest extends SpberegningTestBase {
     @DisplayName("Tema OMS: Flere arbeidsforhold og manuelt fastsatt skjæringstidspunkt")
     @Description("Tester manuell fastsettelse av skjæringstidspunkt og inntektsmelding uten perioder")
     public void OmsATOver25AvvikAvsluttetArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("111");
+        //Lag privat arbeidsgiver
+        TestscenarioDto arbeidsgiverScenario = opprettScenario("110");
+        String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
+
+        //Lag testscenario
+        TestscenarioDto testscenario = opprettScenarioMedPrivatArbeidsgiver("111", arbeidsgiverFnr);
         int inntektsmeldingMånedsbeløp = 37000;
         BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(27000);
         LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);

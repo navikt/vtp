@@ -49,6 +49,10 @@ public class SpberegningTestBase extends TestBase {
         return testscenarioKlient.opprettTestscenario(id);
     }
 
+    protected TestscenarioDto opprettScenarioMedPrivatArbeidsgiver(String id, String aktorId) throws IOException {
+        return testscenarioKlient.opprettTestscenarioMedAktorId(id, aktorId);
+    }
+
     protected String opprettSak(TestscenarioDto testscenarioDto, String fagområde) throws IOException {
         return fordel.opprettSak(testscenarioDto, fagområde);
     }
@@ -95,6 +99,27 @@ public class SpberegningTestBase extends TestBase {
                 årsak,
                 fnr);
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
+        builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22", "1.0"));
+        builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+                arbeidsforholdId,
+                null,
+                new BigDecimal(beløp),
+                new ArrayList<>(),          //UtsettelseAvForeldrepenger
+                new ArrayList<>(),          //GraderingIForeldrepenger
+                new ArrayList<>()
+        ));        //avtaltFerieListe
+
+        return builder;
+    }
+
+    protected InntektsmeldingBuilder inntektsmeldingGrunnlagPrivatperson(Integer beløp, String fnr, String arbeidsgiverFnr, String arbeidsforholdId, YtelseKodeliste ytelse, ÅrsakInnsendingKodeliste årsak) {
+        InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
+                ytelse,
+                årsak,
+                fnr);
+        builder.setArbeidsgiverPrivat(InntektsmeldingBuilder.createArbeidsgiverPrivat(
+                arbeidsgiverFnr,
+                "41925090"));
         builder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS22", "1.0"));
         builder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
                 arbeidsforholdId,
