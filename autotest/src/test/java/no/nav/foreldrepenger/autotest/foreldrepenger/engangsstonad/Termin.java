@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -169,8 +170,8 @@ public class Termin extends EngangsstonadTestBase {
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU", "behandlingsstatus");
     }
     
-    /*
     @Test
+    @Disabled
     @DisplayName("Mor søker terming 25 dager etter fødsel")
     public void morSøkerTermin25DagerTilbakeITid() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
@@ -182,6 +183,5 @@ public class Termin extends EngangsstonadTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
     }
-    */
 
 }
