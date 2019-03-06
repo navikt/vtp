@@ -35,7 +35,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.medlem.Medlem;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.opptjening.Opptjening;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.PeriodeGrense;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.Stonadskontoer;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.Saldoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPerioder;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
@@ -352,9 +352,9 @@ public class BehandlingerKlient extends FpsakKlient{
     /*
      * hent stønadskontoer for behandling
      */
-    public Stonadskontoer behandlingUttakStonadskontoer(BehandlingResourceRequest behandling) throws IOException {
+    public Saldoer behandlingUttakStonadskontoer(BehandlingResourceRequest behandling) throws IOException {
         String url = hentRestRotUrl() + BEHANDLING_UTTAK_STONADSKONTOER_URL;
-        return postOgHentJson(url, behandling, Stonadskontoer.class, StatusRange.STATUS_SUCCESS);
+        return postOgHentJson(url, behandling, Saldoer.class, StatusRange.STATUS_SUCCESS);
     }
 
     /*

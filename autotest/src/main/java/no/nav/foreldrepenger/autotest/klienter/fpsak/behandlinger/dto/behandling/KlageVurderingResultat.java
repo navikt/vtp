@@ -9,7 +9,6 @@ public class KlageVurderingResultat {
     protected String klageVurdering;
     protected String begrunnelse;
     protected String fritekstTilBrev;
-    protected String klageAvvistArsak;
     protected String klageAvvistArsakNavn;
     protected String klageMedholdArsak;
     protected String klageMedholdArsakNavn;
@@ -39,14 +38,6 @@ public class KlageVurderingResultat {
 
     public void setFritekstTilBrev(String fritekstTilBrev) {
         this.fritekstTilBrev = fritekstTilBrev;
-    }
-
-    public String getKlageAvvistArsak() {
-        return klageAvvistArsak;
-    }
-
-    public void setKlageAvvistArsak(String klageAvvistArsak) {
-        this.klageAvvistArsak = klageAvvistArsak;
     }
 
     public String getKlageAvvistArsakNavn() {

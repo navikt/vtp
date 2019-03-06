@@ -40,6 +40,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.Beregningsgrunnlag;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.medlem.Medlem;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.opptjening.Opptjening;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.Saldoer;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPerioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.dto.BestillBrev;
@@ -270,6 +271,9 @@ public class Saksbehandler extends Aktoer{
             Deffered<UttakResultatPerioder> dUttakResultatPerioder = new Deffered<>(() -> {
                 return behandlingerKlient.behandlingUttakResultatPerioder(request);
             });
+            Deffered<Saldoer> dStonadskontoer = new Deffered<>(() -> {
+                return behandlingerKlient.behandlingUttakStonadskontoer(request);
+            });
             
             
             valgtBehandling.personopplysning = dPersonopplysninger.get();
@@ -284,6 +288,7 @@ public class Saksbehandler extends Aktoer{
             valgtBehandling.kontrollerFaktaData = dKontrollerFaktaData.get();
             valgtBehandling.medlem = dMedlem.get();
             valgtBehandling.uttakResultatPerioder = dUttakResultatPerioder.get();
+            valgtBehandling.saldoer = dStonadskontoer.get();
         }
         
         valgtBehandling.aksjonspunkter = dAksonspunkter.get();

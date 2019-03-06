@@ -1,8 +1,10 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggHistorikkinnslag;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
@@ -14,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,13 @@ import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.*;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettBruttoBeregningsgrunnlagSNBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderBeregnetInntektsAvvikBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderFaktaOmBeregningBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderPerioderOpptjeningBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderVarigEndringEllerNyoppstartetSNBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaAleneomsorgBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaUttakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.papirsoknad.PapirSoknadForeldrepengerBekreftelse;
@@ -47,22 +54,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arb
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
-import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggHistorikkinnslag;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("fpsak")
 @Tag("foreldrepenger")
@@ -158,6 +150,8 @@ public class Fodsel extends ForeldrepengerTestBase {
     }
 
     @Test
+    @DisplayName("Mor fødsel SN med avvik i beregning")
+    @Description("Mor søker fødsel som selvstendig næringsdrivende. Avvik i beregning")
     public void morSøkerFødselSomSelvstendingNæringsdrivende_AvvikIBeregning() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("48");
@@ -427,7 +421,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Far søker fødsel med 1 arbeidsforhold")
     public void farSøkerFødselMedEttArbeidsforhold() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("60");
+        TestscenarioDto testscenario = opprettScenario("62");
 
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
@@ -542,7 +536,6 @@ public class Fodsel extends ForeldrepengerTestBase {
     @Test
     @Description("Mor søker fødsel med 2 arbeidsforhold med arbeidsforhold som ikke matcher på ID")
     @DisplayName("Mor søker fødsel med 2 arbeidsforhold med arbeidsforhold som ikke matcher på ID")
-    @Disabled // Behandlingen blir satt på vent, som er riktig oppførsel. Testen har ikke tatt hensyn til det. Testen må skrives om.
     public void morSøkerFødselMed2ArbeidsforholdArbeidsforholdIdMatcherIkke() throws Exception {
         TestscenarioDto testscenario = opprettScenario("56");
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -568,13 +561,9 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-
+        verifiser(saksbehandler.valgtBehandling.erSattPåVent() == true, "Behandling ikke satt på vent");
         debugLoggBehandling(saksbehandler.valgtBehandling);
-        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
-        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"));
-        verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+
     }
 
     @Test
@@ -738,12 +727,12 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
     }
 
-    @Disabled("Disabler til bug fikset i fpsak")
+
     @Test
     @DisplayName("Far søker fødsel med aleneomsorg men er gift og bor med annenpart")
     public void farSøkerFødselAleneomsorgMenErGiftOgBorMedAnnenpart() throws Exception {
 
-        TestscenarioDto testscenario = opprettScenario("60");
+        TestscenarioDto testscenario = opprettScenario("62");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -772,7 +761,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         UttakResultatPeriode foreldrepengerFørste6Ukene = uttaksperioder.get(0);
         assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getUtbetalingsgrad()).isNull();
-        assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
+        assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getTrekkdager()).isGreaterThan(0);
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
         UttakResultatPeriode foreldrepengerEtterUke6 = uttaksperioder.get(1);
         assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
@@ -780,28 +769,9 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isGreaterThan(0);
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
 
-        //saksbehandler avslått alle perioder
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
-        FastsettUttaksperioderManueltBekreftelse uttaksperioderManueltBekreftelse = saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
-        for (UttakResultatPeriode periode : uttaksperioder) {
-            uttaksperioderManueltBekreftelse.avvisPeriode(periode.getFom(), periode.getTom(), 0);
-        }
-        saksbehandler.bekreftAksjonspunktbekreftelserer(uttaksperioderManueltBekreftelse);
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Antall stønadskontoer er feil.");
 
-        //verifiserer uttak
-        uttaksperioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        assertThat(uttaksperioder).hasSize(2);
-
-        //Alle periodene er avslått
-        foreldrepengerFørste6Ukene = uttaksperioder.get(0);
-        assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode).isEqualTo("AVSLÅTT");
-        assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
-        assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
-        foreldrepengerEtterUke6 = uttaksperioder.get(1);
-        assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode).isEqualTo("AVSLÅTT");
-        assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
-        assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
+        // Avslutter testen her da vi ikke ser det hensiktsmessig å behandle til avsluttet. Saksbehandler må avgjøre.
     }
 
     @Test
@@ -843,7 +813,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     @Description("Mor, med to arbeidsforhold, søker gradering og utsettelse. Samsvar med IM.")
     public void morSøkerGraderingOgUtsettelseMedToArbeidsforhold_utenAvvikendeInntektsmeldinger() throws Exception {
 
-        TestscenarioDto testscenario = opprettScenario("75");
+        TestscenarioDto testscenario = opprettScenario("76");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -940,6 +910,11 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(utsettelse.getAktiviteter().get(1).getTrekkdager()).isEqualTo(0);
         assertThat(utsettelse.getAktiviteter().get(1).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE);
 
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4);
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() == 0);
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FELLESPERIODE").getSaldo() == 71);
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("MØDREKVOTE").getSaldo() == 24);
+
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
@@ -966,7 +941,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilØkonomioppdragFerdigstilles();
+        //saksbehandler.ventTilØkonomioppdragFerdigstilles();
 
         //verifiserer uttak
         List<UttakResultatPeriode> uttaksperioder = saksbehandler.valgtBehandling.hentUttaksperioder();
@@ -994,6 +969,10 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getUtbetalingsgrad()).isEqualTo(BigDecimal.valueOf(0));
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
+
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 2, "Feil antall stønadskontoer");
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() == 0);
+        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER").getSaldo() == 0);
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
