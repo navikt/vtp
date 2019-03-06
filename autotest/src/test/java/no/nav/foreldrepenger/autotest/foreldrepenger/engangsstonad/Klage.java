@@ -67,60 +67,6 @@ public class Klage extends EngangsstonadTestBase {
     }
     
     @Test
-    @DisplayName("Behandle klage via NFP - påklaget vedtak omgjort/medhold")
-    public void klageOmgjortAvKA() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
-        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
-
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
-        opprettForstegangssoknadVedtak(saksnummer);
-
-        // Motta og behandle klage - NFP
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long sakId = fordel.sendInnKlage(null, testscenario, saksnummer);
-        klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
-        klagebehandler.hentFagsak(sakId);
-
-        klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling("Klage");
-
-        klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
-                .godkjennAlleFormkrav()
-                .setBegrunnelse("blabla");
-        klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravNfp.class);
-        klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNfpBekreftelse.class)
-                .bekreftStadfestet()
-                .fritekstBrev("Fritekst brev fra nfp")
-                .setBegrunnelse("Fordi");
-        klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNfpBekreftelse.class);
-        verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_STADFESTET");
-
-        // KA - klage kommer rett til KA uten totrinnsbehanling. Kan fortsette med samme klagebehandler.
-        klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravKa.class)
-                .godkjennAlleFormkrav()
-                .setBegrunnelse("blabla begrunnelse");
-        klagebehandler.bekreftAksjonspunktBekreftelse(KlageFormkravKa.class);
-        /*
-        klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
-                .bekreftOpphevet("NYE_OPPLYSNINGER")
-                .fritekstBrev("Fritekst brev fra KA")
-                .setBegrunnelse("Fordi");
-        klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
-        klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_YTELSESVEDTAK_OPPHEVET");
-
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
-        beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling("Klage");
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtak();
-        */
-
-    }
-
-    @Test
     @DisplayName("Behandle klage via NFP - påklaget vedtak opphevet")
     public void klageOppheveAvKA() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
