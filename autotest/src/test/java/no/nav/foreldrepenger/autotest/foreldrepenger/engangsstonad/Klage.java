@@ -114,7 +114,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtak();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
     }
 
@@ -253,7 +253,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.ikkeVentPåStatus = true;
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserBehandlingsresultat(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET");
         beslutter.ventTilHistorikkinnslag("Brev sendt");

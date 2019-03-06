@@ -50,7 +50,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag("Brev sendt");
@@ -85,7 +85,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
@@ -144,7 +144,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag("Brev sendt");

@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.autotest.base;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -61,7 +63,7 @@ public abstract class TestBase {
 
     protected void verifiser(boolean statement, String message) {
         if (!statement) {
-            throw new RuntimeException("Verifisering feilet: " + message);
+             fail("Verifisering feilet: " + message);
         }
     }
 

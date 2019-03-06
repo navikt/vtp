@@ -156,7 +156,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK))
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
         return saksnummer;
     }
 
@@ -213,7 +213,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER))
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
         return saksnummer;
     }
 

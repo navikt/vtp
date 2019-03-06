@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
@@ -27,10 +26,12 @@ public class GsakRepo {
 
     private Map<String, Sak> bySakId;
     private AtomicInteger sakIder;
+    private AtomicInteger oppgaveIder;
 
     public GsakRepo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
         sakIder = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
+        oppgaveIder = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
         bySakId = new HashMap<>();
     }
 
@@ -88,9 +89,8 @@ public class GsakRepo {
     }
 
     public String opprettOppgave(String sakId) {
-        // TODO cache disse?
-        Integer oppgavenrGenerert = new Random().nextInt(899 + 1) + 100;
-        String oppgaveId =  sakId + String.valueOf(oppgavenrGenerert);
+
+        String oppgaveId =  sakId + String.valueOf(oppgaveIder.incrementAndGet());
         return oppgaveId;
     }
 }

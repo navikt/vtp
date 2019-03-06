@@ -628,13 +628,12 @@ public class Saksbehandler extends Aktoer{
     }
     
     private Vilkar hentVilkår(Kode vilkårKode) {
-        Vilkar returnVilkår = null;
         for (Vilkar vilkår : valgtBehandling.vilkar) {
             if(vilkår.getVilkarType().equals(vilkårKode)) {
-                returnVilkår = vilkår;
+                return vilkår;
             }
         }
-        return returnVilkår;
+        throw new IllegalStateException(String.format("Fant ikke vilkår %s for behandling %s", vilkårKode.toString(), valgtBehandling.id));
     }
     
     public Vilkar hentVilkår(String vilkårKode) {
@@ -709,16 +708,8 @@ public class Saksbehandler extends Aktoer{
         return null;
     }
 
-    @Step("Fatter vedtak")
-    public void fattVedtak() throws Exception {
-        ikkeVentPåStatus = true;
-        bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        ventTilBehandlingsstatus("AVSLU");
-        ikkeVentPåStatus = false;
-    }
-
-    @Step("Fatter vedtak og godkjenner økonomioppdrag")
-    public void fattVedtakOgGodkjennØkonomioppdrag() throws Exception {
+    @Step("Fatter vedtak og venter til sak er avsluttet")
+    public void fattVedtakOgVentTilAvsluttetSak() throws Exception {
         ikkeVentPåStatus = true;
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         ventTilAvsluttetSak();

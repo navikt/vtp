@@ -133,7 +133,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
         beslutter.hentFagsak(saksnummerMor);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         beslutter.refreshFagsak();
         verifiserLikhet(beslutter.valgtFagsak.hentStatus().kode, "LOP", "Fagsakstatus");
@@ -158,7 +158,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
         aksjonspunkter.add(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(aksjonspunkter);
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
         beslutter.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU");
         // Sjekke at revurdering er opprettet på mor uten endring

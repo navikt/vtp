@@ -134,7 +134,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -194,7 +194,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap2 = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_SELVSTENDIG_NÆRINGSDRIVENDE);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Arrays.asList(ap1, ap2));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -253,7 +253,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(ap);
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -303,7 +303,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(ap);
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -451,7 +451,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK));
 
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
@@ -628,7 +628,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -717,7 +717,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
 
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -823,7 +823,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDER_PERIODER_MED_OPPTJENING));
 
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
     }
 
     private void verifiserUttak(int antallAktiviteter, List<UttakResultatPeriode> perioder) {

@@ -15,6 +15,10 @@ public class Kode {
 
     }
 
+    public Kode(String kode) {
+        this.kode = kode;
+    }
+
     public Kode(String kodeverk, String kode) {
         this.kodeverk = kodeverk;
         this.kode = kode;
@@ -35,8 +39,7 @@ public class Kode {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Kode kode1 = (Kode) o;
-        return Objects.equals(kodeverk, kode1.kodeverk) &&
-                Objects.equals(kode, kode1.kode);
+        return Objects.equals(kode, kode1.kode);
     }
 
     @Override

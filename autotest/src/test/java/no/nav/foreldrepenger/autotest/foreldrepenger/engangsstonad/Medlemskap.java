@@ -91,7 +91,7 @@ public class Medlemskap extends EngangsstonadTestBase {
     }
     
     @Test
-    @DisplayName("Mor søker med utelandsk adresse")
+    @DisplayName("Mor søker med utenlandsk adresse")
     @Description("Mor søker med utelandsk adresse")
     public void morSøkerFødselUtenlandsadresse() throws Exception {
         TestscenarioDto testscenario = opprettScenario("121");
@@ -117,6 +117,6 @@ public class Medlemskap extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
     }
 }

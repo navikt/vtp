@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
@@ -17,8 +18,8 @@ public class JournalRepositoryImpl implements JournalRepository {
     private HashMap<String,JournalpostModell> journalposter;
     private HashMap<String, DokumentModell> dokumenter;
 
-    private Integer journalpostId;
-    private Integer dokumentId;
+    private AtomicInteger journalpostId;
+    private AtomicInteger dokumentId;
 
     private static JournalRepositoryImpl instance;
 
@@ -37,8 +38,8 @@ public class JournalRepositoryImpl implements JournalRepository {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
         journalposter = new HashMap<>();
         dokumenter = new HashMap<>();
-        journalpostId = Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;
-        dokumentId = Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;
+        journalpostId = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
+        dokumentId = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
     }
 
     @Override
@@ -108,13 +109,11 @@ public class JournalRepositoryImpl implements JournalRepository {
 
 
     public String genererJournalpostId(){
-        journalpostId++;
-        return journalpostId.toString();
+        return Integer.toString(journalpostId.incrementAndGet());
     }
 
     public String genererDokumentId(){
-        dokumentId++;
-        return dokumentId.toString();
+        return Integer.toString(dokumentId.incrementAndGet());
     }
 
 
