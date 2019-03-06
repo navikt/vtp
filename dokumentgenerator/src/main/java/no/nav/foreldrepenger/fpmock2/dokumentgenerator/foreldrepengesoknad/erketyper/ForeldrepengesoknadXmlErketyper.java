@@ -169,11 +169,15 @@ public class ForeldrepengesoknadXmlErketyper {
     }
 
     public ForeldrepengesoknadBuilder terminMorEngangstonad(String aktoerId) {
+        return terminMorEngangstonad(aktoerId, LocalDate.now().plusWeeks(3));
+    }
+    
+    public ForeldrepengesoknadBuilder terminMorEngangstonad(String aktoerId, LocalDate termindato) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad("Begrunnelse")
                 .withTilleggsopplysninger("Autogenerert erketypetest mor søker på fødsel som har funnet sted")
-                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeTerminFørTermin())
+                .withEngangsstoenadYtelse(EngangstonadYtelseErketyper.engangsstønadUkjentForelderNorgeTermin(termindato))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
@@ -335,5 +339,4 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
-
 }

@@ -266,7 +266,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.fattVedtakOgGodkjennØkonomioppdrag();
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
     }
     
 }
