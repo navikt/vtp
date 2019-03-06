@@ -145,8 +145,8 @@ public class Termin extends EngangsstonadTestBase {
     }
 
     @Test
-    @DisplayName("Setter behandling på vent og gjennoptar")
-    public void settBehandlingPåVentOgGjenoppta() throws Exception {
+    @DisplayName("Setter behandling på vent og gjennoptar og henlegger")
+    public void settBehandlingPåVentOgGjenopptaOgHenlegg() throws Exception {
         //Opprett scenario og søknad
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -163,6 +163,23 @@ public class Termin extends EngangsstonadTestBase {
 
         saksbehandler.gjenopptaBehandling();
         verifiser(!saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er satt på vent");
+        
+        saksbehandler.henleggBehandling(saksbehandler.henleggArsaker.getKode("HENLAGT_SØKNAD_TRUKKET"));
+        verifiser(saksbehandler.valgtBehandling.erHenlagt(), "Behandlingen ble uventet ikke henlagt");
+        verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU", "behandlingsstatus");
+    }
+    
+    @Test
+    @DisplayName("Mor søker terming 25 dager etter fødsel")
+    public void morSøkerTermin25DagerTilbakeITid() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_ENGANGSSTONAD);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
     }
 
 }
