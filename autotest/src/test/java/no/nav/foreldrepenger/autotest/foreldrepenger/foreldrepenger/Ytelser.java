@@ -117,7 +117,7 @@ public class Ytelser extends ForeldrepengerTestBase {
             .leggTilAndelerYtesle(4000.0, new Kode("", "ARBEIDSTAKER", ""));//TODO hent kode
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderFaktaOmBeregningBekreftelse.class);
         
-        verifiserLikhet(saksbehandler.vilkårStatus("Beregning").navn, "Vilkåret er ikke oppfylt");
+        verifiserLikhet(saksbehandler.vilkårStatus("FP_VK_41").navn, "Vilkåret er ikke oppfylt"); //Beregning
     }
     
     @Test
