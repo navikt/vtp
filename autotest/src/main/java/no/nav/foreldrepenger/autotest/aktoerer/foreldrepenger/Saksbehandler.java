@@ -406,20 +406,21 @@ public class Saksbehandler extends Aktoer{
                 return aksjonspunkt;
             }
         }
-        throw new RuntimeException("Fant ikke aksonspunkt ");
+        return null;
     }
+    
+    
 
     /*
     * Sjekker om aksjonspunkt av gitt kode er på behandlingen
     */
     public boolean harAksjonspunkt(String kode) {
-        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
-            if (aksjonspunkt.getDefinisjon().kode.equals(kode)) {
-                return true;
-            }
-        }
         AllureHelper.debugLoggBehandling(valgtBehandling);
-        return false;
+        return null != hentAksjonspunkt(kode);
+    }
+    
+    public boolean harIkkeAksjonspunkt(String kode) {
+        return !harAksjonspunkt(kode);
     }
     
     /*
@@ -759,5 +760,4 @@ public class Saksbehandler extends Aktoer{
         behandlingerKlient.mellomlagreGjennapne(new KlageVurderingResultatAksjonspunktMellomlagringDto(valgtBehandling, hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP)));
         refreshBehandling();
     }
-
 }

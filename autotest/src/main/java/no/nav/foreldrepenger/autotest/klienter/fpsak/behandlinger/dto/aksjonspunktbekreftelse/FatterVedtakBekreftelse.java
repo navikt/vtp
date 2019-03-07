@@ -37,13 +37,13 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
     }
     
     public FatterVedtakBekreftelse avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, Kode kode) {
-        List<Kode> årsaker = new ArrayList<>();
-        årsaker.add(kode);
+        List<String> årsaker = new ArrayList<>();
+        årsaker.add(kode.kode);
         avvisAksjonspunkt(aksjonspunkt, årsaker);
         return this;
     }
     
-    public void avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, List<Kode> arsaker) {
+    public void avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, List<String> arsaker) {
         if(!aksjonspunkt.skalTilToTrinnsBehandling()) {
             throw new RuntimeException("Avvister aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().navn);
         }
@@ -56,7 +56,7 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
     
     public static class AksjonspunktGodkjenningDto{
         protected String aksjonspunktKode;
-        protected List<Kode> arsaker = new ArrayList<>();
+        protected List<String> arsaker = new ArrayList<>();
         protected String begrunnelse = null;
         protected boolean godkjent = false;
         

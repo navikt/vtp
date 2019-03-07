@@ -23,7 +23,7 @@ public class SoekersRelasjonErketyper {
     }
 
     public static Foedsel søkerFødselEtterSøknadsfrist() {
-        return fødsel(1, LocalDate.now().minusMonths(20));
+        return fødsel(1, LocalDate.now().minusMonths(7));
     }
 
 
