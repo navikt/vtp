@@ -201,8 +201,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @DisplayName("Tema FOR: Flere arbeidsforhold og privat arbeidsgiver")
-    @Description("Bruker er sjømann, har et arbeidsforhold hos privatperson hvor det er mottatt inntektsmelding, samtlige arbeidsforhold opphører etter september. Naturalytelse er medregnet i inntekt. Avviket er over 25% og det skal opprettes nøkkelkontroll oppgave.")
+    @DisplayName("Tema FOR: Flere arbeidsforhold og privat arbeidsgiver med IM")
+    @Description("Bruker er sjømann, har et arbeidsforhold hos privatperson hvor det er mottatt inntektsmelding uten arbeidsforholdID, samtlige arbeidsforhold opphører etter september. Naturalytelse er medregnet i inntekt. Avviket er over 25% og det skal opprettes nøkkelkontroll oppgave.")
     public void For3AtOver25AvvikPrivatArbeidsforhold() throws Exception {
         //Lag privat arbeidsgiver
         TestscenarioDto arbeidsgiverScenario = opprettScenario("110");
@@ -389,8 +389,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
     }
 
     @Test
-    @DisplayName("Tema SYK: Komplekse inntektsmeldinger og komplekse beregningsregler")
-    @Description("2 forskjellige inntektsmeldinger uten arbeidsforholdID for 2 forskjellige virksomheter")
+    @DisplayName("Tema SYK: Inntektsmeldinger uten arbeidsforholdID og mange arbeidsforhold")
+    @Description("Det sendes inn to inntektsmeldinger som ikke inneholder arbeidsforhold ID. Testen sjekker korrekt fastsettelse av skjæringstidspunkt, at naturalytelse tas med i beregning når det opphører i en arbeidsgiverperiode, beregning med flere inntektsmeldinger og avvik når frilansinntekt ikke medregnes grunnet valgt status(arbeidstaker) ")
     public void SykKompleksBeregning() throws Exception {
         TestscenarioDto testscenario = opprettScenario("113");
         int inntektsmeldingMånedsbeløpNr1 = 15000;
@@ -466,13 +466,13 @@ public class VerdikjedeTest extends SpberegningTestBase {
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
-        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Arbeidstaker");
 
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
-        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 1885200D, "Beregnet årsinntekt inkl naturalytelse");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 1524000D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 2100000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 10.23D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 27.43D, "Avvik");
     }
 
     @Test
@@ -557,9 +557,53 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 40D, "Avvik");
     }
 
+    @Test
+    @DisplayName("Tema SYK: Kombinasjon arbeidstaker og frilanser hos privat arbeidsgiver/oppdragsgiver")
+    @Description("Bruker har kombinert AT/FL hvor arbeidsgiver(AT) er privat og oppdragsgiver(FL) er privat")
+    public void SykATFLPrivatPerson() throws Exception {
+        //Lag privat arbeidsgiver
+        TestscenarioDto arbeidsgiverScenario = opprettScenario("110");
+        String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
+
+        //Lag testscenario
+        TestscenarioDto testscenario = opprettScenarioMedPrivatArbeidsgiver("116", arbeidsgiverFnr);
+        int inntektsmeldingMånedsbeløp = 20000;
+        BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
+        LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        String Tema = "SYK";
+        String saksnummer = fordel.opprettSak(testscenario, Tema);
+
+        List<Periode> perioder = new ArrayList<>();
+        perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 9)));
+
+        //Send Inntektsmelding
+        InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlagPrivatperson(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(),arbeidsgiverFnr, "ARB001-003", YtelseKodeliste.SYKEPENGER, ÅrsakInnsendingKodeliste.NY)
+                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
+                .setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
+                        BigDecimal.valueOf(20000), perioder, BegrunnelseIngenEllerRedusertUtbetalingKodeliste.LOVLIG_FRAVAER));
+
+        fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
+
+        //Saksbehandler bekrefter at skjæringstidspunkt er korrekt og setter status
+        verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
+        saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
+
+        //Valider resultat av verdikjedetest
+        verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 720000D, "Beregnet årsinntekt inkl naturalytelse");
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 11, 30));
+        verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 600000D, "Sammenlikningsgrunnlag");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 20.0D, "Avvik");
+    }
+
+
     @Test //TODO Støtter ikke inntektsfilter i VTP. Utvide med støtte for filter 8-28 og 8-30
     @DisplayName("Tema SYK: Kombinasjon arbeidstaker og frilanser")
-    @Description("Feriepenger skal ikke med i beregnet inntekt(§8-28), endring i arbeidsforhold, sluttet/startet i samme arbeidsforhold og IM på feil ytelse")
+    @Description("Feriepenger skal ikke med i beregnet inntekt(§8-28), endring i arbeidsforhold, sluttet/startet i samme arbeidsforhold og IM på feil ytelse skal ikke med i beregning")
     public void SykATFLFeriepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("114");
         int inntektsmeldingMånedsbeløp = 20000;
