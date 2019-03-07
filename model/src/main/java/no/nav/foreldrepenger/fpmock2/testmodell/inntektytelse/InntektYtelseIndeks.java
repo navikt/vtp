@@ -13,7 +13,9 @@ public class InntektYtelseIndeks {
     }
 
     public void leggTil(String ident, InntektYtelseModell iy) {
-        byIdent.put(ident, iy);
+        if(ident != null && iy != null){
+            byIdent.put(ident, iy);
+        }
     }
 
 }
