@@ -3,10 +3,10 @@ package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private final BasisdataProvider basisdata;
     private final List<TestscenarioImpl> scenarios = new ArrayList<>();
 
-    private final Map<String, LokalIdentIndeks> identer = new HashMap<>();
+    private final Map<String, LokalIdentIndeks> identer = new ConcurrentHashMap<>();
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
     private OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();

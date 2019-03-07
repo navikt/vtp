@@ -1,16 +1,16 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.personopplysning;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class PersonIndeks {
 
-    private Map<String, BrukerModell> byIdent = new HashMap<>();
-    private Map<String, BrukerModell> byAktørIdent = new HashMap<>();
-    private Map<String, Personopplysninger> byIdentPersonopplysninger = new HashMap<>();
+    private Map<String, BrukerModell> byIdent = new ConcurrentHashMap<>();
+    private Map<String, BrukerModell> byAktørIdent = new ConcurrentHashMap<>();
+    private Map<String, Personopplysninger> byIdentPersonopplysninger = new ConcurrentHashMap<>();
     
     public PersonIndeks() {
     }
