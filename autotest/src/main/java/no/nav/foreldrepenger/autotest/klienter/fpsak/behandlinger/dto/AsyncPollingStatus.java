@@ -34,13 +34,13 @@ public class AsyncPollingStatus {
         CANCELLED(418),
         HALTED(418);
 
-        private int httpStatus;
+        private Integer httpStatus;
 
-        Status(int httpStatus){
+        Status(Integer httpStatus){
             this.httpStatus = httpStatus;
         }
 
-        public int getHttpStatus() {
+        public Integer getHttpStatus() {
             return httpStatus;
         }
     }
