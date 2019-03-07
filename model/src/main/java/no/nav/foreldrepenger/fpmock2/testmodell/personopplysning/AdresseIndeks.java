@@ -10,15 +10,15 @@ public class AdresseIndeks {
     public AdresseIndeks() {
     }
 
-    public void leggTil(AdresseModell adresse) {
+    public synchronized void leggTil(AdresseModell adresse) {
         adresser.add(adresse);
     }
 
-    public AdresseModell finn(AdresseType adresseType, Landkode landkode) {
+    public synchronized AdresseModell finn(AdresseType adresseType, Landkode landkode) {
         return finn(adresseType, landkode == null ? null : landkode.getKode());
     }
 
-    public AdresseModell finn(AdresseType adresseType, String landkode) {
+    public synchronized AdresseModell finn(AdresseType adresseType, String landkode) {
         return adresser.stream()
             .filter(a -> a.getAdresseType() == adresseType)
             .filter(a -> landkode.equals(a.getLandkode()))
@@ -28,7 +28,7 @@ public class AdresseIndeks {
     }
 
     /** bytt ut en generisk referansemal med en adressse fra katalogen. */
-    public AdresseModell finnFra(AdresseRefModell ref) {
+    public synchronized AdresseModell finnFra(AdresseRefModell ref) {
         AdresseModell adresse = finn(ref.getAdresseType(), ref.getLandkode());
         adresse = (AdresseModell) adresse.clone();
 

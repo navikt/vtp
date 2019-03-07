@@ -2,12 +2,12 @@ package no.nav.foreldrepenger.fpmock2.testmodell.enheter;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EnheterIndeks {
 
-    private Map<String, Norg2Modell> byDiskresjonskode = new HashMap<>();
+    private Map<String, Norg2Modell> byDiskresjonskode = new ConcurrentHashMap<>();
     
     public void leggTil(Collection<Norg2Modell> enheter) {
         enheter.forEach(m -> byDiskresjonskode.putIfAbsent(m.getDiskresjonskode(), m));
