@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -727,7 +728,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
     }
 
-
+    @Disabled("Disabler til testen ble endret")
     @Test
     @DisplayName("Far søker fødsel med aleneomsorg men er gift og bor med annenpart")
     public void farSøkerFødselAleneomsorgMenErGiftOgBorMedAnnenpart() throws Exception {
