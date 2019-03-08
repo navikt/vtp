@@ -250,46 +250,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
 
-    @Test
-    @DisplayName("Testcase mor termin med gradering i uke 7")
-    @Description("Mor søker på termin, graderer i uke 7")
-    public void testcase_mor_termin_AT_gradering() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("74");
-        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
-        String fnrMor = testscenario.getPersonopplysninger().getSøkerIdent();
-        LocalDate fødselsdato = LocalDate.now().minusWeeks(3);
-        LocalDate fpStartdatoMor = fødselsdato.minusWeeks(3);
-        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
-        // Oppretter søknad fordeling
-        Fordeling fordeling = new ObjectFactory().createFordeling();
-        fordeling.setAnnenForelderErInformert(true);
-        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
-        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, fødselsdato.minusDays(1)));
-        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(6).minusDays(1)));
-        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødselsdato.plusWeeks(6), fødselsdato.plusWeeks(14).minusDays(1)));
-        // Gradering søknad fordeling med med gradering
-        LocalDate graderingFom = fødselsdato.plusWeeks(6);
-        LocalDate graderingTom = fødselsdato.plusWeeks(14).minusDays(1);
-        Gradering gradering = new Gradering();
-        gradering.setArbeidsforholdSomSkalGraderes(true);
-        gradering.setArbeidtidProsent(50);
-        gradering.setErArbeidstaker(true);
-        Virksomhet virksomhet = new Virksomhet();
-        virksomhet.setIdentifikator(orgnr);
-        gradering.setArbeidsgiver(virksomhet);
-        addStønadskontotype(STØNADSKONTOTYPE_MØDREKVOTE, gradering);
-        addPeriode(graderingFom, graderingTom, gradering);
-        perioder.add(gradering);
-        // sender inn søknad
-        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.termindatoUttakKunMor(morAktørId, fordeling, fødselsdato);
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        //Lager IM med graderingsperiode
-        InntektsmeldingBuilder inntektsmeldingerMor = lagInntektsmeldingBuilder(beløp, fnrMor, fpStartdatoMor, orgnr, Optional.empty(), Optional.empty());
-        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(50), graderingFom, graderingTom);
-        fordel.sendInnInntektsmelding(inntektsmeldingerMor, testscenario, saksnummerMor);
-    }
+
 
     @Test
     @DisplayName("Testcase mor tom for dager")
@@ -529,7 +490,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @DisplayName("Utsettelse ")
     @Description("-")
     public void testcase_uttsettelse() throws Exception {
-        TestscenarioDto testscenario = opprettScenario("50");
+        TestscenarioDto testscenario = opprettScenario("49");
 
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
@@ -567,9 +528,83 @@ public class Uttak extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Mor Termin ATFL med graderte perioder")
-    @Description("Mor søker på termin, har status ATFL og søker med minst en gradert periode")
-    public void testcase_mor_termin_ATFL_gradering() throws Exception {
+    @DisplayName("Testcase mor termin med gradering i uke 7")
+    @Description("Mor søker på termin, graderer i uke 7")
+    public void testcase_mor_termin_AT_gradering() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("74");
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String fnrMor = testscenario.getPersonopplysninger().getSøkerIdent();
+        LocalDate familieHendelse = LocalDate.now().minusWeeks(3);
+        LocalDate fpStartdatoMor = familieHendelse.minusWeeks(3);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
+
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, familieHendelse.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familieHendelse, familieHendelse.plusWeeks(6).minusDays(1)));
+        LocalDate graderingFom = familieHendelse.plusWeeks(6);
+        LocalDate graderingTom = familieHendelse.plusWeeks(14).minusDays(1);
+        Gradering gradering = new Gradering();
+        graderingSøknadBuilder(gradering, STØNADSKONTOTYPE_MØDREKVOTE, graderingFom, graderingTom, 50, true, orgnr);
+        perioder.add(gradering);
+        LocalDate graderingFom2 = familieHendelse.plusWeeks(14);
+        LocalDate graderingTom2 = familieHendelse.plusWeeks(16).minusDays(1);
+        Gradering gradering2 = new Gradering();
+        graderingSøknadBuilder(gradering2, STØNADSKONTOTYPE_FELLESPERIODE, graderingFom2, graderingTom2, 20, true, orgnr);
+        perioder.add(gradering2);
+
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.termindatoUttakKunMor(morAktørId, fordeling, familieHendelse);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingerMor = lagInntektsmeldingBuilder(beløp, fnrMor, fpStartdatoMor, orgnr, Optional.empty(), Optional.empty());
+        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(50), graderingFom, graderingTom);
+        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(20), graderingFom2, graderingTom2);
+        fordel.sendInnInntektsmelding(inntektsmeldingerMor, testscenario, saksnummerMor);
+    }
+
+    @Test
+    @DisplayName("Testcase mor termin med gradering og utsettelse")
+    @Description("Mor søker på termin, gradering og utsettelse")
+    public void testcase_mor_termin_AT_gradering_utsettelse() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("74");
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String fnrMor = testscenario.getPersonopplysninger().getSøkerIdent();
+        LocalDate familieHendelse = LocalDate.now().minusWeeks(3);
+        LocalDate fpStartdatoMor = familieHendelse.minusWeeks(3);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
+
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, familieHendelse.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familieHendelse, familieHendelse.plusWeeks(10).minusDays(1)));
+        LocalDate graderingFom = familieHendelse.plusWeeks(10);
+        LocalDate graderingTom = familieHendelse.plusWeeks(14).minusDays(1);
+        Gradering gradering = new Gradering();
+        graderingSøknadBuilder(gradering, STØNADSKONTOTYPE_MØDREKVOTE, graderingFom, graderingTom, 80, true, orgnr);
+        perioder.add(gradering);
+        LocalDate utsettelseFOM = familieHendelse.plusWeeks(14);
+        LocalDate utsettelseTOM = familieHendelse.plusWeeks(40);
+        Utsettelsesperiode utsettelse = new Utsettelsesperiode();
+        utsettelseSøknadBuilder (utsettelse,utsettelseFOM,utsettelseTOM, UTSETTELSETYPE_ARBEID, true);
+        perioder.add(utsettelse);
+
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.termindatoUttakKunMor(morAktørId, fordeling, familieHendelse);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        InntektsmeldingBuilder inntektsmeldingerMor = lagInntektsmeldingBuilder(beløp, fnrMor, fpStartdatoMor, orgnr, Optional.empty(), Optional.empty());
+        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(80), graderingFom, graderingTom);
+        inntektsmeldingerMor.addUtsettelseperiode(UTSETTELSETYPE_ARBEID,utsettelseFOM,utsettelseTOM);
+        fordel.sendInnInntektsmelding(inntektsmeldingerMor, testscenario, saksnummerMor);
+    }
+
+    @Test
+    @DisplayName("Mor Fødsel ATFL med graderte perioder")
+    @Description("Mor søker på fødsel, har status ATFL og søker med minst en gradert periode")
+    public void testcase_mor_fødsel_ATFL_gradering() throws Exception {
         TestscenarioDto testscenario = opprettScenario("59");
 
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -584,11 +619,10 @@ public class Uttak extends ForeldrepengerTestBase {
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, familieHendelse.minusDays(1)));
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familieHendelse, familieHendelse.plusWeeks(6).minusDays(1)));
-        // Gradering søknad fordeling med med gradering
         LocalDate graderingFOM = familieHendelse.plusWeeks(6);
         LocalDate graderingTOM = familieHendelse.plusWeeks(14).minusDays(1);
         Gradering gradering = new Gradering();
-        graderingSøknadBuilder(gradering,STØNADSKONTOTYPE_MØDREKVOTE,graderingFOM,graderingTOM,45,true,orgNrAT);
+        graderingSøknadBuilder(gradering,STØNADSKONTOTYPE_MØDREKVOTE,graderingFOM,graderingTOM,80,true,orgNrAT);
         perioder.add(gradering);
         LocalDate gradering2FOM = familieHendelse.plusWeeks(14);
         LocalDate gradering2TOM = familieHendelse.plusWeeks(16).minusDays(1);
@@ -601,8 +635,7 @@ public class Uttak extends ForeldrepengerTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
                 orgNrAT, Optional.empty(), Optional.empty());
-        inntektsmeldingBuilder.addGradertperiode(BigDecimal.valueOf(50), graderingFOM, graderingTOM);
-        inntektsmeldingBuilder.addGradertperiode(BigDecimal.valueOf(42), gradering2FOM, gradering2TOM);
+        inntektsmeldingBuilder.addGradertperiode(BigDecimal.valueOf(80), graderingFOM, graderingTOM);
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
@@ -619,9 +652,9 @@ public class Uttak extends ForeldrepengerTestBase {
 
     }
     @Test
-    @DisplayName("Mor Termin ATFL med utsettelse perioder")
-    @Description("Mor søker på termin, har status ATFL og søker med minst en gradert periode")
-    public void testcase_mor_termin_ATFL_utsettelse() throws Exception {
+    @DisplayName("Mor Fødsel ATFL med utsettelse perioder")
+    @Description("Mor søker på fødsel, har status ATFL og søker med minst en gradert periode")
+    public void testcase_mor_fødsel_ATFL_utsettelse() throws Exception {
         TestscenarioDto testscenario = opprettScenario("59");
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
@@ -635,9 +668,9 @@ public class Uttak extends ForeldrepengerTestBase {
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, familieHendelse.minusDays(1)));
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familieHendelse, familieHendelse.plusWeeks(15).minusDays(1)));
-        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familieHendelse.plusWeeks(15), familieHendelse.plusWeeks(31).minusDays(1)));
-        LocalDate utsettelseFOM = familieHendelse.plusWeeks(31);
-        LocalDate utsettelseTOM = familieHendelse.plusWeeks(40);
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familieHendelse.plusWeeks(15), familieHendelse.plusWeeks(30).minusDays(1)));
+        LocalDate utsettelseFOM = familieHendelse.plusWeeks(30);
+        LocalDate utsettelseTOM = familieHendelse.plusWeeks(35).plusDays(1);
         Utsettelsesperiode utsettelse = new Utsettelsesperiode();
         utsettelseSøknadBuilder (utsettelse,utsettelseFOM,utsettelseTOM, UTSETTELSETYPE_ARBEID, false);
         perioder.add(utsettelse);
@@ -647,7 +680,8 @@ public class Uttak extends ForeldrepengerTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingBuilder = lagInntektsmeldingBuilder(inntektPerMåned, fnr, fpStartdato,
                 orgNrAT, Optional.empty(), Optional.empty());
-//        inntektsmeldingBuilder.addUtsettelseperiode(UTSETTELSETYPE_ARBEID,utsettelseFOM,utsettelseTOM);
+        inntektsmeldingBuilder.addUtsettelseperiode(UTSETTELSETYPE_ARBEID,utsettelseFOM,utsettelseTOM);
+
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
