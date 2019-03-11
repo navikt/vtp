@@ -57,6 +57,7 @@ public abstract class TestBase {
         verifiser(listeGjeldende.stream().anyMatch(it -> it.equals(verdiForventet)), String.format("%s inneholder ikke forventet verdi. forventet å finne %s", listeGjeldende, verdiForventet));
     }
 
+    @Deprecated
     protected void verifiser(boolean statement) {
         verifiser(statement, "ingen melding");
     }
