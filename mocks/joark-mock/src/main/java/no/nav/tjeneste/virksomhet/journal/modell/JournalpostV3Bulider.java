@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
@@ -47,6 +48,10 @@ public class JournalpostV3Bulider {
             journalpost.setJournalposttype(journalposttype);
         }
 
+        if(modell.getMottattDato() != null){
+            journalpost.setForsendelseMottatt(DateUtil.convertToXMLGregorianCalendar(modell.getMottattDato()));
+            journalpost.setForsendelseJournalfoert(DateUtil.convertToXMLGregorianCalendar(modell.getMottattDato()));
+        }
        return journalpost;
     }
 

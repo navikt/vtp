@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.fpmock2.server.api.journalforing;
 
+import java.time.LocalDateTime;
+
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -39,6 +41,7 @@ public class JournalforingRestTjeneste {
 
 
         JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, fnr, dokumenttypeId);
+        journalpostModell.setMottattDato(LocalDateTime.now());
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
         String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
 
