@@ -162,4 +162,41 @@ public class Adopsjon extends EngangsstonadTestBase {
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
 
     }
+    
+    @Test
+    @DisplayName("Far søker adopsjon - avvist")
+    public void farSøkerAdopsjonAvvist() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("61");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+
+
+        AvklarFaktaAdopsjonsdokumentasjonBekreftelse bekreftelse1 = saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaAdopsjonsdokumentasjonBekreftelse.class);
+        bekreftelse1.setBarnetsAnkomstTilNorgeDato(LocalDate.now());
+        VurderEktefellesBarnBekreftelse bekreftelse2 = saksbehandler.hentAksjonspunktbekreftelse(VurderEktefellesBarnBekreftelse.class);
+        bekreftelse2.bekreftBarnErEktefellesBarn();
+        MannAdoptererAleneBekreftelse bekreftelse3 = saksbehandler.hentAksjonspunktbekreftelse(MannAdoptererAleneBekreftelse.class);
+        bekreftelse3.bekreftMannAdoptererIkkeAlene();
+        saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2, bekreftelse3);
+
+        verifiserLikhet(saksbehandler.vilkårStatus("FP_VK_4").navn, "Vilkåret er ikke oppfylt", "Vilkårstatus for adopsjon");
+        verifiserLikhet(saksbehandler.valgtBehandling.hentAvslagsarsak(), "Ektefelles/samboers barn", "Avslagsårsak");
+        
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
+        beslutter.fattVedtakOgVentTilAvsluttetSak();
+
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+    }
 }
