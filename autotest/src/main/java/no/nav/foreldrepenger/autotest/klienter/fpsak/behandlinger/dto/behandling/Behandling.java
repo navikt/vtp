@@ -83,6 +83,13 @@ public class Behandling {
     public String hentBehandlingsresultat() {
         return behandlingsresultat.type.navn;
     }
+    
+    public String hentAvslagsarsak() {
+        if(null != behandlingsresultat && null != behandlingsresultat.avslagsarsak) {
+            return behandlingsresultat.avslagsarsak.navn;
+        }
+        return "Ingen avslagsårsak";
+    }
 
     @Override
     public String toString(){

@@ -39,10 +39,31 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         return this;
     }
     
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad, Kode stønadskonto) {
+        UttakResultatPeriode periode = finnPeriode(fra, til);
+        godkjennPeriode(periode, utbetalingsgrad, stønadskonto);
+        return this;
+    }
+    
     public void godkjennPeriode(UttakResultatPeriode periode, int utbetalingsgrad) {
         periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
         periode.setPeriodeResultatÅrsak(new Kode("INNVILGET_AARSAK", "2001", "§14-6: Uttak er oppfylt"));
         periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
+        
+        //Utsettelses perioder trenger ikke trekkdager. set dem til 0
+        for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
+            aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(utbetalingsgrad));
+            if(!periode.getUtsettelseType().kode.equals("-")) {
+                aktivitet.setTrekkdager(0);
+            }
+        }
+    }
+    
+    public void godkjennPeriode(UttakResultatPeriode periode, int utbetalingsgrad, Kode stønadskonto) {
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(new Kode("INNVILGET_AARSAK", "2001", "§14-6: Uttak er oppfylt"));
+        periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
+        periode.setStønadskonto(stønadskonto);
         
         //Utsettelses perioder trenger ikke trekkdager. set dem til 0
         for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {

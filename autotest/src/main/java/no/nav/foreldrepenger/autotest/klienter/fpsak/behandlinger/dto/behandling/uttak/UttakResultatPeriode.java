@@ -108,4 +108,14 @@ public class UttakResultatPeriode {
     public Kode getOppholdÅrsak() {
         return oppholdÅrsak;
     }
+    
+    public void setPeriodeType(Kode periodeType) {
+        this.periodeType = periodeType;
+    }
+
+    public void setStønadskonto(Kode stønadskonto) {
+        for (UttakResultatPeriodeAktivitet aktivitet : aktiviteter) {
+            aktivitet.stønadskontoType = stønadskonto;
+        }
+    }
 }
