@@ -95,7 +95,14 @@ class WellKnownResponse {
         this.issuer = issuer;
         this.endSessionEndpoint = url + "/isso/oauth2/connect/endSession";
         this.checkSessionIframe = url + "/isso/oauth2/connect/checkSession";
-        this.authorizationEndpoint = url + "/isso/oauth2/authorize";
+        /**
+         * Gjør det mulig å kjøre redirect flow i browseren når vi kjører med docker-compose.
+         */
+        if (null != System.getenv("AUTHORIZE_BASE_URL")) {
+            this.authorizationEndpoint = System.getenv("AUTHORIZE_BASE_URL") + "/isso/oauth2/authorize";
+        } else {
+            this.authorizationEndpoint = url + "/isso/oauth2/authorize";
+        }
         this.jwksUri = url + "/isso/oauth2/connect/jwk_uri";
         this.registrationEndpoint = url + "/isso/oauth2/connect/register";
         this.tokenEndpoint = url + "/isso/oauth2/access_token";

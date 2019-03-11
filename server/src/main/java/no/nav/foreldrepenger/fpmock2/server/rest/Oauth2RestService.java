@@ -167,7 +167,11 @@ public class Oauth2RestService {
         Hashtable<String, String> props = new Hashtable<>();
         props.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
         props.put(javax.naming.Context.SECURITY_AUTHENTICATION, "none");
-        props.put(javax.naming.Context.PROVIDER_URL, "ldaps://localhost:8636/");
+        if (null != System.getenv("LDAP_PROVIDER_URL")) {
+            props.put(javax.naming.Context.PROVIDER_URL, System.getenv("LDAP_PROVIDER_URL"));
+        } else {
+            props.put(javax.naming.Context.PROVIDER_URL, "ldaps://localhost:8636/");
+        }
 
         InitialLdapContext ctx = new InitialLdapContext(props, null);
         LdapName base = new LdapName("ou=NAV,ou=BusinessUnits,dc=test,dc=local");
@@ -210,10 +214,8 @@ public class Oauth2RestService {
         String issuer;
         if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER")) {
             issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER");
-            LOG.info("Setter issuer-url fra naisconfig: " + issuer);
         } else {
             issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
-            LOG.info("Setter issuer-url fra implisit localhost: " + issuer);
         }
         return issuer;
     }

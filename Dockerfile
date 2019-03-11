@@ -8,7 +8,8 @@ ENV DUMMYPROP=fraDockerfile
 ARG JAR_FILE
 COPY resources/pipeline/enablecustomcerts.sh /init-scripts
 RUN mkdir /app/testcerts
-COPY resources/pipeline/keystore/vtpkeystore /app/testcerts/vtpkeystore.jks
+COPY resources/pipeline/keystore/vtpkeystore            /app/testcerts/vtpkeystore.jks
+COPY resources/pipeline/keystore/nav_truststore_path    /app/testcerts/nav_truststore_path
 
 RUN mkdir /app/lib
 COPY server/lib/*.jar /app/lib/

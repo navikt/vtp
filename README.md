@@ -74,14 +74,21 @@ Utvikling, wsdl
 Se MockServer for liste over url til genererte wsdl'er for test via SoapUi eller lignende.
 
 
-### Kjøre via Docker
+### Kjøre via docker run / docker-compose
 Lagt til noen forenklinger på environment variabler når vi kjører opp VTP + Autotest i docker. Se
-`./resources/pipeline/readme.md` for mer info.
+`./resources/pipeline/readme.md` for mer info. Test certifikater er allerede lagt inn i imaget. Men man må
+fortsatt sette path riktig.
 
 ```
-AUTOTEST_FPSAK_BASE_URL=https://fpsak:8443
-AUTOTEST_VTP_BASE_URL=https://fpmock2:8063
-ENABLE_CUSTOM_TRUSTSTORE=true
-CUSTOM_KEYSTORE_PATH=/var/run/secrets/naisd.io/nav_truststore_path
+CUSTOM_KEYSTORE_PATH=/app/testcerts/vtpkeystore.jks
 CUSTOM_KEYSTORE_PASSWORD=changeit
-```
+NAV_TRUSTSTORE_PATH=/app/testcerts/nav_truststore_path
+NAV_TRUSTSTORE_PASSWORD=changeit
+ENABLE_CUSTOM_TRUSTSTORE=true
+AUTOTEST_OAUTH2_ISSUER=https://fpmock2:8063/isso/oauth2
+AUTOTEST_FPSAK_BASE_URL=http://fpsak:8080
+AUTOTEST_VTP_BASE_URL=http://fpmock2:8060
+LDAP_PROVIDER_URL=ldaps://fpmock2:8636
+AUTHORIZE_BASE_URL=http://localhost:8060
+```      
+
