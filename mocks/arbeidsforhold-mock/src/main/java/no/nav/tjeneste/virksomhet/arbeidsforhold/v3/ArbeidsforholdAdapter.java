@@ -15,6 +15,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.G
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.ObjectFactory;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Organisasjon;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.PermisjonOgPermittering;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Person;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Yrker;
 
@@ -31,6 +32,10 @@ public class ArbeidsforholdAdapter {
         Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
         arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
         arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
+//
+//        PermisjonOgPermittering testKode = new PermisjonOgPermittering();
+//        testKode.set
+//        arbeidsforhold.getPermisjonOgPermittering().add()
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
         aftype.setKodeRef(arbeidsforholdModell.getArbeidsforholdstype().getKode());

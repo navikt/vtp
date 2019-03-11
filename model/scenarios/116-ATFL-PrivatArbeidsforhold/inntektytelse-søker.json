@@ -4,7 +4,7 @@
 			{
 				"fom": "2017-01-01",
 				"tom": "2018-10-31",
-				"beløp": 40000,
+				"beløp": 30000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
@@ -23,7 +23,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-12-31",
 				"beløp": 10000,
-				"orgnr": "995428563",
+				"aktorId": "${aktor1}",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -33,7 +33,7 @@
 			{
 				"frilansFom":"2018-01-01",
 				"frilansTom":"2018-12-31",
-				"orgnr":"995428563",
+				"aktorId": "${aktor1}",
 				"stillingsprosent":"25"
 			}
 		]

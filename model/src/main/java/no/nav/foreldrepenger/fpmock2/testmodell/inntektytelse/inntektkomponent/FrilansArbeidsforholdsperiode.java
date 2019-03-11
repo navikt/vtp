@@ -19,16 +19,20 @@ public class FrilansArbeidsforholdsperiode {
     @JsonProperty("orgnr")
     private String orgnr;
 
+    @JsonProperty("aktorId")
+    private String aktorId;
+
     @JsonProperty("stillingsprosent")
     private Integer stillingsprosent;
 
     public FrilansArbeidsforholdsperiode(){}
 
-    public FrilansArbeidsforholdsperiode(LocalDate frilansFom, LocalDate frilansTom, String orgnr, Integer stillingsprosent){
+    public FrilansArbeidsforholdsperiode(LocalDate frilansFom, LocalDate frilansTom, String orgnr, Integer stillingsprosent, String aktorId){
         this.frilansFom = frilansFom;
         this.frilansTom = frilansTom;
         this.orgnr = orgnr;
         this.stillingsprosent = stillingsprosent;
+        this.aktorId = aktorId;
     }
 
     public LocalDate getFrilansFom() {
@@ -67,6 +71,13 @@ public class FrilansArbeidsforholdsperiode {
         return FRILANS_ARBEIDSFORHOLDSTYPE;
     }
 
+    public String getAktorId() {
+        return aktorId;
+    }
+
+    public void setAktorId(String aktorId) {
+        this.aktorId = aktorId;
+    }
 }
 
 
