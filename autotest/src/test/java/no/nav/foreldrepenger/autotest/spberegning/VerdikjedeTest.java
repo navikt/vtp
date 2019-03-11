@@ -97,10 +97,10 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
-        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 689400D, "Beregnet årsinntekt inkl naturalytelse");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 684000D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 55.27D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 54.05D, "Avvik");
     }
 
     @Test
@@ -110,7 +110,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         //Lag testscenario
         TestscenarioDto testscenario = opprettScenario("110");
-        int inntektsmeldingMånedsbeløp = 37000;
+        int inntektsmeldingMånedsbeløp = 57000;
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         String Tema = "OMS";
@@ -135,10 +135,10 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
-        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt");
+        verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 684000D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
-        verifiserLikhet(saksbehandler.getAvvikIProsent(), 1.22D, "Avvik");
+        verifiserLikhet(saksbehandler.getAvvikIProsent(), 54.05D, "Avvik");
     }
 
     @Test
@@ -214,7 +214,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.addUtsettelseperiode("ARBEID", LocalDate.of(2018,12,10),LocalDate.of(2018,12,15));
         inntektsmeldingsBuilder.addUtsettelseperiode("LOVBESTEMT_FERIE", LocalDate.of(2018, 7, 1), LocalDate.of(2018, 7, 30));
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
-                BigDecimal.valueOf(450), LocalDate.of(2018, 9, 15), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
+                BigDecimal.valueOf(450), LocalDate.of(2018, 9, 16), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
@@ -259,11 +259,13 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "SYK";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
+        //Arbeidsgiverperioder til inntektsmelding
         List<Periode> perioder = new ArrayList<>();
         perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 9)));
         perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 10, 15), LocalDate.of(2018, 10, 20)));
         perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 11, 1), LocalDate.of(2018, 11, 9)));
 
+        //Naturalytelser som opphører til inntektsmelding
         List<NaturalytelseDetaljer> opphørNaturalytelseList = Arrays.asList(
                 InntektsmeldingBuilder.createNaturalytelseDetaljer(
                         BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON),
@@ -273,6 +275,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
                         BigDecimal.valueOf(800), LocalDate.of(2018, 10, 22), NaturalytelseKodeliste.KOST_DAGER
                 ));
 
+        //Oppretter inntektsmelding for ytelsen Sykepenger
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.SYKEPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
@@ -287,15 +290,19 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(800), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
         saksbehandler.lagreNotat(beregning, "Hei på deg", beregning.getBeregningsgrunnlag().getId());
 
+        //SB Verifiserer skjæringstidspunkt og setter status
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 696600D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
@@ -321,8 +328,9 @@ public class VerdikjedeTest extends SpberegningTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         String Tema = "OMS";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
-        List<Arbeidsforhold> arbeidsforhold = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold();
 
+
+        //Oppretter inntektsmelding for ytelsen Omsorgspenger
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-002", YtelseKodeliste.OMSORGSPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null));
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
@@ -330,14 +338,17 @@ public class VerdikjedeTest extends SpberegningTestBase {
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         BeregningDto beregning = saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
+        //SB setter skjæringstidspunkt og status
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 11, 30), "Arbeidstaker");
-        saksbehandler.lagreNotat(beregning, "Hei på deg", beregning.getBeregningsgrunnlag().getId());
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 444000D, "Beregnet årsinntekt");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
@@ -360,23 +371,29 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "FOR";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
+        //Oppretter inntektsmelding for arbeidsforhold 1
         InntektsmeldingBuilder inntektsmeldingsBuilder1 = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløpNr1, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
 
+        //Oppretter inntektsmelding for arbeidsforhold 2
         InntektsmeldingBuilder inntektsmeldingsBuilder2 = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløpNr2, testscenario.getPersonopplysninger().getSøkerIdent(), "979191139", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder1, testscenario, Long.parseLong(saksnummer));
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder2, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
+        //SB validerer skjæringstidspunkt og setter status
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 2160000D, "Sum inntekt");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 2160000D, "Beregnet årsinntekt inkl naturalytelse");
@@ -456,15 +473,19 @@ public class VerdikjedeTest extends SpberegningTestBase {
                 BigDecimal.valueOf(800), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder1, testscenario, Long.parseLong(saksnummer));
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder2, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
+        //SB validerer skjæringstidspunkt og setter status
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 11, 1), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Arbeidstaker");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 1549200D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
@@ -486,27 +507,29 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "FOR";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-
+        //Oppretter inntektsmelding for yteslsen Svangerskapspenger
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.SVANGERSKAPSPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setFoersfravaersdag(LocalDate.of(2018, 10, 6));
-
         List<Periode> feriePerioder = new ArrayList<>();
         feriePerioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 12, 5), LocalDate.of(2018, 12, 9)));
         inntektsmeldingsBuilder.addAvtaltFerie(feriePerioder);
-
         inntektsmeldingsBuilder.getOpphoerAvNaturalytelsesList().getOpphoerAvNaturalytelse().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 10, 5), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
         inntektsmeldingsBuilder.getGjenopptakelseNaturalytelseListe().getNaturalytelseDetaljer().add(InntektsmeldingBuilder.createNaturalytelseDetaljer(
                 BigDecimal.valueOf(450), LocalDate.of(2018, 12, 31), NaturalytelseKodeliste.ELEKTRONISK_KOMMUNIKASJON));
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
+        //SB setter skjæringstidspunkt og status
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Arbeidstaker");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
@@ -575,21 +598,24 @@ public class VerdikjedeTest extends SpberegningTestBase {
         List<Periode> perioder = new ArrayList<>();
         perioder.add(InntektsmeldingBuilder.createPeriode(LocalDate.of(2018, 10, 5), LocalDate.of(2018, 10, 9)));
 
-        //Send Inntektsmelding
+        //Oppretter inntektsmelding for yteslsen Sykepenger
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlagPrivatperson(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(),arbeidsgiverFnr, "ARB001-003", YtelseKodeliste.SYKEPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setSykepengerIArbeidsgiverperioden(InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
                         BigDecimal.valueOf(20000), perioder, BegrunnelseIngenEllerRedusertUtbetalingKodeliste.LOVLIG_FRAVAER));
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
+
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-        //Saksbehandler bekrefter at skjæringstidspunkt er korrekt og setter status
+        //SB verifiserer skjæringstidspunkt og setter status
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
-        //Valider resultat av verdikjedetest
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 720000D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
@@ -604,26 +630,26 @@ public class VerdikjedeTest extends SpberegningTestBase {
     public void SykATFLFeriepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("114");
         int inntektsmeldingMånedsbeløp = 20000;
-        BigDecimal inntektsmeldingRefusjon = BigDecimal.valueOf(45000);
-        LocalDate refusjonOpphørsdato = LocalDate.now().plusMonths(10);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         String Tema = "SYK";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-
+        //Oppretter inntektsmelding for yteslsen Foreldrepenger
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-003", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
-                .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
 
+        //Inntektsmelding journalføres i Joark
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-
+        //SB setter skjæringstidspunkt og status
        saksbehandler.oppdaterBeregning(LocalDate.of(2018, 12, 20),  "Kombinert arbeidstaker og frilanser");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 600000D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 11, 30));
@@ -640,15 +666,14 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "FOS";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-        System.out.println("Saksnummer: " + saksnummer);
-
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-        Thread.sleep(5000);
-
+        //SB setter skjæringstidspunkt og status
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Frilanser");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 120000D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
@@ -670,15 +695,14 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String Tema = "SYK";
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
-        System.out.println("Saksnummer: " + saksnummer);
-
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
-        Thread.sleep(5000);
-
+        //SB setter skjæringstidspunkt og status
         saksbehandler.oppdaterBeregning(LocalDate.of(2018, 10, 5), "Frilanser");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 120000D, "Beregnet årsinntekt inkl naturalytelse");
         verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
