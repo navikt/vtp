@@ -64,8 +64,11 @@ public class SecureHttpsSession extends AbstractHttpSession {
 
             PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(registry);
             connManager.setValidateAfterInactivity(100);
+            connManager.setDefaultMaxPerRoute(30);
+            connManager.setMaxTotal(60);
             builder.setConnectionManager(connManager);
             builder.setDefaultRequestConfig(getRequestConfig());
+
             return builder.build();
         } catch (Exception e) {
             System.out.println(e.getMessage());

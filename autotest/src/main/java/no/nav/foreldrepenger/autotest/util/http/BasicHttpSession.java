@@ -24,6 +24,8 @@ public class BasicHttpSession extends AbstractHttpSession {
         } else {
             builder = builder.disableRedirectHandling();
         }
+        builder.setMaxConnPerRoute(30);
+        builder.setMaxConnTotal(60);
         return builder.build();
     }
 

@@ -10,8 +10,6 @@ import org.apache.http.entity.StringEntity;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 
@@ -22,9 +20,7 @@ public abstract class JsonRest extends Rest{
     public JsonRest(HttpSession session) {
         super(session);
     }
-
-
-
+    
     /*
      * POST
      */
@@ -142,10 +138,5 @@ public abstract class JsonRest extends Rest{
         }
     }
 
-    protected ObjectMapper hentObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS); //Sets serialization format of LocalDate to: "yyyy-mm-dd";
-        return mapper;
-    }
+    protected abstract ObjectMapper hentObjectMapper();
 }
