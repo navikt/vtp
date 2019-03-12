@@ -14,7 +14,7 @@ public class AllureHelper {
     @Step("Informasjon om behandling: {behandling}")
     public static void debugLoggBehandling(Behandling behandling){ }
 
-    @Step("Sender inn dokument {} med innhold: {xml}")
+    @Step("Sender inn dokument {type} med innhold: {xml}")
     public static void debugSenderInnDokument(String type, String xml){ }
 
     @Step("Fritekstlogg {fritekst}")

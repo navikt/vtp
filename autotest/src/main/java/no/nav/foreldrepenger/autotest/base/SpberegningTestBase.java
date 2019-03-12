@@ -11,11 +11,10 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import no.nav.foreldrepenger.autotest.base.TestBase;
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.spberegning.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.vtp.testscenario.TestscenarioKlient;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.autotest.util.http.BasicHttpSession;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
@@ -41,7 +40,7 @@ public class SpberegningTestBase extends TestBase {
         saksbehandler = new Saksbehandler();
         fordel = new Fordel();
 
-        testscenarioKlient = new TestscenarioKlient(new HttpSession());
+        testscenarioKlient = new TestscenarioKlient(BasicHttpSession.session());
         inntektsmeldingErketype = new InntektsmeldingErketype();
     }
 

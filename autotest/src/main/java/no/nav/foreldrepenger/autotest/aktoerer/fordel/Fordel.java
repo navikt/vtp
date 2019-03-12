@@ -29,7 +29,7 @@ import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakRequestDTO;
 import no.nav.foreldrepenger.autotest.klienter.vtp.sak.dto.OpprettSakResponseDTO;
 import no.nav.foreldrepenger.autotest.klienter.vtp.tpsFeed.TpsFeedKlient;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.autotest.util.http.BasicHttpSession;
 import no.nav.foreldrepenger.autotest.util.vent.Vent;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -61,7 +61,7 @@ public class Fordel extends Aktoer {
     public Fordel() {
         fordelKlient = new FordelKlient(session);
         behandlingerKlient = new BehandlingerKlient(session);
-        journalpostKlient = new JournalforingKlient(new HttpSession());
+        journalpostKlient = new JournalforingKlient(BasicHttpSession.session());
         sakKlient = new SakKlient(session);
         fagsakKlient = new FagsakKlient(session);
         historikkKlient = new HistorikkKlient(session);

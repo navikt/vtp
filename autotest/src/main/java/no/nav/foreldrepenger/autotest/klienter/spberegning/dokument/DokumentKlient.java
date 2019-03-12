@@ -3,14 +3,14 @@ package no.nav.foreldrepenger.autotest.klienter.spberegning.dokument;
 import java.io.IOException;
 
 import no.nav.foreldrepenger.autotest.klienter.spberegning.SpBeregningKlient;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.autotest.util.http.BasicHttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class DokumentKlient extends SpBeregningKlient {
     
     private static final String DOKUMENT_HENT_DOKUMENT_URL = "/dokument/hent-dokument";
 
-    public DokumentKlient(HttpSession session) {
+    public DokumentKlient(BasicHttpSession session) {
         super(session);
     }
     

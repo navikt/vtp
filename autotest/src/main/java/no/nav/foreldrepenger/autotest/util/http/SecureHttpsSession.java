@@ -17,7 +17,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-public class HttpsSession extends HttpSession {
+public class SecureHttpsSession extends AbstractHttpSession {
+
+    private static final ThreadLocal<SecureHttpsSession> sessions = ThreadLocal.withInitial(() -> new SecureHttpsSession());
+
+    public static SecureHttpsSession session(){
+        return sessions.get();
+    }
 
     @Override
     protected CloseableHttpClient opprettKlient(boolean doRedirect) {

@@ -5,14 +5,14 @@ import java.io.IOException;
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.klienter.vtp.openam.OpenamKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
-import no.nav.foreldrepenger.autotest.util.http.HttpsSession;
+import no.nav.foreldrepenger.autotest.util.http.SecureHttpsSession;
 
 public class Aktoer {
 
     public HttpSession session;
 
     public Aktoer() {
-        session = new HttpsSession();
+        session = SecureHttpsSession.session();
     }
 
     public void erLoggetInnUtenRolle() throws IOException {

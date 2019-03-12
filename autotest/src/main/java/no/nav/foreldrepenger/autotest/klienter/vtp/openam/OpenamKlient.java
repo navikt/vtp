@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.slf4j.Logger;
@@ -17,6 +19,8 @@ import no.nav.modig.testcertificates.TestCertificates;
 public class OpenamKlient extends VTPKlient {
 
     private static final Logger LOG = LoggerFactory.getLogger(OpenamKlient.class);
+
+    private static final ThreadLocal<Map<String, BasicClientCookie>> loginCookies = ThreadLocal.withInitial(HashMap::new);
 
     static {
 
@@ -35,6 +39,11 @@ public class OpenamKlient extends VTPKlient {
     }
 
     private void loginBypass(String rolle) {
+        BasicClientCookie cookie = loginCookies.get().computeIfAbsent(rolle, this::createCookie);
+        session.leggTilCookie(cookie);
+    }
+
+    BasicClientCookie createCookie(String rolle) {
         String issuer;
         if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
             // @todo Hvor blir dette brukt. Kan det bruke samme instilling som
@@ -43,14 +52,13 @@ public class OpenamKlient extends VTPKlient {
             issuer = System.getProperty("isso.oauth2.issuer", "https://localhost:8063/isso/oauth2"); //fixme med propertyutils
         }
 
-        LOG.info("Issuer satt til " + issuer);
         String token = new OidcTokenGenerator(rolle, "notcetnonce").withIssuer(issuer).create();
 
         BasicClientCookie cookie = new BasicClientCookie("ID_token", token);
         cookie.setPath("/");
         cookie.setDomain("");
         cookie.setExpiryDate(new Date(LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()));
-        session.leggTilCookie(cookie);
+        return cookie;
     }
 
 }

@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.FpsakKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.navansatt.dto.InnloggetNavAnsatt;
-import no.nav.foreldrepenger.autotest.util.http.HttpSession;
+import no.nav.foreldrepenger.autotest.util.http.BasicHttpSession;
 import no.nav.foreldrepenger.autotest.util.http.rest.StatusRange;
 
 public class NavAnsattKlient extends FpsakKlient{
 
     private static final String NAV_ANSATT_URL = "/nav-ansatt";
     
-    public NavAnsattKlient(HttpSession session) {
+    public NavAnsattKlient(BasicHttpSession session) {
         super(session);
     }
     

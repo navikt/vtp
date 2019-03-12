@@ -131,11 +131,14 @@ public class BehandlingerKlient extends FpsakKlient{
     }
 
     public HttpResponse status(int behandlingId, Integer gruppe) throws IOException {
-        session.setRedirect(false);
-        String url = hentRestRotUrl() + String.format(BEHANDLINGER_STATUS_URL, behandlingId, gruppe);
-        HttpResponse response = getJson(url);
-        session.setRedirect(true);
-        return response;
+        try {
+            session.setRedirect(false);
+            String url = hentRestRotUrl() + String.format(BEHANDLINGER_STATUS_URL, behandlingId, gruppe);
+            HttpResponse response = getJson(url);
+            return response;
+        } finally {
+            session.setRedirect(true);
+        }
     }
 
     public boolean erStatusOk(int behandlingId, Integer gruppe) throws IOException {
