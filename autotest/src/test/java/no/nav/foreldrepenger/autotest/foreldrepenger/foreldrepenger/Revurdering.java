@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Flaky;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -48,7 +47,8 @@ public class Revurdering extends ForeldrepengerTestBase {
 
     @Test
     @DisplayName("Revurdering opprettet manuelt av saksbehandler.")
-    @Description("Førstegangsbehandling til positivt vedtak. Saksbehandler oppretter revurdering. Overstyrer medlemskap. Vedtaket opphører.")
+    @Description("Førstegangsbehandling til positivt vedtak. Saksbehandler oppretter revurdering manuelt. " +
+            "Overstyrer medlemskap. Vedtaket opphører.")
     public void opprettRevurderingManuelt() throws Exception {
 
         TestscenarioDto testscenario = opprettScenario("50");
@@ -138,7 +138,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
         saksbehandler.velgBehandling("Revurdering");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
-        verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"));
+        verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"), "Behandlingsresultat er ikke 'Foreldrepenger er endret'");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
         saksbehandler.hentFagsak(saksnummerE);
         verifiser(saksbehandler.valgtFagsak.hentStatus().kode.equals("LOP"), "Status på fagsaken er ikke løpende.");
@@ -146,7 +146,6 @@ public class Revurdering extends ForeldrepengerTestBase {
     }
 
     @Test
-    @Flaky
     @DisplayName("Revurdering og ny IM når behandling er hos beslutter.")
     @Description("Førstegangsbehandling til positivt vedtak. Revurdering, og ny IM kommer når behandling er hos beslutter. Vedtak fortsatt løpende.")
     public void nyInntektsmeldingUnderÅpenRevurdering() throws Exception {
@@ -280,7 +279,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         for (UttakResultatPeriode periode : saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker()) {
             verifiser(periode.getAktiviteter().size() == 1, "Periode har mer enn én aktivitet");
         }
-        verifiserLikhet(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().get(4).getUtsettelseType().kode, "ARBEID", "Feil utsettelsesperiode.");
+        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().get(4).getUtsettelseType().kode.equals("ARBEID"), "Feil i utsettelsetype eller periode.");
 
     }
 
@@ -318,11 +317,10 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummerE = fordel.sendInnSøknad(endretSøknad.buildEndring(), søkerAktørIdent, søkerIdent,
                 DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
-        // Send inn ny inntektsmelding - med utsettelseperiode
-        BigDecimal arbeidsprosent = new BigDecimal(40);
+        // Send inn ny inntektsmelding - med graderingsperiode
         List<InntektsmeldingBuilder> inntektsmeldingEndret = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
         for (InntektsmeldingBuilder im : inntektsmeldingEndret) {
-            im.addGradertperiode(arbeidsprosent, graderingFom, graderingTom);
+            im.addGradertperiode(BigDecimal.valueOf(40), graderingFom, graderingTom);
         }
         fordel.sendInnInntektsmeldinger(inntektsmeldingEndret, testscenario, saksnummer);
 
@@ -342,8 +340,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         for (UttakResultatPeriode periode : saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker()) {
             verifiser(periode.getAktiviteter().size() == 1, "Periode har mer enn én aktivitet");
         }
-        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().get(4).getAktiviteter().get(0).getTrekkdager() == 9, "Feil antall trekkdager.");
-        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().get(4).getGraderingInnvilget() == true, "Feil utsettelsesperiode.");
+        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().get(4).getGraderingInnvilget() == true, "Feil graderingsperiode.");
 
     }
 

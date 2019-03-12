@@ -478,8 +478,10 @@ public class Uttak extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("PFP-5457 ")
-    @Description("koblet sak endringssøknad - uttakResultatPerioder")
+    @DisplayName("Koblet sak med oppholdsperioder og endringssøknad")
+    @Description("Mor søker (med oppholdsperioder for far). Far søker (med oppholdsperioder for mor). Berørt sak på begge. " +
+            "Endringssøknad fra mor for å sjekke endringsstartpunkt. Endringssøknad fra far for å sjekke endringsstartpunkt." +
+            "Blir opprettet veldig mange revurderinger. En del gå automatisk gjennom og vrient å holde styr på rekkefølge.")
     public void testcase_kobletSak_endringssøknad() throws Exception {
         TestscenarioDto testscenario = opprettScenario("82");
 
