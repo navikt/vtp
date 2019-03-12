@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class OpenamKlient extends VTPKlient {
 
     private static final Logger LOG = LoggerFactory.getLogger(OpenamKlient.class);
 
-    private static final ThreadLocal<Map<String, BasicClientCookie>> loginCookies = ThreadLocal.withInitial(HashMap::new);
+    private static final Map<String, BasicClientCookie> loginCookies = new ConcurrentHashMap<>();
 
     static {
 
@@ -39,7 +39,7 @@ public class OpenamKlient extends VTPKlient {
     }
 
     private void loginBypass(String rolle) {
-        BasicClientCookie cookie = loginCookies.get().computeIfAbsent(rolle, this::createCookie);
+        BasicClientCookie cookie = loginCookies.computeIfAbsent(rolle, this::createCookie);
         session.leggTilCookie(cookie);
     }
 
