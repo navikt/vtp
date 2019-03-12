@@ -30,7 +30,6 @@ import no.seres.xsd.nav.inntektsmelding_m._20181211.PleiepengerPeriodeListe;
 
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
-    BeregningKlient klient;
 
     @Test
     @DisplayName("Tema FOR: Motorvei for foreldrepenger ")
