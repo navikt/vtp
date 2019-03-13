@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.fpmock2.kontrakter;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,10 +17,11 @@ public class PersonhendelseDeserializer extends JsonDeserializer<PersonhendelseD
 
     @Override
     public PersonhendelseDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
-        ObjectMapper mapper = (ObjectMapper) jp.getCodec();
-        ObjectNode root = mapper.readTree(jp);
+        ObjectCodec oc = jp.getCodec();
+        ObjectNode root = oc.readTree(jp);
         PersonhendelseDto dto = null;
 
+        ObjectMapper mapper = (ObjectMapper) oc;
         if (root.has("type") && root.get("type").textValue().equals(FØDSELS_TYPE)) {
             dto = mapper.readValue(root.toString(), FødselshendelseDto.class);
         }

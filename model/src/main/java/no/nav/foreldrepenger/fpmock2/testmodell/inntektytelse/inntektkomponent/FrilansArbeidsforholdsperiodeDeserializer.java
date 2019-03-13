@@ -13,9 +13,6 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
 
 public class FrilansArbeidsforholdsperiodeDeserializer extends JsonDeserializer<List<FrilansArbeidsforholdsperiode> > {
 
@@ -25,11 +22,9 @@ public class FrilansArbeidsforholdsperiodeDeserializer extends JsonDeserializer<
         ObjectCodec oc = jsonParser.getCodec();
         JsonNode node = oc.readTree(jsonParser);
         List<FrilansArbeidsforholdsperiode> frilansArbeidsforholdsperioder = new ArrayList<>();
-        JsonMapper jm = new JsonMapper();
-        ObjectMapper objectMapper = jm.lagObjectMapper();
 
         for (JsonNode nodeElement : node) {
-            FrilansArbeidsforholdsperiode frilansArbeidsforholdsperiode = objectMapper.treeToValue(nodeElement, FrilansArbeidsforholdsperiode.class);
+            FrilansArbeidsforholdsperiode frilansArbeidsforholdsperiode = oc.treeToValue(nodeElement, FrilansArbeidsforholdsperiode.class);
             frilansArbeidsforholdsperioder.addAll(splittFrilansArbeidsforholdTilMånedligeIntervall(frilansArbeidsforholdsperiode));
         }
         return frilansArbeidsforholdsperioder;
