@@ -63,9 +63,6 @@ public class SecureHttpsSession extends AbstractHttpSession {
                     "https", factory).register("http", plainFactory).build();
 
             PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(registry);
-            connManager.setValidateAfterInactivity(100);
-            connManager.setDefaultMaxPerRoute(30);
-            connManager.setMaxTotal(60);
             builder.setConnectionManager(connManager);
             builder.setDefaultRequestConfig(getRequestConfig());
 
