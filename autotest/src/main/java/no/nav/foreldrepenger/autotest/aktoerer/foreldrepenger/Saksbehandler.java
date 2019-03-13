@@ -199,16 +199,16 @@ public class Saksbehandler extends Aktoer{
     public void velgBehandling(Behandling behandling) throws Exception {
         ventPåStatus(behandling);
         
-        Deffered<Behandling> dBehandling = new Deffered<>(() -> {
+        Deffered<Behandling> dBehandling = Deffered.deffered(() -> {
             return behandlingerKlient.getBehandling(behandling.id);
         });
-        Deffered<List<HistorikkInnslag>> dHistorikkInnslag = new Deffered<>(() -> {
+        Deffered<List<HistorikkInnslag>> dHistorikkInnslag = Deffered.deffered(() -> {
             return historikkKlient.hentHistorikk(valgtFagsak.saksnummer);
         });
-        Deffered<List<DokumentListeEnhet>> dDokumentListeEnhet = new Deffered<>(() -> {
+        Deffered<List<DokumentListeEnhet>> dDokumentListeEnhet = Deffered.deffered(() -> {
             return dokumentKlient.hentDokumentliste(valgtFagsak.saksnummer);
         });
-        Deffered<Behandling> dAnnenPartBehandling = new Deffered<>(() -> {
+        Deffered<Behandling> dAnnenPartBehandling = Deffered.deffered(() -> {
             return behandlingerKlient.annenPartBehandling(valgtFagsak.saksnummer);
         });
         
@@ -222,11 +222,11 @@ public class Saksbehandler extends Aktoer{
     }
     
     private void populateBehandling(Behandling behandling) throws Exception {
-        Deffered<List<Aksjonspunkt>> dAksonspunkter = new Deffered<>(() -> {
+        Deffered<List<Aksjonspunkt>> dAksonspunkter = Deffered.deffered(() -> {
             return behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
         });
         
-        Deffered<List<Vilkar>> dVilkår = new Deffered<>(() -> {
+        Deffered<List<Vilkar>> dVilkår = Deffered.deffered(() -> {
             return behandlingerKlient.behandlingVilkår(behandling.id);
         });
         
@@ -235,43 +235,43 @@ public class Saksbehandler extends Aktoer{
         } else {
             BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
             
-            Deffered<Personopplysning> dPersonopplysninger = new Deffered<>(() -> {
+            Deffered<Personopplysning> dPersonopplysninger = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingPersonopplysninger(request);
             });
-            Deffered<Verge> dVerge = new Deffered<>(() -> {
+            Deffered<Verge> dVerge = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingVerge(request);
             });
-            Deffered<Beregningsgrunnlag> dBeregningsgrunnlag = new Deffered<>(() -> {
+            Deffered<Beregningsgrunnlag> dBeregningsgrunnlag = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingBeregningsgrunnlag(request);
             });
-            Deffered<Beregningsresultat> dBeregningsresultat = new Deffered<>(() -> {
+            Deffered<Beregningsresultat> dBeregningsresultat = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
             });
-            Deffered<BeregningsresultatMedUttaksplan> dBeregningsresultatMedUttaksplan = new Deffered<>(() -> {
+            Deffered<BeregningsresultatMedUttaksplan> dBeregningsresultatMedUttaksplan = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
             });
-            Deffered<Soknad> dSoknad = new Deffered<>(() -> {
+            Deffered<Soknad> dSoknad = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingSøknad(request);
             });
-            Deffered<Familiehendelse> dFamiliehendelse = new Deffered<>(() -> {
+            Deffered<Familiehendelse> dFamiliehendelse = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingFamiliehendelse(request);
             });
-            Deffered<Opptjening> dOpptjening = new Deffered<>(() -> {
+            Deffered<Opptjening> dOpptjening = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingOpptjening(request);
             });
-            Deffered<InntektArbeidYtelse> dInntektArbeidYtelse = new Deffered<>(() -> {
+            Deffered<InntektArbeidYtelse> dInntektArbeidYtelse = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingInntektArbeidYtelse(request);
             });
-            Deffered<KontrollerFaktaData> dKontrollerFaktaData = new Deffered<>(() -> {
+            Deffered<KontrollerFaktaData> dKontrollerFaktaData = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
             });
-            Deffered<Medlem> dMedlem = new Deffered<>(() -> {
+            Deffered<Medlem> dMedlem = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingMedlemskap(request);
             });
-            Deffered<UttakResultatPerioder> dUttakResultatPerioder = new Deffered<>(() -> {
+            Deffered<UttakResultatPerioder> dUttakResultatPerioder = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingUttakResultatPerioder(request);
             });
-            Deffered<Saldoer> dStonadskontoer = new Deffered<>(() -> {
+            Deffered<Saldoer> dStonadskontoer = Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingUttakStonadskontoer(request);
             });
             
