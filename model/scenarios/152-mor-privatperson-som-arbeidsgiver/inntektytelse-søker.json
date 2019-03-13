@@ -5,7 +5,10 @@
         "fom": "now() - P12M",
         "tom": "now() - P11M",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -14,7 +17,10 @@
         "fom": "now() - P10M",
         "tom": "now() - P9M",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -23,7 +29,10 @@
         "fom": "now() - P7M",
         "tom": "now() - P6M",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -32,7 +41,10 @@
         "fom": "now() - P4M",
         "tom": "now() - P3M",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -41,7 +53,10 @@
         "fom": "now() - P3M",
         "tom": "now() - P2M",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -50,7 +65,10 @@
         "fom": "now() - P2M",
         "tom": "now() - P1M",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -59,7 +77,10 @@
         "fom": "now() - P1M",
         "tom": "now()",
         "beløp": 30000,
-        "aktorId": "${aktor1}",
+        "arbeidsgiver": {
+            "@type": "person",
+            "ident": "${aktor1}"
+        },
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"

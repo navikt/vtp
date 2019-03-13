@@ -43,8 +43,7 @@ public class ScenariosTest {
             SøkerModell søker = pers.getSøker();
             assertThat(pers.getFamilierelasjoner()).isNotEmpty();
             assertThat(søker.getGeografiskTilknytning()).isNotNull();
-
-
+            
             if (sc.getTemplateNavn().equals(TEST_SCENARIO_NAVN)) {
                 avsjekketEttScenario = avsjekkSpesifiktScenario(pers, søker);
             }

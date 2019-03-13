@@ -132,7 +132,7 @@ public class HentInntektlistBolkMapper {
         loennsinntekt.setInngaarIGrunnlagForTrekk(true);
         loennsinntekt.setInntektsmottaker(aktoer);
         Aktoer arbeidsgiver = ip.getOrgnr() != null && !ip.getOrgnr().equals("") ?
-                lagOrganisation(ip.getOrgnr()) : lagPersonIdent(ip.getAktorId());
+                lagOrganisation(ip.getOrgnr()) : lagPersonIdent(ip.getPersonligArbeidsgiver().getAktørIdent());
         loennsinntekt.setVirksomhet(arbeidsgiver);
         loennsinntekt.setOpplysningspliktig(arbeidsgiver);
         loennsinntekt.setUtbetaltIPeriode(ConversionUtils.convertToXMLGregorianCalendar(ip.getFom()));

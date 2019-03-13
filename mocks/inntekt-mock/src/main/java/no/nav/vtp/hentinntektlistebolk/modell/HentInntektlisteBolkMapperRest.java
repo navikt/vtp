@@ -73,7 +73,7 @@ public class HentInntektlisteBolkMapperRest {
             inntekt.setBeskrivelse(temp.getBeskrivelse());
             inntekt.setFordel(temp.getFordel().getKode());
             Aktoer arbeidsgiver = temp.getOrgnr() != null && !temp.getOrgnr().equals("") ?
-                    Aktoer.newOrganisasjon(temp.getOrgnr()) : Aktoer.newAktoerId(temp.getAktorId());
+                    Aktoer.newOrganisasjon(temp.getOrgnr()) : Aktoer.newAktoerId(temp.getPersonligArbeidsgiver().getAktørIdent());
             inntekt.setVirksomhet(arbeidsgiver);
             inntekt.setOpptjeningsperiodeFom(temp.getFom());
             inntekt.setOpptjeningsperiodeTom(temp.getTom());

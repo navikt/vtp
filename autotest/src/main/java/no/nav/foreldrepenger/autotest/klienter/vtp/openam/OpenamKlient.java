@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.impl.cookie.BasicClientCookie;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
@@ -17,8 +15,6 @@ import no.nav.foreldrepenger.fpmock2.felles.OidcTokenGenerator;
 import no.nav.modig.testcertificates.TestCertificates;
 
 public class OpenamKlient extends VTPKlient {
-
-    private static final Logger LOG = LoggerFactory.getLogger(OpenamKlient.class);
 
     private static final Map<String, BasicClientCookie> loginCookies = new ConcurrentHashMap<>();
 

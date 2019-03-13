@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.util.JsonMapper;
 
-public class FrilansArbeidsforholdsperiodeDeserializer extends JsonDeserializer {
+public class FrilansArbeidsforholdsperiodeDeserializer extends JsonDeserializer<List<FrilansArbeidsforholdsperiode> > {
 
 
     @Override

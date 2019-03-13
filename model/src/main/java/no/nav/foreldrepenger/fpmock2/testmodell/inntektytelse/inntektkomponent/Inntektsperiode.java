@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonArbeidsgiver;
+
 public class Inntektsperiode {
 
 
@@ -20,8 +22,8 @@ public class Inntektsperiode {
     @JsonProperty("orgnr")
     private String orgnr;
 
-    @JsonProperty("aktorId")
-    private String aktorId;
+    @JsonProperty("arbeidsgiver")
+    private PersonArbeidsgiver arbeidsgiver;
 
     @JsonProperty("type")
     private InntektType type;
@@ -47,7 +49,7 @@ public class Inntektsperiode {
     public Inntektsperiode(){ }
 
     public Inntektsperiode(LocalDate fom, LocalDate tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel,
-                           String beskrivelse, String skatteOgAvgiftsregel, Boolean inngaarIGrunnlagForTrekk, Boolean utloeserArbeidsgiveravgift, String aktorId){
+                           String beskrivelse, String skatteOgAvgiftsregel, Boolean inngaarIGrunnlagForTrekk, Boolean utloeserArbeidsgiveravgift, PersonArbeidsgiver arbeidsgiver){
         this.fom = fom;
         this.tom = tom;
         this.beløp = beløp;
@@ -58,7 +60,7 @@ public class Inntektsperiode {
         this.skatteOgAvgiftsregel = skatteOgAvgiftsregel;
         this.inngaarIGrunnlagForTrekk = inngaarIGrunnlagForTrekk;
         this.utloeserArbeidsgiveravgift = utloeserArbeidsgiveravgift;
-        this.aktorId = aktorId;
+        this.arbeidsgiver = arbeidsgiver;
     }
 
     public LocalDate getFom() {
@@ -85,12 +87,8 @@ public class Inntektsperiode {
         this.beløp = beløp;
     }
 
-    public String getAktorId() {
-        return aktorId;
-    }
-
-    public void setAktorId(String aktorId) {
-        this.aktorId = aktorId;
+    public PersonArbeidsgiver getPersonligArbeidsgiver() {
+        return arbeidsgiver;
     }
 
     public String getOrgnr() {

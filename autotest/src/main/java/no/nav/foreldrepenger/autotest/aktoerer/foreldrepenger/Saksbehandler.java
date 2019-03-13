@@ -443,7 +443,7 @@ public class Saksbehandler extends Aktoer{
         bekreftAksjonspunktbekreftelserer(bekreftelser);
     }
     
-    public <T extends AksjonspunktBekreftelse> void bekreftAksjonspunktbekreftelserer(AksjonspunktBekreftelse... bekreftelser) throws Exception {
+    public void bekreftAksjonspunktbekreftelserer(AksjonspunktBekreftelse... bekreftelser) throws Exception {
         bekreftAksjonspunktbekreftelserer(Arrays.asList(bekreftelser));
     }
     
