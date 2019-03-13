@@ -45,7 +45,7 @@ public class PersonhendelseAdapter {
         DødfødselOpprettetHendelseContent.Builder builder = new DødfødselOpprettetHendelseContent.Builder();
 
         if (erSatt(dødfødselhendelseDto.getFnr())) {
-            builder.setPersonIdenter(dødfødselhendelseDto.getFnr(), aktørIdFraFnr(dødfødselhendelseDto.getFnr()));
+            builder.setIdenter(dødfødselhendelseDto.getFnr(), aktørIdFraFnr(dødfødselhendelseDto.getFnr()));
         }
         if (erSatt(dødfødselhendelseDto.getDoedfoedselsdato())) {
             builder.setDoedfoedselsdato(dødfødselhendelseDto.getDoedfoedselsdato());
@@ -57,7 +57,7 @@ public class PersonhendelseAdapter {
         DødsmeldingOpprettetHendelseContent.Builder builder = new DødsmeldingOpprettetHendelseContent.Builder();
 
         if(erSatt(dødshendelseDto.getFnr())){
-            builder.setPersonIdenter(dødshendelseDto.getFnr(),aktørIdFraFnr(dødshendelseDto.getFnr()));
+            builder.setIdenter(dødshendelseDto.getFnr(),aktørIdFraFnr(dødshendelseDto.getFnr()));
         }
         if(erSatt(dødshendelseDto.getDoedsdato())){
             builder.setDoedsdato(dødshendelseDto.getDoedsdato());

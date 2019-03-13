@@ -7,24 +7,24 @@ import java.util.List;
 public class DødsmeldingOpprettetHendelseContent implements HendelseContent {
     private static final String TYPE = "DOEDSMELDINGOPPRETTET";
 
-    private List<String> personIdenter;
+    private List<String> identer;
     private LocalDate doedsdato;
 
     private DødsmeldingOpprettetHendelseContent(Builder builder){
-        this.personIdenter = builder.personIdenter;
+        this.identer = builder.identer;
         this.doedsdato = builder.doedsdato;
     }
 
-    public List<String> getPersonIdenter() {
-        return personIdenter;
+    public List<String> getIdenter() {
+        return identer;
     }
 
     public LocalDate getDoedsdato() {
         return doedsdato;
     }
 
-    public void setPersonIdenter(List<String> personIdenter) {
-        this.personIdenter = personIdenter;
+    public void setIdenter(List<String> identer) {
+        this.identer = identer;
     }
 
 
@@ -40,13 +40,13 @@ public class DødsmeldingOpprettetHendelseContent implements HendelseContent {
 
 
     public static class Builder{
-        private List<String> personIdenter;
+        private List<String> identer;
         private LocalDate doedsdato;
 
-        public Builder setPersonIdenter(String fnr, String aktørId){
-            personIdenter = new ArrayList<>();
-            personIdenter.add(fnr);
-            personIdenter.add(aktørId);
+        public Builder setIdenter(String fnr, String aktørId){
+            identer = new ArrayList<>();
+            identer.add(fnr);
+            identer.add(aktørId);
             return this;
         }
         public Builder setDoedsdato(LocalDate doedsdato){

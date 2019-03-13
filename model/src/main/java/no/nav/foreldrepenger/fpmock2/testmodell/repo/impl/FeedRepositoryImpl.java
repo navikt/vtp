@@ -59,7 +59,8 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     private boolean entryHarSequenceIVindu(FeedEntry entry, Integer sequenceId, Integer pageSize) {
-        return entry.getSequence() >= sequenceId.longValue() && entry.getSequence() < sequenceId+pageSize;
+        return sequenceId != null && pageSize != null && entry.getSequence() >= sequenceId.longValue()
+                && entry.getSequence() < sequenceId+pageSize;
     }
 
     private static Metadata genererMetaData() {

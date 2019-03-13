@@ -7,24 +7,24 @@ import java.util.List;
 public class DødfødselOpprettetHendelseContent implements HendelseContent {
     private static final String TYPE = "DOEDFOEDSELOPPRETTET";
 
-    private List<String> personIdenter;
+    private List<String> identer;
     private LocalDate doedfoedselsdato;
 
     private DødfødselOpprettetHendelseContent(DødfødselOpprettetHendelseContent.Builder builder) {
-        this.personIdenter = builder.personIdenter;
+        this.identer = builder.identer;
         this.doedfoedselsdato = builder.doedfoedselsdato;
     }
 
-    public List<String> getPersonIdenter() {
-        return personIdenter;
+    public List<String> getIdenter() {
+        return identer;
     }
 
     public LocalDate getDoedfoedselsdato() {
         return doedfoedselsdato;
     }
 
-    public void setPersonIdenter(List<String> personIdenter) {
-        this.personIdenter = personIdenter;
+    public void setIdenter(List<String> identer) {
+        this.identer = identer;
     }
 
     public void setDoedfoedselsdato(LocalDate doedfoedselsdato) {
@@ -37,13 +37,13 @@ public class DødfødselOpprettetHendelseContent implements HendelseContent {
     }
 
     public static class Builder {
-        private List<String> personIdenter;
+        private List<String> identer;
         private LocalDate doedfoedselsdato;
 
-        public DødfødselOpprettetHendelseContent.Builder setPersonIdenter(String fnr, String aktørId) {
-            personIdenter = new ArrayList<>();
-            personIdenter.add(fnr);
-            personIdenter.add(aktørId);
+        public DødfødselOpprettetHendelseContent.Builder setIdenter(String fnr, String aktørId) {
+            identer = new ArrayList<>();
+            identer.add(fnr);
+            identer.add(aktørId);
             return this;
         }
         public DødfødselOpprettetHendelseContent.Builder setDoedfoedselsdato(LocalDate doedfoedselsdato) {
