@@ -196,6 +196,45 @@ public class Beregning extends ForeldrepengerTestBase {
     @DisplayName("Endret beregningsgrunnlag med kortvarig")
     @Description("Endret beregningsgrunnlag med kortvarig")
     @Tag("beregning")
+    public void mor_søker_fødsel_med_to_arbeidsforhold_i_samme_organisasjon_inntektsmelding_for_en_med_id_velger_og_sette_det_andre_til_inaktivt() throws Exception {
+
+        TestscenarioDto testscenario = opprettScenario("57");
+
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMor(søkerAktørIdent, fødselsdato);
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
+        List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
+        String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+        InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilder(inntekter.get(0), fnr,
+                fpStartdato, orgnr, Optional.of("ARB001-001"), Optional.empty());
+
+        fordel.sendInnInntektsmelding(inntektsmelding, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        saksbehandler.gjenopptaBehandling();
+
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
+                .bekreftArbeidsforholdErOverstyrt("ACANDO AS", LocalDate.now().minusYears(3), fpStartdato.minusDays(10));
+
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
+
+        saksbehandler.hentFagsak(saksnummer);
+
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
+    }
+
+    @Test
+    @DisplayName("Endret beregningsgrunnlag med kortvarig")
+    @Description("Endret beregningsgrunnlag med kortvarig")
+    @Tag("beregning")
     public void endret_beregningsgrunnlag_med_kortvarig() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
 

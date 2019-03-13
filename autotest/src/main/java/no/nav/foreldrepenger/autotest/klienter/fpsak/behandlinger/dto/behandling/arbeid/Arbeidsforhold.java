@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Arbeidsforhold {
-    
+
     protected String id = null;
     protected String navn = null;
     protected String arbeidsgiverIdentifikator = null;
@@ -28,6 +28,7 @@ public class Arbeidsforhold {
     protected Boolean ikkeRegistrertIAaRegister = null;
     protected Boolean tilVurdering = null;
     protected Boolean vurderOmSkalErstattes = null;
+    protected LocalDate overstyrtTom = null;
 
     public Boolean getBrukArbeidsforholdet() {
         return brukArbeidsforholdet;
@@ -49,8 +50,16 @@ public class Arbeidsforhold {
         return navn;
     }
 
+    public LocalDate getFomDato() {
+        return fomDato;
+    }
+
     public void setNavn(String navn) {
         this.navn = navn;
+    }
+
+    public void setOverstyrtTom(LocalDate overstyrtTom) {
+        this.overstyrtTom = overstyrtTom;
     }
 
 }
