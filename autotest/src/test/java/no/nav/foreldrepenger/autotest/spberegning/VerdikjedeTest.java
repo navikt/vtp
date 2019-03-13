@@ -622,7 +622,6 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 50.0D, "Avvik");
     }
 
-
     @Test //TODO Støtter ikke inntektsfilter i VTP. Utvide med støtte for filter 8-28 og 8-30
     @DisplayName("Tema SYK: Kombinasjon arbeidstaker og frilanser")
     @Description("Feriepenger skal ikke med i beregnet inntekt(§8-28), endring i arbeidsforhold, sluttet/startet i samme arbeidsforhold og IM på feil ytelse skal ikke med i beregning")
@@ -683,7 +682,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
     @Test
     @DisplayName("Tema SYK: Test bruker med frilansoppdrag hos privatperson")
     @Description("Bruker har kun inntekt som frilanser. Skjæringstidspunkt og status blir manuelt satt")
-    public void FosFLPrivatOppdragsgiver() throws Exception {
+    public void SykFLPrivatOppdragsgiver() throws Exception {
         //Lag privat arbeidsgiver
         TestscenarioDto arbeidsgiverScenario = opprettScenario("110");
         String arbeidsgiverFnr = arbeidsgiverScenario.getPersonopplysninger().getSøkerIdent();
