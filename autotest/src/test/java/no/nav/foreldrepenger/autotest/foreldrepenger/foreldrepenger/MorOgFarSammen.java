@@ -11,6 +11,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import java.time.LocalDate;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
 public class MorOgFarSammen extends ForeldrepengerTestBase {
 
     @Test
+    @Disabled
     @DisplayName("Mor og far koblet sak, kant til kant")
     @Description("Mor søker, får AP slik at behandling stopper opp. Far sender søknad og blir satt på vent. Behandler ferdig mor sin søknad (positivt vedtak)." +
             "Behandler far sin søknad (positivt vedtak). Ingen overlapp. Verifiserer at sakene er koblet og at det ikke opprettes revurdering berørt sak.")
@@ -84,6 +86,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Far og mor søker fødsel med overlappende uttaksperiode")
     @Description("Mor søker og får innvilget. Far søker med to uker overlapp med mor (stjeling). Far får innvilget. " +
             "Berørt sak opprettet mor. Siste periode blir spittet i to og siste del blir avlsått. Det opprettes ikke" +
@@ -149,6 +152,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Mor og far koblet sak med oppholdsperiode")
     @Description("Mor og far sender inn søknader med oppholdsperiode for den andre parten. Periodene er kant til kant. " +
             "Berørt sak opprettes fordi periodene anses som overlapp. Verifiserer på like trekkdager i siste behandling hos begge.")
