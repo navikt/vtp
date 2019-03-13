@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 
 public class Deffered<T> {
 
-    public static final java.util.concurrent.ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(20);
+    public static final java.util.concurrent.ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     private final Future<T> future;
     private Deffered(Future<T> future){

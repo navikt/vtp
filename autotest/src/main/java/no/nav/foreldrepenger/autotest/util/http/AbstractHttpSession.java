@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -17,11 +19,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpCoreContext;
 
 public abstract class AbstractHttpSession implements HttpSession {
@@ -92,7 +98,6 @@ public abstract class AbstractHttpSession implements HttpSession {
         int connectTimeoutMillis = 5000;
         requestBuilder = requestBuilder.setConnectTimeout(connectTimeoutMillis * 6);
         requestBuilder = requestBuilder.setSocketTimeout(connectTimeoutMillis * 6);
-        requestBuilder = requestBuilder.setConnectionRequestTimeout(connectTimeoutMillis);
 
         return requestBuilder.build();
     }
@@ -130,6 +135,27 @@ public abstract class AbstractHttpSession implements HttpSession {
     @Override
     public String getCurrentUrl() {
         return ((HttpUriRequest) context.getAttribute(HttpCoreContext.HTTP_REQUEST)).getURI().toString();
+    }
+    
+    protected ConnectionKeepAliveStrategy createKeepAliveStrategy(int seconds) {
+        ConnectionKeepAliveStrategy myStrategy = new ConnectionKeepAliveStrategy() {
+            @Override
+            public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
+                HeaderElementIterator it = new BasicHeaderElementIterator
+                    (response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+                while (it.hasNext()) {
+                    HeaderElement he = it.nextElement();
+                    String param = he.getName();
+                    String value = he.getValue();
+                    if (value != null && param.equalsIgnoreCase
+                       ("timeout")) {
+                        return Long.parseLong(value) * 1000;
+                    }
+                }
+                return seconds * 1000;
+            }
+        };
+        return myStrategy;
     }
 
 }

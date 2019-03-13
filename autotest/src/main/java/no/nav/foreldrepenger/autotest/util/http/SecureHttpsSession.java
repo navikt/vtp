@@ -10,6 +10,7 @@ import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -49,7 +50,7 @@ public class SecureHttpsSession extends AbstractHttpSession {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, sertifikater, null);
             
-            SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext);
+            SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
             PlainConnectionSocketFactory plainFactory = new PlainConnectionSocketFactory();
 
             
@@ -63,6 +64,7 @@ public class SecureHttpsSession extends AbstractHttpSession {
                     "https", factory).register("http", plainFactory).build();
 
             PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(registry);
+            builder.setKeepAliveStrategy(createKeepAliveStrategy(30));
             builder.setConnectionManager(connManager);
             builder.setDefaultRequestConfig(getRequestConfig());
 
