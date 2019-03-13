@@ -4,7 +4,6 @@ import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 
 import io.qameta.allure.Description;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -250,7 +249,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiser(morDispFedrekvote == farDispFedrekvote, "Partene har forskjellig saldo for Fedrekvote");
         verifiser(morDispFellesperiode == farDispFellesperiode, "Partene har forskjellig saldo for Fellesperiode");
         verifiser(morDispFPFF == farDispFPFF, "Partene har forskjellig saldo for Foreldrepenger før fødsel");
-
     }
     
     @Test
