@@ -2,13 +2,15 @@ package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonArbeidsgiver;
 
+@JsonInclude(Include.NON_EMPTY)
 public class Inntektsperiode {
-
 
     @JsonProperty("fom")
     private LocalDate fom;
@@ -87,6 +89,7 @@ public class Inntektsperiode {
         this.beløp = beløp;
     }
 
+    @JsonIgnore
     public PersonArbeidsgiver getPersonligArbeidsgiver() {
         return arbeidsgiver;
     }
