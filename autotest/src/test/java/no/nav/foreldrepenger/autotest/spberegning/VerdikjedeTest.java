@@ -135,7 +135,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 684000D, "Beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 54.05D, "Avvik");
     }
@@ -179,7 +179,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 5), "Skjæringstidspunkt");
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 444000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 1.2D, "Avvik");
 
@@ -304,7 +304,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 696600D, "Beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 710000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 1.89D, "Avvik");
         verifiserLikhet(saksbehandler.getSjømann(), true);
@@ -350,7 +350,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "OMS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 444000D, "Beregnet årsinntekt");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 710000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 37.46D, "Avvik");
         verifiserLikhet(saksbehandler.getSjømann(), true); //Skal endres til "false" siden arbeidsforholdet bruker er sjømann i er avsluttet
@@ -394,9 +394,8 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
-        verifiserLikhet(saksbehandler.beregnetÅrsinntekt(), 2160000D, "Sum inntekt");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 2160000D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 2100000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 2.86D, "Avvik");
     }
@@ -487,7 +486,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 1549200D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 10, 31), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 2100000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 26.23D, "Avvik");
     }
@@ -531,7 +530,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 449400D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 600000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 25.1D, "Avvik");
     }
@@ -550,6 +549,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         String saksnummer = fordel.opprettSak(testscenario, Tema);
 
 
+        //Oppretter inntektsmelding for ytelsen Foreldrepenger
         InntektsmeldingBuilder inntektsmeldingsBuilder = inntektsmeldingGrunnlag(inntektsmeldingMånedsbeløp, testscenario.getPersonopplysninger().getSøkerIdent(), "979191138", "ARB001-001", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY)
                 .setRefusjon(InntektsmeldingBuilder.createRefusjon(inntektsmeldingRefusjon, refusjonOpphørsdato, null))
                 .setStartdatoForeldrepengeperiodenFOM(LocalDate.of(2018, 10, 6));
@@ -563,15 +563,18 @@ public class VerdikjedeTest extends SpberegningTestBase {
 
         fordel.journalførInnektsmelding(inntektsmeldingsBuilder, testscenario, Long.parseLong(saksnummer));
 
+        //SB åpner beregningsmodulen fra "Gosys" og logger inn
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.foreslåBeregning(Tema, testscenario, saksnummer);
 
+        //SB Validerer skjæringstidspunkt og setter status
         verifiserLikhet(saksbehandler.getSkjæringstidspunkt(), LocalDate.of(2018, 10, 6), "Skjæringstidspunkt");
         saksbehandler.oppdaterBeregning(saksbehandler.getSkjæringstidspunkt(), "Kombinert arbeidstaker og frilanser");
 
+        //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOR", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 360000D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 600000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 40D, "Avvik");
     }
@@ -617,7 +620,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 720000D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 480000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 50.0D, "Avvik");
     }
@@ -650,7 +653,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 600000D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 11, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 11, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 600000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 0D, "Avvik");
     }
@@ -674,7 +677,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "FOS", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 120000D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 120000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 0D, "Avvik");
     }
@@ -703,7 +706,7 @@ public class VerdikjedeTest extends SpberegningTestBase {
         //Validerer beregning
         verifiserLikhet(saksbehandler.beregning.getTema().kode, "SYK", "Beregningstema");
         verifiserLikhet(saksbehandler.BruttoInkludertBortfaltNaturalytelsePrAar(), 120000D, "Beregnet årsinntekt inkl naturalytelse");
-        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30));
+        verifiserLikhet(saksbehandler.sammenligningsperiodeTom(), LocalDate.of(2018, 9, 30), "TOM dato for innhenting av sammenligningsgrunnlag");
         verifiserLikhet(saksbehandler.getSammenligningsgrunnlag(), 480000D, "Sammenlikningsgrunnlag");
         verifiserLikhet(saksbehandler.getAvvikIProsent(), 75.0D, "Avvik");
     }
