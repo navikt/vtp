@@ -34,8 +34,8 @@ public class HentInntektlistBolkMapper {
     public static ArbeidsInntektIdent makeArbeidsInntektIdent(InntektskomponentModell modell, Aktoer aktoer) {
         ArbeidsInntektIdent arbeidsInntektIdent = new ArbeidsInntektIdent();
         arbeidsInntektIdent.setIdent(aktoer);
-        List<Inntekt> inntektsliste = mapInntektFraModell(modell.getInntektsperioder(), aktoer);
-        List<ArbeidsforholdFrilanser> arbeidsforholdFrilansereListe = mapArbeidsforholdFrilansFraModell(modell.getFrilansarbeidsforholdperioder(), aktoer);
+        List<Inntekt> inntektsliste = mapInntektFraModell(modell.getInntektsperioderSplittMånedlig(), aktoer);
+        List<ArbeidsforholdFrilanser> arbeidsforholdFrilansereListe = mapArbeidsforholdFrilansFraModell(modell.getFrilansarbeidsforholdperioderSplittMånedlig(), aktoer);
         Map<String, List<Inntekt>> inntektsMåneder = new HashMap<>();
 
         for (Inntekt inntekt : inntektsliste) {
@@ -176,7 +176,7 @@ public class HentInntektlistBolkMapper {
 
     //TODO: Skriv om til å både inntekt og arbeidsforhold
     private static List<LocalDate> getMonthYearsWithData(InntektskomponentModell modell) {
-        if (modell.getInntektsperioder().size() == 0) {
+        if (modell.getInntektsperioderSplittMånedlig().size() == 0) {
             return new ArrayList<>();
         }
         LocalDate minDate = getMinimumMonth(modell);
@@ -190,11 +190,11 @@ public class HentInntektlistBolkMapper {
     }
 
     private static LocalDate getMinimumMonth(InntektskomponentModell modell) {
-        return modell.getInntektsperioder().stream().min(Comparator.comparing(t -> t.getFom())).get().getFom();
+        return modell.getInntektsperioderSplittMånedlig().stream().min(Comparator.comparing(t -> t.getFom())).get().getFom();
     }
 
     private static LocalDate getMaximumMonth(InntektskomponentModell modell) {
-        return modell.getInntektsperioder().stream().max(Comparator.comparing(t -> t.getTom())).get().getTom();
+        return modell.getInntektsperioderSplittMånedlig().stream().max(Comparator.comparing(t -> t.getTom())).get().getTom();
     }
 
 

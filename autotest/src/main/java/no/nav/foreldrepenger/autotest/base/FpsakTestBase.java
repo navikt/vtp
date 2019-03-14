@@ -74,10 +74,10 @@ public class FpsakTestBase extends TestScenarioTestBase {
         List<Inntektsperiode> inntektsperioder;
         List<Arbeidsforhold> arbeidsforholdEtterStartdatoFP;
         if (erAnnenpart == true) {
-            inntektsperioder = testscenario.getScenariodataAnnenpart().getInntektskomponentModell().getInntektsperioder();
+            inntektsperioder = testscenario.getScenariodataAnnenpart().getInntektskomponentModell().getInntektsperioderSplittMånedlig();
             arbeidsforholdEtterStartdatoFP = testscenario.getScenariodataAnnenpart().getArbeidsforholdModell().getArbeidsforhold();
         } else {
-            inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder();
+            inntektsperioder = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig();
             arbeidsforholdEtterStartdatoFP = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold();
         }
         arbeidsforholdEtterStartdatoFP.stream()

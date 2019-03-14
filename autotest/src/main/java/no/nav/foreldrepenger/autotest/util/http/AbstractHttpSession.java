@@ -12,7 +12,6 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -93,16 +92,6 @@ public abstract class AbstractHttpSession implements HttpSession {
     protected abstract CloseableHttpClient opprettKlient(boolean doRedirect);
 
     @Override
-    public RequestConfig getRequestConfig() {
-        RequestConfig.Builder requestBuilder = RequestConfig.custom();
-        int connectTimeoutMillis = 5000;
-        requestBuilder = requestBuilder.setConnectTimeout(connectTimeoutMillis * 6);
-        requestBuilder = requestBuilder.setSocketTimeout(connectTimeoutMillis * 6);
-
-        return requestBuilder.build();
-    }
-
-    @Override
     public void setUserCredentials(String username, String password) {
         CredentialsProvider provider = new BasicCredentialsProvider();
         provider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
@@ -137,7 +126,7 @@ public abstract class AbstractHttpSession implements HttpSession {
         return ((HttpUriRequest) context.getAttribute(HttpCoreContext.HTTP_REQUEST)).getURI().toString();
     }
     
-    protected ConnectionKeepAliveStrategy createKeepAliveStrategy(int seconds) {
+    protected static ConnectionKeepAliveStrategy createKeepAliveStrategy(int seconds) {
         ConnectionKeepAliveStrategy myStrategy = new ConnectionKeepAliveStrategy() {
             @Override
             public long getKeepAliveDuration(HttpResponse response, HttpContext context) {

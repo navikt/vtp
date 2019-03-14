@@ -69,7 +69,7 @@ public class SpberegningTestBase extends TestBase {
         List<InntektsmeldingBuilder> inntektsmeldinger = new ArrayList<>();
         String fnr = testscenario.getPersonopplysninger().getSøkerIdent();
 
-        for (Inntektsperiode periode : testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder()) {
+        for (Inntektsperiode periode : testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig()) {
             String orgnummer = periode.getOrgnr();
             Integer belop = periode.getBeløp();
 

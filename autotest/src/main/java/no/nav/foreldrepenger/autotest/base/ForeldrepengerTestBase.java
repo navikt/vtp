@@ -15,7 +15,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
 public class ForeldrepengerTestBase extends FpsakTestBase {
 
     protected List<Integer> sorterteInntektsbeløp(TestscenarioDto testscenario) {
-        return testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().stream()
+        return testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig().stream()
                 .map(Inntektsperiode::getBeløp)
                 .distinct()
                 .sorted(Comparator.reverseOrder())

@@ -1,36 +1,39 @@
 package no.nav.foreldrepenger.autotest.util.http;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.client.StandardHttpRequestRetryHandler;
 
 public class SecureHttpsSession extends AbstractHttpSession {
-
     private static final ThreadLocal<SecureHttpsSession> sessions = ThreadLocal.withInitial(() -> new SecureHttpsSession());
 
-    public static SecureHttpsSession session(){
+    private static final CloseableHttpClient redirectClient = getKlient(true);
+    private static final CloseableHttpClient nonRedirectClient = getKlient(false);
+
+    public static SecureHttpsSession session() {
         return sessions.get();
     }
 
     @Override
     protected CloseableHttpClient opprettKlient(boolean doRedirect) {
+        return doRedirect ? redirectClient : nonRedirectClient;
+    }
+
+    private static CloseableHttpClient getKlient(boolean doRedirect) {
         try {
             HttpClientBuilder builder = HttpClients.custom().useSystemProperties();
-            TrustManager[] sertifikater = new TrustManager[]{
+            TrustManager[] sertifikater = new TrustManager[] {
                     new X509TrustManager() {
                         @Override
                         public X509Certificate[] getAcceptedIssuers() {
@@ -45,34 +48,40 @@ public class SecureHttpsSession extends AbstractHttpSession {
                         public void checkClientTrusted(X509Certificate[] arg0, String arg1) {
                         }
                     }
-                };
+            };
 
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, sertifikater, null);
-            
-            SSLConnectionSocketFactory factory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
-            PlainConnectionSocketFactory plainFactory = new PlainConnectionSocketFactory();
+            SSLContext sslContext;
+            try {
+                sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, sertifikater, null);
+            } catch (KeyManagementException | NoSuchAlgorithmException e) {
+                throw new IllegalStateException("Kunne ikke initialisere TLS", e);
+            }
+            builder.setSSLContext(sslContext);
+            builder.setMaxConnPerRoute(20);
+            builder.setMaxConnTotal(100);
 
-            
             if (doRedirect) {
                 builder = builder.setRedirectStrategy(new LaxRedirectStrategy());
             } else {
                 builder = builder.disableRedirectHandling();
             }
 
-            Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create().register(
-                    "https", factory).register("http", plainFactory).build();
-
-            PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(registry);
             builder.setKeepAliveStrategy(createKeepAliveStrategy(30));
-            builder.setConnectionManager(connManager);
-            builder.setDefaultRequestConfig(getRequestConfig());
+            
+            RequestConfig.Builder requestBuilder = RequestConfig.custom();
+            int connectTimeoutMillis = 5000;
+            requestBuilder = requestBuilder.setConnectTimeout(connectTimeoutMillis * 6);
+            requestBuilder = requestBuilder.setSocketTimeout(connectTimeoutMillis * 6);
+            
+            builder.setDefaultRequestConfig(requestBuilder.build());
+            builder.setRetryHandler(new StandardHttpRequestRetryHandler());
 
             return builder.build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
-
     }
+
 }

@@ -13,14 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 
-public abstract class JsonRest extends Rest{
+public abstract class JsonRest extends Rest {
 
     private static String ACCEPT_JSON_HEADER = "application/json";
 
     public JsonRest(HttpSession session) {
         super(session);
     }
-    
+
     /*
      * POST
      */
@@ -50,12 +50,14 @@ public abstract class JsonRest extends Rest{
         return postOgHentJson(url, requestData, new HashMap<>(), returnType, expectedStatusRange);
     }
 
-    protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange) throws IOException {
+    protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, Class<T> returnType, StatusRange expectedStatusRange)
+            throws IOException {
         String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
         return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
 
-    protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange) throws IOException {
+    protected <T> T postOgHentJson(String url, Object requestData, Map<String, String> headers, JavaType returnType, StatusRange expectedStatusRange)
+            throws IOException {
         String json = postOgVerifiser(url, requestData, headers, expectedStatusRange);
         return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
@@ -68,12 +70,11 @@ public abstract class JsonRest extends Rest{
         String request = requestData == null ? "{}" : hentObjectMapper().writeValueAsString(requestData);
         HttpResponse response = postJson(url, request, headers);
         String json = hentResponseBody(response);
-        if(expectedStatusRange != null) {
-            ValidateResponse(response, expectedStatusRange, url + "\n" + request +"\n\n" + json);
+        if (expectedStatusRange != null) {
+            ValidateResponse(response, expectedStatusRange, url + "\n" + request + "\n\n" + json);
         }
         return json;
     }
-
 
     /*
      * GET
@@ -113,7 +114,6 @@ public abstract class JsonRest extends Rest{
         return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
 
-
     /*
      * PUT
      */
@@ -128,7 +128,6 @@ public abstract class JsonRest extends Rest{
         return response;
     }
 
-
     protected StringEntity hentJsonPostEntity(String json) {
         try {
             return new StringEntity(json, ContentType.APPLICATION_JSON);
@@ -138,5 +137,7 @@ public abstract class JsonRest extends Rest{
         }
     }
 
-    protected abstract ObjectMapper hentObjectMapper();
+    protected ObjectMapper hentObjectMapper() {
+        return JsonKlient.getObjectMapper();
+    }
 }

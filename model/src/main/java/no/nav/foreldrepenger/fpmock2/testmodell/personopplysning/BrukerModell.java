@@ -5,18 +5,22 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.annotation.Nulls;
 
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 
+@JsonInclude(Include.NON_NULL)
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY)
-@JsonSubTypes({ @Type(BarnModell.class), @Type(SøkerModell.class), @Type(AnnenPartModell.class), @Type(BrukerIdent.class) , @Type(PersonArbeidsgiver.class) })
+@JsonSubTypes({ @Type(BarnModell.class), @Type(SøkerModell.class), @Type(AnnenPartModell.class), @Type(BrukerIdent.class), @Type(PersonArbeidsgiver.class) })
 public abstract class BrukerModell {
 
     /** Ident referanse, hver unik referanse vil erstattes av en syntetisk men 'gyldig' ident (FNR). */
@@ -30,6 +34,8 @@ public abstract class BrukerModell {
     /** Variabler delt i scenario. */
     @JacksonInject
     private VariabelContainer vars;
+
+    private String aktørIdent;
 
     public BrukerModell() {
         // default ctor.
@@ -70,10 +76,19 @@ public abstract class BrukerModell {
         this.identer = identer;
     }
 
+    @JsonGetter()
     public String getAktørIdent() {
+        if (aktørIdent != null) {
+            return aktørIdent;
+        }
         // aktørId er pt. 13 siffer. bruker FNR som utgangspunkt som er 11 slik at det er enkelt å spore
         String ident = getIdent();
         return ident == null ? null : "99" + ident;
+    }
+
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    public void setAktørIdent(String aktørIdent) {
+        this.aktørIdent = aktørIdent;
     }
 
 }

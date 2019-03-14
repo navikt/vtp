@@ -7,12 +7,20 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SimulerOppdragDto{
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+public class SimulerOppdragDto {
+
+    @JsonProperty
     private Long behandlingId;
 
+    @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> oppdragPrMottaker;
 
+    @JsonProperty
     private String behandlingÅrsakKode;
 
     public SimulerOppdragDto(Long behandlingId, List<String> oppdragPrMottaker) {
@@ -37,14 +45,13 @@ public class SimulerOppdragDto{
         return behandlingÅrsakKode;
     }
 
-
     @JsonIgnore
     public static SimulerOppdragDto lagDto(Long behandlingId, List<String> råXml) {
         Objects.requireNonNull(råXml, "Rå XML kan ikke være null");
         List<String> encoded = råXml.stream()
-                .map(str -> Base64.getEncoder()
-                        .encodeToString(str.getBytes(Charset.forName("UTF-8"))))
-                .collect(Collectors.toList());
+            .map(str -> Base64.getEncoder()
+                .encodeToString(str.getBytes(Charset.forName("UTF-8"))))
+            .collect(Collectors.toList());
         return new SimulerOppdragDto(behandlingId, encoded);
     }
 }

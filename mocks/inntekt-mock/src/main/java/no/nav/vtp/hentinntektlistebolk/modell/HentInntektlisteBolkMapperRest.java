@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
@@ -21,10 +18,7 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsforholdFrilanser;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.Inntekt;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.InntektType;
 
-
 public class HentInntektlisteBolkMapperRest {
-    private static final Logger LOG = LoggerFactory.getLogger(HentInntektlisteBolkMapperRest.class);
-
 
     public static ArbeidsInntektIdent makeArbeidsInntektIdent(InntektskomponentModell modell, Aktoer aktoer, YearMonth fom, YearMonth tom) {
         ArbeidsInntektIdent arbeidsInntektIdent = new ArbeidsInntektIdent();
@@ -44,36 +38,39 @@ public class HentInntektlisteBolkMapperRest {
         return arbeidsInntektIdent;
     }
 
-    private static ArbeidsInntektInformasjon makeArbeidsInntektInformasjonForMåned(InntektskomponentModell modell, YearMonth måned){
+    private static ArbeidsInntektInformasjon makeArbeidsInntektInformasjonForMåned(InntektskomponentModell modell, YearMonth måned) {
         ArbeidsInntektInformasjon arbeidsInntektInformasjon = new ArbeidsInntektInformasjon();
-        arbeidsInntektInformasjon.setArbeidsforholdListe(arbeidsforholdFrilanserListeFraModellListeForMåned(modell.getFrilansarbeidsforholdperioder(), måned));
-        arbeidsInntektInformasjon.setInntektListe(inntektListeFraModell(modell.getInntektsperioder(), måned));
+        arbeidsInntektInformasjon
+            .setArbeidsforholdListe(arbeidsforholdFrilanserListeFraModellListeForMåned(modell.getFrilansarbeidsforholdperioderSplittMånedlig(), måned));
+        arbeidsInntektInformasjon.setInntektListe(inntektListeFraModell(modell.getInntektsperioderSplittMånedlig(), måned));
         return arbeidsInntektInformasjon;
     }
 
-    private static List<ArbeidsforholdFrilanser> arbeidsforholdFrilanserListeFraModellListeForMåned(List<FrilansArbeidsforholdsperiode> modellPeriode, YearMonth måned){
-        List<FrilansArbeidsforholdsperiode> frilansArbeidsforholdsperiodeList = modellPeriode.stream().filter(t-> localDateTimeInYearMonth(t.getFrilansFom(),måned)).collect(Collectors.toList());
+    private static List<ArbeidsforholdFrilanser> arbeidsforholdFrilanserListeFraModellListeForMåned(List<FrilansArbeidsforholdsperiode> modellPeriode,
+                                                                                                    YearMonth måned) {
+        List<FrilansArbeidsforholdsperiode> frilansArbeidsforholdsperiodeList = modellPeriode.stream()
+            .filter(t -> localDateTimeInYearMonth(t.getFrilansFom(), måned)).collect(Collectors.toList());
         return frilansArbeidsforholdsperiodeList.stream().map(temp -> {
             ArbeidsforholdFrilanser res = new ArbeidsforholdFrilanser();
             res.setFrilansPeriodeFom(temp.getFrilansFom());
             res.setFrilansPeriodeTom(temp.getFrilansTom());
             res.setArbeidsforholdstype(temp.getArbeidsforholdstype());
-            res.setStillingsprosent((double)temp.getStillingsprosent());
+            res.setStillingsprosent((double) temp.getStillingsprosent());
             res.setArbeidsgiver(Aktoer.newOrganisasjon(temp.getOrgnr()));
             return res;
         }).collect(Collectors.toList());
     }
 
-
-    private static List<Inntekt> inntektListeFraModell(List<Inntektsperiode> modellPeriode, YearMonth måned){
-        List<Inntektsperiode> inntektsperiodeList = modellPeriode.stream().filter(t->localDateTimeInYearMonth(t.getTom(),måned)).collect(Collectors.toList());
+    private static List<Inntekt> inntektListeFraModell(List<Inntektsperiode> modellPeriode, YearMonth måned) {
+        List<Inntektsperiode> inntektsperiodeList = modellPeriode.stream().filter(t -> localDateTimeInYearMonth(t.getTom(), måned))
+            .collect(Collectors.toList());
         return inntektsperiodeList.stream().map(temp -> {
             Inntekt inntekt = new Inntekt(fraModellInntektstype(temp.getType()));
             inntekt.setBeloep(new BigDecimal(temp.getBeløp()));
             inntekt.setBeskrivelse(temp.getBeskrivelse());
             inntekt.setFordel(temp.getFordel().getKode());
-            Aktoer arbeidsgiver = temp.getOrgnr() != null && !temp.getOrgnr().equals("") ?
-                    Aktoer.newOrganisasjon(temp.getOrgnr()) : Aktoer.newAktoerId(temp.getPersonligArbeidsgiver().getAktørIdent());
+            Aktoer arbeidsgiver = temp.getOrgnr() != null && !temp.getOrgnr().equals("") ? Aktoer.newOrganisasjon(temp.getOrgnr())
+                : Aktoer.newAktoerId(temp.getPersonligArbeidsgiver().getAktørIdent());
             inntekt.setVirksomhet(arbeidsgiver);
             inntekt.setOpptjeningsperiodeFom(temp.getFom());
             inntekt.setOpptjeningsperiodeTom(temp.getTom());
@@ -85,28 +82,24 @@ public class HentInntektlisteBolkMapperRest {
         }).collect(Collectors.toList());
     }
 
-    private static boolean localDateTimeInYearMonth(LocalDate ldt, YearMonth yearMonth){
+    private static boolean localDateTimeInYearMonth(LocalDate ldt, YearMonth yearMonth) {
         return YearMonth.of(ldt.getYear(), ldt.getMonth()).compareTo(yearMonth) == 0;
     }
 
-
-
-    private static InntektType fraModellInntektstype(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType modellType){
-        if(modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.LØNNSINNTEKT)){
+    private static InntektType fraModellInntektstype(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType modellType) {
+        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.LØNNSINNTEKT)) {
             return InntektType.LOENNSINNTEKT;
         }
-        if(modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.NÆRINGSINNTEKT)){
+        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.NÆRINGSINNTEKT)) {
             return InntektType.NAERINGSINNTEKT;
         }
-        if(modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.PENSJON_ELLER_TRYGD)){
+        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.PENSJON_ELLER_TRYGD)) {
             return InntektType.PENSJON_ELLER_TRYGD;
         }
-        if(modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.YTELSE_FRA_OFFENTLIGE)){
+        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.YTELSE_FRA_OFFENTLIGE)) {
             return InntektType.YTELSE_FRA_OFFENTLIGE;
         }
         throw new IllegalStateException("Inntektstype kunne ikke konverteres: " + modellType.getKode());
     }
-
-
 
 }

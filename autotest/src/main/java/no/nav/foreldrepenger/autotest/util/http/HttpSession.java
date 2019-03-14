@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.util.EntityUtils;
@@ -44,8 +43,6 @@ public interface HttpSession {
     HttpResponse delete(String url, Map<String, String> headers) throws IOException;
 
     void setRedirect(boolean doRedirect);
-
-    RequestConfig getRequestConfig();
 
     default void applyHeaders(HttpUriRequest request, Map<String, String> headers) {
         for (String headerKey : headers.keySet()) {

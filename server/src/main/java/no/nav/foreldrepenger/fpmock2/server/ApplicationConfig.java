@@ -51,8 +51,8 @@ public class ApplicationConfig extends Application {
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[] { "https", "http" });
         beanConfig.setBasePath(API_URI);
-        beanConfig.setResourcePackage("no.nav");
         beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
+        beanConfig.setResourcePackage("no.nav");
         beanConfig.setDescription("REST grensesnitt for VTP.");
         beanConfig.setScan(true);
     }

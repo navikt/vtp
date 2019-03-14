@@ -611,7 +611,7 @@ public class Uttak extends ForeldrepengerTestBase {
         LocalDate familieHendelse = LocalDate.now().minusWeeks(3);
         LocalDate fpStartdatoMor = familieHendelse.minusWeeks(3);
         String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
+        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig().get(0).getBeløp();
 
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
@@ -648,7 +648,7 @@ public class Uttak extends ForeldrepengerTestBase {
         LocalDate familieHendelse = LocalDate.now().minusWeeks(3);
         LocalDate fpStartdatoMor = familieHendelse.minusWeeks(3);
         String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
+        Integer beløp = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig().get(0).getBeløp();
 
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
@@ -686,7 +686,7 @@ public class Uttak extends ForeldrepengerTestBase {
         LocalDate familieHendelse = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate fpStartdato = familieHendelse.minusWeeks(3);
         String orgNrAT = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        Integer inntektPerMåned = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
+        Integer inntektPerMåned = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig().get(0).getBeløp();
 
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
@@ -734,7 +734,7 @@ public class Uttak extends ForeldrepengerTestBase {
         LocalDate familieHendelse = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate fpStartdato = familieHendelse.minusWeeks(3);
         String orgNrAT = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
-        Integer inntektPerMåned = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioder().get(0).getBeløp();
+        Integer inntektPerMåned = testscenario.getScenariodata().getInntektskomponentModell().getInntektsperioderSplittMånedlig().get(0).getBeløp();
 
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
