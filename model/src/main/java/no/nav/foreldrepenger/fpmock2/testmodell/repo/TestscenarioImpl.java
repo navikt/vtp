@@ -1,10 +1,17 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import no.nav.foreldrepenger.fpmock2.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseIndeks;
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.util.VariabelContainer;
 import no.nav.foreldrepenger.fpmock2.testmodell.virksomhet.ScenarioVirksomheter;
@@ -73,7 +80,6 @@ public class TestscenarioImpl implements Testscenario {
         personopplysninger.setIdenter(identer);
     }
 
-
     @Override
     public Personopplysninger getPersonopplysninger() {
         return this.personopplysninger;
@@ -117,5 +123,23 @@ public class TestscenarioImpl implements Testscenario {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "<template, " + templateNavn + ", id=" + id + ">";
+    }
+
+    /** Returnerer alle personlige arbeidsgivere (fra søker og annen part). */
+    public Set<PersonArbeidsgiver> getPersonligArbeidsgivere() {
+        ArrayList<PersonArbeidsgiver> result = new ArrayList<>();
+        result.addAll(getPersonArbeidsgivere(getSøkerInntektYtelse()));
+        result.addAll(getPersonArbeidsgivere(getAnnenpartInntektYtelse()));
+        return Set.copyOf(result);
+    }
+
+    private List<PersonArbeidsgiver> getPersonArbeidsgivere(InntektYtelseModell iyModell) {
+        if (iyModell == null || iyModell.getInntektskomponentModell() == null || iyModell.getInntektskomponentModell().getInntektsperioder() == null) {
+            return Collections.emptyList();
+        }
+        return iyModell.getInntektskomponentModell().getInntektsperioder().stream()
+            .map(ip -> ip.getPersonligArbeidsgiver())
+            .filter(pa -> pa != null)
+            .collect(Collectors.toList());
     }
 }

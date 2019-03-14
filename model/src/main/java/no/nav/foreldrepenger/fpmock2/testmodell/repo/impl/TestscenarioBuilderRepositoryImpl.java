@@ -74,6 +74,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
             personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
 
             personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
+            testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));
         }
 
         inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());

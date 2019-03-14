@@ -91,4 +91,22 @@ public abstract class BrukerModell {
         this.aktørIdent = aktørIdent;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (obj == null || !getClass().equals(obj.getClass())) {
+            return false;
+        }
+        BrukerModell bm = (BrukerModell) obj;
+        String ident = getIdent();
+        String ident2 = bm.getIdent();
+        return ident != null && ident2!=null && Objects.equals(ident, ident2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getIdent());
+    }
+
 }
