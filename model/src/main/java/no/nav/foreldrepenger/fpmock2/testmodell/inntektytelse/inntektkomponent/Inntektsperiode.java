@@ -24,6 +24,9 @@ public class Inntektsperiode {
     @JsonProperty("orgnr")
     private String orgnr;
 
+    @JsonProperty("aktorId")
+    private String aktorId;
+
     @JsonProperty("arbeidsgiver")
     private PersonArbeidsgiver arbeidsgiver;
 
@@ -56,6 +59,7 @@ public class Inntektsperiode {
         this.tom = tom;
         this.beløp = beløp;
         this.orgnr = orgnr;
+        this.aktorId = aktorId;
         this.type = inntektType;
         this.fordel = inntektFordel;
         this.beskrivelse = beskrivelse;
@@ -63,6 +67,14 @@ public class Inntektsperiode {
         this.inngaarIGrunnlagForTrekk = inngaarIGrunnlagForTrekk;
         this.utloeserArbeidsgiveravgift = utloeserArbeidsgiveravgift;
         this.arbeidsgiver = arbeidsgiver;
+    }
+
+    public String getAktorId() {
+        return aktorId;
+    }
+
+    public void setAktorId(String aktorId) {
+        this.aktorId = aktorId;
     }
 
     public LocalDate getFom() {
