@@ -212,7 +212,7 @@ public class Beregning extends ForeldrepengerTestBase {
         List<Integer> inntekter = sorterteInntektsbeløp(testscenario);
         String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
         InntektsmeldingBuilder inntektsmelding = lagInntektsmeldingBuilder(inntekter.get(0), fnr,
-                fpStartdato, orgnr, Optional.of("ARB001-001"), Optional.empty());
+                fpStartdato, orgnr, Optional.of("ARB001-001"), Optional.empty(), Optional.empty());
 
         fordel.sendInnInntektsmelding(inntektsmelding, testscenario, saksnummer);
 
