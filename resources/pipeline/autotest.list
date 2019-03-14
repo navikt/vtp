@@ -109,3 +109,7 @@ LOGBACK_CONFIG=/app/lib/logback.xml
 ENVIRONMENT_NAME=p
 NAIS_NAMESPACE=p
 FASIT_ENVIRONMENT_NAME=p
+KAFKA_AKSJONSPUNKTHENDELSE_TOPIC=privat-foreldrepenger-aksjonspunkthendelse-vtp
+KAFKA_AKSJONSPUNKTHENDELSE_CLIENT_ID=KP-privat-foreldrepenger-aksjonspunkthendelse-t10
+KAFKA_AKSJONSPUNKTHENDELSE_SCHEMA_REGISTRY.URL=https://kafka-test-schema-registry.nais.preprod.local
+KAFKA_AKSJONSPUNKTHENDELSE_GROUP_ID=KC-privat-foreldrepenger-aksjonspunkthendelse-t10
