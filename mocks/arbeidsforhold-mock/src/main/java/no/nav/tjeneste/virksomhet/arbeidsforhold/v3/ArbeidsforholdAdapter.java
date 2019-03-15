@@ -32,10 +32,6 @@ public class ArbeidsforholdAdapter {
         Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
         arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
         arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
-//
-//        PermisjonOgPermittering testKode = new PermisjonOgPermittering();
-//        testKode.set
-//        arbeidsforhold.getPermisjonOgPermittering().add()
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
         aftype.setKodeRef(arbeidsforholdModell.getArbeidsforholdstype().getKode());
