@@ -146,11 +146,14 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
         Long arbeidsforholdId = request.getArbeidsforholdId();
 
         HentArbeidsforholdHistorikkResponse response = new HentArbeidsforholdHistorikkResponse();
-        List<String> identer = scenarioRepository.getPersonIndeks().getAlleSøkere()
+        List<String> identer = new ArrayList<>();
+        identer.addAll(identerSøkere());
+        identer.addAll(identerAnnenpart());
+        /*List<String> identer = scenarioRepository.getPersonIndeks().getAlleSøkere()
                 .stream()
                 .map(t-> t.getSøker().getIdent())
                 .collect(Collectors.toList());
-
+*/
         for (String fnr : identer){
             ArbeidsforholdModell arbeidsforholdModell = scenarioRepository.getInntektYtelseModell(fnr).get().getArbeidsforholdModell();
             if(arbeidsforholdModell != null){
@@ -163,5 +166,19 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             }
         }
         throw new HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet("Kunne ikke finne arbeidsforholdHistorikk med Id " + arbeidsforholdId, new ArbeidsforholdIkkeFunnet());
+    }
+
+    private List<String> identerSøkere() {
+        return scenarioRepository.getPersonIndeks().getAlleSøkere()
+                .stream()
+                .map(t-> t.getSøker().getIdent())
+                .collect(Collectors.toList());
+    }
+
+    private List<String> identerAnnenpart() {
+        return scenarioRepository.getPersonIndeks().getAlleAnnenPart()
+                .stream()
+                .map(t-> t.getAnnenPart().getIdent())
+                .collect(Collectors.toList());
     }
 }

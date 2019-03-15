@@ -73,14 +73,17 @@ public class SigrunMock {
         Optional<InntektYtelseModell> inntektYtelseModell = testscenarioRepository.getInntektYtelseModell(brukerFnr);
         String response = "";
 
-        if (inntektYtelseModell.isPresent()) {
+        if (inntektYtelseModell.isPresent() && !inntektYtelseModell.get().getSigrunModell().getInntektsår().isEmpty()) {
             List<Inntektsår> inntektsår = inntektYtelseModell.get().getSigrunModell().getInntektsår();
             String test = inntektsår.get(0).getOppføring().stream().map(t -> t.toString()).collect(Collectors.joining(",\n"));
 
             response = String.format("[\n%s\n]", test);
-        } else {
+        } else if (!inntektYtelseModell.isPresent()){
             LOG.info("Kunne ikke finne bruker.");
             return Response.status(404,"Kunne ikke finne bruker").build();
+        } else {
+            LOG.info("Kunne ikke finne inntektsår");
+            return Response.status(404,"Kunne ikke finne inntektsår").build();
         }
         return Response.status(200).entity(response).build();
     }

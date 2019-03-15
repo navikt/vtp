@@ -11,6 +11,18 @@
         "registreringsDato": "now() - P10Y",
         "datoSistEndret": "now() - P1Y"
       }
+    },
+    {
+      "orgnummer": "979191200",
+      "navn": {
+        "navnelinje": [
+          "KJELLTECH"
+        ]
+      },
+      "organisasjonDetaljer": {
+        "registreringsDato": "now() - P10Y",
+        "datoSistEndret": "now() - P1Y"
+      }
     }
   ]
 }

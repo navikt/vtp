@@ -5,7 +5,7 @@
 				"fom": "now() - P4Y",
 				"tom": "now()",
 				"beløp": 40000,
-				"orgnr": "979191138",
+				"orgnr": "979191200",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -15,11 +15,11 @@
 	"aareg": {
 		"arbeidsforhold": [
 			{
-				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "828161",
+				"arbeidsforholdId": "ARB001-002",
+				"arbeidsforholdIdNav": "828162",
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "979191200",
 
 
 				"arbeidsavtaler" : [
