@@ -23,7 +23,10 @@
 				"fom": "2017-01-01",
 				"tom": "2018-12-31",
 				"beløp": 10000,
-				"aktorId": "${aktor1}",
+				"arbeidsgiver": {
+					"@type": "person",
+					"ident": "${aktor1}"
+				},
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -33,7 +36,10 @@
 			{
 				"frilansFom":"2018-01-01",
 				"frilansTom":"2018-12-31",
-				"aktorId": "${aktor1}",
+				"arbeidsgiver": {
+					"@type": "person",
+					"ident": "${aktor1}"
+				},
 				"stillingsprosent":"25"
 			}
 		]

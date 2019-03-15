@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonArbeidsgiver;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FrilansArbeidsforholdsperiode {
@@ -25,14 +28,22 @@ public class FrilansArbeidsforholdsperiode {
     @JsonProperty("stillingsprosent")
     private Integer stillingsprosent;
 
+    @JsonProperty("arbeidsgiver")
+    private PersonArbeidsgiver arbeidsgiver;
+
     public FrilansArbeidsforholdsperiode(){}
 
-    public FrilansArbeidsforholdsperiode(LocalDate frilansFom, LocalDate frilansTom, String orgnr, Integer stillingsprosent, String aktorId){
+    public FrilansArbeidsforholdsperiode(LocalDate frilansFom, LocalDate frilansTom, String orgnr, Integer stillingsprosent, String aktorId, PersonArbeidsgiver arbeidsgiver){
         this.frilansFom = frilansFom;
         this.frilansTom = frilansTom;
         this.orgnr = orgnr;
         this.stillingsprosent = stillingsprosent;
         this.aktorId = aktorId;
+        this.arbeidsgiver = arbeidsgiver;
+    }
+
+    public PersonArbeidsgiver getPersonligArbeidsgiver(){
+        return arbeidsgiver;
     }
 
     public LocalDate getFrilansFom() {

@@ -57,7 +57,7 @@ public class InntektskomponentModell {
                 LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
                 frilansArbeidsforholdsperioderPerMåned.add(new FrilansArbeidsforholdsperiode(init.withDayOfMonth(1),
                     init.withDayOfMonth(init.lengthOfMonth()),
-                    fap.getOrgnr(), fap.getStillingsprosent()));
+                    fap.getOrgnr(), fap.getStillingsprosent(), fap.getAktorId(), fap.getPersonligArbeidsgiver()));
             });
         return frilansArbeidsforholdsperioderPerMåned;
     }
