@@ -45,7 +45,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.HentArbeidsforhold
 
 @Addressing
 @WebService(name = "Arbeidsforhold_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3")
-@HandlerChain(file="Handler-chain.xml")
+@HandlerChain(file = "Handler-chain.xml")
 public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArbeidsforholdMockImpl.class);
@@ -53,7 +53,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
     private TestscenarioBuilderRepository scenarioRepository;
 
-    public ArbeidsforholdMockImpl(){
+    public ArbeidsforholdMockImpl() {
 
     }
 
@@ -68,7 +68,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidsgiver")
     @ResponseWrapper(localName = "FinnArbeidsforholdPrArbeidsgiverResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidsgiverResponse")
-    public FinnArbeidsforholdPrArbeidsgiverResponse finnArbeidsforholdPrArbeidsgiver(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidsforholdPrArbeidsgiverRequest finnArbeidsforholdPrArbeidsgiverRequest) throws FinnArbeidsforholdPrArbeidsgiverForMangeForekomster, FinnArbeidsforholdPrArbeidsgiverSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidsgiverUgyldigInput {
+    public FinnArbeidsforholdPrArbeidsgiverResponse finnArbeidsforholdPrArbeidsgiver(@WebParam(name = "parameters", targetNamespace = "") FinnArbeidsforholdPrArbeidsgiverRequest finnArbeidsforholdPrArbeidsgiverRequest) throws FinnArbeidsforholdPrArbeidsgiverForMangeForekomster, FinnArbeidsforholdPrArbeidsgiverSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidsgiverUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
@@ -88,7 +88,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidstakerePrArbeidsgiverRequest")
     @ResponseWrapper(localName = "finnArbeidstakerePrArbeidsgiverResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidstakerePrArbeidsgiverResponse")
-    public FinnArbeidstakerePrArbeidsgiverResponse finnArbeidstakerePrArbeidsgiver(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidstakerePrArbeidsgiverRequest finnArbeidstakerePrArbeidsgiverRequest) throws FinnArbeidstakerePrArbeidsgiverSikkerhetsbegrensning, FinnArbeidstakerePrArbeidsgiverUgyldigInput {
+    public FinnArbeidstakerePrArbeidsgiverResponse finnArbeidstakerePrArbeidsgiver(@WebParam(name = "parameters", targetNamespace = "") FinnArbeidstakerePrArbeidsgiverRequest finnArbeidstakerePrArbeidsgiverRequest) throws FinnArbeidstakerePrArbeidsgiverSikkerhetsbegrensning, FinnArbeidstakerePrArbeidsgiverUgyldigInput {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
@@ -99,7 +99,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstaker")
     @ResponseWrapper(localName = "finnArbeidsforholdPrArbeidstakerResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.FinnArbeidsforholdPrArbeidstakerResponse")
-    public FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstaker(@WebParam(name = "parameters",targetNamespace = "") FinnArbeidsforholdPrArbeidstakerRequest request) throws FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidstakerUgyldigInput {
+    public FinnArbeidsforholdPrArbeidstakerResponse finnArbeidsforholdPrArbeidstaker(@WebParam(name = "parameters", targetNamespace = "") FinnArbeidsforholdPrArbeidstakerRequest request) throws FinnArbeidsforholdPrArbeidstakerSikkerhetsbegrensning, FinnArbeidsforholdPrArbeidstakerUgyldigInput {
         LOG.info("finnArbeidsforholdPrArbeidstaker. Ident: " + request.getIdent().getIdent() + ". Regelverk: " + request.getRapportertSomRegelverk().getKodeverksRef());
         if (request != null && request.getIdent() != null
                 && request.getIdent().getIdent() != null
@@ -110,11 +110,11 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             String fnr = request.getIdent().getIdent();
             Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
 
-            if(inntektYtelseModell.isPresent() && inntektYtelseModell.get().getArbeidsforholdModell() != null){
+            if (inntektYtelseModell.isPresent() && inntektYtelseModell.get().getArbeidsforholdModell() != null) {
                 ArbeidsforholdModell arbeidsforholdModell = inntektYtelseModell.get().getArbeidsforholdModell();
                 List<Arbeidsforhold> responseArbeidsforhold = new ArrayList<>();
 
-                for(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforhold : arbeidsforholdModell.getArbeidsforhold()){
+                for (no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforhold : arbeidsforholdModell.getArbeidsforhold()) {
                     responseArbeidsforhold.add(arbeidsforholdAdapter.fra(fnr, arbeidsforhold));
                 }
 
@@ -138,7 +138,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkRequest")
     @ResponseWrapper(localName = "hentArbeidsforholdHistorikkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3",
             className = "no.nav.tjeneste.virksomhet.arbeidsforhold.v3.HentArbeidsforholdHistorikkResponse")
-    public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters",targetNamespace = "") HentArbeidsforholdHistorikkRequest request) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning{
+    public HentArbeidsforholdHistorikkResponse hentArbeidsforholdHistorikk(@WebParam(name = "parameters", targetNamespace = "") HentArbeidsforholdHistorikkRequest request) throws HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet, HentArbeidsforholdHistorikkSikkerhetsbegrensning {
         LOG.info("Kall til HentArbeidsforholdHistorikk. Ber om historikk for arbeidsforholdsId: {}", request.getArbeidsforholdId());
 
         ArbeidsforholdAdapter adapter = new ArbeidsforholdAdapter();
@@ -154,31 +154,30 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
                 .map(t-> t.getSøker().getIdent())
                 .collect(Collectors.toList());
 */
-        for (String fnr : identer){
-            ArbeidsforholdModell arbeidsforholdModell = scenarioRepository.getInntektYtelseModell(fnr).get().getArbeidsforholdModell();
-            if(arbeidsforholdModell != null){
-                Optional<no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold> first = arbeidsforholdModell.getArbeidsforhold().stream().filter(t -> t.getArbeidsforholdIdnav().equals(arbeidsforholdId)).findFirst();
-                if(first.isPresent()){
-                    Arbeidsforhold responseArbeidsforhold = adapter.fra(fnr, first.get());
-                    response.setArbeidsforhold(responseArbeidsforhold);
-                    return  response;
-                }
+        for (String fnr : identer) {
+            ArbeidsforholdModell arbeidsforholdModell = scenarioRepository.getInntektYtelseModell(fnr).orElse(new InntektYtelseModell()).getArbeidsforholdModell();
+            Optional<no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold> first = arbeidsforholdModell.getArbeidsforhold().stream().filter(t -> t.getArbeidsforholdIdnav().equals(arbeidsforholdId)).findFirst();
+            if (first.isPresent()) {
+                Arbeidsforhold responseArbeidsforhold = adapter.fra(fnr, first.get());
+                response.setArbeidsforhold(responseArbeidsforhold);
+                return response;
             }
         }
+
         throw new HentArbeidsforholdHistorikkArbeidsforholdIkkeFunnet("Kunne ikke finne arbeidsforholdHistorikk med Id " + arbeidsforholdId, new ArbeidsforholdIkkeFunnet());
     }
 
     private List<String> identerSøkere() {
         return scenarioRepository.getPersonIndeks().getAlleSøkere()
                 .stream()
-                .map(t-> t.getSøker().getIdent())
+                .map(t -> t.getSøker().getIdent())
                 .collect(Collectors.toList());
     }
 
     private List<String> identerAnnenpart() {
         return scenarioRepository.getPersonIndeks().getAlleAnnenPart()
                 .stream()
-                .map(t-> t.getAnnenPart().getIdent())
+                .map(t -> t.getAnnenPart().getIdent())
                 .collect(Collectors.toList());
     }
 }
