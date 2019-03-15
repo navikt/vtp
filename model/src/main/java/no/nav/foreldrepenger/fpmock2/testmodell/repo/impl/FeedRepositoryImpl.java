@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.foreldrepenger.fpmock2.testmodell.feed.HendelseContent;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.FeedRepository;
 import no.nav.tjenester.person.feed.common.v1.Feed;
@@ -16,7 +13,6 @@ import no.nav.tjenester.person.feed.common.v1.FeedEntry;
 import no.nav.tjenester.person.feed.common.v1.Metadata;
 
 public class FeedRepositoryImpl implements FeedRepository {
-    private static final Logger LOG = LoggerFactory.getLogger(FeedRepositoryImpl.class);
 
     private List<FeedEntry> feedEntries;
     private Long sekvensnummer;
@@ -53,7 +49,7 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .collect(Collectors.toList());
 
         return Feed.builder()
-                .title("PersonFeed_v1")
+                .title("PersonFeed_v2")
                 .items(returnEntries)
                 .build();
     }
@@ -69,7 +65,6 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .createdDate(LocalDateTime.now())
                 .build();
     }
-
 
     @Override
     public Long genererSekvensnummer(){

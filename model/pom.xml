@@ -38,11 +38,7 @@
         </dependency>
 		<dependency>
 			<groupId>no.nav.tjenester</groupId>
-			<artifactId>person-api-feed-v1</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenester</groupId>
-			<artifactId>person-api-common</artifactId>
+			<artifactId>person-api-feed-v2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>no.nav.tjenester</groupId>

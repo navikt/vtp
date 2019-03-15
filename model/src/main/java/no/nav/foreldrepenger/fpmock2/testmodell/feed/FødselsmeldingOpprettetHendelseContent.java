@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.tjenester.person.feed.v2.Ident;
+
 public class FødselsmeldingOpprettetHendelseContent implements HendelseContent {
     private static final String TYPE = "FOEDSELSMELDINGOPPRETTET";
 
-    private List<String> personIdenterBarn;
-    private List<String> personIdenterMor;
-    private List<String> personIdenterFar;
+    private List<Ident> personIdenterBarn;
+    private List<Ident> personIdenterMor;
+    private List<Ident> personIdenterFar;
     private LocalDate foedselsdato;
 
     private FødselsmeldingOpprettetHendelseContent(Builder builder){
@@ -24,15 +26,15 @@ public class FødselsmeldingOpprettetHendelseContent implements HendelseContent 
         return TYPE;
     }
 
-    public List<String> getPersonIdenterBarn() {
+    public List<Ident> getPersonIdenterBarn() {
         return personIdenterBarn;
     }
 
-    public List<String> getPersonIdenterMor() {
+    public List<Ident> getPersonIdenterMor() {
         return personIdenterMor;
     }
 
-    public List<String> getPersonIdenterFar() {
+    public List<Ident> getPersonIdenterFar() {
         return personIdenterFar;
     }
 
@@ -41,30 +43,30 @@ public class FødselsmeldingOpprettetHendelseContent implements HendelseContent 
     }
 
     public static class Builder{
-        private List<String> personIdenterBarn;
-        private List<String> personIdenterMor;
-        private List<String> personIdenterFar;
+        private List<Ident> personIdenterBarn;
+        private List<Ident> personIdenterMor;
+        private List<Ident> personIdenterFar;
         private LocalDate foedselsdato;
 
 
-        public Builder setPersonIdenterBarn(String fnr, String aktørId){
+        public Builder setPersonIdenterBarn(String fnr, String aktørId) {
             personIdenterBarn = new ArrayList<>();
-            personIdenterBarn.add(fnr);
-            personIdenterBarn.add(aktørId);
+            personIdenterBarn.add(new Ident(fnr, FNR_IDENT_TYPE));
+            personIdenterBarn.add(new Ident(aktørId, AKTØR_ID_IDENT_TYPE));
             return this;
         }
 
-        public Builder setPersonIdenterMor(String fnr, String aktørId){
+        public Builder setPersonIdenterMor(String fnr, String aktørId) {
             personIdenterMor = new ArrayList<>();
-            personIdenterMor.add(fnr);
-            personIdenterMor.add(aktørId);
+            personIdenterMor.add(new Ident(fnr, FNR_IDENT_TYPE));
+            personIdenterMor.add(new Ident(aktørId, AKTØR_ID_IDENT_TYPE));
             return this;
         }
 
-        public Builder setPersonIdenterFar(String fnr, String aktørId){
+        public Builder setPersonIdenterFar(String fnr, String aktørId) {
             personIdenterFar = new ArrayList<>();
-            personIdenterFar.add(fnr);
-            personIdenterFar.add(aktørId);
+            personIdenterFar.add(new Ident(fnr, FNR_IDENT_TYPE));
+            personIdenterFar.add(new Ident(aktørId, AKTØR_ID_IDENT_TYPE));
             return this;
         }
 
@@ -76,9 +78,5 @@ public class FødselsmeldingOpprettetHendelseContent implements HendelseContent 
         public FødselsmeldingOpprettetHendelseContent build(){
             return new FødselsmeldingOpprettetHendelseContent(this);
         }
-
-
-
     }
-
 }

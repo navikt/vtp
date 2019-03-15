@@ -6,9 +6,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.fpmock2.kontrakter.PersonhendelseDto;
@@ -19,7 +16,6 @@ import no.nav.tjenester.person.feed.common.v1.FeedEntry;
 @Api(tags = "Legge til data i feeds")
 @Path("/api/feed")
 public class FeedRestTjeneste {
-    private static final Logger LOG = LoggerFactory.getLogger(FeedRestTjeneste.class);
     PersonhendelseAdapter personhendelseAdapter = new PersonhendelseAdapter();
 
     @POST

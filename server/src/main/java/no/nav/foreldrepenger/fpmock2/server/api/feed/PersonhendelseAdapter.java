@@ -2,8 +2,6 @@ package no.nav.foreldrepenger.fpmock2.server.api.feed;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import no.nav.foreldrepenger.fpmock2.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.fpmock2.kontrakter.DødshendelseDto;
 import no.nav.foreldrepenger.fpmock2.kontrakter.FødselshendelseDto;
@@ -17,7 +15,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepository
 
 public class PersonhendelseAdapter {
 
-    ObjectMapper objectMapper = new ObjectMapper();
     TestscenarioRepositoryImpl testscenarioRepository;
 
     public PersonhendelseAdapter(){

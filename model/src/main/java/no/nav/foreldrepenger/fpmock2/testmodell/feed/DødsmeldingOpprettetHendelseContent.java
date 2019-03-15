@@ -4,10 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.tjenester.person.feed.v2.Ident;
+
 public class DødsmeldingOpprettetHendelseContent implements HendelseContent {
     private static final String TYPE = "DOEDSMELDINGOPPRETTET";
 
-    private List<String> identer;
+    private List<Ident> identer;
     private LocalDate doedsdato;
 
     private DødsmeldingOpprettetHendelseContent(Builder builder){
@@ -15,7 +17,7 @@ public class DødsmeldingOpprettetHendelseContent implements HendelseContent {
         this.doedsdato = builder.doedsdato;
     }
 
-    public List<String> getIdenter() {
+    public List<Ident> getIdenter() {
         return identer;
     }
 
@@ -23,30 +25,27 @@ public class DødsmeldingOpprettetHendelseContent implements HendelseContent {
         return doedsdato;
     }
 
-    public void setIdenter(List<String> identer) {
+    public void setIdenter(List<Ident> identer) {
         this.identer = identer;
     }
-
 
     public void setDoedsdato(LocalDate doedsdato) {
         this.doedsdato = doedsdato;
     }
-
 
     @Override
     public String hentType() {
         return TYPE;
     }
 
-
     public static class Builder{
-        private List<String> identer;
+        private List<Ident> identer;
         private LocalDate doedsdato;
 
         public Builder setIdenter(String fnr, String aktørId){
             identer = new ArrayList<>();
-            identer.add(fnr);
-            identer.add(aktørId);
+            identer.add(new Ident(fnr, FNR_IDENT_TYPE));
+            identer.add(new Ident(aktørId, AKTØR_ID_IDENT_TYPE));
             return this;
         }
         public Builder setDoedsdato(LocalDate doedsdato){

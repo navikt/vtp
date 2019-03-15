@@ -82,8 +82,7 @@
         <kodeverk.version>2.0.1-SNAPSHOT</kodeverk.version>
         <dokumentproduksjon.version>2.1.7</dokumentproduksjon.version>
         <modig-testcertificates.version>1.2.5-vedfp-SNAPSHOT</modig-testcertificates.version>
-        <person-api-common.version>1.0.0</person-api-common.version>
-        <person-api-feed.version>1.0.0</person-api-feed.version>
+        <person-api-feed.version>1.1.0</person-api-feed.version>
         <person-api-feed-common.version>1.0.1</person-api-feed-common.version>
         <vl-fpoppdrag-integrasjon.version>1.0_20190110115356_1239f94</vl-fpoppdrag-integrasjon.version>
         <vl-kontrakt-fpoppdrag.version>1.0_20190117140834_70d7fb3</vl-kontrakt-fpoppdrag.version>
@@ -338,13 +337,8 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>
-                <artifactId>person-api-feed-v1</artifactId>
+                <artifactId>person-api-feed-v2</artifactId>
                 <version>${person-api-feed.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>person-api-common</artifactId>
-                <version>${person-api-common.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>
