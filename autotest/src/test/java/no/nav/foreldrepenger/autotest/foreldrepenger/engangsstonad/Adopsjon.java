@@ -56,7 +56,7 @@ public class Adopsjon extends EngangsstonadTestBase {
     }
 
     @Test
-    @DisplayName("Mor søker adopsjon - avvist")
+    @DisplayName("Mor søker adopsjon - avvist - barn er over 15 år")
     public void morSøkerAdopsjonAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
