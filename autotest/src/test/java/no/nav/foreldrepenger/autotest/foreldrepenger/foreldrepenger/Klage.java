@@ -105,7 +105,7 @@ public class Klage extends ForeldrepengerTestBase {
         verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
         
         ExpectResultDto result = expectKlient.checkExpectation(expectXml);
-        Felles fellesxml = Felles.fromFile(result.getResultData());
+        Felles fellesxml = Felles.fromString(result.getResultData());
         fellesxml.valider();
         
     }
