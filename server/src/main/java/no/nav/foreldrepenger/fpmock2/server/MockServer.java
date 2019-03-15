@@ -91,7 +91,9 @@ public class MockServer {
     }
 
     private void startKafkaServer() {
-        LocalKafkaServer.startKafka(2181,9092,List.of("privat-foreldrepenger-mottatBehandling-fpsak"));
+        Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort","9092"));
+        Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port","2181"));
+        LocalKafkaServer.startKafka(zookeeperPort,kafkaBrokerPort,List.of("privat-foreldrepenger-mottatBehandling-fpsak","privat-foreldrepenger-aksjonspunkthendelse-fpsak"));
     }
 
     private void startWebServer() throws IOException, Exception {

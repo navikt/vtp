@@ -23,12 +23,15 @@ public class LocalKafkaProducer {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         producer = new KafkaProducer(props);
-
         kafkaAdminClient = AdminClient.create(props);
     }
 
     public AdminClient getKafkaAdminClient() {
         return kafkaAdminClient;
+    }
+
+    KafkaProducer getKafkaProducer() {
+        return producer;
     }
 
     public void sendSynkront(String topic, String key, String value) {
