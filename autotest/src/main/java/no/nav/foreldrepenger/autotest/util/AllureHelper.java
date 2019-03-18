@@ -14,6 +14,9 @@ public class AllureHelper {
     @Step("Informasjon om behandling: {behandling}")
     public static void debugLoggBehandling(Behandling behandling){ }
 
+    @Step("Informasjon om behandling ({tekst}): {behandling}")
+    public static void debugLoggBehandling(String tekst, Behandling behandling){ }
+
     @Step("Sender inn dokument {type} med innhold: {xml}")
     public static void debugSenderInnDokument(String type, String xml){ }
 
@@ -34,6 +37,14 @@ public class AllureHelper {
 
     @Step("Informasjon om behandlinger: ")
     public static void debugLoggBehandlingsliste(List<Behandling> behandlinger) {
+        for(Behandling behandling : behandlinger){
+            debugLoggBehandling(behandling);
+        }
+    }
+
+
+    @Step("Informasjon om behandlinger: {tekst} ")
+    public static void debugLoggBehandlingsliste(String tekst, List<Behandling> behandlinger) {
         for(Behandling behandling : behandlinger){
             debugLoggBehandling(behandling);
         }
