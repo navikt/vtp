@@ -230,7 +230,11 @@ public class Saksbehandler extends Aktoer{
             return behandlingerKlient.behandlingVilkår(behandling.id);
         });
         
-        if (behandling.type.navn.equals("Klage")) {
+        System.out.println(behandling.type.navn);
+        if(behandling.type.navn.equals("Dokumentinnsyn")) {
+            
+        }
+        else if (behandling.type.navn.equals("Klage")) {
             valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
         } else {
             BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
