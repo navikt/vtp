@@ -8,13 +8,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 
-import io.qameta.allure.Description;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
@@ -419,6 +414,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetSak();
     }
 
+    @Step("Behandle søknad for mor registrert fødsel")
     public long behandleSøknadForMorRegistrertFødsel(TestscenarioDto testscenario) throws Exception {
         long saksnummer = sendInnSøknadOgInntektMor(testscenario, testscenario.getPersonopplysninger().getFødselsdato());
 
@@ -429,6 +425,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         return saksnummer;
     }
 
+    @Step("Behandle søknad for mor uregistrert")
     private long behandleSøknadForMorUregistrert(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadOgInntektMor(testscenario, fødselsdato);
 
@@ -451,6 +448,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         return saksnummer;
     }
 
+    @Step("Behandle søknad for mor uten overlapp")
     private long behandleSøknadForMorUtenOverlapp(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadOgInntektMor(testscenario, fødselsdato);
 
@@ -478,6 +476,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         return saksnummer;
     }
 
+    @Step("Behandle søknad for far")
     public long behandleSøknadForFar(TestscenarioDto testscenario) throws Exception {
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
@@ -512,6 +511,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         return saksnummer;
     }
 
+    @Step("Behandle søknad for far uten overlapp")
     public long behandleSøknadForFarUtenOverlapp(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadOgInntektFar(testscenario, fødselsdato, fødselsdato.plusWeeks(10).plusDays(1));
 
@@ -541,6 +541,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         return saksnummer;
     }
 
+    @Step("Send inn endringssøknad for mor")
     private void sendInnEndringssøknadforMor(TestscenarioDto testscenario, long saksnummerMor) throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -560,6 +561,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER, saksnummerMor);
     }
 
+    @Step("Send inn endringssøknad for mor med endret uttak")
     private void sendInnEndringssøknadforMorMedEndretUttak(TestscenarioDto testscenario, long saksnummerMor) throws Exception  {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -579,6 +581,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         long saksnummer = fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER, saksnummerMor);
     }
 
+    @Step("Behandle søknad for far satt på vent")
     private long behandleSøknadForFarSattPåVent(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadOgInntektFar(testscenario, fødselsdato, fødselsdato.plusWeeks(10).plusDays(1));
 
@@ -588,6 +591,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
         return saksnummer;
     }
+
     @Step("Send inn søknad og inntekt mor")
     private long sendInnSøknadOgInntektMor(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadMor(testscenario, fødselsdato);
