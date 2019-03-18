@@ -8,6 +8,11 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 
 import io.qameta.allure.Description;
 import java.time.LocalDate;
@@ -54,15 +59,22 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
             "Behandler far sin søknad (positivt vedtak). Ingen overlapp. Verifiserer at sakene er koblet og at det ikke opprettes revurdering berørt sak.")
     public void morOgFar_fødsel_ettArbeidsforholdHver_kobletsak_kantTilKant() throws Exception {
         TestscenarioDto testscenario = opprettScenario("82");
+        String morIdent = testscenario.getPersonopplysninger().getSøkerIdent();
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String farIdent = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-        LocalDate startDatoForeldrepengerFar = fødselsdato.plusWeeks(6);
+        LocalDate fpstartdatoMor = fødselsdato.minusWeeks(3);
+        LocalDate fpstartdatoFar = fødselsdato.plusWeeks(6);
 
         long saksnummerMor = sendInnSøknadMorMedAksjonspunkt(testscenario, fødselsdato);
-        sendInnInntektsmeldingMor(testscenario, fødselsdato, saksnummerMor);
+        List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, morIdent, fpstartdatoMor, false);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, morAktørId, morIdent, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "UBEH", "Fagsakstatus sak mor");
-        long saksnummerFar = sendInnSøknadFar(testscenario, fødselsdato, startDatoForeldrepengerFar);
+        long saksnummerFar = sendInnSøknadFar(testscenario, fødselsdato, fpstartdatoFar);
         saksbehandler.hentFagsak(saksnummerFar);
         debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "UBEH", "Fagsakstatus sak far");
@@ -83,7 +95,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.valgtFagsak.hentStatus().kode, "LOP", "Fagsakstatus");
         debugFritekst("Ferdig med behandling mor");
         //Behandle ferdig far sin sak
-        sendInnInntektsmeldingFar(testscenario, fødselsdato, startDatoForeldrepengerFar, saksnummerFar);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fpstartdatoFar, true);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farIdent, saksnummerFar);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Saken er ikke koblet til en annen behandling");
@@ -292,13 +306,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harIkkeBehandling("Revurdering"), "Fars behandling fikk revurdering selv uten endringer i mors behandling av endringssøknaden");
     }
 
-    private long opprettSøknadMor(TestscenarioDto testscenario) throws Exception {
-        String morIdent = testscenario.getPersonopplysninger().getSøkerIdent();
-        String morAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
-        String farAktørid = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
-
-        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
 
     @Test
     @DisplayName("Berørt sak endringssøknad opphør")
@@ -610,14 +617,17 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
         String annenPartAktørid = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
-        LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
 
-        Fordeling fordeling = FordelingErketyper.fordelingMorMedAksjonspunkt(fødselsdato);
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, fødselsdato.minusDays(1)));
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(
                 søkerAktørid,
                 annenPartAktørid,
                 fødselsdato,
-                startDatoForeldrepenger.plusWeeks(2),
+                LocalDate.now(),
                 fordeling);
 
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
