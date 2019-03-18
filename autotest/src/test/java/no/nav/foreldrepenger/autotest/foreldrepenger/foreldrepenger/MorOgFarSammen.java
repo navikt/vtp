@@ -25,6 +25,8 @@ import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerManueltOpprettetRevurdering;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerOpplysningerOmFordelingAvStonadsperioden;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderSoknadsfristForeldrepengerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerBosattBekreftelse;
@@ -365,7 +367,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
     
     @Test
-    @Disabled("Disabled til behandling av mors søknad før far er ute i master")
     @DisplayName("Berørt sak mor søker etter far og sniker i køen")
     public void BerørtSakMorSøkerEtterFar() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
@@ -375,7 +376,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         
         saksbehandler.hentFagsak(saksnummerMor);
         
-        /*// Bruk når  revurdering fungerer
+        // Bruk når  revurdering fungerer
         saksbehandler.opprettBehandlingRevurdering("Nye opplysninger om uttak");
         saksbehandler.velgBehandling("Revurdering");
         
@@ -387,7 +388,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
             .godkjennAllePerioder();
         saksbehandler.bekreftAksjonspunktBekreftelse(KontrollerOpplysningerOmFordelingAvStonadsperioden.class);
         
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktbekreftelserer(
+                saksbehandler.hentAksjonspunktbekreftelse(KontrollerManueltOpprettetRevurdering.class),
+                saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class));
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
 
@@ -395,10 +398,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.velgBehandling("Revurdering");
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.KONTROLLER_OPPLYSNINGER_OM_FORDELING_AV_STØNADSPERIODEN))
-            .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
+            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.KONTROLLER_OPPLYSNINGER_OM_FORDELING_AV_STØNADSPERIODEN))
+            .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.fattVedtakOgVentTilAvsluttetSak();
-        */
     }
     
     public long behandleSøknadForMorRegistrertFødsel(TestscenarioDto testscenario) throws Exception {
