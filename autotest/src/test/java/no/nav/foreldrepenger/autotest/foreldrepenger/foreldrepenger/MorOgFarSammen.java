@@ -2,23 +2,24 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.foreldrepenger;
 
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
+import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandlingsliste;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 
-import io.qameta.allure.Description;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
-
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
@@ -37,12 +38,9 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
 
 
 @Tag("fpsak")
@@ -59,12 +57,13 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         LocalDate startDatoForeldrepengerFar = fødselsdato.plusWeeks(6);
 
         long saksnummerMor = sendInnSøknadMorMedAksjonspunkt(testscenario, fødselsdato);
-        sendInnInntektMor(testscenario, fødselsdato, saksnummerMor);
+        sendInnInntektsmeldingMor(testscenario, fødselsdato, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "UBEH", "Fagsakstatus sak mor");
         long saksnummerFar = sendInnSøknadFar(testscenario, fødselsdato, startDatoForeldrepengerFar);
         saksbehandler.hentFagsak(saksnummerFar);
+        debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "UBEH", "Fagsakstatus sak far");
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke på vent.");
         //Behandle ferdig mor sin sak
@@ -84,7 +83,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.refreshFagsak();
         verifiserLikhet(beslutter.valgtFagsak.hentStatus().kode, "LOP", "Fagsakstatus");
         //Behandle ferdig far sin sak
-        sendInnInntektFar(testscenario, fødselsdato, startDatoForeldrepengerFar, saksnummerFar);
+        sendInnInntektsmeldingFar(testscenario, fødselsdato, startDatoForeldrepengerFar, saksnummerFar);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Saken er ikke koblet til en annen behandling");
@@ -125,6 +124,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerMor);
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Mors behandling er ikke ferdigbehandlet.");
         debugFritekst("Ferdig med første behandling mor");
+        debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 3, "Antall perioder er ikke 3.");
         verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
         // FAR
@@ -570,13 +570,15 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         
         return saksnummer;
     }
-    
+
+    @Step("Send inn søknad og inntekt mor")
     private long sendInnSøknadOgInntektMor(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadMor(testscenario, fødselsdato);
-        sendInnInntektMor(testscenario, fødselsdato, saksnummer);
+        sendInnInntektsmeldingMor(testscenario, fødselsdato, saksnummer);
         return saksnummer;
     }
-    
+
+    @Step("Send inn søknad mor")
     private long sendInnSøknadMor(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -594,7 +596,8 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         return fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
     }
-    
+
+    @Step("Send inn søknad mor med aksjonspunkt")
     private long sendInnSøknadMorMedAksjonspunkt(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -612,8 +615,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         return fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
     }
-    
-    private long sendInnInntektMor(TestscenarioDto testscenario, LocalDate fødselsdato, Long saksnummer) throws Exception {
+
+    @Step("Send inn inntektsmelding mor")
+    private long sendInnInntektsmeldingMor(TestscenarioDto testscenario, LocalDate fødselsdato, Long saksnummer) throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();
         LocalDate startDatoForeldrepenger = fødselsdato.minusWeeks(3);
@@ -631,13 +635,15 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
                 Optional.empty());
         return fordel.sendInnInntektsmelding(inntektsmelding, søkerAktørid, søkerIdent, saksnummer);
     }
-    
+
+    @Step("Send inn søknad og inntektsmelding far")
     private long sendInnSøknadOgInntektFar(TestscenarioDto testscenario, LocalDate fødselsdato, LocalDate startDatoForeldrepenger) throws Exception {
         long saksnummer = sendInnSøknadFar(testscenario, fødselsdato, startDatoForeldrepenger);
-        sendInnInntektFar(testscenario, fødselsdato, startDatoForeldrepenger, saksnummer);
+        sendInnInntektsmeldingFar(testscenario, fødselsdato, startDatoForeldrepenger, saksnummer);
         return saksnummer;
     }
-    
+
+    @Step("Send inn søknad far")
     private long sendInnSøknadFar(TestscenarioDto testscenario, LocalDate fødselsdato, LocalDate startDatoForeldrepenger) throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getAnnenpartIdent();
@@ -653,8 +659,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         return fordel.sendInnSøknad(søknad.build(), søkerAktørid, søkerIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
     }
-    
-    private long sendInnInntektFar(TestscenarioDto testscenario, LocalDate fødselsdato, LocalDate startDatoForeldrepenger, Long saksnummer)  throws Exception {
+
+    @Step("Send inn inntektsmelding far")
+    private long sendInnInntektsmeldingFar(TestscenarioDto testscenario, LocalDate fødselsdato, LocalDate startDatoForeldrepenger, Long saksnummer)  throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getAnnenpartIdent();
 
