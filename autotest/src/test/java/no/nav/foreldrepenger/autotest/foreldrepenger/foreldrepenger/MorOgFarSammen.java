@@ -69,10 +69,10 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke på vent.");
         //Behandle ferdig mor sin sak
         saksbehandler.hentFagsak(saksnummerMor);
+        System.out.println(fødselsdato);
+        System.out.println(fødselsdato.plusWeeks(6));
         saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
-                .godkjennPeriode(fødselsdato.minusWeeks(3), fødselsdato.minusDays(1), 100)
-                .godkjennPeriode(fødselsdato, fødselsdato.plusWeeks(6).minusDays(1), 100)
-                .setBegrunnelse("Godkjent");
+                .godkjennAllePerioder();
         saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
