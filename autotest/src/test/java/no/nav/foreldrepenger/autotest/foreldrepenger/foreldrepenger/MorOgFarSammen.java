@@ -127,8 +127,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Mors behandling er ikke ferdigbehandlet.");
         debugFritekst("Ferdig med første behandling mor");
         saksbehandler.refreshBehandling();
-        debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 3, "Antall perioder er ikke 3.");
+        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 3, "Antall perioder for mor er ikke 3.");
         verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
         // FAR
         Fordeling fordelingFar = new Fordeling();
@@ -168,7 +167,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Mor og far koblet sak med oppholdsperiode")
+    @DisplayName("Mor og far koblet sak med oppholdsperiode i søknad")
     @Description("Mor og far sender inn søknader med oppholdsperiode for den andre parten. Periodene er kant til kant. " +
             "Berørt sak opprettes fordi periodene anses som overlapp. Verifiserer på like trekkdager i siste behandling hos begge.")
     public void morOgFar_berørtSak_oppholdsperioder() throws Exception {
