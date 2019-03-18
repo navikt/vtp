@@ -76,6 +76,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke på vent.");
         //Behandle ferdig mor sin sak
         saksbehandler.hentFagsak(saksnummerMor);
+        debugLoggBehandlingsliste("mors behandlinger", saksbehandler.behandlinger);
         saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
                 .godkjennAllePerioder();
         saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
@@ -235,6 +236,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         debugFritekst("Ferdig med første behandling til far");
 
         saksbehandler.hentFagsak(saksnummerMor);
+        debugLoggBehandlingsliste("Mors behandlinger",saksbehandler.behandlinger);
         saksbehandler.ventTilFagsakstatus("LOP");
         saksbehandler.velgBehandling("Revurdering");
         debugLoggBehandling(saksbehandler.valgtBehandling);
