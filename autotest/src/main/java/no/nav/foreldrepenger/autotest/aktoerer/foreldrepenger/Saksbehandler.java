@@ -330,9 +330,14 @@ public class Saksbehandler extends Aktoer{
         if(status == null) {
             return true;
         }
-        else if(status.getStatus() == 418){
-            AllureHelper.debugFritekst("Prosesstask feilet i behandlingsverifisering: " + status.getMessage());
-            throw new IllegalStateException("Prosesstask i vrang tilstand: " + status.getMessage());
+        else if(status.getStatusCode() == 418){
+            if(status.getStatus() != AsyncPollingStatus.Status.DELAYED) {
+                AllureHelper.debugFritekst("Prosesstask feilet i behandlingsverifisering: " + status.getMessage());
+                throw new IllegalStateException("Prosesstask i vrang tilstand: " + status.getMessage());
+            } else {
+                AllureHelper.debugFritekst("Prossesstask DELAYED: "+status.getMessage());
+                return false;
+            }
         }
         else if(status.isPending()) {
             return false;

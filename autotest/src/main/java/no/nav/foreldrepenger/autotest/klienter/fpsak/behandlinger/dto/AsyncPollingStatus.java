@@ -18,9 +18,11 @@ public class AsyncPollingStatus {
         return pending != null ? pending : false;
     }
 
-    public Integer getStatus() {
+    public Integer getStatusCode() {
         return status != null ? status.getHttpStatus() : null;
     }
+
+    public Status getStatus() {return status != null ? status : null;}
 
     public String getMessage() {
         return message;
