@@ -598,7 +598,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         sendInnInntektsmeldingMor(testscenario, fødselsdato, saksnummer);
         return saksnummer;
     }
-    @Step("Send inn søknad mor")
+    @Step("Send inn søknad mor: fødsel funnet sted mor med far")
     private long sendInnSøknadMor(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         String søkerAktørid = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String søkerIdent = testscenario.getPersonopplysninger().getSøkerIdent();

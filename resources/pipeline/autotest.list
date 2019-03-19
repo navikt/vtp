@@ -113,3 +113,4 @@ KAFKA_AKSJONSPUNKTHENDELSE_TOPIC=privat-foreldrepenger-aksjonspunkthendelse-vtp
 KAFKA_AKSJONSPUNKTHENDELSE_CLIENT_ID=KP-privat-foreldrepenger-aksjonspunkthendelse-t10
 KAFKA_AKSJONSPUNKTHENDELSE_SCHEMA_REGISTRY.URL=https://kafka-test-schema-registry.nais.preprod.local
 KAFKA_AKSJONSPUNKTHENDELSE_GROUP_ID=KC-privat-foreldrepenger-aksjonspunkthendelse-t10
+DATO_FOR_NYE_BEREGNINGSREGLER=2010-01-01
