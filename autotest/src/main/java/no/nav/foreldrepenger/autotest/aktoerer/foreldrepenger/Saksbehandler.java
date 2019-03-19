@@ -409,6 +409,7 @@ public class Saksbehandler extends Aktoer{
                 return (T) aksjonspunkt.getBekreftelse();
             }
         }
+        AllureHelper.debugLoggBehandling("Behandling mangler aksjonspunkt: ", valgtBehandling);
         throw new RuntimeException("Valgt behandling (" + valgtBehandling.id + " - " + valgtFagsak.saksnummer + ") har ikke aksjonspunktbekreftelse: " + type.getName());
     }
     
