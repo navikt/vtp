@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VarselOmRevurderingBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderManglendeFodselBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarBrukerHarGyldigPeriodeBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
@@ -131,7 +131,6 @@ public class Fodsel extends EngangsstonadTestBase {
     }
     
     @Test
-    @Disabled
     @DisplayName("Mor søker fødsel - beregning overstyrt")
     public void morSøkerFødselBeregningOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
@@ -149,14 +148,18 @@ public class Fodsel extends EngangsstonadTestBase {
         //Overstyr beregning
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
-        
+        overstyrer.opprettBehandlingRevurdering("RE-PRSSL");
+        overstyrer.velgBehandling("Revurdering");
+        overstyrer.hentAksjonspunktbekreftelse(VarselOmRevurderingBekreftelse.class).bekreftIkkeSendVarsel();
+        overstyrer.bekreftAksjonspunktBekreftelse(VarselOmRevurderingBekreftelse.class);
+        overstyrer.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         overstyrer.overstyr(new OverstyrBeregning(saksbehandler.valgtFagsak, saksbehandler.valgtBehandling, 10));
         verifiserLikhet(10, overstyrer.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse());
-        
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
+        beslutter.velgBehandling("Revurdering");
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_BEREGNING));
