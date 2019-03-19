@@ -339,4 +339,15 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorForeldrepengerFlereBarn(String aktoerId,
+            LocalDate fødselsdato, int antallBarn) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((fødselsdato))
+                .withBegrunnelseForSenSoeknad(null)
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMor(fødselsdato, antallBarn))
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
 }
