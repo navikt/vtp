@@ -24,11 +24,6 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNkBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
-import no.nav.foreldrepenger.autotest.util.AllureHelper;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectRequestDto;
 import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectResultDto;
 import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectTokenDto;
@@ -37,6 +32,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soekn
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectPredicate;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("fpsak")
@@ -311,7 +307,7 @@ public class Klage extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling("Førstegangsbehandling");
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
 
         return saksnummer;

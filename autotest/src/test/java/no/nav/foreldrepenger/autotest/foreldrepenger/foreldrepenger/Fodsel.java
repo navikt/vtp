@@ -25,7 +25,6 @@ import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
-import no.nav.foreldrepenger.autotest.domain.foreldrepenger.BrevMalXml;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettBruttoBeregningsgrunnlagSNBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -47,16 +46,15 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.papirsøknad.PermisjonPeriodeDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriodeAktivitet;
-import no.nav.foreldrepenger.autotest.klienter.vtp.expect.ExpectKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectRequestDto;
 import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectResultDto;
 import no.nav.foreldrepenger.autotest.klienter.vtp.expect.dto.ExpectTokenDto;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectPredicate;
 import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
+import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
@@ -146,7 +144,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -208,7 +206,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap2 = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_SELVSTENDIG_NÆRINGSDRIVENDE);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Arrays.asList(ap1, ap2));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -267,7 +265,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(ap);
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -317,7 +315,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(ap);
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
@@ -360,7 +358,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -388,7 +386,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -417,7 +415,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
@@ -471,7 +469,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         ExpectTokenDto expectXml = expectKlient.createExpectation(new ExpectRequestDto(Mock.DOKUMENTPRODUKSJON.toString(), "produserIkkeredigerbartDokument", new ExpectPredicate("aktør", søkerIdent)));
 
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiser(beslutter.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
         verifiser(beslutter.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
@@ -514,7 +512,7 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
@@ -549,7 +547,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         aksjonspunktBekreftelse.morSøkerFødsel(fordeling, fødselsdato, fpff.periodeFom);
 
         saksbehandler.bekreftAksjonspunktBekreftelse(aksjonspunktBekreftelse);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         //verifiserer uttak
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
@@ -655,7 +653,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -744,7 +742,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         Aksjonspunkt ap = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkter(Collections.singletonList(ap));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
 
         verifiserLikhet(beslutter.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
@@ -831,7 +829,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDER_PERIODER_MED_OPPTJENING));
 
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
     }
 
     @Test

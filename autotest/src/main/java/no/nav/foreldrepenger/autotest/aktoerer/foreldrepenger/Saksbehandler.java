@@ -229,12 +229,19 @@ public class Saksbehandler extends Aktoer{
         Deffered<List<Vilkar>> dVilkår = Deffered.deffered(() -> {
             return behandlingerKlient.behandlingVilkår(behandling.id);
         });
-        
-        System.out.println(behandling.type.navn);
-        if(behandling.type.navn.equals("Dokumentinnsyn")) {
+
+        /*
+        KODE	OFFISIELL_KODE	BESKRIVELSE
+        BT-002	ae0034	Førstegangsbehandling
+        BT-003	ae0058	Klage
+        BT-004	ae0028	Revurdering
+        BT-005	ae0043	Tilbakebetaling endring
+        BT-006	ae0042	Dokumentinnsyn
+         */
+
+        if(behandling.type.navn.equalsIgnoreCase("Dokumentinnsyn")) {
             
-        }
-        else if (behandling.type.navn.equals("Klage")) {
+        } else if (behandling.type.navn.equalsIgnoreCase("Klage")) {
             valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
         } else {
             BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
@@ -719,15 +726,13 @@ public class Saksbehandler extends Aktoer{
     }
 
     @Step("Fatter vedtak og venter til sak er avsluttet")
-    public void fattVedtakOgVentTilAvsluttetSak() throws Exception {
-        ikkeVentPåStatus = true;
+    public void fattVedtakOgVentTilAvsluttetBehandling() throws Exception {
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        ventTilAvsluttetSak();
-        ikkeVentPåStatus = false;
+        ventTilAvsluttetBehandling();
     }
 
     @Step("Venter til saken er avsluttet")
-    public void ventTilAvsluttetSak() throws Exception {
+    public void ventTilAvsluttetBehandling() throws Exception {
         ventTilBehandlingsstatus("AVSLU");
     }
     

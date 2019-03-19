@@ -561,7 +561,7 @@ public class Beregning extends ForeldrepengerTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
 

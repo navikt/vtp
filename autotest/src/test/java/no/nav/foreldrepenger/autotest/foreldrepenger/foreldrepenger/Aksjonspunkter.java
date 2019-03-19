@@ -66,7 +66,7 @@ public class Aksjonspunkter  extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
 

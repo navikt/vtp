@@ -85,7 +85,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentFagsak(saksnummerMor);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         beslutter.refreshFagsak();
         verifiserLikhet(beslutter.valgtFagsak.hentStatus().kode, "LOP", "Fagsakstatus");
@@ -297,7 +297,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.velgBehandling("Revurdering");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRIST_FORELDREPENGER));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.harIkkeBehandling("Revurdering"), "Fars behandling fikk revurdering selv uten endringer i mors behandling av endringssøknaden");
@@ -336,7 +336,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRIST_FORELDREPENGER))
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_FØDSELSVILKÅRET));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Fars behandling fikk ikke revurdering selv med opphørt vedtak i mors behandling av endringssøknaden");
@@ -373,7 +373,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.velgBehandling("Revurdering");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRIST_FORELDREPENGER));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Fars behandling fikk ikke revurdering selv uten med endringer i mors behandling av endringssøknaden");
@@ -413,7 +413,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.KONTROLLER_OPPLYSNINGER_OM_FORDELING_AV_STØNADSPERIODEN))
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
     }
 
     @Step("Behandle søknad for mor registrert fødsel")
@@ -422,7 +422,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
 
         return saksnummer;
     }
@@ -445,7 +445,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentFagsak(saksnummer);
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         return saksnummer;
     }
@@ -473,7 +473,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRIST_FORELDREPENGER))
             .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         return saksnummer;
     }
@@ -509,7 +509,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK))
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
         return saksnummer;
     }
 
@@ -538,7 +538,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL))
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         return saksnummer;
     }

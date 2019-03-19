@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -50,7 +49,7 @@ public class Termin extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_TERMINBEKREFTELSE));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
 
@@ -115,7 +114,7 @@ public class Termin extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_FØDSELSVILKÅRET));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
@@ -196,7 +195,7 @@ public class Termin extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
     }
     
 }

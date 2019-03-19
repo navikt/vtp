@@ -68,7 +68,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         saksbehandler.velgBehandling("Førstegangsbehandling");
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
         saksbehandler.opprettBehandlingRevurdering("RE-MDL");
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
@@ -88,7 +88,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         beslutter.velgBehandling("Revurdering");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.getAvslagsarsak().kode, "1020", "Avslagsårsak");
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
@@ -120,7 +120,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.velgBehandling("Førstegangsbehandling");
         saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
         debugLoggBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger"); //revurdering opprettes ved flere arbeidsforhold for nå i autotest
         verifiserLikhet(saksbehandler.valgtBehandling.type.kode, "BT-002", "Behandlingstype");
         saksbehandler.ventTilBehandlingsstatus("AVSLU");

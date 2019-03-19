@@ -111,7 +111,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
     }
     
@@ -164,7 +164,7 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgBehandling("Klage");
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtakOgVentTilAvsluttetSak();
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
     }
 
     @Test
@@ -293,7 +293,7 @@ public class Klage extends EngangsstonadTestBase {
         verifiserBehandlingsresultat(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET");
         saksbehandler.ventTilHistorikkinnslag("Brev sendt");
         
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
     }
 
     private void verifiserBehandlingsresultat(String verdiFaktisk, String verdiForventet) {

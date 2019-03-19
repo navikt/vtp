@@ -45,7 +45,7 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        saksbehandler.ventTilAvsluttetSak();
+        saksbehandler.ventTilAvsluttetBehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         debugFritekst("Ferdig med første behandling");
 
