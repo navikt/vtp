@@ -148,10 +148,12 @@ public class Saksbehandler extends Aktoer{
     /*
      * Refresh
      */
+    @Step("Refresh behandling")
     public void refreshBehandling() throws Exception {
         velgBehandling(valgtBehandling);
     }
-    
+
+    @Step("Refresh fagsak")
     public void refreshFagsak() throws Exception {
         Behandling behandling = valgtBehandling;
         hentFagsak(valgtFagsak.saksnummer);
@@ -190,7 +192,7 @@ public class Saksbehandler extends Aktoer{
             throw new RuntimeException("Valgt fagsak har ikke behandling av type: " + behandlingstype.kode);
         }
     }
-    
+
     public void velgBehandling(String behandlingstype) throws Exception {
         velgBehandling(kodeverk.BehandlingType.getKode(behandlingstype));
     }

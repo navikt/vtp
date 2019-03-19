@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Step;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -284,6 +285,7 @@ public class Klage extends EngangsstonadTestBase {
         verifiserBehandlingsstatus(beslutter.valgtBehandling.status.navn, "Avsluttet");
     }
 
+    @Step("Oppretter førstegangsvedtak")
     private void opprettForstegangssoknadVedtak(long saksnummer) throws Exception {
         // Opprette førstegangssøknad engangsstønad
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);

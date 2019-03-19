@@ -57,6 +57,6 @@ public abstract class AksjonspunktBekreftelse {
 
     @Override
     public String toString(){
-        return String.format("%s : %s", kode != null ? kode : "", begrunnelse != null ? begrunnelse : "");
+        return String.format("[%s] %s : %s", this.getClass().getSimpleName(), kode != null ? kode : "", begrunnelse != null ? begrunnelse : "");
     }
 }
