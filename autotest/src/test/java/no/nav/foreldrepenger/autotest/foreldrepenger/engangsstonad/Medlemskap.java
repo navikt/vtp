@@ -26,6 +26,7 @@ public class Medlemskap extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker fødsel er utvandret")
+    @Description("Mor søker fødsel og er utvandret. Skal føre til aksjonspunkt angående medlemskap - avslått")
     public void morSøkerFødselErUtvandret() throws Exception {
         TestscenarioDto testscenario = opprettScenario("51");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

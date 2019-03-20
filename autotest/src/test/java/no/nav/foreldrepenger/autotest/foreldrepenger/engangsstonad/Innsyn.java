@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
@@ -22,6 +23,7 @@ public class Innsyn extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Behandle innsyn for mor - godkjent")
+    @Description("Behandle innsyn for mor - godkjent happy case")
     public void behandleInnsynMorGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -56,6 +58,7 @@ public class Innsyn extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Behandle innsyn for mor - avvist")
+    @Description("Behandle innsyn for mor - avvist ved vurdering")
     public void behandleInnsynMorAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -87,6 +90,7 @@ public class Innsyn extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Behandle innsyn for far - avvist")
+    @Description("Behandle innsyn for far - avvist ved vurdering")
     public void behandleInnsynFarAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

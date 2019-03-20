@@ -19,7 +19,7 @@ import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @Tag("flaky")
-@Tag("foreldrepenger")
+@Tag("engangsstonad")
 public class RevurderingEnsFlaky extends ForeldrepengerTestBase {
     @Test
     public void manueltOpprettetRevurderingIkkeSendVarsel() throws Exception {

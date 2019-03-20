@@ -28,6 +28,8 @@ public class Soknadsfrist extends EngangsstonadTestBase {
 
     @Test
     @Disabled
+    @DisplayName("Mor søker for sent men får godkjent")
+    @Description("Mor søker for sent men får godkjent alikevel")
     public void behandleFødselEngangstønadSøknadsfristGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("52");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadSøktForSent(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -53,6 +55,7 @@ public class Soknadsfrist extends EngangsstonadTestBase {
     }
     
     @Test
+    @DisplayName("Behandle søknadsfrist og sent tilbake")
     @Description("Behandle søknadsfrist og sent tilbake på grunn av søknadsfrist")
     public void behandleSøknadsfristOgSentTilbakePåGrunnAvSøknadsfrist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
@@ -91,7 +94,8 @@ public class Soknadsfrist extends EngangsstonadTestBase {
     }
     
     @Test
-    @Description("Behandle søknadsfrist og sent tilbake på grunn av fødsel")
+    @DisplayName("Behandle søknadsfrist og sent tilbake på grunn av fødsel")
+    @Description("Behandle søknadsfrist og sent tilbake på grunn av fødsel - tester tilbakesending")
     public void behandleSøknadsfristOgSentTilbakePåGrunnAvFodsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadSøktForSent(testscenario.getPersonopplysninger().getSøkerAktørIdent());

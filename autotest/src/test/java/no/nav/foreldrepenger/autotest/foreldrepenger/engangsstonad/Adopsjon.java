@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -26,6 +27,7 @@ public class Adopsjon extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker adopsjon - godkjent")
+    @Description("Mor søker adopsjon - godkjent happy case")
     public void morSøkerAdopsjonGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -57,6 +59,7 @@ public class Adopsjon extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker adopsjon - avvist - barn er over 15 år")
+    @Description("Mor søker adopsjon - avvist - barn er over 15 år og blir dermed avlått")
     public void morSøkerAdopsjonAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -89,6 +92,7 @@ public class Adopsjon extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker adopsjon med overstyrt vilkår")
+    @Description("Mor søker adopsjon med overstyrt vilkår som tar behandlingen fra innvilget til avslått")
     public void morSøkerAdopsjonOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -130,6 +134,7 @@ public class Adopsjon extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Far søker adopsjon - godkjent")
+    @Description("Far søker adopsjon - godkjent happy case")
     public void farSøkerAdopsjonGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -164,7 +169,8 @@ public class Adopsjon extends EngangsstonadTestBase {
     }
     
     @Test
-    @DisplayName("Far søker adopsjon - avvist")
+    @DisplayName("Far søker adopsjon av ektefelles barn")
+    @Description("Far søker adopsjon av ektefelles barn fører til avvist behandling")
     public void farSøkerAdopsjonAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.adopsjonFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

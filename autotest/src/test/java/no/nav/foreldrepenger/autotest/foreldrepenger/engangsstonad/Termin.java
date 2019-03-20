@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -25,6 +26,7 @@ public class Termin extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker terming - godkjent")
+    @Description("Mor søker terming - godkjent happy case")
     public void morSøkerTerminGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -58,6 +60,7 @@ public class Termin extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker terming men mangler dokumentasjon")
+    @Description("Mor søker terming men mangler dokumentasjon og sender melding om manglende brev")
     public void morSøkerTerminManglerDokumentasjon() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -81,6 +84,7 @@ public class Termin extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker termin overstyrt vilkår")
+    @Description("Mor søker termin overstyrt vilkår fødsel fra oppfylt til avvist")
     public void morSøkerTerminOvertyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -125,6 +129,7 @@ public class Termin extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Far søker termin")
+    @Description("Far søker termin avslått pga søker er far")
     public void farSøkerTermin() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -147,6 +152,7 @@ public class Termin extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Setter behandling på vent og gjennoptar og henlegger")
+    @Description("Setter behandling på vent og gjennoptar og henlegger")
     public void settBehandlingPåVentOgGjenopptaOgHenlegg() throws Exception {
         //Opprett scenario og søknad
         TestscenarioDto testscenario = opprettScenario("55");
@@ -172,6 +178,7 @@ public class Termin extends EngangsstonadTestBase {
     
     @Test
     @DisplayName("Mor søker terming 25 dager etter fødsel")
+    @Description("Mor søker terming 25 dager etter fødsel - Får aksjonpunkt om manglende fødsel - godkjent")
     public void morSøkerTermin25DagerTilbakeITid() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.terminMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent(), LocalDate.now().minusDays(26));
@@ -190,6 +197,8 @@ public class Termin extends EngangsstonadTestBase {
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
 

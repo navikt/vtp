@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -28,6 +29,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker fødsel - godkjent")
+    @Description("Mor søker fødsel - godkjent happy case")
     public void morSøkerFødselGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -46,6 +48,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker fødsel - avvist")
+    @Description("Mor søker fødsel - avvist fordi dokumentasjon mangler og barn er ikke registrert i tps")
     public void morSøkerFødselAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -75,7 +78,8 @@ public class Fodsel extends EngangsstonadTestBase {
     }
 
     @Test
-    @DisplayName("Far søker Registrert fødsel")
+    @DisplayName("Far søker registrert fødsel")
+    @Description("Far søker registrert fødsel og blir avvist fordi far søker")
     public void farSøkerFødselRegistrert() throws Exception {
         TestscenarioDto testscenario = opprettScenario("60");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -94,6 +98,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker fødsel overstyrt vilkår")
+    @Description("Mor søker fødsel overstyrt vilkår adopsjon fra godkjent til avslått")
     public void morSøkerFødselOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -132,6 +137,7 @@ public class Fodsel extends EngangsstonadTestBase {
     
     @Test
     @DisplayName("Mor søker fødsel - beregning overstyrt")
+    @Description("Mor søker fødsel - beregning overstyrt fra ett beløp til 10 kroner")
     public void morSøkerFødselBeregningOverstyrt() throws Exception {
         TestscenarioDto testscenario = opprettScenario("50");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -169,6 +175,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker fødsel med flere barn")
+    @Description("Mor søker fødsel med flere barn - happy case flere barn")
     public void morSøkerFødselFlereBarn() throws Exception {
         TestscenarioDto testscenario = opprettScenario("53");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadFlereBarn(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -203,6 +210,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker fødsel med verge")
+    @Description("Mor søker fødsel med verge - skal få aksjonspunkt om registrering av verge når man er under 18")
     public void morSøkerFødselMedVerge() throws Exception {
         TestscenarioDto testscenario = opprettScenario("54");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -243,6 +251,7 @@ public class Fodsel extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker uregistrert fødsel mindre enn 14 dager etter fødsel")
+    @Description("Mor søker uregistrert fødsel mindre enn 14 dager etter fødsel. Behandlingen skal bli satt på vent")
     public void morSøkerUregistrertFødselMindreEnn14DagerEtter() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorEngangstonadIGår(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -258,6 +267,7 @@ public class Fodsel extends EngangsstonadTestBase {
     
     @Test
     @DisplayName("Medmor søker fødsel")
+    @Description("Medmor søker fødsel - søkand blir avslått fordi søker er medmor")
     public void medmorSøkerFødsel() throws Exception {
         TestscenarioDto testscenario = opprettScenario("90");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakMedmorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());

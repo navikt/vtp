@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
@@ -23,6 +24,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker Omsorgsovertakelse - godkjent")
+    @Description("Mor søker Omsorgsovertakelse - godkjent happy case")
     public void MorSøkerOmsorgsovertakelseGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -58,6 +60,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Mor søker Omsorgsovertakelse - avvist")
+    @Description("Mor søker Omsorgsovertakelse - avvist fordi mor ikke er død")
     public void morSøkerOmsorgsovertakelseAvvist() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseMorEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
@@ -117,6 +120,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
     @Test
     @DisplayName("Far søker Omsorgsovertakelse - godkjent")
+    @Description("Far søker Omsorgsovertakelse - godkjent happy case")
     public void farSøkerOmsorgsovertakelseGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
