@@ -37,6 +37,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 
 @Tag("fpsak")
 @Tag("foreldrepenger")
+@Tag("fluoritt")
 public class Klage extends ForeldrepengerTestBase {
 
     @Test

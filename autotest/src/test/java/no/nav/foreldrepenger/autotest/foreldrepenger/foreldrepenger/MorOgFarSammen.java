@@ -46,6 +46,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
 
 @Tag("fpsak")
 @Tag("foreldrepenger")
+@Tag("fluoritt")
 public class MorOgFarSammen extends ForeldrepengerTestBase {
 
     @Test
@@ -268,7 +269,8 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Berørt sak endringssøknad ingen endring")
+    @DisplayName("Mor får revurdering fra endringssøknad ingen endring")
+    @Description("Mor får revurdering fra endringssøknad ingen endring - far får ikke revurdering")
     public void BerørtSakIngenEndring() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
         long saksnummerMor = behandleSøknadForMorUtenOverlapp(testscenario, LocalDate.now().minusMonths(4));
@@ -305,7 +307,8 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
 
     @Test
-    @DisplayName("Berørt sak endringssøknad opphør")
+    @DisplayName("Mor får revurdering fra endringssøknad vedtak opphører")
+    @Description("Mor får revurdering fra endringssøknad vedtak opphører - far får revurdering")
     public void BerørtSakOpphør() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
         long saksnummerMor = behandleSøknadForMorUtenOverlapp(testscenario, LocalDate.now().minusMonths(4));
@@ -343,7 +346,8 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Berørt sak endringssøknad endring av uttak")
+    @DisplayName("Mor får revurdering fra endringssøknad endring av uttak")
+    @Description("Mor får revurdering fra endringssøknad endring av uttak - fører til revurdering hos far")
     public void BerørtSakEndringAvUttak() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
         long saksnummerMor = behandleSøknadForMorUtenOverlapp(testscenario, LocalDate.now().minusMonths(4));
@@ -381,6 +385,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
     @Test
     @DisplayName("Berørt sak mor søker etter far og sniker i køen")
+    @Description("Berørt sak mor søker etter far og sniker i køen - mor får behandlet saken mens fars sak er på vent")
     public void BerørtSakMorSøkerEtterFar() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
         LocalDate fødselsdato = LocalDate.now().minusDays(15);

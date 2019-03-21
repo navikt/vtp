@@ -43,6 +43,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 
 @Tag("fpsak")
 @Tag("foreldrepenger")
+@Tag("fluoritt")
 public class Revurdering extends ForeldrepengerTestBase {
 
     @Test

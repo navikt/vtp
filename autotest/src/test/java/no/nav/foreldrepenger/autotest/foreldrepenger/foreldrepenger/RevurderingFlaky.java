@@ -22,6 +22,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 
 
 @Tag("flaky")
+@Tag("fluoritt")
 public class RevurderingFlaky extends ForeldrepengerTestBase {
 
     @Test
