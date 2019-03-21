@@ -10,6 +10,7 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvForeldreansvarAndreLedd;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvOmsorgsvilkoret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaOmsorgOgForeldreansvarBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
@@ -148,6 +149,43 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
+        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
+
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        beslutter.ventTilHistorikkinnslag("Brev sendt");
+    }
+    
+    @Test
+    @DisplayName("Far søker Foreldreansvar 2. ledd - godkjent")
+    @Description("Far søker Foreldreansvar 2. ledd - godkjent happy case")
+    public void farSøkerForeldreansvarGodkjent() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("61");
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
+
+
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaOmsorgOgForeldreansvarBekreftelse.class)
+                .setVilkårType(saksbehandler.kodeverk.OmsorgsovertakelseVilkårType.getKode("FP_VK_8"));
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaOmsorgOgForeldreansvarBekreftelse.class);
+
+        
+        saksbehandler.hentAksjonspunktbekreftelse(VurderingAvForeldreansvarAndreLedd.class)
+                .bekreftGodkjent();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvForeldreansvarAndreLedd.class);
+
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummer);
+
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_FORELDREANSVARSVILKÅRET_2_LEDD));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
