@@ -21,7 +21,7 @@
 		"personstatus": [
 			{
 				"kode": "BOSA",
-                "fom": "now()-P50Y"
+				"fom": "now()-P50Y"
 			}
 		],
 		"sivilstand": [
@@ -66,7 +66,17 @@
 				"ident": "${barn1}",
 				"fornavn": "${nevø1}",
 				"etternavn": "Duck",
-				"fødselsdato": "now()-P2W"
+				"fødselsdato": "now()-P2M"
+			}
+		},
+		{
+			"rolle": "BARN",
+			"til": {
+				"@type": "barn",
+				"ident": "${barn2}",
+				"fornavn": "${nevø2}",
+				"etternavn": "Duck",
+				"fødselsdato": "now()-P2M"
 			}
 		},
 		{

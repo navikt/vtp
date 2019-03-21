@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.endringssoeknadForeldrepengerYtelseNorskBorgerINorgeFødselMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.endringssoeknadYtelse;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorge;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeFodselMedFrilans;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeFødselFarAleneomsorg;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeFødselMorAleneomsorg;
@@ -19,6 +20,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import java.time.LocalDate;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
 public class ForeldrepengesoknadXmlErketyper {
@@ -51,7 +53,16 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("")
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato, fordeling))
-//                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeTerminMor(termindato))
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+    public ForeldrepengesoknadBuilder UttakKunMor(String aktoerId,Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((LocalDate.now()))
+                .withBegrunnelseForSenSoeknad(null)
+                .withTilleggsopplysninger("")
+                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorge(fordeling, soekersRelasjonTilBarnet))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);

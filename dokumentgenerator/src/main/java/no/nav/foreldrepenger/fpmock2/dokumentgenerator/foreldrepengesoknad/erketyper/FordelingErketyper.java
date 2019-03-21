@@ -2,16 +2,17 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erke
 
 import java.time.LocalDate;
 
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Oppholdsaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
 
 public class FordelingErketyper {
 
@@ -96,11 +97,10 @@ public class FordelingErketyper {
     }
 
     public static Uttaksperiode uttaksperiode(String stønadskontotype, LocalDate fom, LocalDate tom) {
-        Uttaksperiode uttaksperiode = new Uttaksperiode();
-        addStønadskontotype(stønadskontotype, uttaksperiode);
-
-        addPeriode(fom, tom, uttaksperiode);
-        return uttaksperiode;
+        return (new UttaksperiodeBuilder()
+                .medTidsperiode(fom, tom)
+                .medStønadskontoType(stønadskontotype)
+                .build());
     }
 
     public static Oppholdsperiode oppholdsperiode(String oppholdsårsak, LocalDate fom, LocalDate tom) {

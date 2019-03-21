@@ -38,6 +38,9 @@ public class SoekersRelasjonErketyper {
     public static Termin søkerTermin(LocalDate termindato) {
         return termin(1, termindato);
     }
+    public static Termin søkerTermin(int antallBarn,LocalDate termindato) {
+        return termin(antallBarn, termindato);
+    }
 
     public static Termin søkerTerminFørTermin() {
         return termin(1, LocalDate.now().plusWeeks(3));

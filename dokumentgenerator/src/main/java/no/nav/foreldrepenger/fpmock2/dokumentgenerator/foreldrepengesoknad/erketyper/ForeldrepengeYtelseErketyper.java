@@ -33,6 +33,15 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setFordeling(value);
         return foreldrepenger;
     }
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorge(Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
+        foreldrepenger.setRelasjonTilBarnet(soekersRelasjonTilBarnet);
+        foreldrepenger.setFordeling(fordeling);
+        return foreldrepenger;
+    }
 
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeTerminFar(LocalDate termindato) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
