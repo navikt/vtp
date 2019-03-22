@@ -26,6 +26,9 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Dokumentty
 @Tag("foreldrepenger")
 public class Ytelser extends ForeldrepengerTestBase {
 
+    /*
+     * Mottar foreldrepenger og ikke sykepenger pga problemer / mangler med vtp scenariet. usikker på hva som mangler
+     */
     @Test
     public void morSøkerFødselMottarSykepenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("70"); //TODO bruker ytelse foreldrepenger og ikke sykepenger
