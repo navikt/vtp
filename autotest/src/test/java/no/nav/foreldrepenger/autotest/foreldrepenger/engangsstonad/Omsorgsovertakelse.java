@@ -157,7 +157,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
     
     @Test
     @DisplayName("Far søker Foreldreansvar 2. ledd - godkjent")
-    @Description("Far søker Foreldreansvar 2. ledd - godkjent happy case")
+    @Description("Far søker Foreldreansvar 2. ledd - får godkjent aksjonspunkt og blir invilget")
     public void farSøkerForeldreansvarGodkjent() throws Exception {
         TestscenarioDto testscenario = opprettScenario("61");
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.omsorgsovertakelseFarEngangstonad(testscenario.getPersonopplysninger().getSøkerAktørIdent());
