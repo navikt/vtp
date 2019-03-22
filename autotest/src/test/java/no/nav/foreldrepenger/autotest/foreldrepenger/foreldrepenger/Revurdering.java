@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -146,6 +147,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
     }
 
+    @Disabled
     @Test
     @DisplayName("Revurdering og ny IM når behandling er hos beslutter.")
     @Description("Førstegangsbehandling til positivt vedtak. Revurdering, og ny IM kommer når behandling er hos beslutter. Vedtak fortsatt løpende.")
