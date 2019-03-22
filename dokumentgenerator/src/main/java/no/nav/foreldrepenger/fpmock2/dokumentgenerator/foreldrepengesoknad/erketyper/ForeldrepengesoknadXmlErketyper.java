@@ -57,7 +57,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
-    public ForeldrepengesoknadBuilder UttakKunMor(String aktoerId,Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+    public ForeldrepengesoknadBuilder uttakKunMor(String aktoerId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)

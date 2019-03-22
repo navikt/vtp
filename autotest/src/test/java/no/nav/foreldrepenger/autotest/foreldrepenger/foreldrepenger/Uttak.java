@@ -353,10 +353,8 @@ public class Uttak extends ForeldrepengerTestBase {
     @Description("Mor sender førstegangssøknad på termin, kan brukes for å teste flytting")
     public void testcase_mor_termin() throws Exception {
         TestscenarioDto testscenario = opprettScenario("75");
-//        String morIdent = testscenario.getPersonopplysninger().getSøkerIdent();
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-//        LocalDate terminDato = fødselsdato.plusMonths(1).plusWeeks(2);
         LocalDate terminDato = fødselsdato.minusDays(1);
         LocalDate fpStartdatoMor = terminDato.minusWeeks(3);
         Fordeling fordelingMor = new ObjectFactory().createFordeling();
@@ -408,7 +406,7 @@ public class Uttak extends ForeldrepengerTestBase {
                 .medStønadskontoType(STØNADSKONTOTYPE_FELLESPERIODE)
                 .medFlerbarnsdager(true)
                 .build());
-        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.UttakKunMor(morAktørId, fordelingMor, SoekersRelasjonErketyper.søkerTermin( 2,termindato) );
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakKunMor(morAktørId, fordelingMor, SoekersRelasjonErketyper.søkerTermin( 2,termindato) );
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);

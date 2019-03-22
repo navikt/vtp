@@ -38,7 +38,7 @@ public class SoekersRelasjonErketyper {
     public static Termin søkerTermin(LocalDate termindato) {
         return termin(1, termindato);
     }
-    public static Termin søkerTermin(int antallBarn,LocalDate termindato) {
+    public static Termin søkerTermin(int antallBarn, LocalDate termindato) {
         return termin(antallBarn, termindato);
     }
 
