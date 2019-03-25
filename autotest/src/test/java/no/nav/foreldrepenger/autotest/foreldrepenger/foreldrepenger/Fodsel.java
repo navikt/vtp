@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,7 @@ import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettBruttoBeregningsgrunnlagSNBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettUttaksperioderManueltBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderBeregnetInntektsAvvikBekreftelse;
@@ -454,8 +454,13 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK);
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class).
                 godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2),
-                        saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
+                        saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_KAN_IKKE_AVKLARES"));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.class);
+
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER);
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class).
+                godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2), 100);
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
 
         List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
         verifiserLikhet(perioder.size(), 1);
@@ -752,7 +757,6 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
     }
 
-    @Disabled("Disabler til testen ble endret")
     @Test
     @DisplayName("Far søker fødsel med aleneomsorg men er gift og bor med annenpart")
     public void farSøkerFødselAleneomsorgMenErGiftOgBorMedAnnenpart() throws Exception {
@@ -764,9 +768,8 @@ public class Fodsel extends ForeldrepengerTestBase {
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakFarAleneomsorg(søkerAktørIdent, fødselsdato);
         fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
-        LocalDate startdatoForeldrePenger = fødselsdato;
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, startdatoForeldrePenger);
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fødselsdato);
 
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
@@ -777,26 +780,26 @@ public class Fodsel extends ForeldrepengerTestBase {
         AvklarFaktaAleneomsorgBekreftelse bekreftelse = saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaAleneomsorgBekreftelse.class);
         bekreftelse.bekreftBrukerHarIkkeAleneomsorg();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse);
+        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakPerioder.class)
+                //20 uker fra erketype
+                .delvisGodkjennPeriode(fødselsdato, fødselsdato.plusWeeks(20), fødselsdato, fødselsdato.plusWeeks(20),
+                        hentKodeverk().UttakPeriodeVurderingType.getKode("PERIODE_KAN_IKKE_AVKLARES"));
+        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakPerioder.class);
 
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER);
         //verifiserer uttak
         List<UttakResultatPeriode> uttaksperioder = saksbehandler.valgtBehandling.hentUttaksperioder();
         assertThat(uttaksperioder).hasSize(2);
 
-        //uttak gå til manuell behandling
+        //uttak går til manuell behandling
         UttakResultatPeriode foreldrepengerFørste6Ukene = uttaksperioder.get(0);
         assertThat(foreldrepengerFørste6Ukene.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
-        assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getUtbetalingsgrad()).isNull();
-        assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getTrekkdager()).isGreaterThan(0);
         assertThat(foreldrepengerFørste6Ukene.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
         UttakResultatPeriode foreldrepengerEtterUke6 = uttaksperioder.get(1);
         assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
-        assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getUtbetalingsgrad()).isNull();
-        assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getTrekkdager()).isGreaterThan(0);
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
 
         verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Antall stønadskontoer er feil.");
-
-        // Avslutter testen her da vi ikke ser det hensiktsmessig å behandle til avsluttet. Saksbehandler må avgjøre.
     }
 
     @Test

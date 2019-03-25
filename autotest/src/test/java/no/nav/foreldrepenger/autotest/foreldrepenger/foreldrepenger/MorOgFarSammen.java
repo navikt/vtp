@@ -481,41 +481,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         return saksnummer;
     }
 
-    @Step("Behandle søknad for far")
-    public long behandleSøknadForFar(TestscenarioDto testscenario) throws Exception {
-        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
-        LocalDate startDatoForeldrepenger = fødselsdato.plusWeeks(3);
-        long saksnummer = sendInnSøknadOgInntektFar(testscenario, fødselsdato, startDatoForeldrepenger);
-
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
-
-        verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Saken er ikke koblet til en annen behandling");
-
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarBrukerBosattBekreftelse.class)
-                .bekreftBrukerErBosatt();
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarBrukerBosattBekreftelse.class);
-
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.class)
-                .godkjennPeriode(startDatoForeldrepenger, startDatoForeldrepenger.plusWeeks(2),
-                        saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_OK"));
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.class);
-
-        List<UttakResultatPeriode> perioder = saksbehandler.valgtBehandling.hentUttaksperioder();
-        verifiserLikhet(perioder.size(), 1);
-
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
-
-        beslutter.hentFagsak(saksnummer);
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK))
-                .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ER_BOSATT));
-        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
-        return saksnummer;
-    }
-
     @Step("Behandle søknad for far uten overlapp")
     public long behandleSøknadForFarUtenOverlapp(TestscenarioDto testscenario, LocalDate fødselsdato) throws Exception {
         long saksnummer = sendInnSøknadOgInntektFar(testscenario, fødselsdato, fødselsdato.plusWeeks(10).plusDays(1));
