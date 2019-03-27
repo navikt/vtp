@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -177,6 +178,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
     }
 
+    @Disabled
     @Test
     @DisplayName("Mor og far koblet sak med oppholdsperiode i søknad")
     @Description("Mor og far sender inn søknader med oppholdsperiode for den andre parten. Periodene er kant til kant. " +
