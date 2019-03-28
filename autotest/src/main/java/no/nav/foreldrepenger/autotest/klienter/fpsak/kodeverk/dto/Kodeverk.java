@@ -12,6 +12,7 @@ public class Kodeverk{
     public Map<String, KodeListe> Avslagsårsak;
     public KodeListe BehandlingType;
     public KodeListe BehandlingÅrsakType;
+    public KodeListe BehandlingResultatType;
     public KodeListe FagsakStatus;
     public KodeListe FagsakYtelseType;
     public KodeListe FagsakÅrsakType;

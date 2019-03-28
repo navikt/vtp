@@ -171,7 +171,7 @@ public class Termin extends EngangsstonadTestBase {
         saksbehandler.gjenopptaBehandling();
         verifiser(!saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er satt på vent");
         
-        saksbehandler.henleggBehandling(saksbehandler.henleggArsaker.getKode("HENLAGT_SØKNAD_TRUKKET"));
+        saksbehandler.henleggBehandling(saksbehandler.kodeverk.BehandlingResultatType.getKode("HENLAGT_SØKNAD_TRUKKET"));
         verifiser(saksbehandler.valgtBehandling.erHenlagt(), "Behandlingen ble uventet ikke henlagt");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU", "behandlingsstatus");
     }
