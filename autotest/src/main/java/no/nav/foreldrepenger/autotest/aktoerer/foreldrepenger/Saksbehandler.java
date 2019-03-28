@@ -53,7 +53,6 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInns
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.KodeverkKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk.KodeListe;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.ProsesstaskKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.ProsessTaskListItemDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.prosesstask.dto.SokeFilterDto;
@@ -85,9 +84,6 @@ public class Saksbehandler extends Aktoer{
     private ProsesstaskKlient prosesstaskKlient;
     
     public Kodeverk kodeverk;
-    public KodeListe henleggArsaker;
-    public KodeListe henleggArsakerKlage;
-    public KodeListe henleggArsakerInnsyn;
     
     public boolean ikkeVentPåStatus = false; //TODO hack for økonomioppdrag
     
@@ -356,11 +352,6 @@ public class Saksbehandler extends Aktoer{
     public void hentKodeverk() {
         try {
             kodeverk = kodeverkKlient.getKodeverk();
-            /* Fjernet henting av disse:
-            //henleggArsaker = kodeverkKlient.henleggArsaker();
-            //henleggArsakerKlage = kodeverkKlient.henleggArsakerKlage();
-            //henleggArsakerInnsyn = kodeverkKlient.henleggArsakerInnsyn();
-            */
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke hente kodeverk: " + e.getMessage());
         }
