@@ -23,6 +23,10 @@ public class FordelingErketyper {
     public static final String STØNADSKONTOTYPE_FORELDREPENGER = "FORELDREPENGER";
     public static final String UTSETTELSETYPE_LOVBESTEMT_FERIE = "LOVBESTEMT_FERIE";
     public static final String UTSETTELSETYPE_ARBEID = "ARBEID";
+    public static final String UTSETTELSETYPE_SYKDOMSKADE = "SYKDOM";
+    public static final String UTSETTELSETYPE_INNLAGTSØKER = "INSTITUSJONSOPPHOLD_SØKER";
+    public static final String UTSETTELSETYPE_INNLAGTBARN = "INSTITUSJONSOPPHOLD_BARNET";
+    public static final String UTSETTELSETYPE_UDEFINERT = "-";
     public static final String OPPHOLDSPTYPE_UDEFINERT = "-";
     public static final String OPPHOLDSTYPE_INGEN = "INGEN";
     public static final String OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER = "UTTAK_MØDREKVOTE_ANNEN_FORELDER";
@@ -77,6 +81,19 @@ public class FordelingErketyper {
 
         addPeriode(fom, tom, gradering);
         return gradering;
+    }
+
+    public static Utsettelsesperiode utsettelsesperiode(String stønadskontotype, LocalDate fom, LocalDate tom, String årsak, boolean erArbeidstaker) {
+        Utsettelsesperiode utsettelse = new Utsettelsesperiode();
+        Utsettelsesaarsaker årsaker = new Utsettelsesaarsaker();
+        årsaker.setKode(årsak);
+        utsettelse.setAarsak(årsaker);
+        Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
+        uttaksperiodetyper.setKode(stønadskontotype);
+        utsettelse.setUtsettelseAv(uttaksperiodetyper);
+        utsettelse.setErArbeidstaker(erArbeidstaker);
+        addPeriode(fom, tom, utsettelse);
+        return utsettelse;
     }
 
     public static Utsettelsesperiode utsettelsePeriode(String årsak, LocalDate fom, LocalDate tom) {
