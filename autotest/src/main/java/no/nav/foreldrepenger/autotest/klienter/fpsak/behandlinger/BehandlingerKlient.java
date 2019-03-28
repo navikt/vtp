@@ -51,7 +51,7 @@ public class BehandlingerKlient extends FpsakKlient{
     private static final String BEHANDLINGER_HENLEGG_URL = BEHANDLINGER_URL + "/henlegg";
     private static final String BEHANDLINGER_GJENOPPTA_URL = BEHANDLINGER_URL + "/gjenoppta";
     private static final String BEHANDLINGER_BYTT_ENHET_URL = BEHANDLINGER_URL + "/bytt-enhet";
-    private static final String BEHANDLINGER_ALLE_URL = BEHANDLINGER_URL + "/alle-fpsak?saksnummer=%s";
+    private static final String BEHANDLINGER_ALLE_URL = BEHANDLINGER_URL + "/alle?saksnummer=%s";
     private static final String BEHANDLINGER_OPNE_FOR_ENDRINGER_URL = BEHANDLINGER_URL + "/opne-for-endringer";
     private static final String BEHANDLINGER_ANNEN_PART_BEHANDLING_URL = BEHANDLINGER_URL + "/annen-part-behandling?saksnummer=%s";
 

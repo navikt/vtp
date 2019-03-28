@@ -356,9 +356,11 @@ public class Saksbehandler extends Aktoer{
     public void hentKodeverk() {
         try {
             kodeverk = kodeverkKlient.getKodeverk();
-            henleggArsaker = kodeverkKlient.henleggArsaker();
-            henleggArsakerKlage = kodeverkKlient.henleggArsakerKlage();
-            henleggArsakerInnsyn = kodeverkKlient.henleggArsakerInnsyn();
+            /* Fjernet henting av disse:
+            //henleggArsaker = kodeverkKlient.henleggArsaker();
+            //henleggArsakerKlage = kodeverkKlient.henleggArsakerKlage();
+            //henleggArsakerInnsyn = kodeverkKlient.henleggArsakerInnsyn();
+            */
         } catch (Exception e) {
             throw new RuntimeException("Kunne ikke hente kodeverk: " + e.getMessage());
         }
