@@ -20,7 +20,9 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         super(fagsak, behandling);
         
         for (UttakResultatPeriode uttakPeriode : behandling.hentUttaksperioder()) {
-            uttakPeriode.setBegrunnelse("Begrunnelse");
+            if (!uttakPeriode.getPeriodeResultatType().kode.equals("INNVILGET")) {
+                uttakPeriode.setBegrunnelse("Begrunnelse");
+            }
             LeggTilUttakPeriode(uttakPeriode);
         }
     }
@@ -28,6 +30,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
     public void godkjennAllePerioder() {
         for (UttakResultatPeriode uttakResultatPeriode : perioder) {
             godkjennPeriode(uttakResultatPeriode, 100);
+            uttakResultatPeriode.setBegrunnelse("Begrunnelse autotest");
         }
     }
     
@@ -57,6 +60,18 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
                 aktivitet.setTrekkdager(0);
             }
         }
+    }
+
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriodeMedGradering(UttakResultatPeriode periode, Kode periodeResultatÅrsak) {
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(periodeResultatÅrsak);
+        periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
+
+        for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
+            BigDecimal andelArbeid = aktivitet.getProsentArbeid();
+            aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(100).subtract(andelArbeid));
+        }
+        return this;
     }
     
     public void godkjennPeriode(UttakResultatPeriode periode, int utbetalingsgrad, Kode stønadskonto) {

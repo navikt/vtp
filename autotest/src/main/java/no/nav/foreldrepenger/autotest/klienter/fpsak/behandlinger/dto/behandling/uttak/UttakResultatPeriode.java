@@ -11,23 +11,20 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UttakResultatPeriode {
 
-    protected LocalDate fom = null;
-    protected LocalDate tom = null;
-
-    protected List<UttakResultatPeriodeAktivitet> aktiviteter = null;
-
-    protected Kode periodeResultatType = null;
-    protected String begrunnelse = null;
-    protected Kode periodeResultatÅrsak = null;
-    protected Kode manuellBehandlingÅrsak = null;
-    protected Kode graderingAvslagÅrsak = null;
-    protected Boolean flerbarnsdager = null;
+    protected LocalDate fom;
+    protected LocalDate tom;
+    protected List<UttakResultatPeriodeAktivitet> aktiviteter;
+    protected Kode periodeResultatType;
+    protected String begrunnelse;
+    protected Kode periodeResultatÅrsak;
+    protected Kode manuellBehandlingÅrsak;
+    protected Kode graderingAvslagÅrsak;
+    protected Boolean flerbarnsdager;
     protected Boolean samtidigUttak;
     protected Boolean graderingInnvilget;
-    protected Kode periodeType = null;
-    protected Kode utsettelseType = null;
-    protected Kode oppholdÅrsak = null;
-
+    protected Kode periodeType;
+    protected Kode utsettelseType;
+    protected Kode oppholdÅrsak;
     protected UttakResultatPeriodeAktivitet gradertAktivitet = null;
 
     public void setBegrunnelse(String begrunnelse) {
@@ -118,4 +115,8 @@ public class UttakResultatPeriode {
             aktivitet.stønadskontoType = stønadskonto;
         }
     }
+
+    public Kode getManuellBehandlingÅrsak() {return manuellBehandlingÅrsak;}
+
+    public void setManuellBehandlingÅrsak(Kode manuellBehandlingÅrsak) {this.manuellBehandlingÅrsak = manuellBehandlingÅrsak;}
 }
