@@ -88,14 +88,14 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(LocalDate fødselsdato, String aktørIdFar, Fordeling fordeling) {
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(LocalDate fødselsdato, String annenpartAktørId, Fordeling fordeling) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
         foreldrepenger.setFordeling(fordeling);
-        foreldrepenger.setAnnenForelder(standardAnnenForelder(aktørIdFar));
+        foreldrepenger.setAnnenForelder(standardAnnenForelder(annenpartAktørId));
         return foreldrepenger;
     }
 
@@ -121,18 +121,6 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
         foreldrepenger.setFordeling(FordelingErketyper.fordelingFarHappyCase(fødselsdato));
-        return foreldrepenger;
-    }
-
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(String aktørIdMor, LocalDate fødselsdato, Fordeling fordeling) {
-        Foreldrepenger foreldrepenger = new Foreldrepenger();
-        foreldrepenger.setDekningsgrad(standardDekningsgrader());
-        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
-        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
-        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
-        foreldrepenger.setFordeling(fordeling);
-        foreldrepenger.setAnnenForelder(standardAnnenForelder(aktørIdMor));
-
         return foreldrepenger;
     }
 

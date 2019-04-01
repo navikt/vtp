@@ -10,11 +10,10 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMorEkstraUttakFørFødsel;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselFar;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorVentelonnVartpenger;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.*;
 
 import java.time.LocalDate;
@@ -242,7 +241,7 @@ public class ForeldrepengesoknadXmlErketyper {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselMorMedFar(fødselsdato, farAktørId, fordeling))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, farAktørId, fordeling))
                 .withSoeker(morSoeker(morAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
@@ -262,7 +261,7 @@ public class ForeldrepengesoknadXmlErketyper {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselFarMedMor(morAktørId, fødselsdato, fordeling))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, morAktørId, fordeling))
                 .withSoeker(farSoeker(farAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);

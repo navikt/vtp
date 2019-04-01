@@ -29,7 +29,6 @@ public abstract class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftels
                     periode.getBegrunnelse(),
                     periode);
 
-            periode.setBegrunnelse("Vurdert av autotest");
             periode.setBekreftet(true);
 
             bekreftedePerioder.add(bekreftetUttakPeriode);
