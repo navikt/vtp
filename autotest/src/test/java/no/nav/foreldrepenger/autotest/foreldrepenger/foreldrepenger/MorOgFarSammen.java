@@ -271,9 +271,10 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Mor får revurdering fra endringssøknad ingen endring")
-    @Description("Mor får revurdering fra endringssøknad ingen endring - far får ikke revurdering")
-    public void BerørtSakIngenEndring() throws Exception {
+    @DisplayName("Koblet sak endringssøknad ingen endring")
+    @Description("Sender inn søknad mor. Sender inn søknad far uten overlapp. Sender inn endringssøknad mor som er lik " +
+            "førstegangsbehandlingen. Verifiserer at det ikke blir berørt sak på far.")
+    public void KobletSakIngenEndring() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
         long saksnummerMor = behandleSøknadForMorUtenOverlapp(testscenario, LocalDate.now().minusMonths(4));
         long saksnummerFar = behandleSøknadForFarUtenOverlapp(testscenario, LocalDate.now().minusMonths(4));
@@ -386,9 +387,10 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Berørt sak mor søker etter far og sniker i køen")
-    @Description("Berørt sak mor søker etter far og sniker i køen - mor får behandlet saken mens fars sak er på vent")
-    public void BerørtSakMorSøkerEtterFar() throws Exception {
+    @DisplayName("Koblet sak mor søker etter far og sniker i køen")
+    @Description("Far søker. Blir satt på vent pga for tidlig søknad. Mor søker og får innvilget. Oppretter manuell " +
+            "revurdering på mor. ")
+    public void KobletSakMorSøkerEtterFar() throws Exception {
         TestscenarioDto testscenario = opprettScenario("84");
         LocalDate fødselsdato = LocalDate.now().minusDays(15);
         long saksnummerFar = behandleSøknadForFarSattPåVent(testscenario, fødselsdato);

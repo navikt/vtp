@@ -2,31 +2,33 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandlin
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.Arbeidsgiver;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakDokumentasjon;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KontrollerFaktaPeriode {
 
-    protected LocalDate tom = null;
-    protected LocalDate fom = null;
-
-    protected Kode uttakPeriodeType = null;
-    protected Kode utsettelseÅrsak = null;
-    protected Kode overføringÅrsak = null;
-    protected Kode resultat = null;
-    protected List<UttakDokumentasjon> dokumentertePerioder = new ArrayList<>();
-
-    protected BigDecimal arbeidstidsprosent = null;
-    protected String begrunnelse = null;
-    protected Boolean bekreftet = null;
-    protected String orgnr = null;
-    protected Boolean erArbeidstaker = null;
+    protected LocalDate tom;
+    protected LocalDate fom;
+    protected Kode uttakPeriodeType;
+    protected Kode utsettelseÅrsak;
+    protected Kode overføringÅrsak;
+    protected Kode oppholdÅrsak;
+    protected Kode resultat;
+    protected List<UttakDokumentasjon> dokumentertePerioder;
+    protected BigDecimal arbeidstidsprosent;
+    protected String begrunnelse;
+    protected Boolean bekreftet;
+    protected Arbeidsgiver arbeidsgiver;
+    protected Boolean erArbeidstaker;
+    protected boolean erFrilanser;
+    protected boolean erSelvstendig;
+    protected boolean samtidigUttak;
 
     public LocalDate getTom() {
         return tom;

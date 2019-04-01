@@ -863,7 +863,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         LocalDate graderingTom = fødselsdato.plusWeeks(12);
         BigDecimal arbeidstidsprosent = BigDecimal.TEN;
         perioder.add(FordelingErketyper.graderingPeriode(FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE, graderingFom, graderingTom, gradetArbeidsgiver,
-                arbeidstidsprosent.doubleValue()));
+                arbeidstidsprosent));
         LocalDate utsettelseFom = fødselsdato.plusWeeks(12).plusDays(1);
         LocalDate utsettelseTom = fødselsdato.plusWeeks(14);
         perioder.add(FordelingErketyper.utsettelsePeriode(FordelingErketyper.UTSETTELSETYPE_ARBEID, utsettelseFom, utsettelseTom));

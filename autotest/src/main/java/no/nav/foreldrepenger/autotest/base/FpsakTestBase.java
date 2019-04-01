@@ -162,6 +162,15 @@ public class FpsakTestBase extends TestScenarioTestBase {
         return builder;
     }
 
+    protected InntektsmeldingBuilder finnIM(List<InntektsmeldingBuilder> inntektsmeldinger, String orgnr) {
+        for (InntektsmeldingBuilder im : inntektsmeldinger) {
+            if (im.getArbeidsgiver().getVirksomhetsnummer().equals(orgnr)) {
+                return im;
+            }
+        }
+        throw new IllegalArgumentException("Finner ikke inntektsmelding for oppgitt orgnr.");
+    }
+
     protected InntektsmeldingBuilder lagInntektsmeldingBuilderMedEndringIRefusjonPrivatArbeidsgiver(Integer beløp, String fnr,
                                                                                                     LocalDate fpStartdato, String fnrArbeidsgiver,
                                                                            Optional<String> arbeidsforholdId, Optional<BigDecimal> refusjon, Map<LocalDate, BigDecimal> endringRefusjonMap) {

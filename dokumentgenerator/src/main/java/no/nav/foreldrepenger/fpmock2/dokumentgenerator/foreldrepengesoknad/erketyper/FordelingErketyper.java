@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
@@ -67,7 +68,7 @@ public class FordelingErketyper {
         return fordeling;
     }
 
-    public static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, double arbeidstidsprosent) {
+    public static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, BigDecimal arbeidstidsprosent) {
         Gradering gradering = new Gradering();
         gradering.setArbeidsforholdSomSkalGraderes(true);
 
@@ -75,7 +76,7 @@ public class FordelingErketyper {
         virksomhet.setIdentifikator(arbeidsgiverIdentifikator);
 
         gradering.setArbeidsgiver(virksomhet);
-        gradering.setArbeidtidProsent(arbeidstidsprosent);
+        gradering.setArbeidtidProsent(arbeidstidsprosent.doubleValue());
         gradering.setErArbeidstaker(true);
         addStønadskontotype(stønadskontotype, gradering);
 

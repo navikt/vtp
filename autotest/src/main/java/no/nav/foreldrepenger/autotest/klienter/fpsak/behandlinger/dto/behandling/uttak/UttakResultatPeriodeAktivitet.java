@@ -34,15 +34,12 @@ public class UttakResultatPeriodeAktivitet {
     public void setStønadskontoType(Kode stønadskontoType) {
         this.stønadskontoType = stønadskontoType;
     }
-
     public Arbeidsgiver getArbeidsgiver() {
         return arbeidsgiver;
     }
-
     public Kode getUttakArbeidType() {
         return uttakArbeidType;
     }
-
     public BigDecimal getProsentArbeid() {
         return prosentArbeid;
     }
