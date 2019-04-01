@@ -81,7 +81,7 @@
         <norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
         <kodeverk.version>2.0.1-SNAPSHOT</kodeverk.version>
         <dokumentproduksjon.version>2.1.7</dokumentproduksjon.version>
-        <modig-testcertificates.version>1.2.5-vedfp-SNAPSHOT</modig-testcertificates.version>
+        <modig-testcertificates.version>1.2.6-SNAPSHOT</modig-testcertificates.version>
         <person-api-feed.version>1.1.0</person-api-feed.version>
         <person-api-feed-common.version>1.0.1</person-api-feed-common.version>
         <vl-fpoppdrag-integrasjon.version>1.0_20190110115356_1239f94</vl-fpoppdrag-integrasjon.version>
