@@ -21,6 +21,8 @@
 	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
 	<logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
 
+    <logger name="org.apache.kafka" level="${log.level.org.apache.kafka:-INFO}"/>
+
 	<root level="${log.level.root:-WARN}">
 		<appender-ref ref="STDOUT" />
 	</root>

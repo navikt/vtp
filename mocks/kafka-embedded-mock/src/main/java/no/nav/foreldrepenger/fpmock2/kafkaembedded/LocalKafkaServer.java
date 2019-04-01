@@ -2,9 +2,7 @@ package no.nav.foreldrepenger.fpmock2.kafkaembedded;
 
 import java.util.Collection;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
-import org.apache.kafka.clients.admin.NewTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +33,7 @@ public class LocalKafkaServer {
 
         kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
         kafkaProperties.put("offsets.topic.replication.factor", "1");
-        kafkaProperties.put("logs.dirs", "target/kafka-logs");
+        kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("listeners", "PLAINTEXT://localhost:" + kafkaBrokerPort);
         kafkaProperties.put("advertised.host.name", "localhost");
         //kafkaProperties.put("advertised.port",kafkaBrokerPort);
@@ -50,7 +48,7 @@ public class LocalKafkaServer {
 
         try {
             kafka = new KafkaLocal(kafkaProperties, zkProperties);
-
+            /*
             if (bootstrapTopics != null) {
                 localProducer = new LocalKafkaProducer();
                 localProducer.getKafkaAdminClient().createTopics(
@@ -64,7 +62,7 @@ public class LocalKafkaServer {
                 //localConsumer.startConsumerPoller(bootstrapTopics);
             }
 
-
+        */
         } catch (Exception e){
             e.printStackTrace();
             LOG.error("Kunne ikke starte Kafka producer og/eller consumer");
