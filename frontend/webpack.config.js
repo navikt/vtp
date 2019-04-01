@@ -2,14 +2,6 @@ const path = require('path');
 
 module.exports = {
     entry: './src/index.ts',
-    baseUrl: './',
-    css: {
-        loaderOptions: {
-            css: {
-                url: false,
-            }
-        }
-    },
     module: {
         rules: [
             {
