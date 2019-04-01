@@ -194,5 +194,4 @@ public class Termin extends ForeldrepengerTestBase {
 
     }
 
-    // TODO(MV): ikke FFPF, skal bli opprettet og avslått. Sjekk skjæringstidspunkt og startdato for STF STP
 }
