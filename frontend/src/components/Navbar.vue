@@ -9,6 +9,7 @@
                 <b-navbar-nav>
                     <b-nav-item to="/">Datascenarioer</b-nav-item>
                     <b-nav-item to="/soknader">Søknader</b-nav-item>
+                    <b-nav-item :href=swaggerUrl target="_blank">Swagger</b-nav-item>
                 </b-navbar-nav>
 
             </b-collapse>
@@ -17,11 +18,12 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 
-    @Component
-    export default class Navbar extends Vue {
-
+@Component
+export default class Navbar extends Vue {
+    get swaggerUrl(): string {
+        return document.location.protocol + '//' + document.location.hostname + ':8063/swagger';
     }
-
+}
 </script>
