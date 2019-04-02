@@ -58,7 +58,7 @@ public class Behandling {
     public KlageInfo klagevurdering;
     public Saldoer saldoer;
     
-    public AvklartData avklartData;
+    public AvklartDataFodsel avklartDataFodsel;
 
     public List<UttakResultatPeriode> hentUttaksperioder() {
         if (uttakResultatPerioder == null) {
