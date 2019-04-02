@@ -36,8 +36,8 @@
                                 <goal>install-node-and-yarn</goal>
                             </goals>
                             <configuration>
-                                <nodeVersion>v10.14.1</nodeVersion>
-                                <yarnVersion>v1.12.3</yarnVersion>
+                                <nodeVersion>v10.15.3</nodeVersion>
+                                <yarnVersion>v1.15.2</yarnVersion>
                                 <nodeDownloadRoot>http://a34apvl063.devillo.no:81/software/node/</nodeDownloadRoot>
                                 <yarnDownloadRoot>http://a34apvl063.devillo.no:81/software/yarn/</yarnDownloadRoot>
                             </configuration>
