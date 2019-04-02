@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="vtpnavbar">
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-brand href="#">VTP</b-navbar-brand>
 
@@ -17,13 +17,26 @@
     </div>
 </template>
 
-<script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-
-@Component
-export default class Navbar extends Vue {
-    get swaggerUrl(): string {
-        return document.location.protocol + '//' + document.location.hostname + ':8063/swagger';
+<style>
+    .vtpnavbar {
+        margin-bottom: 40px;
     }
-}
+</style>
+
+<script lang="ts">
+    import {Component, Vue} from 'vue-property-decorator';
+
+    @Component
+    export default class Navbar extends Vue {
+        get swaggerUrl(): string {
+
+            let port: string;
+            if (document.location.protocol === 'https') {
+                port = '8063';
+            } else {
+                port = '8060';
+            }
+            return document.location.protocol + '//' + document.location.hostname + ':' + port + '/swagger';
+        }
+    }
 </script>
