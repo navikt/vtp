@@ -116,6 +116,14 @@ public class UttakResultatPeriode {
         }
     }
 
+    public Boolean getFlerbarnsdager() {return flerbarnsdager;}
+
+    public void setFlerbarnsdager(Boolean flerbarnsdager) {this.flerbarnsdager = flerbarnsdager;}
+
+    public Boolean getSamtidigUttak() {return samtidigUttak;}
+
+    public void setSamtidigUttak(Boolean samtidigUttak) {this.samtidigUttak = samtidigUttak;}
+
     public Kode getManuellBehandlingÅrsak() {return manuellBehandlingÅrsak;}
 
     public void setManuellBehandlingÅrsak(Kode manuellBehandlingÅrsak) {this.manuellBehandlingÅrsak = manuellBehandlingÅrsak;}

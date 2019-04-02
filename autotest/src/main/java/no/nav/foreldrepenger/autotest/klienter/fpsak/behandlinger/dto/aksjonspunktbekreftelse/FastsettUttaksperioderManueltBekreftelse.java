@@ -41,6 +41,14 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         godkjennPeriode(periode, utbetalingsgrad);
         return this;
     }
+
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad, boolean flerbarnsdager, boolean samtidigUttak) {
+        UttakResultatPeriode periode = finnPeriode(fra, til);
+        periode.setSamtidigUttak(samtidigUttak);
+        periode.setFlerbarnsdager(flerbarnsdager);
+        godkjennPeriode(periode, utbetalingsgrad);
+        return this;
+    }
     
     public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad, Kode stønadskonto) {
         UttakResultatPeriode periode = finnPeriode(fra, til);
