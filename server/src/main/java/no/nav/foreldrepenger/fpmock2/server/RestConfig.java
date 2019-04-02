@@ -48,7 +48,7 @@ public class RestConfig {
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setInitParameter("resteasy.servlet.mapping.prefix", "/");
         servletHolder.setInitParameter("javax.ws.rs.Application", ApplicationConfig.class.getName());
-        context.addServlet(servletHolder, "/rest/*");
+        context.addServlet(servletHolder, "/*");
     }
 
 }
