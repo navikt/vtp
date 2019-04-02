@@ -32,6 +32,7 @@ public class VurderManglendeFodselBekreftelse extends AksjonspunktBekreftelse {
     }
 
     public void bekreftDokumentasjonIkkeForeligger() {
+        uidentifiserteBarn.add(new UidentifisertBarn(null,null));
         dokumentasjonForeligger = false;
         antallBarnFodt = null;
     }
