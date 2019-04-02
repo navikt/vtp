@@ -103,7 +103,7 @@ public class Behandling {
         sb.append("Aksjonspunkter:\n");
         if(aksjonspunkter != null) {
             for (Aksjonspunkt aksjonspunkt : aksjonspunkter) {
-                sb.append(String.format("{\t%s : %s}\n", aksjonspunkt.definisjon.navn, aksjonspunkt.status.navn));
+                sb.append(String.format("{\t%s (%s) : %s}\n", aksjonspunkt.definisjon.navn, aksjonspunkt.definisjon.kode, aksjonspunkt.status.navn));
             }
         }
         sb.append("Vilkår:\n");
