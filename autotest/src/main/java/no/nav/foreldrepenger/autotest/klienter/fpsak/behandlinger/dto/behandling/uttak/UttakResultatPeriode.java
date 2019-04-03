@@ -21,6 +21,7 @@ public class UttakResultatPeriode {
     protected Kode graderingAvslagÅrsak;
     protected Boolean flerbarnsdager;
     protected Boolean samtidigUttak;
+    protected BigDecimal samtidigUttaksprosent;
     protected Boolean graderingInnvilget;
     protected Kode periodeType;
     protected Kode utsettelseType;

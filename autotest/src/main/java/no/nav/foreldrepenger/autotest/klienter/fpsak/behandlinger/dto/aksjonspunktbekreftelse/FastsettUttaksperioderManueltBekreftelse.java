@@ -20,6 +20,9 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         super(fagsak, behandling);
         
         for (UttakResultatPeriode uttakPeriode : behandling.hentUttaksperioder()) {
+            /*if (!uttakPeriode.getManuellBehandlingÅrsak().kode.equals("-")) {
+                uttakPeriode.setBegrunnelse("Begrunnelse");
+            }*/
             if (!uttakPeriode.getPeriodeResultatType().kode.equals("INNVILGET")) {
                 uttakPeriode.setBegrunnelse("Begrunnelse");
             }
@@ -42,10 +45,25 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         return this;
     }
 
-    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad, boolean flerbarnsdager, boolean samtidigUttak) {
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, Kode periodeResultatÅrsak, int utbetalingsgrad) {
         UttakResultatPeriode periode = finnPeriode(fra, til);
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(periodeResultatÅrsak);
+        periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
+        periode.setBegrunnelse("Vurdering");
+        godkjennPeriode(periode, utbetalingsgrad);
+        return this;
+    }
+
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad,
+                                                                    Kode periodeResultatÅrsak, boolean flerbarnsdager, boolean samtidigUttak) {
+        UttakResultatPeriode periode = finnPeriode(fra, til);
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(periodeResultatÅrsak);
+        periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
         periode.setSamtidigUttak(samtidigUttak);
         periode.setFlerbarnsdager(flerbarnsdager);
+        periode.setBegrunnelse("Vurdering");
         godkjennPeriode(periode, utbetalingsgrad);
         return this;
     }

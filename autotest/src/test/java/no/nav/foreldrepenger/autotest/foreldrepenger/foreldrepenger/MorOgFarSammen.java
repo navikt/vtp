@@ -38,6 +38,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -513,11 +514,11 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fødsel.plusWeeks(2), true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørIdent, farIdent, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
+        Kode godkjennFellesperiode = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2002");
         saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
-                .godkjennPeriode(fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1), 100)
-                .godkjennPeriode(fødsel.plusWeeks(36), fødsel.plusWeeks(38).minusDays(1), 100, false, false);
+                .godkjennPeriode(fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1), godkjennFellesperiode, 100)
+                .godkjennPeriode(fødsel.plusWeeks(36), fødsel.plusWeeks(38).minusDays(1), 100, godkjennFellesperiode, false, false);
         saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
-        // TODO: Endre slik at kun perioder som er endret på godkjennes. Nå er alle periodene rørt av saksbehandler. Se graderingscaset.
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         /*
@@ -528,6 +529,9 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);*/
 
         //TODO: Må behandles ferdig når flouritt fikser at berørt sak blir opprettet på mor. Skjer ikke dette tilfellet av en eller annen grunn.
+        /* Stopper på TaskName: iversetteVedtak.startBerørtBehandling
+        ExceptionCauseMessage: Error while committing the transaction
+        ExceptionCauseClass: javax.persistence.RollbackException */
     }
 
     @Step("Behandle søknad for mor registrert fødsel")
