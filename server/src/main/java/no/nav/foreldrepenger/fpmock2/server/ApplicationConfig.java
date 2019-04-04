@@ -45,7 +45,7 @@ import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
 
 public class ApplicationConfig extends Application {
 
-    public static final String API_URI = "/";
+    public static final String API_URI = "/rest";
 
     public ApplicationConfig() {
         BeanConfig beanConfig = new BeanConfig();
