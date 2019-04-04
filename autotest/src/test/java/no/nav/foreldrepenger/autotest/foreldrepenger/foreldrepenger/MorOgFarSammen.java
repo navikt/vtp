@@ -431,7 +431,6 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Koblet sak med flerbarnsdager og samtidig uttak")
     @Description("Mor søker med blabla. Far søker med blabla.")
     public void kobletSakMedFlerbarnsdagerOgSamtidigUttak() throws Exception {
@@ -445,17 +444,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         LocalDate fpstartdatoMor = fødsel.minusWeeks(3);
 
         //Søknad mor
-        Fordeling fordelingMor = new Fordeling();
-        fordelingMor.setAnnenForelderErInformert(true);
-        List<LukketPeriodeMedVedlegg> perioderMor = fordelingMor.getPerioder();
-        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpstartdatoMor, fødsel.minusDays(1)));
-        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel, fødsel.plusWeeks(6).minusDays(1)));
-        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel.plusWeeks(6), fødsel.plusWeeks(9).minusDays(1)));
-        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødsel.plusWeeks(9), fødsel.plusWeeks(21).minusDays(1)));
-        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel.plusWeeks(21), fødsel.plusWeeks(27).minusDays(1)));
-        perioderMor.add(oppholdsperiode(OPPHOLDSTYPE_KVOTE_FELLESPERIODE_ANNEN_FORELDER, fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1)));
-        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødsel.plusWeeks(31), fødsel.plusWeeks(38).minusDays(1)));
-        //TODO: sjekke XmlErketyper og YtelseErketype for dublikater av metoder....
+        Fordeling fordelingMor = fordelingMorSamtidigUttakFlerbarnsdager(fpstartdatoMor, fødsel);
         ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(morAktørIdent, farAktørIdent, fødsel, LocalDate.now(), fordelingMor, 2);
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
@@ -466,6 +455,70 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         //Søknad far
+        Fordeling fordelingFar = fordelingFarSamtidigUttakFlerbarnsdager(fødsel);
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørIdent, morAktørIdent, fødsel, LocalDate.now(), fordelingFar, 2);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørIdent, farIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fødsel.plusWeeks(2), true);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørIdent, farIdent, saksnummerFar);
+        saksbehandler.hentFagsak(saksnummerFar);
+        Kode godkjennFellesperiode = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2002");
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
+                .godkjennPeriode(fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1), godkjennFellesperiode, 100)
+                .godkjennPeriode(fødsel.plusWeeks(36), fødsel.plusWeeks(38).minusDays(1), 100, godkjennFellesperiode, false, false);
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummerFar);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+
+        // Behandler revurdering berørt sak mor
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummerMor);
+        saksbehandler.velgBehandling("Revurdering");
+        Kode godkjennInnvilget = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2003");
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
+                .godkjennPeriode(fødsel.plusWeeks(2), fødsel.plusWeeks(6).minusDays(1), 100, godkjennInnvilget, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(6), fødsel.plusWeeks(9).minusDays(1), 100, godkjennInnvilget, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(10), fødsel.plusWeeks(11).minusDays(1), 100, godkjennFellesperiode, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(23), fødsel.plusWeeks(27).minusDays(1), 100, godkjennInnvilget, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(31), fødsel.plusWeeks(36).minusDays(1), 100, godkjennFellesperiode, true, 100);
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        beslutter.hentFagsak(saksnummerMor);
+        beslutter.velgBehandling("Revurdering");
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+
+        //TODO: slik fpsak fungerer nå blir det opprettet ny berørt sak på far etter at man har ryddet opp hos mor.
+        /* Dette skal ikke være nødvendig. Veldig mye merarbeid for saksbehandler. Sakskomplekset er dermed ikke avsluttet. */
+
+        //TODO: legg til valideringer før testen taes i bruk.
+
+
+    }
+
+    public Fordeling fordelingMorSamtidigUttakFlerbarnsdager(LocalDate fpstartdatoMor, LocalDate fødsel) throws Exception {
+        Fordeling fordelingMor = new Fordeling();
+        fordelingMor.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioderMor = fordelingMor.getPerioder();
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpstartdatoMor, fødsel.minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel, fødsel.plusWeeks(6).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel.plusWeeks(6), fødsel.plusWeeks(9).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødsel.plusWeeks(9), fødsel.plusWeeks(21).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel.plusWeeks(21), fødsel.plusWeeks(27).minusDays(1)));
+        perioderMor.add(oppholdsperiode(OPPHOLDSTYPE_KVOTE_FELLESPERIODE_ANNEN_FORELDER, fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødsel.plusWeeks(31), fødsel.plusWeeks(38).minusDays(1)));
+        return fordelingMor;
+    }
+
+    public Fordeling fordelingFarSamtidigUttakFlerbarnsdager(LocalDate fødsel) throws Exception {
         Fordeling fordelingFar = new Fordeling();
         fordelingFar.setAnnenForelderErInformert(true);
         List<LukketPeriodeMedVedlegg> periodeFar = fordelingFar.getPerioder();
@@ -508,30 +561,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
                 .medTidsperiode(fødsel.plusWeeks(31), fødsel.plusWeeks(38).minusDays(1))
                 .build());
         periodeFar.add(uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fødsel.plusWeeks(38), fødsel.plusWeeks(42).minusDays(1)));
-        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørIdent, morAktørIdent, fødsel, LocalDate.now(), fordelingFar, 2);
-        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørIdent, farIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
-        List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fødsel.plusWeeks(2), true);
-        fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørIdent, farIdent, saksnummerFar);
-        saksbehandler.hentFagsak(saksnummerFar);
-        Kode godkjennFellesperiode = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2002");
-        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
-                .godkjennPeriode(fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1), godkjennFellesperiode, 100)
-                .godkjennPeriode(fødsel.plusWeeks(36), fødsel.plusWeeks(38).minusDays(1), 100, godkjennFellesperiode, false, false);
-        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-
-        /*
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
-        beslutter.hentFagsak(saksnummerFar);
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);*/
-
-        //TODO: Må behandles ferdig når flouritt fikser at berørt sak blir opprettet på mor. Skjer ikke dette tilfellet av en eller annen grunn.
-        /* Stopper på TaskName: iversetteVedtak.startBerørtBehandling
-        ExceptionCauseMessage: Error while committing the transaction
-        ExceptionCauseClass: javax.persistence.RollbackException */
+        return fordelingFar;
     }
 
     @Step("Behandle søknad for mor registrert fødsel")

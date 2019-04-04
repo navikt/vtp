@@ -238,13 +238,7 @@ public class ForeldrepengesoknadXmlErketyper {
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
-        return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato((mottattdato))
-                .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, farAktørId, fordeling))
-                .withSoeker(morSoeker(morAktørId))
-                .withAndreVedlegg(null)
-                .withPaakrevdeVedlegg(null);
+        return fodselfunnetstedMorMedFar(morAktørId, farAktørId, fødselsdato, mottattdato, fordeling, 1);
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling, int antallBarn) {

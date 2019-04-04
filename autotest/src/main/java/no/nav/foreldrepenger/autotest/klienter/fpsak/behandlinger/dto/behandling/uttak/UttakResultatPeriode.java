@@ -128,4 +128,10 @@ public class UttakResultatPeriode {
     public Kode getManuellBehandlingÅrsak() {return manuellBehandlingÅrsak;}
 
     public void setManuellBehandlingÅrsak(Kode manuellBehandlingÅrsak) {this.manuellBehandlingÅrsak = manuellBehandlingÅrsak;}
+
+    public BigDecimal getSamtidigUttaksprosent() {return samtidigUttaksprosent;}
+
+    public void setSamtidigUttaksprosent(BigDecimal samtidigUttaksprosent) {
+        this.samtidigUttaksprosent = samtidigUttaksprosent;
+    }
 }

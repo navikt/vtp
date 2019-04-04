@@ -20,10 +20,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         super(fagsak, behandling);
         
         for (UttakResultatPeriode uttakPeriode : behandling.hentUttaksperioder()) {
-            /*if (!uttakPeriode.getManuellBehandlingÅrsak().kode.equals("-")) {
-                uttakPeriode.setBegrunnelse("Begrunnelse");
-            }*/
-            if (!uttakPeriode.getPeriodeResultatType().kode.equals("INNVILGET")) {
+            if (uttakPeriode.getManuellBehandlingÅrsak() != null && !uttakPeriode.getManuellBehandlingÅrsak().kode.equals("-")) {
                 uttakPeriode.setBegrunnelse("Begrunnelse");
             }
             LeggTilUttakPeriode(uttakPeriode);
@@ -36,8 +33,6 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
             uttakResultatPeriode.setBegrunnelse("Begrunnelse autotest");
         }
     }
-    
-    
     
     public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad) {
         UttakResultatPeriode periode = finnPeriode(fra, til);
@@ -63,6 +58,19 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
         periode.setSamtidigUttak(samtidigUttak);
         periode.setFlerbarnsdager(flerbarnsdager);
+        periode.setBegrunnelse("Vurdering");
+        godkjennPeriode(periode, utbetalingsgrad);
+        return this;
+    }
+
+    public FastsettUttaksperioderManueltBekreftelse godkjennPeriode(LocalDate fra, LocalDate til, int utbetalingsgrad,
+                                                                    Kode periodeResultatÅrsak, boolean samtidigUttak, int samtidigUttakProsent) {
+        UttakResultatPeriode periode = finnPeriode(fra, til);
+        periode.setPeriodeResultatType(new Kode("PERIODE_RESULTAT_TYPE", "INNVILGET", "Innvilget"));
+        periode.setPeriodeResultatÅrsak(periodeResultatÅrsak);
+        periode.setOppholdÅrsak(new Kode("OPPHOLD_AARSAK_TYPE", "-", "Ikke satt eller valgt kode"));
+        periode.setSamtidigUttak(samtidigUttak);
+        periode.setSamtidigUttaksprosent(BigDecimal.valueOf(samtidigUttakProsent));
         periode.setBegrunnelse("Vurdering");
         godkjennPeriode(periode, utbetalingsgrad);
         return this;
