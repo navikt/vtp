@@ -23,15 +23,23 @@
 </style>
 
 <script>
+    import axios from 'axios';
     export default {
+
         data() {
             return {
                 selected: null,
+                scenarier: null,
                 scenarioOptions: [
                     {value: null, text: 'Please select'},
                     {value: 'a', text: '45-mor-fødsel-1-barn-stillingsprosent-0'}
                 ]
             }
+        },
+        mounted () {
+            axios
+                .get("http://localhost:8060/rest/api/testscenario/templates")
+                .then(response => this.scenarier = response )
         }
     }
 </script>

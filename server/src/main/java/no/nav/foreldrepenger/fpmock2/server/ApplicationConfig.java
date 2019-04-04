@@ -9,6 +9,9 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Produces;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -84,6 +87,7 @@ public class ApplicationConfig extends Application {
         classes.add(IsReadyImpl.class);
         classes.add(JacksonConfigResolver.class);
         classes.add(MyExceptionMapper.class);
+        classes.add(CorsFilter.class);
 
 
         return classes;
@@ -139,6 +143,25 @@ public class ApplicationConfig extends Application {
             String logMessage = logMsg.toString();
             log.warn(logMessage);
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
+        }
+    }
+
+    @Provider
+    public static class CorsFilter implements ContainerResponseFilter {
+
+        @Override
+        public void filter(ContainerRequestContext requestContext,
+                           ContainerResponseContext responseContext) throws IOException {
+            responseContext.getHeaders().add(
+                    "Access-Control-Allow-Origin", "*");
+            responseContext.getHeaders().add(
+                    "Access-Control-Allow-Credentials", "true");
+            responseContext.getHeaders().add(
+                    "Access-Control-Allow-Headers",
+                    "origin, content-type, accept, authorization");
+            responseContext.getHeaders().add(
+                    "Access-Control-Allow-Methods",
+                    "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         }
     }
 
