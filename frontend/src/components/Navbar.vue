@@ -24,21 +24,18 @@
 </style>
 
 <script>
-export default {
-    methods: {
-        swaggerUrl: function() {
-            
-            var port;
-            if (document.location.protocol === 'https') {
-                port = '8063';
-            } else {
-                port = '8060';
+    import {mapGetters} from 'vuex';
+
+    export default {
+        computed: {
+            ...mapGetters([
+                'getBackendHost'
+            ])
+        },
+        methods: {
+            swaggerUrl: function () {
+                return this.getBackendHost + '/swagger';
             }
-            
-            return document.location.protocol + '//' + document.location.hostname + ':' + port + '/swagger';
         }
-
     }
-
-}
 </script>
