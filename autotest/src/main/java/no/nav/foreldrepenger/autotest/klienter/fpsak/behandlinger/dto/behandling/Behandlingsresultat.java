@@ -28,4 +28,6 @@ public class Behandlingsresultat {
 
     public Kode getAvslagsarsak() { return avslagsarsak;}
 
+    public String getSkjaeringstidspunktForeldrepenger() {return skjaeringstidspunktForeldrepenger;}
+
 }
