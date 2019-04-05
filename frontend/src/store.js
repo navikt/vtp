@@ -6,8 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         backendHost: '',
-        apiPath: '',
-        initialLoadComplete: false
+        apiPath: ''
     },
     getters: {
         getBackendHost: state => {

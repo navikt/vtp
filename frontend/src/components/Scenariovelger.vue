@@ -1,16 +1,19 @@
 <template>
     <div>
 
-        <b-form>
-            <b-form-group>
+        <b-form >
+            <span v-if="!loaded && !error">Laster...</span>
+            <b-form-group v-if="loaded && !error">
                 <b-form-select id="scenarioalias" v-model="selected" :options="scenarioOptions"></b-form-select>
-                <b-button class="ml-4 mt-3" variant="primary">Opprett</b-button>
+                <b-button class="ml-4 mt-3" variant="primary" v-on:click="opprett()">Opprett</b-button>
             </b-form-group>
 
         </b-form>
 
-        <p>Backendhost: {{getBackendHost}}</p>
-        <p>Api url: {{getApiUrl}}</p>
+        <div v-if="error">
+            <span>{{error}}</span><br />
+            <span>{{errorDetail}}</span>
+        </div>
 
     </div>
 </template>
@@ -28,14 +31,16 @@
 <script>
     import axios from 'axios';
     import { mapGetters } from 'vuex';
-    import { mapActions } from 'vuex';
 
     export default {
         data() {
             return {
                 selected: null,
                 scenarier: null,
-                scenarioOptions: []
+                scenarioOptions: [],
+                loaded: false,
+                error: null,
+                errorDetail:null
             }
         },
         computed: {
@@ -45,9 +50,13 @@
             ]),
         },
         methods: {
-            ...mapActions([
-                'setBackendHost'
-            ])
+            opprett() {
+                axios
+                    .post(this.getApiUrl + "/testscenario/" + this.selected)
+                    .then(response => {
+                        console.log(response);
+                    })
+            }
         },
         mounted() {
             axios
@@ -58,6 +67,16 @@
                     }, this)
                 }).then(() => {
                 this.selected = this.scenarioOptions[0].value;
+                this.loaded = true;
+            }).catch(error => {
+                this.loaded = true;
+                this.error = "Noe gikk galt, kunne ikke laste templates.";
+                this.errorDetail = error.toString();
+
+                if (error.toString().includes("Network")) {
+                    this.errorDetail = this.errorDetail + " - har du husket å starte backend?"
+                }
+
             });
         }
     }

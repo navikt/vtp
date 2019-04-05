@@ -8,8 +8,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 
-
-
 Vue.use(BootstrapVue)
 
 new Vue({
@@ -18,6 +16,6 @@ new Vue({
   render: h => h(App),
   created: function() {
     this.$store.dispatch('setBackendHost') // kontekstavhengig compute av host for backend, i.e. https vs http og localhost vs deployed
-    this.$store.dispatch('setApiPath', '/rest/api') // kontekstavhengig compute av host for backend, i.e. https vs http og localhost vs deployed
+    this.$store.dispatch('setApiPath', '/rest/api')
   }
 }).$mount('#app')

@@ -87,7 +87,7 @@ public class ApplicationConfig extends Application {
         classes.add(IsReadyImpl.class);
         classes.add(JacksonConfigResolver.class);
         classes.add(MyExceptionMapper.class);
-        classes.add(CorsFilter.class);
+        classes.add(CorsFilter.class); // todo legg på en sjekk på om man kjører på localhost, fjern hvis man er deployed
 
 
         return classes;
