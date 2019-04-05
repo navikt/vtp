@@ -30,16 +30,19 @@
             return {
                 selected: null,
                 scenarier: null,
-                scenarioOptions: [
-                    {value: null, text: 'Please select'},
-                    {value: 'a', text: '45-mor-fødsel-1-barn-stillingsprosent-0'}
-                ]
+                scenarioOptions: []
             }
         },
         mounted () {
             axios
                 .get("http://localhost:8060/rest/api/testscenario/templates")
-                .then(response => this.scenarier = response )
+                .then(response => {
+                    response.data.forEach(function(data){
+                        this.scenarioOptions.push({value: data.key, text: data.navn});
+                    }, this)
+                }).then(() => {
+                    this.selected = this.scenarioOptions[0].value;
+            })
         }
     }
 </script>
