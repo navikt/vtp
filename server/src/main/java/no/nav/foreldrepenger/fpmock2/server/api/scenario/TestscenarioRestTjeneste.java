@@ -1,22 +1,10 @@
 package no.nav.foreldrepenger.fpmock2.server.api.scenario;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +44,23 @@ public class TestscenarioRestTjeneste {
     public void setTestscenarioRepository(TestscenarioRepository testscenarioRepository) {
         this.testscenarioRepository = testscenarioRepository;
     }
+
+    @GET
+    @Path("/initialiserte")
+    @ApiOperation( value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
+    public List<TestscenarioDto> hentInitialiserteCaser(){
+        Collection<Testscenario> testscenarios = this.testscenarioRepository.getTestscenarios();
+
+        List<TestscenarioDto> testList = new ArrayList<>();
+
+        testscenarios.stream().forEach(ts -> {
+            //testList.add(new TestscenarioDto())
+        });
+
+        return testList;
+    }
+
+
     @POST
     @Path("/{key}")
     @Produces(MediaType.APPLICATION_JSON)
