@@ -61,9 +61,6 @@ public class Behandling {
     public AvklartDataFodsel avklartDataFodsel;
 
     public List<UttakResultatPeriode> hentUttaksperioder() {
-        if (uttakResultatPerioder == null) {
-            return Collections.emptyList();
-        }
         return uttakResultatPerioder.getPerioderForSøker().stream().sorted(Comparator.comparing(UttakResultatPeriode::getFom)).collect(Collectors.toList());
     }
     
