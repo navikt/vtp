@@ -193,4 +193,42 @@ public class Termin extends ForeldrepengerTestBase {
 
     }
 
+    @Test
+    @DisplayName("Mor søker termin uten FPFF")
+    @Description("Mor søker termin uten periode for foreldrepenger før fødsel. FPFF-perioden skal opprettes og avslåes (automatisk). " +
+            "Skjæringstidspunkt skal være 3 uker før termindato.")
+    public void morSokerTerminUtenFPFFperiode() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("55");
+        String søkerAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate termindato = LocalDate.now().plusWeeks(3);
+
+        Fordeling fordeling = new Fordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, termindato, termindato.plusWeeks(15).minusDays(1)));
+
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.termindatoUttakKunMor(søkerAktørId, fordeling, termindato);
+        Long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, termindato);
+        fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
+
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+
+        List<UttakResultatPeriode> resultatPerioder = saksbehandler.valgtBehandling.hentUttaksperioder();
+        verifiser(resultatPerioder.size() == 3, "Det er ikke blitt opprettet riktig antall perioder.");
+        verifiser(resultatPerioder.get(0).getPeriodeResultatType().kode.equals("AVSLÅTT"), "FPFF er ikke avslått.");
+        verifiser(resultatPerioder.get(0).getAktiviteter().get(0).getStønadskontoType().kode.equals("FORELDREPENGER_FØR_FØDSEL"), "Feil stønadskontotype.");
+        verifiser(resultatPerioder.get(1).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden søkt for skal være innvilget.");
+        verifiser(resultatPerioder.get(1).getAktiviteter().get(0).getStønadskontoType().kode.equals("MØDREKVOTE"), "Feil stønadskontotype.");
+        verifiser(resultatPerioder.get(2).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden søkt for skal være innvilget.");
+        verifiser(resultatPerioder.get(2).getAktiviteter().get(0).getStønadskontoType().kode.equals("MØDREKVOTE"), "Feil stønadskontotype.");
+        String skjaeringstidspunkt = termindato.minusWeeks(3).toString();
+        verifiser(saksbehandler.valgtBehandling.behandlingsresultat.getSkjaeringstidspunktForeldrepenger().equals(skjaeringstidspunkt), "Mismatch på skjæringstidspunkt.");
+
+
+    }
+
 }
