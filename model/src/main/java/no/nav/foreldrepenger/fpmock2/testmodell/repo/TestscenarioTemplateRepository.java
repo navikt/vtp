@@ -8,4 +8,6 @@ public interface TestscenarioTemplateRepository {
 
     TestscenarioTemplate finn(String templateKey);
 
+    TestscenarioTemplate finnMedTemplatenavn(String templateNavn);
+
 }
