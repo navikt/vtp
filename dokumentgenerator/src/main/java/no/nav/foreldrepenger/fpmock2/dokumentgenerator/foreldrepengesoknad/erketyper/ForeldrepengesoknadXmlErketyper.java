@@ -238,10 +238,14 @@ public class ForeldrepengesoknadXmlErketyper {
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
+        return fodselfunnetstedMorMedFar(morAktørId, farAktørId, fødselsdato, mottattdato, fordeling, 1);
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedMorMedFar(String morAktørId, String farAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling, int antallBarn) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, farAktørId, fordeling))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, farAktørId, fordeling, antallBarn))
                 .withSoeker(morSoeker(morAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
@@ -257,14 +261,18 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withPaakrevdeVedlegg(null);
     }
 
-    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String farAktørId, String morAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
+    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String farAktørId, String morAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling, int antallBarn) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((mottattdato))
                 .withBegrunnelseForSenSoeknad(null)
-                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, morAktørId, fordeling))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, morAktørId, fordeling, antallBarn))
                 .withSoeker(farSoeker(farAktørId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
+    }
+
+    public ForeldrepengesoknadBuilder fodselfunnetstedFarMedMor(String farAktørId, String morAktørId, LocalDate fødselsdato, LocalDate mottattdato, Fordeling fordeling) {
+        return fodselfunnetstedFarMedMor(farAktørId, morAktørId, fødselsdato, mottattdato, fordeling, 1);
     }
 
     public ForeldrepengesoknadBuilder fodselfunnetstedUttakKunMorMedEgenNaering(String aktoerId, LocalDate fodselsdato, LocalDate mottattdato) {

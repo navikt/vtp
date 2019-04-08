@@ -18,6 +18,7 @@ public class Kodeverk{
     public KodeListe FagsakÅrsakType;
     public KodeListe ForeldreType;
     public KodeListe InnsynResultatType;
+    public KodeListe InnvilgetÅrsak;
     public KodeListe KlageAvvistÅrsak;
     public KodeListe KlageMedholdÅrsak;
     public KodeListe Landkoder;

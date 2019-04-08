@@ -4,11 +4,14 @@ import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugFritekst;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandling;
 import static no.nav.foreldrepenger.autotest.util.AllureHelper.debugLoggBehandlingsliste;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_FEDREKVOTE_ANNEN_FORELDER;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_KVOTE_FELLESPERIODE_ANNEN_FORELDER;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,8 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -423,6 +428,140 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.KONTROLLER_OPPLYSNINGER_OM_FORDELING_AV_STØNADSPERIODEN))
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
+    }
+
+    @Test
+    @DisplayName("Koblet sak med flerbarnsdager og samtidig uttak")
+    @Description("Mor søker med blabla. Far søker med blabla.")
+    public void kobletSakMedFlerbarnsdagerOgSamtidigUttak() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("85");
+
+        String morIdent = testscenario.getPersonopplysninger().getSøkerIdent();
+        String morAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String farIdent = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        String farAktørIdent = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
+        LocalDate fødsel = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpstartdatoMor = fødsel.minusWeeks(3);
+
+        //Søknad mor
+        Fordeling fordelingMor = fordelingMorSamtidigUttakFlerbarnsdager(fpstartdatoMor, fødsel);
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.fodselfunnetstedMorMedFar(morAktørIdent, farAktørIdent, fødsel, LocalDate.now(), fordelingMor, 2);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, morIdent, fpstartdatoMor, false);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, morAktørIdent, morIdent, saksnummerMor);
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummerMor);
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
+
+        //Søknad far
+        Fordeling fordelingFar = fordelingFarSamtidigUttakFlerbarnsdager(fødsel);
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørIdent, morAktørIdent, fødsel, LocalDate.now(), fordelingFar, 2);
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørIdent, farIdent, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farIdent, fødsel.plusWeeks(2), true);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørIdent, farIdent, saksnummerFar);
+        saksbehandler.hentFagsak(saksnummerFar);
+        Kode godkjennFellesperiode = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2002");
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
+                .godkjennPeriode(fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1), godkjennFellesperiode, 100)
+                .godkjennPeriode(fødsel.plusWeeks(36), fødsel.plusWeeks(38).minusDays(1), 100, godkjennFellesperiode, false, false);
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
+        beslutter.hentFagsak(saksnummerFar);
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+
+        // Behandler revurdering berørt sak mor
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummerMor);
+        saksbehandler.velgBehandling("Revurdering");
+        Kode godkjennInnvilget = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2003");
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
+                .godkjennPeriode(fødsel.plusWeeks(2), fødsel.plusWeeks(6).minusDays(1), 100, godkjennInnvilget, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(6), fødsel.plusWeeks(9).minusDays(1), 100, godkjennInnvilget, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(10), fødsel.plusWeeks(11).minusDays(1), 100, godkjennFellesperiode, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(23), fødsel.plusWeeks(27).minusDays(1), 100, godkjennInnvilget, true, 100)
+                .godkjennPeriode(fødsel.plusWeeks(31), fødsel.plusWeeks(36).minusDays(1), 100, godkjennFellesperiode, true, 100);
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
+        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+
+        beslutter.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        beslutter.hentFagsak(saksnummerMor);
+        beslutter.velgBehandling("Revurdering");
+        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+                .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER));
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+
+        //TODO: slik fpsak fungerer nå blir det opprettet ny berørt sak på far etter at man har ryddet opp hos mor.
+        /* Dette skal ikke være nødvendig. Veldig mye merarbeid for saksbehandler. Sakskomplekset er dermed ikke avsluttet. */
+
+        //TODO: legg til valideringer før testen taes i bruk.
+
+
+    }
+
+    public Fordeling fordelingMorSamtidigUttakFlerbarnsdager(LocalDate fpstartdatoMor, LocalDate fødsel) throws Exception {
+        Fordeling fordelingMor = new Fordeling();
+        fordelingMor.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioderMor = fordelingMor.getPerioder();
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpstartdatoMor, fødsel.minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel, fødsel.plusWeeks(6).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel.plusWeeks(6), fødsel.plusWeeks(9).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødsel.plusWeeks(9), fødsel.plusWeeks(21).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødsel.plusWeeks(21), fødsel.plusWeeks(27).minusDays(1)));
+        perioderMor.add(oppholdsperiode(OPPHOLDSTYPE_KVOTE_FELLESPERIODE_ANNEN_FORELDER, fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1)));
+        perioderMor.add(uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, fødsel.plusWeeks(31), fødsel.plusWeeks(38).minusDays(1)));
+        return fordelingMor;
+    }
+
+    public Fordeling fordelingFarSamtidigUttakFlerbarnsdager(LocalDate fødsel) throws Exception {
+        Fordeling fordelingFar = new Fordeling();
+        fordelingFar.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> periodeFar = fordelingFar.getPerioder();
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medFlerbarnsdager(true)
+                .medSamtidigUttak(true, BigDecimal.valueOf(100))
+                .medStønadskontoType(STØNADSKONTOTYPE_FELLESPERIODE)
+                .medTidsperiode(fødsel.plusWeeks(2), fødsel.plusWeeks(6).minusDays(1))
+                .build());
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medFlerbarnsdager(true)
+                .medSamtidigUttak(true, BigDecimal.valueOf(100))
+                .medStønadskontoType(STØNADSKONTOTYPE_FEDREKVOTE)
+                .medTidsperiode(fødsel.plusWeeks(6), fødsel.plusWeeks(9).minusDays(1))
+                .build());
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medFlerbarnsdager(true)
+                .medStønadskontoType(STØNADSKONTOTYPE_FEDREKVOTE)
+                .medTidsperiode(fødsel.plusWeeks(9), fødsel.plusWeeks(10).minusDays(1))
+                .build());
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medSamtidigUttak(true, BigDecimal.valueOf(50))
+                .medStønadskontoType(STØNADSKONTOTYPE_FEDREKVOTE)
+                .medTidsperiode(fødsel.plusWeeks(10), fødsel.plusWeeks(11).minusDays(1))
+                .build());
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medFlerbarnsdager(true)
+                .medSamtidigUttak(true, BigDecimal.valueOf(100))
+                .medStønadskontoType(STØNADSKONTOTYPE_FEDREKVOTE)
+                .medTidsperiode(fødsel.plusWeeks(23), fødsel.plusWeeks(27).minusDays(1))
+                .build());
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medStønadskontoType(STØNADSKONTOTYPE_FELLESPERIODE)
+                .medTidsperiode(fødsel.plusWeeks(27), fødsel.plusWeeks(31).minusDays(1))
+                .build());
+        periodeFar.add(new UttaksperiodeBuilder()
+                .medFlerbarnsdager(true)
+                .medSamtidigUttak(true, BigDecimal.valueOf(100))
+                .medStønadskontoType(STØNADSKONTOTYPE_FELLESPERIODE)
+                .medTidsperiode(fødsel.plusWeeks(31), fødsel.plusWeeks(38).minusDays(1))
+                .build());
+        periodeFar.add(uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fødsel.plusWeeks(38), fødsel.plusWeeks(42).minusDays(1)));
+        return fordelingFar;
     }
 
     @Step("Behandle søknad for mor registrert fødsel")

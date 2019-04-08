@@ -88,15 +88,19 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
-    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(LocalDate fødselsdato, String annenpartAktørId, Fordeling fordeling) {
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(LocalDate fødselsdato, String annenpartAktørId, Fordeling fordeling, int antallBarn) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
-        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        foreldrepenger.setRelasjonTilBarnet(SoekersRelasjonErketyper.fødsel(antallBarn, fødselsdato));
         foreldrepenger.setFordeling(fordeling);
         foreldrepenger.setAnnenForelder(standardAnnenForelder(annenpartAktørId));
         return foreldrepenger;
+    }
+
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(LocalDate fødselsdato, String annenpartAktørId, Fordeling fordeling) {
+        return foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart(fødselsdato, annenpartAktørId, fordeling, 1);
     }
 
     public static Endringssoeknad endringssoeknadForeldrepengerYtelseNorskBorgerINorgeFødselMor(LocalDate startDatoForeldrepenger, String saksnummer) {

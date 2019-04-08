@@ -21,6 +21,7 @@ public class UttakResultatPeriode {
     protected Kode graderingAvslagÅrsak;
     protected Boolean flerbarnsdager;
     protected Boolean samtidigUttak;
+    protected BigDecimal samtidigUttaksprosent;
     protected Boolean graderingInnvilget;
     protected Kode periodeType;
     protected Kode utsettelseType;
@@ -116,7 +117,21 @@ public class UttakResultatPeriode {
         }
     }
 
+    public Boolean getFlerbarnsdager() {return flerbarnsdager;}
+
+    public void setFlerbarnsdager(Boolean flerbarnsdager) {this.flerbarnsdager = flerbarnsdager;}
+
+    public Boolean getSamtidigUttak() {return samtidigUttak;}
+
+    public void setSamtidigUttak(Boolean samtidigUttak) {this.samtidigUttak = samtidigUttak;}
+
     public Kode getManuellBehandlingÅrsak() {return manuellBehandlingÅrsak;}
 
     public void setManuellBehandlingÅrsak(Kode manuellBehandlingÅrsak) {this.manuellBehandlingÅrsak = manuellBehandlingÅrsak;}
+
+    public BigDecimal getSamtidigUttaksprosent() {return samtidigUttaksprosent;}
+
+    public void setSamtidigUttaksprosent(BigDecimal samtidigUttaksprosent) {
+        this.samtidigUttaksprosent = samtidigUttaksprosent;
+    }
 }

@@ -167,8 +167,8 @@ public class Termin extends ForeldrepengerTestBase {
         verifiser(resultatPerioder.get(4).getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"), "Perioden har ikke gått til manuell behandling.");
         verifiser(resultatPerioder.get(5).getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"), "Perioden har ikke gått til manuell behandling.");
         verifiser(resultatPerioder.get(6).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
-        Kode periodeResultatÅrsakInnvilget = new Kode("INNVILGET_AARSAK", "2003", "§14-12: Innvilget uttak av kvote");
-        Kode periodeResultatÅrsakGradFelles = new Kode("INNVILGET_AARSAK", "2030", "§14-9, jf. §14-16: Gradering av fellesperiode/foreldrepenger");
+        Kode periodeResultatÅrsakInnvilget = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2003");
+        Kode periodeResultatÅrsakGradFelles = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2030");
         UttakResultatPerioder uttakResultatPerioder = saksbehandler.valgtBehandling.uttakResultatPerioder;
         saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
                 .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(2), periodeResultatÅrsakInnvilget)
