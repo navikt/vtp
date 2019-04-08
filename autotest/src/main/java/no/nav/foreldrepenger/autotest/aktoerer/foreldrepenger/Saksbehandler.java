@@ -297,7 +297,9 @@ public class Saksbehandler extends Aktoer{
             valgtBehandling.kontrollerFaktaData = dKontrollerFaktaData.get();
             valgtBehandling.medlem = dMedlem.get();
             valgtBehandling.uttakResultatPerioder = dUttakResultatPerioder.get();
-            valgtBehandling.saldoer = dStonadskontoer.get();
+            if (!valgtBehandling.uttakResultatPerioder.getPerioderForSøker().isEmpty()) {
+                valgtBehandling.saldoer = dStonadskontoer.get();
+            }
         }
         
         valgtBehandling.aksjonspunkter = dAksonspunkter.get();
