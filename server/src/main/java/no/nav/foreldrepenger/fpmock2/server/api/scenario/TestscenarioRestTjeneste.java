@@ -49,8 +49,8 @@ public class TestscenarioRestTjeneste {
 
     @GET
     @Path("/initialiserte")
-    @ApiOperation( value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
-    public List<TestscenarioDto> hentInitialiserteCaser(){
+    @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
+    public List<TestscenarioDto> hentInitialiserteCaser() {
 
         Collection<Testscenario> testscenarios = this.testscenarioRepository.getTestscenarios();
         List<TestscenarioDto> testList = new ArrayList<>();
@@ -74,11 +74,20 @@ public class TestscenarioRestTjeneste {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
-        return konverterTilTestscenarioDto(testscenario);
+        return konverterTilTestscenarioDto(testscenario, templateKey);
     }
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts){
-        TestscenarioTemplate template = templateRepository.finnMedTemplatenavn(ts.getTemplateNavn());
+        return konverterTilTestscenarioDto(ts, null);
+    }
+
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts, String templateKey) {
+        TestscenarioTemplate template;
+        if (templateKey == null) {
+            template = templateRepository.finnMedTemplatenavn(ts.getTemplateNavn());
+        } else {
+            template = templateRepository.finn(templateKey);
+        }
 
         String fnrSøker = ts.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = ts.getPersonopplysninger().getAnnenPart().getIdent();
