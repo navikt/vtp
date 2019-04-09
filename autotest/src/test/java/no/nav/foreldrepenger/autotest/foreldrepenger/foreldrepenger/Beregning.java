@@ -470,12 +470,6 @@ public class Beregning extends ForeldrepengerTestBase {
                 .bekreftArbeidsforholdErRelevant("ACANDO AS", true);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
 
-        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_PERIODER_MED_OPPTJENING);
-
-        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
-                .godkjennAllOpptjening();
-        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
-
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
         verifiserLikhet(saksbehandler.valgtBehandling.aksjonspunkter.stream()
                 .anyMatch(ap -> ap.erUbekreftet() &&
