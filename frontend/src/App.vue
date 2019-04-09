@@ -39,6 +39,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('loadAvailableTemplates');
+    this.$store.dispatch('refreshScenarios');
   }
 }
 </script>

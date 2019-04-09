@@ -13,6 +13,7 @@
     "bootstrap-vue": "^2.0.0-rc.16",
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
+    "vue-json-tree-view": "^2.1.4",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

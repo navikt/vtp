@@ -28,6 +28,9 @@ const getters = {
     },
     getSelectedTemplate: state => {
         return state.selectedTemplate;
+    },
+    initializedScenarios: state => {
+        return state.initializedScenarios;
     }
 }
 
@@ -48,34 +51,53 @@ const mutations = {
     },
     setSelectedTemplate: (state, template) => {
         state.selectedTemplate = template;
+    },
+    addInitializedScenario: (state, scenario) => {
+        state.initializedScenarios.push(scenario)
+    },
+    setInitializedScenarios: (state, scenarios) => {
+        state.initializedScenarios = scenarios;
     }
 }
 
 const actions = {
-    loadAvailableTemplates: (context) => {
+    loadAvailableTemplates: ({commit, rootGetters}) => {
         axios
-            .get(context.rootState.backendHost + context.rootState.apiPath + "/testscenario/templates")
+        //.get(context.rootState.backendHost + context.rootState.apiPath + "/testscenario/templates")
+            .get(rootGetters.getApiUrl + "/testscenario/templates")
             .then(response => {
                 var constructedTemplates = [];
                 response.data.forEach(function (data) {
                     constructedTemplates.push({value: data.key, text: data.navn});
                 }, this);
-                context.commit('setAvailableTemplates', constructedTemplates);
+                commit('setAvailableTemplates', constructedTemplates);
 
             }).then(() => {
-            context.commit('setTemplatesLoaded', true);
+            commit('setTemplatesLoaded', true);
             EventBus.$emit('templatesWereLoaded', true);
 
         }).catch(error => {
-            context.commit('setTemplatesLoaded', true);
-            context.commit('setTemplatesError', 'Noe gikk galt, kunne ikke laste templates.');
-            context.commit('setTemplatesErrorDetail', error.toString());
+            commit('setTemplatesLoaded', true);
+            commit('setTemplatesError', 'Noe gikk galt, kunne ikke laste templates.');
+            commit('setTemplatesErrorDetail', error.toString());
 
             if (error.toString().includes("Network")) {
-                context.commit('setTemplatesErrorDetail', this.getTemplatesErrorDetail() + "  - har du husket å starte backend?");
+                commit('setTemplatesErrorDetail', this.getTemplatesErrorDetail() + "  - har du husket å starte backend?");
             }
 
         });
+    },
+    refreshScenarios: ({commit, rootGetters}) => {
+        axios
+            .get(rootGetters.getApiUrl + "/testscenario/initialiserte")
+            .then(response => {
+                commit('setInitializedScenarios', response.data);
+                /*
+                response.data.forEach(function (data) {
+                    commit('addInitializedScenario', data)
+                });
+                */
+            });
     }
 }
 

@@ -53,6 +53,8 @@
                        return this.getFirstAvailableTemplate.value;
                     } else if(this.$store.getters.getSelectedTemplate) {
                         return this.$store.getters.getSelectedTemplate;
+                    } else {
+                        return null;
                     }
 
                 },
@@ -65,8 +67,8 @@
             opprett() {
                 axios
                     .post(this.getApiUrl + "/testscenario/" + this.selected)
-                    .then(response => {
-                        EventBus.$emit('scenarioWasCreated');
+                    .then(() => {
+                        this.$store.dispatch('refreshScenarios');
                     });
             }
         },
