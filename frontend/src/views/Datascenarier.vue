@@ -1,19 +1,21 @@
 <template>
     <div class="datascenarier">
         <Scenariovelger></Scenariovelger>
-        <hr />
-
+        <hr/>
+        <Scenarioliste></Scenarioliste>
     </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Scenariovelger from '@/components/Scenariovelger.vue'
+    // @ is an alias to /src
+    import Scenariovelger from '@/components/Scenariovelger.vue'
+    import Scenarioliste from '@/components/Scenarioliste.vue'
 
-export default {
-  name: 'datascenarier',
-  components: {
-    Scenariovelger
-  }
-}
+    export default {
+        name: 'datascenarier',
+        components: {
+            Scenariovelger,
+            Scenarioliste
+        }
+    }
 </script>

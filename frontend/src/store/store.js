@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import scenarioTemplates from './modules/scenarioTemplates.js'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    modules: {
+      scenarioTemplates
+    },
     state: {
         backendHost: '',
         apiPath: ''
@@ -54,6 +58,7 @@ export default new Vuex.Store({
         },
         setApiPath: (context, apiPath) => {
             context.commit('setApiPath', apiPath);
+            context.dispatch('loadAvailableTemplates');
         }
     }
 })
