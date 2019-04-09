@@ -5,12 +5,14 @@ import store from './store/store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import TreeView from "vue-json-tree-view"
 
 export const EventBus = new Vue();
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
+Vue.use(TreeView)
 
 
 

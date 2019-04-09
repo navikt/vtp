@@ -10,6 +10,9 @@ public class TestscenarioReferanse {
     @JsonProperty("templateKey")
     private String templateKey;
 
+    @JsonProperty("templateNavn")
+    private String templateNavn;
+
     @JsonProperty("id")
     private String testscenarioId;
 
@@ -26,4 +29,11 @@ public class TestscenarioReferanse {
         return testscenarioId;
     }
 
+    public String getTemplateNavn() {
+        return templateNavn;
+    }
+
+    public void setTemplateNavn(String templateNavn) {
+        this.templateNavn = templateNavn;
+    }
 }
