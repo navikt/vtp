@@ -1,82 +1,79 @@
 <template>
     <div>
 
-        <b-form >
-            <span v-if="!loaded && !error">Laster...</span>
-            <b-form-group v-if="loaded && !error">
-                <b-form-select id="scenarioalias" v-model="selected" :options="scenarioOptions"></b-form-select>
+        <b-form>
+            <span v-if="!getTemplatesLoaded && !getTemplatesError">Laster...</span>
+            <b-form-group v-if="getTemplatesLoaded && !getTemplatesError">
+                <b-form-select id="scenarioalias" v-model="selected" :options="getAvailableTemplates">
+
+                    <!--option v-for="template in getAvailableTemplates" v-bind:value="template.value">
+                        {{ template.navn }}
+                    </option-->
+
+                </b-form-select>
                 <b-button class="ml-4 mt-3" variant="primary" v-on:click="opprett()">Opprett</b-button>
             </b-form-group>
 
         </b-form>
 
-        <div v-if="error">
-            <span>{{error}}</span><br />
-            <span>{{errorDetail}}</span>
+        <div v-if="getTemplatesError">
+            <span>{{getTemplatesError}}</span><br/>
+            <span>{{getTemplatesErrorDetail}}</span>
         </div>
 
     </div>
 </template>
 
 <style>
-    .lol {
-        text-align: center;
-        display: block;
-        margin-left: auto;
-        color: red;
-        margin-right: auto;
-    }
 </style>
 
 <script>
     import axios from 'axios';
-    import { mapGetters } from 'vuex';
+    import {mapGetters} from 'vuex';
+    import {EventBus} from "../main";
 
     export default {
         data() {
             return {
-                selected: null,
-                scenarier: null,
-                scenarioOptions: [],
-                loaded: false,
-                error: null,
-                errorDetail:null
+               
             }
         },
         computed: {
             ...mapGetters([
-                'getBackendHost',
+                'getAvailableTemplates',
+                'getTemplatesLoaded',
+                'getTemplatesError',
+                'getTemplatesErrorDetail',
+                'getFirstAvailableTemplate',
                 'getApiUrl'
             ]),
+            selected: {
+                get: function () {
+                    if(this.getFirstAvailableTemplate && this.$store.getters.getSelectedTemplate == null) {
+                       return this.getFirstAvailableTemplate.value;
+                    } else if(this.$store.getters.getSelectedTemplate) {
+                        return this.$store.getters.getSelectedTemplate;
+                    }
+
+                },
+                set: function (val) {
+                    this.$store.commit('setSelectedTemplate', val);
+                }
+            }
         },
         methods: {
             opprett() {
                 axios
                     .post(this.getApiUrl + "/testscenario/" + this.selected)
                     .then(response => {
-                        console.log(response);
-                    })
+                        EventBus.$emit('scenarioWasCreated');
+                    });
             }
         },
         mounted() {
-            axios
-                .get(this.getApiUrl + "/testscenario/templates")
-                .then(response => {
-                    response.data.forEach(function (data) {
-                        this.scenarioOptions.push({value: data.key, text: data.navn});
-                    }, this)
-                }).then(() => {
-                this.selected = this.scenarioOptions[0].value;
-                this.loaded = true;
-            }).catch(error => {
-                this.loaded = true;
-                this.error = "Noe gikk galt, kunne ikke laste templates.";
-                this.errorDetail = error.toString();
-
-                if (error.toString().includes("Network")) {
-                    this.errorDetail = this.errorDetail + " - har du husket å starte backend?"
-                }
-
+            EventBus.$on('templatesWereLoaded', () => {
+                console.log("Caught event templates loaded");
+                //this.selected = this.$store.getters.getFirstAvailableTemplate.value;
             });
         }
     }

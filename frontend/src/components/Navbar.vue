@@ -7,7 +7,7 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item active to="/">Datascenarioer</b-nav-item>
+                    <b-nav-item to="/">Datascenarioer</b-nav-item>
                     <b-nav-item to="/soknader">Søknader</b-nav-item>
                     <b-nav-item v-bind:href="swaggerUrl()" target="_blank">Swagger</b-nav-item>
                 </b-navbar-nav>
@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .vtpnavbar {
         margin-bottom: 40px;
     }
