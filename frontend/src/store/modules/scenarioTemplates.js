@@ -98,6 +98,13 @@ const actions = {
                 });
                 */
             });
+    },
+    slettScenario: (context, scenarioId) => {
+        axios
+            .delete(context.rootGetters.getApiUrl + "/testscenario/slettscenario/" + scenarioId)
+            .then( () => {
+                context.dispatch('refreshScenarios');
+            })
     }
 }
 

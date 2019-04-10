@@ -47,6 +47,17 @@ public class TestscenarioRestTjeneste {
         this.testscenarioRepository = testscenarioRepository;
     }
 
+    @DELETE
+    @Path("/slettscenario/{id}")
+    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario")
+    public Response slettScenario(@PathParam("id") String id) {
+        if(testscenarioRepository.slettScenario(id)){
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
     @GET
     @Path("/initialiserte")
     @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
@@ -77,7 +88,7 @@ public class TestscenarioRestTjeneste {
         return konverterTilTestscenarioDto(testscenario, templateKey);
     }
 
-    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts){
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts) {
         return konverterTilTestscenarioDto(ts, null);
     }
 

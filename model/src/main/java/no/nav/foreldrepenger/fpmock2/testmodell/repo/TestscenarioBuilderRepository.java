@@ -27,4 +27,6 @@ public interface TestscenarioBuilderRepository {
 
     Collection<Testscenario> getTestscenarios();
 
+    Boolean slettScenario(String id);
+
 }
