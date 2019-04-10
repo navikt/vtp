@@ -1,11 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -111,4 +106,15 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         return inntektYtelseIndeks.getModellForIdent(aktørId.substring(aktørId.length() - 11));
     }
 
+    @Override
+    public Boolean slettScenario(String id) {
+        int preSize = scenarios.size();
+        scenarios.removeIf(s -> Objects.equals(s.getId(), id));
+
+        if (scenarios.size() < preSize) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
