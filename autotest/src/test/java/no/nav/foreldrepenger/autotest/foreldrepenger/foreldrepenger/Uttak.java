@@ -377,7 +377,7 @@ public class Uttak extends ForeldrepengerTestBase {
     @Description("Mor sender førstegangssøknad på termin, kan brukes for å teste flytting")
     public void testcase_mor_fødsel_flyttingFødsel() throws Exception {
         //TODO FIKSE på periodene og legge til IM med utsettelse
-        TestscenarioDto testscenario = opprettScenario("77");
+        TestscenarioDto testscenario = opprettScenario("78");
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate termindato = fødselsdato.plusWeeks(1);
@@ -411,6 +411,60 @@ public class Uttak extends ForeldrepengerTestBase {
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
+    }
+    @Test
+    @DisplayName("Mor og fra søker om samtidig uttak med overlapp")
+    @Description("Mor søker om samtidig uttak i førstegangssøknaden og far søker overlapp i denne perioden")
+    public void testcase_morOgFar_SamtidigUttak_overlappendePerioder() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("85");
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
+        String farFnr = testscenario.getPersonopplysninger().getAnnenpartIdent();
+
+        LocalDate familiehendelse = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdatoMor = familiehendelse.minusWeeks(3);
+        Fordeling fordelingMor = new ObjectFactory().createFordeling();
+        fordelingMor.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioderMor = fordelingMor.getPerioder();
+        LocalDate samtidigUttakFOM = familiehendelse.plusWeeks(6);
+        LocalDate samtidigUttakTOM = familiehendelse.plusWeeks(14).minusDays(1);
+        perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familiehendelse.minusWeeks(3), familiehendelse.minusDays(1)));
+        perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familiehendelse, familiehendelse.plusWeeks(6).minusDays(1)));
+        perioderMor.add(new UttaksperiodeBuilder()
+                .medTidsperiode(samtidigUttakFOM, samtidigUttakTOM)
+                .medStønadskontoType(STØNADSKONTOTYPE_MØDREKVOTE)
+                .medSamtidigUttak(true, BigDecimal.valueOf(50))
+                .build());
+        perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familiehendelse.plusWeeks(14), familiehendelse.plusWeeks(20).minusDays(1)));
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakMedAnnenpart(morAktørId, farAktørId, fordelingMor, SoekersRelasjonErketyper.søkerTermin( 2,familiehendelse) );
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummerMor);
+        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
+
+        LocalDate fpStartDatoFar = samtidigUttakFOM;
+        Fordeling fordelingFar = new ObjectFactory().createFordeling();
+        fordelingFar.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioderFar = fordelingFar.getPerioder();
+        perioderFar.add(new UttaksperiodeBuilder()
+                .medTidsperiode(samtidigUttakFOM, samtidigUttakTOM.plusWeeks(3))
+                .medStønadskontoType(STØNADSKONTOTYPE_FEDREKVOTE)
+                .medSamtidigUttak(true, BigDecimal.valueOf(99))
+                .medFlerbarnsdager(true)
+                .build());
+        perioderFar.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, familiehendelse.plusWeeks(20), familiehendelse.plusWeeks(21).minusDays(1)));
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.uttakMedAnnenpart(farAktørId, morAktørId, fordelingFar, SoekersRelasjonErketyper.fødsel( 2,familiehendelse));
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørId, farFnr, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
+        saksbehandler.hentFagsak(saksnummerFar);
+        saksbehandler.velgBehandling("Førstegangsbehandling");
+
     }
 
     @Test
