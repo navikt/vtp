@@ -1,6 +1,8 @@
 Oppsett og konfigurasjon
 ====
 
+#Repo skal ligge som private inntil historikken er gjennomgått. #
+
 Starte server
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
