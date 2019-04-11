@@ -114,87 +114,91 @@
 
             </build>
         </profile>
+    <profile>
+        <id>Ekstern</id>
+        <build>
+            <plugins>
+                <plugin>
+
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <!-- Use the latest released version:
+                    https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
+                    <version>1.6</version>
+
+                    <executions>
+                        <execution>
+                            <id>install node and yarn</id>
+                            <goals>
+                                <goal>install-node-and-yarn</goal>
+                            </goals>
+                            <configuration>
+                                <nodeVersion>v10.14.1</nodeVersion>
+                                <yarnVersion>v1.12.3</yarnVersion>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>yarn rm proxy</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>yarn</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>config delete proxy</arguments>
+                            </configuration>
+                        </execution>
+
+
+                        <execution>
+                            <id>yarn set registry</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>yarn</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>config set registry http://registry.npmjs.org/</arguments>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>yarn install</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>yarn</goal>
+                            </goals>
+                            <configuration>
+                                <!-- optional: The default argument is actually
+                                "install", so unless you need to run some other yarn command,
+                                you can remove this whole <configuration> section.
+                                -->
+                                <arguments>install</arguments>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>yarn build</id>
+                            <goals>
+                                <goal>yarn</goal>
+                            </goals>
+                            <configuration>
+                                <!-- optional: The default argument is actually
+                                "install", so unless you need to run some other yarn command,
+                                you can remove this whole <configuration> section.
+                                -->
+                                <arguments>build</arguments>
+                            </configuration>
+                            <phase>package</phase>
+                        </execution>
+
+                    </executions>
+
+                </plugin>
+            </plugins>
+
+        </build>
+
+    </profile>
     </profiles>
-    <build>
-        <plugins>
-            <plugin>
-
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <!-- Use the latest released version:
-                https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
-                <version>1.6</version>
-
-                <executions>
-                    <execution>
-                        <id>install node and yarn</id>
-                        <goals>
-                            <goal>install-node-and-yarn</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v10.14.1</nodeVersion>
-                            <yarnVersion>v1.12.3</yarnVersion>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>yarn rm proxy</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>config delete proxy</arguments>
-                        </configuration>
-                    </execution>
-
-
-                    <execution>
-                        <id>yarn set registry</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>config set registry http://registry.npmjs.org/</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>yarn install</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <!-- optional: The default argument is actually
-                            "install", so unless you need to run some other yarn command,
-                            you can remove this whole <configuration> section.
-                            -->
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>yarn build</id>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <!-- optional: The default argument is actually
-                            "install", so unless you need to run some other yarn command,
-                            you can remove this whole <configuration> section.
-                            -->
-                            <arguments>build</arguments>
-                        </configuration>
-                        <phase>package</phase>
-                    </execution>
-
-                </executions>
-
-            </plugin>
-        </plugins>
-
-    </build>
 
 </project>
