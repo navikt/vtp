@@ -80,7 +80,7 @@
         <arbeidsforhold.version>3.0.0</arbeidsforhold.version>
         <organisasjon.version>1.0.4</organisasjon.version>
         <norg2.arbeidsfordeling.version>1.1.0</norg2.arbeidsfordeling.version>
-        <kodeverk.version>2.0.1-SNAPSHOT</kodeverk.version>
+        <kodeverk.version>2.0.0</kodeverk.version>
         <dokumentproduksjon.version>2.1.7</dokumentproduksjon.version>
         <modig-testcertificates.version>1.2.6-SNAPSHOT</modig-testcertificates.version>
         <person-api-feed.version>1.1.0</person-api-feed.version>
@@ -464,7 +464,6 @@
                 <groupId>no.nav.tjenester.fim</groupId>
                 <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
                 <version>${kodeverk.version}</version>
-                <classifier>jaxws</classifier>
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester.fim</groupId>
