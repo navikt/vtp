@@ -6,6 +6,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeFodselMedFrilans;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeFødselFarAleneomsorg;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeFødselMorAleneomsorg;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeMedAnnenForelder;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminFar;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMorEkstraUttakFørFødsel;
@@ -62,6 +63,16 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("")
                 .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorge(fordeling, soekersRelasjonTilBarnet))
+                .withSoeker(morSoeker(aktoerId))
+                .withAndreVedlegg(null)
+                .withPaakrevdeVedlegg(null);
+    }
+    public ForeldrepengesoknadBuilder uttakMedAnnenpart(String aktoerId, String annenpartAktørId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+        return ForeldrepengesoknadBuilder.startBuilding()
+                .withMottattDato((LocalDate.now()))
+                .withBegrunnelseForSenSoeknad(null)
+                .withTilleggsopplysninger("")
+                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeMedAnnenForelder(fordeling, soekersRelasjonTilBarnet, annenpartAktørId))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
