@@ -29,4 +29,6 @@ public interface TestscenarioBuilderRepository {
 
     Boolean slettScenario(String id);
 
+    Boolean endreTestscenario(Testscenario testscenario);
+
 }

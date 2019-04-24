@@ -47,6 +47,16 @@ public class TestscenarioRestTjeneste {
         this.testscenarioRepository = testscenarioRepository;
     }
 
+
+    @PUT
+    @Path("/endrescenario/{id}")
+    @ApiOperation(value="", notes="Patcher et testcase. Serialiserer uten sjekk, du må selv ha styr på typer")
+    public Response endreScenario(TestscenarioDto testscenarioDto){
+
+
+        return Response.ok().build();
+    }
+
     @DELETE
     @Path("/slettscenario/{id}")
     @ApiOperation(value = "", notes= "Sletter et initialisert testscenario")
