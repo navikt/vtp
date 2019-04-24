@@ -117,4 +117,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
             return false;
         }
     }
+
+    @Override
+    public Boolean endreTestscenario(Testscenario testscenario) {
+
+        return null;
+    }
+
 }

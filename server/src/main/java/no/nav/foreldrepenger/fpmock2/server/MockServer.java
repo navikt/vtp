@@ -137,6 +137,9 @@ public class MockServer {
 
     protected void addWebResources(HandlerContainer handlerContainer) {
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
+
+
+
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
 
@@ -151,6 +154,7 @@ public class MockServer {
 
     protected void addWebGui(HandlerContainer handlerContainer) {
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/webapps/frontend"), "/");
+        ctx.setDefaultsDescriptor(null);
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
         DefaultServlet defaultServlet = new DefaultServlet();

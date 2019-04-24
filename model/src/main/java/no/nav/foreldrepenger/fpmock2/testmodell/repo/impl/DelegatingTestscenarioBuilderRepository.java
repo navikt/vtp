@@ -66,4 +66,9 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     public Boolean slettScenario(String id) {
         return delegate.slettScenario(id);
     }
+
+    @Override
+    public Boolean endreTestscenario(Testscenario testscenario) {
+        return null;
+    }
 }
