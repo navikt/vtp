@@ -5,6 +5,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.OPPHOLDSTYPE_MØDREKVOTE_ANNEN_FORELDER;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FEDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FELLESPERIODE;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
@@ -21,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
@@ -56,6 +57,40 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 @Tag("foreldrepenger")
 public class Uttak extends ForeldrepengerTestBase {
     // Testcaser
+    @Test
+    @DisplayName("Testcase alenefar - søker med manglende periode")
+    @Description("Alenefar søker med manglende perioder i starten")
+    public void testcase_alenefar_fødsel_manglerPerioder() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("82");
+
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+
+        String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
+        String farFnr = testscenario.getPersonopplysninger().getAnnenpartIdent();
+        LocalDate fpStartDatoFar = fødselsdato.plusWeeks(9);
+
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER, fpStartDatoFar, fpStartDatoFar.plusWeeks(6).minusDays(1)));
+
+        ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.fodselfunnetstedFarMedMor(farAktørId, morAktørId, fødselsdato, LocalDate.now(), fordeling);
+        Rettigheter rettigheter = RettigheterErketyper.harAleneOmsorgOgEnerett();
+        Termin fødsel = SoekersRelasjonErketyper.søkerTermin(fødselsdato);
+        AnnenForelderMedNorskIdent annenpart = new AnnenForelderMedNorskIdent();
+        annenpart.setAktoerId(morAktørId);
+
+        søknadFar.withForeldrepengerYtelse(foreldrepengerYtelseNorskBorger(rettigheter, fødsel, fordeling, annenpart));
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+
+        long saksnummerFar = fordel.sendInnSøknad(søknadFar.build(), farAktørId, farFnr, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
+        fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
+        saksbehandler.hentFagsak(saksnummerFar);
+        saksbehandler.velgBehandling("Førstegangsbehandling");
+    }
+
     @Test
     @DisplayName("Testcase for koblet sak")
     @Description("Mor og far søker etter fødsel med ett arbeidsforhold hver. 100% dekningsgrad.")
