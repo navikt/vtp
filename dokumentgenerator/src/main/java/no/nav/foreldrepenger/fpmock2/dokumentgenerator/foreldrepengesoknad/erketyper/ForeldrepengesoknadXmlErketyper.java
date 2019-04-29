@@ -10,17 +10,22 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminFar;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengeYtelseNorskBorgerINorgeTerminMorEkstraUttakFørFødsel;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorger;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselFar;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMor;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorMedEgenNaering;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselMorVentelonnVartpenger;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorgerINorgeFødselSøkerMedAnnenpart;
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.standardAnnenForelder;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.*;
 
 import java.time.LocalDate;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.AnnenForelder;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
+import no.nav.vedtak.felles.xml.soeknad.felles.v3.UkjentForelder;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
 public class ForeldrepengesoknadXmlErketyper {
@@ -57,25 +62,21 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
-    public ForeldrepengesoknadBuilder uttakKunMor(String aktoerId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+    public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId, AnnenForelder annenForelder, Fordeling fordeling, Rettigheter rettigheter, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((LocalDate.now()))
                 .withBegrunnelseForSenSoeknad(null)
                 .withTilleggsopplysninger("")
-                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorge(fordeling, soekersRelasjonTilBarnet))
+                .withForeldrepengerYtelse(foreldrepengerYtelseNorskBorger(rettigheter, soekersRelasjonTilBarnet, fordeling, annenForelder))
                 .withSoeker(morSoeker(aktoerId))
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
-    public ForeldrepengesoknadBuilder uttakMedAnnenpart(String aktoerId, String annenpartAktørId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
-        return ForeldrepengesoknadBuilder.startBuilding()
-                .withMottattDato((LocalDate.now()))
-                .withBegrunnelseForSenSoeknad(null)
-                .withTilleggsopplysninger("")
-                .withForeldrepengerYtelse(foreldrepengeYtelseNorskBorgerINorgeMedAnnenForelder(fordeling, soekersRelasjonTilBarnet, annenpartAktørId))
-                .withSoeker(morSoeker(aktoerId))
-                .withAndreVedlegg(null)
-                .withPaakrevdeVedlegg(null);
+    public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+        return uttakMedFordeling(aktoerId, new UkjentForelder(), fordeling, RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg(), soekersRelasjonTilBarnet);
+    }
+    public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId,String annenpartAktørId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+        return uttakMedFordeling(aktoerId, standardAnnenForelder(annenpartAktørId), fordeling, RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg(), soekersRelasjonTilBarnet);
     }
 
 
