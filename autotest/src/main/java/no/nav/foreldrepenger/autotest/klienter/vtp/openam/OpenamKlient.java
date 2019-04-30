@@ -43,9 +43,9 @@ public class OpenamKlient extends VTPKlient {
         String issuer;
         if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
             // @todo Hvor blir dette brukt. Kan det bruke samme instilling som
-            issuer = System.getProperty("isso.oauth2.issuer", "https://fpmock2:8063/isso/oauth2");
+            issuer = System.getProperty("isso.oauth2.issuer", "https://fpmock2:8063/rest/isso/oauth2");
         } else {
-            issuer = System.getProperty("isso.oauth2.issuer", "https://localhost:8063/isso/oauth2"); //fixme med propertyutils
+            issuer = System.getProperty("isso.oauth2.issuer", "https://localhost:8063/rest/isso/oauth2"); //fixme med propertyutils
         }
 
         String token = new OidcTokenGenerator(rolle, "notcetnonce").withIssuer(issuer).create();
