@@ -146,14 +146,10 @@ public class Klage extends ForeldrepengerTestBase {
                 .fritekstBrev("Fritekst brev fra KA")
                 .setBegrunnelse("Fordi");
         klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
-        klagebehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
-        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
-        beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling("Klage");
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
         verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "HJEMSENDE_UTEN_OPPHEVE");
-        verifiserBehandlingsstatus(beslutter.getBehandlingsstatus(), "AVSLU");
+        verifiserKlageVurdering(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNK().getKlageVurdering(), "HJEMSENDE_UTEN_Å_OPPHEVE");
+        verifiserBehandlingsstatus(klagebehandler.valgtBehandling.status.kode, "AVSLU");
     }
 
     @Test
