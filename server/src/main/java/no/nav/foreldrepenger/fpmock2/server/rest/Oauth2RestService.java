@@ -215,7 +215,7 @@ public class Oauth2RestService {
         if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER")) {
             issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER");
         } else {
-            issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/isso/oauth2";
+            issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/rest/isso/oauth2";
         }
         return issuer;
     }

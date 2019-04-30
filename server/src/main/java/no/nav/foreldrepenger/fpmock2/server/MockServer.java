@@ -154,9 +154,10 @@ public class MockServer {
 
     protected void addWebGui(HandlerContainer handlerContainer) {
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/webapps/frontend"), "/");
-        ctx.setDefaultsDescriptor(null);
+        //ctx.setDefaultsDescriptor(null);
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
+
         DefaultServlet defaultServlet = new DefaultServlet();
 
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
