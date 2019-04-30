@@ -10,6 +10,10 @@ Starte server
 * Swagger UI: https://localhost:8063/swagger/ - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
 
+Front-end
+---
+I mappen frontend kjør yarn run serve. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063
+
 Opprette testdata 
 ----
 * Opprett testdata ved å lage scenario i ./model/scenarios. Innledende tall brukes som referanse for å få instansiert scenario fra Autotest. 
