@@ -160,7 +160,6 @@ public class Uttak extends ForeldrepengerTestBase {
         fordelingFar.setAnnenForelderErInformert(true);
         List<LukketPeriodeMedVedlegg> perioderFar = fordelingFar.getPerioder();
         perioderFar.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, familiehendelse.plusWeeks(6), familiehendelse.plusWeeks(10).minusDays(1)));
-//        perioderFar.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familiehendelse.plusWeeks(20), familiehendelse.plusWeeks(30).minusDays(1)));
 
         ForeldrepengesoknadBuilder søknadFar = foreldrepengeSøknadErketyper.uttakMedFordeling(farAktørId, morAktørId, fordelingFar, SoekersRelasjonErketyper.fødsel(1, familiehendelse));
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
@@ -169,7 +168,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
         saksbehandler.velgBehandling("Førstegangsbehandling");
-//        saksbehandler.ventTilBehandlingsstatus("AVSLU");
+        saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
 
     @Test
