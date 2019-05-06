@@ -15,6 +15,7 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorger;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +28,14 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FastsettBruttoBeregningsgrunnlagSNBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderFaktaOmBeregningBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderPerioderOpptjeningBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderVarigEndringEllerNyoppstartetSNBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.FaktaOmBeregningTilfelle;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
@@ -324,6 +331,7 @@ public class Uttak extends ForeldrepengerTestBase {
         LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
         LocalDate fpStartdatoMor = fødselsdato.minusWeeks(3);
         String orgnr = testscenario.getScenariodata().getArbeidsforholdModell().getArbeidsforhold().get(0).getArbeidsgiverOrgnr();
+
         Fordeling fordeling = new ObjectFactory().createFordeling();
         fordeling.setAnnenForelderErInformert(true);
         List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
@@ -339,7 +347,6 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
         inntektsmeldingerMor.get(0).addGradertperiode(BigDecimal.valueOf(47), fødselsdato.plusWeeks(6), fødselsdato.plusWeeks(12).minusDays(1));
         inntektsmeldingerMor.get(0).addGradertperiode(BigDecimal.valueOf(33), fødselsdato.plusWeeks(12),fødselsdato.plusWeeks(18).minusDays(1));
-
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
     @Test
@@ -524,7 +531,6 @@ public class Uttak extends ForeldrepengerTestBase {
         saksbehandler.velgFørstegangsbehandling();
 
     }
-
     @Test
     @DisplayName("Mor fødsel med Arena")
     @Description("Mor søker fødsel med arena")
@@ -540,7 +546,6 @@ public class Uttak extends ForeldrepengerTestBase {
         // Må fortsette behandling fra behandlingsmeny for å få opp at FP er innvilget og behandlingen er avsluttet (refresh 1-2 ganger)
 
     }
-
     @Test
     @DisplayName("Testcase mor uten barn søker fødsel ")
     @Description("Mor har ikke barn registrert i TPS og søker på fødsel som skal ha skjedd 3 uker før.")
@@ -562,7 +567,6 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerSøker = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoSøker);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerSøker, testscenario, saksnummerMor);
     }
-
     @Test
     @DisplayName("Mor søker med ukjent annen foreldre")
     @Description("AnnenForelder, kjent eller ikke kjent")
@@ -646,7 +650,6 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerSøker = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoSøker);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerSøker, søkerIdent, søkerFnr, saksnummer);
     }
-
     @Test
     @DisplayName("Mor fødsel med arbeidsforhold og frilans. AP i Fakta om uttak")
     @Description("Mor søker fødsel med ett arbeidsforhold og frilans. Vurder fakta om beregning. Avvik i beregning")
@@ -671,6 +674,78 @@ public class Uttak extends ForeldrepengerTestBase {
                 orgNr, Optional.empty(), Optional.of(refusjon), Optional.empty());
 
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
+    }
+    @Test
+    @DisplayName("Mor fødsel SN gradering")
+    @Description("Mor søker fødsel som selvstendig næringsdrivende med minst en periode som er gradering.")
+    public void testcase_mor_fødsel_gradering_SN() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("48");
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, fødselsdato.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(6).minusDays(1)));
+        perioder.add(graderingSøknadBuilder(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato.plusWeeks(6), fødselsdato.plusWeeks(12).minusDays(1), 47, false,false,true));
+        perioder.add(graderingSøknadBuilder(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato.plusWeeks(12),fødselsdato.plusWeeks(18).minusDays(1), 33, false, false, true));
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.uttakMedSN(søkerAktørIdent, fordeling, SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+//        List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
+//        fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class).godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
+//        //Verifiser at aksjonspunkt 5042 ikke blir oprettet uten varig endring
+        saksbehandler.hentAksjonspunktbekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class)
+                .setErVarigEndretNaering(false)
+                .setBegrunnelse("Ingen endring");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class);
+        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_SELVSTENDIG_NÆRINGSDRIVENDE), "Har uventet aksjonspunkt: 5042");
+        saksbehandler.hentAksjonspunktbekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class)
+                .setErVarigEndretNaering(true)
+                .setBegrunnelse("Endring eller nyoppstartet begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderVarigEndringEllerNyoppstartetSNBekreftelse.class);
+        saksbehandler.hentAksjonspunktbekreftelse(FastsettBruttoBeregningsgrunnlagSNBekreftelse.class)
+                .setBruttoBeregningsgrunnlag(1_000_000)
+                .setBegrunnelse("Grunnlag begrunnelse");
+        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettBruttoBeregningsgrunnlagSNBekreftelse.class);
+//
+//        saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
+//        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
+//        beslutter.erLoggetInnMedRolle(Aktoer.Rolle.BESLUTTER);
+//        beslutter.hentFagsak(saksnummer);
+//        Aksjonspunkt ap1 = beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDER_VARIG_ENDRET_ELLER_NYOPPSTARTET_NÆRING_SELVSTENDIG_NÆRINGSDRIVENDE);
+//        Aksjonspunkt ap2 = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_SELVSTENDIG_NÆRINGSDRIVENDE);
+//        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
+//                .godkjennAksjonspunkter(Arrays.asList(ap1, ap2));
+//        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
+    }
+    @Test
+    @DisplayName("Mor fødsel SNFL gradering")
+    @Description("Mor søker fødsel som selvstendig næringsdrivende med minst en periode som er gradering.")
+    public void testcase_mor_fødsel_gradering_SNFL() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("48");
+        String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = testscenario.getPersonopplysninger().getFødselsdato();
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, fødselsdato.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(6).minusDays(1)));
+        perioder.add(graderingSøknadBuilder(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato.plusWeeks(6), fødselsdato.plusWeeks(12).minusDays(1), 47, false, true, false));
+        perioder.add(graderingSøknadBuilder(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato.plusWeeks(12),fødselsdato.plusWeeks(18).minusDays(1), 33, false, false, true));
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.uttakMedSNFL(søkerAktørIdent, fordeling, SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        fordel.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class).godkjennAllOpptjening();
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
     }
     @Test
     @DisplayName("Mor automatisk førstegangssøknad med endringssøknad")
@@ -718,7 +793,6 @@ public class Uttak extends ForeldrepengerTestBase {
         saksbehandler.ventTilSakHarRevurdering();
         saksbehandler.velgRevurderingBehandling();
     }
-
     @Test
     @DisplayName("Koblet sak med oppholdsperioder og endringssøknad")
     @Description("Mor søker (med oppholdsperioder for far). Far søker (med oppholdsperioder for mor). Berørt sak på begge. " +
@@ -800,7 +874,6 @@ public class Uttak extends ForeldrepengerTestBase {
         Long saksnummerFarE = fordel.sendInnSøknad(søknadFarEndring.build(), farAktørId, farIdent, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummerFar);
 
     }
-
     @Test
     @DisplayName("Utsettelse ")
     @Description("-")
@@ -826,11 +899,10 @@ public class Uttak extends ForeldrepengerTestBase {
         inntektsmeldingerMor.get(0).addUtsettelseperiode(UTSETTELSETYPE_ARBEID, utsettelseFom, utsettelseTom);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
-
     @Test
     @DisplayName("Testcase mor termin med gradering i uke 7")
     @Description("Mor søker på termin, graderer i uke 7")
-    public void testcase_mor_termin_AT_gradering() throws Exception {
+    public void testcase_mor_termin_gradering_AT() throws Exception {
         TestscenarioDto testscenario = opprettScenario("74");
         String morAktørId = testscenario.getPersonopplysninger().getSøkerAktørIdent();
         String fnrMor = testscenario.getPersonopplysninger().getSøkerIdent();
@@ -858,10 +930,9 @@ public class Uttak extends ForeldrepengerTestBase {
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         InntektsmeldingBuilder inntektsmeldingerMor = lagInntektsmeldingBuilder(beløp, fnrMor, fpStartdatoMor, orgnr, Optional.empty(), Optional.empty(), Optional.empty());
         inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(80), graderingFom, graderingTom);
-        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(20), graderingFom2, graderingTom2);
+//        inntektsmeldingerMor.addGradertperiode(BigDecimal.valueOf(20), graderingFom2, graderingTom2);
         fordel.sendInnInntektsmelding(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
-
     @Test
     @DisplayName("Testcase mor termin med gradering og utsettelse")
     @Description("Mor søker på termin, gradering og utsettelse")
@@ -896,7 +967,6 @@ public class Uttak extends ForeldrepengerTestBase {
         inntektsmeldingerMor.addUtsettelseperiode(UTSETTELSETYPE_ARBEID,utsettelseFOM,utsettelseTOM);
         fordel.sendInnInntektsmelding(inntektsmeldingerMor, testscenario, saksnummerMor);
     }
-
     @Test
     @DisplayName("Mor Fødsel ATFL med graderte perioder")
     @Description("Mor søker på fødsel, har status ATFL og søker med minst en gradert periode")
@@ -921,8 +991,7 @@ public class Uttak extends ForeldrepengerTestBase {
         perioder.add(gradering);
         LocalDate gradering2FOM = familieHendelse.plusWeeks(14);
         LocalDate gradering2TOM = familieHendelse.plusWeeks(16).minusDays(1);
-        Gradering gradering2 = new Gradering();
-        graderingSøknadBuilder(gradering2,STØNADSKONTOTYPE_FELLESPERIODE,gradering2FOM,gradering2TOM,63,false);
+        Gradering gradering2 = graderingSøknadBuilder(STØNADSKONTOTYPE_FELLESPERIODE,gradering2FOM,gradering2TOM,63,false, true, false);
         perioder.add(gradering2);
 
         ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.fodselfunnetstedUttakKunMorMedFrilans(fordeling,søkerAktørIdent, familieHendelse);
@@ -932,18 +1001,7 @@ public class Uttak extends ForeldrepengerTestBase {
                 orgNrAT, Optional.empty(), Optional.empty(), Optional.empty());
         inntektsmeldingBuilder.addGradertperiode(BigDecimal.valueOf(80), graderingFOM, graderingTOM);
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
-
-        saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
-        saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
-                .godkjennAllOpptjening();
-        saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
-        debugLoggBehandling(saksbehandler.valgtBehandling);
-        saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class)
-                .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.VURDER_MOTTAR_YTELSE.kode)
-                .leggTilMottarYtelse(false, Collections.emptyList());
-        saksbehandler.bekreftAksjonspunktBekreftelse(VurderFaktaOmBeregningBekreftelse.class);
+        //TODO legge til automatisk behandling av AP
     }
     @Test
     @DisplayName("Mor Fødsel ATFL med utsettelse perioder")
@@ -989,22 +1047,30 @@ public class Uttak extends ForeldrepengerTestBase {
                 .leggTilMottarYtelse(false, Collections.emptyList());
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderFaktaOmBeregningBekreftelse.class);
     }
-
-    private Gradering graderingSøknadBuilder(Gradering gradering, String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker){
+    private Gradering graderingSøknadBuilder(String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean erArbeidstaker, boolean erFrilans, boolean erSelvstNæringsdrivende){
+        Gradering gradering = new Gradering ();
         gradering.setArbeidsforholdSomSkalGraderes(true);
         gradering.setArbeidtidProsent(arbeidtidProsent);
         addStønadskontotype(STØNADSKONTOTYPE, gradering);
         addPeriode(graderingFom, graderingTom, gradering);
-        gradering.setErArbeidstaker(setErArbeidstaker);
-
+        gradering.setErArbeidstaker(erArbeidstaker);
+        gradering.setErFrilanser(erFrilans);
+        gradering.setErSelvstNæringsdrivende(erSelvstNæringsdrivende);
         return gradering;
     }
-    private Gradering graderingSøknadBuilder(String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean setErArbeidstaker, String orgNr){
+    private Gradering graderingSøknadBuilder(String STØNADSKONTOTYPE, LocalDate graderingFom, LocalDate graderingTom, Integer arbeidtidProsent, boolean erArbeidstaker, String orgNr){
         Gradering gradering = new Gradering();
         Virksomhet virksomhet = new Virksomhet();
         virksomhet.setIdentifikator(orgNr);
         gradering.setArbeidsgiver(virksomhet);
-        return graderingSøknadBuilder(gradering,STØNADSKONTOTYPE, graderingFom,graderingTom, arbeidtidProsent, setErArbeidstaker);
+        gradering.setArbeidsforholdSomSkalGraderes(true);
+        gradering.setArbeidtidProsent(arbeidtidProsent);
+        addStønadskontotype(STØNADSKONTOTYPE, gradering);
+        addPeriode(graderingFom, graderingTom, gradering);
+        gradering.setErArbeidstaker(erArbeidstaker);
+        gradering.setErFrilanser(false);
+        gradering.setErSelvstNæringsdrivende(false);
+        return gradering;
     }
     private Utsettelsesperiode utsettelseSøknadBuilder(LocalDate utsettelseFom, LocalDate utsettelseTom, String UTSETTELSETYPE, boolean setErArbeidstaker){
         Utsettelsesperiode utsettelse = new Utsettelsesperiode();
