@@ -72,7 +72,7 @@ public class Uttak extends ForeldrepengerTestBase {
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, fødselsdato.minusDays(1)));
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(8).minusDays(1)));
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fødselsdato.plusWeeks(8), fødselsdato.plusWeeks(13).minusDays(1)));
-        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakKunMor(morAktørId, fordelingMor, SoekersRelasjonErketyper.fødsel(1,fødselsdato) );
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakMedFordeling(morAktørId, fordelingMor, SoekersRelasjonErketyper.fødsel(1,fødselsdato) );
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
@@ -95,7 +95,7 @@ public class Uttak extends ForeldrepengerTestBase {
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, termindato.minusDays(1)));
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, termindato, termindato.plusWeeks(8).minusDays(1)));
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, termindato.plusWeeks(8), termindato.plusWeeks(13).minusDays(1)));
-        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakKunMor(morAktørId, fordelingMor, SoekersRelasjonErketyper.søkerTermin(1,termindato) );
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakMedFordeling(morAktørId, fordelingMor, SoekersRelasjonErketyper.søkerTermin(1,termindato) );
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
@@ -118,7 +118,7 @@ public class Uttak extends ForeldrepengerTestBase {
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdatoMor, fødselsdato.minusDays(1)));
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(8).minusDays(1)));
         perioderMor.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, fødselsdato.plusWeeks(8), fødselsdato.plusWeeks(13).minusDays(1)));
-        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakKunMor(morAktørId, fordelingMor, SoekersRelasjonErketyper.fødsel(1,fødselsdato) );
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakMedFordeling(morAktørId, fordelingMor, SoekersRelasjonErketyper.fødsel(1,fødselsdato) );
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
@@ -336,7 +336,7 @@ public class Uttak extends ForeldrepengerTestBase {
         perioder.add(graderingSøknadBuilder(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato.plusWeeks(12),fødselsdato.plusWeeks(18).minusDays(1), 33, true, orgnr));
         perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato.plusWeeks(18), fødselsdato.plusWeeks(30).minusDays(1)));
 
-        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakKunMor(morAktørId, fordeling, SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        ForeldrepengesoknadBuilder søknadMor = foreldrepengeSøknadErketyper.uttakMedFordeling(morAktørId, fordeling, SoekersRelasjonErketyper.fødsel(1, fødselsdato));
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummerMor = fordel.sendInnSøknad(søknadMor.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
         List<InntektsmeldingBuilder> inntektsmeldingerMor = makeInntektsmeldingFromTestscenario(testscenario, fpStartdatoMor);
