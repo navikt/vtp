@@ -80,7 +80,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaOmsorgOgForeldreansvarBekreftelse.class);
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvOmsorgsvilkoret.class)
-                .bekreftAvvist(saksbehandler.kodeverk.Avslagsårsak.get("FP_VK_5").getKode("1009"));
+                .bekreftAvvist(saksbehandler.kodeverk.Avslagsårsak.get("FP_VK_5").getKode("1009" /* Mor ikke død */));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderingAvOmsorgsvilkoret.class);
 
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);

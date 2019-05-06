@@ -179,7 +179,7 @@ public class Fordel extends Aktoer {
             final long saksnummerF = gammeltSaksnummer;
             Vent.til(() -> {
                 List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
-                return historikk.stream().anyMatch(h -> HistorikkInnslag.VEDLEGG_MOTTATT.equals(h.getTypeKode()));
+                return historikk.stream().anyMatch(h -> HistorikkInnslag.VEDLEGG_MOTTATT.getKode().equals(h.getTypeKode()));
             }, 30, "Saken har ikke mottatt inntektsmeldingen");
         } else {
             Vent.til(() -> {
@@ -221,7 +221,7 @@ public class Fordel extends Aktoer {
 
     private int antallInntektsmeldingerMottatt(long saksnummer) throws IOException {
         List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummer);
-        int antall = historikk.stream().filter(h -> HistorikkInnslag.VEDLEGG_MOTTATT.equals(h.getTypeKode())).collect(Collectors.toList()).size();
+        int antall = historikk.stream().filter(h -> HistorikkInnslag.VEDLEGG_MOTTATT.getKode().equals(h.getTypeKode())).collect(Collectors.toList()).size();
         return antall;
     }
 

@@ -114,7 +114,7 @@ public class Adopsjon extends EngangsstonadTestBase {
         overstyrer.hentFagsak(saksnummer);
 
         OverstyrAdopsjonsvilkaaret overstyr = new OverstyrAdopsjonsvilkaaret(overstyrer.valgtFagsak, overstyrer.valgtBehandling);
-        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_4").getKode("Barn over 15 år"));
+        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_4").getKode("1004" /* Barn over 15 år */));
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 

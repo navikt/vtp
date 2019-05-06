@@ -128,7 +128,7 @@ public class Soknadsfrist extends EngangsstonadTestBase {
         
         saksbehandler.hentFagsak(saksnummer);
         verifiserLikhet(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL).getStatus().kode, "OPPR");
-        verifiser(saksbehandler.harIkkeAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRISTVILKÅRET), "Behandling hadde aksjonspunkt " + AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRISTVILKÅRET + " selv om det ikke var forventet");
+        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRISTVILKÅRET), "Behandling hadde aksjonspunkt " + AksjonspunktKoder.MANUELL_VURDERING_AV_SØKNADSFRISTVILKÅRET + " selv om det ikke var forventet");
     }
 
 }

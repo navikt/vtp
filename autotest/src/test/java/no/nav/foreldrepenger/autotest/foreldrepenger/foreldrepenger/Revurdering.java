@@ -76,10 +76,10 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Saken har ikke fått revurdering.");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Saken har ikke fått revurdering.");
         overstyrer.velgRevurderingBehandling();
         OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak, overstyrer.valgtBehandling);
-        overstyrMedlemskapsvilkaaret.avvis(hentKodeverk().Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
+        overstyrMedlemskapsvilkaaret.avvis(hentKodeverk().Avslagsårsak.get("FP_VK_2").getKode("1020" /*Søker er ikke medlem*/));
         overstyrMedlemskapsvilkaaret.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyrMedlemskapsvilkaaret);
         overstyrer.bekreftAksjonspunktBekreftelse(KontrollerManueltOpprettetRevurdering.class);
@@ -95,7 +95,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.getAvslagsarsak().kode, "1020", "Avslagsårsak");
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
-        beslutter.ventTilFagsakstatus("Avsluttet");
+        beslutter.ventTilFagsakAvsluttet();
         System.out.println(beslutter.valgtFagsak.hentStatus().kode);
     }
 
@@ -138,7 +138,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerE);
         saksbehandler.ventTilSakHarRevurdering();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Det er ikke opprettet revurdering.");
         saksbehandler.velgRevurderingBehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"), "Behandlingsresultat er ikke 'Foreldrepenger er endret'");
@@ -176,7 +176,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.ventTilSakHarRevurdering();
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Revurdering er ikke opprettet.");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Revurdering er ikke opprettet.");
         saksbehandler.velgRevurderingBehandling();
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class)
                 .setStartdatoFraSoknad(fpStartdato.plusWeeks(1))
@@ -273,7 +273,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerE);
         saksbehandler.ventTilSakHarRevurdering();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Det er ikke opprettet revurdering.");
         saksbehandler.velgRevurderingBehandling();
         saksbehandler.refreshFagsak();
         saksbehandler.refreshBehandling();
@@ -334,7 +334,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerE);
         saksbehandler.ventTilSakHarRevurdering();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Det er ikke opprettet revurdering.");
         saksbehandler.velgRevurderingBehandling();
         saksbehandler.refreshFagsak();
         saksbehandler.refreshBehandling();
