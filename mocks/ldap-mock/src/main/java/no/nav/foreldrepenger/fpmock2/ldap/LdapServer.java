@@ -21,7 +21,8 @@ import com.unboundid.ldif.LDIFReader;
 public class LdapServer {
 
     private static final String BASEDATA_USERS_LDIF = "basedata/users.ldif";
-    private final int listenerPort = Integer.valueOf(System.getProperty("ldaps.port", "8636")); // 636 er default LDAPS port, 389 default for LDAP
+    private final int listenerPortLdaps = Integer.valueOf(System.getProperty("ldaps.port", "8636")); // 636 er default LDAPS port, 389 default for LDAP
+    private final int listenerPortLdap = Integer.valueOf(System.getProperty("ldaps.port", "8389")); // 636 er default LDAPS port, 389 default for LDAP
 
     private InMemoryDirectoryServer directoryServer;
 
@@ -32,19 +33,20 @@ public class LdapServer {
         this.keystoreFile = keystoreFile;
         this.password = password;
         InMemoryDirectoryServerConfig cfg = new InMemoryDirectoryServerConfig("DC=local");
-        
+
         cfg.setEnforceAttributeSyntaxCompliance(false);
         cfg.setEnforceSingleStructuralObjectClass(false);
         cfg.setSchema(null); // dropper valider schema slik at vi slipper å definere alle object classes
 
-        SSLContext context = SSLContext.getInstance("TLS");
+        SSLContext TLScontext = SSLContext.getInstance("TLS");
 
         KeyManager[] km = loadKeyManagers();
-        context.init(km, null, null);
+        TLScontext.init(km, null, null);
 
-        InMemoryListenerConfig ldapsConfig = InMemoryListenerConfig.createLDAPSConfig("LDAPS", listenerPort, context.getServerSocketFactory());
-        
-        cfg.setListenerConfigs(ldapsConfig);
+        InMemoryListenerConfig ldapsConfig = InMemoryListenerConfig.createLDAPSConfig("LDAPS", listenerPortLdaps, TLScontext.getServerSocketFactory());
+        InMemoryListenerConfig ldapConfig = InMemoryListenerConfig.createLDAPConfig("LDAP",listenerPortLdap );
+
+        cfg.setListenerConfigs(ldapsConfig,ldapConfig);
 
         directoryServer = new InMemoryDirectoryServer(cfg);
         readLdifFilesFromClasspath(directoryServer);
