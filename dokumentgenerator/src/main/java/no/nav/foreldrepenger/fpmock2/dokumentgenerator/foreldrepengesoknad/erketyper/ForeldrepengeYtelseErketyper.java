@@ -53,16 +53,6 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setOpptjening(opptjening);
         return foreldrepenger;
     }
-    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeMedSNFL(Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
-        Foreldrepenger foreldrepenger = new Foreldrepenger();
-        foreldrepenger.setDekningsgrad(standardDekningsgrader());
-        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
-        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
-        foreldrepenger.setRelasjonTilBarnet(soekersRelasjonTilBarnet);
-        foreldrepenger.setFordeling(fordeling);
-        foreldrepenger.setOpptjening(OpptjeningErketyper.medEgenNaeringOgFrilansOpptjening());
-        return foreldrepenger;
-    }
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeMedAnnenForelder(Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet, String annenpartAktørId) {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
