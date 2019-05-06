@@ -549,7 +549,7 @@ public class Saksbehandler extends Aktoer{
     /*
      * Historikkinnslag
      */
-    @Step("Venter på historikkinnslag {tekst}")
+    @Step("Venter på historikkinnslag {type}")
     public void ventTilHistorikkinnslag(HistorikkInnslag.Type type) throws Exception {
         if(harHistorikkinnslag(type)) {
             return;
@@ -563,12 +563,12 @@ public class Saksbehandler extends Aktoer{
     /*
      * Historikkinnslag
      */
-    @Step("Venter sekunder antall sekunder på historikkinnslag {tekst}")
-    public void ventTilAntallHistorikkinnslag(String tekst, Integer sekunder, Integer antallHistorikkInnslag) throws Exception {
+    @Step("Venter sekunder antall sekunder på historikkinnslag {type}")
+    public void ventTilAntallHistorikkinnslag(HistorikkInnslag.Type type, Integer sekunder, Integer antallHistorikkInnslag) throws Exception {
         Vent.til( () -> {
             velgBehandling(valgtBehandling);
-            return harAntallHistorikkinnslag(tekst) == antallHistorikkInnslag;
-        }, sekunder, "Saken  hadde ikke historikkinslag " + tekst);
+            return harAntallHistorikkinnslag(type) == antallHistorikkInnslag;
+        }, sekunder, "Saken  hadde ikke historikkinslag " + type);
     }
 
     public boolean harHistorikkinnslag(HistorikkInnslag.Type type) {
@@ -610,10 +610,10 @@ public class Saksbehandler extends Aktoer{
         ventTilFagsakstatus(kodeverk.FagsakStatus.getKode(status));
     }
 
-    public int harAntallHistorikkinnslag(String tekst) {
+    public int harAntallHistorikkinnslag(HistorikkInnslag.Type type) {
         int antall = 0;
         for (HistorikkInnslag innslag : historikkInnslag) {
-            if(innslag.getTypeKode().contains(tekst)) {
+            if(innslag.getTypeKode().equals(type.getKode())) {
                 antall++;
             }
         }

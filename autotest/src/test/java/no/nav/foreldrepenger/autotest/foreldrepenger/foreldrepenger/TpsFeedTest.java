@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.DødshendelseDto;
@@ -53,8 +54,8 @@ public class TpsFeedTest extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAntallHistorikkinnslag("Behandlingen oppdatert med nye opplysninger", 120, 2);
-        verifiserLikhet(saksbehandler.harAntallHistorikkinnslag("Behandlingen oppdatert med nye opplysninger"), 2);
+        saksbehandler.ventTilAntallHistorikkinnslag(HistorikkInnslag.BEH_OPPDATERT_NYE_OPPL, 120, 2);
+        verifiserLikhet(saksbehandler.harAntallHistorikkinnslag(HistorikkInnslag.BEH_OPPDATERT_NYE_OPPL), 2);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class TpsFeedTest extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilAntallHistorikkinnslag("Behandlingen oppdatert med nye opplysninger", 120, 2);
-        verifiserLikhet(saksbehandler.harAntallHistorikkinnslag("Behandlingen oppdatert med nye opplysninger"), 2);
+        saksbehandler.ventTilAntallHistorikkinnslag(HistorikkInnslag.BEH_OPPDATERT_NYE_OPPL, 120, 2);
+        verifiserLikhet(saksbehandler.harAntallHistorikkinnslag(HistorikkInnslag.BEH_OPPDATERT_NYE_OPPL), 2);
     }
 }

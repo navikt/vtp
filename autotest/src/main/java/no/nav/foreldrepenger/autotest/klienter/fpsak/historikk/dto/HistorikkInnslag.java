@@ -12,6 +12,7 @@ public class HistorikkInnslag {
     public enum Type {
         REVURD_OPPR,
         BEH_VENT,
+        BEH_OPPDATERT_NYE_OPPL,
         BREV_BESTILT,
         BREV_SENT,
         VEDLEGG_MOTTATT,
@@ -33,6 +34,7 @@ public class HistorikkInnslag {
     public static final Type BEHANDLINGEN_ER_FLYTTET = Type.SPOLT_TILBAKE;
     public static final Type NYE_REGOPPLYSNINGER = Type.NYE_REGOPPLYSNINGER;
     public static final Type UENDRET_UTFALL = Type.UENDRET_UTFALL;
+    public static final Type BEH_OPPDATERT_NYE_OPPL = Type.BEH_OPPDATERT_NYE_OPPL;
     
     
     protected HistorikkTekst tekst;
@@ -45,5 +47,10 @@ public class HistorikkInnslag {
     
     public String getTypeKode() {
         return type.kode;
+    }
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + String.format("<behandlingsid=%s, type=%s>", behandlingsid, type);
     }
 }
