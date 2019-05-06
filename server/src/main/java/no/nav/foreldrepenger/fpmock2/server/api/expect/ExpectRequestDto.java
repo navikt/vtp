@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.fpmock2.server.api.expect;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

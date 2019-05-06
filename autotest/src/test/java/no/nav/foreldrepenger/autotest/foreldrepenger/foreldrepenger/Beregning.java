@@ -31,6 +31,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagArbeidsforholdDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagPeriodeDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.BeregningsgrunnlagPrStatusOgAndelDto;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
@@ -94,7 +95,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
 
@@ -144,7 +145,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
@@ -258,7 +259,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
@@ -313,7 +314,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
@@ -496,7 +497,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
@@ -561,7 +562,7 @@ public class Beregning extends ForeldrepengerTestBase {
 
         saksbehandler.opprettBehandlingRevurdering("RE-HENDELSE-FØDSEL");
 
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
 
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);
 
@@ -625,7 +626,7 @@ public class Beregning extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmelding(inntektsmeldingBuilder2, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
 
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.VURDER_FAKTA_FOR_ATFL_SN);

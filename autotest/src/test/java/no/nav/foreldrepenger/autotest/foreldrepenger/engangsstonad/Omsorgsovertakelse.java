@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaOmsorgOgForeldreansvarBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -56,7 +57,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 
     @Test
@@ -152,7 +153,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
     
     @Test
@@ -189,6 +190,6 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        beslutter.ventTilHistorikkinnslag("Brev sendt");
+        beslutter.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 }

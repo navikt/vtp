@@ -93,7 +93,7 @@ public class InntektMockImpl implements InntektV3 {
         LOG.info("hentInntektListeBolk. AktoerIdentListe: {}", request.getIdentListe().stream().map(t -> getIdentFromAktoer(t)).collect(Collectors.joining(",")));
         HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
 
-        if (request != null && request.getIdentListe() != null
+        if (request.getIdentListe() != null
                 && !request.getIdentListe().isEmpty()
                 && request.getUttrekksperiode() != null) {
 

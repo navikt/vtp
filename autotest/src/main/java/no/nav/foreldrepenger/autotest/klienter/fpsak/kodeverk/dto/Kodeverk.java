@@ -47,7 +47,7 @@ public class Kodeverk{
 
         public Kode getKode(String kodeverdi) {
             for (Kode kode : this) {
-                if(kode.kode.equals(kodeverdi) || kode.navn.equals(kodeverdi)) { //Kan hente kode basert på kode eller navn
+                if(kode.kode.equals(kodeverdi)) {
                     return kode;
                 }
             }

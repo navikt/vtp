@@ -26,7 +26,7 @@ public class OverstyringAvGradering extends FpsakTestBase {
         verifiser(saksbehandler.valgtBehandling.hentUttaksperiode(0).getGraderingInnvilget(), "Gradering var ikke invilget. forventet invilget");
 
         saksbehandler.aksjonspunktBekreftelse(OverstyrUttaksperioder.class)
-                .bekreftPeriodeGraderingErIkkeOppfylt(saksbehandler.valgtBehandling.hentUttaksperiode(0), new Kode());
+                .bekreftPeriodeGraderingErIkkeOppfylt(saksbehandler.valgtBehandling.hentUttaksperiode(0), Kode.lagBlankKode());
         saksbehandler.bekreftAksjonspunktBekreftelse(OverstyrUttaksperioder.class);
 
         verifiser(!saksbehandler.valgtBehandling.hentUttaksperiode(0).getGraderingInnvilget(), "Gradering var invilget. forventet ikke invilget");

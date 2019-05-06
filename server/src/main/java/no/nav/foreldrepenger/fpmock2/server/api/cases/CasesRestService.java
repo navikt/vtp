@@ -86,7 +86,7 @@ public class CasesRestService extends FpsakTestBase {
             fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
             saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
             saksbehandler.hentFagsak(saksnummerMor);
-            saksbehandler.velgBehandling("Førstegangsbehandling");
+            saksbehandler.velgFørstegangsbehandling();
             saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
             String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
@@ -106,7 +106,7 @@ public class CasesRestService extends FpsakTestBase {
             List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
             fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
             saksbehandler.hentFagsak(saksnummerFar);
-            saksbehandler.velgBehandling("Førstegangsbehandling");
+            saksbehandler.velgFørstegangsbehandling();
             return Response.ok(saksnummerMor).build();
         } catch (Exception e) {
             String message = "Error: " + e.toString();

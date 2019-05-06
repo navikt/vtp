@@ -191,8 +191,8 @@ public class Adopsjon extends EngangsstonadTestBase {
         bekreftelse3.bekreftMannAdoptererIkkeAlene();
         saksbehandler.bekreftAksjonspunktbekreftelserer(bekreftelse1, bekreftelse2, bekreftelse3);
 
-        verifiserLikhet(saksbehandler.vilkårStatus("FP_VK_4").navn, "Vilkåret er ikke oppfylt", "Vilkårstatus for adopsjon");
-        verifiserLikhet(saksbehandler.valgtBehandling.hentAvslagsarsak(), "Ektefelles/samboers barn", "Avslagsårsak");
+        verifiserLikhet(saksbehandler.vilkårStatus("FP_VK_4").kode, "IKKE_OPPFYLT", "Vilkårstatus for adopsjon");
+        verifiserLikhet(saksbehandler.valgtBehandling.hentAvslagsarsak(), "1005", "Avslagsårsak (Ektefelles/samboers barn)");
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
