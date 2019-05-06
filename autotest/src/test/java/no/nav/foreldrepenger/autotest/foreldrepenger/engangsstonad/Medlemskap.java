@@ -47,7 +47,7 @@ public class Medlemskap extends EngangsstonadTestBase {
         overstyrer.hentFagsak(saksnummer);
 
         OverstyrMedlemskapsvilkaaret overstyr = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak, overstyrer.valgtBehandling);
-        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
+        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_2").getKode("1020" /* Søker er ikke medlem" */));
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 

@@ -51,7 +51,7 @@ public class Kodeverk{
                     return kode;
                 }
             }
-            return null;
+            throw new IllegalArgumentException("Ukjent kode: " + kodeverdi);
         }
     }
 }

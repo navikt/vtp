@@ -166,7 +166,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
         // Revurdering berørt sak mor
         saksbehandler.hentFagsak(saksnummerMor);
-        verifiser(saksbehandler.harBehandling("Revurdering") == true, "Mangler berørt behandling på mor");
+        verifiser(saksbehandler.harRevurderingBehandling() == true, "Mangler berørt behandling på mor");
         saksbehandler.ventTilSakHarRevurdering();
         saksbehandler.velgRevurderingBehandling();
         debugFritekst("Revurdering berørt sak opprettet på mor.");
@@ -244,7 +244,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
 
         saksbehandler.hentFagsak(saksnummerMor);
         debugLoggBehandlingsliste("Mors behandlinger",saksbehandler.behandlinger);
-        saksbehandler.ventTilFagsakstatus("LOP");
+        saksbehandler.ventTilFagsakLøpende();
         saksbehandler.velgRevurderingBehandling();
         debugLoggBehandling(saksbehandler.valgtBehandling);
         verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Mor sin sak ikke koblet til far sin sak.");
@@ -284,7 +284,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         long saksnummerFar = behandleSøknadForFarUtenOverlapp(testscenario, LocalDate.now().minusMonths(4));
 
         saksbehandler.hentFagsak(saksnummerMor);
-        verifiser(!saksbehandler.harBehandling("Revurdering"), "Mor har fått revurdering uten endringssøknad eller endring i behandling");
+        verifiser(!saksbehandler.harRevurderingBehandling(), "Mor har fått revurdering uten endringssøknad eller endring i behandling");
 
         sendInnEndringssøknadforMor(testscenario, saksnummerMor);
 
@@ -309,7 +309,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         saksbehandler.hentFagsak(saksnummerFar);
-        verifiser(saksbehandler.harIkkeBehandling("Revurdering"), "Fars behandling fikk revurdering selv uten endringer i mors behandling av endringssøknaden");
+        verifiser(!saksbehandler.harRevurderingBehandling(), "Fars behandling fikk revurdering selv uten endringer i mors behandling av endringssøknaden");
     }
 
 
@@ -329,7 +329,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         overstyrer.velgRevurderingBehandling();
 
         OverstyrFodselsvilkaaret overstyr = new OverstyrFodselsvilkaaret(overstyrer.valgtFagsak, overstyrer.valgtBehandling);
-        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_1").getKode("Søker er far"));
+        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_1").getKode("1003" /*Søker er far */));
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 
@@ -349,7 +349,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         saksbehandler.hentFagsak(saksnummerFar);
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Fars behandling fikk ikke revurdering selv med opphørt vedtak i mors behandling av endringssøknaden");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Fars behandling fikk ikke revurdering selv med opphørt vedtak i mors behandling av endringssøknaden");
     }
 
     @Test
@@ -387,7 +387,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         saksbehandler.hentFagsak(saksnummerFar);
-        verifiser(saksbehandler.harBehandling("Revurdering"), "Fars behandling fikk ikke revurdering selv uten med endringer i mors behandling av endringssøknaden");
+        verifiser(saksbehandler.harRevurderingBehandling(), "Fars behandling fikk ikke revurdering selv uten med endringer i mors behandling av endringssøknaden");
     }
 
     @Test
@@ -403,7 +403,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerMor);
 
         // Bruk når  revurdering fungerer
-        saksbehandler.opprettBehandlingRevurdering("Nye opplysninger om uttak");
+        saksbehandler.opprettBehandlingRevurdering("RE-END-FRA-BRUKER");
         saksbehandler.velgRevurderingBehandling();
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
