@@ -121,7 +121,7 @@ public class Fodsel extends EngangsstonadTestBase {
         overstyrer.hentFagsak(saksnummer);
 
         OverstyrFodselsvilkaaret overstyr = new OverstyrFodselsvilkaaret(overstyrer.valgtFagsak, overstyrer.valgtBehandling);
-        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_1").getKode("Søker er far"));
+        overstyr.avvis(overstyrer.kodeverk.Avslagsårsak.get("FP_VK_1").getKode("1003" /*Søker er far */));
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 

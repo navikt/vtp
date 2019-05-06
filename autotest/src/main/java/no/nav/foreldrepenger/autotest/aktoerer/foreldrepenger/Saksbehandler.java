@@ -445,10 +445,6 @@ public class Saksbehandler extends Aktoer{
         return null != hentAksjonspunkt(kode);
     }
     
-    public boolean harIkkeAksjonspunkt(String kode) {
-        return !harAksjonspunkt(kode);
-    }
-    
     /*
      * bekrefter aksjonspunkt
      */
@@ -515,7 +511,6 @@ public class Saksbehandler extends Aktoer{
     public void oprettBehandlingInnsyn(Kode årsak) throws Exception {
         opprettBehandling(kodeverk.BehandlingType.getKode("BT-006"), årsak);
     }
-    
 
     /*
      * Brev
@@ -611,7 +606,7 @@ public class Saksbehandler extends Aktoer{
         }, 10, "Fagsak har ikke status " + status);
     }
     
-    public void ventTilFagsakstatus(String status) throws Exception {
+    protected void ventTilFagsakstatus(String status) throws Exception {
         ventTilFagsakstatus(kodeverk.FagsakStatus.getKode(status));
     }
 
@@ -640,25 +635,6 @@ public class Saksbehandler extends Aktoer{
         }, 20, "Saken  hadde ikke aksjonspunkt " + kode);
     }
 
-    /*
-     * Vilkår
-     */
-    @Step("Venter på vilkår {tekst}")
-    public void ventTilVilkårVurdert(String kode) throws Exception {
-        if(harVurdertVilkår(kode)) {
-            return;
-        }
-        Vent.til( () -> {
-            refreshBehandling();
-            return harVurdertVilkår(kode);
-        }, 10, "Saken  hadde ikke vilkår " + kode);
-    }
-
-    private boolean harVurdertVilkår(String kode) {
-        return valgtBehandling.vilkar != null && valgtBehandling.vilkar.stream().anyMatch(v -> v.getVilkarType().kode.equals(kode) &&
-                !v.getVilkarStatus().kode.equals(VilkarStatusKoder.IKKE_VURDERT));
-    }
-    
     private Vilkar hentVilkår(Kode vilkårKode) {
         for (Vilkar vilkår : valgtBehandling.vilkar) {
             if(vilkår.getVilkarType().equals(vilkårKode)) {
@@ -731,14 +707,6 @@ public class Saksbehandler extends Aktoer{
         return false;
     }
     
-    public boolean harBehandling(String behandlingType) {
-        return harBehandling(kodeverk.BehandlingType.getKode(behandlingType));
-    }
-    
-    public boolean harIkkeBehandling(String behandlingType) {
-        return !harBehandling(behandlingType);
-    }
-
     private Behandling getBehandling(Kode behandlingstype) {
         for (Behandling behandling : behandlinger) {
             if (behandling.type.kode.equals(behandlingstype.kode)) {
@@ -791,5 +759,17 @@ public class Saksbehandler extends Aktoer{
     public void mellomlagreOgGjennåpneKlage() throws Exception {
         behandlingerKlient.mellomlagreGjennapne(new KlageVurderingResultatAksjonspunktMellomlagringDto(valgtBehandling, hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP)));
         refreshBehandling();
+    }
+
+    public boolean harRevurderingBehandling() {
+        return harBehandling(kodeverk.BehandlingType.getKode("BT-004"));
+    }
+
+    public void ventTilFagsakAvsluttet() throws Exception {
+        ventTilFagsakstatus("AVSLU");
+    }
+    
+    public void ventTilFagsakLøpende() throws Exception {
+        ventTilFagsakstatus("LOP");
     }
 }
