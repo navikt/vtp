@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import io.qameta.allure.Step;
@@ -177,14 +178,15 @@ public class Fordel extends Aktoer {
         //vent til inntektsmelding er mottatt
         if (gammeltSaksnummer != null) {
             final long saksnummerF = gammeltSaksnummer;
+            AtomicReference<List<HistorikkInnslag>> historikkRef = new AtomicReference<>();
             Vent.til(() -> {
-                List<HistorikkInnslag> historikk = historikkKlient.hentHistorikk(saksnummerF);
-                return historikk.stream().anyMatch(h -> HistorikkInnslag.VEDLEGG_MOTTATT.getKode().equals(h.getTypeKode()));
-            }, 30, "Saken har ikke mottatt inntektsmeldingen");
+                historikkRef.set(historikkKlient.hentHistorikk(saksnummerF));
+                return historikkRef.get().stream().anyMatch(h -> HistorikkInnslag.VEDLEGG_MOTTATT.getKode().equals(h.getTypeKode()));
+            }, 30, () -> "Saken har ikke mottatt inntektsmeldingen.\nHar historikk: " + historikkRef.get());
         } else {
             Vent.til(() -> {
                 return fagsakKlient.søk("" + nyttSaksnummer).size() > 0;
-            }, 30, "Oprettet ikke fagsag for inntektsmelding");
+            }, 30, "Opprettet ikke fagsak for inntektsmelding");
         }
 
         return nyttSaksnummer;
