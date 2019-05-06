@@ -237,9 +237,9 @@ public class Saksbehandler extends Aktoer{
         BT-006	ae0042	Dokumentinnsyn
          */
 
-        if(behandling.type.navn.equalsIgnoreCase("Dokumentinnsyn")) {
+        if(behandling.type.kode.equalsIgnoreCase("BT-006") /* Dokumentinnsyn*/) {
             
-        } else if (behandling.type.navn.equalsIgnoreCase("Klage")) {
+        } else if (behandling.type.kode.equalsIgnoreCase("BT-003" /* Klage */)) {
             valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
         } else {
             BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
