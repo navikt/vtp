@@ -73,6 +73,18 @@ public class Saksbehandler extends Aktoer {
         beregning = beregningKlient.hentBeregning(forslag.getBeregningId());
     }
 
+    /** Ikke bruk navn som oppslag i kodeverk. */
+    @Deprecated
+    public void oppdaterBeregning(LocalDate skjæringstidspunkt, String status) throws IOException {
+        try {
+            Thread.sleep(5000);
+            oppdaterBeregning(skjæringstidspunkt, kodeverk.AktivitetStatus.getKode(status));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     public void lagreNotat(BeregningDto beregning, String notat, Long beregningsgrunnlagId) throws IOException {
         LagreNotatDto request = new LagreNotatDto(beregning.getId(), notat, beregningsgrunnlagId);
         beregningKlient.lagrenotat(request);
