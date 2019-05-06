@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
 import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
@@ -39,14 +40,14 @@ public class TerminFlaky extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
 
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         debugLoggBehandling(saksbehandler.valgtBehandling);
         debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
-        saksbehandler.ventTilHistorikkinnslag("Vedtak fattet");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDTAK_FATTET);
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         //TODO (OL): Byttet verifisering på historikkinnslag til asynk venting. Feilet med at behandlingen ikke hadde historikkinnslag
         //verifiser(saksbehandler.harHistorikkinnslag("Vedtak fattet"), "behandling har ikke historikkinslag 'Vedtak fattet'");
-        //verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "behandling har ikke historikkinslag 'Brev sendt'");
+        //verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENT), "behandling har ikke historikkinslag 'Brev sendt'");
     }
 
 }

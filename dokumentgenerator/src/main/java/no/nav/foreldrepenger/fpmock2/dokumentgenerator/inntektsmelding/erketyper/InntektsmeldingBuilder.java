@@ -557,7 +557,7 @@ public class InntektsmeldingBuilder {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(
                 UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.FORELDREPENGER,
-                ÅrsakInnsendingKodeliste.NY.NY,
+                ÅrsakInnsendingKodeliste.NY,
                 fnr,
                 startDatoForeldrepenger);
         builder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
@@ -576,7 +576,7 @@ public class InntektsmeldingBuilder {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(
                 UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.SYKEPENGER,
-                ÅrsakInnsendingKodeliste.NY.NY,
+                ÅrsakInnsendingKodeliste.NY,
                 fnr);
 
         List<Periode> perioder = new ArrayList<>();
@@ -602,7 +602,7 @@ public class InntektsmeldingBuilder {
     public static InntektsmeldingBuilder createDefaultOMS(Integer beløp, String fnr, String orgnummer, LocalDate startDatoForeldrepenger) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(UUID.randomUUID().toString().substring(0, 7),
                 YtelseKodeliste.FORELDREPENGER,
-                ÅrsakInnsendingKodeliste.NY.NY,
+                ÅrsakInnsendingKodeliste.NY,
                 fnr,
                 startDatoForeldrepenger);
         return builder;

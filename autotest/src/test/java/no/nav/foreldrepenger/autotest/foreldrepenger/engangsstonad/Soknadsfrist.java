@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Disabled;

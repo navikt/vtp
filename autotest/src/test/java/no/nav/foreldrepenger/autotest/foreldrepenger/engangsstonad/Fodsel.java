@@ -19,6 +19,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrBeregning;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrFodselsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -43,7 +44,7 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.ventTilAvsluttetBehandling();
 
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 
     @Test
@@ -155,7 +156,7 @@ public class Fodsel extends EngangsstonadTestBase {
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         overstyrer.opprettBehandlingRevurdering("RE-PRSSL");
-        overstyrer.velgBehandling("Revurdering");
+        overstyrer.velgRevurderingBehandling();
         overstyrer.hentAksjonspunktbekreftelse(VarselOmRevurderingBekreftelse.class).bekreftIkkeSendVarsel();
         overstyrer.bekreftAksjonspunktBekreftelse(VarselOmRevurderingBekreftelse.class);
         overstyrer.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
@@ -165,7 +166,7 @@ public class Fodsel extends EngangsstonadTestBase {
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
-        beslutter.velgBehandling("Revurdering");
+        beslutter.velgRevurderingBehandling();
         
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
             .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_BEREGNING));

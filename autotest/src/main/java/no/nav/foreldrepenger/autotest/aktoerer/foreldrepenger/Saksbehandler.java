@@ -189,10 +189,22 @@ public class Saksbehandler extends Aktoer{
         }
     }
 
-    public void velgBehandling(String behandlingstype) throws Exception {
-        velgBehandling(kodeverk.BehandlingType.getKode(behandlingstype));
+    public void velgFørstegangsbehandling() throws Exception {
+        velgBehandling(kodeverk.BehandlingType.getKode("BT-002"));
     }
-
+    
+    public void velgKlageBehandling() throws Exception {
+        velgBehandling(kodeverk.BehandlingType.getKode("BT-003"));
+    }
+    
+    public void velgRevurderingBehandling() throws Exception {
+        velgBehandling(kodeverk.BehandlingType.getKode("BT-004"));
+    }
+    
+    public void velgDokumentInnsynBehandling() throws Exception {
+        velgBehandling(kodeverk.BehandlingType.getKode("BT-006"));
+    }
+    
     @Step("Velger behandling {behandling}")
     public void velgBehandling(Behandling behandling) throws Exception {
         ventPåStatus(behandling);
@@ -493,7 +505,7 @@ public class Saksbehandler extends Aktoer{
     }
 
     protected void opprettBehandlingRevurdering(Kode årsak) throws Exception {
-        opprettBehandling(kodeverk.BehandlingType.getKode("Revurdering"), årsak);
+        opprettBehandling(kodeverk.BehandlingType.getKode("BT-004"), årsak);
     }
     
     public void opprettBehandlingRevurdering(String årsak) throws Exception {
@@ -543,14 +555,14 @@ public class Saksbehandler extends Aktoer{
      * Historikkinnslag
      */
     @Step("Venter på historikkinnslag {tekst}")
-    public void ventTilHistorikkinnslag(String tekst) throws Exception {
-        if(harHistorikkinnslag(tekst)) {
+    public void ventTilHistorikkinnslag(HistorikkInnslag.Type type) throws Exception {
+        if(harHistorikkinnslag(type)) {
             return;
         }
         Vent.til( () -> {
             refreshBehandling();
-            return harHistorikkinnslag(tekst);
-        }, 20, "Saken  hadde ikke historikkinslag " + tekst);
+            return harHistorikkinnslag(type);
+        }, 20, "Saken  hadde ikke historikkinslag " + type);
     }
 
     /*
@@ -564,13 +576,13 @@ public class Saksbehandler extends Aktoer{
         }, sekunder, "Saken  hadde ikke historikkinslag " + tekst);
     }
 
-    public boolean harHistorikkinnslag(String tekst) {
-        return getHistorikkInnslag(tekst) != null; 
+    public boolean harHistorikkinnslag(HistorikkInnslag.Type type) {
+        return getHistorikkInnslag(type) != null; 
     }
 
-    private HistorikkInnslag getHistorikkInnslag(String tekst) {
+    private HistorikkInnslag getHistorikkInnslag(HistorikkInnslag.Type type) {
         for (HistorikkInnslag innslag : historikkInnslag) {
-            if(innslag.getTekst().contains(tekst)) {
+            if(innslag.getTypeKode().contains(type.getKode())) {
                 return innslag;
             }
         }
@@ -606,7 +618,7 @@ public class Saksbehandler extends Aktoer{
     public int harAntallHistorikkinnslag(String tekst) {
         int antall = 0;
         for (HistorikkInnslag innslag : historikkInnslag) {
-            if(innslag.getTekst().contains(tekst)) {
+            if(innslag.getTypeKode().contains(tekst)) {
                 antall++;
             }
         }
@@ -687,10 +699,18 @@ public class Saksbehandler extends Aktoer{
         return valgtBehandling.status.kode;
     }
     
-    public void ventTilSakHarBehandling(String behandlingType) throws Exception {
-        ventTilSakHarBehandling(kodeverk.BehandlingType.getKode(behandlingType));
+    public void ventTilSakHarFørstegangsbehandling() throws Exception {
+        ventTilSakHarBehandling(kodeverk.BehandlingType.getKode("BT-002"));
     }
-
+    
+    public void ventTilSakHarRevurdering() throws Exception {
+        ventTilSakHarBehandling(kodeverk.BehandlingType.getKode("BT-004"));
+    }
+    
+    public void ventTilSakHarKlage() throws Exception {
+        ventTilSakHarBehandling(kodeverk.BehandlingType.getKode("BT-003"));
+    }
+    
     @Step("Venter på at fagsak får behandlingstype: {behandlingType}")
     protected void ventTilSakHarBehandling(Kode behandlingType) throws Exception {
         if(harBehandling(behandlingType)) {

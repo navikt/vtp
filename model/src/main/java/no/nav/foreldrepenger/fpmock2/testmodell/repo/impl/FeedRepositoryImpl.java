@@ -32,6 +32,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
 
+    @Override
     public FeedEntry leggTilHendelse(HendelseContent hendelseContent){
         FeedEntry feedEntry = FeedEntry.builder()
                 .sequence(genererSekvensnummer())

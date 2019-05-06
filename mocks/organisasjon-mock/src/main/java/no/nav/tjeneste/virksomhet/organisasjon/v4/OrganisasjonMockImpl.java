@@ -100,7 +100,7 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
     public HentOrganisasjonResponse hentOrganisasjon(@WebParam(name = "request",targetNamespace = "") HentOrganisasjonRequest request) throws HentOrganisasjonOrganisasjonIkkeFunnet, HentOrganisasjonUgyldigInput{
 
         LOG.info("hentOrganisasjon. Orgnummer: {}", request.getOrgnummer());
-        if (request != null && request.getOrgnummer() != null) {
+        if (request.getOrgnummer() != null) {
             HentOrganisasjonResponse response = new HentOrganisasjonResponse();
             OrganisasjonGenerator orggen = new OrganisasjonGenerator();
             //response.setOrganisasjon(orggen.lagOrganisasjon(request.getOrgnummer()));
@@ -126,7 +126,7 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
     public HentNoekkelinfoOrganisasjonResponse hentNoekkelinfoOrganisasjon(@WebParam(name = "request",targetNamespace = "") HentNoekkelinfoOrganisasjonRequest request) throws HentNoekkelinfoOrganisasjonOrganisasjonIkkeFunnet, HentNoekkelinfoOrganisasjonUgyldigInput{
 
         LOG.info("hentNoekkelinfoOrganisasjon. Orgnummer: {}", request.getOrgnummer());
-        if (request != null && request.getOrgnummer() != null) {
+        if (request.getOrgnummer() != null) {
 
             HentNoekkelinfoOrganisasjonResponse response = new HentNoekkelinfoOrganisasjonResponse();
             OrganisasjonGenerator orggen = new OrganisasjonGenerator();

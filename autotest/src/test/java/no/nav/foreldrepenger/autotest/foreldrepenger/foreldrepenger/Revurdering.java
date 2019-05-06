@@ -26,6 +26,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrMedlemskapsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPeriode;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
@@ -69,14 +70,14 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilAvsluttetBehandling();
         saksbehandler.opprettBehandlingRevurdering("RE-MDL");
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Saken har ikke fått revurdering.");
-        overstyrer.velgBehandling("Revurdering");
+        overstyrer.velgRevurderingBehandling();
         OverstyrMedlemskapsvilkaaret overstyrMedlemskapsvilkaaret = new OverstyrMedlemskapsvilkaaret(overstyrer.valgtFagsak, overstyrer.valgtBehandling);
         overstyrMedlemskapsvilkaaret.avvis(hentKodeverk().Avslagsårsak.get("FP_VK_2").getKode("Søker er ikke medlem"));
         overstyrMedlemskapsvilkaaret.setBegrunnelse("avvist");
@@ -87,7 +88,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
-        beslutter.velgBehandling("Revurdering");
+        beslutter.velgRevurderingBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
@@ -119,8 +120,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.ikkeVentPåStatus = true;
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.velgFørstegangsbehandling();
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
         debugLoggBehandling(saksbehandler.valgtBehandling);
         saksbehandler.ventTilAvsluttetBehandling();
         verifiserLikhet(saksbehandler.behandlinger.size(), 1, "Antall behandlinger"); //revurdering opprettes ved flere arbeidsforhold for nå i autotest
@@ -135,10 +136,10 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
-        saksbehandler.ventTilSakHarBehandling("Revurdering");
+        saksbehandler.ventTilSakHarRevurdering();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"), "Behandlingsresultat er ikke 'Foreldrepenger er endret'");
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
@@ -174,9 +175,9 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilSakHarBehandling("Revurdering");
+        saksbehandler.ventTilSakHarRevurdering();
         verifiser(saksbehandler.harBehandling("Revurdering"), "Revurdering er ikke opprettet.");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class)
                 .setStartdatoFraSoknad(fpStartdato.plusWeeks(1))
                 .setBegrunnelse("Endret startdato for fp.");
@@ -194,9 +195,9 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
         verifiser(saksbehandler.behandlinger.size() == 2, "Fagsaken har mer enn én revurdering.");
-        saksbehandler.velgBehandling("Revurdering");
-        saksbehandler.ventTilHistorikkinnslag("Behandlingen er flyttet");
-        verifiser(saksbehandler.harHistorikkinnslag("Behandlingen er flyttet"), "Mangler historikkinnslag om at behandlingen er flyttet.");
+        saksbehandler.velgRevurderingBehandling();
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BEHANDLINGEN_ER_FLYTTET);
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BEHANDLINGEN_ER_FLYTTET), "Mangler historikkinnslag om at behandlingen er flyttet.");
         verifiser(saksbehandler.harAksjonspunkt("5045"), "Behandling hopper ikke tilbake til 'Avklar startdato for foreldrepengeperioden'.");
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class)
                 .setStartdatoFraSoknad(fpStartdato.plusDays(2))
@@ -210,7 +211,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
-        beslutter.velgBehandling("Revurdering");
+        beslutter.velgRevurderingBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FØRSTE_UTTAKSDATO));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -219,7 +220,7 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         verifiser(saksbehandler.valgtFagsak.hentStatus().kode.equals("LOP"), "Fagsaken er ikke løpende.");
 
@@ -247,7 +248,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 4, "Feil antall perioder.");
@@ -270,10 +271,10 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
-        saksbehandler.ventTilSakHarBehandling("Revurdering");
+        saksbehandler.ventTilSakHarRevurdering();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
         saksbehandler.refreshFagsak();
         saksbehandler.refreshBehandling();
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus er ikke avsluttet");
@@ -308,7 +309,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 4, "Feil antall perioder.");
@@ -331,10 +332,10 @@ public class Revurdering extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
-        saksbehandler.ventTilSakHarBehandling("Revurdering");
+        saksbehandler.ventTilSakHarRevurdering();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         verifiser(saksbehandler.harBehandling("Revurdering"), "Det er ikke opprettet revurdering.");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
         saksbehandler.refreshFagsak();
         saksbehandler.refreshBehandling();
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus er ikke avsluttet");

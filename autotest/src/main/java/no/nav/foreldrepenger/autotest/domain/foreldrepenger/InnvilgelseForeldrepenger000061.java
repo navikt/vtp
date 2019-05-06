@@ -20,6 +20,7 @@ public class InnvilgelseForeldrepenger000061 extends BrevMalXml{
         return fromResource(path, InnvilgelseForeldrepenger000061.class);
     }
 
+    @Override
     public boolean isComparable(BrevMalXml otherXml) {
         boolean result = true;
         

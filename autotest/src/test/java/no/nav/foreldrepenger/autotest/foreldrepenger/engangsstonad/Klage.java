@@ -16,6 +16,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvKlageBekreftelse.VurderingAvKlageNkBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -42,8 +43,8 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling("Klage");
+        klagebehandler.ventTilSakHarKlage();
+        klagebehandler.velgKlageBehandling();
 
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
@@ -58,7 +59,7 @@ public class Klage extends EngangsstonadTestBase {
         verifiserBehandlingsresultat(klagebehandler.valgtBehandling.behandlingsresultat.toString(), "KLAGE_MEDHOLD");
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling("Klage");
+        beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -83,8 +84,8 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling("Klage");
+        klagebehandler.ventTilSakHarKlage();
+        klagebehandler.velgKlageBehandling();
 
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
@@ -112,7 +113,7 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling("Klage");
+        beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
@@ -136,8 +137,8 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling("Klage");
+        klagebehandler.ventTilSakHarKlage();
+        klagebehandler.velgKlageBehandling();
 
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
@@ -166,7 +167,7 @@ public class Klage extends EngangsstonadTestBase {
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling("Klage");
+        beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
@@ -189,8 +190,8 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling("Klage");
+        klagebehandler.ventTilSakHarKlage();
+        klagebehandler.velgKlageBehandling();
 
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
@@ -211,7 +212,7 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.velgBehandling("Klage");
+        beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.VURDERING_AV_FORMKRAV_KLAGE_KA));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -235,8 +236,8 @@ public class Klage extends EngangsstonadTestBase {
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
 
-        klagebehandler.ventTilSakHarBehandling("Klage");
-        klagebehandler.velgBehandling("Klage");
+        klagebehandler.ventTilSakHarKlage();
+        klagebehandler.velgKlageBehandling();
 
         klagebehandler.hentAksjonspunktbekreftelse(KlageFormkravNfp.class)
                 .godkjennAlleFormkrav()
@@ -255,8 +256,8 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.ventTilSakHarBehandling("Klage");
-        beslutter.velgBehandling("Klage");
+        beslutter.ventTilSakHarKlage();
+        beslutter.velgKlageBehandling();
 
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .avvisAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP), beslutter.kodeverk.BehandlingÅrsakType.getKode("RE-LOV"))
@@ -265,7 +266,7 @@ public class Klage extends EngangsstonadTestBase {
 
         klagebehandler.erLoggetInnMedRolle(Rolle.KLAGEBEHANDLER);
         klagebehandler.hentFagsak(sakId);
-        klagebehandler.velgBehandling("Klage");
+        klagebehandler.velgKlageBehandling();
         verifiserFritekst(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getFritekstTilBrev(), fritekstbrev1);
         verifiserFritekst(klagebehandler.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getBegrunnelse(), begrunnelse1);
         String fritekstbrev2 = "Fritekst brev nr 2 .";
@@ -279,8 +280,8 @@ public class Klage extends EngangsstonadTestBase {
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(sakId);
-        beslutter.ventTilSakHarBehandling("Klage");
-        beslutter.velgBehandling("Klage");
+        beslutter.ventTilSakHarKlage();
+        beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NFP));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
@@ -288,7 +289,7 @@ public class Klage extends EngangsstonadTestBase {
         verifiserFritekst(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getFritekstTilBrev(), fritekstbrev2);
         verifiserFritekst(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getBegrunnelse(), begrunnelse2);
         verifiserKlageVurderingOmgjoer(beslutter.valgtBehandling.klagevurdering.getKlageVurderingResultatNFP().getKlageVurderingOmgjoer(), "DELVIS_MEDHOLD_I_KLAGE");
-        verifiserBehandlingsstatus(beslutter.valgtBehandling.status.navn, "Avsluttet");
+        verifiserBehandlingsstatus(beslutter.valgtBehandling.status.kode, "AVSLU");
     }
 
     @Step("Oppretter førstegangsvedtak")
@@ -299,7 +300,7 @@ public class Klage extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
         verifiserBehandlingsresultat(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         
         saksbehandler.ventTilAvsluttetBehandling();
     }

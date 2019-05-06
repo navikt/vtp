@@ -70,7 +70,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
     public HentPeriodeListeResponse hentPeriodeListe(@WebParam(name = "request",targetNamespace = "") HentPeriodeListeRequest request) throws PersonIkkeFunnet, Sikkerhetsbegrensning {
 
         LOG.info("hentPeriodeListe. IdentFNR: {}", request.getIdent().getValue());
-        if (request != null && request.getIdent() != null) {
+        if (request.getIdent() != null) {
             String fnr = request.getIdent().getValue();
             List<Medlemsperiode> medlemsperiodeListe = new MedlemskapperioderAdapter(scenarioRepository).finnMedlemsperioder(fnr);
             HentPeriodeListeResponse response = new HentPeriodeListeResponse().withPeriodeListe(medlemsperiodeListe);

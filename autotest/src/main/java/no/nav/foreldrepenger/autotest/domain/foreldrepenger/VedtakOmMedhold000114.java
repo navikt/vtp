@@ -20,6 +20,7 @@ public class VedtakOmMedhold000114 extends BrevMalXml{
         return fromResource(path, VedtakOmMedhold000114.class);
     }
 
+    @Override
     public boolean isComparable(BrevMalXml otherXml) {
         boolean result = true;
         

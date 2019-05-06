@@ -35,7 +35,7 @@ public class BehandleAksjonspunkter extends FpsakTestBase {
         bekreftelse.setAntallBarn(1);
         saksbehandler.bekreftAksjonspunktBekreftelse(bekreftelse);
 
-        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget", "Behandlingsresultat");
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "INNVILGET", "Behandlingsresultat");
     }
 
 }

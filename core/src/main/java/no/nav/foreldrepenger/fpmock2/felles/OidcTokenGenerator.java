@@ -39,7 +39,7 @@ public class OidcTokenGenerator {
     }
 
     public void addAud(String e) {
-        this.aud = new ArrayList(aud);
+        this.aud = new ArrayList<>(aud);
         this.aud.add(e);
     }
 

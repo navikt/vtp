@@ -16,6 +16,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.overstyr.OverstyrFodselsvilkaaret;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -78,8 +79,8 @@ public class Termin extends EngangsstonadTestBase {
         //Todo mock brev
         //verifiser(saksbehandler.harDokument(""), "Behandling har ikke dokument");
 
-        saksbehandler.ventTilHistorikkinnslag("Brev bestilt");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_BESTILT);
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 
     @Test

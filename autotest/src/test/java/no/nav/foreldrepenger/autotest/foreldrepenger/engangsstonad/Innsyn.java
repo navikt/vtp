@@ -12,6 +12,7 @@ import no.nav.foreldrepenger.autotest.base.EngangsstonadTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderingAvInnsynBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.autotest.util.AllureHelper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
@@ -36,7 +37,7 @@ public class Innsyn extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
         saksbehandler.oprettBehandlingInnsyn(null);
-        saksbehandler.velgBehandling("BT-006");
+        saksbehandler.velgDokumentInnsynBehandling();
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
                 .setMottattDato(LocalDate.now())
@@ -50,10 +51,10 @@ public class Innsyn extends EngangsstonadTestBase {
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
         AllureHelper.debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_INNVILGET", "Behandlingstatus");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"), "Brev er ikke bestilt etter innsyn er godkjent");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "Brev er ikke sendt etter innsyn er godkjent");
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }
 
     @Test
@@ -71,7 +72,7 @@ public class Innsyn extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
         saksbehandler.oprettBehandlingInnsyn(null);
-        saksbehandler.velgBehandling("BT-006");
+        saksbehandler.velgDokumentInnsynBehandling();
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
                 .setMottattDato(LocalDate.now())
@@ -82,10 +83,10 @@ public class Innsyn extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_AVVIST", "Behandlingstatus");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"), "Brev er ikke bestilt etter innsyn er godkjent");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "Brev er ikke sendt etter innsyn er godkjent");
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }
 
     @Test
@@ -103,7 +104,7 @@ public class Innsyn extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
         saksbehandler.oprettBehandlingInnsyn(null);
-        saksbehandler.velgBehandling("BT-006");
+        saksbehandler.velgDokumentInnsynBehandling();
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderingAvInnsynBekreftelse.class)
                 .setMottattDato(LocalDate.now())
@@ -114,9 +115,9 @@ public class Innsyn extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_AVVIST", "Behandlingstatus");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev bestilt"), "Brev er ikke bestilt etter innsyn er godkjent");
-        verifiser(saksbehandler.harHistorikkinnslag("Brev sendt"), "Brev er ikke sendt etter innsyn er godkjent");
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
+        verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }
 }

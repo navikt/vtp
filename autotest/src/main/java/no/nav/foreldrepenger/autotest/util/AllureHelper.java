@@ -27,7 +27,7 @@ public class AllureHelper {
         StringBuilder sb = new StringBuilder();
         sb.append("Historikkinnslag\n");
         for(HistorikkInnslag historikkInnslag : historikkInnslagList){
-            sb.append(String.format("\t{%s}",historikkInnslag.getTekst()));
+            sb.append(String.format("\t{%s}",historikkInnslag.getTypeKode()));
         }
         loggHistorikkinnslag(sb.toString());
     }

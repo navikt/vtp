@@ -94,7 +94,7 @@ public class InntektsmeldingBuilderTest{
         Assert.assertNotEquals(0, inntektesmeldingXML.length());
 
 
-        inntektsmeldingBuilder.setArbeidsgiverPrivat(inntektsmeldingBuilder.createArbeidsgiverPrivat("123"));
+        inntektsmeldingBuilder.setArbeidsgiverPrivat(InntektsmeldingBuilder.createArbeidsgiverPrivat("123"));
 
         String inntektesmeldingXML1 = inntektsmeldingBuilder.createInntektesmeldingXML();
         Assert.assertTrue(inntektesmeldingXML1.contains("arbeidsgiverFnr"));

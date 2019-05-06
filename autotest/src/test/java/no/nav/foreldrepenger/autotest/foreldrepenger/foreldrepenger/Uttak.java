@@ -9,13 +9,10 @@ import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesokna
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_ARBEID;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.UTSETTELSETYPE_LOVBESTEMT_FERIE;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.addPeriode;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.addStønadskontotype;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper.fordelingFarHappycaseKobletMedMorHappycase;
 import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.ForeldrepengeYtelseErketyper.foreldrepengerYtelseNorskBorger;
-import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.morSoeker;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -33,6 +30,7 @@ import no.nav.foreldrepenger.autotest.base.ForeldrepengerTestBase;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderFaktaOmBeregningBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderPerioderOpptjeningBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.FaktaOmBeregningTilfelle;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.RettigheterErketyper;
@@ -46,7 +44,6 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.UkjentForelder;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
-import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
@@ -79,7 +76,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
     }
     @Test
     @DisplayName("Mor automatisk førstegangssøknad termin")
@@ -102,7 +99,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
     }
     @Test
     @DisplayName("Mor automatisk førstegangssøknad termin")
@@ -125,7 +122,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
     }
     @Test
     @DisplayName("Testcase alenefar - søker med manglende periode")
@@ -158,7 +155,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
     }
     @Test
     @DisplayName("Testcase for koblet sak")
@@ -177,7 +174,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
@@ -191,7 +188,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
     @Test
@@ -219,7 +216,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         String farFnr = testscenario.getPersonopplysninger().getAnnenpartIdent();
@@ -235,7 +232,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
     @Test
@@ -255,7 +252,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
@@ -275,7 +272,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         //saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
     }
@@ -296,7 +293,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         String farAktørId = testscenario.getPersonopplysninger().getAnnenPartAktørIdent();
@@ -315,7 +312,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         //saksbehandler.ventTilBehandlingsstatus("AVSLU");
     }
     @Test
@@ -504,7 +501,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         LocalDate fpStartDatoFar = samtidigUttakFOM;
@@ -524,7 +521,7 @@ public class Uttak extends ForeldrepengerTestBase {
         List<InntektsmeldingBuilder> inntektsmeldingerFar = makeInntektsmeldingFromTestscenarioMedIdent(testscenario, farFnr, fpStartDatoFar, true);
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farFnr, saksnummerFar);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
 
     }
 
@@ -700,7 +697,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         // Endring - fordelig og søknad mor
         Long saksnummerMorL = saksnummerMor;
@@ -718,8 +715,8 @@ public class Uttak extends ForeldrepengerTestBase {
         Long saksnummerMorE = fordel.sendInnSøknad(søknadMorEndring.build(), morAktørId, morIdent, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMorE);
-        saksbehandler.ventTilSakHarBehandling("Revurdering");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.ventTilSakHarRevurdering();
+        saksbehandler.velgRevurderingBehandling();
     }
 
     @Test
@@ -754,7 +751,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerMor, testscenario, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMor);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         // Fordeling og søknad far
@@ -772,7 +769,7 @@ public class Uttak extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldingerFar, farAktørId, farIdent, saksnummerFar);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerFar);
-        saksbehandler.velgBehandling("Førstegangsbehandling");
+        saksbehandler.velgFørstegangsbehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         // Endring - fordelig og søknad mor
@@ -787,8 +784,8 @@ public class Uttak extends ForeldrepengerTestBase {
         Long saksnummerMorE = fordel.sendInnSøknad(søknadMorEndring.build(), morAktørId, morIdent, DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummerMor);
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerMorE);
-        saksbehandler.ventTilSakHarBehandling("Revurdering");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.ventTilSakHarRevurdering();
+        saksbehandler.velgRevurderingBehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         // Endring - fordeling og søknad far
@@ -938,7 +935,7 @@ public class Uttak extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
         saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
                 .godkjennAllOpptjening();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
@@ -982,7 +979,7 @@ public class Uttak extends ForeldrepengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag("Vedlegg mottatt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDLEGG_MOTTATT);
         saksbehandler.hentAksjonspunktbekreftelse(VurderPerioderOpptjeningBekreftelse.class)
                 .godkjennAllOpptjening();
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
