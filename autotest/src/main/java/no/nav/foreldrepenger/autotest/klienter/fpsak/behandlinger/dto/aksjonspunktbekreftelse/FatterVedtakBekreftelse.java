@@ -27,7 +27,7 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
     
     public FatterVedtakBekreftelse godkjennAksjonspunkt(Aksjonspunkt aksjonspunkt) {
         if(!aksjonspunkt.skalTilToTrinnsBehandling()) {
-            throw new RuntimeException("Godkjenner aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().navn);
+            throw new RuntimeException("Godkjenner aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().kode);
         }
         
         AksjonspunktGodkjenningDto godkjenning = new AksjonspunktGodkjenningDto(aksjonspunkt);
@@ -45,7 +45,7 @@ public class FatterVedtakBekreftelse extends AksjonspunktBekreftelse {
     
     public void avvisAksjonspunkt(Aksjonspunkt aksjonspunkt, List<String> arsaker) {
         if(!aksjonspunkt.skalTilToTrinnsBehandling()) {
-            throw new RuntimeException("Avvister aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().navn);
+            throw new RuntimeException("Avvister aksjonspunkt som ikke skal til totrinnskontroll: "+ aksjonspunkt.getDefinisjon().kode);
         }
         
         AksjonspunktGodkjenningDto godkjenning = new AksjonspunktGodkjenningDto(aksjonspunkt);

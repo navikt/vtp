@@ -32,7 +32,7 @@ public class OppretteRevurdering extends FpsakTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(bekreftelse);
 
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus(), "Avsluttet");
-        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "Innvilget");
+        verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "INNVILGET");
 
         //Opprette Revurdering
         saksbehandler.opprettBehandlingRevurdering("RE-FEFAKTA");

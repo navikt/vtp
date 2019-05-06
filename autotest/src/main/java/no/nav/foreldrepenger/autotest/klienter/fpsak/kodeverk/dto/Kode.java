@@ -9,10 +9,15 @@ public class Kode {
 
     public String kodeverk;
     public String kode;
-    public String navn;
+    
+    /** 
+     * @deprecated Ikke bruk for i logikk, bruk heller {@link #kode}
+     */
+    @Deprecated
+    private String navn;
 
-    public Kode() {
-
+    protected Kode() {
+        // for deserialisering
     }
 
     public Kode(String kode) {
@@ -30,6 +35,10 @@ public class Kode {
         this.navn = navn;
     }
 
+    public String getNavn() {
+        return navn;
+    }
+    
     public static Kode lagBlankKode() {
         return new Kode(null, "-", null);
     }
@@ -49,6 +58,6 @@ public class Kode {
 
     @Override
     public String toString() {
-        return kodeverk + " - " + kode + " - " + navn;
+        return kodeverk + " - " + kode + (navn==null?"": " - " + navn);
     }
 }

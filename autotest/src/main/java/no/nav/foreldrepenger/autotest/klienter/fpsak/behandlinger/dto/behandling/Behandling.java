@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandlin
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,12 +77,12 @@ public class Behandling {
     }
 
     public String hentBehandlingsresultat() {
-        return behandlingsresultat.type.navn;
+        return behandlingsresultat.type.kode;
     }
     
     public String hentAvslagsarsak() {
         if(null != behandlingsresultat && null != behandlingsresultat.avslagsarsak) {
-            return behandlingsresultat.avslagsarsak.navn;
+            return behandlingsresultat.avslagsarsak.kode;
         }
         return "Ingen avslagsårsak";
     }
@@ -92,21 +91,21 @@ public class Behandling {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("{Behandlingsid: %s}\n",this.id));
-        sb.append(String.format("{Behandlingsstatus: %s [%s]}\n", this.status.navn, this.status.kode));
-        sb.append(String.format("{Behandlingstype: %s [%s]}", this.type.navn, this.type.kode));
+        sb.append(String.format("{Behandlingsstatus: %s}\n", this.status.kode));
+        sb.append(String.format("{Behandlingstype: %s}",  this.type.kode));
         if(this.behandlingsresultat != null && this.behandlingsresultat.avslagsarsak != null) {
-            sb.append(String.format("{Årsak avslag: %s}\n", this.behandlingsresultat.avslagsarsak.navn));
+            sb.append(String.format("{Årsak avslag: %s}\n", this.behandlingsresultat.avslagsarsak.kode));
         }
         sb.append("Aksjonspunkter:\n");
         if(aksjonspunkter != null) {
             for (Aksjonspunkt aksjonspunkt : aksjonspunkter) {
-                sb.append(String.format("{\t%s (%s) : %s}\n", aksjonspunkt.definisjon.navn, aksjonspunkt.definisjon.kode, aksjonspunkt.status.navn));
+                sb.append(String.format("\t{%s}\n", aksjonspunkt.definisjon.kode));
             }
         }
         sb.append("Vilkår:\n");
         if(vilkar != null) {
             for (Vilkar vilkar : vilkar) {
-                sb.append(String.format("\t{%s :  %s}\n", vilkar.vilkarType.navn, vilkar.vilkarStatus.navn));
+                sb.append(String.format("\t{%s}\n", vilkar.vilkarType.kode));
             }
         }
         return sb.toString();

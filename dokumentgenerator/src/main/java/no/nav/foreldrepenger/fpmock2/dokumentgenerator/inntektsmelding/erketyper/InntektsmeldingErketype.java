@@ -25,7 +25,7 @@ public class InntektsmeldingErketype {
         inntektsmeldingDTO.setArbeidstakerFNR(fnr);
         inntektsmeldingDTO.setBeregnetInntektBelop(35000);
         inntektsmeldingDTO.setInntektsmeldingID(UUID.randomUUID().toString().substring(0, 7));
-        inntektsmeldingDTO.setInntektsmeldingType(ÅrsakInnsendingKodeliste.NY.NY);
+        inntektsmeldingDTO.setInntektsmeldingType(ÅrsakInnsendingKodeliste.NY);
         inntektsmeldingDTO.setInntektsmeldingYtelse(YtelseKodeliste.FORELDREPENGER);
         inntektsmeldingDTO.setStartDatoForeldrepengePerioden(LocalDate.of(2018, 10, 1));
         inntektsmeldingDTO.setOrganisasjonsnummer(EksempelArbeidsgiver.STATOILSOKKEL.getOrgNummer());

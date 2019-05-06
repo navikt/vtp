@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Callable;
 
-import org.threeten.extra.Interval;
-
 public class Vent {
 
     public static void til(Callable<Boolean> callable, int timeoutInSeconds, String failReason) throws Exception {

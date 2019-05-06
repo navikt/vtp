@@ -20,6 +20,7 @@ public class Felles extends BrevMalXml{
         return fromResource(path, Felles.class);
     }
 
+    @Override
     public boolean isComparable(BrevMalXml otherXml) {
         /*
         boolean result = true;

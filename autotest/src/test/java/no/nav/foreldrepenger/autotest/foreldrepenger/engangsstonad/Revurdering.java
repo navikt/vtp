@@ -17,6 +17,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaAdopsjonsdokumentasjonBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarFaktaTillegsopplysningerBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.historikk.dto.HistorikkInnslag;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -57,19 +58,19 @@ public class Revurdering extends EngangsstonadTestBase {
 
         verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingsresultat");
 
-        saksbehandler.ventTilHistorikkinnslag("Brev sendt");
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
 
         saksbehandler.opprettBehandlingRevurdering("RE-FEFAKTA");
-        saksbehandler.velgBehandling("Revurdering");
+        saksbehandler.velgRevurderingBehandling();
 
         saksbehandler.hentAksjonspunktbekreftelse(VarselOmRevurderingBekreftelse.class)
                 .bekreftSendVarsel(saksbehandler.kodeverk.Venteårsak.getKode("UTV_FRIST"), "Send brev");
         saksbehandler.bekreftAksjonspunktBekreftelse(VarselOmRevurderingBekreftelse.class);
 
-        saksbehandler.harHistorikkinnslag("Revurdering opprettet");
-        saksbehandler.harHistorikkinnslag("Brev bestilt");
-        saksbehandler.harHistorikkinnslag("Behandling på vent");
+        saksbehandler.harHistorikkinnslag(HistorikkInnslag.REVURD_OPPR);
+        saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT);
+        saksbehandler.harHistorikkinnslag(HistorikkInnslag.BEH_VENT);
 
         verifiser(saksbehandler.valgtBehandling.erSattPåVent(), "Behandlingen er ikke satt på vent etter varsel for revurdering");
     }
