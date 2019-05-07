@@ -1,4 +1,4 @@
-FROM navikt/java:10
+FROM navikt/java:11
 
 EXPOSE 8636 8063 8060
 
