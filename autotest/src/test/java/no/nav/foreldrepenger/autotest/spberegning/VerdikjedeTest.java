@@ -29,6 +29,10 @@ import no.seres.xsd.nav.inntektsmelding_m._20181211.PleiepengerPeriodeListe;
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
 
+    public VerdikjedeTest() throws Exception {
+        super();
+    }
+
     @Test
     @DisplayName("Tema FOR: Motorvei for foreldrepenger ")
     @Description("Hensikten med testen er å validere at status og skjæringstidspunkt blir automatisk fastsatt, samt at beregning kjøres autoamtisk for Tema FOR. Motorvei vil si et arbeidsforhold og en inntektsmelding, men ingen frilansforhold.")
