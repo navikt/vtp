@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import no.nav.foreldrepenger.autotest.domain.foreldrepenger.BrevMalXml;
 import no.nav.foreldrepenger.autotest.domain.foreldrepenger.VedtakOmMedhold000114;
 
+@Execution(ExecutionMode.CONCURRENT)
 @Tag("internal")
 public class BrevMalTest {
 

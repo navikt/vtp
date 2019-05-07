@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -24,6 +26,7 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.inntektsmelding.erketyper
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
 
+@Execution(ExecutionMode.CONCURRENT)
 @Tag("fpsak")
 @Tag("foreldrepenger")
 public class Ytelser extends ForeldrepengerTestBase {
