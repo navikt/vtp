@@ -27,31 +27,31 @@ public class AvklarFaktaOmsorgOgForeldreansvarBekreftelse extends AksjonspunktBe
     public AvklarFaktaOmsorgOgForeldreansvarBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         //Set antall barn fra søknad
-        antallBarn = behandling.soknad.getAntallBarn();
+        antallBarn = behandling.getSoknad().getAntallBarn();
         
         //Set antall barn originalt fra søknad
-        originalAntallBarn = behandling.soknad.getAntallBarn();
+        originalAntallBarn = behandling.getSoknad().getAntallBarn();
         
         //Set omsorgsovertakelsedato fra søknad
-        omsorgsovertakelseDato = behandling.soknad.getOmsorgsovertakelseDato();
+        omsorgsovertakelseDato = behandling.getSoknad().getOmsorgsovertakelseDato();
         
         //Legg til foreler fra søknad
-        foreldre.add(new OmsorgovertakelseForelder(behandling.personopplysning));
+        foreldre.add(new OmsorgovertakelseForelder(behandling.getPersonopplysning()));
         
         //TODO kan hentes fra kodeverk når det er på plass
         farSokerType = "Far har overtatt omsorgen for barnet mindre enn 56 uker etter adopsjon, med sikte på å overta foreldreansvaret alene";
         
         //Legg til bern fra søknad
-        if(behandling.soknad.getAdopsjonFodelsedatoer() != null){
-            Map<Integer, LocalDate> fodselsdatoer = behandling.soknad.getAdopsjonFodelsedatoer();
+        if(behandling.getSoknad().getAdopsjonFodelsedatoer() != null){
+            Map<Integer, LocalDate> fodselsdatoer = behandling.getSoknad().getAdopsjonFodelsedatoer();
             
             for(int i = 0; i < fodselsdatoer.size(); i++){
                 barn.add(new OmsorgovertakelseBarn(fodselsdatoer.get(i+1), "SAKSBEH", (i+1)));
             }
         }
         else{
-            for(int i = 0; i < behandling.soknad.getAntallBarn(); i++){
-                barn.add(new OmsorgovertakelseBarn(behandling.soknad.getFodselsdatoer().get(i+1), "SAKSBEH", (i+1)));
+            for(int i = 0; i < behandling.getSoknad().getAntallBarn(); i++){
+                barn.add(new OmsorgovertakelseBarn(behandling.getSoknad().getFodselsdatoer().get(i+1), "SAKSBEH", (i+1)));
             }
         }
     }

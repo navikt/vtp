@@ -61,7 +61,7 @@ public class Termin extends ForeldrepengerTestBase {
 
         //TODO (OL): Flyttet til ventende sjekk - OK?
         saksbehandler.hentFagsak(saksnummer);
-        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugLoggHistorikkinnslag(saksbehandler.getHistorikkInnslag());
         debugLoggBehandling(saksbehandler.valgtBehandling);
 
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDTAK_FATTET);
@@ -159,7 +159,7 @@ public class Termin extends ForeldrepengerTestBase {
                 .godkjennPeriode(termindato.plusWeeks(12), termindato.plusWeeks(15).minusDays(1), kodeVurderingstype)
                 .godkjennPeriode(termindato.plusWeeks(15), termindato.plusWeeks(18).minusDays(1), kodeVurderingstype);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakPerioder.class);
-        List<UttakResultatPeriode> resultatPerioder = saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker();
+        List<UttakResultatPeriode> resultatPerioder = saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker();
         verifiser(resultatPerioder.size() == 7, "Antall perioder er ikke 7.");
         verifiser(resultatPerioder.get(0).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
         verifiser(resultatPerioder.get(1).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
@@ -170,7 +170,7 @@ public class Termin extends ForeldrepengerTestBase {
         verifiser(resultatPerioder.get(6).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
         Kode periodeResultatÅrsakInnvilget = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2003");
         Kode periodeResultatÅrsakGradFelles = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2030");
-        UttakResultatPerioder uttakResultatPerioder = saksbehandler.valgtBehandling.uttakResultatPerioder;
+        UttakResultatPerioder uttakResultatPerioder = saksbehandler.valgtBehandling.getUttakResultatPerioder();
         saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
                 .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(2), periodeResultatÅrsakInnvilget)
                 .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(3), periodeResultatÅrsakInnvilget)
@@ -227,7 +227,7 @@ public class Termin extends ForeldrepengerTestBase {
         verifiser(resultatPerioder.get(2).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden søkt for skal være innvilget.");
         verifiser(resultatPerioder.get(2).getAktiviteter().get(0).getStønadskontoType().kode.equals("MØDREKVOTE"), "Feil stønadskontotype.");
         String skjaeringstidspunkt = termindato.minusWeeks(3).toString();
-        verifiser(saksbehandler.valgtBehandling.behandlingsresultat.getSkjaeringstidspunktForeldrepenger().equals(skjaeringstidspunkt), "Mismatch på skjæringstidspunkt.");
+        verifiser(saksbehandler.valgtBehandling.getBehandlingsresultat().getSkjaeringstidspunktForeldrepenger().equals(skjaeringstidspunkt), "Mismatch på skjæringstidspunkt.");
 
 
     }

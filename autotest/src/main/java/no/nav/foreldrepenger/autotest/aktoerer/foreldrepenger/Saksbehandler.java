@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.apache.http.HttpResponse;
@@ -27,21 +28,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Familiehendelse;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.KontrollerFaktaData;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Personopplysning;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Soknad;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Verge;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Vilkar;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.VilkarStatusKoder;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.BeregningsresultatMedUttaksplan;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.beregningsgrunnlag.Beregningsgrunnlag;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.medlem.Medlem;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.opptjening.Opptjening;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.Saldoer;
-import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.uttak.UttakResultatPerioder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.BrevKlient;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.brev.dto.BestillBrev;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.dokument.DokumentKlient;
@@ -67,13 +54,13 @@ public class Saksbehandler extends Aktoer{
     public List<Fagsak> fagsaker;
     public Fagsak valgtFagsak;
     
-    public List<DokumentListeEnhet> dokumenter;
-    public List<HistorikkInnslag> historikkInnslag;
+    private Deffered<List<DokumentListeEnhet>> dokumenter;
+    private Deffered<List<HistorikkInnslag>> historikkInnslag;
+    private Deffered<Behandling> annenPartBehandling;
     
     public List<Behandling> behandlinger;
     public Behandling valgtBehandling;
     
-    public Behandling annenPartBehandling;
     
     private FagsakKlient fagsakKlient;
     private BehandlingerKlient behandlingerKlient;
@@ -226,19 +213,13 @@ public class Saksbehandler extends Aktoer{
         valgtBehandling = dBehandling.get();
         populateBehandling(valgtBehandling);
         
-        dokumenter = dDokumentListeEnhet.get();
-        historikkInnslag = dHistorikkInnslag.get();
-        annenPartBehandling = dAnnenPartBehandling.get();
+        setDokumenter(dDokumentListeEnhet);
+        setHistorikkInnslag(dHistorikkInnslag);
+        setAnnenPartBehandling(dAnnenPartBehandling);
     }
     
     private void populateBehandling(Behandling behandling) throws Exception {
-        Deffered<List<Aksjonspunkt>> dAksonspunkter = Deffered.deffered(() -> {
-            return behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
-        });
         
-        Deffered<List<Vilkar>> dVilkår = Deffered.deffered(() -> {
-            return behandlingerKlient.behandlingVilkår(behandling.id);
-        });
 
         /*
         KODE	OFFISIELL_KODE	BESKRIVELSE
@@ -252,71 +233,67 @@ public class Saksbehandler extends Aktoer{
         if(behandling.type.kode.equalsIgnoreCase("BT-006") /* Dokumentinnsyn*/) {
             
         } else if (behandling.type.kode.equalsIgnoreCase("BT-003" /* Klage */)) {
-            valgtBehandling.klagevurdering = behandlingerKlient.klage(behandling.id);
+            var behandlingId = behandling.id;
+            valgtBehandling.setKlagevurdering(Deffered.deffered(() -> {
+                return behandlingerKlient.klage(behandlingId);
+            }));
         } else {
             BehandlingResourceRequest request = new BehandlingResourceRequest(valgtBehandling.id, valgtFagsak.saksnummer);
             
-            Deffered<Personopplysning> dPersonopplysninger = Deffered.deffered(() -> {
+            // FIXME: Forespørslene her burde konsultere resultat for valgtbehandling for å sjekke om URLene er tilgjengelig før de kjører.
+            // URLene kan endre seg, men koden i behandlingerKlient tar ikke hensyn til det p.t. I tillegg er det unødvendig å spørre på noe som ikke finnes
+            // slik det skjer nå.
+            
+            valgtBehandling.setPersonopplysning(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingPersonopplysninger(request);
-            });
-            Deffered<Verge> dVerge = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setVerge(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingVerge(request);
-            });
-            Deffered<Beregningsgrunnlag> dBeregningsgrunnlag = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setBeregningsgrunnlag(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingBeregningsgrunnlag(request);
-            });
-            Deffered<Beregningsresultat> dBeregningsresultat = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setBeregningResultatEngangsstonad(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingBeregningsresultatEngangsstønad(request);
-            });
-            Deffered<BeregningsresultatMedUttaksplan> dBeregningsresultatMedUttaksplan = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setBeregningResultatForeldrepenger(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingBeregningsresultatForeldrepenger(request);
-            });
-            Deffered<Soknad> dSoknad = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setSoknad(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingSøknad(request);
-            });
-            Deffered<Familiehendelse> dFamiliehendelse = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setFamiliehendelse(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingFamiliehendelse(request);
-            });
-            Deffered<Opptjening> dOpptjening = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setOpptjening(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingOpptjening(request);
-            });
-            Deffered<InntektArbeidYtelse> dInntektArbeidYtelse = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setInntektArbeidYtelse(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingInntektArbeidYtelse(request);
-            });
-            Deffered<KontrollerFaktaData> dKontrollerFaktaData = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setKontrollerFaktaData(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingKontrollerFaktaPerioder(request);
-            });
-            Deffered<Medlem> dMedlem = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setMedlem(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingMedlemskap(request);
-            });
-            Deffered<UttakResultatPerioder> dUttakResultatPerioder = Deffered.deffered(() -> {
+            }));
+            valgtBehandling.setUttakResultatPerioder(Deffered.deffered(() -> {
                 return behandlingerKlient.behandlingUttakResultatPerioder(request);
-            });
-            Deffered<Saldoer> dStonadskontoer = Deffered.deffered(() -> {
-                return behandlingerKlient.behandlingUttakStonadskontoer(request);
-            });
-            
-            
-            valgtBehandling.personopplysning = dPersonopplysninger.get();
-            valgtBehandling.verge = dVerge.get();
-            valgtBehandling.beregningsgrunnlag = dBeregningsgrunnlag.get();
-            valgtBehandling.beregningResultatEngangsstonad = dBeregningsresultat.get();
-            valgtBehandling.beregningResultatForeldrepenger = dBeregningsresultatMedUttaksplan.get();
-            valgtBehandling.soknad = dSoknad.get();
-            valgtBehandling.familiehendelse = dFamiliehendelse.get();
-            valgtBehandling.opptjening = dOpptjening.get();
-            valgtBehandling.inntektArbeidYtelse = dInntektArbeidYtelse.get();
-            valgtBehandling.kontrollerFaktaData = dKontrollerFaktaData.get();
-            valgtBehandling.medlem = dMedlem.get();
-            valgtBehandling.uttakResultatPerioder = dUttakResultatPerioder.get();
-            if (!valgtBehandling.uttakResultatPerioder.getPerioderForSøker().isEmpty()) {
-                valgtBehandling.saldoer = dStonadskontoer.get();
+            }));
+            if (!valgtBehandling.getUttakResultatPerioder().getPerioderForSøker().isEmpty()) {
+                valgtBehandling.setSaldoer(Deffered.deffered(() -> {
+                    return behandlingerKlient.behandlingUttakStonadskontoer(request);
+                }));
             }
         }
         
-        valgtBehandling.aksjonspunkter = dAksonspunkter.get();
-        valgtBehandling.vilkar = dVilkår.get();
-        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
+        valgtBehandling.setAksjonspunkter(Deffered.deffered(() -> {
+            return behandlingerKlient.getBehandlingAksjonspunkt(behandling.id);
+        }));
+        valgtBehandling.setVilkar(Deffered.deffered(() -> {
+            return behandlingerKlient.behandlingVilkår(behandling.id);
+        }));
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.getAksjonspunkter()) {
             aksjonspunkt.setBekreftelse(AksjonspunktBekreftelse.fromAksjonspunkt(valgtFagsak, valgtBehandling, aksjonspunkt));
         }
     }
@@ -413,7 +390,7 @@ public class Saksbehandler extends Aktoer{
     @SuppressWarnings("unchecked")
     @Step("Henter aksjonspunktbekreftelse for {type}")
     public <T extends AksjonspunktBekreftelse> T hentAksjonspunktbekreftelse(Class<T> type) {
-        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.getAksjonspunkter()) {
             if(type.isInstance(aksjonspunkt.getBekreftelse())) {
                 return (T) aksjonspunkt.getBekreftelse();
             }
@@ -427,15 +404,13 @@ public class Saksbehandler extends Aktoer{
      */
     @Step("Henter aksjonspunkt {kode}")
     public Aksjonspunkt hentAksjonspunkt(String kode) {
-        for (Aksjonspunkt aksjonspunkt : valgtBehandling.aksjonspunkter) {
+        for (Aksjonspunkt aksjonspunkt : valgtBehandling.getAksjonspunkter()) {
             if(aksjonspunkt.getDefinisjon().kode.equals(kode)) {
                 return aksjonspunkt;
             }
         }
         return null;
     }
-    
-    
 
     /*
     * Sjekker om aksjonspunkt av gitt kode er på behandlingen
@@ -535,7 +510,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til(() -> {
             refreshBehandling();
             return harDokument(dokument);
-        }, 30, "Behandling har ikke dokument: " + dokument);
+        }, 30, () -> "Behandling har ikke dokument: " + dokument + "\n\tDokumenter:" + getDokumenter());
     }
     
     public boolean harDokument(String dokument) {
@@ -557,7 +532,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             refreshBehandling();
             return harHistorikkinnslag(type);
-        }, 20, () -> "Saken  hadde ikke historikkinslag " + type + "\n\tHistorikkInnslag:" + historikkInnslag);
+        }, 20, () -> "Saken  hadde ikke historikkinslag " + type + "\n\tHistorikkInnslag:" + String.join("\t\n", String.valueOf(getHistorikkInnslag())));
     }
 
     /*
@@ -568,7 +543,7 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             velgBehandling(valgtBehandling);
             return harAntallHistorikkinnslag(type) == antallHistorikkInnslag;
-        }, sekunder, "Saken  hadde ikke historikkinslag " + type);
+        }, sekunder, () -> "Saken  hadde ikke historikkinslag " + type + "\n\tHistorikkInnslag:" + String.join("\t\n", String.valueOf(getHistorikkInnslag())));
     }
 
     public boolean harHistorikkinnslag(HistorikkInnslag.Type type) {
@@ -576,7 +551,7 @@ public class Saksbehandler extends Aktoer{
     }
 
     private HistorikkInnslag getHistorikkInnslag(HistorikkInnslag.Type type) {
-        for (HistorikkInnslag innslag : historikkInnslag) {
+        for (HistorikkInnslag innslag : getHistorikkInnslag()) {
             if(innslag.getTypeKode().contains(type.getKode())) {
                 return innslag;
             }
@@ -612,7 +587,7 @@ public class Saksbehandler extends Aktoer{
 
     public int harAntallHistorikkinnslag(HistorikkInnslag.Type type) {
         int antall = 0;
-        for (HistorikkInnslag innslag : historikkInnslag) {
+        for (HistorikkInnslag innslag : getHistorikkInnslag()) {
             if(innslag.getTypeKode().equals(type.getKode())) {
                 antall++;
             }
@@ -632,11 +607,11 @@ public class Saksbehandler extends Aktoer{
         Vent.til( () -> {
             refreshBehandling();
             return harAksjonspunkt(kode);
-        }, 20, "Saken  hadde ikke aksjonspunkt " + kode);
+        }, 20, () -> "Saken  hadde ikke aksjonspunkt " + kode + (valgtBehandling==null? "" : "\n\tAksjonspunkter:" + valgtBehandling.getAksjonspunkter()));
     }
 
     private Vilkar hentVilkår(Kode vilkårKode) {
-        for (Vilkar vilkår : valgtBehandling.vilkar) {
+        for (Vilkar vilkår : valgtBehandling.getVilkar()) {
             if(vilkår.getVilkarType().equals(vilkårKode)) {
                 return vilkår;
             }
@@ -748,7 +723,7 @@ public class Saksbehandler extends Aktoer{
     }
 
     public boolean sakErKobletTilAnnenpart() {
-        return annenPartBehandling != null;
+        return getAnnenPartBehandling() != null;
     }
 
     public void mellomlagreKlage() throws Exception {
@@ -771,5 +746,37 @@ public class Saksbehandler extends Aktoer{
     
     public void ventTilFagsakLøpende() throws Exception {
         ventTilFagsakstatus("LOP");
+    }
+
+    public List<DokumentListeEnhet> getDokumenter() {
+        return get(dokumenter);
+    }
+
+    private void setDokumenter(Deffered<List<DokumentListeEnhet>> dDokumentListeEnhet) {
+        this.dokumenter = dDokumentListeEnhet;
+    }
+
+    public List<HistorikkInnslag> getHistorikkInnslag() {
+        return get(historikkInnslag);
+    }
+
+    private void setHistorikkInnslag(Deffered<List<HistorikkInnslag>> dHistorikkInnslag) {
+        this.historikkInnslag = dHistorikkInnslag;
+    }
+
+    public Behandling getAnnenPartBehandling() {
+        return get(annenPartBehandling);
+    }
+
+    private void setAnnenPartBehandling(Deffered<Behandling> dAnnenPartBehandling) {
+        this.annenPartBehandling = dAnnenPartBehandling;
+    }
+    
+    private static <V> V get(Deffered<V> deferred) {
+        try {
+            return deferred.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
