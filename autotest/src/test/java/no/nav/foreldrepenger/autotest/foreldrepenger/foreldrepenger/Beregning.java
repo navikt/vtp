@@ -13,6 +13,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer;
@@ -42,6 +44,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arb
 /**
  * Tester i denne klassen vil ikkje kjøres i felles pipeline med mindre dei har Tag "fpsak"
  */
+@Execution(ExecutionMode.CONCURRENT)
 @Tag("beregning")
 @Tag("foreldrepenger")
 public class Beregning extends ForeldrepengerTestBase {

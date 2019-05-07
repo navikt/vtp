@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -42,7 +44,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 
-
+@Execution(ExecutionMode.CONCURRENT)
 @Tag("fpsak")
 @Tag("foreldrepenger")
 @Tag("fluoritt")
