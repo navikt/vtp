@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.BeforeEach;
+
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.foreldrepenger.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kodeverk;
@@ -41,7 +43,9 @@ public class FpsakTestBase extends TestScenarioTestBase {
     protected ForeldrepengesoknadXmlErketyper foreldrepengeSøknadErketyper;
     protected InntektsmeldingErketype inntektsmeldingErketype;
 
-    public FpsakTestBase() {
+
+    @BeforeEach
+    public void setUp() {
         fordel = new Fordel();
         saksbehandler = new Saksbehandler();
         overstyrer = new Saksbehandler();

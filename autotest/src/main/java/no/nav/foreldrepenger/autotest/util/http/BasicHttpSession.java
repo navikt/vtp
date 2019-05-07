@@ -26,8 +26,8 @@ public class BasicHttpSession extends AbstractHttpSession {
 
     private static CloseableHttpClient createKlient(boolean doRedirect) {
         HttpClientBuilder builder = HttpClientBuilder.create();
-        builder.setMaxConnPerRoute(20);
-        builder.setMaxConnTotal(100);
+        builder.setMaxConnPerRoute(40);
+        builder.setMaxConnTotal(200);
         builder.setRetryHandler(new StandardHttpRequestRetryHandler());
 
         RequestConfig.Builder requestBuilder = RequestConfig.custom();

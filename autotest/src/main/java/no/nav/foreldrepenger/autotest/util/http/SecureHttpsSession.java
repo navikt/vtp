@@ -59,8 +59,8 @@ public class SecureHttpsSession extends AbstractHttpSession {
             }
             builder.setSSLContext(sslContext);
             builder.setMaxConnPerRoute(20);
-            builder.setMaxConnTotal(100);
-
+            builder.setMaxConnTotal(200);
+            
             if (doRedirect) {
                 builder = builder.setRedirectStrategy(new LaxRedirectStrategy());
             } else {

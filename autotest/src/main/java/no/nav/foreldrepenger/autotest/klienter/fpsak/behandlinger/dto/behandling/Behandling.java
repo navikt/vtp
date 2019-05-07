@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
@@ -46,13 +45,11 @@ public class Behandling {
     private Deffered<List<Aksjonspunkt>> aksjonspunkter;
     
     private Deffered<Personopplysning> personopplysning;
-    private Deffered<Verge> verge;
     private Deffered<Beregningsgrunnlag> beregningsgrunnlag;
     private Deffered<Beregningsresultat> beregningResultatEngangsstonad;
     private Deffered<BeregningsresultatMedUttaksplan> beregningResultatForeldrepenger;
     private Deffered<UttakResultatPerioder> uttakResultatPerioder;
     private Deffered<Soknad> soknad;
-    private Deffered<Familiehendelse> familiehendelse;
     private Deffered<Opptjening> opptjening;
     private Deffered<InntektArbeidYtelse> inntektArbeidYtelse;
     private Deffered<KontrollerFaktaData> kontrollerFaktaData;
@@ -128,14 +125,6 @@ public class Behandling {
         this.personopplysning = dPersonopplysninger;
     }
 
-    public Verge getVerge() {
-        return get(verge);
-    }
-
-    public void setVerge(Deffered<Verge> dVerge) {
-        this.verge = dVerge;
-    }
-
     public Beregningsgrunnlag getBeregningsgrunnlag() {
         return get(beregningsgrunnlag);
     }
@@ -174,14 +163,6 @@ public class Behandling {
 
     public void setSoknad(Deffered<Soknad> dSoknad) {
         this.soknad = dSoknad;
-    }
-
-    public Familiehendelse getFamiliehendelse() {
-        return get(familiehendelse);
-    }
-
-    public void setFamiliehendelse(Deffered<Familiehendelse> dFamiliehendelse) {
-        this.familiehendelse = dFamiliehendelse;
     }
 
     public Opptjening getOpptjening() {
