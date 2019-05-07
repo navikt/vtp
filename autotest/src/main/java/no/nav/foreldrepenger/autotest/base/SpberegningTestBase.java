@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
-
 import no.nav.foreldrepenger.autotest.aktoerer.fordel.Fordel;
 import no.nav.foreldrepenger.autotest.aktoerer.spberegning.Saksbehandler;
 import no.nav.foreldrepenger.autotest.klienter.vtp.testscenario.TestscenarioKlient;
@@ -35,8 +33,7 @@ public class SpberegningTestBase extends TestBase {
     protected TestscenarioKlient testscenarioKlient;
     protected InntektsmeldingErketype inntektsmeldingErketype;
 
-    @BeforeEach
-    void setUp() throws Exception {
+    public SpberegningTestBase() throws Exception {
         saksbehandler = new Saksbehandler();
         fordel = new Fordel();
 
