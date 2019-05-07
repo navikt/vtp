@@ -56,7 +56,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 
@@ -92,7 +92,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     @Test
@@ -152,7 +152,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_OMSORGSVILKÅRET));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
     
@@ -189,7 +189,7 @@ public class Omsorgsovertakelse extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_FORELDREANSVARSVILKÅRET_2_LEDD));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
         beslutter.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 }

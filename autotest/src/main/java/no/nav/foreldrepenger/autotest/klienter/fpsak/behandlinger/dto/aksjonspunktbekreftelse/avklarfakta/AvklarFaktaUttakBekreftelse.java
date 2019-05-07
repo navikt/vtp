@@ -22,7 +22,7 @@ public abstract class AvklarFaktaUttakBekreftelse extends AksjonspunktBekreftels
     public AvklarFaktaUttakBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
 
-        for (KontrollerFaktaPeriode periode : behandling.kontrollerFaktaData.getPerioder()) {
+        for (KontrollerFaktaPeriode periode : behandling.getKontrollerFaktaData().getPerioder()) {
             BekreftetUttakPeriode bekreftetUttakPeriode = new BekreftetUttakPeriode(periode.getFom(),
                     periode.getTom(),
                     periode.getArbeidstidsprosent(),

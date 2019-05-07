@@ -6,4 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class HistorikkTekst {
     protected String begrunnelse;
     protected String hendelse;
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "<begrunnelse="+begrunnelse + ", hendelse"+hendelse+">";
+    }
 }

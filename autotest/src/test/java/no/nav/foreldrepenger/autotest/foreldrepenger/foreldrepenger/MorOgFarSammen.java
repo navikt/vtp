@@ -143,8 +143,8 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Mors behandling er ikke ferdigbehandlet.");
         debugFritekst("Ferdig med første behandling mor");
         saksbehandler.refreshBehandling();
-        verifiser(saksbehandler.valgtBehandling.uttakResultatPerioder.getPerioderForSøker().size() == 3, "Antall perioder for mor er ikke 3.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
+        verifiser(saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker().size() == 3, "Antall perioder for mor er ikke 3.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
         // FAR
         Fordeling fordelingFar = new Fordeling();
         fordelingFar.setAnnenForelderErInformert(true);
@@ -163,7 +163,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         saksbehandler.refreshBehandling();
         verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Saken er ikke koblet til mor sin behandling");
         verifiser(saksbehandler.valgtBehandling.hentUttaksperioder().size() == 2, "Antall perioder er ikke 2.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().size() == 4, "Feil antall stønadskontoer.");
         // Revurdering berørt sak mor
         saksbehandler.hentFagsak(saksnummerMor);
         verifiser(saksbehandler.harRevurderingBehandling() == true, "Mangler berørt behandling på mor");
@@ -172,10 +172,10 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         debugFritekst("Revurdering berørt sak opprettet på mor.");
         verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Saken er ikke koblet til en far sin behandling");
         verifiser(saksbehandler.valgtBehandling.hentUttaksperioder().size() == 4, "Feil i splitting av mors perioder.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FEDREKVOTE").getSaldo() > 0, "Feil i stønadsdager fedrekvote.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("MØDREKVOTE").getSaldo() > 0, "Feil i stønadsdager mødrekvote.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FELLESPERIODE").getSaldo() == 80, "Feil i stønadsdager fellesperiode.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() >= 0, "Feil i stønadsdager FPFF.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FEDREKVOTE").getSaldo() > 0, "Feil i stønadsdager fedrekvote.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("MØDREKVOTE").getSaldo() > 0, "Feil i stønadsdager mødrekvote.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FELLESPERIODE").getSaldo() == 80, "Feil i stønadsdager fellesperiode.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() >= 0, "Feil i stønadsdager FPFF.");
         // verifiser ikke berørt sak far
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.behandlinger.size() == 1, "Feil antall behandlinger i fagsak til far.");
@@ -253,20 +253,20 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         verifiser(saksbehandler.behandlinger.size() == 3, "Feil antall behandlinger hos mor");
         Behandling sistebehandling = saksbehandler.behandlinger.get(2);
         saksbehandler.velgBehandling(sistebehandling);
-        int morDispMødrekvote = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("MØDREKVOTE").getSaldo();
-        int morDispFedrekvote = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FEDREKVOTE").getSaldo();
-        int morDispFellesperiode = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FELLESPERIODE").getSaldo();
-        int morDispFPFF = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo();
+        int morDispMødrekvote = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("MØDREKVOTE").getSaldo();
+        int morDispFedrekvote = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FEDREKVOTE").getSaldo();
+        int morDispFellesperiode = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FELLESPERIODE").getSaldo();
+        int morDispFPFF = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo();
 
         saksbehandler.hentFagsak(saksnummerFar);
         verifiser(saksbehandler.behandlinger.size() == 2, "Feil antall behandlinger hos far");
         saksbehandler.velgRevurderingBehandling();
         debugLoggBehandling(saksbehandler.valgtBehandling);
         verifiser(saksbehandler.sakErKobletTilAnnenpart(), "Far sin sak ikke koblet til mor sin sak.");
-        int farDispMødrekvote = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("MØDREKVOTE").getSaldo();
-        int farDispFedrekvote = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FEDREKVOTE").getSaldo();
-        int farDispFellesperiode = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FELLESPERIODE").getSaldo();
-        int farDispFPFF = saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo();
+        int farDispMødrekvote = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("MØDREKVOTE").getSaldo();
+        int farDispFedrekvote = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FEDREKVOTE").getSaldo();
+        int farDispFellesperiode = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FELLESPERIODE").getSaldo();
+        int farDispFPFF = saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo();
 
         verifiser(morDispMødrekvote == farDispMødrekvote, "Partene har forskjellig saldo for Mødrekvote");
         verifiser(morDispFedrekvote == farDispFedrekvote, "Partene har forskjellig saldo for Fedrekvote");

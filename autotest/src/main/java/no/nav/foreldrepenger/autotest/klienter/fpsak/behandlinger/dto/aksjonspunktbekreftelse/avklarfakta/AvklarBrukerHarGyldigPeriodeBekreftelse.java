@@ -19,7 +19,7 @@ public class AvklarBrukerHarGyldigPeriodeBekreftelse extends AksjonspunktBekreft
     public AvklarBrukerHarGyldigPeriodeBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        for(Medlemskapsperiode periode : behandling.medlem.getMedlemskapPerioder()){
+        for(Medlemskapsperiode periode : behandling.getMedlem().getMedlemskapPerioder()){
             periods.add(periode);
         }
     }

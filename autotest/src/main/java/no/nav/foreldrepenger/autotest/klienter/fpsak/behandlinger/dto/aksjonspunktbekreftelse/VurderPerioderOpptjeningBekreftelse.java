@@ -14,11 +14,11 @@ public class VurderPerioderOpptjeningBekreftelse extends AksjonspunktBekreftelse
     
     public VurderPerioderOpptjeningBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
-        if(behandling.opptjening.getOpptjeningAktivitetList() == null) {
+        if(behandling.getOpptjening().getOpptjeningAktivitetList() == null) {
             return;
         }
         
-        for (OpptjeningAktivitet opptjeningAktivitet : behandling.opptjening.getOpptjeningAktivitetList()) {
+        for (OpptjeningAktivitet opptjeningAktivitet : behandling.getOpptjening().getOpptjeningAktivitetList()) {
             
             opptjeningAktivitet.setOriginalFom(opptjeningAktivitet.getOpptjeningFom());
             opptjeningAktivitet.setOriginalTom(opptjeningAktivitet.getOpptjeningTom());

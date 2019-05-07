@@ -42,7 +42,7 @@ public class TerminFlaky extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.velgFørstegangsbehandling();
         debugLoggBehandling(saksbehandler.valgtBehandling);
-        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugLoggHistorikkinnslag(saksbehandler.getHistorikkInnslag());
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.VEDTAK_FATTET);
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
         //TODO (OL): Byttet verifisering på historikkinnslag til asynk venting. Feilet med at behandlingen ikke hadde historikkinnslag

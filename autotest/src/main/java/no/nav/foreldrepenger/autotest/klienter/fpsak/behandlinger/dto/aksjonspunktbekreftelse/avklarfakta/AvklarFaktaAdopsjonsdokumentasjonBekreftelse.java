@@ -18,12 +18,12 @@ public class AvklarFaktaAdopsjonsdokumentasjonBekreftelse extends AksjonspunktBe
     public AvklarFaktaAdopsjonsdokumentasjonBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        if(behandling.soknad.getOmsorgsovertakelseDato() != null){
-            omsorgsovertakelseDato = behandling.soknad.getOmsorgsovertakelseDato();
+        if(behandling.getSoknad().getOmsorgsovertakelseDato() != null){
+            omsorgsovertakelseDato = behandling.getSoknad().getOmsorgsovertakelseDato();
         }
         
-        if(behandling.soknad.getAdopsjonFodelsedatoer() != null){
-            fodselsdatoer = behandling.soknad.getAdopsjonFodelsedatoer();
+        if(behandling.getSoknad().getAdopsjonFodelsedatoer() != null){
+            fodselsdatoer = behandling.getSoknad().getAdopsjonFodelsedatoer();
         }
     }
     
