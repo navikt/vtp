@@ -403,7 +403,7 @@ public class MorOgFarSammen extends ForeldrepengerTestBase {
         saksbehandler.hentFagsak(saksnummerMor);
 
         // Bruk når  revurdering fungerer
-        saksbehandler.opprettBehandlingRevurdering("RE-END-FRA-BRUKER");
+        saksbehandler.opprettBehandlingRevurdering("RE-FRDLING");
         saksbehandler.velgRevurderingBehandling();
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)

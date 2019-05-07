@@ -1071,7 +1071,7 @@ public class Fodsel extends ForeldrepengerTestBase {
     @Test
     @DisplayName("Mor sender inntektsmelding inn etter behandlet behandling men før foreslå vedtak")
     @Description("Mor sender inntektsmelding inn etter behandlet behandling men før foreslå vedtak - behandling starter på nytt")
-    public void morSenderInntektsmeldingEtterInvilgetMenFørVedtak() throws Exception {
+    public void morSenderInntektsmeldingEtterInnvilgetMenFørVedtak() throws Exception {
         TestscenarioDto testscenario = opprettScenario("55");
 
         String søkerAktørIdent = testscenario.getPersonopplysninger().getSøkerAktørIdent();
