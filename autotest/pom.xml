@@ -68,15 +68,19 @@
                     <argLine>
                         -Dfile.encoding=UTF-8 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-	                <properties>
-	                    <configurationParameters>
-		                    junit.jupiter.execution.parallel.enabled=true
-							junit.jupiter.execution.parallel.config.strategy=fixed
-							junit.jupiter.execution.parallel.config.fixed.parallelism=4
-	                        junit.jupiter.extensions.autodetection.enabled = true
-	                    </configurationParameters>
-	                </properties>
-                    <includes>
+                    <systemProperties>
+                        <property>
+                            <name>junit.jupiter.extensions.autodetection.enabled</name>
+                            <value>true</value>
+                            <name>junit.jupiter.execution.parallel.enabled</name>
+                            <value>true</value>
+							<name>junit.jupiter.execution.parallel.config.strategy</name>
+                            <value>fixed</value>
+                            <name>junit.jupiter.execution.parallel.config.fixed.parallelism</name>
+                            <value>6</value>
+                        </property>
+                    </systemProperties>
+	                <includes>
                         <include>${testPackage}</include>
                     </includes>
                     <groups>${includeTestsTags}</groups>
