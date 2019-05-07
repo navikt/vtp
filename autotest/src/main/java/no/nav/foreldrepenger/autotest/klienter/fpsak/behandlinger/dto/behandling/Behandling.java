@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.arbeid.InntektArbeidYtelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.Beregningsresultat;
@@ -39,13 +40,13 @@ public class Behandling {
     public String behandlendeEnhetNavn;
     public Boolean behandlingHenlagt;
     public Boolean behandlingPaaVent;
+    public Behandlingsresultat behandlingsresultat;
     
     private Deffered<List<Vilkar>> vilkar;
     private Deffered<List<Aksjonspunkt>> aksjonspunkter;
     
     private Deffered<Personopplysning> personopplysning;
     private Deffered<Verge> verge;
-    private Behandlingsresultat behandlingsresultat;
     private Deffered<Beregningsgrunnlag> beregningsgrunnlag;
     private Deffered<Beregningsresultat> beregningResultatEngangsstonad;
     private Deffered<BeregningsresultatMedUttaksplan> beregningResultatForeldrepenger;
@@ -77,12 +78,12 @@ public class Behandling {
     }
 
     public String hentBehandlingsresultat() {
-        return getBehandlingsresultat().type.kode;
+        return behandlingsresultat.type.kode;
     }
     
     public String hentAvslagsarsak() {
-        if(null != getBehandlingsresultat() && null != getBehandlingsresultat().avslagsarsak) {
-            return getBehandlingsresultat().avslagsarsak.kode;
+        if(null != behandlingsresultat && null != behandlingsresultat.avslagsarsak) {
+            return behandlingsresultat.avslagsarsak.kode;
         }
         return "Ingen avslagsårsak";
     }
@@ -93,8 +94,8 @@ public class Behandling {
         sb.append(String.format("{Behandlingsid: %s}\n",this.id));
         sb.append(String.format("{Behandlingsstatus: %s}\n", this.status.kode));
         sb.append(String.format("{Behandlingstype: %s}",  this.type.kode));
-        if(this.getBehandlingsresultat() != null && this.getBehandlingsresultat().avslagsarsak != null) {
-            sb.append(String.format("{Årsak avslag: %s}\n", this.getBehandlingsresultat().avslagsarsak.kode));
+        if(this.behandlingsresultat != null && this.behandlingsresultat.avslagsarsak != null) {
+            sb.append(String.format("{Årsak avslag: %s}\n", this.behandlingsresultat.avslagsarsak.kode));
         }
         sb.append("Aksjonspunkter:\n");
         if(getAksjonspunkter() != null) {
@@ -133,14 +134,6 @@ public class Behandling {
 
     public void setVerge(Deffered<Verge> dVerge) {
         this.verge = dVerge;
-    }
-
-    public Behandlingsresultat getBehandlingsresultat() {
-        return behandlingsresultat;
-    }
-
-    public void setBehandlingsresultat(Behandlingsresultat behandlingsresultat) {
-        this.behandlingsresultat = behandlingsresultat;
     }
 
     public Beregningsgrunnlag getBeregningsgrunnlag() {
