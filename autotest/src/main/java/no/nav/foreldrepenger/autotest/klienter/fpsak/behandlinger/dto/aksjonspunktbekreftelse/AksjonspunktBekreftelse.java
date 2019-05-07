@@ -2,17 +2,29 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspu
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-
-import org.reflections.Reflections;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Behandling;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.fagsak.dto.Fagsak;
+import no.nav.foreldrepenger.autotest.util.IndexClasses;
 
 
 public abstract class AksjonspunktBekreftelse {
+
+    private static final List<Class<? extends AksjonspunktBekreftelse>> aksjonspunktBekreftelseClasses;
+    static {
+        try {
+            IndexClasses index = IndexClasses.getIndexFor(AksjonspunktBekreftelse.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            aksjonspunktBekreftelseClasses = Collections.unmodifiableList(index.getSubClassesWithAnnotation(AksjonspunktBekreftelse.class, BekreftelseKode.class));
+        } catch (URISyntaxException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
     @JsonProperty("@type")
     protected String kode;
@@ -27,9 +39,8 @@ public abstract class AksjonspunktBekreftelse {
     }
     
     public static AksjonspunktBekreftelse fromKode(Fagsak fagsak, Behandling behandling, String kode) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        Reflections reflections = new Reflections("no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse");
                 
-        for (Class<? extends AksjonspunktBekreftelse> klasse : reflections.getSubTypesOf(AksjonspunktBekreftelse.class)) {
+        for (Class<? extends AksjonspunktBekreftelse> klasse : aksjonspunktBekreftelseClasses) {
             
             BekreftelseKode annotation = klasse.getDeclaredAnnotation(BekreftelseKode.class);
             
