@@ -35,8 +35,8 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.ObjectFactory;
 @Path("/api/cases")
 public class CasesRestService extends FpsakTestBase {
 
-    public CasesRestService() {
-        setUp();
+    public CasesRestService() throws Exception {
+        super();
     }
 
     @GET

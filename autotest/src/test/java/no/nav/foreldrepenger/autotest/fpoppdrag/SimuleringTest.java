@@ -37,6 +37,10 @@ import no.nav.foreldrepenger.integrasjon.økonomistøtte.oppdrag.TfradragTillegg
 @Tag("fpoppdrag")
 public class SimuleringTest extends FpoppdragTestBase {
 
+    public SimuleringTest() throws Exception {
+        super();
+    }
+
     @Test
     public void starterSimuleringHenterResultatOgKansellererSimulering() throws IOException, JAXBException, SAXException {
         /*********** Steg 1: Start simulering **************/
