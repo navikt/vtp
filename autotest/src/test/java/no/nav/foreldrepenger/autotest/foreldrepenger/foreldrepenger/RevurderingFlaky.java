@@ -59,8 +59,8 @@ public class RevurderingFlaky extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harRevurderingBehandling(), "Saken har ikke opprettet revurdering.");
         saksbehandler.velgRevurderingBehandling();
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INGEN_ENDRING", "Behandlingsresultat");
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().getKonsekvenserForYtelsen().get(0).kode, "INGEN_ENDRING", "konsekvensForYtelsen");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INGEN_ENDRING", "Behandlingsresultat");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "INGEN_ENDRING", "konsekvensForYtelsen");
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         debugFritekst("Ferdig med andre behandling (revurdering nr 1)");
 
