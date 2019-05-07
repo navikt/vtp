@@ -249,7 +249,7 @@ public class Behandling {
     
     private static <V> V get(Deffered<V> deferred) {
         try {
-            return deferred.get();
+            return deferred==null?null: deferred.get();
         } catch (ExecutionException | InterruptedException e) {
             throw new IllegalStateException(e);
         }
