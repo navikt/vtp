@@ -9,6 +9,7 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Dekningsgrad;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
+import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Opptjening;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Dekningsgrader;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
@@ -40,6 +41,16 @@ public class ForeldrepengeYtelseErketyper {
         foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
         foreldrepenger.setRelasjonTilBarnet(soekersRelasjonTilBarnet);
         foreldrepenger.setFordeling(fordeling);
+        return foreldrepenger;
+    }
+    public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorge(Fordeling fordeling, Opptjening opptjening, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+        Foreldrepenger foreldrepenger = new Foreldrepenger();
+        foreldrepenger.setDekningsgrad(standardDekningsgrader());
+        foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
+        foreldrepenger.setRettigheter(RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg());
+        foreldrepenger.setRelasjonTilBarnet(soekersRelasjonTilBarnet);
+        foreldrepenger.setFordeling(fordeling);
+        foreldrepenger.setOpptjening(opptjening);
         return foreldrepenger;
     }
     public static Foreldrepenger foreldrepengeYtelseNorskBorgerINorgeMedAnnenForelder(Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet, String annenpartAktørId) {
