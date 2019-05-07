@@ -51,7 +51,7 @@ public class Medlemskap extends EngangsstonadTestBase {
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 
-        verifiserLikhet(overstyrer.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -62,7 +62,7 @@ public class Medlemskap extends EngangsstonadTestBase {
         beslutter.ikkeVentPåStatus = true;
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
     
     @Test

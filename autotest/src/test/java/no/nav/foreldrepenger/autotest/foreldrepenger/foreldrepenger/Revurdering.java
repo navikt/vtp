@@ -84,7 +84,7 @@ public class Revurdering extends ForeldrepengerTestBase {
         overstyrer.overstyr(overstyrMedlemskapsvilkaaret);
         overstyrer.bekreftAksjonspunktBekreftelse(KontrollerManueltOpprettetRevurdering.class);
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-        verifiserLikhet(overstyrer.valgtBehandling.getBehandlingsresultat().toString(), "OPPHØR", "Behandlingsresultat");
+        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
@@ -92,8 +92,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_MEDLEMSKAPSVILKÅRET));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "OPPHØR", "Behandlingsresultat");
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().getAvslagsarsak().kode, "1020", "Avslagsårsak");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "OPPHØR", "Behandlingsresultat");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.getAvslagsarsak().kode, "1020", "Avslagsårsak");
         verifiserLikhet(beslutter.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus");
         beslutter.ventTilFagsakAvsluttet();
         System.out.println(beslutter.valgtFagsak.hentStatus().kode);
@@ -141,8 +141,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         verifiser(saksbehandler.harRevurderingBehandling(), "Det er ikke opprettet revurdering.");
         saksbehandler.velgRevurderingBehandling();
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
-        verifiser(saksbehandler.valgtBehandling.getBehandlingsresultat().toString().equals("FORELDREPENGER_ENDRET"), "Behandlingsresultat er ikke 'Foreldrepenger er endret'");
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
+        verifiser(saksbehandler.valgtBehandling.behandlingsresultat.toString().equals("FORELDREPENGER_ENDRET"), "Behandlingsresultat er ikke 'Foreldrepenger er endret'");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
         saksbehandler.hentFagsak(saksnummerE);
         verifiser(saksbehandler.valgtFagsak.hentStatus().kode.equals("LOP"), "Status på fagsaken er ikke løpende.");
 
@@ -215,8 +215,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FØRSTE_UTTAKSDATO));
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "FORELDREPENGER_ENDRET", "Behandlingsresultat");
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "FORELDREPENGER_ENDRET", "Behandlingsresultat");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK", "konsekvensForYtelsen");
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
@@ -279,8 +279,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.refreshBehandling();
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus er ikke avsluttet");
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "LOP", "Saken er ikke løpende.");
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "FORELDREPENGER_ENDRET");
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "FORELDREPENGER_ENDRET");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK");
         verifiser(saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker().size() == 5, "Feil antall perioder.");
         for (UttakResultatPeriode periode : saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker()) {
             verifiser(periode.getAktiviteter().size() == 1, "Periode har mer enn én aktivitet");
@@ -340,8 +340,8 @@ public class Revurdering extends ForeldrepengerTestBase {
         saksbehandler.refreshBehandling();
         verifiserLikhet(saksbehandler.valgtBehandling.status.kode, "AVSLU", "Behandlingsstatus er ikke avsluttet");
         verifiserLikhet(saksbehandler.valgtFagsak.hentStatus().kode, "LOP", "Saken er ikke løpende.");
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "FORELDREPENGER_ENDRET");
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "FORELDREPENGER_ENDRET");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.getKonsekvenserForYtelsen().get(0).kode, "ENDRING_I_UTTAK");
         verifiser(saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker().size() == 5, "Feil antall perioder.");
         for (UttakResultatPeriode periode : saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker()) {
             verifiser(periode.getAktiviteter().size() == 1, "Periode har mer enn én aktivitet");

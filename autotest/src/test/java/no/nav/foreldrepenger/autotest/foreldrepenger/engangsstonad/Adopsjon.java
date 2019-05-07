@@ -54,7 +54,7 @@ public class Adopsjon extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
     }
 
     @Test
@@ -87,7 +87,7 @@ public class Adopsjon extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_ADOPSJONSDOKUMENTAJON));
         beslutter.ikkeVentPåStatus = true;
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     @Test
@@ -118,7 +118,7 @@ public class Adopsjon extends EngangsstonadTestBase {
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 
-        verifiserLikhet(overstyrer.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -129,7 +129,7 @@ public class Adopsjon extends EngangsstonadTestBase {
         beslutter.ikkeVentPåStatus = true;
         beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     @Test
@@ -164,7 +164,7 @@ public class Adopsjon extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
         beslutter.ikkeVentPåStatus = true;
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
 
     }
     
@@ -203,6 +203,6 @@ public class Adopsjon extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_OM_ADOPSJON_GJELDER_EKTEFELLES_BARN));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
 }

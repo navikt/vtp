@@ -54,7 +54,7 @@ public class Termin extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_TERMINBEKREFTELSE));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
 
     }
 
@@ -111,7 +111,7 @@ public class Termin extends EngangsstonadTestBase {
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 
-        verifiserLikhet(overstyrer.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -121,7 +121,7 @@ public class Termin extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.OVERSTYRING_AV_FØDSELSVILKÅRET));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     public void behandleTerminMorUtenTerminbekreftelse() throws Exception {
@@ -148,7 +148,7 @@ public class Termin extends EngangsstonadTestBase {
                 .setTermindato(LocalDate.now().plusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTerminBekreftelse.class);
 
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     @Test
@@ -198,7 +198,7 @@ public class Termin extends EngangsstonadTestBase {
         
         saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
-        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
         beslutter.hentFagsak(saksnummer);
