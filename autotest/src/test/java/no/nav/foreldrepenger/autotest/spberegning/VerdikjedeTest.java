@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import io.qameta.allure.Description;
 import no.nav.foreldrepenger.autotest.aktoerer.Aktoer.Rolle;
@@ -26,6 +28,7 @@ import no.seres.xsd.nav.inntektsmelding_m._20181211.Omsorgspenger;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.PleiepengerPeriodeListe;
 
+@Execution(ExecutionMode.CONCURRENT)
 @Tag("spberegning")
 public class VerdikjedeTest extends SpberegningTestBase {
 
