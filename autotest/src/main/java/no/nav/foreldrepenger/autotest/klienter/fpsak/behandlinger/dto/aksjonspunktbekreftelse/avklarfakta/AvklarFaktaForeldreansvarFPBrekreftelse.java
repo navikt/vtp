@@ -25,21 +25,21 @@ public class AvklarFaktaForeldreansvarFPBrekreftelse extends AksjonspunktBekreft
     public AvklarFaktaForeldreansvarFPBrekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
         
-        antallBarn = behandling.soknad.getAntallBarn();
-        omsorgsovertakelseDato = behandling.soknad.getOmsorgsovertakelseDato();
+        antallBarn = behandling.getSoknad().getAntallBarn();
+        omsorgsovertakelseDato = behandling.getSoknad().getOmsorgsovertakelseDato();
         
-        foreldre.add(new OmsorgovertakelseForelder(behandling.personopplysning));
+        foreldre.add(new OmsorgovertakelseForelder(behandling.getPersonopplysning()));
         
-        if(behandling.soknad.getAdopsjonFodelsedatoer() != null){
-            Map<Integer, LocalDate> fodselsdatoer = behandling.soknad.getAdopsjonFodelsedatoer();
+        if(behandling.getSoknad().getAdopsjonFodelsedatoer() != null){
+            Map<Integer, LocalDate> fodselsdatoer = behandling.getSoknad().getAdopsjonFodelsedatoer();
             
             for(int i = 0; i < fodselsdatoer.size(); i++){
                 barn.add(new OmsorgovertakelseBarn(fodselsdatoer.get(i+1), "SAKSBEH", (i+1)));
             }
         }
         else{
-            for(int i = 0; i < behandling.soknad.getAntallBarn(); i++){
-                barn.add(new OmsorgovertakelseBarn(behandling.soknad.getFodselsdatoer().get(i+1), "SAKSBEH", (i+1)));
+            for(int i = 0; i < behandling.getSoknad().getAntallBarn(); i++){
+                barn.add(new OmsorgovertakelseBarn(behandling.getSoknad().getFodselsdatoer().get(i+1), "SAKSBEH", (i+1)));
             }
         }
     }

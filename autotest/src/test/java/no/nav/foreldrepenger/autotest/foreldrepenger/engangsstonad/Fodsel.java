@@ -43,7 +43,7 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         saksbehandler.ventTilAvsluttetBehandling();
 
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 
@@ -75,7 +75,7 @@ public class Fodsel extends EngangsstonadTestBase {
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
         //verifiser at statusen er avvist
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     @Test
@@ -94,7 +94,7 @@ public class Fodsel extends EngangsstonadTestBase {
         
         saksbehandler.ventTilAvsluttetBehandling();
         
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
     }
 
     @Test
@@ -115,7 +115,7 @@ public class Fodsel extends EngangsstonadTestBase {
             .bekreftDokumentasjonForeligger(1, LocalDate.now().minusMonths(1));
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
         
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "behandlingsresultat");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "behandlingsresultat");
 
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
         overstyrer.hentFagsak(saksnummer);
@@ -125,7 +125,7 @@ public class Fodsel extends EngangsstonadTestBase {
         overstyr.setBegrunnelse("avvist");
         overstyrer.overstyr(overstyr);
 
-        verifiserLikhet(overstyrer.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(overstyrer.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -150,7 +150,7 @@ public class Fodsel extends EngangsstonadTestBase {
         saksbehandler.hentFagsak(saksnummer);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
 
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
         
         //Overstyr beregning
         overstyrer.erLoggetInnMedRolle(Rolle.OVERSTYRER);
@@ -161,7 +161,7 @@ public class Fodsel extends EngangsstonadTestBase {
         overstyrer.bekreftAksjonspunktBekreftelse(VarselOmRevurderingBekreftelse.class);
         overstyrer.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         overstyrer.overstyr(new OverstyrBeregning(saksbehandler.valgtFagsak, saksbehandler.valgtBehandling, 10));
-        verifiserLikhet(10, overstyrer.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse());
+        verifiserLikhet(10, overstyrer.valgtBehandling.getBeregningResultatEngangsstonad().getBeregnetTilkjentYtelse());
         overstyrer.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
         
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
@@ -205,8 +205,8 @@ public class Fodsel extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
-        verifiserLikhet(beslutter.valgtBehandling.beregningResultatEngangsstonad.getBeregnetTilkjentYtelse(), 2 * SATS_2019);
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBeregningResultatEngangsstonad().getBeregnetTilkjentYtelse(), 2 * SATS_2019);
     }
 
     @Test
@@ -247,7 +247,7 @@ public class Fodsel extends EngangsstonadTestBase {
                 .godkjennAksjonspunkt(saksbehandler.hentAksjonspunkt(AksjonspunktKoder.SJEKK_MANGLENDE_FØDSEL));
         beslutter.fattVedtakOgVentTilAvsluttetBehandling();
 
-        verifiserLikhet(beslutter.valgtBehandling.behandlingsresultat.toString(), "INNVILGET", "Behandlingstatus");
+        verifiserLikhet(beslutter.valgtBehandling.getBehandlingsresultat().toString(), "INNVILGET", "Behandlingstatus");
     }
 
     @Test
@@ -281,7 +281,7 @@ public class Fodsel extends EngangsstonadTestBase {
         
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaTillegsopplysningerBekreftelse.class);
         
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "AVSLÅTT", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "AVSLÅTT", "Behandlingstatus");
         saksbehandler.ventTilAvsluttetBehandling();
 
         beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);

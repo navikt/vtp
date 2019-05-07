@@ -14,8 +14,8 @@ public class VurderSoknadsfristBekreftelse extends AksjonspunktBekreftelse{
     
     public VurderSoknadsfristBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
-        omsorgsovertakelseDato = behandling.soknad.getOmsorgsovertakelseDato();
-        mottattDato = behandling.soknad.getMottattDato();
+        omsorgsovertakelseDato = behandling.getSoknad().getOmsorgsovertakelseDato();
+        mottattDato = behandling.getSoknad().getMottattDato();
     }
     
     public void bekreftVilkårErOk() {

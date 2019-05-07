@@ -18,7 +18,7 @@ public class AvklarArbeidsforholdBekreftelse extends AksjonspunktBekreftelse {
     public AvklarArbeidsforholdBekreftelse(Fagsak fagsak, Behandling behandling) {
         super(fagsak, behandling);
 
-        arbeidsforhold = behandling.inntektArbeidYtelse.arbeidsforhold;
+        arbeidsforhold = behandling.getInntektArbeidYtelse().arbeidsforhold;
 
         for (Arbeidsforhold arbeidsforholdBehandling : arbeidsforhold) {
             arbeidsforholdBehandling.setBrukArbeidsforholdet(true);

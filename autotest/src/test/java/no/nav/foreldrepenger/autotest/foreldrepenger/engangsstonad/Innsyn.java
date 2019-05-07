@@ -50,9 +50,9 @@ public class Innsyn extends EngangsstonadTestBase {
 
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         AllureHelper.debugLoggBehandlingsliste(saksbehandler.behandlinger);
-        AllureHelper.debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
+        AllureHelper.debugLoggHistorikkinnslag(saksbehandler.getHistorikkInnslag());
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_INNVILGET", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNSYN_INNVILGET", "Behandlingstatus");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }
@@ -84,7 +84,7 @@ public class Innsyn extends EngangsstonadTestBase {
 
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_AVVIST", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNSYN_AVVIST", "Behandlingstatus");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }
@@ -116,7 +116,7 @@ public class Innsyn extends EngangsstonadTestBase {
 
         saksbehandler.ventTilBehandlingsstatus("AVSLU");
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
-        verifiserLikhet(saksbehandler.valgtBehandling.behandlingsresultat.toString(), "INNSYN_AVVIST", "Behandlingstatus");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBehandlingsresultat().toString(), "INNSYN_AVVIST", "Behandlingstatus");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }

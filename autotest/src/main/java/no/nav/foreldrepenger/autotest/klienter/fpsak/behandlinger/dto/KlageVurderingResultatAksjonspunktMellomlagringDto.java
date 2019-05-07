@@ -32,6 +32,6 @@ public class KlageVurderingResultatAksjonspunktMellomlagringDto {
     }
     
     public KlageVurderingResultatAksjonspunktMellomlagringDto(Behandling behandling, Aksjonspunkt aksjonspunkt) {
-        this(behandling.id, behandling.klagevurdering.getKlageVurderingResultatNFP(), aksjonspunkt); //lage for hvert av dem?
+        this(behandling.id, behandling.getKlagevurdering().getKlageVurderingResultatNFP(), aksjonspunkt); //lage for hvert av dem?
     }
 }

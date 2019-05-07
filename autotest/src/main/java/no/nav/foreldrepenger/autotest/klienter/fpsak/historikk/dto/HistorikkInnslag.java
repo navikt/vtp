@@ -51,6 +51,6 @@ public class HistorikkInnslag {
     
     @Override
     public String toString() {
-        return getClass().getSimpleName() + String.format("<behandlingsid=%s, type=%s>", behandlingsid, type);
+        return getClass().getSimpleName() + String.format("<behandlingsid=%s, type=%s, tekst=%s, innslag=%s>", behandlingsid, type.kode, tekst, historikkinnslagDeler);
     }
 }

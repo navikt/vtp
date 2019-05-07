@@ -109,10 +109,10 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderFaktaOmBeregningBekreftelse.class);
 
         //Verifiser Beregningsgrunnlag
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallAktivitetStatus(), 1);//ikke sikker på denne
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getAktivitetStatus(0).kode, "AT_FL");
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto(), 1);
-        List<BeregningsgrunnlagPrStatusOgAndelDto> andeler = saksbehandler.valgtBehandling.beregningsgrunnlag.getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallAktivitetStatus(), 1);//ikke sikker på denne
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getAktivitetStatus(0).kode, "AT_FL");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallBeregningsgrunnlagPeriodeDto(), 1);
+        List<BeregningsgrunnlagPrStatusOgAndelDto> andeler = saksbehandler.valgtBehandling.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
         verifiserLikhet(andeler.size(), 2);
         verifiserLikhet(andeler.get(0).getAktivitetStatus().kode, "AT");
         verifiserLikhet(andeler.get(1).getAktivitetStatus().kode, "FL");
@@ -154,7 +154,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
         verifiser(beslutter.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(2, beslutter.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, true);
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.getBeregningResultatForeldrepenger(), true);
 
     }
 
@@ -196,7 +196,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(FastsettBruttoBeregningsgrunnlagSNBekreftelse.class);
 
         //verifiser skjæringstidspunkt i følge søknad
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getSkjaeringstidspunktBeregning(), fpStartdato);
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getSkjaeringstidspunktBeregning(), fpStartdato);
 
 
         saksbehandler.hentAksjonspunktbekreftelse(ForesloVedtakBekreftelse.class);
@@ -215,7 +215,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
         verifiser(beslutter.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, false);
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.getBeregningResultatForeldrepenger(), false);
 
     }
 
@@ -274,7 +274,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
         verifiser(beslutter.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(2, beslutter.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, true);
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.getBeregningResultatForeldrepenger(), true);
 
     }
 
@@ -324,7 +324,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
         verifiser(beslutter.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, true);
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.getBeregningResultatForeldrepenger(), true);
 
     }
 
@@ -368,7 +368,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(2, saksbehandler.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.getBeregningResultatForeldrepenger(), false);
 
     }
 
@@ -396,7 +396,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.getBeregningResultatForeldrepenger(), false);
     }
 
     @Test
@@ -424,7 +424,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(2, saksbehandler.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.getBeregningResultatForeldrepenger(), false);
     }
 
     @Test
@@ -526,7 +526,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(1, saksbehandler.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.beregningResultatForeldrepenger, false);
+        verifiserTilkjentYtelse(saksbehandler.valgtBehandling.getBeregningResultatForeldrepenger(), false);
 
     }
 
@@ -638,10 +638,10 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
 
         //Verifiser Beregningsgrunnlag
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallAktivitetStatus(), 1);//ikke sikker på denne
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getAktivitetStatus(0).kode, "AT");
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto(), 1);
-        List<BeregningsgrunnlagPrStatusOgAndelDto> andeler = saksbehandler.valgtBehandling.beregningsgrunnlag.getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallAktivitetStatus(), 1);//ikke sikker på denne
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getAktivitetStatus(0).kode, "AT");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallBeregningsgrunnlagPeriodeDto(), 1);
+        List<BeregningsgrunnlagPrStatusOgAndelDto> andeler = saksbehandler.valgtBehandling.getBeregningsgrunnlag().getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
         verifiserLikhet(andeler.size(), 1);
         verifiserLikhet(andeler.get(0).getAktivitetStatus().kode, "AT");
 
@@ -668,7 +668,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         verifiserLikhet(beslutter.getBehandlingsstatus(), "AVSLU");
         verifiser(beslutter.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT));
         verifiserUttak(1, beslutter.valgtBehandling.hentUttaksperioder());
-        verifiserTilkjentYtelse(beslutter.valgtBehandling.beregningResultatForeldrepenger, false);
+        verifiserTilkjentYtelse(beslutter.valgtBehandling.getBeregningResultatForeldrepenger(), false);
     }
 
     @Test
@@ -716,10 +716,10 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderPerioderOpptjeningBekreftelse.class);
 
         //Verifiser Beregningsgrunnlag
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallAktivitetStatus(), 1);//ikke sikker på denne
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.getAktivitetStatus(0).kode, "AT");
-        verifiserLikhet(saksbehandler.valgtBehandling.beregningsgrunnlag.antallBeregningsgrunnlagPeriodeDto(), 2);
-        List<BeregningsgrunnlagPrStatusOgAndelDto> andelerFørstePeriode = saksbehandler.valgtBehandling.beregningsgrunnlag
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallAktivitetStatus(), 1);//ikke sikker på denne
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getAktivitetStatus(0).kode, "AT");
+        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallBeregningsgrunnlagPeriodeDto(), 2);
+        List<BeregningsgrunnlagPrStatusOgAndelDto> andelerFørstePeriode = saksbehandler.valgtBehandling.getBeregningsgrunnlag()
                 .getBeregningsgrunnlagPeriode(0).getBeregningsgrunnlagPrStatusOgAndel();
         verifiserLikhet(andelerFørstePeriode.size(), 1);
         verifiserLikhet(andelerFørstePeriode.get(0).getAktivitetStatus().kode, "AT");
@@ -731,7 +731,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderBeregnetInntektsAvvikBekreftelse.class);
 
         // Assert refusjon
-        BeregningsresultatPeriode[] resultatPerioder = saksbehandler.valgtBehandling.beregningResultatForeldrepenger.getPerioder();
+        BeregningsresultatPeriode[] resultatPerioder = saksbehandler.valgtBehandling.getBeregningResultatForeldrepenger().getPerioder();
         assertThat(resultatPerioder.length).isEqualTo(4);
         BigDecimal forventetDagsats = BigDecimal.valueOf(overstyrtInntekt).divide(BigDecimal.valueOf(260), RoundingMode.HALF_EVEN);
         assertThat(resultatPerioder[0].getAndeler()[0].getRefusjon()).isEqualTo(forventetDagsats.intValue());
@@ -801,7 +801,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(foreldrepengerEtterUke6.getPeriodeResultatType().kode).isEqualTo("MANUELL_BEHANDLING");
         assertThat(foreldrepengerEtterUke6.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
 
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Antall stønadskontoer er feil.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().size() == 4, "Antall stønadskontoer er feil.");
     }
 
     @Test
@@ -941,14 +941,14 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(utsettelse.getAktiviteter().get(1).getTrekkdager()).isEqualTo(0);
         assertThat(utsettelse.getAktiviteter().get(1).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE);
 
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 4, "Feil i antall stønadskontoer, skal være 4.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() >= 0, "FPFF skal ikke være i minus.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FELLESPERIODE").getSaldo() >= 0, "Fellerperiode skal ikke være i minus.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("MØDREKVOTE").getSaldo() >= 0, "Mødrekvote skal ikke være i minus");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().size() == 4, "Feil i antall stønadskontoer, skal være 4.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() >= 0, "FPFF skal ikke være i minus.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FELLESPERIODE").getSaldo() >= 0, "Fellerperiode skal ikke være i minus.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("MØDREKVOTE").getSaldo() >= 0, "Mødrekvote skal ikke være i minus");
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "INNVILGET");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
-        debugLoggHistorikkinnslag(saksbehandler.historikkInnslag);
+        debugLoggHistorikkinnslag(saksbehandler.getHistorikkInnslag());
         saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BREV_SENDT);
     }
 
@@ -1001,9 +1001,9 @@ public class Fodsel extends ForeldrepengerTestBase {
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getTrekkdager()).isEqualTo(0);
         assertThat(periodeMerEnn49Uker.getAktiviteter().get(0).getStønadskontoType().kode).isEqualTo(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER);
 
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().size() == 2, "Feil antall stønadskontoer");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() >= 0, "FPFF skal ikke være minus.");
-        verifiser(saksbehandler.valgtBehandling.saldoer.getStonadskontoer().get("FORELDREPENGER").getSaldo() >= 0, "Foreldrepenger skal ikke være i minus.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().size() == 2, "Feil antall stønadskontoer");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FORELDREPENGER_FØR_FØDSEL").getSaldo() >= 0, "FPFF skal ikke være minus.");
+        verifiser(saksbehandler.valgtBehandling.getSaldoer().getStonadskontoer().get("FORELDREPENGER").getSaldo() >= 0, "Foreldrepenger skal ikke være i minus.");
 
         verifiserLikhet(saksbehandler.valgtBehandling.hentBehandlingsresultat(), "INNVILGET");
         verifiserLikhet(saksbehandler.getBehandlingsstatus(), "AVSLU");
@@ -1095,7 +1095,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
         
         saksbehandler.hentFagsak(saksnummer);
-        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.NYE_REGOPPLYSNINGER);
+        saksbehandler.ventTilHistorikkinnslag(HistorikkInnslag.BEH_OPPDATERT_NYE_OPPL);
     }
 
     @Test
