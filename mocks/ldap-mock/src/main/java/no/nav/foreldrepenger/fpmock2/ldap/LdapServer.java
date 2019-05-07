@@ -21,8 +21,8 @@ import com.unboundid.ldif.LDIFReader;
 public class LdapServer {
 
     private static final String BASEDATA_USERS_LDIF = "basedata/users.ldif";
-    private final int listenerPortLdaps = Integer.valueOf(System.getProperty("ldaps.port", "8636")); // 636 er default LDAPS port, 389 default for LDAP
-    private final int listenerPortLdap = Integer.valueOf(System.getProperty("ldaps.port", "8389")); // 636 er default LDAPS port, 389 default for LDAP
+    private final int listenerPortLdaps = Integer.valueOf(System.getProperty("ldaps.port", "8636")); // 636 er default port for LDAPS
+    private final int listenerPortLdap = Integer.valueOf(System.getProperty("ldap.port", "8389")); // 389 er default port for LDAP
 
     private InMemoryDirectoryServer directoryServer;
 
