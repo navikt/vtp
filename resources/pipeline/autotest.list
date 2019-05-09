@@ -10,22 +10,22 @@ LOADBALANCER_FQDN=fpmock2:8080
 LOADBALANCER_FPSAK_POOLNAME=nais
 LOADBALANCER_FPSAK_CONTEXTROOTS=fpsak
 
-OIDC_OPENAM_HOSTURL=https://fpmock2:8063/isso/oauth2
-OIDC_OPENAM_JWKSURL=https://fpmock2:8063/isso/oauth2/connect/jwk_uri
-OIDC_OPENAM_ISSUERURL=https://fpmock2:8063/isso/oauth2
+OIDC_OPENAM_HOSTURL=https://fpmock2:8063/rest/isso/oauth2
+OIDC_OPENAM_JWKSURL=https://fpmock2:8063/rest/isso/oauth2/connect/jwk_uri
+OIDC_OPENAM_ISSUERURL=https://fpmock2:8063/rest/isso/oauth2
 OIDC_OPENAM_AGENTNAME=fpsak-localhost
 OIDC_OPENAM_PASSWORD=brukesdenne?
-OIDC_STS_ISSUER=https://fpmock2:8063/sts/issuer
-OIDC_STS_ISSUER_URL=https://fpmock2:8063/sts/issuer
-OIDC_STS_JWKS=https://fpmock2:8063/sts/jwks
-OIDC_STS_JWKS_URL=https://fpmock2:8063/sts/jwks
+OIDC_STS_ISSUER=https://fpmock2:8063/rest/sts/issuer
+OIDC_STS_ISSUER_URL=https://fpmock2:8063/rest/sts/issuer
+OIDC_STS_JWKS=https://fpmock2:8063/rest/sts/jwks
+OIDC_STS_JWKS_URL=https://fpmock2:8063/rest/sts/jwks
 ABAC_PDP_ENDPOINT_DESCRIPTION=The XACML JSON Endpoint for evaluating attributes against policies
-ABAC_PDP_ENDPOINT_URL=https://fpmock2:8063/asm-pdp/authorize
+ABAC_PDP_ENDPOINT_URL=https://fpmock2:8063/rest/asm-pdp/authorize
 SECURITYTOKENSERVICE_URL=https://fpmock2:8063/soap/SecurityTokenServiceProvider/
 
-OPENIDCONNECT_ISSOHOST=https://fpmock2:8063/isso/oauth2
-OPENIDCONNECT_ISSOISSUER=https://fpmock2:8063/isso/oauth2
-OPENIDCONNECT_ISSOJWKS=https://fpmock2:8063/isso/oauth2/connect/jwk_uri
+OPENIDCONNECT_ISSOHOST=https://fpmock2:8063/rest/isso/oauth2
+OPENIDCONNECT_ISSOISSUER=https://fpmock2:8063/rest/isso/oauth2
+OPENIDCONNECT_ISSOJWKS=https://fpmock2:8063/rest/isso/oauth2/connect/jwk_uri
 OPENIDCONNECT_USERNAME=fpsak-localhost
 
 APPDYNAMICS_CONTROLLER_HOST_NAME=appdynamics.adeo.no
