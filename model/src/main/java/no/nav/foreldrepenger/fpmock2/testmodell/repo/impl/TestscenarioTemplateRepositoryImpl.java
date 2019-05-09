@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -110,6 +112,14 @@ public class TestscenarioTemplateRepositoryImpl implements TestscenarioTemplateR
     @Override
     public TestscenarioTemplate finn(String templateKey) {
         return testTemplates.get(templateKey);
+    }
+
+    @Override
+    public TestscenarioTemplate finnMedTemplatenavn(String templateNavn) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(templateNavn);
+        matcher.find();
+        int i = Integer.valueOf(matcher.group());
+        return this.finn(Integer.toString(i));
     }
 
     public File getRootDir() {

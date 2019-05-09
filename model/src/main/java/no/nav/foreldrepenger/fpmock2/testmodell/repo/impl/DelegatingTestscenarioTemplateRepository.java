@@ -24,5 +24,11 @@ public class DelegatingTestscenarioTemplateRepository implements TestscenarioTem
     public TestscenarioTemplate finn(String templateKey) {
        return delegate.finn(templateKey); 
     }
-    
+
+    @Override
+    public TestscenarioTemplate finnMedTemplatenavn(String templateNavn) {
+        return delegate.finnMedTemplatenavn(templateNavn);
+    }
+
+
 }

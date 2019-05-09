@@ -32,4 +32,8 @@ public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuil
         return delegate.opprettTestscenario(template, userSuppliedVariables);
     }
 
+    @Override
+    public Boolean slettScenario(String id) {
+        return delegate.slettScenario(id);
+    }
 }

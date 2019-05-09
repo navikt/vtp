@@ -61,4 +61,14 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     public Optional<OrganisasjonModell> getOrganisasjon(String orgnr) {
         return delegate.getOrganisasjon(orgnr);
     }
+
+    @Override
+    public Boolean slettScenario(String id) {
+        return delegate.slettScenario(id);
+    }
+
+    @Override
+    public Boolean endreTestscenario(Testscenario testscenario) {
+        return null;
+    }
 }

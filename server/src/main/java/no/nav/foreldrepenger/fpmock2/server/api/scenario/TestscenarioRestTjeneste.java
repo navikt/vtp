@@ -1,22 +1,12 @@
 package no.nav.foreldrepenger.fpmock2.server.api.scenario;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,42 +46,92 @@ public class TestscenarioRestTjeneste {
     public void setTestscenarioRepository(TestscenarioRepository testscenarioRepository) {
         this.testscenarioRepository = testscenarioRepository;
     }
+
+
+    @PUT
+    @Path("/endrescenario/{id}")
+    @ApiOperation(value="", notes="Patcher et testcase. Serialiserer uten sjekk, du må selv ha styr på typer")
+    public Response endreScenario(TestscenarioDto testscenarioDto){
+
+
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/slettscenario/{id}")
+    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario")
+    public Response slettScenario(@PathParam("id") String id) {
+        if(testscenarioRepository.slettScenario(id)){
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/initialiserte")
+    @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
+    public List<TestscenarioDto> hentInitialiserteCaser() {
+
+        Collection<Testscenario> testscenarios = this.testscenarioRepository.getTestscenarios();
+        List<TestscenarioDto> testList = new ArrayList<>();
+
+        testscenarios.stream().forEach(ts -> {
+            testList.add(konverterTilTestscenarioDto(ts));
+
+        });
+
+        return testList;
+    }
+
+
     @POST
     @Path("/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key"), response = TestscenarioDto.class)
     public TestscenarioDto initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
+
         TestscenarioTemplate template = templateRepository.finn(templateKey);
-
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
-
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
-        Map<String, String> variabler = testscenario.getVariabelContainer().getVars();
+        return konverterTilTestscenarioDto(testscenario, templateKey);
+    }
 
-        String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
-        String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
-        String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
-        String aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
-        Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts) {
+        return konverterTilTestscenarioDto(ts, null);
+    }
+
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts, String templateKey) {
+        TestscenarioTemplate template;
+        if (templateKey == null) {
+            template = templateRepository.finnMedTemplatenavn(ts.getTemplateNavn());
+        } else {
+            template = templateRepository.finn(templateKey);
+        }
+
+        String fnrSøker = ts.getPersonopplysninger().getSøker().getIdent();
+        String fnrAnnenPart = ts.getPersonopplysninger().getAnnenPart().getIdent();
+        String aktørIdSøker = ts.getPersonopplysninger().getSøker().getAktørIdent();
+        String aktørIdAnnenPart = ts.getPersonopplysninger().getAnnenPart().getAktørIdent();
+        Optional<LocalDate> fødselsdato = fødselsdatoBarn(ts);
 
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker, fnrAnnenPart, aktørIdSøker, aktørIdAnnenPart, fødselsdato.orElse(null));
 
-        LOG.info("Testscenario med templateKey: {}, for søker: {}, med aktørId: {}.", templateKey, fnrSøker, aktørIdSøker);
-
-        ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
-        InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
+        ArbeidsforholdModell arbeidsforholdModell = ts.getSøkerInntektYtelse().getArbeidsforholdModell();
+        InntektskomponentModell inntektskomponentModell = ts.getSøkerInntektYtelse().getInntektskomponentModell();
         TestscenariodataDto scenariodata = new TestscenariodataDto(inntektskomponentModell, arbeidsforholdModell);
 
         TestscenariodataDto scenariodataAnnenpart = null;
-        if (testscenario.getAnnenpartInntektYtelse() != null) {
-            ArbeidsforholdModell arbeidsforholdModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getArbeidsforholdModell();
-            InntektskomponentModell inntektskomponentModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getInntektskomponentModell();
+        if (ts.getAnnenpartInntektYtelse() != null) {
+            ArbeidsforholdModell arbeidsforholdModellAnnenpart = ts.getAnnenpartInntektYtelse().getArbeidsforholdModell();
+            InntektskomponentModell inntektskomponentModellAnnenpart = ts.getAnnenpartInntektYtelse().getInntektskomponentModell();
             scenariodataAnnenpart = new TestscenariodataDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
 
         }
 
-        return new TestscenarioDto(template, testscenario.getId(), variabler, scenarioPersonopplysninger, scenariodata, scenariodataAnnenpart);
+        return new TestscenarioDto(template, ts.getId(), ts.getVariabelContainer().getVars(), scenarioPersonopplysninger, scenariodata, scenariodataAnnenpart);
+
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
@@ -117,5 +157,13 @@ public class TestscenarioRestTjeneste {
             result.put(e.getKey(), e.getValue().get(0));
         }
         return result;
+    }
+
+    private int getTemplateKeyFromString(String s) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(s);
+        matcher.find();
+        int i = Integer.valueOf(matcher.group());
+
+        return i;
     }
 }

@@ -38,6 +38,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioTemplateRe
 import no.nav.modig.testcertificates.TestCertificates;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
+
 public class MockServer {
 
     private static final String HTTP_HOST = "0.0.0.0";
@@ -93,6 +94,7 @@ public class MockServer {
         TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
         templateRepositoryImpl.load();
 
+
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
         DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         GsakRepo gsakRepo = new GsakRepo();
@@ -101,6 +103,7 @@ public class MockServer {
         addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo);
 
         addWebResources(handler);
+        addWebGui(handler);
 
         startServer();
 
@@ -133,16 +136,35 @@ public class MockServer {
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {
-
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
+
+
+
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
 
         DefaultServlet defaultServlet = new DefaultServlet();
+
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
 
-        ctx.addServlet(servletHolder, "/");
+        ctx.addServlet(servletHolder, "/swagger");
+
+    }
+
+    protected void addWebGui(HandlerContainer handlerContainer) {
+        WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/webapps/frontend"), "/");
+        //ctx.setDefaultsDescriptor(null);
+        ctx.setThrowUnavailableOnStartupException(true);
+        ctx.setLogUrlOnStart(true);
+
+        DefaultServlet defaultServlet = new DefaultServlet();
+
+        ServletHolder servletHolder = new ServletHolder(defaultServlet);
+        servletHolder.setInitParameter("dirAllowed", "true");
+
+        ctx.addServlet(servletHolder, "/webapps/frontend");
+
     }
 
     protected void setConnectors(Server server) {
