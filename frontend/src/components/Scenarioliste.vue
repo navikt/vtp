@@ -17,7 +17,10 @@
         computed: {
             ...mapGetters([
                 'initializedScenarios'
-            ])
+            ]),
+            reverseArray() {
+                return this.initializedScenarios.slice().reverse();
+            }
         },
         components: {
             Scenario
