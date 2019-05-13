@@ -56,7 +56,7 @@ const mutations = {
         state.initializedScenarios.push(scenario)
     },
     setInitializedScenarios: (state, scenarios) => {
-        state.initializedScenarios = scenarios;
+        state.initializedScenarios = scenarios.reverse();
     }
 }
 
