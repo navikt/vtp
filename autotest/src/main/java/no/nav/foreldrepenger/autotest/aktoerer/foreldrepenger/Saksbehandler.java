@@ -24,6 +24,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.KlageVurde
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.AksjonspunktBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.BekreftedeAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.FatterVedtakBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.ForesloVedtakBekreftelseUtenTotrinn;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.OverstyrAksjonspunkter;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.Aksjonspunkt;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
@@ -689,6 +690,12 @@ public class Saksbehandler extends Aktoer {
     @Step("Fatter vedtak og venter til sak er avsluttet")
     public void fattVedtakOgVentTilAvsluttetBehandling() throws Exception {
         bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        ventTilAvsluttetBehandling();
+    }
+
+    @Step("Fatter vedtak uten totrinnsbehandling og venter til sak er avsluttet")
+    public void fattVedtakUtenTotrinnOgVentTilAvsluttetBehandling() throws Exception {
+        bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelseUtenTotrinn.class);
         ventTilAvsluttetBehandling();
     }
 

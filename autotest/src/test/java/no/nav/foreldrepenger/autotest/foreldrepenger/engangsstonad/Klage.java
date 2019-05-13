@@ -116,7 +116,16 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        klagebehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        klagebehandler.hentFagsak(sakId);
+        klagebehandler.velgKlageBehandling();
+        klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
+                .bekreftOpphevet("NYE_OPPLYSNINGER")
+                .fritekstBrev("Fritekst brev fra KA")
+                .setBegrunnelse("Fordi");
+        klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
+        klagebehandler.fattVedtakUtenTotrinnOgVentTilAvsluttetBehandling();
 
     }
     
@@ -170,7 +179,15 @@ public class Klage extends EngangsstonadTestBase {
         beslutter.velgKlageBehandling();
         beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
                 .godkjennAksjonspunkt(beslutter.hentAksjonspunkt(AksjonspunktKoder.MANUELL_VURDERING_AV_KLAGE_NK));
-        beslutter.fattVedtakOgVentTilAvsluttetBehandling();
+        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
+        klagebehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        klagebehandler.hentFagsak(sakId);
+        klagebehandler.velgKlageBehandling();
+        klagebehandler.hentAksjonspunktbekreftelse(VurderingAvKlageNkBekreftelse.class)
+                .bekreftMedholdGunst("NYE_OPPLYSNINGER")
+                .fritekstBrev("Brev");
+        klagebehandler.bekreftAksjonspunktBekreftelse(VurderingAvKlageNkBekreftelse.class);
+        klagebehandler.fattVedtakUtenTotrinnOgVentTilAvsluttetBehandling();
     }
 
     @Test
