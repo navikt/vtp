@@ -160,7 +160,35 @@ public class Uttak extends ForeldrepengerTestBase {
                 .setBegrunnelse("omg lol haha ja bacon");
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
     }
+    @Test
+    @DisplayName("Flytting pga fødsel")
+    @Description ("Testcase hvor mor søker på termin men fødsel har skjedd. Ikke barn i TPS")
+    public void testcase_mor_fødsel_flyttingAvPerioderGrunnetFødsel() throws Exception {
+        TestscenarioDto testscenario = opprettScenario("74");
+        String søkerAktørID = testscenario.getPersonopplysninger().getSøkerAktørIdent();
+        LocalDate fødselsdato = LocalDate.now().minusWeeks(3);
+        LocalDate fpStartdato = fødselsdato.minusWeeks(3);
 
+        Fordeling fordeling = new ObjectFactory().createFordeling();
+        fordeling.setAnnenForelderErInformert(true);
+        List<LukketPeriodeMedVedlegg> perioder = fordeling.getPerioder();
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, fpStartdato, fødselsdato.minusDays(1)));
+        perioder.add(FordelingErketyper.uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusDays(36)));
+        ForeldrepengesoknadBuilder søknad = foreldrepengeSøknadErketyper.uttakMedFordeling(søkerAktørID, fordeling, SoekersRelasjonErketyper.fødsel(1, fødselsdato));
+        fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        Long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
+
+        List<InntektsmeldingBuilder> inntektsmedlinger = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
+        fordel.sendInnInntektsmeldinger(inntektsmedlinger, testscenario, saksnummer);
+
+        //Automatisk behandling av Fakta om fødsel siden det ikke er registert barn i TPS
+        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
+        saksbehandler.hentFagsak(saksnummer);
+        saksbehandler.hentAksjonspunktbekreftelse(VurderManglendeFodselBekreftelse.class)
+                .bekreftDokumentasjonForeligger(1, fødselsdato.minusMonths(1))
+                .setBegrunnelse("omg lol haha ja bacon");
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderManglendeFodselBekreftelse.class);
+    }
     @Test
     @DisplayName("Testcase alenefar - søker med manglende periode")
     @Description("Alenefar søker med manglende perioder i starten")
