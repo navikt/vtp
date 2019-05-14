@@ -22,19 +22,21 @@ public class VurderManglendeFodselBekreftelse extends AksjonspunktBekreftelse {
         super(fagsak, behandling);
     }
     
-    public void bekreftDokumentasjonForeligger(int antallBarn, LocalDate dato) {
+    public VurderManglendeFodselBekreftelse bekreftDokumentasjonForeligger(int antallBarn, LocalDate dato) {
         dokumentasjonForeligger = true;
         antallBarnFodt = antallBarn;
         for (int i = 0; i < antallBarn; i++) {
             uidentifiserteBarn.add(new UidentifisertBarn(dato, null));
         }
         fodselsdato = dato;
+        return this;
     }
 
-    public void bekreftDokumentasjonIkkeForeligger() {
+    public VurderManglendeFodselBekreftelse bekreftDokumentasjonIkkeForeligger() {
         uidentifiserteBarn.add(new UidentifisertBarn(null,null));
         dokumentasjonForeligger = false;
         antallBarnFodt = null;
+        return this;
     }
     
     public void bekreftBrukAntallBarnITps() {
