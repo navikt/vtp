@@ -2,7 +2,7 @@
 	"inntektskomponent": {
 		"inntektsperioder": [
 			{
-				"fom": "now() - P12M",
+				"fom": "now() - P2Y",
 				"beløp": 50000,
 				"orgnr": "979191138",
 				"type": "Lønnsinntekt",
@@ -23,7 +23,7 @@
 
 				"arbeidsavtaler" : [
 					{
-						"fomGyldighetsperiode": "now() - P2M",
+						"fomGyldighetsperiode": "now() - P2Y",
 						"sisteLønnsendringsdato": "now() - P1M",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "40",

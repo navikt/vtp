@@ -75,6 +75,7 @@ public class ForeldrepengesoknadXmlErketyper {
                 .withAndreVedlegg(null)
                 .withPaakrevdeVedlegg(null);
     }
+
     public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId, AnnenForelder annenForelder, Fordeling fordeling, Rettigheter rettigheter, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
         return ForeldrepengesoknadBuilder.startBuilding()
                 .withMottattDato((LocalDate.now()))
@@ -88,7 +89,7 @@ public class ForeldrepengesoknadXmlErketyper {
     public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
         return uttakMedFordeling(aktoerId, new UkjentForelder(), fordeling, RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg(), soekersRelasjonTilBarnet);
     }
-    public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId,String annenpartAktørId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
+    public ForeldrepengesoknadBuilder uttakMedFordeling(String aktoerId, String annenpartAktørId, Fordeling fordeling, SoekersRelasjonTilBarnet soekersRelasjonTilBarnet) {
         return uttakMedFordeling(aktoerId, standardAnnenForelder(annenpartAktørId), fordeling, RettigheterErketyper.beggeForeldreRettIkkeAleneomsorg(), soekersRelasjonTilBarnet);
     }
 
