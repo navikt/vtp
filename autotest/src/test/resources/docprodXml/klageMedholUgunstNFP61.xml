@@ -5,12 +5,12 @@
         <fagsaksnummer>131101103</fagsaksnummer>
         <automatiskBehandlet>true</automatiskBehandlet>
         <sakspart>
-            <sakspartId>20097330434</sakspartId>
+            <sakspartId>19069011369</sakspartId>
             <sakspartTypeKode>PERSON</sakspartTypeKode>
             <sakspartNavn>DUCK DOLLY</sakspartNavn>
         </sakspart>
         <mottaker>
-            <mottakerId>20097330434</mottakerId>
+            <mottakerId>19069011369</mottakerId>
             <mottakerTypeKode>PERSON</mottakerTypeKode>
             <mottakerNavn>DUCK DOLLY</mottakerNavn>
             <mottakerAdresse>

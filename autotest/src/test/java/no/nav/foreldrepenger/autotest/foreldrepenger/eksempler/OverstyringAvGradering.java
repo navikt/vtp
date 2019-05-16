@@ -17,10 +17,6 @@ public class OverstyringAvGradering extends FpsakTestBase {
         fordel.erLoggetInnUtenRolle();
         long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
 
-        /*
-        Inntektsmelding = InntektsmeldingBuilder.fromSøknad(søkand);
-        fordel.sendInnInntektsmelding(null, "1000104117747");
-        */
 
         saksbehandler.hentFagsak(saksnummer);
         verifiser(saksbehandler.valgtBehandling.hentUttaksperiode(0).getGraderingInnvilget(), "Gradering var ikke invilget. forventet invilget");
