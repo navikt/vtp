@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 public enum EksempelArbeidsgiver {
-    STATOILSOKKEL("Statoil ASA avd Sokkelvirksomhet","973861778","973861778","07097521470","22552255"),
-    COLORLINE("Color Line Crew AS","973135678","991779434","07097521470","99009900"),
-    UNIVERSITETET_I_OSLO("Universitetet i Oslo","974716860","974716860","07097521470","88778877"),
-    FORSVARET("Forsvaret","995428563","995428563","07097521470","22552255"),
-    STATOILFORSK("Statoil Forskningssenter", "984042442", "984042442", "07097521470","22332233"),
-    STORTINGET("Stortinget","874707112","874707112","07097521470","22330000");
+    STATOILSOKKEL("Statoil ASA avd Sokkelvirksomhet","973861778","973861778","19069011369","22552255"),
+    COLORLINE("Color Line Crew AS","973135678","991779434","19069011369","99009900"),
+    UNIVERSITETET_I_OSLO("Universitetet i Oslo","974716860","974716860","19069011369","88778877"),
+    FORSVARET("Forsvaret","995428563","995428563","19069011369","22552255"),
+    STATOILFORSK("Statoil Forskningssenter", "984042442", "984042442", "19069011369","22332233"),
+    STORTINGET("Stortinget","874707112","874707112","19069011369","22330000");
 
     private String orgNavn;
     private String orgNummer;
