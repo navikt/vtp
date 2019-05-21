@@ -5,7 +5,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-10-31",
 				"beløp": 20000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn",
@@ -50,7 +50,7 @@
 				"ansettelsesperiodeFom": "2017-01-01",
                 "ansettelsesperiodeTom": "2018-11-15",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "910909088",
 
 
 				"arbeidsavtaler" : [

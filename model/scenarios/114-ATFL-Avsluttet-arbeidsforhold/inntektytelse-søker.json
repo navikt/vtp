@@ -5,7 +5,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-10-31",
 				"beløp": 40000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -14,7 +14,7 @@
 				"fom": "2018-11-01",
 				"tom": "2018-12-31",
 				"beløp": 40000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "feriepenger"
@@ -46,7 +46,7 @@
 				"ansettelsesperiodeFom": "2017-01-01",
 				"ansettelsesperiodeTom": "2018-11-15",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "910909088",
 
 
 				"arbeidsavtaler" : [
@@ -66,7 +66,7 @@
 				"arbeidsforholdIdNav": "1148161",
 				"ansettelsesperiodeFom": "2018-11-16",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "910909088",
 
 
 				"arbeidsavtaler" : [

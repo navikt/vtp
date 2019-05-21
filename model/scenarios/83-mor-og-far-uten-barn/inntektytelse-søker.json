@@ -5,7 +5,7 @@
 				"fom": "now() - P12M",
 				"tom": "now() - P10M",
 				"beløp": 60000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -14,7 +14,7 @@
 				"fom": "now() - P10M",
 				"tom": "now()",
 				"beløp": 60000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -28,7 +28,7 @@
 				"arbeidsforholdIdNav": "1238161",
 				"ansettelsesperiodeFom": "now() - P4M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "910909088",
 
 
 				"arbeidsavtaler" : [
@@ -56,7 +56,7 @@
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"ansettelsesperiodeTom": "now() - P4M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "910909088",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P4Y",
