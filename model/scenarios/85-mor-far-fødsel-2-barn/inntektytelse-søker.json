@@ -5,7 +5,7 @@
         "fom": "now() - P4Y",
         "tom": "now()",
         "beløp": 40000,
-        "orgnr": "979191200",
+        "orgnr": "994884174",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -19,7 +19,7 @@
         "arbeidsforholdIdNav": "828162",
         "ansettelsesperiodeFom": "now() - P4Y",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "979191200",
+        "arbeidsgiverOrgnr": "994884174",
 
 
         "arbeidsavtaler" : [

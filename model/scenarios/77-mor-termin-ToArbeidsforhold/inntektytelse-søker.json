@@ -14,7 +14,7 @@
 				"fom": "now() - P2Y",
 				"tom": "now()",
 				"beløp": 25000,
-				"orgnr": "979191200",
+				"orgnr": "994884174",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -45,7 +45,7 @@
 				"arbeidsforholdIdNav": "7738162",
 				"ansettelsesperiodeFom": "now() - P2Y",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191200",
+				"arbeidsgiverOrgnr": "994884174",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P2Y",

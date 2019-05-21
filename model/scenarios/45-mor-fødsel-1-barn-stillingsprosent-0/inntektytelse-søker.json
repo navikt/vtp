@@ -5,7 +5,7 @@
 				"fom": "now() - P12M",
 				"tom": "now() - P1M",
 				"beløp": 30000,
-				"orgnr": "979191146",
+				"orgnr": "974760673",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
@@ -19,7 +19,7 @@
 				"arbeidsforholdIdNav": "458161",
 				"ansettelsesperiodeFom": "now() - P12M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191146",
+				"arbeidsgiverOrgnr": "974760673",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P12M",
