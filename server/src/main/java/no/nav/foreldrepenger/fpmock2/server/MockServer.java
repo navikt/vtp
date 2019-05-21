@@ -87,7 +87,7 @@ public class MockServer {
     public void start() throws Exception {
         startLdapServer();
         startWebServer();
-        startKafkaServer();
+        //startKafkaServer(); TODO (OL): Kommentert ut for å gjøre VTP public
     }
 
     private void startKafkaServer() {
