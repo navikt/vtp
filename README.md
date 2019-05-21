@@ -1,3 +1,7 @@
+OBS OBS IKKE OFFENTLIGGJØR ENDA
+=================================
+Fortsatt litt opprydding igjen
+
 Virtuell Tjeneste Plattform (VTP)
 =================================
 
