@@ -1,7 +1,25 @@
-Oppsett og konfigurasjon
-====
+Virtuell Tjeneste Plattform (VTP)
+=================================
 
-#Repo skal ligge som private inntil historikken er gjennomgått. #
+Applikasjon for å virtualisere grensesnitt rundt applikasjonene i FP-familien. 
+Instansierer og holder testdata konsistente på tvers av virtualiserte grensesnitt.
+
+Støtter grensesnitt på SOAP, REST og Kafka, og har også sikkerhetshåndtering innebygd. 
+
+Kan brukes av mennesker for manuell testing, og av automatiske tester for å sette testdata-tilstand før testeksekvering. 
+
+
+# Henvendelser
+
+Team Foreldrepenger <teamforeldrepenger(at)nav.no>
+
+## For NAV-ansatte
+
+Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
+
+
+# Hvordan komme igang - Oppsett og konfigurasjon
+
 
 Starte server
 ----
@@ -50,7 +68,7 @@ Koble foreldrepenger til VTP
 * Medlem_v2.url=https://localhost:8063/medl2/ws/Medlemskap/v2
 * Kodeverk_v2.url=https://localhost:8063/kodeverk/ws/Kodeverk/v2
 * MeldekortUtbetalingsgrunnlag_v1.url=https://localhost:8063/ail_ws/MeldekortUtbetalingsgrunnlag_v1
-* #SigrunRestBeregnetSkatt.url= MANGLER MANGLER MANGLER, port fra httpss://fpmock-t10.nais.preprod.local
+* SigrunRestBeregnetSkatt.url= MANGLER MANGLER MANGLER, port fra httpss://fpmock-t10.nais.preprod.local
 * Arbeidsfordeling_v1.url=https://localhost:8063/norg2/ws/Arbeidsfordeling/v1
 * infotrygd.hendelser.api.url=https://localhost:8063/infotrygd/hendelser
 
@@ -91,18 +109,6 @@ Lagt til noen forenklinger på environment variabler når vi kjører opp VTP + A
 `./resources/pipeline/readme.md` for mer info. Test certifikater er allerede lagt inn i imaget. Men man må
 fortsatt sette path riktig.
 
-```
-CUSTOM_KEYSTORE_PATH=/app/testcerts/vtpkeystore.jks
-CUSTOM_KEYSTORE_PASSWORD=changeit
-NAV_TRUSTSTORE_PATH=/app/testcerts/nav_truststore_path
-NAV_TRUSTSTORE_PASSWORD=changeit
-ENABLE_CUSTOM_TRUSTSTORE=true
-AUTOTEST_OAUTH2_ISSUER=https://fpmock2:8063/rest/isso/oauth2
-AUTOTEST_FPSAK_BASE_URL=http://fpsak:8080
-AUTOTEST_VTP_BASE_URL=http://fpmock2:8060
-LDAP_PROVIDER_URL=ldaps://fpmock2:8636
-AUTHORIZE_BASE_URL=http://localhost:8060
-```      
 
 Bygge fpmock lokalt. Imaget blir da tilgjengelig som fpmock2:latest
 ```
