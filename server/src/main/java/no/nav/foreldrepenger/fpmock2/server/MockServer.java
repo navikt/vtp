@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
+import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.fpmock2.ldap.LdapServer;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
@@ -86,6 +87,13 @@ public class MockServer {
     public void start() throws Exception {
         startLdapServer();
         startWebServer();
+        //startKafkaServer(); TODO (OL): Kommentert ut for å gjøre VTP public
+    }
+
+    private void startKafkaServer() {
+        Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort","9092"));
+        Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port","2181"));
+        LocalKafkaServer.startKafka(zookeeperPort,kafkaBrokerPort,List.of("privat-foreldrepenger-mottatBehandling-fpsak","privat-foreldrepenger-aksjonspunkthendelse-fpsak"));
     }
 
     private void startWebServer() throws IOException, Exception {

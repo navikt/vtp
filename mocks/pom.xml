@@ -28,6 +28,7 @@
         <module>infotrygdfeed-mock</module>
         <module>personfeed-mock</module>
         <module>oppdrag-mock</module>
+        <module>kafka-embedded-mock</module>
     </modules>
 
     <dependencies>
