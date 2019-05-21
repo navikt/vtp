@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
@@ -20,7 +21,7 @@ public abstract class Rest {
     protected HttpSession session;
 
     protected static final String ACCEPT_TEXT_HEADER = "application/text";
-    
+
     private static final String WRONG_STATUS_MESSAGE_FORMAT = "Request returned unexpected status code expected range %s got %s\n%s";
     private static final String AUTHORIZATION_FORMAT = "Basic %s";
 
@@ -35,7 +36,7 @@ public abstract class Rest {
     /*
      * GET
      */
-    
+
     protected HttpResponse get(String url) throws IOException {
 
         return get(url, HttpSession.createEmptyHeaders());
@@ -53,11 +54,11 @@ public abstract class Rest {
     protected HttpResponse post(String url, HttpEntity entity) throws IOException {
         return post(url, entity, HttpSession.createEmptyHeaders());
     }
-    
+
     protected HttpResponse post(String url, String request, Map<String, String> headers) throws UnsupportedEncodingException, IOException {
         return post(url, new StringEntity(request), headers);
     }
-    
+
     protected HttpResponse post(String url, String request) throws UnsupportedEncodingException, IOException {
         return post(url, request, HttpSession.createEmptyHeaders());
     }
@@ -65,7 +66,8 @@ public abstract class Rest {
     protected HttpResponse post(String url, HttpEntity entity, Map<String, String> headers) throws IOException {
         return session.post(url, entity, headers);
     }
-    
+
+
     /*
      * PUT
      */
@@ -77,7 +79,7 @@ public abstract class Rest {
     protected HttpResponse put(String url, HttpEntity entity, Map<String, String> headers) throws IOException {
         return session.put(url, entity, headers);
     }
-    
+
     /*
      * DELETE
      */
@@ -89,18 +91,17 @@ public abstract class Rest {
     protected HttpResponse delete(String url, Map<String, String> headers) throws IOException {
         return session.delete(url, headers);
     }
-    
-    
+
 
     protected String basicAuthenticationHeaderValue(String username, String password) {
         String encodedAuth = Base64.getEncoder().encodeToString(String.format("%s:%s", username, password).getBytes(StandardCharsets.UTF_8));
         return String.format(AUTHORIZATION_FORMAT, encodedAuth);
     }
-    
+
     protected String hentResponseBody(HttpResponse response) {
         return HttpSession.readResponse(response);
     }
-    
+
     /*
      * COOKIES
      */
@@ -115,7 +116,7 @@ public abstract class Rest {
     protected void addCookie(Cookie cookie) {
         session.leggTilCookie(cookie);
     }
-    
+
     /*
      * STATUSCODE VALIDATION
      */
@@ -123,23 +124,23 @@ public abstract class Rest {
     protected void ValidateResponse(HttpResponse response, int expectedStatus) {
         ValidateResponse(response, new StatusRange(expectedStatus, expectedStatus), "");
     }
-    
+
     protected void ValidateResponse(HttpResponse response, int expectedStatus, String body) {
         ValidateResponse(response, new StatusRange(expectedStatus, expectedStatus), body);
     }
-    
+
     protected void ValidateResponse(HttpResponse response, StatusRange expectedRange) {
         ValidateResponse(response, expectedRange, "");
     }
 
     protected void ValidateResponse(HttpResponse response, StatusRange expectedRange, String body) {
         int statuscode = response.getStatusLine().getStatusCode();
-        
-        if(!expectedRange.inRange(statuscode)) {
-            if(body.equals("")) {
+
+        if (!expectedRange.inRange(statuscode)) {
+            if (body.equals("")) {
                 body = hentResponseBody(response);
             }
-            
+
             throw new RuntimeException(String.format(WRONG_STATUS_MESSAGE_FORMAT, expectedRange, statuscode, body));
         }
     }
@@ -150,9 +151,13 @@ public abstract class Rest {
     public String UrlCompose(String url, Map<String, String> data) {
         return url + UrlEncodeQuery(data);
     }
-    
+
     public String UrlEncodeQuery(Map<String, String> data) {
-        StringBuilder query = new StringBuilder("?");
+        return UrlEncodeQuery(data, "?");
+    }
+
+    public String UrlEncodeQuery(Map<String, String> data, String prefix) {
+        StringBuilder query = new StringBuilder(prefix);
         for (Map.Entry<String, String> item : data.entrySet()) {
             if (item.getValue() != null && !item.getKey().isEmpty() && !item.getValue().isEmpty()) {
                 String queryKey = UrlEncodeItem(item.getKey());

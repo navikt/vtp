@@ -33,7 +33,7 @@ public class SpberegningTestBase extends TestBase {
     protected TestscenarioKlient testscenarioKlient;
     protected InntektsmeldingErketype inntektsmeldingErketype;
 
-    public SpberegningTestBase() throws Exception {
+    public SpberegningTestBase()  {
         saksbehandler = new Saksbehandler();
         fordel = new Fordel();
 

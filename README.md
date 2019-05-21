@@ -32,7 +32,6 @@ Koble foreldrepenger til VTP
 
 *Ved å starte FPSAK med '--vtp' setter du følgende endepunkter:*
 
-
 * Aktoer_v2.url=https://localhost:8063/aktoerregister/ws/Aktoer/v2
 * Person_v3.url=https://localhost:8063/tpsws/ws/Person/v3
 * Journal_v2.url=https://localhost:8063/joark/Journal/v2
@@ -62,16 +61,21 @@ I tillegg, for å overstyre sikkerhet (PDP, STS, OpenAM):
 * oidc_sts.jwks.url=https://localhost:8063/sts/jwks
 
 ### STS web service
-* securityTokenService.url=https://localhost:8063/SecurityTokenServiceProvider/
+* securityTokenService.url=https://localhost:8063/soap/SecurityTokenServiceProvider/
 
 ### LDAP
 * ldap.url=ldaps://localhost:8636/
 * ldap.auth=none
 * ldap.user.basedn=ou\=NAV,ou\=BusinessUnits,dc\=test,dc\=local
 
-* OpenIdConnect.issoHost=https://localhost:8063/isso/oauth2
-* OpenIdConnect.issoIssuer=https://localhost:8063/isso/oauth2
-* OpenIdConnect.issoJwks=https://localhost:8063/isso/oauth2/connect/jwk_uri
+For å sjekke om LDAP kjører riktig kan man bruke `ldapsearch`, eksempel fra under.
+```bash
+ldapsearch -x -h localhost:8389 -b "ou=NAV,ou=BusinessUnits,dc=test,dc=local"
+```
+
+* OpenIdConnect.issoHost=https://localhost:8063/rest/isso/oauth2
+* OpenIdConnect.issoIssuer=https://localhost:8063/rest/isso/oauth2
+* OpenIdConnect.issoJwks=https://localhost:8063/rest/isso/oauth2/connect/jwk_uri
 * OpenIdConnect.username=fpsak-localhost
 
 * systembruker.username=vtp
@@ -100,3 +104,7 @@ LDAP_PROVIDER_URL=ldaps://fpmock2:8636
 AUTHORIZE_BASE_URL=http://localhost:8060
 ```      
 
+Bygge fpmock lokalt. Imaget blir da tilgjengelig som fpmock2:latest
+```
+docker build -t fpmock2 . 
+```
