@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -111,6 +112,15 @@ public abstract class JsonRest extends Rest {
         HttpResponse response = getJson(url, headers);
         String json = hentResponseBody(response);
         ValidateResponse(response, expectedStatusRange, url + "\n\n" + json);
+        return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
+    }
+
+    protected <T> T postFormOgHentJson(String url, Map<String, String> query, Class<T> returnType) throws IOException {
+        String content = UrlEncodeQuery(query,"");
+        HttpEntity entity = new StringEntity(content, ContentType.APPLICATION_FORM_URLENCODED);
+        Map<String,String> headers = Map.of("Content-Type", ContentType.APPLICATION_FORM_URLENCODED.getMimeType());
+        HttpResponse response = post(url, entity, headers);
+        String json = hentResponseBody(response);
         return json.equals("") ? null : hentObjectMapper().readValue(json, returnType);
     }
 

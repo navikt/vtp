@@ -12,7 +12,7 @@ public class FpoppdragTestBase extends TestBase {
 
     protected InntektsmeldingErketype inntektsmeldingErketype;
 
-    public FpoppdragTestBase() throws Exception {
+    public FpoppdragTestBase() {
         saksbehandler = new Saksbehandler();
         testscenarioKlient = new TestscenarioKlient(BasicHttpSession.session());
         inntektsmeldingErketype = new InntektsmeldingErketype();
