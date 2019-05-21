@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>no.nav.vedtak.fpmock2</groupId>
+    <artifactId>fpmock2</artifactId>
+    <packaging>pom</packaging>
+    <name>FPMock2 :: Root</name>
+    <version>${revision}${sha1}${changelist}</version>
+
+    <scm>
+        <connection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</connection>
+        <developerConnection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</developerConnection>
+        <url>http://stash.devillo.no/projects/VEDFP/repos/vl-mock/browse</url>
+        <tag>vl-mock-1.0.0</tag>
+    </scm>
+
+    <modules>
+        <module>frontend</module>
+        <module>core</module>
+        <module>model</module>
+        <module>mocks</module>
+        <module>server</module>
+        <module>dokumentgenerator</module>
+        <module>autotest</module>
+    </modules>
+
+    <properties>
+        <revision>1.0</revision>
+        <sha1></sha1>
+        <changelist>-SNAPSHOT</changelist>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>11</java.version>
+
+        <cxf.version>3.3.1</cxf.version>
+        <swagger.version>1.5.21</swagger.version>
+
+		<!-- TODO bli kvitt denne avhengigheten. kan ikke eksponere disse sertifikatene og private keys offentlig -->
+        <modig-testcertificates.version>1.2.6-SNAPSHOT</modig-testcertificates.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+        	<!-- BOMs - vil overstyre alle senere avhengigheter -->
+        	<dependency>
+                <!-- NB jetty avhengigher før resteasy -->
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-bom</artifactId>
+                <version>9.4.15.v20190215</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>2.9.8</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-bom</artifactId>
+                <version>3.6.3.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- fjernet fra SE i Java11 -->
+            <dependency>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-rt</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
+            <!-- Prosjektavhengigheter -->
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>dokumentgenerator</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>testmodell</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>tps-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>gsak-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>joark-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>infotrygd-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>arena-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>medl-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>inntekt-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>arbeidsforhold-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>organisasjon-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>sigrun-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+			<dependency>
+				<groupId>no.nav.vedtak.fpmock2</groupId>
+				<artifactId>kafka-embedded-mock</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>personfeed-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>infotrygdfeed-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>norg2-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>kodeverk-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>dokumentproduksjon-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>oppdrag-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>autotest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>ldap-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- CXF - for å kunne stubbe WS-trust -->
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-ws-security</artifactId>
+                <version>${cxf.version}</version>
+	            <exclusions>
+	            	<exclusion>
+	            		<groupId>javax.xml.ws</groupId>
+	            		<artifactId>jaxws-api</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>com.sun.activation</groupId>
+	            		<artifactId>javax.activation</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>javax.annotation</groupId>
+	            		<artifactId>javax.annotation-api</artifactId>
+	            	</exclusion>
+	            	<exclusion>
+	            		<groupId>com.sun.xml.messaging.saaj</groupId>
+	            		<artifactId>saaj-impl</artifactId>
+	            	</exclusion>
+	            </exclusions>
+	        </dependency>
+            <dependency>
+                <groupId>org.apache.cxf.services.sts</groupId>
+                <artifactId>cxf-services-sts-core</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+
+            <!-- NAV-biblioteker -->
+            <dependency>
+                <groupId>no.nav.modig</groupId>
+                <artifactId>modig-testcertificates</artifactId>
+                <version>${modig-testcertificates.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- Kontraktsavhengigheter -->
+            <dependency>
+                <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                <artifactId>foreldrepenger-kontrakter-root</artifactId>
+                <version>5.0_20190242140110_c052926</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
+                <version>2.0.1</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
+                <version>3.4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>1.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>3.1.5</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
+                <version>3.0.1</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
+                <version>3.1.1</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>person-api-feed-v2</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>person-api-feed-common-v1</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
+                <version>1.0.7</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.sbl.dialogarena</groupId>
+                <artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-inngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+                <version>1.1.3</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+                <version>1.0.1</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-behandleJournal-v3-tjenestespesifikasjon</artifactId>
+                <version>3.0.2</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
+                <version>1.1.2</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-infotrygdBeregningsgrunnlag-v1-tjenestespesifikasjon</artifactId>
+                <version>1.0.2</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-meldekortUtbetalingsgrunnlag-v1-tjenestespesifikasjon</artifactId>
+                <version>1.0.1</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-fim-ytelseskontrakt-v3-tjenestespesifikasjon</artifactId>
+                <version>3.0.1</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
+                <version>2.0.6</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>nav-arbeidsfordeling-v1-tjenestespesifikasjon</artifactId>
+                <version>1.1.0</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
+                <version>2.0.0</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-organisasjon-v4-tjenestespesifikasjon</artifactId>
+                <version>1.0.4</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-arbeidsforhold-v3-tjenestespesifikasjon</artifactId>
+                <version>3.0.0</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.oppdrag</groupId>
+                <artifactId>oppdrag-klient</artifactId>
+                <version>1.0_20190110115356_1239f94</version>
+                <classifier>jaxb</classifier>
+                <exclusions>
+                    <exclusion>
+                        <groupId>no.nav.vedtak.felles.integrasjon</groupId>
+                        <artifactId>felles-integrasjon-webservice</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                <artifactId>fpoppdrag-v2</artifactId>
+                <version>1.0_20190117140834_70d7fb3</version>
+                <classifier>jaxb</classifier>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                <artifactId>okonomistotte-v1</artifactId>
+                <version>2.0_20180730135256_2912e61</version>
+                <classifier>jaxb</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-dokumentproduksjon-v2-tjenestespesifikasjon</artifactId>
+                <version>2.1.7</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+
+
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-oppgave-v3-tjenestespesifikasjon</artifactId>
+                <version>3.0.0</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+
+
+            <!-- Eksterne bibliotek -->
+            <dependency>
+                <groupId>org.jboss</groupId>
+                <artifactId>jandex</artifactId>
+                <version>2.1.1.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>2.3.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>7.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.unboundid</groupId>
+                <artifactId>unboundid-ldapsdk</artifactId>
+                <version>4.0.8</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bitbucket.b_c</groupId>
+                <artifactId>jose4j</artifactId>
+                <version>0.6.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.threeten</groupId>
+                <artifactId>threeten-extra</artifactId>
+                <version>1.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-jaxrs</artifactId>
+                <version>${swagger.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <!-- gammel 1.1 versjon eksluderes -->
+                        <groupId>javax.ws.rs</groupId>
+                        <artifactId>jsr311-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-core</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>5.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.papertrailapp</groupId>
+                <artifactId>logback-syslog4j</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <!-- Testavhengigheter -->
+            <dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter</artifactId>
+			    <version>5.4.2</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.junit.vintage</groupId>
+			    <artifactId>junit-vintage-engine</artifactId>
+			    <version>5.4.2</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.junit.platform</groupId>
+			    <artifactId>junit-platform-launcher</artifactId>
+			    <version>1.4.2</version>
+			</dependency>
+			        
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.10.0</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>2.25.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>4.5.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.24.1-GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jvnet.jaxb2_commons</groupId>
+                <artifactId>jaxb2-basics-runtime</artifactId>
+                <version>1.11.1</version>
+            </dependency>
+			
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- fjernet fra SE i Java11. legger derfor til -->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>UTF-8</encoding>
+                        <release>${java.version}</release>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M2</version>
+                    <configuration>
+                        <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.0</version>
+                    <executions>
+                        <execution>
+                            <id>failsafe-integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>failsafe-verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <reuseForks>true</reuseForks>
+                        <useFile>true</useFile>
+                        <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dsurefire.forkNumber=${surefire.forkNumber}
+                            -Dlog.level.no.nav=WARN
+                        </argLine>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jboss.jandex</groupId>
+                    <artifactId>jandex-maven-plugin</artifactId>
+                    <version>1.0.5</version>
+                    <executions>
+                        <execution>
+                            <id>make-index</id>
+                            <goals>
+                                <goal>jandex</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Nothing needed here for simple cases -->
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <configuration>
+                    <flattenMode>bom</flattenMode>
+                    <flattenedPomFilename>.flattened</flattenedPomFilename>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jboss.jandex</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <id>m2internal</id>
+            <name>NAV Maven2 Internal Repository</name>
+            <url>http://maven.adeo.no/nexus/content/repositories/m2internal</url>
+        </repository>
+        <snapshotRepository>
+            <id>m2snapshot</id>
+            <name>NAV Maven2 Snapshot Repository</name>
+            <url>http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+</project>

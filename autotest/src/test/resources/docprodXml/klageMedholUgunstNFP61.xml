@@ -1,0 +1,124 @@
+
+<brevdata>
+    <felles>
+        <spraakkode>NB</spraakkode>
+        <fagsaksnummer>131101103</fagsaksnummer>
+        <automatiskBehandlet>true</automatiskBehandlet>
+        <sakspart>
+            <sakspartId>19069011369</sakspartId>
+            <sakspartTypeKode>PERSON</sakspartTypeKode>
+            <sakspartNavn>DUCK DOLLY</sakspartNavn>
+        </sakspart>
+        <mottaker>
+            <mottakerId>19069011369</mottakerId>
+            <mottakerTypeKode>PERSON</mottakerTypeKode>
+            <mottakerNavn>DUCK DOLLY</mottakerNavn>
+            <mottakerAdresse>
+                <adresselinje1>Fjordlandet 10 B</adresselinje1>
+                <postNr>2500</postNr>
+                <poststed>TYNSET</poststed>
+                <land>NORGE</land>
+            </mottakerAdresse>
+        </mottaker>
+        <navnAvsenderEnhet>NAV Familie- og pensjonsytelser</navnAvsenderEnhet>
+        <kontaktInformasjon>
+            <kontaktTelefonnummer>55553333</kontaktTelefonnummer>
+            <returadresse>
+                <navEnhetsNavn>NAV Familie- og pensjonsytelser</navEnhetsNavn>
+                <adresselinje>Postboks 6600 Etterstad</adresselinje>
+                <postNr>0607</postNr>
+                <poststed>OSLO</poststed>
+            </returadresse>
+            <postadresse>
+                <navEnhetsNavn>NAV Familie- og pensjonsytelser</navEnhetsNavn>
+                <adresselinje>Postboks 6600 Etterstad</adresselinje>
+                <postNr>0607</postNr>
+                <poststed>OSLO</poststed>
+            </postadresse>
+        </kontaktInformasjon>
+        <dokumentDato>2019-01-31</dokumentDato>
+    </felles>
+    <fag>
+        <behandlingsType>FOERSTEGANGSBEHANDLING</behandlingsType>
+        <sokersNavn>DUCK DOLLY</sokersNavn>
+        <personstatus>ANNET</personstatus>
+        <relasjonskode>MOR</relasjonskode>
+        <behandlingsResultat>INNVILGET</behandlingsResultat>
+        <overbetaling>false</overbetaling>
+        <mottattDato>2019-01-31</mottattDato>
+        <dekningsgrad>100</dekningsgrad>
+        <bruttoBeregningsgrunnlag>720000</bruttoBeregningsgrunnlag>
+        <dagsats>2236</dagsats>
+        <månedsbeløp>48446</månedsbeløp>
+        <stønadsperiodeFom>2019-01-08</stønadsperiodeFom>
+        <stønadsperiodeTom>2019-04-09</stønadsperiodeTom>
+        <totalBrukerAndel>1</totalBrukerAndel>
+        <totalArbeidsgiverAndel>0</totalArbeidsgiverAndel>
+        <antallArbeidsgivere>1</antallArbeidsgivere>
+        <annenForelderHarRett>true</annenForelderHarRett>
+        <aleneomsorg>IKKE_VURDERT</aleneomsorg>
+        <ikkeOmsorg>false</ikkeOmsorg>
+        <antallBarn>1</antallBarn>
+        <barnErFødt>true</barnErFødt>
+        <fødselsHendelse>false</fødselsHendelse>
+        <gjelderFoedsel>true</gjelderFoedsel>
+        <dagerTaptFørTermin>0</dagerTaptFørTermin>
+        <antallPerioder>1</antallPerioder>
+        <antallInnvilget>1</antallInnvilget>
+        <antallAvslag>0</antallAvslag>
+        <graderingFinnes>false</graderingFinnes>
+        <sisteUtbetalingsdag>2019-04-09</sisteUtbetalingsdag>
+        <periodeListe>
+            <periode>
+                <innvilget>true</innvilget>
+                <årsak>2006</årsak>
+                <periodeFom>2019-01-08</periodeFom>
+                <periodeTom>2019-04-09</periodeTom>
+                <periodeDagsats>2236</periodeDagsats>
+                <antallTapteDager>0</antallTapteDager>
+                <arbeidsforholdListe>
+                    <arbeidsforhold>
+                        <arbeidsgiverNavn>BEDRIFT AS</arbeidsgiverNavn>
+                        <aktivitetDagsats>2236</aktivitetDagsats>
+                        <gradering>false</gradering>
+                        <uttaksgrad>100</uttaksgrad>
+                        <prosentArbeid>0</prosentArbeid>
+                        <stillingsprosent>50</stillingsprosent>
+                        <utbetalingsgrad>100</utbetalingsgrad>
+                    </arbeidsforhold>
+                </arbeidsforholdListe>
+            </periode>
+        </periodeListe>
+        <disponibleDager>24</disponibleDager>
+        <disponibleFellesDager>80</disponibleFellesDager>
+        <sisteDagAvSistePeriode>2019-04-09</sisteDagAvSistePeriode>
+        <seksG>581298</seksG>
+        <inntektOverSeksG>true</inntektOverSeksG>
+        <klageFristUker>6</klageFristUker>
+        <lovhjemmel>
+            <vurdering>§§ 14-10 og 14-12</vurdering>
+            <beregning>§§ 14-7 og 8-30</beregning>
+        </lovhjemmel>
+        <konsekvensForYtelse>INGEN_ENDRING</konsekvensForYtelse>
+        <antallBeregningsgrunnlagRegeler>1</antallBeregningsgrunnlagRegeler>
+        <beregningsgrunnlagRegelListe>
+            <beregningsgrunnlagRegel>
+                <regelStatus>ARBEIDSTAKER</regelStatus>
+                <antallArbeidsgivereIBeregning>1</antallArbeidsgivereIBeregning>
+                <besteBeregning>false</besteBeregning>
+                <SNNyoppstartet>false</SNNyoppstartet>
+                <andelListe>
+                    <andel>
+                        <status>ARBEIDSTAKER</status>
+                        <arbeidsgiverNavn>BEDRIFT AS</arbeidsgiverNavn>
+                        <dagsats>2236</dagsats>
+                        <månedsinntekt>60000</månedsinntekt>
+                        <årsinntekt>720000</årsinntekt>
+                    </andel>
+                </andelListe>
+            </beregningsgrunnlagRegel>
+        </beregningsgrunnlagRegelListe>
+        <forMyeUtbetalt>INGEN</forMyeUtbetalt>
+        <inntektMottattArbgiver>false</inntektMottattArbgiver>
+    </fag>
+</brevdata>

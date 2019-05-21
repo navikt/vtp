@@ -1,0 +1,106 @@
+{
+	"inntektskomponent": {
+		"inntektsperioder": [
+			{
+				"fom": "2017-01-01",
+				"tom": "2018-10-31",
+				"beløp": 20000,
+				"orgnr": "910909088",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn",
+				"skatteOgAvgiftsregel": "Ikke definert",
+				"inngaarIGrunnlagForTrekk": true,
+				"utloeserArbeidsgiveravgift": true
+			},
+			{
+				"fom": "2017-01-01",
+				"tom": "2018-10-31",
+				"beløp": 30000,
+				"orgnr": "979191139",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn",
+				"skatteOgAvgiftsregel": "nettoloennForSjoefolk",
+				"inngaarIGrunnlagForTrekk": true,
+				"utloeserArbeidsgiveravgift": true
+			},
+			{
+				"fom": "2017-01-01",
+				"tom": "2018-09-30",
+				"beløp": 10000,
+				"arbeidsgiver": {
+				    "@type": "person",
+				    "ident": "${aktor1}"
+				},
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "fastloenn",
+				"skatteOgAvgiftsregel": "nettoloenn",
+				"inngaarIGrunnlagForTrekk": true,
+				"utloeserArbeidsgiveravgift": true
+			}
+		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+			{
+				"arbeidsforholdId": "ARB001-001",
+				"arbeidsforholdIdNav": "1238161",
+				"ansettelsesperiodeFom": "2017-01-01",
+                "ansettelsesperiodeTom": "2018-11-15",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "910909088",
+
+
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "2017-01-01",
+						"sisteLønnsendringsdato": "2018-01-01",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "20",
+						"stillingsprosent" : 20,
+						"beregnetAntallTimerPerUke": "15"
+					}
+				]
+
+			},
+			{
+				"arbeidsforholdId": "ARB001-002",
+				"arbeidsforholdIdNav": "1118162",
+				"ansettelsesperiodeFom": "2017-01-01",
+                "ansettelsesperiodeTom": "2018-11-30",
+				"arbeidsforholdstype": "maritimtArbeidsforhold",
+				"arbeidsgiverOrgnr": "979191139",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "2017-01-01",
+						"sisteLønnsendringsdato": "2018-01-01",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "20",
+						"stillingsprosent" : 15,
+						"beregnetAntallTimerPerUke": "15"
+					}
+				]
+			},
+			{
+				"arbeidsforholdId": "ARB001-001",
+				"arbeidsforholdIdNav": "1118162",
+				"ansettelsesperiodeFom": "2017-01-01",
+                "ansettelsesperiodeTom": "2018-09-30",
+				"arbeidsforholdstype": "forenkletOppgjoersordning",
+				"arbeidsgiverAktorId": "${aktor1}",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "2017-01-01",
+						"sisteLønnsendringsdato": "2018-01-01",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "20",
+						"stillingsprosent" : 20,
+						"beregnetAntallTimerPerUke": "5"
+					}
+				]
+			}
+		]
+	}
+ }

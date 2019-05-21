@@ -1,0 +1,203 @@
+dn: dc=local
+changetype: add
+objectClass: top
+objectClass: dcObject
+dc: local
+
+dn: DC=test,DC=local
+changetype: add
+dc: test
+o: test
+objectClass: top
+objectclass: dcObject
+objectclass: organization
+
+dn: OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: BusinessUnits
+objectClass: organizationalUnit
+objectClass: top
+
+dn: OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: NAV
+objectClass: organizationalUnit
+objectClass: top
+
+dn: OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: Users
+objectClass: organizationalUnit
+objectClass: top
+
+dn: CN=saksbeh,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: saksbeh
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Sara Saksbehandler
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+dn: CN=saksbeh6,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: saksbeh6
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Sa6a Saksbehandler6
+memberOf: CN=0000-GA-GOSYS_KODE6,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+dn: CN=saksbeh7,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: saksbeh7
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Sa7a Saksbehandler7
+memberOf: CN=0000-GA-GOSYS_KODE7,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+dn: CN=beslut,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: beslut
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Birger Beslutter
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-beslutter,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+dn: CN=oversty,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: oversty
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Ove Overstyrer
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-manuelt-overstyrer,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+
+dn: CN=klageb,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: klageb
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Klara Klagebehandler
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-PENSJON_KLAGEBEH,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+ 
+
+dn: CN=veil,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: veil
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Vegard Veileder
+memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
+ sUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-saksbehandler,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-fpsak-veileder,OU=AccountGroups,OU=Groups,OU=NAV,O
+ U=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_FORELDRE,OU=AccountGroups,OU=Groups,OU=NAV,OU=Bus
+ inessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
+ ,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
+ s,DC=test,DC=local
+

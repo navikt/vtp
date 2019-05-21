@@ -1,0 +1,231 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>no.nav.vedtak.fpmock2</groupId>
+		<artifactId>fpmock2</artifactId>
+		<version>${revision}${sha1}${changelist}</version>
+	</parent>
+
+	<artifactId>server</artifactId>
+	<packaging>jar</packaging>
+	<name>FPMock2 :: mock server</name>
+
+	<dependencies>
+		<!-- Prosjektavhengigheter -->
+		<dependency>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <artifactId>ldap-mock</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>tps-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>gsak-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>joark-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>infotrygd-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>medl-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>norg2-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>inntekt-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>arbeidsforhold-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>organisasjon-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>sigrun-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>kafka-embedded-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>infotrygdfeed-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>personfeed-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>kodeverk-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>dokumentproduksjon-mock</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>oppdrag-mock</artifactId>
+        </dependency>
+
+		<!-- Tester -->
+
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>autotest</artifactId>
+		</dependency>
+
+
+		<!-- NAV biblioteker -->
+		<dependency>
+			<groupId>no.nav.modig</groupId>
+			<artifactId>modig-testcertificates</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Eksterne avhengigheter -->
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.papertrailapp</groupId>
+			<artifactId>logback-syslog4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-http-spi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>no.nav.vedtak.fpmock2</groupId>
+			<artifactId>arena-mock</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson2-provider</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bitbucket.b_c</groupId>
+			<artifactId>jose4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-ws-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf.services.sts</groupId>
+			<artifactId>cxf-services-sts-core</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.junit.vintage</groupId>
+		    <artifactId>junit-vintage-engine</artifactId>
+		    <scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.basedir}/lib/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy Vue.js frontend html</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>src/main/resources/webapps/frontend</outputDirectory>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/frontend/dist</directory>
+									<includes>
+										<include>index.html</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy Vue.js static resources</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>src/main/resources/webapps/frontend/</outputDirectory>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<directory>${project.parent.basedir}/frontend/dist</directory>
+									<excludes>
+										<exclude>index.html/</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

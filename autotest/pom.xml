@@ -1,0 +1,186 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>no.nav.vedtak.fpmock2</groupId>
+        <artifactId>fpmock2</artifactId>
+        <version>${revision}${sha1}${changelist}</version>
+    </parent>
+
+    <artifactId>autotest</artifactId>
+    <name>FPMock2 :: AutoTest</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aspectj.version>1.9.2</aspectj.version>
+    </properties>
+
+    <profiles>
+    	<profile>
+            <id>spberegning</id>
+            <properties>
+                <testsTags>spberegning</testsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.spberegning.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
+            <id>fpoppdrag</id>
+            <properties>
+                <testsTags>fpoppdrag</testsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.fpoppdrag.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
+            <id>fpsak</id>
+            <properties>
+                <includeTestsTags>fpsak</includeTestsTags>
+                <excludeTestsTags>test, pending</excludeTestsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
+            <id>utvikling</id>
+            <properties>
+                <includeTestsTags>utvikling</includeTestsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.**</testPackage>
+            </properties>
+        </profile>
+        <profile>
+            <id>internal</id>
+            <properties>
+                <includeTestsTags>internal</includeTestsTags>
+                <excludeTestsTags>pending</excludeTestsTags>
+                <testPackage>no.nav.foreldrepenger.autotest.internal.**</testPackage>
+            </properties>
+            <activation>
+            	<activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>
+                        -Dfile.encoding=UTF-8 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                    <systemProperties>
+                        <property>
+                            <name>junit.jupiter.extensions.autodetection.enabled</name>
+                            <value>true</value>
+                            <name>junit.jupiter.execution.parallel.enabled</name>
+                            <value>true</value>
+							<name>junit.jupiter.execution.parallel.config.strategy</name>
+                            <value>fixed</value>
+                            <name>junit.jupiter.execution.parallel.config.fixed.parallelism</name>
+                            <value>6</value>
+                        </property>
+                    </systemProperties>
+	                <includes>
+                        <include>${testPackage}</include>
+                    </includes>
+                    <groups>${includeTestsTags}</groups>
+                    <excludedGroups>${excludeTestsTags}</excludedGroups>
+                    <systemPropertyVariables>
+                        <application.root>${maven.multiModuleProjectDirectory}</application.root>
+                    </systemPropertyVariables>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
+                <configuration>
+                    <reportDirectory>target/allure-results</reportDirectory>
+                    <reportVersion>2.7.0</reportVersion>
+                    <allureDownloadUrl>http://maven.adeo.no/nexus/service/local/repositories/m2internal/hendelseContent/no/testhub/allure/2.7.0/allure-2.7.0.zip</allureDownloadUrl>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <dependencies>
+        <!-- External dependencies -->
+    	 <dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.junit.platform</groupId>
+		    <artifactId>junit-platform-launcher</artifactId>
+		</dependency>
+				
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jandex</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        
+        <!-- Interne prosjektavhengigheter -->
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <artifactId>testmodell</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <artifactId>dokumentgenerator</artifactId>
+        </dependency>
+
+        <!-- NAV biblioteker -->
+        <dependency>
+            <groupId>no.nav.modig</groupId>
+            <artifactId>modig-testcertificates</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+            <artifactId>okonomistotte-v1</artifactId>
+            <classifier>jaxb</classifier>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.oppdrag</groupId>
+            <artifactId>oppdrag-klient</artifactId>
+            <classifier>jaxb</classifier>
+        </dependency>
+        
+    </dependencies>
+</project>

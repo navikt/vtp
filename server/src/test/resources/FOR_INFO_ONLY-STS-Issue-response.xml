@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:wsa="http://www.w3.org/2005/08/addressing"
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+	<soapenv:Header>
+		<wsa:MessageID>urn:uuid:7bac0dfd-c6ea-4f04-8ec1-276463409618</wsa:MessageID>
+		<wsa:Action>http://docs.oasis-open.org/ws-sx/ws-trust/200512/RSTRC/IssueFinal</wsa:Action>
+		<wsa:To>http://www.w3.org/2005/08/addressing/anonymous</wsa:To>
+	</soapenv:Header>
+	<soapenv:Body>
+		<wst:RequestSecurityTokenResponseCollection
+			xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
+			xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+			<wst:RequestSecurityTokenResponse Context="supportLater">
+				<wst:TokenType>http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0</wst:TokenType>
+				<wst:RequestedSecurityToken>
+					<saml2:Assertion Version="2.0" ID="SAML-6a571212-dd53-4488-99c8-31e36dd8856b" IssueInstant="2018-10-10T07:00:36Z"
+						xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
+						<saml2:Issuer>IS02</saml2:Issuer>
+						<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+							<SignedInfo>
+								<CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+								<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+								<Reference URI="#SAML-6a571212-dd53-4488-99c8-31e36dd8856b">
+									<Transforms>
+										<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+										<Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+									</Transforms>
+									<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+									<DigestValue>1vjCFVHlVk6zu/CJsqxbEyq/jUk=</DigestValue>
+								</Reference>
+							</SignedInfo>
+							<SignatureValue>CfPkcIgCWXuAJ6xUfE5H+HPa5LY+p5Y94Y+lCkQihe4xL28sZeDSxLOihTPl1QAKeK8XQlJe2zDxY/FPBRPbyvozAY2+uCRTzpAdKGqLACJXIke7w6JDYbbWAi+MpMHxov9LJZPS2+2ULXou1o7qdQNmIkdW0/P85kUpAdMox2s3WE+BHCjtf4lYVVGFlD6HMu9WJk7OFDRtBnPAxkE0su/CxCO0cjoCTvhuBh00mVxVcXbLbF4WNokFFLbMWz6iqRx5mzkMiNp/jvN3kGtm8bCbg1eVUHYcfyVkws5o0cCnkFofftOAJSzp9TyxNZU1gfVtNzKCxA7YV6xFkrH1Dw==</SignatureValue>
+							<KeyInfo>
+								<X509Data>
+									<X509Certificate>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</X509Certificate>
+									<X509IssuerSerial>
+										<X509IssuerName>CN=D26 Issuing CA Intern, DC=test, DC=local</X509IssuerName>
+										<X509SerialNumber>579819418258013541424141683728872668728926316</X509SerialNumber>
+									</X509IssuerSerial>
+								</X509Data>
+							</KeyInfo>
+						</Signature>
+						<saml2:Subject>
+							<saml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">srvengangsstonad</saml2:NameID>
+							<saml2:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+								<saml2:SubjectConfirmationData NotBefore="2018-10-10T07:00:33Z" NotOnOrAfter="2018-10-10T08:00:39Z" />
+							</saml2:SubjectConfirmation>
+						</saml2:Subject>
+						<saml2:Conditions NotBefore="2018-10-10T07:00:33Z" NotOnOrAfter="2018-10-10T08:00:39Z" />
+						<saml2:AttributeStatement>
+							<saml2:Attribute Name="identType" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+								<saml2:AttributeValue>Systemressurs</saml2:AttributeValue>
+							</saml2:Attribute>
+							<saml2:Attribute Name="authenticationLevel" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+								<saml2:AttributeValue>0</saml2:AttributeValue>
+							</saml2:Attribute>
+							<saml2:Attribute Name="consumerId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+								<saml2:AttributeValue>srvengangsstonad</saml2:AttributeValue>
+							</saml2:Attribute>
+						</saml2:AttributeStatement>
+					</saml2:Assertion>
+				</wst:RequestedSecurityToken>
+				<wst:Lifetime>
+					<wsu:Created>2018-10-10T07:00:33Z</wsu:Created>
+					<wsu:Expires>2018-10-10T08:00:39Z</wsu:Expires>
+				</wst:Lifetime>
+			</wst:RequestSecurityTokenResponse>
+		</wst:RequestSecurityTokenResponseCollection>
+	</soapenv:Body>
+</soapenv:Envelope>

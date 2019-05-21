@@ -1,0 +1,5 @@
+APP_NAME=spberegning
+NAIS_APP_NAME=spberegning
+DEFAULTDS_URL=jdbc:oracle:thin:@d26dbfl020.test.local:1521/spberegning_test
+DEFAULTDS_USERNAME=SPBEREGNING_TEST
+DEFAULTDS_PASSWORD=VhWwl9iCU2No
