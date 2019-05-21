@@ -78,7 +78,7 @@
                 <antallTapteDager>0</antallTapteDager>
                 <arbeidsforholdListe>
                     <arbeidsforhold>
-                        <arbeidsgiverNavn>ACANDO AS</arbeidsgiverNavn>
+                        <arbeidsgiverNavn>BEDRIFT AS</arbeidsgiverNavn>
                         <aktivitetDagsats>2236</aktivitetDagsats>
                         <gradering>false</gradering>
                         <uttaksgrad>100</uttaksgrad>
@@ -110,7 +110,7 @@
                 <andelListe>
                     <andel>
                         <status>ARBEIDSTAKER</status>
-                        <arbeidsgiverNavn>ACANDO AS</arbeidsgiverNavn>
+                        <arbeidsgiverNavn>BEDRIFT AS</arbeidsgiverNavn>
                         <dagsats>2236</dagsats>
                         <månedsinntekt>60000</månedsinntekt>
                         <årsinntekt>720000</årsinntekt>

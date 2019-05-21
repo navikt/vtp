@@ -857,7 +857,7 @@ public class Fodsel extends ForeldrepengerTestBase {
         LocalDate startdatoForeldrePenger = fødselsdato.minusWeeks(3);
         perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, startdatoForeldrePenger, fødselsdato.minusDays(1)));
         perioder.add(FordelingErketyper.uttaksperiode(FordelingErketyper.STØNADSKONTOTYPE_MØDREKVOTE, fødselsdato, fødselsdato.plusWeeks(10)));
-        String gradetArbeidsgiver = "979191138";
+        String gradetArbeidsgiver = "910909088";
         LocalDate graderingFom = fødselsdato.plusWeeks(10).plusDays(1);
         LocalDate graderingTom = fødselsdato.plusWeeks(12);
         BigDecimal arbeidstidsprosent = BigDecimal.TEN;

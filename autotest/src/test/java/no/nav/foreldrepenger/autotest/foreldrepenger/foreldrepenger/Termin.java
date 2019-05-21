@@ -91,7 +91,7 @@ public class Termin extends ForeldrepengerTestBase {
 
 
         saksbehandler.hentAksjonspunktbekreftelse(AvklarArbeidsforholdBekreftelse.class)
-                .bekreftArbeidsforholdErRelevant("ACANDO AS", true);
+                .bekreftArbeidsforholdErRelevant("BEDRIFT AS", true);
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarArbeidsforholdBekreftelse.class);
 
 

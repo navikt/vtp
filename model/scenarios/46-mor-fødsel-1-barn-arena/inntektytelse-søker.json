@@ -32,7 +32,7 @@
 				"fom": "now() - P2Y",
 				"tom": "now() - P2M",
 				"beløp": 30000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -40,7 +40,7 @@
 			{
 				"fom": "now() - P2M",
 				"beløp": 20000,
-				"orgnr": "979191138",
+				"orgnr": "910909088",
 				"type": "YtelseFraOffentlige",
 				"fordel": "kontantytelse",
 				"beskrivelse": "arbeidsavklaringspenger"
@@ -55,7 +55,7 @@
 				"ansettelsesperiodeFom": "now() - P2Y",
 				"ansettelsesperiodeTom": "now() - P2M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191138",
+				"arbeidsgiverOrgnr": "910909088",
 
 
 				"arbeidsavtaler" : [

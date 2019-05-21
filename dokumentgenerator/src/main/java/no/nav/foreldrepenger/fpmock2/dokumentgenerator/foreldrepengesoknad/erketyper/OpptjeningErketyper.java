@@ -64,7 +64,7 @@ public class OpptjeningErketyper {
         typer.add(type);
 
         naering.setOppstartsdato((LocalDate.now().minusYears(4)));
-        naering.setOrganisasjonsnummer("979191138");
+        naering.setOrganisasjonsnummer("910909088");
         naering.setNaerRelasjon(false);
         naering.setNavn("Navnet Organisasjon");
         naering.setErVarigEndring(true);
@@ -117,7 +117,7 @@ public class OpptjeningErketyper {
         typer.add(type);
 
         naering.setOppstartsdato((LocalDate.now().minusYears(4)));
-        naering.setOrganisasjonsnummer("979191138");
+        naering.setOrganisasjonsnummer("910909088");
         naering.setNaerRelasjon(false);
         naering.setNavn("Navnet Organisasjon");
         naering.setErVarigEndring(true);

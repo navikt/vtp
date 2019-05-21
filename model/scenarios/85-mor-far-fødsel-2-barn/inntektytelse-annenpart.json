@@ -5,7 +5,7 @@
         "fom": "now() - P2Y",
         "tom": "now()",
         "beløp": 50000,
-        "orgnr": "979191138",
+        "orgnr": "910909088",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
@@ -19,7 +19,7 @@
         "arbeidsforholdIdNav": "828161",
         "ansettelsesperiodeFom": "now() - P2Y",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
-        "arbeidsgiverOrgnr": "979191138",
+        "arbeidsgiverOrgnr": "910909088",
 
 
         "arbeidsavtaler" : [
