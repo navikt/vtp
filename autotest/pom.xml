@@ -121,7 +121,7 @@
 		    <groupId>org.junit.platform</groupId>
 		    <artifactId>junit-platform-launcher</artifactId>
 		</dependency>
-				
+
 		<dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -151,7 +151,7 @@
             <artifactId>allure-junit5</artifactId>
             <version>2.11.0</version>
         </dependency>
-        
+
         <!-- Interne prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -170,6 +170,7 @@
         <dependency>
             <groupId>no.nav.modig</groupId>
             <artifactId>modig-testcertificates</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
@@ -181,6 +182,6 @@
             <artifactId>oppdrag-klient</artifactId>
             <classifier>jaxb</classifier>
         </dependency>
-        
+
     </dependencies>
 </project>
