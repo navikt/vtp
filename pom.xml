@@ -244,7 +244,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>foreldrepenger-kontrakter-root</artifactId>
-                <version>5.0_20190242140110_c052926</version>
+                <version>5.0_201904100091110_b739419</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

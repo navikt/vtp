@@ -16,6 +16,7 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.Bruker;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Ytelse;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
+import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Svangerskapspenger;
 import no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
@@ -102,6 +103,12 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
     @Override
     public ForeldrepengesoknadBuilder withEngangsstoenadYtelse(Ytelse omYtelse) {
         this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.ObjectFactory().createEngangsstønad((Engangsstønad) omYtelse);
+        return this;
+    }
+
+    @Override
+    public ForeldrepengesoknadBuilder withSvangerskapspengeYtelse(Ytelse omYtelse) {
+        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory().createSvangerskapspenger((Svangerskapspenger) omYtelse);
         return this;
     }
 

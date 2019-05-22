@@ -6,4 +6,5 @@ public interface OmYtelseStep <T extends OmYtelseStep<T>>{
     T withForeldrepengerYtelse(Ytelse omYtelse);
     T withEndringssoeknadYtelse(Ytelse omYtelse);
     T withEngangsstoenadYtelse(Ytelse omYtelse);
+    T withSvangerskapspengeYtelse(Ytelse omYtelse);
 }

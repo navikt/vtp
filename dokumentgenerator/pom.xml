@@ -41,7 +41,7 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
-        
+
     	<dependency>
 		    <groupId>no.nav.vedtak.fpmock2</groupId>
 		    <artifactId>testmodell</artifactId>
