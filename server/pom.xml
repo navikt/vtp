@@ -93,11 +93,7 @@
 
 
 		<!-- NAV biblioteker -->
-		<dependency>
-			<groupId>no.nav.modig</groupId>
-			<artifactId>modig-testcertificates</artifactId>
-			<optional>true</optional>
-		</dependency>
+
 
 		<dependency>
 			<groupId>junit</groupId>

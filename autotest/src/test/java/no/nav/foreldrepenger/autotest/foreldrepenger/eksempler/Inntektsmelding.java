@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Assert;
+
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,6 @@ public class Inntektsmelding extends FpsakTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         long saksnummer = fordel.sendInnInntektsmelding(inntektsmeldingBuilder, testscenario, null);
         System.out.println(inntektsmeldingBuilder.createInntektesmeldingXML());
-        Assert.assertTrue(saksnummer > 0);
     }
 
 

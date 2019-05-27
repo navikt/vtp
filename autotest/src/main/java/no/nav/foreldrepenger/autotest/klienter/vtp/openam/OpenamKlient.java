@@ -13,7 +13,6 @@ import no.nav.foreldrepenger.autotest.klienter.vtp.VTPKlient;
 import no.nav.foreldrepenger.autotest.klienter.vtp.openam.dto.AccessTokenResponseDTO;
 import no.nav.foreldrepenger.autotest.util.http.HttpSession;
 import no.nav.foreldrepenger.fpmock2.felles.OidcTokenGenerator;
-import no.nav.modig.testcertificates.TestCertificates;
 
 public class OpenamKlient extends VTPKlient {
 

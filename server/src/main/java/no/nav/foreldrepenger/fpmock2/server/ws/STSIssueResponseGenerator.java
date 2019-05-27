@@ -49,7 +49,7 @@ public class STSIssueResponseGenerator {
                 if (callbacks[i] instanceof WSPasswordCallback) { // CXF
                     WSPasswordCallback pc = (WSPasswordCallback) callbacks[i];
                     if (KeyStoreTool.getKeyAndCertAlias().equals(pc.getIdentifier())) {
-                        pc.setPassword(new String(KeyStoreTool.getKeyStoreAndKeyPassword()));
+                        pc.setPassword(new String(KeyStoreTool.getKeyStorePassword()));
                         break;
                     }
                 }
@@ -133,7 +133,7 @@ public class STSIssueResponseGenerator {
         Properties properties = new Properties();
         properties.put(
             "org.apache.wss4j.crypto.provider", "org.apache.wss4j.common.crypto.Merlin");
-        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", new String(KeyStoreTool.getKeyStoreAndKeyPassword()));
+        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", new String(KeyStoreTool.getKeyStorePassword()));
         properties.put("org.apache.wss4j.crypto.merlin.keystore.file", KeyStoreTool.getDefaultKeyStorePath());
 
         return properties;
