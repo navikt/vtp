@@ -18,16 +18,13 @@ class KafkaLocal {
     KafkaLocal(Properties kafkaProperties, Properties zkProperties) {
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
 
-        //start local zookeeper
         LOG.info("starting local zookeeper...");
         zookeeper = new ZooKeeperLocal(zkProperties);
-
         startKafka(kafkaConfig);
 
     }
 
     private void startKafka(KafkaConfig kafkaConfig) {
-        //start local kafka broker
         kafka = new KafkaServerStartable(kafkaConfig);
         LOG.info("starting local kafka broker...");
         kafka.startup();
@@ -36,7 +33,6 @@ class KafkaLocal {
 
 
     void stop() {
-        //stop kafka broker
         LOG.info("stopping kafka...");
         kafka.shutdown();
     }
