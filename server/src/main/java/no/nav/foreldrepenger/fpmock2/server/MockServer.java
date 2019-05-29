@@ -60,7 +60,6 @@ public class MockServer {
 
         PropertiesUtils.initProperties();
 
-
         MockServer mockServer = new MockServer();
 
         mockServer.start();
@@ -85,15 +84,19 @@ public class MockServer {
     }
 
     public void start() throws Exception {
+        startKafkaServer();
+
         startLdapServer();
         startWebServer();
-        //startKafkaServer(); TODO (OL): Kommentert ut for å gjøre VTP public
     }
 
     private void startKafkaServer() {
+
+       // Properties.setProp("java.security.auth.login.config", "KafkaServerJaas.conf");
+
         Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort","9092"));
         Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port","2181"));
-        LocalKafkaServer.startKafka(zookeeperPort,kafkaBrokerPort,List.of("privat-foreldrepenger-mottatBehandling-fpsak","privat-foreldrepenger-aksjonspunkthendelse-fpsak"));
+        LocalKafkaServer.startKafka(zookeeperPort,kafkaBrokerPort,List.of("privat-foreldrepenger-mottatBehandling-fpsak","privat-foreldrepenger-aksjonspunkthendelse-fpsak","privat-foreldrepenger-fprisk-utfor-t4","privat-foreldrepenger-tilkjentytelse-v1-local"));
     }
 
     private void startWebServer() throws IOException, Exception {
