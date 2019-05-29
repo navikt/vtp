@@ -79,14 +79,7 @@ public class KeyStoreTool {
     }
 
     public static String getKeyAndCertAlias() {
-        return "fpmock2";
-        /*
-        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
-            return "fpmock2";
-        } else {
             return System.getProperty("no.nav.modig.security.appkey", "app-key");
-        }
-        */
     }
 
 
