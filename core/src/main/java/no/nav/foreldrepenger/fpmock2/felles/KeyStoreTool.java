@@ -33,7 +33,7 @@ public class KeyStoreTool {
 
         PublicKey myPublicKey;
         PrivateKey myPrivateKey;
-        char[] keystorePassword = getKeyStoreAndKeyPassword();
+        char[] keystorePassword = getKeyStorePassword();
         String keystorePath = getDefaultKeyStorePath();
         String keyAndCertAlias = getKeyAndCertAlias();
 
@@ -65,28 +65,21 @@ public class KeyStoreTool {
     }
 
     public static String getDefaultKeyStorePath() {
-        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
-            return System.getenv("CUSTOM_KEYSTORE_PATH");
-        } else {
-            return System.getProperty("no.nav.modig.security.appcert.keystore");
+        if (null != System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE")){
+            return System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
         }
+        throw new IllegalStateException("Keystore path mangler. Konfigurer systemvariabel: NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
     }
 
-    public static char[] getKeyStoreAndKeyPassword() {
-        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
-            return System.getenv("CUSTOM_KEYSTORE_PASSWORD").toCharArray();
-        } else {
-
-            return System.getProperty("no.nav.modig.security.appcert.password").toCharArray();
+    public static char[] getKeyStorePassword() {
+        if(null != System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD")){
+            return System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD").toCharArray();
         }
+        throw new IllegalStateException("Keystore passord mangler. Konfigurer systemvariabel: NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD");
     }
 
     public static String getKeyAndCertAlias() {
-        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")){
-            return "fpmock2";
-        } else {
             return System.getProperty("no.nav.modig.security.appkey", "app-key");
-        }
     }
 
 
@@ -95,7 +88,7 @@ public class KeyStoreTool {
             init();
             org.apache.xml.security.Init.init();
         }
-        KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(),  getKeyStoreAndKeyPassword());
+        KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(),  getKeyStorePassword());
         return credentialAdapter;
     }
 
