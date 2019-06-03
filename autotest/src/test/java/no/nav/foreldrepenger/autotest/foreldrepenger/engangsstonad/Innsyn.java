@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -91,7 +92,7 @@ public class Innsyn extends EngangsstonadTestBase {
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_BESTILT), "Brev er ikke bestilt etter innsyn er godkjent");
         verifiser(saksbehandler.harHistorikkinnslag(HistorikkInnslag.BREV_SENDT), "Brev er ikke sendt etter innsyn er godkjent");
     }
-
+    @Disabled //Disabled til Kafka støtte for brev er i VTP
     @Test
     @DisplayName("Behandle innsyn for far - avvist")
     @Description("Behandle innsyn for far - avvist ved vurdering")

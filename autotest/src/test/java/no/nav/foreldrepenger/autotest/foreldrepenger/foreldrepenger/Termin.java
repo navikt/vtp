@@ -145,56 +145,28 @@ public class Termin extends ForeldrepengerTestBase {
         Long saksnummer = fordel.sendInnSøknad(søknad.build(), testscenario, DokumenttypeId.FOEDSELSSOKNAD_FORELDREPENGER);
 
         List<InntektsmeldingBuilder> inntektsmeldinger = makeInntektsmeldingFromTestscenario(testscenario, fpstartdato);
-        InntektsmeldingBuilder imOrg1 = finnIM(inntektsmeldinger, orgnr1);
-        InntektsmeldingBuilder imOrg2 = finnIM(inntektsmeldinger, orgnr2);
-        imOrg2.addGradertperiode(BigDecimal.valueOf(40), termindato.plusWeeks(7), termindato.plusWeeks(10).minusDays(1));
-        imOrg1.addGradertperiode(BigDecimal.valueOf(30),termindato.plusWeeks(12), termindato.plusWeeks(15).minusDays(1));
-        imOrg1.addGradertperiode(BigDecimal.valueOf(20), termindato.plusWeeks(15), termindato.plusWeeks(18).minusDays(1));
-        imOrg1.addGradertperiode(BigDecimal.valueOf(30), termindato.plusWeeks(18), termindato.plusWeeks(21).minusDays(1));
         fordel.sendInnInntektsmeldinger(inntektsmeldinger, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-        Kode kodeVurderingstype = saksbehandler.kodeverk.UttakPeriodeVurderingType.getKode("PERIODE_KAN_IKKE_AVKLARES");
-        saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakPerioder.class)
-                .godkjennPeriode(termindato.plusWeeks(6), termindato.plusWeeks(9).minusDays(1), kodeVurderingstype)
-                .godkjennPeriode(termindato.plusWeeks(9), termindato.plusWeeks(12).minusDays(1), kodeVurderingstype)
-                .godkjennPeriode(termindato.plusWeeks(12), termindato.plusWeeks(15).minusDays(1), kodeVurderingstype)
-                .godkjennPeriode(termindato.plusWeeks(15), termindato.plusWeeks(18).minusDays(1), kodeVurderingstype);
-        saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakPerioder.class);
         List<UttakResultatPeriode> resultatPerioder = saksbehandler.valgtBehandling.getUttakResultatPerioder().getPerioderForSøker();
         verifiser(resultatPerioder.size() == 7, "Antall perioder er ikke 7.");
         verifiser(resultatPerioder.get(0).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
         verifiser(resultatPerioder.get(1).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
-        verifiser(resultatPerioder.get(2).getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"), "Perioden har ikke gått til manuell behandling.");
-        verifiser(resultatPerioder.get(3).getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"), "Perioden har ikke gått til manuell behandling.");
-        verifiser(resultatPerioder.get(4).getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"), "Perioden har ikke gått til manuell behandling.");
-        verifiser(resultatPerioder.get(5).getPeriodeResultatType().kode.equals("MANUELL_BEHANDLING"), "Perioden har ikke gått til manuell behandling.");
+        verifiser(resultatPerioder.get(2).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
+        verifiser(resultatPerioder.get(3).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
+        verifiser(resultatPerioder.get(4).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
+        verifiser(resultatPerioder.get(5).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
         verifiser(resultatPerioder.get(6).getPeriodeResultatType().kode.equals("INNVILGET"), "Perioden er ikke automatisk innvilget.");
-        Kode periodeResultatÅrsakInnvilget = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2003");
-        Kode periodeResultatÅrsakGradFelles = saksbehandler.kodeverk.InnvilgetÅrsak.getKode("2030");
-        UttakResultatPerioder uttakResultatPerioder = saksbehandler.valgtBehandling.getUttakResultatPerioder();
-        saksbehandler.hentAksjonspunktbekreftelse(FastsettUttaksperioderManueltBekreftelse.class)
-                .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(2), periodeResultatÅrsakInnvilget)
-                .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(3), periodeResultatÅrsakInnvilget)
-                .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(4), periodeResultatÅrsakInnvilget)
-                .godkjennPeriodeMedGradering(uttakResultatPerioder.getPerioderForSøker().get(5), periodeResultatÅrsakGradFelles);
-        saksbehandler.bekreftAksjonspunktBekreftelse(FastsettUttaksperioderManueltBekreftelse.class);
-        saksbehandler.bekreftAksjonspunktBekreftelse(ForesloVedtakBekreftelse.class);
-
-        beslutter.erLoggetInnMedRolle(Rolle.BESLUTTER);
-        beslutter.hentFagsak(saksnummer);
-        Aksjonspunkt ap1 = beslutter.hentAksjonspunkt(AksjonspunktKoder.AVKLAR_FAKTA_UTTAK);
-        Aksjonspunkt ap2 = beslutter.hentAksjonspunkt(AksjonspunktKoder.FASTSETT_UTTAKPERIODER);
-        beslutter.hentAksjonspunktbekreftelse(FatterVedtakBekreftelse.class)
-                .godkjennAksjonspunkter(Arrays.asList(ap1, ap2));
-        beslutter.bekreftAksjonspunktBekreftelse(FatterVedtakBekreftelse.class);
-
-        saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
-        saksbehandler.hentFagsak(saksnummer);
+        verifiser(resultatPerioder.get(2).getGraderingInnvilget().equals(true), "Gradering ikke innvilget");
+        verifiser(resultatPerioder.get(4).getGraderingInnvilget().equals(true), "Gradering ikke innvilget");
+        verifiser(resultatPerioder.get(5).getGraderingInnvilget().equals(true), "Gradering ikke innvilget");
+        verifiser(resultatPerioder.get(6).getGraderingInnvilget().equals(true), "Gradering ikke innvilget");
+        verifiser(resultatPerioder.get(2).getGradertArbeidsprosent().compareTo(BigDecimal.valueOf(40))== 0, "Feil graderingsprosent");
+        verifiser(resultatPerioder.get(4).getGradertArbeidsprosent().compareTo(BigDecimal.valueOf(10))== 0, "Feil graderingsprosent");
+        verifiser(resultatPerioder.get(5).getGradertArbeidsprosent().compareTo(BigDecimal.valueOf(20))== 0, "Feil graderingsprosent");
+        verifiser(resultatPerioder.get(6).getGradertArbeidsprosent().compareTo(BigDecimal.valueOf(30))== 0, "Feil graderingsprosent");
         verifiser(saksbehandler.valgtBehandling.status.kode.equals("AVSLU"), "Behandlingen har ikke status avsluttet.");
-
-
     }
 
     @Test

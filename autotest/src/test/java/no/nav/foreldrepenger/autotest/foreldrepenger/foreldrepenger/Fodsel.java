@@ -127,7 +127,7 @@ public class Fodsel extends ForeldrepengerTestBase {
                 .leggTilMottarYtelse(true, Collections.emptyList())
                 .leggTilMaanedsinntekt(25800);
         saksbehandler.bekreftAksjonspunktBekreftelse(VurderFaktaOmBeregningBekreftelse.class);
-        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS));
+        verifiser(!saksbehandler.harAksjonspunkt(AksjonspunktKoder.FASTSETT_BEREGNINGSGRUNNLAG_ARBEIDSTAKER_FRILANS), "Fått AP hvor det ikke skal være det");
 
         saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class)
                 .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.VURDER_MOTTAR_YTELSE.kode)
