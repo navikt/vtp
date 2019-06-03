@@ -18,7 +18,7 @@ public class VurderFaktaOmBeregningBekreftelse extends AksjonspunktBekreftelse {
     protected List<String> faktaOmBeregningTilfeller = new ArrayList<>();
     protected MottarYtelse mottarYtelse;
     protected FastsettEndretBeregningsgrunnlag fastsettEndringBeregningsgrunnlag;
-    
+    protected VurderTidsbegrensetArbeidsforholdDto vurderTidsbegrensetArbeidsforhold;
     protected YtelseForedeling kunYtelseFordeling;
 
     public VurderFaktaOmBeregningBekreftelse(Fagsak fagsak, Behandling behandling) {
@@ -27,6 +27,11 @@ public class VurderFaktaOmBeregningBekreftelse extends AksjonspunktBekreftelse {
 
     public VurderFaktaOmBeregningBekreftelse leggTilFaktaOmBeregningTilfeller(String kode) {
         this.faktaOmBeregningTilfeller.add(kode);
+        return this;
+    }
+
+    public VurderFaktaOmBeregningBekreftelse leggTilVurderTidsbegrenset(List<VurderteArbeidsforholdDto> tidsbegrensetAndeler){
+        this.vurderTidsbegrensetArbeidsforhold = new VurderTidsbegrensetArbeidsforholdDto(tidsbegrensetAndeler);
         return this;
     }
 
