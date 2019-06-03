@@ -91,7 +91,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
             aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(utbetalingsgrad));
             if(!periode.getUtsettelseType().kode.equals("-")) {
-                aktivitet.setTrekkdager(0);
+                aktivitet.setTrekkdagerDesimaler(BigDecimal.ZERO);
             }
         }
     }
@@ -118,7 +118,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
             aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(utbetalingsgrad));
             if(!periode.getUtsettelseType().kode.equals("-")) {
-                aktivitet.setTrekkdager(0);
+                aktivitet.setTrekkdagerDesimaler(BigDecimal.ZERO);
             }
         }
     }
@@ -136,7 +136,7 @@ public class FastsettUttaksperioderManueltBekreftelse extends AksjonspunktBekref
         //HACK for manglende aktivitet i periode (set aktivitet til å trekke fra mødrekvoten)
         for (UttakResultatPeriodeAktivitet aktivitet : periode.getAktiviteter()) {
             aktivitet.setUtbetalingsgrad(BigDecimal.valueOf(utbetalingsgrad));
-            aktivitet.setTrekkdager(0);
+            aktivitet.setTrekkdagerDesimaler(BigDecimal.ZERO);
             if(aktivitet.getStønadskontoType() == null || aktivitet.getStønadskontoType().kode.equals("-")) {
                 aktivitet.setStønadskontoType(new Kode("STOENADSKONTOTYPE", "MØDREKVOTE", "Mødrekvote"));
             }

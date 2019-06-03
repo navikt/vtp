@@ -10,7 +10,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.kodeverk.dto.Kode;
 public class UttakResultatPeriodeAktivitet {
 
     protected Kode stønadskontoType = null;
-    protected Integer trekkdager = null;
+    protected BigDecimal trekkdagerDesimaler = null;
     protected BigDecimal prosentArbeid = null;
     protected BigDecimal utbetalingsgrad = null;
     protected Kode uttakArbeidType = null;
@@ -22,11 +22,11 @@ public class UttakResultatPeriodeAktivitet {
     public void setUtbetalingsgrad(BigDecimal utbetalingsgrad) {
         this.utbetalingsgrad = utbetalingsgrad;
     }
-    public Integer getTrekkdager() {
-        return trekkdager;
+    public BigDecimal getTrekkdagerDesimaler() {
+        return trekkdagerDesimaler;
     }
-    public void setTrekkdager(Integer trekkdager) {
-        this.trekkdager = trekkdager;
+    public void setTrekkdagerDesimaler(BigDecimal trekkdagerDesimaler) {
+        this.trekkdagerDesimaler = trekkdagerDesimaler;
     }
     public Kode getStønadskontoType() {
         return stønadskontoType;
