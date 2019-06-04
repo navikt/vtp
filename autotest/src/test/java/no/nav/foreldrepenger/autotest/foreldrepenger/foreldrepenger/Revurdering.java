@@ -184,6 +184,7 @@ public class Revurdering extends ForeldrepengerTestBase {
                 .setStartdatoFraSoknad(fpStartdato.plusWeeks(1))
                 .setBegrunnelse("Endret startdato for fp.");
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class);
+        verifiser(saksbehandler.harAksjonspunkt("5081"), "Har ikke AP 5081");
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakFørsteUttakDato.class)
                 .delvisGodkjennPeriode(fpStartdato, fpStartdato.plusWeeks(3).minusDays(1), fpStartdato.plusWeeks(1), fpStartdato.plusWeeks(3).minusDays(1),
                         hentKodeverk().UttakPeriodeVurderingType.getKode("PERIODE_OK"));
@@ -205,6 +206,7 @@ public class Revurdering extends ForeldrepengerTestBase {
                 .setStartdatoFraSoknad(fpStartdato.plusDays(2))
                 .setBegrunnelse("Endret startdato for fp.");
         saksbehandler.bekreftAksjonspunktBekreftelse(AvklarFaktaStartdatoForForeldrepengerBekreftelse.class);
+        verifiser(saksbehandler.harAksjonspunkt("5081"), "Har ikke AP 5081");
         saksbehandler.hentAksjonspunktbekreftelse(AvklarFaktaUttakBekreftelse.AvklarFaktaUttakFørsteUttakDato.class)
                 .delvisGodkjennPeriode(fpStartdato, fpStartdato.plusWeeks(3).minusDays(1), fpStartdato.plusDays(2), fpStartdato.plusWeeks(3).minusDays(1),
                         hentKodeverk().UttakPeriodeVurderingType.getKode("PERIODE_OK"));
