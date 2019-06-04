@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.autotest.foreldrepenger.engangsstonad;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ public class Termin extends EngangsstonadTestBase {
 
     }
 
-
+    @Disabled //Disabled til Kafka støtte for brev er i VTP
     @Test
     @DisplayName("Mor søker terming men mangler dokumentasjon")
     @Description("Mor søker terming men mangler dokumentasjon og sender melding om manglende brev")
