@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-
+//TODO (OL): Redundant med koder to ganger? Refaktorer.
 public class Behandlingstema {
 
     private static List<String> VALID_KODER;
@@ -17,6 +17,7 @@ public class Behandlingstema {
         koder.add("ab0047");
         koder.add("ab0072");
         koder.add("ab0326");
+        koder.add("ab0126");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -26,6 +27,7 @@ public class Behandlingstema {
     public static Behandlingstema FORELDREPENGER_FOEDSEL = new Behandlingstema("ab0047");
     public static Behandlingstema FORELDREPENGER_ADOPSJON = new Behandlingstema("ab0072");
     public static Behandlingstema FORELDREPENGER = new Behandlingstema("ab0326");
+    public static Behandlingstema SVANGERSKAPSPENGER = new Behandlingstema("ab0126");
 
     private String kode;
 

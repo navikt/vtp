@@ -9,19 +9,21 @@ public class ArbeidsforholdErketyper {
 
 
 
-    public Virksomhet virksomhet(){
-        return new Virksomhet();
+    public static Virksomhet virksomhet(String identifikator){
+        Virksomhet virksomhet = new Virksomhet();
+        virksomhet.setIdentifikator(identifikator);
+        return virksomhet;
     }
 
-    public PrivatArbeidsgiver privatArbeidsgiver(){
+    public static PrivatArbeidsgiver privatArbeidsgiver(){
         return new PrivatArbeidsgiver();
     }
 
-    public SelvstendigNæringsdrivende selvstendigNæringsdrivende(){
+    public static SelvstendigNæringsdrivende selvstendigNæringsdrivende(){
         return new SelvstendigNæringsdrivende();
     }
 
-    public Frilanser frilanser() {
+    public static Frilanser frilanser() {
         return new Frilanser();
     }
 

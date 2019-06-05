@@ -2,10 +2,13 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soek
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.JaxbHelper;
@@ -29,6 +32,8 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
         AndreVedleggStep<ForeldrepengesoknadBuilder>,
         PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
         BuildStep {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ForeldrepengesoknadBuilder.class);
 
     private LocalDate mottattDato;
     private String begrunnelseForSenSoeknad;
@@ -130,6 +135,8 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
         return this;
     }
 
+
+
     @Override
     public Soeknad build() {
         Soeknad soeknad = new Soeknad();
@@ -140,6 +147,17 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
         OmYtelse omYtelse = new OmYtelse();
         omYtelse.getAny().add(this.omYtelse);
         soeknad.setOmYtelse(omYtelse);
+
+        if(erSvangerskapspenger(soeknad)){
+            Svangerskapspenger svangerskapspenger = (Svangerskapspenger) this.omYtelse.getValue();
+            svangerskapspenger.getTilretteleggingListe().getTilrettelegging().forEach(tilrettelegging -> {
+                tilrettelegging.getVedlegg().forEach(vedlegg -> {
+                     soeknad.getPaakrevdeVedlegg().add((Vedlegg) vedlegg.getValue());
+                });
+            });
+        }
+
+
 
         soeknad.setSoeker(this.soeker);
         if (null != this.paakrevdeVedlegg) {
@@ -156,6 +174,16 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
 
 
         return soeknad;
+    }
+
+    private boolean erSvangerskapspenger(Soeknad soeknad) {
+        for(Object jaxbYtelseElement : soeknad.getOmYtelse().getAny()){
+            Ytelse ytelse = (Ytelse) (((JAXBElement<? extends Ytelse>) jaxbYtelseElement).getValue());
+            if(ytelse instanceof Svangerskapspenger){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Soeknad buildEndring() {
