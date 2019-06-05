@@ -264,12 +264,6 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummerE = fordel.sendInnSøknad(endretSøknad.buildEndring(), søkerAktørIdent, søkerIdent,
                 DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
-        // Send inn ny inntektsmelding - med utsettelseperiode
-        List<InntektsmeldingBuilder> inntektsmeldingEndret = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
-        for (InntektsmeldingBuilder im : inntektsmeldingEndret) {
-            im.addUtsettelseperiode(FordelingErketyper.UTSETTELSETYPE_ARBEID, utsettelseFom, utsettelseTom);
-        }
-        fordel.sendInnInntektsmeldinger(inntektsmeldingEndret, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
@@ -325,12 +319,6 @@ public class Revurdering extends ForeldrepengerTestBase {
         fordel.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         Long saksnummerE = fordel.sendInnSøknad(endretSøknad.buildEndring(), søkerAktørIdent, søkerIdent,
                 DokumenttypeId.FORELDREPENGER_ENDRING_SØKNAD, saksnummer);
-        // Send inn ny inntektsmelding - med graderingsperiode
-        List<InntektsmeldingBuilder> inntektsmeldingEndret = makeInntektsmeldingFromTestscenario(testscenario, fpStartdato);
-        for (InntektsmeldingBuilder im : inntektsmeldingEndret) {
-            im.addGradertperiode(BigDecimal.valueOf(40), graderingFom, graderingTom);
-        }
-        fordel.sendInnInntektsmeldinger(inntektsmeldingEndret, testscenario, saksnummer);
 
         saksbehandler.erLoggetInnMedRolle(Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummerE);
