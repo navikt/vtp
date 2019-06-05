@@ -19,8 +19,6 @@ import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erket
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soeknad.ForeldrepengesoknadBuilder;
 import no.nav.foreldrepenger.fpmock2.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Tilrettelegging;
-import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.TilretteleggingListe;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Virksomhet;
 
 @Tag("develop") //TODO (OL): Gjør til fpsak når klar
@@ -55,14 +53,6 @@ public class Førstegangsbehandling extends SvangerskapspengerTestBase {
 
         saksbehandler.erLoggetInnMedRolle(Aktoer.Rolle.SAKSBEHANDLER);
         saksbehandler.hentFagsak(saksnummer);
-
-
-
-
-
-
-
-
 
 
 
