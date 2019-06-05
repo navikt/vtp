@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.autotest.klienter.vtp.openam.TestCertificates;
+import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.fpmock2.ldap.LdapServer;
@@ -79,7 +80,7 @@ public class MockServer {
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
 
-        ldapServer = new LdapServer(new File(getKeystoreFilePath()), getKeyStorePassword().toCharArray());
+        ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
 
     }
 
@@ -201,9 +202,9 @@ public class MockServer {
             sslContextFactory.setKeyManagerPassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
         } else {
             sslContextFactory.setCertAlias("localhost-ssl");
-            sslContextFactory.setKeyStorePath(getKeystoreFilePath());
-            sslContextFactory.setKeyStorePassword(getKeyStorePassword());
-            sslContextFactory.setKeyManagerPassword(getKeyStorePassword());
+            sslContextFactory.setKeyStorePath(KeystoreUtils.getKeystoreFilePath());
+            sslContextFactory.setKeyStorePassword(KeystoreUtils.getKeyStorePassword());
+            sslContextFactory.setKeyManagerPassword(KeystoreUtils.getKeyStorePassword());
         }
 
         @SuppressWarnings("resource")
@@ -216,19 +217,6 @@ public class MockServer {
         server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
     }
 
-    public static String getKeystoreFilePath() {
-        if (null != System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE")){
-            return System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
-        }
-        throw new IllegalStateException("Keystore path mangler. Konfigurer systemvariabel: NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
-    }
-
-    public static String getKeyStorePassword() {
-        if(null != System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD")){
-            return System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD");
-        }
-        throw new IllegalStateException("Keystore passord mangler. Konfigurer systemvariabel: NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD");
-    }
 
     private Integer getSslPort() {
         Integer sslPort = Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
