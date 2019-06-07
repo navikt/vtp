@@ -30,8 +30,14 @@
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>core</artifactId>
         </dependency>
-        
-
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
