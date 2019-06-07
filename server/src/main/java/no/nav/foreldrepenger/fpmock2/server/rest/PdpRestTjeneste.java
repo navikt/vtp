@@ -8,6 +8,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,11 +20,13 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = { "ABAC-PDP-Mock" })
 @Path("/asm-pdp/authorize")
 public class PdpRestTjeneste {
+    private final static Logger LOG = LoggerFactory.getLogger(PdpRestTjeneste.class);
 
     @POST
     @Produces("application/xacml+json")
     @ApiOperation(value = "asm-pdp/authorize", notes = ("Mock impl av ABAC PDP authorize"))
     public Response authorize(String entity) throws IOException {
+        LOG.debug("Invoke: autorize with entry: {}", entity);
         int permits = getPermits(entity);
         return Response.ok(buildPermitResponse(permits)).build();
     }

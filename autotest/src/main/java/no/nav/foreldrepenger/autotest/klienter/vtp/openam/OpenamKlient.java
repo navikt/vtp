@@ -18,13 +18,6 @@ public class OpenamKlient extends VTPKlient {
 
     private static final Map<String, BasicClientCookie> loginCookies = new ConcurrentHashMap<>();
 
-    static {
-
-        if (null == System.getenv("ENABLE_CUSTOM_TRUSTSTORE") || System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("false")) {
-            TestCertificates.setupKeyAndTrustStore();
-        }
-    }
-
     public OpenamKlient(HttpSession session) {
         super(session);
     }
