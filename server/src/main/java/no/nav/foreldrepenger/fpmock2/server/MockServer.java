@@ -23,7 +23,6 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.autotest.klienter.vtp.openam.TestCertificates;
 import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaServer;
@@ -55,9 +54,6 @@ public class MockServer {
     private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
 
     public static void main(String[] args) throws Exception {
-        if (null == System.getenv("ENABLE_CUSTOM_TRUSTSTORE") || System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("false")) {
-            TestCertificates.setupKeyAndTrustStore();
-        }
 
         PropertiesUtils.initProperties();
 
