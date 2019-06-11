@@ -71,13 +71,13 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
                 response.getJournalpostListe().add(JournalpostV3Bulider.buildFrom(modell));
             }
         }
-        
-        LOG.info("Fant antal journalposter: " + response.getJournalpostListe().size());
-        
+
+        LOG.info("Fant antall journalposter: " + response.getJournalpostListe().size());
+
         // TODO: sett sisteIntervall?
         return response;
     }
-    
+
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/journal/v3/Journal_v3/hentDokumentRequest")
     @RequestWrapper(localName = "hentDokument", targetNamespace = "http://nav.no/tjeneste/virksomhet/journal/v3", className = "no.nav.tjeneste.virksomhet.journal.v3.HentDokument")
