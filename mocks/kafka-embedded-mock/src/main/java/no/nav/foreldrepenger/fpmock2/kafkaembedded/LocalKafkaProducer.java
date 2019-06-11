@@ -25,6 +25,14 @@ public class LocalKafkaProducer {
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put("security.protocol", "PLAINTEXT");
+        //props.put("sasl.mechanism", "PLAIN");
+        //props.put("plain.sasl.jaas.config","no.nav.foreldrepenger.fpmock2.kafkaembedded.KafkaLoginModule required;");
+        //props.put("sasl.jaas.config","org.apache.kafka.common.security.scram.ScramLoginModule required username=\"vtp_user\" password=\"vtp_password\";");
+        //props.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
+        //props.put("ssl.truststore.password",KeystoreUtils.getTruststorePassword());
+        //props.put("ssl.keystore.location",KeystoreUtils.getKeystoreFilePath());
+        //props.put("ssl.keystore.password",KeystoreUtils.getKeyStorePassword());
 
         // Create the producer
         producer = new KafkaProducer<String, String>(props);

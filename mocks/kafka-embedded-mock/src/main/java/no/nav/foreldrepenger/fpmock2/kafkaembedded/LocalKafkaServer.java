@@ -42,17 +42,31 @@ public class LocalKafkaServer {
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
         kafkaProperties.put("listeners", "PLAINTEXT://localhost:" + kafkaBrokerPort);
-        kafkaProperties.put("advertised.listeners", "PLAINTEXT://localhost:" + kafkaBrokerPort);
-
-        //kafkaProperties.put("listeners", "SASL_SSL://localhost:" + kafkaBrokerPort);
-        //kafkaProperties.put("advertised.listeners","SASL_SSL://localhost:" +kafkaBrokerPort);
+        kafkaProperties.put("advertised.listeners","PLAINTEXT://localhost:" +kafkaBrokerPort);
+        kafkaProperties.put("socket.request.max.bytes","369296130");
         //kafkaProperties.put("security.inter.broker.protocol","SASL_SSL");
+        //kafkaProperties.put("plain.sasl.jaas.config","no.nav.foreldrepenger.fpmock2.kafkaembedded.KafkaLoginModule required;");
+        //kafkaProperties.put("java.security.auth.login.config","kafkasecurity.conf");
+        //kafkaProperties.put("sasl.mechanism.inter.broker.protocol","PLAIN");
+        //kafkaProperties.put("sasl.enabled.mechanisms","PLAIN, CRAM_MD5");
+        //kafkaProperties.put("plain.sasl.jaas.config","org.apache.kafka.common.security.scram.ScramLoginModule required username=\"vtp_user\" password=\"vtp_password\";");
+
+        //SSL
+        //kafkaProperties.put("ssl.keystore.location", KeystoreUtils.getKeystoreFilePath());
+        //kafkaProperties.put("ssl.keystore.password",KeystoreUtils.getKeyStorePassword());
+        //kafkaProperties.put("ssl.truststore.location",KeystoreUtils.getTruststoreFilePath());
+        //kafkaProperties.put("ssl.truststore.password",KeystoreUtils.getTruststorePassword());
+
 
 
         final String zookeeperTempInstanceDataDir = "" + System.currentTimeMillis(); // For å hindre NodeExists-feil på restart p.g.a. at data allerede finnes i katalogen.
         zkProperties.put("dataDir", "target/zookeeper/" + zookeeperTempInstanceDataDir);
         zkProperties.put("clientPort", "" + zookeeperPort);
         zkProperties.put("maxClientCnxns", "0");
+        zkProperties.put("admin.enableServer","false");
+        //zkProperties.put("authProvider.1","org.apache.zookeeper.server.auth.SASLAuthenticationProvider");
+     //  zkProperties.put("requireClientAuthScheme","sasl");
+
         try {
             kafka = new KafkaLocal(kafkaProperties, zkProperties);
 
@@ -73,6 +87,8 @@ public class LocalKafkaServer {
 
         localConsumer = new LocalKafkaConsumerStream(KAFKA_URL, bootstrapTopics);
         localConsumer.start();
+
     }
+
 
 }

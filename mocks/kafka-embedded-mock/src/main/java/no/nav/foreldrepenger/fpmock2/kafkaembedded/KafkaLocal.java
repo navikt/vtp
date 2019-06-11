@@ -18,10 +18,14 @@ class KafkaLocal {
     KafkaLocal(Properties kafkaProperties, Properties zkProperties) {
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
 
-        LOG.info("starting local zookeeper...");
-        zookeeper = new ZooKeeperLocal(zkProperties);
+        startZookeeper(zkProperties);
         startKafka(kafkaConfig);
 
+    }
+
+    private void startZookeeper(Properties zkProperties){
+        LOG.info("starting local zookeeper...");
+        zookeeper = new ZooKeeperLocal(zkProperties);
     }
 
     private void startKafka(KafkaConfig kafkaConfig) {

@@ -213,7 +213,6 @@ public class MockServer {
         server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
     }
 
-
     private Integer getSslPort() {
         Integer sslPort = Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
         return sslPort;
