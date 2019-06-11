@@ -12,6 +12,8 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
+
 public class LocalKafkaConsumerStream {
     private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaConsumerStream.class);
     private KafkaStreams stream;
@@ -23,6 +25,13 @@ public class LocalKafkaConsumerStream {
         streamsConfiguration.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        streamsConfiguration.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG,"SASL_SSL");
+        streamsConfiguration.put("sasl.mechanism","DIGEST-MD5");
+        streamsConfiguration.put("sasl.jaas.config","org.apache.kafka.common.security.scram.ScramLoginModule required username=\"vtp_user\" password=\"vtp_password\";");
+        streamsConfiguration.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
+        streamsConfiguration.put("ssl.truststore.password",KeystoreUtils.getTruststorePassword());
+        streamsConfiguration.put("ssl.keystore.location",KeystoreUtils.getKeystoreFilePath());
+        streamsConfiguration.put("ssl.keystore.password",KeystoreUtils.getKeyStorePassword());
 
         //TODO (OL): Skrive om slik at vi logger hvilken kø meldingen kommer inn på.
         final StreamsBuilder builder = new StreamsBuilder();
