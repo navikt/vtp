@@ -185,11 +185,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
-                <artifactId>autotest</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>no.nav.vedtak.fpmock2</groupId>
