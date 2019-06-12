@@ -84,13 +84,6 @@
 			<artifactId>oppdrag-mock</artifactId>
         </dependency>
 
-		<!-- Tester -->
-
-		<dependency>
-			<groupId>no.nav.vedtak.fpmock2</groupId>
-			<artifactId>autotest</artifactId>
-		</dependency>
-
 
 		<!-- NAV biblioteker -->
 
