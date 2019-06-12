@@ -710,20 +710,26 @@
                     <release>${java.version}</release>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <deployAtEnd>true</deployAtEnd>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 
         </plugins>
     </build>
 
     <distributionManagement>
         <repository>
-            <id>m2internal</id>
-            <name>NAV Maven2 Internal Repository</name>
-            <url>http://maven.adeo.no/nexus/content/repositories/m2internal</url>
+            <id>repo.adeo.no-releases</id>
+            <url>https://repo.adeo.no/repository/maven-releases</url>
         </repository>
         <snapshotRepository>
-            <id>m2snapshot</id>
-            <name>NAV Maven2 Snapshot Repository</name>
-            <url>http://maven.adeo.no/nexus/content/repositories/m2snapshot</url>
+            <id>repo.adeo.no-snapshots</id>
+            <url>https://repo.adeo.no/repository/maven-snapshots</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>

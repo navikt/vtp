@@ -30,7 +30,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import no.nav.foreldrepenger.fpmock2.server.api.cases.CasesRestService;
 import no.nav.foreldrepenger.fpmock2.server.api.expect.ExpectRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.api.journalforing.JournalforingRestTjeneste;
@@ -75,7 +74,6 @@ public class ApplicationConfig extends Application {
         classes.add(ExpectRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
-        classes.add(CasesRestService.class);
         classes.add(FeedRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
         classes.add(FpFormidlingMock.class);
