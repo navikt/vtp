@@ -24,6 +24,7 @@
         <module>mocks</module>
         <module>server</module>
         <module>dokumentgenerator</module>
+        <module>autotest</module>
     </modules>
 
     <properties>
@@ -185,6 +186,11 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>autotest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -702,6 +708,14 @@
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                     <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <deployAtEnd>true</deployAtEnd>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
 
