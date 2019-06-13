@@ -12,7 +12,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class DokumenttypeId {
-    
+
     private static List<String> VALID_KODER = new ArrayList<>();
 
     private String kode;
@@ -51,6 +51,7 @@ public class DokumenttypeId {
     public static DokumenttypeId FPPROD_FORLENGET_SAKSBEHANDLINGSTID__TIDLIG_SØKNAD = createDokumenttypeId("000056");
     public static DokumenttypeId FORELDREPENGER_ENDRING_SØKNAD = createDokumenttypeId("I000050");
     public static DokumenttypeId FPPROD_VEDTAK_MEDHOLD = createDokumenttypeId("000114");
+    public static DokumenttypeId SØKNAD_SVANGERSKAPSPENGER = createDokumenttypeId("I000001");
 
     public DokumenttypeId(String kode){
         this.kode = kode == null ? this.kode : kode;
@@ -84,7 +85,7 @@ public class DokumenttypeId {
     public int hashCode() {
         return Objects.hash(getKode());
     }
-    
+
     private static DokumenttypeId createDokumenttypeId(String kode) {
         ArrayList<String> koder = new ArrayList<>();
         VALID_KODER.forEach(k -> koder.add(k));
