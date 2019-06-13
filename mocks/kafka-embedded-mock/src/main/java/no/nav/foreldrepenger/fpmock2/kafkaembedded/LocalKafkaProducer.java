@@ -6,14 +6,18 @@ import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
+
 public class LocalKafkaProducer {
-    Logger LOG = LoggerFactory.getLogger(LocalKafkaProducer.class);
     private final KafkaProducer producer;
     private final AdminClient kafkaAdminClient;
+    Logger LOG = LoggerFactory.getLogger(LocalKafkaProducer.class);
 
     public LocalKafkaProducer(String bootstrapServer) {
         // Create Producer properties
@@ -25,14 +29,14 @@ public class LocalKafkaProducer {
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put("security.protocol", "PLAINTEXT");
-        //props.put("sasl.mechanism", "PLAIN");
-        //props.put("plain.sasl.jaas.config","no.nav.foreldrepenger.fpmock2.kafkaembedded.KafkaLoginModule required;");
-        //props.put("sasl.jaas.config","org.apache.kafka.common.security.scram.ScramLoginModule required username=\"vtp_user\" password=\"vtp_password\";");
-        //props.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
-        //props.put("ssl.truststore.password",KeystoreUtils.getTruststorePassword());
-        //props.put("ssl.keystore.location",KeystoreUtils.getKeystoreFilePath());
-        //props.put("ssl.keystore.password",KeystoreUtils.getKeyStorePassword());
+        props.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
+        props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
+        props.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
+        props.put("ssl.truststore.password", KeystoreUtils.getTruststorePassword());
+        props.put("ssl.keystore.location", KeystoreUtils.getKeystoreFilePath());
+        props.put("ssl.keystore.password", KeystoreUtils.getKeyStorePassword());
+        String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
+        props.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(jaasTemplate, "vtp", "vtp"));
 
         // Create the producer
         producer = new KafkaProducer<String, String>(props);
@@ -49,7 +53,7 @@ public class LocalKafkaProducer {
 
     public void sendMelding(String topic, String key, String value) {
         producer.send(new ProducerRecord(topic, key, value), (recordMetadata, e) -> {
-            LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(),recordMetadata.offset());
+            LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
         });
         producer.flush();
     }

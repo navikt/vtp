@@ -11,15 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class ZooKeeperLocal {
-    Logger LOG = LoggerFactory.getLogger(ZooKeeperLocal.class);
-
-    ZooKeeperServerMain zooKeeperServer;
+    private Thread t;
+    private Logger LOG = LoggerFactory.getLogger(ZooKeeperLocal.class);
+    private ZooKeeperServerMain zooKeeperServer;
 
     ZooKeeperLocal(Properties zkProperties) {
         QuorumPeerConfig quorumConfiguration = new QuorumPeerConfig();
         try {
             quorumConfiguration.parseProperties(zkProperties);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -28,16 +28,21 @@ class ZooKeeperLocal {
         configuration.readFrom(quorumConfiguration);
 
 
-        new Thread(() -> {
-                try {
-                    zooKeeperServer.runFromConfig(configuration);
-                } catch (IOException e) {
-                    LOG.error("Zookeeper failed: {}",e.getMessage());
-                } catch (AdminServer.AdminServerException e) {
-                    LOG.error("Zookeeper failed: {}",e.getMessage());
-                    e.printStackTrace();
-                }
+        t = new Thread(() -> {
+            try {
+                zooKeeperServer.runFromConfig(configuration);
+            } catch (IOException e) {
+                LOG.error("Zookeeper failed: {}", e.getMessage());
+            } catch (AdminServer.AdminServerException e) {
+                LOG.error("Zookeeper failed: {}", e.getMessage());
+                e.printStackTrace();
+            }
         }
-        ).start();
+        );
+        t.start();
+    }
+
+    void stop() {
+        t.interrupt();
     }
 }

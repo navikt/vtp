@@ -10,10 +10,10 @@ import kafka.server.KafkaServerStartable;
 
 
 class KafkaLocal {
-    Logger LOG = LoggerFactory.getLogger(KafkaLocal.class);
+    private Logger LOG = LoggerFactory.getLogger(KafkaLocal.class);
 
-    KafkaServerStartable kafka;
-    ZooKeeperLocal zookeeper;
+    private KafkaServerStartable kafka;
+    private ZooKeeperLocal zookeeper;
 
     KafkaLocal(Properties kafkaProperties, Properties zkProperties) {
         KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
@@ -23,7 +23,7 @@ class KafkaLocal {
 
     }
 
-    private void startZookeeper(Properties zkProperties){
+    private void startZookeeper(Properties zkProperties) {
         LOG.info("starting local zookeeper...");
         zookeeper = new ZooKeeperLocal(zkProperties);
     }
@@ -35,10 +35,10 @@ class KafkaLocal {
 
     }
 
-
     void stop() {
         LOG.info("stopping kafka...");
         kafka.shutdown();
+        zookeeper.stop();
     }
 
 }
