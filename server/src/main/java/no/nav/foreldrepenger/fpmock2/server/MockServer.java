@@ -44,24 +44,18 @@ public class MockServer {
 
     private static final String HTTP_HOST = "0.0.0.0";
     private static final String SERVER_PORT = "8060";
-    private Server server;
-    private JettyHttpServer jettyHttpServer;
-    private String host = HTTP_HOST;
+    private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
+
+    private static final String TRUSTSTORE_PASSW_PROP = "javax.net.ssl.trustStorePassword";
+    private static final String TRUSTSTORE_PATH_PROP = "javax.net.ssl.trustStore";
+    private static final String KEYSTORE_PASSW_PROP = "no.nav.modig.security.appcert.password";
+    private static final String KEYSTORE_PATH_PROP = "no.nav.modig.security.appcert.keystore";
 
     private final int port;
     private final LdapServer ldapServer;
-
-    private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
-
-    public static void main(String[] args) throws Exception {
-
-        PropertiesUtils.initProperties();
-
-        MockServer mockServer = new MockServer();
-
-        mockServer.start();
-
-    }
+    private Server server;
+    private JettyHttpServer jettyHttpServer;
+    private String host = HTTP_HOST;
 
     public MockServer() throws Exception {
         LOG.info("Dummyprop er satt til: " + System.getenv("DUMMYPROP"));
@@ -80,6 +74,45 @@ public class MockServer {
 
     }
 
+    public static void main(String[] args) throws Exception {
+
+        PropertiesUtils.initProperties();
+
+        MockServer mockServer = new MockServer();
+
+        mockServer.start();
+
+    }
+
+    private static String initCryptoStoreConfig(String storeName, String storeProperty, String storePasswordProperty, String defaultPassword) {
+        String defaultLocation = getProperty("user.home", ".") + "/.modig/" + storeName + ".jks";
+
+        String storePath = getProperty(storeProperty, defaultLocation);
+        File storeFile = new File(storePath);
+        if (!storeFile.exists()) {
+            throw new IllegalStateException("Finner ikke " + storeName + " i " + storePath
+                    + "\n\tKonfigurer enten som System property \'" + storeProperty + "\' eller environment variabel \'"
+                    + storeProperty.toUpperCase().replace('.', '_') + "\'");
+        }
+        String password = getProperty(storePasswordProperty, defaultPassword);
+        if (password == null) {
+            throw new IllegalStateException("Passord for å aksessere store " + storeName + " i " + storePath + " er null");
+        }
+
+        System.setProperty(storeProperty, storeFile.getAbsolutePath());
+        System.setProperty(storePasswordProperty, password);
+        return storePath;
+    }
+
+    private static String getProperty(String key, String defaultValue) {
+        String val = System.getProperty(key, defaultValue);
+        if (val == null) {
+            val = System.getenv(key.toUpperCase().replace('.', '_'));
+            val = val == null ? defaultValue : val;
+        }
+        return val;
+    }
+
     public void start() throws Exception {
         startKafkaServer();
 
@@ -89,11 +122,15 @@ public class MockServer {
 
     private void startKafkaServer() {
 
-       // Properties.setProp("java.security.auth.login.config", "KafkaServerJaas.conf");
+        // Properties.setProp(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "KafkaServerJaas.conf");
 
-        Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort","9092"));
-        Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port","2181"));
-        LocalKafkaServer.startKafka(zookeeperPort,kafkaBrokerPort,List.of("privat-foreldrepenger-mottatBehandling-fpsak","privat-foreldrepenger-aksjonspunkthendelse-fpsak","privat-foreldrepenger-fprisk-utfor-t4","privat-foreldrepenger-tilkjentytelse-v1-local"));
+        Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
+        Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
+        LocalKafkaServer.startKafka(zookeeperPort, kafkaBrokerPort, List.of("privat-foreldrepenger-mottatBehandling-fpsak",
+                "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
+                "privat-foreldrepenger-fprisk-utfor-t4",
+                "privat-foreldrepenger-tilkjentytelse-v1-local",
+                "privat-familie-vedtakFattet-v1"));
     }
 
     private void startWebServer() throws IOException, Exception {
@@ -147,7 +184,6 @@ public class MockServer {
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
 
 
-
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
 
@@ -191,7 +227,7 @@ public class MockServer {
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
 
-        if(null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
+        if (null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
             sslContextFactory.setCertAlias("fpmock2");
             sslContextFactory.setKeyStorePath(System.getenv("CUSTOM_KEYSTORE_PATH"));
             sslContextFactory.setKeyStorePassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
@@ -202,11 +238,18 @@ public class MockServer {
             sslContextFactory.setKeyStorePassword(KeystoreUtils.getKeyStorePassword());
             sslContextFactory.setKeyManagerPassword(KeystoreUtils.getKeyStorePassword());
         }
+        // truststore avgjør hva vi stoler på av sertifikater når vi gjør utadgående TLS kall
+        initCryptoStoreConfig("truststore", TRUSTSTORE_PATH_PROP, TRUSTSTORE_PASSW_PROP, "changeit");
+
+        // keystore genererer sertifikat og TLS for innkommende kall. Bruker standard prop hvis definert, ellers faller tilbake på modig props
+        var keystoreProp = System.getProperty("javax.net.ssl.keyStore") != null ? "javax.net.ssl.keyStore" : KEYSTORE_PATH_PROP;
+        var keystorePasswProp = System.getProperty("javax.net.ssl.keyStorePassword") != null ? "javax.net.ssl.keyStorePassword" : KEYSTORE_PASSW_PROP;
+        initCryptoStoreConfig("keystore", keystoreProp, keystorePasswProp, "devillokeystore1234");
 
         @SuppressWarnings("resource")
         ServerConnector sslConnector = new ServerConnector(server,
-            new SslConnectionFactory(sslContextFactory, "HTTP/1.1"),
-            new HttpConnectionFactory(https));
+                new SslConnectionFactory(sslContextFactory, "HTTP/1.1"),
+                new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
 
