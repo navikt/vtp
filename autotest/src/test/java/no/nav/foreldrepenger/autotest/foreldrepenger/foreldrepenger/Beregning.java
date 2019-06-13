@@ -26,6 +26,7 @@ import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspun
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.KontrollerManueltOpprettetRevurdering;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderFaktaOmBeregningBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderPerioderOpptjeningBekreftelse;
+import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.VurderteArbeidsforholdDto;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspunktbekreftelse.avklarfakta.AvklarArbeidsforholdBekreftelse;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.AksjonspunktKoder;
 import no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.behandling.beregning.ArbeidstakerandelUtenIMMottarYtelse;
@@ -51,7 +52,8 @@ public class Beregning extends ForeldrepengerTestBase {
 
     @Test
     @DisplayName("Mor med ventelønn og vartpenger")
-    @Description("Mor med ventelønn og vartpenger")
+    @Description("Mor med ventelønn og vartpenger. Fører til aksjonspunkt i opptjening som godkjennes. " +
+            "Aksjonspunkt i beregning for avklaring om ventelønn og vartpenger skal benyttes i beregning.")
     @Tag("beregning")
     public void mor_med_ventelønn_og_vartpenger() throws Exception {
         TestscenarioDto testscenario = opprettScenario("150");
@@ -74,7 +76,15 @@ public class Beregning extends ForeldrepengerTestBase {
         verifiserLikhet(saksbehandler.valgtBehandling.getAksjonspunkter().stream()
                 .anyMatch(ap -> ap.erUbekreftet() && ap.getDefinisjon().kode.equals(AksjonspunktKoder.AVKLAR_AKTIVITETER)), true);
         assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
-                .getAvklarAktiviteter().getVentelonnVartpenger().getInkludert()).isNull();
+                .getAvklarAktiviteter().getAktiviteterTomDatoMapping().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
+                .getAvklarAktiviteter().getAktiviteterTomDatoMapping().get(0).getTom()).isEqualTo(fødselsdato.minusWeeks(3));
+        assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
+                .getAvklarAktiviteter().getAktiviteterTomDatoMapping().get(0).getAktiviteter().size()).isEqualTo(1);
+        assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
+                .getAvklarAktiviteter().getAktiviteterTomDatoMapping().get(0).getAktiviteter().get(0).getArbeidsforholdType().kode).isEqualTo("VENTELØNN_VARTPENGER");
+        assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
+                .getAvklarAktiviteter().getAktiviteterTomDatoMapping().get(0).getAktiviteter().get(0).getSkalBrukes()).isNull();
     }
 
     @Test
@@ -197,8 +207,8 @@ public class Beregning extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Endret beregningsgrunnlag med kortvarig")
-    @Description("Endret beregningsgrunnlag med kortvarig")
+    @DisplayName("To arbeidsforhold i samme organisasjon.")
+    @Description("To arbeidsforhold i samme organisajon. Inntektsmelding med arbeidsforholdId. Setter det ene arbeidsforholdet til inaktivt.")
     @Tag("beregning")
     public void mor_søker_fødsel_med_to_arbeidsforhold_i_samme_organisasjon_inntektsmelding_for_en_med_id_velger_og_sette_det_andre_til_inaktivt() throws Exception {
 
@@ -236,8 +246,9 @@ public class Beregning extends ForeldrepengerTestBase {
     }
 
     @Test
-    @DisplayName("Endret beregningsgrunnlag med kortvarig")
-    @Description("Endret beregningsgrunnlag med kortvarig")
+    @DisplayName("Endret beregningsgrunnlag med kortvarig arbeidsforhold")
+    @Description("Endret beregningsgrunnlag med kortvarig arbeidsforhold. Setter at arbeidsforhold er kortvarig i fakta om beregning." +
+            "Aksjonspunkt for omfordeling av beregningsgrunnlag.")
     @Tag("beregning")
     public void endret_beregningsgrunnlag_med_kortvarig() throws Exception {
         TestscenarioDto testscenario = opprettScenario("151");
@@ -279,8 +290,13 @@ public class Beregning extends ForeldrepengerTestBase {
                 .getKortvarigeArbeidsforhold().get(0).getArbeidsforhold(), "STATOIL", "892850372");
 
 
-        verifiserLikhet(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning().getFaktaOmBeregningTilfeller()
-                .contains(FaktaOmBeregningTilfelle.FASTSETT_ENDRET_BEREGNINGSGRUNNLAG), true);
+        saksbehandler.hentAksjonspunktbekreftelse(VurderFaktaOmBeregningBekreftelse.class)
+                .leggTilFaktaOmBeregningTilfeller(FaktaOmBeregningTilfelle.VURDER_TIDSBEGRENSET_ARBEIDSFORHOLD.kode)
+                .leggTilVurderTidsbegrenset(singletonList(new VurderteArbeidsforholdDto(2L, true, false)));
+        saksbehandler.bekreftAksjonspunktBekreftelse(VurderFaktaOmBeregningBekreftelse.class);
+
+        saksbehandler.ventTilAksjonspunkt(AksjonspunktKoder.FORDEL_BEREGNINGSGRUNNLAG);
+
         assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
                 .getEndringBeregningsgrunnlag().getEndredeArbeidsforhold().size()).isEqualTo(1);
         assertArbeidsforhold(saksbehandler.valgtBehandling.getBeregningsgrunnlag().getFaktaOmBeregning()
@@ -295,6 +311,7 @@ public class Beregning extends ForeldrepengerTestBase {
                 .getPerioderMedGraderingEllerRefusjon().get(0).getTom()).isEqualTo(fpStartdato.plusMonths(2));
 
         assertThat(saksbehandler.valgtBehandling.getBeregningsgrunnlag().antallBeregningsgrunnlagPeriodeDto()).isEqualTo(1);
+
     }
 
     @Test

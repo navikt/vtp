@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.autotest.klienter.fpsak.behandlinger.dto.aksjonspu
 
 import java.util.List;
 
-class FastsettMaanedsinntektUtenInntektsmelding {
+public class FastsettMaanedsinntektUtenInntektsmelding {
 
 
     protected List<FastsettMaanedsinntektUtenInntektsmeldingAndel> andelListe;
