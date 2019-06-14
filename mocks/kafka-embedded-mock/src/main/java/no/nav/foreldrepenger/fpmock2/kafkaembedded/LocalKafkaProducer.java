@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.fpmock2.kafkaembedded;
 
 import java.util.Properties;
 
-import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -15,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
 
 public class LocalKafkaProducer {
+    private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaProducer.class);
+
     private final KafkaProducer producer;
-    private final AdminClient kafkaAdminClient;
-    Logger LOG = LoggerFactory.getLogger(LocalKafkaProducer.class);
 
     public LocalKafkaProducer(String bootstrapServer) {
         // Create Producer properties
@@ -40,11 +39,7 @@ public class LocalKafkaProducer {
 
         // Create the producer
         producer = new KafkaProducer<String, String>(props);
-        kafkaAdminClient = AdminClient.create(props);
-    }
 
-    public AdminClient getKafkaAdminClient() {
-        return kafkaAdminClient;
     }
 
     KafkaProducer getKafkaProducer() {
