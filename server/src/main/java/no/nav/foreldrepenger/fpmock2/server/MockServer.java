@@ -2,8 +2,15 @@ package no.nav.foreldrepenger.fpmock2.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
@@ -23,6 +30,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.familie.topic.Topic;
+import no.nav.familie.topic.TopicManifest;
 import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
 import no.nav.foreldrepenger.fpmock2.felles.PropertiesUtils;
 import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaServer;
@@ -126,11 +135,33 @@ public class MockServer {
 
         Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
         Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
-        LocalKafkaServer.startKafka(zookeeperPort, kafkaBrokerPort, List.of("privat-foreldrepenger-mottatBehandling-fpsak",
+        LocalKafkaServer.startKafka(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
+    }
+
+    private Set<String> getBootstrapTopics() {
+        Field[] fields = TopicManifest.class.getFields();
+        HashSet<String> topicSet = Stream.of(fields)
+                .filter(f -> Modifier.isStatic(f.getModifiers()))
+                .filter(f -> f.getType().equals(Topic.class))
+                .map(this::getTopic)
+                .filter(Objects::nonNull)
+                .map(Topic.class::cast)
+                .map(Topic::getTopic)
+                .collect(Collectors.toCollection(HashSet::new));
+        topicSet.addAll(List.of("privat-foreldrepenger-mottatBehandling-fpsak",
                 "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
                 "privat-foreldrepenger-fprisk-utfor-t4",
-                "privat-foreldrepenger-tilkjentytelse-v1-local",
-                "privat-familie-vedtakFattet-v1"));
+                "privat-foreldrepenger-tilkjentytelse-v1-local"));
+
+        return topicSet;
+    }
+
+    private Object getTopic(Field f) {
+        try {
+            return f.get(null);
+        } catch (IllegalAccessException e) {
+            return null;
+        }
     }
 
     private void startWebServer() throws IOException, Exception {
