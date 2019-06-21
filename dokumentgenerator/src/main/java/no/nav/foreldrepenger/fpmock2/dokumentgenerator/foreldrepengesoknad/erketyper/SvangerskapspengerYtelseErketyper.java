@@ -12,11 +12,10 @@ import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.TilretteleggingLis
 public class SvangerskapspengerYtelseErketyper {
 
 
-    public static Svangerskapspenger svangerskapspengerMedOpptjening(LocalDate termindato, Medlemskap medlemskap, Opptjening opptjening, List<Tilrettelegging> tilretteleggingListe) {
+    public static Svangerskapspenger svangerskapspenger(LocalDate termindato, Medlemskap medlemskap,  List<Tilrettelegging> tilretteleggingListe) {
         Svangerskapspenger svangerskapspenger = new Svangerskapspenger();
         svangerskapspenger.setTermindato(termindato);
         svangerskapspenger.setMedlemskap(medlemskap);
-        svangerskapspenger.setOpptjening(opptjening);
         if(tilretteleggingListe != null) {
             TilretteleggingListe tl = new TilretteleggingListe();
             tl.getTilrettelegging().addAll(tilretteleggingListe);
