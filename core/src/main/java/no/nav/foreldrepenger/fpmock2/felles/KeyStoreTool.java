@@ -23,11 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class KeyStoreTool {
-    private static RsaJsonWebKey jwk = null;
-
-    private static KeyStore keystore = null;
-
     private static final Logger log = LoggerFactory.getLogger(KeyStoreTool.class);
+    private static RsaJsonWebKey jwk = null;
+    private static KeyStore keystore = null;
 
     static synchronized void init() {
 
@@ -65,21 +63,15 @@ public class KeyStoreTool {
     }
 
     public static String getDefaultKeyStorePath() {
-        if (null != System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE")){
-            return System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
-        }
-        throw new IllegalStateException("Keystore path mangler. Konfigurer systemvariabel: NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
+        return KeystoreUtils.getKeystoreFilePath();
     }
 
     public static char[] getKeyStorePassword() {
-        if(null != System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD")){
-            return System.getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD").toCharArray();
-        }
-        throw new IllegalStateException("Keystore passord mangler. Konfigurer systemvariabel: NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD");
+        return KeystoreUtils.getKeyStorePassword().toCharArray();
     }
 
     public static String getKeyAndCertAlias() {
-            return System.getProperty("no.nav.modig.security.appkey", "app-key");
+        return System.getProperty("no.nav.modig.security.appkey", "app-key");
     }
 
 
@@ -88,7 +80,7 @@ public class KeyStoreTool {
             init();
             org.apache.xml.security.Init.init();
         }
-        KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(),  getKeyStorePassword());
+        KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(), getKeyStorePassword());
         return credentialAdapter;
     }
 
@@ -112,13 +104,13 @@ public class KeyStoreTool {
         String n = Base64Url.encode(bytes);
 
         return String.format("{\"keys\":[{" +
-            "\"kty\":\"%s\"," +
-            "\"alg\":\"%s\"," +
-            "\"use\":\"%s\"," +
-            "\"kid\":\"%s\"," +
-            "\"n\":\"%s\"," +
-            "\"e\":\"%s\"" +
-            "}]}", kty, alg, use, kid, n, e);
+                "\"kty\":\"%s\"," +
+                "\"alg\":\"%s\"," +
+                "\"use\":\"%s\"," +
+                "\"kid\":\"%s\"," +
+                "\"n\":\"%s\"," +
+                "\"e\":\"%s\"" +
+                "}]}", kty, alg, use, kid, n, e);
     }
 
 }
