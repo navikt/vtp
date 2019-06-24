@@ -66,7 +66,8 @@ public class LdapServer {
                 LDIFReader r = new LDIFReader(is);
                 LDIFChangeRecord readEntry = null;
                 while ((readEntry = r.readChangeRecord()) != null) {
-                    LOG.info("Read entry LDIF: {}", Arrays.toString(readEntry.toLDIF()));
+
+                    LOG.info("Read entry from path {} LDIF: {}", ldif.getPath(), Arrays.toString(readEntry.toLDIF()));
                   readEntry.processChange(server);
                 }
             }
