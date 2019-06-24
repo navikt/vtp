@@ -27,7 +27,8 @@ public class PropertiesUtils {
         File devFil = Paths.get(propertyDir, DEV_FILNAVN).toFile();
         loadPropertyFile(devFil);
         loadPropertyFile(Paths.get(propertyDir, DEV_FILNAVN_LOCAL).toFile());
-        LOGGER.info("PROPERTIES LASTET");
+        LOGGER.info("PROPERTIES LASTET: ");
+
     }
 
     private static void loadPropertyFile(File devFil) {
