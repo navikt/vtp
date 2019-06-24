@@ -1,8 +1,8 @@
 APP_NAME=fpsak
 NAIS_APP_NAME=fpsak
-DEFAULTDS_URL=jdbc:oracle:thin:@d26dbfl020.test.local:1521/fpsak_test
+DEFAULTDS_URL=jdbc:oracle:thin:@d26dbfl028.test.local:1521/fpsak_test
 DEFAULTDS_USERNAME=fpsak_test
-DEFAULTDS_PASSWORD=fGZdvftaXdGt2V059Z5s
-DVHDS_URL=jdbc:oracle:thin:@d26dbfl020.test.local:1521/fpsak_test
+DEFAULTDS_PASSWORD=Z2joOayP69af4YWTY2nx
+DVHDS_URL=jdbc:oracle:thin:@d26dbfl028.test.local:1521/fpsak_test
 DVHDS_USERNAME=fpsak_hist
-DVHDS_PASSWORD=fpsak_hist
+DVHDS_PASSWORD=Z2joOayP69af4YWTY2
