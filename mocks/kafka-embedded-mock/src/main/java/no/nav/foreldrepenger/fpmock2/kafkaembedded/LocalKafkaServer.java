@@ -45,6 +45,7 @@ public class LocalKafkaServer {
         Properties kafkaProperties = setupKafkaProperties(zookeeperPort, kafkaBrokerPort);
         Properties zkProperties = setupZookeperProperties(zookeeperPort);
         System.setProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, LocalKafkaServer.class.getClassLoader().getResource("kafkasecurity.conf").getPath());
+        LOG.info("Kafka startes med Jaas login config param: " + System.getProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM));
 
         try {
             kafka = new KafkaLocal(kafkaProperties, zkProperties);
