@@ -5,11 +5,15 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.KeyStore;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
 import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
@@ -20,6 +24,7 @@ import com.unboundid.ldif.LDIFReader;
 
 public class LdapServer {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LdapServer.class);
     private static final String BASEDATA_USERS_LDIF = "basedata/users.ldif";
     private final int listenerPortLdaps = Integer.valueOf(System.getProperty("ldaps.port", "8636")); // 636 er default port for LDAPS
     private final int listenerPortLdap = Integer.valueOf(System.getProperty("ldap.port", "8389")); // 389 er default port for LDAP
@@ -61,6 +66,7 @@ public class LdapServer {
                 LDIFReader r = new LDIFReader(is);
                 LDIFChangeRecord readEntry = null;
                 while ((readEntry = r.readChangeRecord()) != null) {
+                    LOG.info("Read entry LDIF: {}", Arrays.toString(readEntry.toLDIF()));
                   readEntry.processChange(server);
                 }
             }
