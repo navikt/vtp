@@ -42,8 +42,8 @@
 
     <dependencyManagement>
         <dependencies>
-        	<!-- BOMs - vil overstyre alle senere avhengigheter -->
-        	<dependency>
+            <!-- BOMs - vil overstyre alle senere avhengigheter -->
+            <dependency>
                 <!-- NB jetty avhengigher før resteasy -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-bom</artifactId>
@@ -143,11 +143,11 @@
                 <version>${project.version}</version>
             </dependency>
 
-			<dependency>
-				<groupId>no.nav.vedtak.fpmock2</groupId>
-				<artifactId>kafka-embedded-mock</artifactId>
-				<version>${project.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <artifactId>kafka-embedded-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.vedtak.fpmock2</groupId>
@@ -208,25 +208,25 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-ws-security</artifactId>
                 <version>${cxf.version}</version>
-	            <exclusions>
-	            	<exclusion>
-	            		<groupId>javax.xml.ws</groupId>
-	            		<artifactId>jaxws-api</artifactId>
-	            	</exclusion>
-	            	<exclusion>
-	            		<groupId>com.sun.activation</groupId>
-	            		<artifactId>javax.activation</artifactId>
-	            	</exclusion>
-	            	<exclusion>
-	            		<groupId>javax.annotation</groupId>
-	            		<artifactId>javax.annotation-api</artifactId>
-	            	</exclusion>
-	            	<exclusion>
-	            		<groupId>com.sun.xml.messaging.saaj</groupId>
-	            		<artifactId>saaj-impl</artifactId>
-	            	</exclusion>
-	            </exclusions>
-	        </dependency>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.xml.ws</groupId>
+                        <artifactId>jaxws-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.activation</groupId>
+                        <artifactId>javax.activation</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.annotation</groupId>
+                        <artifactId>javax.annotation-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.xml.messaging.saaj</groupId>
+                        <artifactId>saaj-impl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
             <dependency>
                 <groupId>org.apache.cxf.services.sts</groupId>
                 <artifactId>cxf-services-sts-core</artifactId>
@@ -553,20 +553,20 @@
 
             <!-- Testavhengigheter -->
             <dependency>
-			    <groupId>org.junit.jupiter</groupId>
-			    <artifactId>junit-jupiter</artifactId>
-			    <version>5.4.2</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.junit.vintage</groupId>
-			    <artifactId>junit-vintage-engine</artifactId>
-			    <version>5.4.2</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.junit.platform</groupId>
-			    <artifactId>junit-platform-launcher</artifactId>
-			    <version>1.4.2</version>
-			</dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>5.4.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>5.4.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-launcher</artifactId>
+                <version>1.4.2</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -752,7 +752,20 @@
                     <deployAtEnd>true</deployAtEnd>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <DependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
