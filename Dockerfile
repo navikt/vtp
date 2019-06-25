@@ -8,9 +8,8 @@ ENV DUMMYPROP=fraDockerfile
 ARG JAR_FILE
 COPY resources/pipeline/enablecustomcerts.sh /init-scripts
 
-
 RUN mkdir /app/lib
-COPY server/lib/*.jar /app/lib/
+COPY server/target/lib/*.jar /app/lib/
 COPY model/scenarios/ /app/model/scenarios/
 RUN chmod -R 777 /app/model/scenarios/
 
