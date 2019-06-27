@@ -119,3 +119,11 @@ KAFKA_TOPIC=privat-foreldrepenger-mottatBehandling-fpsak
 BOOTSTRAP_SERVERS=fpmock2:9092
 SCHEMA_REGISTRY_URL=skjema-veldet.test
 CLIENT_ID=KP-privat-foreldrepenger-mottatBehandling-fpsak
+
+KAFKA_RISIKOKLASSIFISERING_TOPIC=privat-foreldrepenger-fprisk-utfor-t4
+KAFKA_RISIKOKLASSIFISERING_CLIENT_ID=KP-privat-foreldrepenger-fprisk-utfor-t4
+KAFKA_RISIKOKLASSIFISERING_SCHEMA_REGISTRY_URL=https://kafka-test-schema-registry.nais.preprod.local
+KAFKA_DOKUMENTBESTILLING_TOPIC=privat-foreldrepenger-dokumenthendelse-lokal-dummy
+KAFKA_HISTORIKKINNSLAG_TOPIC=privat-foreldrepenger-historikkinnslag-lokal-dummy
+KAFKA_KONTROLL_RESULTAT_TOPIC=privat-foreldrepenger-kontroll-resultat-lokal
+
