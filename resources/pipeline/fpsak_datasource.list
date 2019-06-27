@@ -1,8 +1,8 @@
 APP_NAME=fpsak
 NAIS_APP_NAME=fpsak
-DEFAULTDS_URL=jdbc:oracle:thin:@localhost:1521/xe
+DEFAULTDS_URL=jdbc:oracle:thin:@host.docker.internal:1521/xe
 DEFAULTDS_USERNAME=vtp_fpsak
 DEFAULTDS_PASSWORD=passord
-DVHDS_URL=jdbc:oracle:thin:@localhost:1521/xe
-DVHDS_USERNAME=fpsak_hist
+DVHDS_URL=jdbc:oracle:thin:@host.docker.internal:1521/xe
+DVHDS_USERNAME=vtp_fpsak_dvh
 DVHDS_PASSWORD=passord

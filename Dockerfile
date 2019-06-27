@@ -1,6 +1,6 @@
 FROM navikt/java:11
 
-EXPOSE 8636 8063 8060 8389
+EXPOSE 8636 8063 8060 8389 9092
 
 ENV JAVA_OPTS="-Dscenarios.dir=/app/model/scenarios/"
 ENV DUMMYPROP=fraDockerfile
