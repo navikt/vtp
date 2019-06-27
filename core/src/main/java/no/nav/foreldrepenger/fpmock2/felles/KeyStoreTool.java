@@ -71,7 +71,7 @@ public class KeyStoreTool {
     }
 
     public static String getKeyAndCertAlias() {
-        return System.getProperty("no.nav.modig.security.appkey", "app-key");
+        return System.getProperty("no.nav.modig.security.appkey", "localhost-ssl");
     }
 
 
