@@ -258,17 +258,12 @@ public class MockServer {
         https.addCustomizer(new SecureRequestCustomizer());
         SslContextFactory sslContextFactory = new SslContextFactory();
 
-        if (null != System.getenv("ENABLE_CUSTOM_TRUSTSTORE") && System.getenv("ENABLE_CUSTOM_TRUSTSTORE").equalsIgnoreCase("true")) {
-            sslContextFactory.setCertAlias("fpmock2");
-            sslContextFactory.setKeyStorePath(System.getenv("CUSTOM_KEYSTORE_PATH"));
-            sslContextFactory.setKeyStorePassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
-            sslContextFactory.setKeyManagerPassword(System.getenv("CUSTOM_KEYSTORE_PASSWORD"));
-        } else {
-            sslContextFactory.setCertAlias("localhost-ssl");
-            sslContextFactory.setKeyStorePath(KeystoreUtils.getKeystoreFilePath());
-            sslContextFactory.setKeyStorePassword(KeystoreUtils.getKeyStorePassword());
-            sslContextFactory.setKeyManagerPassword(KeystoreUtils.getKeyStorePassword());
-        }
+        sslContextFactory.setCertAlias("localhost-ssl");
+        sslContextFactory.setKeyStorePath(KeystoreUtils.getKeystoreFilePath());
+        sslContextFactory.setKeyStorePassword(KeystoreUtils.getKeyStorePassword());
+        sslContextFactory.setKeyManagerPassword(KeystoreUtils.getKeyStorePassword());
+        LOG.info("Starting TLS with keystore path {} ", KeystoreUtils.getKeystoreFilePath());
+
         // truststore avgjør hva vi stoler på av sertifikater når vi gjør utadgående TLS kall
         initCryptoStoreConfig("truststore", TRUSTSTORE_PATH_PROP, TRUSTSTORE_PASSW_PROP, "changeit");
 
