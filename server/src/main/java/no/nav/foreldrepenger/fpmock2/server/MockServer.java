@@ -123,7 +123,7 @@ public class MockServer {
     }
 
     public void start() throws Exception {
-        startKafkaServer();
+        //startKafkaServer();
 
         startLdapServer();
         startWebServer();
