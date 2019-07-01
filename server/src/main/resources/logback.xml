@@ -24,6 +24,7 @@
     <logger name="org.apache.kafka" level="${log.level.org.apache.kafka:-TRACE}"/>
 	<logger name="org.apache.zookeeper" level="${log.level.org.apache.zookeeper:-TRACE}"/>
 
+
 	<root level="${log.level.root:-WARN}">
 		<appender-ref ref="STDOUT" />
 	</root>
