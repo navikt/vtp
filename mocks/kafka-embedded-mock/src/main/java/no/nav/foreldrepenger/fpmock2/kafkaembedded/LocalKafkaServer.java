@@ -18,6 +18,8 @@ import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
 
 public class LocalKafkaServer {
 
+    final static public String KAFKA_HOST = null != System.getenv("VTP_KAFKA_HOST") ? System.getenv("VTP_KAFKA_HOST") : "localhost";
+
     private static KafkaLocal kafka;
     private static LocalKafkaProducer localProducer;
     private static LocalKafkaConsumerStream localConsumer;
@@ -37,7 +39,7 @@ public class LocalKafkaServer {
     public static void startKafka(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
         Logger LOG = LoggerFactory.getLogger(LocalKafkaServer.class);
 
-        final String bootstrapServers = String.format("%s:%s", System.getProperty("VTP_KAFKA_HOST","localhost"),kafkaBrokerPort);
+        final String bootstrapServers = String.format("%s:%s", KAFKA_HOST,kafkaBrokerPort);
 
         LocalKafkaServer.kafkaBrokerPort = kafkaBrokerPort;
         LocalKafkaServer.zookeeperPort = zookeeperPort;
@@ -108,14 +110,13 @@ public class LocalKafkaServer {
     private static Properties setupKafkaProperties(int zookeeperPort, int kafkaBrokerPort) {
         Properties kafkaProperties = new Properties();
 
-        String host = System.getProperty("VTP_KAFKA_HOST","localhost");
 
-        kafkaProperties.put("zookeeper.connect", String.format("%s:%s",host,zookeeperPort));
+        kafkaProperties.put("zookeeper.connect", String.format("%s:%s",KAFKA_HOST,zookeeperPort));
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
-        kafkaProperties.put("listeners", String.format("SASL_SSL://%s:%s",host,kafkaBrokerPort));
-        kafkaProperties.put("advertised.listeners", String.format("SASL_SSL://%s:%s",host,kafkaBrokerPort));
+        kafkaProperties.put("listeners", String.format("SASL_SSL://%s:%s",KAFKA_HOST,kafkaBrokerPort));
+        kafkaProperties.put("advertised.listeners", String.format("SASL_SSL://%s:%s",KAFKA_HOST,kafkaBrokerPort));
         kafkaProperties.put("socket.request.max.bytes", "369296130");
         kafkaProperties.put("sasl.enabled.mechanisms", "DIGEST-MD5,PLAIN");
         kafkaProperties.put("sasl.mechanism.inter.broker.protocol", "PLAIN");
