@@ -116,7 +116,7 @@ KAFKA_AKSJONSPUNKTHENDELSE_GROUP_ID=KC-privat-foreldrepenger-aksjonspunkthendels
 DATO_FOR_NYE_BEREGNINGSREGLER=2010-01-01
 ABAKUS_VEDTATT_YTELSE_URL=https://localhost:8063/dev/null
 KAFKA_TOPIC=privat-foreldrepenger-mottatBehandling-fpsak
-BOOTSTRAP_SERVERS=fpmock2:9092
+BOOTSTRAP_SERVERS=fpmock2:9093
 SCHEMA_REGISTRY_URL=skjema-veldet.test
 CLIENT_ID=KP-privat-foreldrepenger-mottatBehandling-fpsak
 

@@ -114,7 +114,7 @@ public class LocalKafkaServer {
         String listeners = "INTERNAL://localhost:"+kafkaBrokerPort;
         if(!VTP_KAFKA_HOST.contains("localhost")){
             listeners = listeners + String.format(",EXTERNAL://%s",VTP_KAFKA_HOST);
-            kafkaProperties.put("listeners.security.protocol.map","INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL");
+            kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL");
             LOG.info("VTP_KAFKA_HOST satt for miljø. Starter med følgende listeners: {}", listeners);
         } else {
             LOG.info("VTP_KAFKA_HOST ikke satt for miljø. Starter med følgende listeners: {}", listeners);
