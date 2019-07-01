@@ -37,7 +37,7 @@ public class LocalKafkaServer {
     public static void startKafka(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
         Logger LOG = LoggerFactory.getLogger(LocalKafkaServer.class);
 
-        final String bootstrapServers = String.format("localhost:%s", kafkaBrokerPort);
+        final String bootstrapServers = String.format("%s:%s", System.getProperty("VTP_KAFKA_HOST","localhost"),kafkaBrokerPort);
 
         LocalKafkaServer.kafkaBrokerPort = kafkaBrokerPort;
         LocalKafkaServer.zookeeperPort = zookeeperPort;
@@ -108,12 +108,14 @@ public class LocalKafkaServer {
     private static Properties setupKafkaProperties(int zookeeperPort, int kafkaBrokerPort) {
         Properties kafkaProperties = new Properties();
 
-        kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
+        String host = System.getProperty("VTP_KAFKA_HOST","localhost");
+
+        kafkaProperties.put("zookeeper.connect", String.format("%s:%s",host,zookeeperPort));
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
-        kafkaProperties.put("listeners", "SASL_SSL://localhost:" + kafkaBrokerPort);
-        kafkaProperties.put("advertised.listeners", "SASL_SSL://localhost:" + kafkaBrokerPort);
+        kafkaProperties.put("listeners", String.format("SASL_SSL://%s:%s",host,kafkaBrokerPort));
+        kafkaProperties.put("advertised.listeners", String.format("SASL_SSL://%s:%s",host,kafkaBrokerPort));
         kafkaProperties.put("socket.request.max.bytes", "369296130");
         kafkaProperties.put("sasl.enabled.mechanisms", "DIGEST-MD5,PLAIN");
         kafkaProperties.put("sasl.mechanism.inter.broker.protocol", "PLAIN");
