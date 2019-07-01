@@ -27,6 +27,11 @@
             <artifactId>okonomistotte-v1</artifactId>
             <classifier>jaxb</classifier>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>tilbakekreving-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
     </dependencies>
 
 

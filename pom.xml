@@ -441,6 +441,12 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>no.nav.tjenester</groupId>
+                <artifactId>tilbakekreving-v1-tjenestespesifikasjon</artifactId>
+                <version>1.0.2</version>
+                <classifier>jaxws</classifier>
+            </dependency>
+            <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>fpoppdrag-v2</artifactId>
                 <version>1.0_20190117140834_70d7fb3</version>
