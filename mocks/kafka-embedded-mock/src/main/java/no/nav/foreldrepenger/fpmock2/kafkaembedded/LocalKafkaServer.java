@@ -127,8 +127,8 @@ public class LocalKafkaServer {
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
-        kafkaProperties.put("listeners", "INTERNAL://localhost:9092,EXTERNAL://localhost:9092");
-        kafkaProperties.put("advertised.listeners", "INTERNAL://localhost:9092,EXTERNAL://fpmock2:9092");
+        kafkaProperties.put("listeners", "INTERNAL://localhost:9092,EXTERNAL://localhost:9093");
+        kafkaProperties.put("advertised.listeners", "INTERNAL://localhost:9092,EXTERNAL://fpmock2:9093");
         kafkaProperties.put("socket.request.max.bytes", "369296130");
         kafkaProperties.put("sasl.enabled.mechanisms", "DIGEST-MD5,PLAIN");
         kafkaProperties.put("sasl.mechanism.inter.broker.protocol", "PLAIN");
