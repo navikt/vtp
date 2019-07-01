@@ -111,7 +111,7 @@ public class LocalKafkaServer {
         Properties kafkaProperties = new Properties();
 
 
-        kafkaProperties.put("zookeeper.connect", String.format("%s:%s",KAFKA_HOST,zookeeperPort));
+        kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
