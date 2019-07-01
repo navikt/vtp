@@ -60,12 +60,12 @@ public class LocalKafkaServer {
         }
 
 
-        kafkaAdminClient = AdminClient.create(createAdminClientProps("localhost:9092,localhost:9093"));
+        kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
                         name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
 
-        localConsumer = new LocalKafkaConsumerStream("localhost:9092,localhost:9093", bootstrapTopics);
+        localConsumer = new LocalKafkaConsumerStream(bootstrapServers, bootstrapTopics);
         localConsumer.start();
 
     }
