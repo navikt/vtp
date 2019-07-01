@@ -111,6 +111,7 @@ public class LocalKafkaServer {
     private static Properties setupKafkaProperties(int zookeeperPort, int kafkaBrokerPort) {
         Properties kafkaProperties = new Properties();
 
+        //TODO: Gjør dette om til kode når POC fungerer i VTP
         String listeners = "INTERNAL://localhost:"+kafkaBrokerPort;
         if(null != System.getenv("VTP_KAFKA_HOST")){
             listeners = listeners + String.format(",EXTERNAL://%s",VTP_KAFKA_HOST);
@@ -121,13 +122,13 @@ public class LocalKafkaServer {
             kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL");
         }
 
-
+        kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL"); //TODO: Fjern når POC fungerer
         kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
-        kafkaProperties.put("listeners", listeners);
-        kafkaProperties.put("advertised.listeners", String.format(listeners));
+        kafkaProperties.put("listeners", "INTERNAL://localhost:9092,EXTERNAL://localhost:9092");
+        kafkaProperties.put("advertised.listeners", "INTERNAL://localhost:9092,EXTERNAL://fpmock2:9092");
         kafkaProperties.put("socket.request.max.bytes", "369296130");
         kafkaProperties.put("sasl.enabled.mechanisms", "DIGEST-MD5,PLAIN");
         kafkaProperties.put("sasl.mechanism.inter.broker.protocol", "PLAIN");
