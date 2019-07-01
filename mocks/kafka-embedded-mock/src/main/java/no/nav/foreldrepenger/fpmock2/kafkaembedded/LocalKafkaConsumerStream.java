@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.fpmock2.kafkaembedded;
 
 import java.util.Collection;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.serialization.Serdes;
@@ -21,6 +22,7 @@ public class LocalKafkaConsumerStream {
 
 
     public LocalKafkaConsumerStream(String bootstrapServers, Collection<String> topics) {
+        LOG.info("Starter konsumering av topics: {}", topics.stream().collect(Collectors.joining(",")));
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "vtp");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
