@@ -60,12 +60,12 @@ public class LocalKafkaServer {
         }
 
 
-        kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
+        kafkaAdminClient = AdminClient.create(createAdminClientProps("localhost:9092,localhost:9093"));
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
                         name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
 
-        localConsumer = new LocalKafkaConsumerStream(bootstrapServers, bootstrapTopics);
+        localConsumer = new LocalKafkaConsumerStream("localhost:9092,localhost:9093", bootstrapTopics);
         localConsumer.start();
 
     }
@@ -110,7 +110,7 @@ public class LocalKafkaServer {
 
     private static Properties setupKafkaProperties(int zookeeperPort, int kafkaBrokerPort) {
         Properties kafkaProperties = new Properties();
-
+/*
         //TODO: Gjør dette om til kode når POC fungerer i VTP
         String listeners = "INTERNAL://localhost:"+kafkaBrokerPort;
         if(null != System.getenv("VTP_KAFKA_HOST")){
@@ -121,7 +121,7 @@ public class LocalKafkaServer {
             LOG.info("VTP_KAFKA_HOST ikke satt for miljø. Starter med følgende listeners: {}", listeners);
             kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL");
         }
-
+*/
         kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL"); //TODO: Fjern når POC fungerer
         kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
         kafkaProperties.put("offsets.topic.replication.factor", "1");
