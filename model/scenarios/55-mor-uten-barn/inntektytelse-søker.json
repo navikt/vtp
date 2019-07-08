@@ -18,15 +18,6 @@
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
-			},
-			{
-				"fom": "now() - P4M",
-				"tom": "now() - P1M",
-				"beløp": 60000,
-				"orgnr": "910909088",
-				"type": "Lønnsinntekt",
-				"fordel": "kontantytelse",
-				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
 			}
 		]
 	},
@@ -38,8 +29,6 @@
 				"ansettelsesperiodeFom": "now() - P4Y",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "910909088",
-
-
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "now() - P2M",
