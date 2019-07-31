@@ -291,11 +291,11 @@ public abstract class PersonModell extends BrukerModell {
         this.statsborgerskap.add(statsborgerskap);
     }
 
-    void setEtternavn(String navn) {
+    public void setEtternavn(String navn) {
         this.etternavn = navn;
     }
 
-    void setFornavn(String fornavn) {
+    public void setFornavn(String fornavn) {
         this.fornavn = fornavn;
     }
 

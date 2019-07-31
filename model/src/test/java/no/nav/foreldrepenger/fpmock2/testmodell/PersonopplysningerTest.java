@@ -65,7 +65,7 @@ public class PersonopplysningerTest {
         // Assert
         SøkerModell søker2 = scenario2.getPersonopplysninger().getSøker();
         assertThat(søker2).isNotNull();
-        assertThat(søker2.getEtternavn()).isEqualTo("Donald");
+        assertThat(søker2.getEtternavn()).isNotEmpty();
 
         SøkerModell søkerFraIndeks = testScenarioRepository.getPersonIndeks().finnByIdent(søker2.getIdent());
         assertThat(søkerFraIndeks).isEqualTo(søker2);
