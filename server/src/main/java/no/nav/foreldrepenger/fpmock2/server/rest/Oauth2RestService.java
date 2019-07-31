@@ -170,7 +170,7 @@ public class Oauth2RestService {
         if (null != System.getenv("LDAP_PROVIDER_URL")) {
             props.put(javax.naming.Context.PROVIDER_URL, System.getenv("LDAP_PROVIDER_URL"));
         } else {
-            props.put(javax.naming.Context.PROVIDER_URL, "ldaps://localhost:8636/");
+            props.put(javax.naming.Context.PROVIDER_URL, "ldap://localhost:8389/");
         }
 
         InitialLdapContext ctx = new InitialLdapContext(props, null);
@@ -215,7 +215,7 @@ public class Oauth2RestService {
         if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER")) {
             issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER");
         } else {
-            issuer = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/rest/isso/oauth2";
+            issuer = "https://vtp.local/issuer";
         }
         return issuer;
     }

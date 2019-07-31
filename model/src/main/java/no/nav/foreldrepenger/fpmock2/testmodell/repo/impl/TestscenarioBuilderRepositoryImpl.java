@@ -3,6 +3,9 @@ package no.nav.foreldrepenger.fpmock2.testmodell.repo.impl;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.*;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.FiktivtNavn;
+import no.nav.foreldrepenger.fpmock2.testmodell.util.TestdataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,8 +16,6 @@ import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModel
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonIndeks;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModeller;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonIndeks;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
@@ -64,8 +65,19 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         if (personopplysninger == null) {
             log.warn("TestscenarioImpl mangler innhold:" + testScenario);
         } else {
-            personIndeks.leggTil(personopplysninger.getSøker());
-            personIndeks.leggTil(personopplysninger.getAnnenPart());
+            SøkerModell søker = personopplysninger.getSøker();
+            PersonNavn sokerNavn = TestdataUtil.getSokerName(søker);
+            søker.setFornavn(sokerNavn.getFornavn());
+            søker.setEtternavn(sokerNavn.getEtternavn());
+            personIndeks.leggTil(søker);
+
+            AnnenPartModell annenPart = personopplysninger.getAnnenPart();
+            if(annenPart != null){
+                PersonNavn annenPartNavn = TestdataUtil.getAnnenPartName(søker, annenPart);
+                annenPart.setFornavn(annenPartNavn.getFornavn());
+                annenPart.setEtternavn(annenPartNavn.getEtternavn());
+                personIndeks.leggTil(annenPart);
+            }
             personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
 
             personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
@@ -102,7 +114,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     }
 
     @Override
-    public Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId){
+    public Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId) {
         return inntektYtelseIndeks.getModellForIdent(aktørId.substring(aktørId.length() - 11));
     }
 

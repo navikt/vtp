@@ -11,9 +11,9 @@
     <version>${revision}${sha1}${changelist}</version>
 
     <scm>
-        <connection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</connection>
-        <developerConnection>scm:git:http://stash.devillo.no/scm/vedfp/vl-mock.git</developerConnection>
-        <url>http://stash.devillo.no/projects/VEDFP/repos/vl-mock/browse</url>
+        <connection>scm:git:https://github.com/navikt/vtp.git</connection>
+        <developerConnection>scm:git:https://github.com/navikt/vtp.git</developerConnection>
+        <url>https://github.com/navikt/vtp</url>
         <tag>vl-mock-1.0.0</tag>
     </scm>
 

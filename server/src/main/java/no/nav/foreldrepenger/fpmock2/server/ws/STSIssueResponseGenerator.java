@@ -12,6 +12,7 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
+import no.nav.foreldrepenger.fpmock2.felles.KeystoreUtils;
 import org.apache.cxf.security.SecurityContext;
 import org.apache.cxf.sts.StaticSTSProperties;
 import org.apache.cxf.sts.operation.TokenIssueOperation;
@@ -49,7 +50,7 @@ public class STSIssueResponseGenerator {
                 if (callbacks[i] instanceof WSPasswordCallback) { // CXF
                     WSPasswordCallback pc = (WSPasswordCallback) callbacks[i];
                     if (KeyStoreTool.getKeyAndCertAlias().equals(pc.getIdentifier())) {
-                        pc.setPassword(new String(KeyStoreTool.getKeyStorePassword()));
+                        pc.setPassword(KeystoreUtils.getKeyStorePassword());
                         break;
                     }
                 }
@@ -133,8 +134,8 @@ public class STSIssueResponseGenerator {
         Properties properties = new Properties();
         properties.put(
             "org.apache.wss4j.crypto.provider", "org.apache.wss4j.common.crypto.Merlin");
-        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", new String(KeyStoreTool.getKeyStorePassword()));
-        properties.put("org.apache.wss4j.crypto.merlin.keystore.file", KeyStoreTool.getDefaultKeyStorePath());
+        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", new String(KeystoreUtils.getKeyStorePassword()));
+        properties.put("org.apache.wss4j.crypto.merlin.keystore.file", KeystoreUtils.getKeystoreFilePath());
 
         return properties;
     }

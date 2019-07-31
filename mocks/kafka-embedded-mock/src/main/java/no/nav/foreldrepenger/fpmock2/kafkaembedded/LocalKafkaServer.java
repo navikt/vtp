@@ -37,10 +37,14 @@ public class LocalKafkaServer {
         return kafkaBrokerPort;
     }
 
+    public static AdminClient getKafkaAdminClient() {
+        return kafkaAdminClient;
+    }
+
     public static void startKafka(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
         Logger LOG = LoggerFactory.getLogger(LocalKafkaServer.class);
 
-        final String bootstrapServers = String.format("%s:%s", "localhost",kafkaBrokerPort);
+        final String bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
 
         LocalKafkaServer.kafkaBrokerPort = kafkaBrokerPort;
         LocalKafkaServer.zookeeperPort = zookeeperPort;
@@ -79,6 +83,7 @@ public class LocalKafkaServer {
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
         props.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
         props.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
@@ -87,6 +92,7 @@ public class LocalKafkaServer {
         props.put("ssl.keystore.password", KeystoreUtils.getKeyStorePassword());
         String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
         props.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(jaasTemplate, "vtp", "vtp"));
+
         return props;
     }
 
@@ -98,6 +104,7 @@ public class LocalKafkaServer {
         zkProperties.put("maxClientCnxns", "0");
         zkProperties.put("admin.enableServer", "false");
         zkProperties.put("jaasLoginRenew", "3600000");
+
         zkProperties.put("authorizer.class.name", "kafka.security.auth.SimpleAclAuthorizer");
         zkProperties.put("allow.everyone.if.no.acl.found", "true");
         zkProperties.put("ssl.client.auth", "required");
@@ -105,6 +112,7 @@ public class LocalKafkaServer {
         zkProperties.put("ssl.keystore.password", KeystoreUtils.getKeyStorePassword());
         zkProperties.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
         zkProperties.put("ssl.truststore.password", KeystoreUtils.getTruststorePassword());
+
         return zkProperties;
     }
 
@@ -122,7 +130,7 @@ public class LocalKafkaServer {
             kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL");
         }
 */
-        kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL"); //TODO: Fjern når POC fungerer
+        kafkaProperties.put("listener.security.protocol.map", "INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL"); //TODO: Fjern når POC fungerer
         kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
