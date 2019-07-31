@@ -1,0 +1,15 @@
+version: '3'
+services:
+  fpmock2:
+    build: .
+    networks:
+      default:
+        aliases:
+          - fpmock2
+    ports:
+      - 8060:8060 # HTTP
+      - 8389:8389 # LDAP
+    environment:
+      - DISABLE_SSL=true
+    volumes:
+      - "~/.modig/:/root/.modig"
