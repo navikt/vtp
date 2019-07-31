@@ -58,6 +58,14 @@ public class SoekersRelasjonErketyper {
         return termin;
     }
 
+    public static Foedsel fødselMedTermin(int antall, LocalDate fødselsdato, LocalDate termindato){
+        Foedsel soekersRelasjonTilBarnet = new Foedsel();
+        soekersRelasjonTilBarnet.setAntallBarn(antall);
+        soekersRelasjonTilBarnet.setFoedselsdato((fødselsdato));
+        soekersRelasjonTilBarnet.setTermindato(termindato);
+
+        return soekersRelasjonTilBarnet;
+    }
 
     public static Adopsjon søkerAdopsjon(){
         return adopsjon(false);
