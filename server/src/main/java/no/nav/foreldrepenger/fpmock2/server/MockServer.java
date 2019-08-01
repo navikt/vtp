@@ -68,7 +68,7 @@ public class MockServer {
 
     public MockServer() throws Exception {
         LOG.info("Dummyprop er satt til: " + System.getenv("DUMMYPROP"));
-        this.port = Integer.valueOf(System.getProperty("autotest.vtp.port", SERVER_PORT));
+        this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", SERVER_PORT));
 
         // Bør denne settes fra ENV_VAR?
         System.setProperty("server.url", "https://localhost:" + getSslPort());
@@ -84,42 +84,9 @@ public class MockServer {
     }
 
     public static void main(String[] args) throws Exception {
-
         PropertiesUtils.initProperties();
-
         MockServer mockServer = new MockServer();
-
         mockServer.start();
-
-    }
-
-    private static String initCryptoStoreConfig(String storeName, String storeProperty, String storePasswordProperty, String defaultPassword) {
-        String defaultLocation = getProperty("user.home", ".") + "/.modig/" + storeName + ".jks";
-
-        String storePath = getProperty(storeProperty, defaultLocation);
-        File storeFile = new File(storePath);
-        if (!storeFile.exists()) {
-            throw new IllegalStateException("Finner ikke " + storeName + " i " + storePath
-                    + "\n\tKonfigurer enten som System property \'" + storeProperty + "\' eller environment variabel \'"
-                    + storeProperty.toUpperCase().replace('.', '_') + "\'");
-        }
-        String password = getProperty(storePasswordProperty, defaultPassword);
-        if (password == null) {
-            throw new IllegalStateException("Passord for å aksessere store " + storeName + " i " + storePath + " er null");
-        }
-
-        System.setProperty(storeProperty, storeFile.getAbsolutePath());
-        System.setProperty(storePasswordProperty, password);
-        return storePath;
-    }
-
-    private static String getProperty(String key, String defaultValue) {
-        String val = System.getProperty(key, defaultValue);
-        if (val == null) {
-            val = System.getenv(key.toUpperCase().replace('.', '_'));
-            val = val == null ? defaultValue : val;
-        }
-        return val;
     }
 
     public void start() throws Exception {
@@ -152,7 +119,6 @@ public class MockServer {
                 "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
                 "privat-foreldrepenger-fprisk-utfor-t4",
                 "privat-foreldrepenger-tilkjentytelse-v1-local"));
-
         return topicSet;
     }
 
@@ -169,7 +135,6 @@ public class MockServer {
 
         TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
         templateRepositoryImpl.load();
-
 
         DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
         DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
@@ -264,13 +229,16 @@ public class MockServer {
         sslContextFactory.setKeyManagerPassword(KeystoreUtils.getKeyStorePassword());
         LOG.info("Starting TLS with keystore path {} ", KeystoreUtils.getKeystoreFilePath());
 
+
         // truststore avgjør hva vi stoler på av sertifikater når vi gjør utadgående TLS kall
-        initCryptoStoreConfig("truststore", TRUSTSTORE_PATH_PROP, TRUSTSTORE_PASSW_PROP, "changeit");
+        System.setProperty(TRUSTSTORE_PATH_PROP, KeystoreUtils.getTruststoreFilePath());
+        System.setProperty(TRUSTSTORE_PASSW_PROP, KeystoreUtils.getTruststorePassword());
 
         // keystore genererer sertifikat og TLS for innkommende kall. Bruker standard prop hvis definert, ellers faller tilbake på modig props
         var keystoreProp = System.getProperty("javax.net.ssl.keyStore") != null ? "javax.net.ssl.keyStore" : KEYSTORE_PATH_PROP;
         var keystorePasswProp = System.getProperty("javax.net.ssl.keyStorePassword") != null ? "javax.net.ssl.keyStorePassword" : KEYSTORE_PASSW_PROP;
-        initCryptoStoreConfig("keystore", keystoreProp, keystorePasswProp, "devillokeystore1234");
+        System.setProperty(keystoreProp, KeystoreUtils.getKeystoreFilePath());
+        System.setProperty(keystorePasswProp, KeystoreUtils.getKeyStorePassword());
 
         @SuppressWarnings("resource")
         ServerConnector sslConnector = new ServerConnector(server,
@@ -278,7 +246,6 @@ public class MockServer {
                 new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
-
         server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
     }
 

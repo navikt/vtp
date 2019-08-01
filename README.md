@@ -95,8 +95,6 @@ I tillegg, for å overstyre sikkerhet (PDP, STS, OpenAM):
 * ldap.user.basedn=ou\=NAV,ou\=BusinessUnits,dc\=test,dc\=local
 
 * OpenIdConnect.issoHost=https://localhost:8063/rest/isso/oauth2
-* OpenIdConnect.issoIssuer=https://localhost:8063/rest/isso/oauth2
-* OpenIdConnect.issoJwks=https://localhost:8063/rest/isso/oauth2/connect/jwk_uri
 For å sjekke om LDAP kjører riktig kan man bruke `ldapsearch`, eksempel fra under.
 ```bash
 ldapsearch -x -h localhost:8389 -b "ou=NAV,ou=BusinessUnits,dc=test,dc=local"
