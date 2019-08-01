@@ -42,7 +42,7 @@ public class OpptjeningErketyper {
 
     }
 
-    public static Opptjening medEgenNaeringOpptjening(){
+    public static Opptjening medEgenNaeringOpptjening(boolean erNyIArbeidslivet, BigInteger næringsInntekt, boolean varigEndretNæring){
 
         Opptjening opptjening = new Opptjening();
         List<EgenNaering> naeringer = opptjening.getEgenNaering();
@@ -67,17 +67,24 @@ public class OpptjeningErketyper {
         naering.setOrganisasjonsnummer("910909088");
         naering.setNaerRelasjon(false);
         naering.setNavn("Navnet Organisasjon");
-        naering.setErVarigEndring(true);
+        naering.setErVarigEndring(varigEndretNæring);
+        if (varigEndretNæring) {
+            naering.setEndringsDato((LocalDate.now().minusWeeks(1)));
+        }
         naering.setBeskrivelseAvEndring("Endringsbeskrivelse");
-        naering.setEndringsDato((LocalDate.now().minusWeeks(1)));
-        naering.setNaeringsinntektBrutto(BigInteger.valueOf(1_500_000));
+        naering.setNaeringsinntektBrutto(næringsInntekt);
         naering.setErNyoppstartet(false);
-        naering.setErNyIArbeidslivet(false);
+        naering.setErNyIArbeidslivet(erNyIArbeidslivet);
 
         naeringer.add(naering);
         return opptjening;
 
     }
+
+    public static Opptjening medEgenNaeringOpptjening(){
+        return medEgenNaeringOpptjening(false, BigInteger.valueOf(1_500_000), true);
+    }
+
     public static Opptjening medEgenNaeringOgFrilansOpptjening(){
 
         Periode periode = new Periode();
