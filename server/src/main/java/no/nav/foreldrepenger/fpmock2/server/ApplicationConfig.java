@@ -54,7 +54,7 @@ public class ApplicationConfig extends Application {
     public ApplicationConfig() {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0");
-        beanConfig.setSchemes(new String[] { "https", "http" });
+        beanConfig.setSchemes(new String[] { "http", "https" });
         beanConfig.setBasePath(API_URI);
         beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
         beanConfig.setResourcePackage("no.nav");

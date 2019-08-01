@@ -54,7 +54,7 @@ public class Oauth2RestService {
     private static final Map<String, String> nonceCache = new HashMap<>();
 
     private static final Map<String, String> clientIdCache = new HashMap<>();
-
+    private static final String DEFAULT_ISSUER = "https://vtp.local/issuer";
     @GET
     @Path("/oauth2/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
@@ -90,7 +90,7 @@ public class Oauth2RestService {
         uriBuilder.addParameter("scope", scope);
         uriBuilder.addParameter("state", state);
         uriBuilder.addParameter("client_id", clientId);
-        uriBuilder.addParameter("iss", getIssuer(req));
+        uriBuilder.addParameter("iss", getIssuer());
         uriBuilder.addParameter("redirect_uri", redirectUri);
         clientIdCache.put(state, clientId);
         if (req.getParameter("nonce") != "") {
@@ -210,18 +210,16 @@ public class Oauth2RestService {
         return Response.ok(oauthResponse).build();
     }
 
-    private String getIssuer(HttpServletRequest req) {
-        String issuer;
-        if (null != System.getenv("AUTOTEST_OAUTH2_ISSUER")) {
-            issuer = System.getenv("AUTOTEST_OAUTH2_ISSUER");
+    private String getIssuer() {
+        if (null != System.getenv("ISSO_OAUTH2_ISSUER")) {
+            return System.getenv("ISSO_OAUTH2_ISSUER");
         } else {
-            issuer = "https://vtp.local/issuer";
+            return DEFAULT_ISSUER;
         }
-        return issuer;
     }
 
     private String createIdToken(HttpServletRequest req, String username) {
-        String issuer = getIssuer(req);
+        String issuer = getIssuer();
         String state = req.getParameter("state");
         String nonce = nonceCache.get(state);
         OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, nonce).withIssuer(issuer);
@@ -307,7 +305,7 @@ public class Oauth2RestService {
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/.well-known/openid-configuration");
         String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
-        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, getIssuer(req));
+        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, getIssuer());
         return Response.ok(wellKnownResponse).build();
     }
 
