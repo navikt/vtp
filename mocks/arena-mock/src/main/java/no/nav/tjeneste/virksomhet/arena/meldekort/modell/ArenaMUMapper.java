@@ -101,6 +101,7 @@ public class ArenaMUMapper {
             v.setDatoKravMottatt(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.getKravMottattDato()));
             v.setVedtaksdato(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.getVedtakDato()));
             v.getMeldekortListe().addAll(mapArenaMeldekortListe(aVedtak.getMeldekort()));
+            v.setDagsats(aVedtak.getDagsats().doubleValue());
             resultat.add(v);
         }
         return resultat;

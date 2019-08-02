@@ -11,6 +11,7 @@
 						"tom": "now() - P2M",
 						"vedtakDato": "now() - P12M",
 						"kravMottattDato": "now() - P12M",
+						"dagsats": 1000,
 						"status": "IVERK",
 						"meldekort": [
 							{

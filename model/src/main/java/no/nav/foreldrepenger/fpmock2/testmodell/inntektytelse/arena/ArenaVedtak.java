@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,9 +27,20 @@ public class ArenaVedtak {
     @JsonProperty("status")
     private VedtakStatus status;
 
+    @JsonProperty("dagsats")
+    private BigDecimal dagsats;
+
     @JsonInclude(Include.NON_EMPTY)
     @JsonProperty("meldekort")
     private List<ArenaMeldekort> meldekort = new ArrayList<>();
+
+    public BigDecimal getDagsats() {
+        return dagsats;
+    }
+
+    public void setDagsats(BigDecimal dagsats) {
+        this.dagsats = dagsats;
+    }
 
     public LocalDate getKravMottattDato() {
         return kravMottattDato;
