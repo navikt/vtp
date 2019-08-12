@@ -200,6 +200,12 @@ public class ForeldrepengeYtelseErketyper {
         return foreldrepenger;
     }
 
+    public static Foreldrepenger foreldrepengerYtelseNorskBorgerINorgeFødselMorMilitær(LocalDate fodselsdato) {
+        Foreldrepenger foreldrepenger = foreldrepengerYtelseNorskBorgerINorgeFødselMor(fodselsdato);
+        foreldrepenger.setOpptjening(OpptjeningErketyper.medMilitærOpptjening());
+        return foreldrepenger;
+    }
+
     public static Dekningsgrad standardDekningsgrader(){
         Dekningsgrad dekningsgrad = new Dekningsgrad();
         Dekningsgrader dekningsgrader = new Dekningsgrader();

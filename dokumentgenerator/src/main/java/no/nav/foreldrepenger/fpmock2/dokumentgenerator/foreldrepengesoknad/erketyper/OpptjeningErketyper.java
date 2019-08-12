@@ -155,4 +155,20 @@ public class OpptjeningErketyper {
 
     }
 
+    public static Opptjening medMilitærOpptjening(){
+        Opptjening opptjening = new Opptjening();
+        List<AnnenOpptjening> annenOpptjening = opptjening.getAnnenOpptjening();
+        AnnenOpptjening militær = new AnnenOpptjening();
+        AnnenOpptjeningTyper type = new AnnenOpptjeningTyper();
+        type.setKode("MILITÆR_ELLER_SIVILTJENESTE");
+        militær.setType(type);
+        Periode periode = new Periode();
+        periode.setFom((LocalDate.now().minusMonths(4)));
+        periode.setTom((LocalDate.now().minusMonths(3)));
+        militær.setPeriode(periode);
+        annenOpptjening.add(militær);
+        return opptjening;
+
+    }
+
 }
