@@ -11,7 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 @Api(tags = {"FpOppdrag"})
-@Path("rest/fpoppdrag/simulering/")
+@Path("/rest/fpoppdrag/simulering/")
 public class FpOppdragMock {
 
     private static final Logger logg = LoggerFactory.getLogger(FpOppdragMock.class);
