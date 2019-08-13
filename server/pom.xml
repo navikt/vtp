@@ -83,6 +83,10 @@
             <groupId>no.nav.vedtak.fpmock2</groupId>
             <artifactId>oppdrag-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <artifactId>fpoppdrag-mock</artifactId>
+        </dependency>
 
 
         <!-- NAV biblioteker -->

@@ -29,6 +29,7 @@
         <module>personfeed-mock</module>
         <module>oppdrag-mock</module>
         <module>kafka-embedded-mock</module>
+        <module>fpoppdrag-mock</module>
     </modules>
 
     <dependencies>
