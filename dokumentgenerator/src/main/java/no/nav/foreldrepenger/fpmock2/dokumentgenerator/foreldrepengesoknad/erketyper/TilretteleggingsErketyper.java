@@ -1,12 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
-
-import org.glassfish.pfl.dynamic.copyobject.spi.ObjectCopierFactory;
 
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Vedlegg;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Innsendingstype;
@@ -39,15 +35,44 @@ public class TilretteleggingsErketyper{
         return tilrettelegging;
     }
 
-    public static Tilrettelegging delvisTilrettelegging(){
+    public static Tilrettelegging delvisTilrettelegging(LocalDate behovForTilretteleggingFom, LocalDate tilrettelagtArbeidFom, Arbeidsforhold arbeidsforhold, BigDecimal stillingsprosent){
         Tilrettelegging tilrettelegging = new Tilrettelegging();
-        tilrettelegging.setDelvisTilrettelegging(new DelvisTilrettelegging());
+        tilrettelegging.setBehovForTilretteleggingFom(behovForTilretteleggingFom);
+        tilrettelegging.setArbeidsforhold(arbeidsforhold);
+
+        ObjectFactory of = new ObjectFactory();
+        Innsendingstype innsendingstype = new Innsendingstype();
+        innsendingstype.setKode("LASTET_OPP");
+        innsendingstype.setKodeverk("INNSENDINGSVALG");
+        Vedlegg vedlegg = new Vedlegg();
+        vedlegg.setId("B"+UUID.randomUUID().toString().substring(0,6));
+        vedlegg.setInnsendingstype(innsendingstype);
+
+        DelvisTilrettelegging delvisTilrettelegging = new DelvisTilrettelegging();
+        delvisTilrettelegging.setTilrettelagtArbeidFom(tilrettelagtArbeidFom);
+        delvisTilrettelegging.setStillingsprosent(stillingsprosent);
+        tilrettelegging.setDelvisTilrettelegging(delvisTilrettelegging);
+        tilrettelegging.getVedlegg().add(of.createTilretteleggingVedlegg(vedlegg));
         return tilrettelegging;
     }
 
-    public static Tilrettelegging ingenTilrettelegging() {
+    public static Tilrettelegging ingenTilrettelegging(LocalDate behovForTilretteleggingFom, LocalDate tilrettelagtArbeidFom, Arbeidsforhold arbeidsforhold) {
         Tilrettelegging tilrettelegging = new Tilrettelegging();
-        tilrettelegging.setIngenTilrettelegging(new IngenTilrettelegging());
+        tilrettelegging.setBehovForTilretteleggingFom(behovForTilretteleggingFom);
+        tilrettelegging.setArbeidsforhold(arbeidsforhold);
+
+        ObjectFactory of = new ObjectFactory();
+        Innsendingstype innsendingstype = new Innsendingstype();
+        innsendingstype.setKode("LASTET_OPP");
+        innsendingstype.setKodeverk("INNSENDINGSVALG");
+        Vedlegg vedlegg = new Vedlegg();
+        vedlegg.setId("C"+UUID.randomUUID().toString().substring(0,6));
+        vedlegg.setInnsendingstype(innsendingstype);
+
+        IngenTilrettelegging ingenTilrettelegging = new IngenTilrettelegging();
+        ingenTilrettelegging.setSlutteArbeidFom(tilrettelagtArbeidFom);
+        tilrettelegging.setIngenTilrettelegging(ingenTilrettelegging);
+        tilrettelegging.getVedlegg().add(of.createTilretteleggingVedlegg(vedlegg));
         return tilrettelegging;
     }
 
