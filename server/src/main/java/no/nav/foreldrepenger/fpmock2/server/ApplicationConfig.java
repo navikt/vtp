@@ -40,8 +40,8 @@ import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioRestTjenest
 import no.nav.foreldrepenger.fpmock2.server.api.scenario.TestscenarioTemplateRestTjeneste;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.fpmock2.server.rest.IsReadyImpl;
-import no.nav.foreldrepenger.fpmock2.server.rest.Oauth2RestService;
-import no.nav.foreldrepenger.fpmock2.server.rest.PdpRestTjeneste;
+import no.nav.foreldrepenger.fpmock2.server.rest.auth.Oauth2RestService;
+import no.nav.foreldrepenger.fpmock2.server.rest.auth.PdpRestTjeneste;
 import no.nav.fpmock2.personfeed.PersonfeedMock;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.sigrun.SigrunMock;

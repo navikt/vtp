@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock2.server.rest;
+package no.nav.foreldrepenger.fpmock2.server.rest.auth;
 
 import java.util.ArrayList;
 import java.util.Arrays;

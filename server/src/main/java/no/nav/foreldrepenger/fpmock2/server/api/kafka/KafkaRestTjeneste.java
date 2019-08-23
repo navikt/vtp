@@ -2,15 +2,16 @@ package no.nav.foreldrepenger.fpmock2.server.api.kafka;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaServer;
 import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ import java.util.concurrent.ExecutionException;
 @Path("/api/kafka")
 public class KafkaRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(KafkaRestTjeneste.class);
+
+    @Context
+    LocalKafkaProducer localKafkaProducer;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +45,21 @@ public class KafkaRestTjeneste {
                 .status(Response.Status.OK)
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .entity(list)
+                .build();
+    }
+
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/send/{topic}")
+    @ApiOperation(value = "", notes = ("Legger melding på Kafka topic"))
+    public Response sendMessage(@PathParam("topic") String topic, String message) {
+        LOG.info("Request: send message to topic [{}]: {}", topic, message);
+        localKafkaProducer.sendMelding(topic, message);
+
+        return Response
+                .status(Response.Status.OK)
+                .type(MediaType.TEXT_PLAIN)
+                .entity(message)
                 .build();
     }
 
