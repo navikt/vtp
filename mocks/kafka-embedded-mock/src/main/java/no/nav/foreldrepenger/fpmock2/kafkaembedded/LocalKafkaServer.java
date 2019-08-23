@@ -80,6 +80,8 @@ public class LocalKafkaServer {
         localConsumer = new LocalKafkaConsumerStream(bootstrapServers, bootstrapTopics);
         localConsumer.start();
 
+        localProducer = new LocalKafkaProducer(bootstrapServers);
+
     }
 
     private static Properties createAdminClientProps(String boostrapServer) {
@@ -161,6 +163,10 @@ public class LocalKafkaServer {
         kafkaProperties.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
         kafkaProperties.put("ssl.truststore.password", KeystoreUtils.getTruststorePassword());
         return kafkaProperties;
+    }
+
+    public static LocalKafkaProducer getLocalProducer(){
+        return localProducer;
     }
 
 

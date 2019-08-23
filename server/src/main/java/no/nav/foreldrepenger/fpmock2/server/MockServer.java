@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import no.nav.foreldrepenger.fpmock2.kafkaembedded.LocalKafkaProducer;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
@@ -141,7 +142,8 @@ public class MockServer {
         GsakRepo gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
-        addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo);
+        addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo, LocalKafkaServer.getLocalProducer());
+
 
         addWebResources(handler);
         addWebGui(handler);
@@ -172,8 +174,8 @@ public class MockServer {
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
                                    DelegatingTestscenarioTemplateRepository templateRepository,
-                                   GsakRepo gsakRepo) {
-        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo);
+                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer) {
+        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {

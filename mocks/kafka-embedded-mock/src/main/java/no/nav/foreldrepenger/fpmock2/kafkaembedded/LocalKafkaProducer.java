@@ -53,4 +53,11 @@ public class LocalKafkaProducer {
         });
         producer.flush();
     }
+
+    public void sendMelding(String topic, String value) {
+        producer.send(new ProducerRecord(topic, value), (recordMetadata, e) -> {
+            LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
+        });
+        producer.flush();
+    }
 }
