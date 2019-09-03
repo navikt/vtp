@@ -53,7 +53,7 @@ public class ForeldrepengesoknadBuilderTest {
     }
 
     @Test
-    public void svangerskappengersøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSattHasNoException() {
+    public void svangerskappengersøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSatt() {
         Tilrettelegging tilrettelegging = TilretteleggingsErketyper.ingenTilrettelegging(
                 LocalDate.now(),
                 LocalDate.now().plusDays(2),
@@ -71,7 +71,7 @@ public class ForeldrepengesoknadBuilderTest {
     }
 
     @Test
-    public void endringssøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSattHasNoException() {
+    public void endringssøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSatt() {
         Endringssoeknad endringssoeknad = new Endringssoeknad();
         endringssoeknad.setSaksnummer("123123");
         endringssoeknad.setFordeling(FordelingErketyper.fordelingFarHappyCase(LocalDate.now().minusWeeks(3)));
@@ -84,7 +84,7 @@ public class ForeldrepengesoknadBuilderTest {
     }
 
     @Test
-    public void engangsstønadbuilderHasNoEzception() {
+    public void engangsstønadsøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSatt() {
         Engangsstønad engangsstønad = new Engangsstønad();
         AnnenForelder annenForelder = new UkjentForelder();
         engangsstønad.setAnnenForelder(annenForelder);
