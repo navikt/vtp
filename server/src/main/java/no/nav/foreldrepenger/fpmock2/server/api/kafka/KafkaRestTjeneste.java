@@ -49,7 +49,7 @@ public class KafkaRestTjeneste {
     }
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/send/{topic}")
     @ApiOperation(value = "", notes = ("Legger melding på Kafka topic"))
     public Response sendMessage(@PathParam("topic") String topic, String message) {
@@ -58,7 +58,7 @@ public class KafkaRestTjeneste {
 
         return Response
                 .status(Response.Status.OK)
-                .type(MediaType.TEXT_PLAIN)
+                .type(MediaType.APPLICATION_JSON)
                 .entity(message)
                 .build();
     }

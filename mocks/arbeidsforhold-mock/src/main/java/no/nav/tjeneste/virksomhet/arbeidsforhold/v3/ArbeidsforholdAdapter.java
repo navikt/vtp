@@ -31,6 +31,7 @@ public class ArbeidsforholdAdapter {
         Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
         arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
         arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
+        arbeidsforhold.setOpprettelsestidspunkt(ConversionUtils.convertToXMLGregorianCalendar(arbeidsforholdModell.getAnsettelsesperiodeFom()));
 
         Arbeidsforholdstyper aftype = objectFactory.createArbeidsforholdstyper();
         aftype.setKodeRef(arbeidsforholdModell.getArbeidsforholdstype().getKode());

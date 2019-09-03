@@ -20,6 +20,10 @@
 			<artifactId>nav-fim-organisasjon-v4-tjenestespesifikasjon</artifactId>
 			<classifier>jaxws</classifier>
 		</dependency>
+		<dependency>
+			<groupId>no.nav.tjenester</groupId>
+			<artifactId>nav-fim-organisasjon-v5-tjenestespesifikasjon</artifactId>
+		</dependency>
 
 		<!-- 3dje parts biblioteker -->
 

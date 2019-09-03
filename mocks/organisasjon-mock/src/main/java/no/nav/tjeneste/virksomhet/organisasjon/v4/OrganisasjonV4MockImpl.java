@@ -50,15 +50,15 @@ import no.nav.tjeneste.virksomhet.organisasjon.v4.meldinger.ValiderOrganisasjonR
 @Addressing
 @WebService(name = "Organisasjon_v4", targetNamespace = "http://nav.no/tjeneste/virksomhet/organisasjon/v4")
 @HandlerChain(file="Handler-chain.xml")
-public class OrganisasjonMockImpl implements OrganisasjonV4 {
+public class OrganisasjonV4MockImpl implements OrganisasjonV4 {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonMockImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonV4MockImpl.class);
 
     private TestscenarioBuilderRepository scenarioRepository;
 
-    public OrganisasjonMockImpl() {}
+    public OrganisasjonV4MockImpl() {}
 
-    public OrganisasjonMockImpl(TestscenarioBuilderRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
+    public OrganisasjonV4MockImpl(TestscenarioBuilderRepository scenarioRepository) {this.scenarioRepository = scenarioRepository;}
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/organisasjon/v4/Organisasjon_v4/finnOrganisasjonRequest")
@@ -102,7 +102,6 @@ public class OrganisasjonMockImpl implements OrganisasjonV4 {
         LOG.info("hentOrganisasjon. Orgnummer: {}", request.getOrgnummer());
         if (request.getOrgnummer() != null) {
             HentOrganisasjonResponse response = new HentOrganisasjonResponse();
-            OrganisasjonGenerator orggen = new OrganisasjonGenerator();
             //response.setOrganisasjon(orggen.lagOrganisasjon(request.getOrgnummer()));
             Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(request.getOrgnummer());
             if (organisasjonModell.isPresent()) {
