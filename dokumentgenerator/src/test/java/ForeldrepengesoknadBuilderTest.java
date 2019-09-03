@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.*;
 public class ForeldrepengesoknadBuilderTest {
 
     @Test
-    public void foreldrepengerbuilderNoException() {
+    public void foreldrepengersøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSatt() {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
@@ -39,7 +39,7 @@ public class ForeldrepengesoknadBuilderTest {
         assertThatCode(() -> soeknad.build()).doesNotThrowAnyException();
     }
     @Test
-    public void foreldrepengerbuilderHasException() {
+    public void foreldrepengersøknadKasterExceptionHvisIkkeAlleNødvendigeFelterErSatt() {
         Foreldrepenger foreldrepenger = new Foreldrepenger();
         foreldrepenger.setDekningsgrad(standardDekningsgrader());
         foreldrepenger.setMedlemskap(MedlemskapErketyper.medlemskapNorge());
@@ -53,7 +53,7 @@ public class ForeldrepengesoknadBuilderTest {
     }
 
     @Test
-    public void svangerskappengerHasNoException() {
+    public void svangerskappengersøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSattHasNoException() {
         Tilrettelegging tilrettelegging = TilretteleggingsErketyper.ingenTilrettelegging(
                 LocalDate.now(),
                 LocalDate.now().plusDays(2),
@@ -71,7 +71,7 @@ public class ForeldrepengesoknadBuilderTest {
     }
 
     @Test
-    public void endringssøknadbuilderHasNoException() {
+    public void endringssøknadKasterIngenExceptionHvisIkkeAlleNødvendigeFelterErSattHasNoException() {
         Endringssoeknad endringssoeknad = new Endringssoeknad();
         endringssoeknad.setSaksnummer("123123");
         endringssoeknad.setFordeling(FordelingErketyper.fordelingFarHappyCase(LocalDate.now().minusWeeks(3)));
