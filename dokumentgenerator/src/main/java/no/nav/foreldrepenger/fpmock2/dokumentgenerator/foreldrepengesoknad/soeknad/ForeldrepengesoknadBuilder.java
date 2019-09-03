@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.soek
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -24,27 +24,16 @@ import no.nav.vedtak.felles.xml.soeknad.v3.ObjectFactory;
 import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
-public class ForeldrepengesoknadBuilder implements MottattDatoStep<ForeldrepengesoknadBuilder>,
-        BegrunnelseForSenSoeknadStep<ForeldrepengesoknadBuilder>,
-        TilleggsopplysningerStep<ForeldrepengesoknadBuilder>,
-        OmYtelseStep<ForeldrepengesoknadBuilder>,
-        SoekerStep<ForeldrepengesoknadBuilder>,
-        AndreVedleggStep<ForeldrepengesoknadBuilder>,
-        PaakrevdeVedlegg<ForeldrepengesoknadBuilder>,
-        BuildStep {
+import static no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.soekerAvType;
+
+public class ForeldrepengesoknadBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(ForeldrepengesoknadBuilder.class);
+    private Soeknad kladd;
+    private JAXBElement<? extends Ytelse> omYtelseJAXBElementKladd;
 
-    private LocalDate mottattDato;
-    private String begrunnelseForSenSoeknad;
-    private String tilleggsopplysninger;
-    private JAXBElement<? extends Ytelse> omYtelse;
-    private Bruker soeker;
-    private List<Vedlegg> andreVedlegg;
-    private List<Vedlegg> paakrevdeVedlegg;
-
-
-    private ForeldrepengesoknadBuilder() {
+    public ForeldrepengesoknadBuilder() {
+        kladd = new Soeknad();
     }
 
     public static ForeldrepengesoknadBuilder startBuilding() {
@@ -52,7 +41,6 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
     }
 
     public static ForeldrepengesoknadBuilder soeknad() {
-
         return new ForeldrepengesoknadBuilder();
     }
 
@@ -72,129 +60,87 @@ public class ForeldrepengesoknadBuilder implements MottattDatoStep<Foreldrepenge
             e.printStackTrace();
         }
         return xml;
-
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withMottattDato(LocalDate mottattDato) {
-        this.mottattDato = mottattDato;
+        kladd.setMottattDato(mottattDato);
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withBegrunnelseForSenSoeknad(String begrunnelseForSenSoeknad) {
-        this.begrunnelseForSenSoeknad = begrunnelseForSenSoeknad;
+        kladd.setBegrunnelseForSenSoeknad(begrunnelseForSenSoeknad);
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withTilleggsopplysninger(String tilleggsopplysninger) {
-        this.tilleggsopplysninger = tilleggsopplysninger;
+        kladd.setTilleggsopplysninger(tilleggsopplysninger);
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withForeldrepengerYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory().createForeldrepenger((Foreldrepenger) omYtelse);
+        omYtelseJAXBElementKladd = new no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory().createForeldrepenger((Foreldrepenger) omYtelse);
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withEndringssoeknadYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory().createEndringssoeknad((Endringssoeknad) omYtelse);
+        omYtelseJAXBElementKladd = new no.nav.vedtak.felles.xml.soeknad.endringssoeknad.v3.ObjectFactory().createEndringssoeknad((Endringssoeknad) omYtelse);
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withEngangsstoenadYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.ObjectFactory().createEngangsstønad((Engangsstønad) omYtelse);
+        omYtelseJAXBElementKladd = new no.nav.vedtak.felles.xml.soeknad.engangsstoenad.v3.ObjectFactory().createEngangsstønad((Engangsstønad) omYtelse);
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withSvangerskapspengeYtelse(Ytelse omYtelse) {
-        this.omYtelse = new no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory().createSvangerskapspenger((Svangerskapspenger) omYtelse);
+        omYtelseJAXBElementKladd = new no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory().createSvangerskapspenger((Svangerskapspenger) omYtelse);
+        Svangerskapspenger svangerskapspenger = (Svangerskapspenger) omYtelseJAXBElementKladd.getValue();
+        svangerskapspenger.getTilretteleggingListe().getTilrettelegging().forEach(tilrettelegging -> tilrettelegging.getVedlegg().forEach(vedlegg -> {
+            kladd.getPaakrevdeVedlegg().add((Vedlegg) vedlegg.getValue());
+        }));
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withSoeker(Bruker soeker) {
-        this.soeker = soeker;
+        //TODO slettes når ForeldrepengesoknadXmlErketyper er ryddet
+        kladd.setSoeker(soeker);
+        return this;
+    }
+    public ForeldrepengesoknadBuilder withSoeker(String aktoerId, String rolle){
+        kladd.setSoeker(soekerAvType(aktoerId, rolle));
         return this;
     }
 
-    @Override
     public ForeldrepengesoknadBuilder withAndreVedlegg(List<Vedlegg> andreVedlegg) {
-        this.andreVedlegg = andreVedlegg;
+        if(andreVedlegg != null){
+            andreVedlegg.forEach(av -> kladd.getAndreVedlegg().add(av));
+        }
         return this;
     }
-
-    @Override
     public ForeldrepengesoknadBuilder withPaakrevdeVedlegg(List<Vedlegg> paakrevdeVedlegg) {
-        this.paakrevdeVedlegg = paakrevdeVedlegg;
+        if(paakrevdeVedlegg != null) {
+            paakrevdeVedlegg.forEach(pv -> kladd.getPaakrevdeVedlegg().add(pv));
+        }
         return this;
     }
 
-
-
-    @Override
     public Soeknad build() {
-        Soeknad soeknad = new Soeknad();
-        soeknad.setMottattDato(this.mottattDato);
-        soeknad.setBegrunnelseForSenSoeknad(this.begrunnelseForSenSoeknad);
-        soeknad.setTilleggsopplysninger(this.tilleggsopplysninger);
+        OmYtelse omYtelseKladd = new OmYtelse();
+        omYtelseKladd.getAny().add(this.omYtelseJAXBElementKladd);
+        kladd.setOmYtelse(omYtelseKladd);
 
-        OmYtelse omYtelse = new OmYtelse();
-        omYtelse.getAny().add(this.omYtelse);
-        soeknad.setOmYtelse(omYtelse);
-
-        if(erSvangerskapspenger(soeknad)){
-            Svangerskapspenger svangerskapspenger = (Svangerskapspenger) this.omYtelse.getValue();
-            svangerskapspenger.getTilretteleggingListe().getTilrettelegging().forEach(tilrettelegging -> {
-                tilrettelegging.getVedlegg().forEach(vedlegg -> {
-                     soeknad.getPaakrevdeVedlegg().add((Vedlegg) vedlegg.getValue());
-                });
-            });
+        if(kladd.getBegrunnelseForSenSoeknad() == null){
+            kladd.setBegrunnelseForSenSoeknad((String) null);
         }
-
-
-
-        soeknad.setSoeker(this.soeker);
-        if (null != this.paakrevdeVedlegg) {
-            this.paakrevdeVedlegg.forEach(pkv -> {
-                soeknad.getPaakrevdeVedlegg().add(pkv);
-            });
+        if(kladd.getTilleggsopplysninger() == null){
+            kladd.setTilleggsopplysninger("");
         }
-
-        if (null != this.andreVedlegg) {
-            this.andreVedlegg.forEach(av -> {
-                soeknad.getAndreVedlegg().add(av);
-            });
+        if(kladd.getMottattDato() == null){
+            kladd.setMottattDato(LocalDate.now());
         }
+        Objects.requireNonNull(kladd.getOmYtelse(), "Ytelse kan ikke være null");
+        Objects.requireNonNull(kladd.getSoeker(), "Søker kan ikke være null");
 
-
-        return soeknad;
-    }
-
-    private boolean erSvangerskapspenger(Soeknad soeknad) {
-        for(Object jaxbYtelseElement : soeknad.getOmYtelse().getAny()){
-            Ytelse ytelse = (Ytelse) (((JAXBElement<? extends Ytelse>) jaxbYtelseElement).getValue());
-            if(ytelse instanceof Svangerskapspenger){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Soeknad buildEndring() {
-        Soeknad soeknad = new Soeknad();
-        soeknad.setMottattDato(this.mottattDato);
-
-        OmYtelse omYtelse = new OmYtelse();
-        omYtelse.getAny().add(this.omYtelse);
-        soeknad.setOmYtelse(omYtelse);
-        soeknad.setSoeker(this.soeker);
-
-        return soeknad;
+        return kladd;
     }
 }

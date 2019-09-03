@@ -21,7 +21,7 @@ public class SoekerErketyper {
         return soekerAvType(aktoerId, "ANDRE");
     }
 
-    private static Bruker soekerAvType(String aktoerId, String soekerType) {
+    public static Bruker soekerAvType(String aktoerId, String soekerType) {
         Bruker bruker = new Bruker();
         bruker.setAktoerId(aktoerId);
         Brukerroller brukerroller = new Brukerroller();
