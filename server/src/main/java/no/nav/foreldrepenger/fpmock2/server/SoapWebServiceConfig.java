@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.WebServiceFeature;
 
+import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
@@ -31,7 +32,7 @@ import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkServiceMockImpl;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.MedlemServiceMockImpl;
 import no.nav.tjeneste.virksomhet.oppgave.v3.OppgaveServiceMockImpl;
-import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonMockImpl;
+import no.nav.tjeneste.virksomhet.organisasjon.v4.OrganisasjonV4MockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
@@ -77,7 +78,8 @@ public class SoapWebServiceConfig {
         publishWebService(new InntektMockImpl(repo), "/soap/inntektskomponenten-ws/inntekt/v3/Inntekt");
         publishWebService(new OppgaveServiceMockImpl(), "/soap/nav-gsak-ws/OppgaveV3");
         publishWebService(new ArbeidsforholdMockImpl(repo), "/soap/aareg-core/ArbeidsforholdService/v3");
-        publishWebService(new OrganisasjonMockImpl(repo), "/soap/ereg/ws/OrganisasjonService/v4");
+        publishWebService(new OrganisasjonV4MockImpl(repo), "/soap/ereg/ws/OrganisasjonService/v4");
+        publishWebService(new OrganisasjonV5MockImpl(repo),"/soap/ereg/ws/OrganisasjonService/v5");
         publishWebService(new BehandleJournalV3ServiceMockImpl(),"/soap/services/behandlejournal/v3");
         publishWebService(new SimulerFpServiceMockImpl(), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
