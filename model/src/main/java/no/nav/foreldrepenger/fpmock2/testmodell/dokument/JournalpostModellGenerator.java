@@ -13,7 +13,7 @@ import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantfor
 public class JournalpostModellGenerator {
 
 
-    public static JournalpostModell lagJournalpost(String innhold, String fnr, DokumenttypeId dokumenttypeId) {
+    public static JournalpostModell lagJournalpostStrukturertDokument(String innhold, String fnr, DokumenttypeId dokumenttypeId) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
@@ -40,7 +40,7 @@ public class JournalpostModellGenerator {
 
     }
 
-    public static JournalpostModell makeUstrukturertDokumentJournalpost(String fnr, DokumenttypeId dokumenttypeId) {
+    public static JournalpostModell lagJournalpostUstrukturertDokument(String fnr, DokumenttypeId dokumenttypeId) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);

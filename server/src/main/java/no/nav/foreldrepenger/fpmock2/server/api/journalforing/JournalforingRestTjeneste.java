@@ -2,13 +2,10 @@ package no.nav.foreldrepenger.fpmock2.server.api.journalforing;
 
 import java.time.LocalDateTime;
 
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +28,7 @@ public class JournalforingRestTjeneste {
     private static final String AKTORID_KEY = "fnr";
     private static final String JOURNALPOST_ID = "journalpostid";
     private static final String SAKSNUMMER = "saksnummer";
+    private static final String JOURNALSTATUS = "journalstatus";
 
     @POST
     @Path("/foreldrepengesoknadxml/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
@@ -40,7 +38,7 @@ public class JournalforingRestTjeneste {
 
 
 
-        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpost(xml, fnr, dokumenttypeId);
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(xml, fnr, dokumenttypeId);
         journalpostModell.setMottattDato(LocalDateTime.now());
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
         String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
@@ -51,6 +49,27 @@ public class JournalforingRestTjeneste {
         res.setJournalpostId(journalpostId);
         return res;
     }
+
+    @POST
+    @Path("/ustrukturertjournalpost/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
+    public JournalforingResultatDto lagUstrukturertJournalpost(@PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeid, @QueryParam(JOURNALSTATUS) String journalstatus){
+        JournalpostModell journalpostModell = JournalpostModellGenerator.lagJournalpostUstrukturertDokument(fnr,dokumenttypeid);
+        if(journalstatus != null && journalstatus.length() > 0){
+            Journalstatus status = new Journalstatus(journalstatus);
+            journalpostModell.setJournalStatus(status);
+        }
+
+        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
+        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
+
+        LOG.info("Oppretter journalpost for bruker: {}. JournalpostId: {}", fnr, journalpostId);
+
+        JournalforingResultatDto response = new JournalforingResultatDto();
+        response.setJournalpostId(journalpostId);
+        return response;
+
+    }
+
 
     @POST
     @Path("/knyttsaktiljournalpost/journalpostid/{journalpostid}/saksnummer/{saksnummer}")
@@ -66,5 +85,7 @@ public class JournalforingRestTjeneste {
         res.setJournalpostId(journalpostId);
         return res;
     }
+
+
 
 }

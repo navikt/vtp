@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.WebServiceFeature;
 
+import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalV1ServiceMock;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -38,7 +39,7 @@ import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
 
 public class SoapWebServiceConfig {
-    
+
     private JettyHttpServer jettyHttpServer;
 
     public SoapWebServiceConfig(JettyHttpServer jettyHttpServer) {
@@ -48,7 +49,7 @@ public class SoapWebServiceConfig {
     public void setup(TestscenarioBuilderRepository repo, JournalRepository journalRepository, GsakRepo gsakRepo) {
 
         publishWebService(new SecurityTokenServiceMockImpl(), "/soap/SecurityTokenServiceProvider/");
-        
+
         // TODO NB! disse "access wsdl on..." er tvilsomme, da de de returnerer WSDL/XSD *generert* fra JAXB-klassene, ikke originaldokumentene
         publishWebService(new AktoerServiceMockImpl(repo), "/soap/aktoerregister/ws/Aktoer/v2");
         // access wsdl on http://localhost:7999/aktoer?wsdl
@@ -60,6 +61,7 @@ public class SoapWebServiceConfig {
         // access wsdl on http://localhost:7999/journal?wsdl
         publishWebService(new JournalV3ServiceMockImpl(journalRepository), "/soap/joark/Journal/v3");
         publishWebService(new InngaaendeJournalServiceMockImpl(journalRepository), "/soap/joark/InngaaendeJournal/v1");
+        publishWebService(new BehandleInngaaendeJournalV1ServiceMock(journalRepository),"/soap/services/behandleinngaaendejournal/v1");
         // publishWebService(new OppgavebehandlingServiceMockImpl(gsakRepo), "/soap/nav-gsak-ws/BehandleOppgaveV1");
         // access wsdl on http://localhost:7999/oppgavebehandling?wsdl
         publishWebService(new BehandleOppgaveServiceMockImpl(gsakRepo), "/soap/nav-gsak-ws/BehandleOppgaveV1");
