@@ -11,7 +11,7 @@ import java.util.Objects;
 public class GraderingBuilder {
     private Gradering kladd = new Gradering();
 
-    public GraderingBuilder medArbeidstaker (String arbeidsgiverIdentifikator, Integer arbeidstidsprosent ) {
+    public GraderingBuilder medGraderingArbeidstaker (String arbeidsgiverIdentifikator, Integer arbeidstidsprosent ) {
         Virksomhet virksomhet = new Virksomhet();
         virksomhet.setIdentifikator(arbeidsgiverIdentifikator);
         this.kladd.setArbeidsgiver(virksomhet);
@@ -22,7 +22,7 @@ public class GraderingBuilder {
         this.kladd.setErSelvstNæringsdrivende(false);
         return this;
     }
-    public GraderingBuilder medSNFL(boolean erFL, boolean erSN, Integer arbeidstidsprosent) {
+    public GraderingBuilder medGraderingFLSN(boolean erFL, boolean erSN, Integer arbeidstidsprosent) {
         this.kladd.setArbeidsforholdSomSkalGraderes(true);
         this.kladd.setArbeidtidProsent(arbeidstidsprosent.doubleValue());
         this.kladd.setErArbeidstaker(false);
