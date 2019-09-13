@@ -75,11 +75,19 @@ public class FordelingErketyper {
                 .build();
         return graderinsperiode;
     }
-    public static Gradering graderingsperiodeFLSN(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erFL, boolean erSN, Integer arbeidstidsprosent) {
+    public static Gradering graderingsperiodeFL(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erFL, Integer arbeidstidsprosent) {
         Gradering graderinsperiode = new GraderingBuilder()
                 .medStønadskontoType(stønadskontotype)
                 .medTidsperiode(fom, tom)
-                .medGraderingFLSN(erFL, erSN, arbeidstidsprosent)
+                .medGraderingFL(arbeidstidsprosent)
+                .build();
+        return graderinsperiode;
+    }
+    public static Gradering graderingsperiodeSN(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erSN, Integer arbeidstidsprosent) {
+        Gradering graderinsperiode = new GraderingBuilder()
+                .medStønadskontoType(stønadskontotype)
+                .medTidsperiode(fom, tom)
+                .medGraderingSN(arbeidstidsprosent)
                 .build();
         return graderinsperiode;
     }

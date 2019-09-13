@@ -22,12 +22,20 @@ public class GraderingBuilder {
         this.kladd.setErSelvstNæringsdrivende(false);
         return this;
     }
-    public GraderingBuilder medGraderingFLSN(boolean erFL, boolean erSN, Integer arbeidstidsprosent) {
+    public GraderingBuilder medGraderingFL(Integer arbeidstidsprosent) {
         this.kladd.setArbeidsforholdSomSkalGraderes(true);
         this.kladd.setArbeidtidProsent(arbeidstidsprosent.doubleValue());
         this.kladd.setErArbeidstaker(false);
-        this.kladd.setErFrilanser(erFL);
-        this.kladd.setErSelvstNæringsdrivende(erSN);
+        this.kladd.setErFrilanser(true);
+        this.kladd.setErSelvstNæringsdrivende(false);
+        return this;
+    }
+    public GraderingBuilder medGraderingSN(Integer arbeidstidsprosent) {
+        this.kladd.setArbeidsforholdSomSkalGraderes(true);
+        this.kladd.setArbeidtidProsent(arbeidstidsprosent.doubleValue());
+        this.kladd.setErArbeidstaker(false);
+        this.kladd.setErFrilanser(false);
+        this.kladd.setErSelvstNæringsdrivende(true);
         return this;
     }
     public GraderingBuilder medTidsperiode(LocalDate fom, LocalDate tom){
