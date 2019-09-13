@@ -1,8 +1,8 @@
 package no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.erketyper;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.GraderingBuilder;
 import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Oppholdsaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
@@ -13,7 +13,6 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 
 public class FordelingErketyper {
 
@@ -68,50 +67,40 @@ public class FordelingErketyper {
         return fordeling;
     }
 
-    public static Gradering graderingPeriode(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, BigDecimal arbeidstidsprosent) {
-        Gradering gradering = new Gradering();
-        gradering.setArbeidsforholdSomSkalGraderes(true);
-
-        Virksomhet virksomhet = new Virksomhet();
-        virksomhet.setIdentifikator(arbeidsgiverIdentifikator);
-
-        gradering.setArbeidsgiver(virksomhet);
-        gradering.setArbeidtidProsent(arbeidstidsprosent.doubleValue());
-        gradering.setErArbeidstaker(true);
-        addStønadskontotype(stønadskontotype, gradering);
-
-        addPeriode(fom, tom, gradering);
-        return gradering;
+    public static Gradering graderingsperiodeArbeidstaker(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, Integer arbeidstidsprosent) {
+        Gradering graderinsperiode = new GraderingBuilder()
+                .medStønadskontoType(stønadskontotype)
+                .medTidsperiode(fom, tom)
+                .medGraderingArbeidstaker(arbeidsgiverIdentifikator, arbeidstidsprosent)
+                .build();
+        return graderinsperiode;
+    }
+    public static Gradering graderingsperiodeFL(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erFL, Integer arbeidstidsprosent) {
+        Gradering graderinsperiode = new GraderingBuilder()
+                .medStønadskontoType(stønadskontotype)
+                .medTidsperiode(fom, tom)
+                .medGraderingFL(arbeidstidsprosent)
+                .build();
+        return graderinsperiode;
+    }
+    public static Gradering graderingsperiodeSN(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erSN, Integer arbeidstidsprosent) {
+        Gradering graderinsperiode = new GraderingBuilder()
+                .medStønadskontoType(stønadskontotype)
+                .medTidsperiode(fom, tom)
+                .medGraderingSN(arbeidstidsprosent)
+                .build();
+        return graderinsperiode;
     }
 
-    public static Utsettelsesperiode utsettelsesperiode(String stønadskontotype, LocalDate fom, LocalDate tom, String årsak, boolean erArbeidstaker) {
-        Utsettelsesperiode utsettelse = new Utsettelsesperiode();
+    public static Utsettelsesperiode utsettelsesperiode(String årsak, LocalDate fom, LocalDate tom) {
+        Utsettelsesperiode utsettelsesperiode = new Utsettelsesperiode();
+        utsettelsesperiode.setFom(fom);
+        utsettelsesperiode.setTom(tom);
         Utsettelsesaarsaker årsaker = new Utsettelsesaarsaker();
         årsaker.setKode(årsak);
-        utsettelse.setAarsak(årsaker);
-        Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
-        uttaksperiodetyper.setKode(stønadskontotype);
-        utsettelse.setUtsettelseAv(uttaksperiodetyper);
-        utsettelse.setErArbeidstaker(erArbeidstaker);
-        addPeriode(fom, tom, utsettelse);
-        return utsettelse;
-    }
+        utsettelsesperiode.setAarsak(årsaker);
 
-    public static Utsettelsesperiode utsettelsePeriode(String årsak, LocalDate fom, LocalDate tom) {
-        Utsettelsesperiode utsettelse = new Utsettelsesperiode();
-        Utsettelsesaarsaker årsaker = new Utsettelsesaarsaker();
-        årsaker.setKode(årsak);
-        utsettelse.setAarsak(årsaker);
-        Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
-        uttaksperiodetyper.setKode(STØNADSKONTOTYPE_FELLESPERIODE);
-        utsettelse.setUtsettelseAv(uttaksperiodetyper);
-        utsettelse.setErArbeidstaker(true);
-        Uttaksperiodetyper typer = new Uttaksperiodetyper();
-        typer.setKode(STØNADSKONTOTYPE_MØDREKVOTE);
-        utsettelse.setUtsettelseAv(typer);
-
-        addPeriode(fom, tom, utsettelse);
-        return utsettelse;
+        return utsettelsesperiode;
     }
 
     public static Uttaksperiode uttaksperiode(String stønadskontotype, LocalDate fom, LocalDate tom) {
