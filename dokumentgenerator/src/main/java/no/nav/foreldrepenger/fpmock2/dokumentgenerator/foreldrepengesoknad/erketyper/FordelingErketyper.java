@@ -75,7 +75,7 @@ public class FordelingErketyper {
                 .build();
         return graderinsperiode;
     }
-    public static Gradering graderingsperiodeFL(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erFL, Integer arbeidstidsprosent) {
+    public static Gradering graderingsperiodeFL(String stønadskontotype, LocalDate fom, LocalDate tom, Integer arbeidstidsprosent) {
         Gradering graderinsperiode = new GraderingBuilder()
                 .medStønadskontoType(stønadskontotype)
                 .medTidsperiode(fom, tom)
@@ -83,7 +83,7 @@ public class FordelingErketyper {
                 .build();
         return graderinsperiode;
     }
-    public static Gradering graderingsperiodeSN(String stønadskontotype, LocalDate fom, LocalDate tom, boolean erSN, Integer arbeidstidsprosent) {
+    public static Gradering graderingsperiodeSN(String stønadskontotype, LocalDate fom, LocalDate tom, Integer arbeidstidsprosent) {
         Gradering graderinsperiode = new GraderingBuilder()
                 .medStønadskontoType(stønadskontotype)
                 .medTidsperiode(fom, tom)
