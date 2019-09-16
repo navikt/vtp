@@ -112,11 +112,14 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     @Override
     public ProduserIkkeredigerbartDokumentResponse produserIkkeredigerbartDokument(ProduserIkkeredigerbartDokumentRequest request) throws ProduserIkkeredigerbartDokumentDokumentErRedigerbart, ProduserIkkeredigerbartDokumentDokumentErVedlegg {
         Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
-        
+
+        String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
         ExpectRepository.hit(Mock.DOKUMENTPRODUKSJON,
                 "produserIkkeredigerbartDokument", 
                 new ExpectPredicate("aktør", ((Person) bruker).getIdent()),
-                xmlToString(((Element)request.getBrevdata()).getOwnerDocument()));
+                data);
+
+        LOG.info("Dokument produsert: " + data);
         
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
 
