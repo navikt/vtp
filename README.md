@@ -31,6 +31,7 @@ Starte server
 * Trenger parameter -Dscenarios.dir="./model/scenarios" dersom denne ikke ligger under working dir (dvs. i IDE).
 * Swagger UI: https://localhost:8063/swagger/ - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
+* VTP trenger Keystore og Truststore liggende i mappe .modig på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
 Front-end
 ---
@@ -108,9 +109,24 @@ ldapsearch -x -h localhost:8389 -b "ou=NAV,ou=BusinessUnits,dc=test,dc=local"
 * systembruker.username=vtp
 * systembruker.password=brukes.ikke.av.vtp.men.er.paakrevd.av.api
 
+Sikkerhet
+----
+For å få VTP til å kjøre med SSL/TLS forbindelse over SOAP, REST og Kafka må keystore angitt i VTP være tilgjengelig i SUT (System under test) sin Truststore. 
+For lokal utvikling på Team Foreldrepenger er trust- og keystore distribuert. Følgende systemvariabler kan defineres for å overstyre defaults i VTP. 
+Alias for sertifikatet er localhost-ssl
+
+```bash
+JAVAX_NET_SSL_TRUSTSTORE
+JAVAX_NET_SSL_TRUSTSTOREPASSWORD
+NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE
+NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD
+```
+
+
 Utvikling, wsdl
 ----
-Se MockServer for liste over url til genererte wsdl'er for test via SoapUi eller lignende.
+Se SoapWebServerConfig for liste over url til genererte wsdl'er. Nye webtjenester registreres her. 
+Se ApplicationConfig for liste over registrerte REST-tjenester. Nye REST-tjenester registreres her. 
 
 
 ### Kjøre via docker run / docker-compose
