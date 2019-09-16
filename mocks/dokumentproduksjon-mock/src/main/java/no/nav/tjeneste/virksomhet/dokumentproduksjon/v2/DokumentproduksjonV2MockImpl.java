@@ -89,7 +89,9 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
     private JournalRepository journalRepository;
 
-    public DokumentproduksjonV2MockImpl(JournalRepository journalRepository){
+    public DokumentproduksjonV2MockImpl(){}
+
+    public DokumentproduksjonV2MockImpl(JournalRepository journalRepository) {
         this.journalRepository = journalRepository;
     }
 
@@ -114,20 +116,21 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
 
         String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
+
         ExpectRepository.hit(Mock.DOKUMENTPRODUKSJON,
-                "produserIkkeredigerbartDokument", 
+                "produserIkkeredigerbartDokument",
                 new ExpectPredicate("aktør", ((Person) bruker).getIdent()),
                 data);
 
         LOG.info("Dokument produsert: " + data);
-        
+
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
 
 
         LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());
         ProduserIkkeredigerbartDokumentResponse response = new ProduserIkkeredigerbartDokumentResponse();
         String journalpostId = journalRepository.leggTilJournalpost(
-                JournalpostModellGenerator.makeUstrukturertDokumentJournalpost(((Person) bruker).getIdent(), new DokumenttypeId(dokumenttypeId)));
+                JournalpostModellGenerator.lagJournalpostUstrukturertDokument(((Person) bruker).getIdent(), new DokumenttypeId(dokumenttypeId)));
         String dokumentId = journalRepository.finnJournalpostMedJournalpostId(journalpostId).get().getDokumentModellList().get(0).getDokumentId();
         LOG.info("produsererIkkeredigerbartDokument generer journalpost {} med dokument {})", journalpostId, dokumentId);
 
@@ -153,7 +156,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
     @Override
     public void ferdigstillForsendelse(FerdigstillForsendelseRequest request) throws FerdigstillForsendelseDokumentUnderRedigering, FerdigstillForsendelseJournalpostIkkeUnderArbeid, FerdigstillForsendelseJournalpostIkkeFunnet {
-        LOG.info("ferdigstillForsendelse ferdigstiller journalpost: {}",request.getJournalpostId());
+        LOG.info("ferdigstillForsendelse ferdigstiller journalpost: {}", request.getJournalpostId());
     }
 
     @Override
@@ -170,7 +173,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     public void endreDokumentTilRedigerbart(EndreDokumentTilRedigerbartRequest endreDokumentTilRedigerbartRequest) throws EndreDokumentTilRedigerbartJournalpostIkkeUnderArbeid, EndreDokumentTilRedigerbartJournalpostIkkeFunnet, EndreDokumentTilRedigerbartDokumentIkkeRedigerbart, EndreDokumentTilRedigerbartDokumentIkkeFunnet, EndreDokumentTilRedigerbartDokumentAlleredeRedigerbart, EndreDokumentTilRedigerbartDokumentErAvbrutt {
         throw new UnsupportedOperationException("Ikke implementert");
     }
-    
+
     private String xmlToString(final Document document) {
         try {
             StringWriter writer = new StringWriter();
@@ -179,7 +182,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            
+
             transformer.transform(new DOMSource(document), new StreamResult(writer));
             return writer.toString();
         } catch (Exception e) {

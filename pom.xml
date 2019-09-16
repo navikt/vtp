@@ -301,6 +301,11 @@
                 <classifier>jaxws</classifier>
             </dependency>
             <dependency>
+                <groupId>no.nav.tjenestespesifikasjoner</groupId>
+                <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+                <version>1.2019.07.10-12.21-b55f47790a9d</version>
+            </dependency>
+            <dependency>
                 <groupId>no.nav.tjenester</groupId>
                 <artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
                 <version>3.4.1</version>
