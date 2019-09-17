@@ -9,7 +9,7 @@
 
     <artifactId>joark-mock</artifactId>
     <packaging>jar</packaging>
-    <name>FPMock2 :: joark-mock</name>
+    <name>VTP ::joark-mock</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->

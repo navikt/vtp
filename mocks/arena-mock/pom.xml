@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>arena-mock</artifactId>
-	<name>FPMock2 :: arena-mock</name>
+	<name>VTP ::arena-mock</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

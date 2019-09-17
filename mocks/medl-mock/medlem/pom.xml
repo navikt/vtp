@@ -9,7 +9,7 @@
 
     <artifactId>medl-mock-medlem</artifactId>
     <packaging>jar</packaging>
-    <name>FPMock2 :: medl-mock-medlem</name>
+    <name>VTP ::medl-mock-medlem</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->

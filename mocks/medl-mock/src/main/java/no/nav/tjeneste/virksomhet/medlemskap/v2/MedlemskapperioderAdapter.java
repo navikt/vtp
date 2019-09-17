@@ -3,11 +3,11 @@ package no.nav.tjeneste.virksomhet.medlemskap.v2;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapperiodeModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.KildeMedTerm;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LandkodeMedTerm;
@@ -29,7 +29,7 @@ public class MedlemskapperioderAdapter {
             BrukerModell brukerModell = scenarioRepository.getPersonIndeks().finnByIdent(personIdent);
             if (brukerModell!=null && brukerModell instanceof PersonModell) {
                 PersonModell pm = (PersonModell)brukerModell;
-                
+
                 List<Medlemsperiode> periodeListe = new ArrayList<>();
                 if(pm.getMedlemskap() != null && pm.getMedlemskap().getPerioder() != null) {
                     pm.getMedlemskap().getPerioder().forEach(medlemsskapsperiode -> periodeListe.add(tilMedlemsperiode(medlemsskapsperiode)));
@@ -59,12 +59,12 @@ public class MedlemskapperioderAdapter {
          <code>
             .withLovvalg(new LovvalgMedTerm().withValue(medlemsskapsperiode.getLovvalg()))
         .withGrunnlagstype(new GrunnlagstypeMedTerm().withValue(medlemsskapsperiode.getGrunnlag()))
-        
+
         .withStudieinformasjon(new Studieinformasjon()
                 .withStatsborgerland(new LandkodeMedTerm().withValue(medlemsskapsperiode.getStudieStatsborgerland()))
                 .withStudieland(new LandkodeMedTerm().withValue(medlemsskapsperiode.getStudieStudieland())))
          </code>
-         * 
+         *
          */
         ;
     }

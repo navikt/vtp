@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.sigrun.Inntektsår;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
 @Api(tags = {"Sigrun/beregnetskatt"})
 @Path("/api/beregnetskatt")

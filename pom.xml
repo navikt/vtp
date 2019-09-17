@@ -7,7 +7,7 @@
     <groupId>no.nav.foreldrepenger.vtp</groupId>
     <artifactId>vtp</artifactId>
     <packaging>pom</packaging>
-    <name>FPMock2 :: Root</name>
+    <name>VTP :: Root</name>
     <version>${revision}${sha1}${changelist}</version>
 
     <scm>

@@ -12,7 +12,7 @@
 
     <artifactId>dokumentgenerator</artifactId>
     <packaging>jar</packaging>
-    <name>FPMock2 :: Dokumentgenerator</name>
+    <name>VTP ::Dokumentgenerator</name>
 
 
     <dependencies>

@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.StatsborgerskapModell;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Statsborgerskap;
@@ -13,13 +13,13 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.StatsborgerskapPeriode;
 import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
 
 public class StatsborgerskapAdapter {
-    public static final String ENDRET_AV = "fpmock2";
+    public static final String ENDRET_AV = "vtp";
 
     List<StatsborgerskapPeriode> fra(List<StatsborgerskapModell> data) {
 
         List<StatsborgerskapPeriode> resultat = new ArrayList<>();
 
-        for (no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.StatsborgerskapModell st : data) {
+        for (StatsborgerskapModell st : data) {
             StatsborgerskapPeriode periode1 = new StatsborgerskapPeriode();
             periode1.withEndretAv(ENDRET_AV);
             periode1.withEndringstidspunkt(ConversionUtils.convertToXMLGregorianCalendar(st.getFom() == null ? LocalDate.now() : st.getFom()));

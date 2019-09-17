@@ -1,8 +1,8 @@
 package no.nav.tjeneste.virksomhet.organisasjon.v5;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonDetaljerModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonDetaljerModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.informasjon.*;
 
 import java.util.Arrays;

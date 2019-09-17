@@ -12,7 +12,7 @@
 
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <name>FPMock2 :: Felles</name>
+    <name>VTP ::Felles</name>
 
     <dependencies>
 		<dependency>

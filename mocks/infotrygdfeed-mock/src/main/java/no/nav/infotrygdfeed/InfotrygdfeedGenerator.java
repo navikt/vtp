@@ -1,6 +1,6 @@
 package no.nav.infotrygdfeed;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.FeedRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.FeedRepository;
 
 public class InfotrygdfeedGenerator {
 

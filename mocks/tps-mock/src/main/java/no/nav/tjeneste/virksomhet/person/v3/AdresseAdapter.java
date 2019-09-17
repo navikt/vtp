@@ -3,12 +3,12 @@ package no.nav.tjeneste.virksomhet.person.v3;
 import java.time.LocalDate;
 import java.util.List;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PostboksadresseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.UstrukturertAdresseModell;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PostboksadresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Gateadresse;
@@ -28,7 +28,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse;
 import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
 
 public class AdresseAdapter {
-    public static final String ENDRET_AV = "fpmock2";
+    public static final String ENDRET_AV = "vtp";
 
     public static StrukturertAdresse tilStrukturert(AdresseModell adr) {
         if ((adr instanceof GateadresseModell)) {
@@ -161,12 +161,12 @@ public class AdresseAdapter {
 
     public void setAdresser(Bruker bruker, PersonModell person) {
         List<AdresseModell> adresser = person.getAdresser();
-        
+
         // sett gjeldende til første adresse
         Postadressetyper postadressetyper = new Postadressetyper();
         postadressetyper.setValue(person.getGjeldendeadresseType());
         bruker.setGjeldendePostadressetype(postadressetyper);
-        
+
         for (AdresseModell a : adresser) {
             switch (a.getAdresseType()) {
                 case BOSTEDSADRESSE:

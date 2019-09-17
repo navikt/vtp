@@ -4,17 +4,17 @@ import java.time.LocalDate;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import no.nav.foreldrepenger.fpmock2.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivfiltype;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Arkivtema;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Behandlingstema;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Journalstatus;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.Variantformat;
+import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivfiltype;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Behandlingstema;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.Arkivtemaer;
 import no.nav.tjeneste.virksomhet.journal.v2.informasjon.DokumentInnhold;

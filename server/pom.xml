@@ -11,7 +11,7 @@
 
     <artifactId>server</artifactId>
     <packaging>jar</packaging>
-    <name>FPMock2 :: mock server</name>
+    <name>VTP ::mock server</name>
 
     <dependencies>
         <!-- Prosjektavhengigheter -->

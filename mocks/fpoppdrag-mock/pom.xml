@@ -10,7 +10,7 @@
 <modelVersion>4.0.0</modelVersion>
 
 <artifactId>fpoppdrag-mock</artifactId>
-<name>FPMock2 :: FpOppdrag-mock</name>
+<name>VTP ::FpOppdrag-mock</name>
 <packaging>jar</packaging>
 <dependencies>
     <dependency>

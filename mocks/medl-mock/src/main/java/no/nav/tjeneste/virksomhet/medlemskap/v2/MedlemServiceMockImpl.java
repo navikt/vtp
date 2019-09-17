@@ -16,7 +16,7 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeRequest;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.meldinger.HentPeriodeListeResponse;
@@ -38,7 +38,7 @@ public class MedlemServiceMockImpl implements MedlemskapV2 {
     public MedlemServiceMockImpl(){
 
     }
-    
+
     @WebMethod
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentPeriode", targetNamespace = "http://nav.no/tjeneste/virksomhet/medlemskap/v2", className = "no.nav.tjeneste.virksomhet.medlemskap.v2.HentPeriode")

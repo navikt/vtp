@@ -11,7 +11,7 @@
 
 	<artifactId>testmodell</artifactId>
 	<packaging>jar</packaging>
-	<name>FPMock2 :: Testmodell</name>
+	<name>VTP ::Testmodell</name>
 
 	<dependencies>
 		<dependency>

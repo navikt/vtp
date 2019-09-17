@@ -14,8 +14,8 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.modell.InngaaendeJournalpostBuilder;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeFunnet;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.binding.HentJournalpostJournalpostIkkeInngaaende;
@@ -52,7 +52,7 @@ public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     public InngaaendeJournalServiceMockImpl(JournalRepository journalRepository){
         this.journalRepository = journalRepository;
     }
-    
+
     @WebMethod(
             action = "http://nav.no/tjeneste/virksomhet/inngaaendeJournal/v1/InngaaendeJournal_v1/pingRequest"
     )

@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>norg2-mock</artifactId>
-	<name>FPMock2 :: norg2-mock</name>
+	<name>VTP ::norg2-mock</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>organisasjon-mock</artifactId>
-	<name>FPMock2 :: organisasjon-mock</name>
+	<name>VTP ::organisasjon-mock</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

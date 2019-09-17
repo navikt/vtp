@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>ldap-mock</artifactId>
-	<name>FPMock2 :: ldap-mock</name>
+	<name>VTP ::ldap-mock</name>
 	<packaging>jar</packaging>
 
 	<dependencies>

@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>kafka-embedded-mock</artifactId>
-    <name>FPMock2 :: kafka-embedded-mock</name>
+    <name>VTP ::kafka-embedded-mock</name>
     <packaging>jar</packaging>
 
     <dependencies>

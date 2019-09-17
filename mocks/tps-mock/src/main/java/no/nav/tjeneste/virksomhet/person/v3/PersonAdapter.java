@@ -2,9 +2,10 @@ package no.nav.tjeneste.virksomhet.person.v3;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
@@ -27,7 +28,7 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
 
 public class PersonAdapter {
 
-    public Bruker fra(no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell bruker) {
+    public Bruker fra(BrukerModell bruker) {
         if (bruker instanceof PersonModell) {
             return fra((PersonModell) bruker);
         } else {
@@ -104,7 +105,7 @@ public class PersonAdapter {
         return person;
     }
 
-    private Bruker mapFraBruker(no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.BrukerModell person) {
+    private Bruker mapFraBruker(BrukerModell person) {
         Bruker bruker = new Bruker();
 
         // Ident
@@ -133,7 +134,7 @@ public class PersonAdapter {
     }
 
     public GeografiskTilknytning tilGeografiskTilknytning(PersonModell bruker) {
-        no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.GeografiskTilknytningModell tilknytning = bruker.getGeografiskTilknytning();
+        GeografiskTilknytningModell tilknytning = bruker.getGeografiskTilknytning();
         if (tilknytning == null) {
             return null;
         } else {

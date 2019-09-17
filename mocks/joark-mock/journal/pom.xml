@@ -10,7 +10,7 @@
 
 	<artifactId>journal-mock</artifactId>
 	<packaging>jar</packaging>
-	<name>FPMock2 :: joark-mock journal</name>
+	<name>VTP ::joark-mock journal</name>
 
 	<dependencies>
 		<!-- Prosjektavhengigheter -->

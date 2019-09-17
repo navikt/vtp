@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>inntekt-mock</artifactId>
-    <name>FPMock2 :: inntekt-mock</name>
+    <name>VTP ::inntekt-mock</name>
     <packaging>jar</packaging>
 
 	<dependencies>

@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>infotrygd-mock</artifactId>
-    <name>FPMock2 :: infotrygd-mock</name>
+    <name>VTP ::infotrygd-mock</name>
     <packaging>jar</packaging>
 
 	<dependencies>
