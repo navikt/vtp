@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>mocks</artifactId>
-        <groupId>no.nav.vedtak.fpmock2</groupId>
+        <groupId>no.nav.foreldrepenger.vtp</groupId>
         <version>${revision}${sha1}${changelist}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -28,14 +28,14 @@
             <artifactId>nav-infotrygdBeregningsgrunnlag-v1-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
             </dependency>
-        
+
         <!-- 3dje parts biblioteker -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http-spi</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>core</artifactId>
         </dependency>
 

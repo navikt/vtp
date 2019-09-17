@@ -4,8 +4,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.nav.vedtak.fpmock2</groupId>
-    <artifactId>fpmock2</artifactId>
+    <groupId>no.nav.foreldrepenger.vtp</groupId>
+    <artifactId>vtp</artifactId>
     <packaging>pom</packaging>
     <name>FPMock2 :: Root</name>
     <version>${revision}${sha1}${changelist}</version>
@@ -76,135 +76,135 @@
             <!-- Prosjektavhengigheter -->
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>dokumentgenerator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>testmodell</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>tps-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>gsak-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>joark-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>infotrygd-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>arena-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>medl-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>inntekt-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>arbeidsforhold-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>organisasjon-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>sigrun-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>kafka-embedded-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>personfeed-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>infotrygdfeed-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>norg2-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>kodeverk-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>dokumentproduksjon-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>oppdrag-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>fpoppdrag-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>autotest</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>ldap-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>server</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -280,7 +280,7 @@
                 <version>2.2.1</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.vedtak.fpmock2</groupId>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>core</artifactId>
             </dependency>
             <dependency>
