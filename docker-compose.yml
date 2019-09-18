@@ -1,11 +1,11 @@
 version: '3'
 services:
-  fpmock2:
+  vtp:
     build: .
     networks:
       default:
         aliases:
-          - fpmock2
+          - vtp
     ports:
       - 8060:8060 # HTTP
       - 8389:8389 # LDAP
