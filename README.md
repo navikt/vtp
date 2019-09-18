@@ -76,7 +76,7 @@ Lagt til noen forenklinger på environment variabler når vi kjører opp VTP + A
 fortsatt sette path riktig.
 
 
-Bygge fpmock lokalt. Imaget blir da tilgjengelig som fpmock2:latest
+Bygge vtp lokalt. Imaget blir da tilgjengelig som vtp:latest
 ```
-docker build -t fpmock2 . 
+docker build -t vtp . 
 ```
