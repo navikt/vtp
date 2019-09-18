@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mocks</artifactId>
+        <groupId>no.nav.foreldrepenger.vtp</groupId>
+        <version>${revision}${sha1}${changelist}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>joark-mock</artifactId>
+    <packaging>jar</packaging>
+    <name>VTP ::joark-mock</name>
+
+    <dependencies>
+        <!-- Prosjektavhengigheter -->
+
+        <!-- 3dje parts NAV felleskomponenter -->
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-inngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-behandleJournal-v3-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+
+        <dependency>
+        <groupId>no.nav.tjenestespesifikasjoner</groupId>
+        <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
+        </dependency>
+
+
+        <!-- 3dje parts biblioteker -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http-spi</artifactId>
+        </dependency>
+
+		<dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>dokumentgenerator</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

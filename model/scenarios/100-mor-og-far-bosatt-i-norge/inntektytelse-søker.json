@@ -1,0 +1,70 @@
+{
+	"arena": {
+		"saker": [
+			{
+				"saksnummer": "${arenasak1}",
+				"tema": "AAP",
+				"status": "AKTIV",
+				"vedtak": [
+					{
+						"fom": "now() - P1M",
+						"tom": "now() + P2M",
+						"vedtakDato": "now() - P1M1D",
+						"kravMottattDato": "now() - P1M5D",
+						"status": "IVERK",
+						"meldekort": [
+							{
+								"fom": "now() - P1M",
+								"tom": "now() + P2M",
+								"dagsats": 10000,
+								"beløp": 10,
+								"utbetalingsgrad": 1
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"infotrygd": {
+		"ytelser": [
+			{
+				"sakId": "9999",
+				"registrert": "now()",
+				"iverksatt": "now()",
+				"endret": "now()",
+				"opphør": "now() + PT2400H",
+				"saksbehandlerId": "helloworld",
+				"tema": "FA",
+				"behandlingstema": "FØ",
+				"type": "S",
+				"status": "FI"
+			}
+		],
+		"grunnlag": [
+			{
+				"@type": "foreldrepenger",
+				"startdato": "now()",
+				"fom": "now()",
+				"behandlingstema": "FØ",
+				"vedtak": [
+					{
+						"fom": "now()",
+						"utbetalingsgrad": 100
+					}
+				],
+				"arbeidskategori": "01",
+				"arbeidsforhold": [
+					{
+						"orgnr": "1",
+						"beløp": 10000,
+						"inntektsperiode": "M"
+					}
+				],
+				"dekningsgrad": 100,
+				"gradering": 100,
+				"fødselsdatoBarn": "now()"
+			}
+		]
+	}
+}

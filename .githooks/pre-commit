@@ -1,0 +1,10 @@
+#!/bin/sh
+
+isMaster=$(git branch | grep \* | sed 's/* master$/1/g')
+
+error_msg="Avbryter commit. Det er ikke tillat å committe til master."
+
+if [[ "$isMaster" = "1" ]]; then
+    echo "$error_msg" >&2
+    exit 1
+fi

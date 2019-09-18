@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>no.nav.foreldrepenger.vtp</groupId>
+		<artifactId>vtp</artifactId>
+		<version>${revision}${sha1}${changelist}</version>
+	</parent>
+
+	<artifactId>testmodell</artifactId>
+	<packaging>jar</packaging>
+	<name>VTP ::Testmodell</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-parameter-names</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.threeten</groupId>
+			<artifactId>threeten-extra</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>no.nav.tjenester.fim</groupId>
+            <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>no.nav.tjenester</groupId>
+			<artifactId>person-api-feed-v2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.tjenester</groupId>
+			<artifactId>person-api-feed-common-v1</artifactId>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.junit.vintage</groupId>
+		    <artifactId>junit-vintage-engine</artifactId>
+		    <scope>test</scope>
+		</dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}, %X{prosess}] - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<logger name="no.nav" level="${log.level.no.nav:-INFO}" />
+
+	<!-- skru paa for aa logge all sql statements med parametere -->
+	<logger name="org.apache" level="${log.level.org.apache:-WARN}" />
+	<logger name="org.eclipse.jetty" level="${log.level.org.eclipse.jetty:-INFO}" />
+
+	<!-- ESSV: genererer en del støy for webservice -->
+	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
+	<logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
+
+    <logger name="org.apache.kafka" level="${log.level.org.apache.kafka:-TRACE}"/>
+	<logger name="org.apache.zookeeper" level="${log.level.org.apache.zookeeper:-TRACE}"/>
+
+
+	<root level="${log.level.root:-WARN}">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

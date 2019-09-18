@@ -1,0 +1,8 @@
+*
+!server/target
+!server/lib
+!model
+!resources/pipeline
+!server/src/main/resources/logback.xml
+!server/kafkasecurity.conf
+!*.sh
