@@ -2,23 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>mocks</artifactId>
-        <groupId>no.nav.vedtak.fpmock2</groupId>
-        <version>${revision}${sha1}${changelist}</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+<parent>
+    <artifactId>mocks</artifactId>
+    <groupId>no.nav.foreldrepenger.vtp</groupId>
+    <version>${revision}${sha1}${changelist}</version>
+</parent>
+<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fpoppdrag-mock</artifactId>
-    <name>FPMock2 :: FpOppdrag-mock</name>
-    <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-    </dependencies>
+<artifactId>fpoppdrag-mock</artifactId>
+<name>VTP ::FpOppdrag-mock</name>
+<packaging>jar</packaging>
+<dependencies>
+    <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>javax.ws.rs-api</artifactId>
+        <version>2.1.1</version>
+    </dependency>
+</dependencies>
 
 
 </project>

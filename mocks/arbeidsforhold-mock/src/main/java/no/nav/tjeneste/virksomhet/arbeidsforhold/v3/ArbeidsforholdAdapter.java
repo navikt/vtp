@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Aktoer;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AnsettelsesPeriode;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AntallTimerIPerioden;
@@ -26,7 +26,7 @@ public class ArbeidsforholdAdapter {
 
     private ObjectFactory objectFactory = new ObjectFactory();
 
-    public Arbeidsforhold fra(String fnr, no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforholdModell){
+    public Arbeidsforhold fra(String fnr, no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforholdModell){
 
         Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
         arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
@@ -46,7 +46,7 @@ public class ArbeidsforholdAdapter {
         ansperiode.setPeriode(enansperiode);
         arbeidsforhold.setAnsettelsesPeriode(ansperiode);
 
-        for (no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtale : arbeidsforholdModell.getArbeidsavtaler()) {
+        for (no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtale : arbeidsforholdModell.getArbeidsavtaler()) {
             arbeidsforhold.getArbeidsavtale().add(fra(arbeidsavtale));
         }
 
@@ -68,7 +68,7 @@ public class ArbeidsforholdAdapter {
         return arbeidsforhold;
     }
 
-    public Arbeidsavtale fra(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtaleModell){
+    public Arbeidsavtale fra(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtaleModell){
         Arbeidsavtale arbeidsavtale = objectFactory.createArbeidsavtale();
 
         arbeidsavtale.setAvtaltArbeidstimerPerUke(lagBD(arbeidsavtaleModell.getAvtaltArbeidstimerPerUke()));

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektInformasjon;
@@ -88,17 +88,17 @@ public class HentInntektlisteBolkMapperRest {
         return YearMonth.of(ldt.getYear(), ldt.getMonth()).compareTo(yearMonth) == 0;
     }
 
-    private static InntektType fraModellInntektstype(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType modellType) {
-        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.LØNNSINNTEKT)) {
+    private static InntektType fraModellInntektstype(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType modellType) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType.LØNNSINNTEKT)) {
             return InntektType.LOENNSINNTEKT;
         }
-        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.NÆRINGSINNTEKT)) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType.NÆRINGSINNTEKT)) {
             return InntektType.NAERINGSINNTEKT;
         }
-        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.PENSJON_ELLER_TRYGD)) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType.PENSJON_ELLER_TRYGD)) {
             return InntektType.PENSJON_ELLER_TRYGD;
         }
-        if (modellType.equals(no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.inntektkomponent.InntektType.YTELSE_FRA_OFFENTLIGE)) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType.YTELSE_FRA_OFFENTLIGE)) {
             return InntektType.YTELSE_FRA_OFFENTLIGE;
         }
         throw new IllegalStateException("Inntektstype kunne ikke konverteres: " + modellType.getKode());

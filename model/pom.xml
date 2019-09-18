@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>no.nav.vedtak.fpmock2</groupId>
-		<artifactId>fpmock2</artifactId>
+		<groupId>no.nav.foreldrepenger.vtp</groupId>
+		<artifactId>vtp</artifactId>
 		<version>${revision}${sha1}${changelist}</version>
 	</parent>
 
 	<artifactId>testmodell</artifactId>
 	<packaging>jar</packaging>
-	<name>FPMock2 :: Testmodell</name>
+	<name>VTP ::Testmodell</name>
 
 	<dependencies>
 		<dependency>

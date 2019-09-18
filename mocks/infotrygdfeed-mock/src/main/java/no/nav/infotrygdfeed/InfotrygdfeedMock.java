@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.impl.FeedRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.FeedRepositoryImpl;
 
 
 @Api(tags = {"Infotrygdmock/hendelser"})

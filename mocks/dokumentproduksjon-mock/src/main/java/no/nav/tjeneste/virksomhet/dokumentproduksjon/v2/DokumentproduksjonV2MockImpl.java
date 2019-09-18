@@ -16,12 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import no.nav.foreldrepenger.fpmock2.felles.ExpectPredicate;
-import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository;
-import no.nav.foreldrepenger.fpmock2.felles.ExpectRepository.Mock;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.JournalpostModellGenerator;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.felles.ExpectPredicate;
+import no.nav.foreldrepenger.vtp.felles.ExpectRepository;
+import no.nav.foreldrepenger.vtp.felles.ExpectRepository.Mock;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseAvbrytelseIkkeTillatt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostAlleredeAvbrutt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostIkkeFunnet;

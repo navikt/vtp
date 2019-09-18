@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>mocks</artifactId>
-        <groupId>no.nav.vedtak.fpmock2</groupId>
+        <groupId>no.nav.foreldrepenger.vtp</groupId>
         <version>${revision}${sha1}${changelist}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>kafka-embedded-mock</artifactId>
-    <name>FPMock2 :: kafka-embedded-mock</name>
+    <name>VTP ::kafka-embedded-mock</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -32,7 +32,7 @@
             <artifactId>kafka-streams</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.fpmock2</groupId>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>core</artifactId>
         </dependency>
         <dependency>

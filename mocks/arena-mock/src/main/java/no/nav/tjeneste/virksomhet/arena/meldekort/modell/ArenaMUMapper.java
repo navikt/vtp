@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaMeldekort;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaSak;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaVedtak;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.SakStatus;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.VedtakStatus;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaMeldekort;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaVedtak;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.SakStatus;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Meldekort;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.ObjectFactory;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Periode;
@@ -47,17 +47,17 @@ public class ArenaMUMapper {
             if (filtrerVekkSak(arenaSak, temaer)) {
                 continue;
             }
-            
+
             Sak sak = objectFactory.createSak();
             sak.setFagsystemSakId(arenaSak.getSaksnummer());
             Tema tema = objectFactory.createTema();
             tema.setValue(arenaSak.getTema().getKode());
             sak.setTema(tema);
             sak.setSaksstatus(mapSakStatus(arenaSak.getStatus()));
-            
+
             List<ArenaVedtak> vedtak = arenaSak.getVedtak().stream().filter(v -> filtrerVedtak(v, fom, tom)).collect(Collectors.toList());
             sak.getVedtakListe().addAll(mapArenaVedtakListe(vedtak));
-            
+
             response.getMeldekortUtbetalingsgrunnlagListe().add(sak);
         }
         return response;

@@ -1,8 +1,8 @@
 package no.nav.tjeneste.virksomhet.arena.meldekort;
 
-import static no.nav.foreldrepenger.fpmock2.testmodell.FeilKodeKonstanter.PERSON_IKKE_FUNNET;
-import static no.nav.foreldrepenger.fpmock2.testmodell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
-import static no.nav.foreldrepenger.fpmock2.testmodell.FeilKodeKonstanter.UGYLDIG_INPUT;
+import static no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter.PERSON_IKKE_FUNNET;
+import static no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
+import static no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter.UGYLDIG_INPUT;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -20,11 +20,11 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.Feilkode;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.arena.ArenaModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.arena.meldekort.modell.ArenaMUMapper;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning;

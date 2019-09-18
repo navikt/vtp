@@ -1,13 +1,11 @@
 package no.nav.tjeneste.virksomhet.organisasjon.v5;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.binding.*;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.informasjon.Organisasjon;
-import no.nav.tjeneste.virksomhet.organisasjon.v5.informasjon.OrganisasjonsDetaljer;
-import no.nav.tjeneste.virksomhet.organisasjon.v5.informasjon.UstrukturertNavn;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.meldinger.*;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.meldinger.FinnOrganisasjonResponse;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.meldinger.FinnOrganisasjonsendringerListeResponse;
@@ -25,7 +23,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @WebService(

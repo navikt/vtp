@@ -2,8 +2,8 @@ package no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.modell;
 
 import java.time.LocalDateTime;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.Behandlingstema;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.InfotrygdVedtak;
 import no.nav.tjeneste.virksomhet.infotrygdsak.v1.informasjon.ObjectFactory;

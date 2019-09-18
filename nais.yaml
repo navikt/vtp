@@ -1,4 +1,4 @@
-image: "docker.adeo.no:5000/fpmock2"
+image: "docker.adeo.no:5000/vtp"
 replicas:
   min: 1
   max: 1

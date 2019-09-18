@@ -3,11 +3,11 @@ package no.nav.tjeneste.virksomhet.inngaaendejournal.modell;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentVariantInnhold;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.ArkivSak;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Arkivfiltyper;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.informasjon.Dokumentinformasjon;

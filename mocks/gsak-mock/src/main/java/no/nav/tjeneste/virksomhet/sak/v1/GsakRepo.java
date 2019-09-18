@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import no.nav.foreldrepenger.fpmock2.felles.ConversionUtils;
-import no.nav.foreldrepenger.fpmock2.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.tjeneste.virksomhet.sak.v1.binding.HentSakSakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.feil.SakIkkeFunnet;
 import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Aktoer;

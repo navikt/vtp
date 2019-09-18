@@ -1,11 +1,10 @@
 package no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1;
 
 
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.binding.*;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.meldinger.FerdigstillJournalfoeringRequest;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.meldinger.OppdaterJournalpostRequest;
-import org.glassfish.pfl.basic.logex.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

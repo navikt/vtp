@@ -16,9 +16,9 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.fpmock2.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostV3Bulider;
 import no.nav.tjeneste.virksomhet.journal.v3.feil.DokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v3.meldinger.HentDokumentRequest;
