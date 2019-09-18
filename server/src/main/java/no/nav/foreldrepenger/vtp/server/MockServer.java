@@ -119,7 +119,9 @@ public class MockServer {
         topicSet.addAll(List.of("privat-foreldrepenger-mottatBehandling-fpsak",
                 "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
                 "privat-foreldrepenger-fprisk-utfor-t4",
-                "privat-foreldrepenger-tilkjentytelse-v1-local"));
+                "privat-foreldrepenger-tilkjentytelse-v1-local",
+                "privat-foreldrepenger-dokumenthendelse-vtp",
+                "privat-foreldrepenger-historikkinnslag-vtp"));
         return topicSet;
     }
 
