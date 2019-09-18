@@ -1,5 +1,6 @@
 Virtuell Tjeneste Plattform (VTP)
 =================================
+![alt text](vtp.png "Logo Title Text 1")
 
 
 VTP hjelper deg med å: 
