@@ -85,7 +85,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>fpoppdrag-mock</artifactId>
+            <artifactId>dummy-mock</artifactId>
         </dependency>
 
 

@@ -21,7 +21,8 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
-import no.nav.vtp.fpoppdragmock.FpOppdragMock;
+
+import no.nav.vtp.DummyRestTjeneste;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,8 @@ public class ApplicationConfig extends Application {
         classes.add(FeedRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
         classes.add(FpFormidlingMock.class);
-        classes.add(FpOppdragMock.class);
+        classes.add(DummyRestTjeneste.class);
+
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);

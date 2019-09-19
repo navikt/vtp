@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>vtp</artifactId>
         <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -11,25 +12,25 @@
     <name>VTP ::Mocks</name>
     <packaging>pom</packaging>
     <modules>
-		<module>ldap-mock</module>
-        <module>tps-mock</module>
-		<module>gsak-mock</module>
-		<module>joark-mock</module>
+        <module>arbeidsforhold-mock</module>
+        <module>arena-mock</module>
         <module>dokumentproduksjon-mock</module>
-		<module>infotrygd-mock</module>
-		<module>arena-mock</module>
-		<module>medl-mock</module>
-		<module>inntekt-mock</module>
-		<module>arbeidsforhold-mock</module>
-		<module>organisasjon-mock</module>
-		<module>norg2-mock</module>
-		<module>sigrun-mock</module>
-        <module>kodeverk-mock</module>
+        <module>dummy-mock</module>
+        <module>gsak-mock</module>
+        <module>infotrygd-mock</module>
         <module>infotrygdfeed-mock</module>
-        <module>personfeed-mock</module>
-        <module>oppdrag-mock</module>
+        <module>inntekt-mock</module>
+        <module>joark-mock</module>
         <module>kafka-embedded-mock</module>
-        <module>fpoppdrag-mock</module>
+        <module>kodeverk-mock</module>
+        <module>ldap-mock</module>
+        <module>medl-mock</module>
+        <module>norg2-mock</module>
+        <module>oppdrag-mock</module>
+        <module>organisasjon-mock</module>
+        <module>personfeed-mock</module>
+        <module>sigrun-mock</module>
+        <module>tps-mock</module>
     </modules>
 
     <dependencies>
