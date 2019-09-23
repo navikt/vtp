@@ -30,7 +30,7 @@ public class TilretteleggingsErketyper{
 
         HelTilrettelegging helTilrettelegging = new HelTilrettelegging();
         helTilrettelegging.setTilrettelagtArbeidFom(tilrettelagtArbeidFom);
-        tilrettelegging.setHelTilrettelegging(helTilrettelegging);
+        tilrettelegging.getHelTilrettelegging().add(helTilrettelegging);
         tilrettelegging.getVedlegg().add(of.createTilretteleggingVedlegg(vedlegg));
         return tilrettelegging;
     }
@@ -51,7 +51,7 @@ public class TilretteleggingsErketyper{
         DelvisTilrettelegging delvisTilrettelegging = new DelvisTilrettelegging();
         delvisTilrettelegging.setTilrettelagtArbeidFom(tilrettelagtArbeidFom);
         delvisTilrettelegging.setStillingsprosent(stillingsprosent);
-        tilrettelegging.setDelvisTilrettelegging(delvisTilrettelegging);
+        tilrettelegging.getDelvisTilrettelegging().add(delvisTilrettelegging);
         tilrettelegging.getVedlegg().add(of.createTilretteleggingVedlegg(vedlegg));
         return tilrettelegging;
     }
@@ -71,7 +71,7 @@ public class TilretteleggingsErketyper{
 
         IngenTilrettelegging ingenTilrettelegging = new IngenTilrettelegging();
         ingenTilrettelegging.setSlutteArbeidFom(tilrettelagtArbeidFom);
-        tilrettelegging.setIngenTilrettelegging(ingenTilrettelegging);
+        tilrettelegging.getIngenTilrettelegging().add(ingenTilrettelegging);
         tilrettelegging.getVedlegg().add(of.createTilretteleggingVedlegg(vedlegg));
         return tilrettelegging;
     }
