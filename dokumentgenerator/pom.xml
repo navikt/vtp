@@ -20,7 +20,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
             <artifactId>soeknad-v3</artifactId>
-            <classifier>jaxb</classifier>
         </dependency>
 
 
@@ -28,7 +27,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
             <artifactId>inntektsmelding-v1</artifactId>
-            <classifier>jaxb</classifier>
         </dependency>
 
 
