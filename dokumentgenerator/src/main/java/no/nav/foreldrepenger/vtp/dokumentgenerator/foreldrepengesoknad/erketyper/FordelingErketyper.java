@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketype
 
 import java.time.LocalDate;
 
+import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.SøkersRolle;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.builders.GraderingBuilder;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Oppholdsaarsaker;
@@ -35,6 +36,14 @@ public class FordelingErketyper {
     public static final String OPPHOLDSTYPE_KVOTE_FORELDREPENGER_ANNEN_FORELDER = "UTTAK_FORELDREPENGER_ANNEN_FORELDER";
 
 
+    public static Fordeling fordelingHappyCase(LocalDate familehendelseDato, SøkersRolle søkerRolle){
+        if(søkerRolle == SøkersRolle.MOR){
+            return fordelingMorHappyCaseLong(familehendelseDato);
+        }
+        else {
+            return fordelingFarHappyCase(familehendelseDato);
+        }
+    }
     public static Fordeling fordelingMorHappyCase(LocalDate familehendelseDato) {
         return generiskFordeling(
                 uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)),
@@ -44,7 +53,9 @@ public class FordelingErketyper {
     public static Fordeling fordelingMorHappyCaseLong(LocalDate familehendelseDato) {
         return generiskFordeling(
                 uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)),
-                uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familehendelseDato, familehendelseDato.plusWeeks(11)));
+                uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familehendelseDato, familehendelseDato.plusWeeks(15).minusDays(1)),
+                uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(15), familehendelseDato.plusWeeks(31).minusDays(1)));
+
     }
 
     public static Fordeling fordelingMorHappyCaseEkstraUttakFørFødsel(LocalDate familehendelseDato) {

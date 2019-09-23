@@ -49,5 +49,9 @@
 		    <artifactId>junit-vintage-engine</artifactId>
 		    <scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
     </dependencies>
 </project>

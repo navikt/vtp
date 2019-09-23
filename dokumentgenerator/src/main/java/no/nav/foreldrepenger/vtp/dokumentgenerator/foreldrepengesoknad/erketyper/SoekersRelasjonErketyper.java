@@ -2,30 +2,17 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketype
 
 import java.time.LocalDate;
 
+import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.OmsorgsovertakelseÅrsak;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Adopsjon;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Omsorgsovertakelse;
-import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Omsorgsovertakelseaarsaker;
 
 public class SoekersRelasjonErketyper {
-    public static Foedsel søkerFødselFørFødsel(){
-        return fødsel(1, LocalDate.now().plusDays(14));
+    public static Foedsel fødsel(LocalDate fødselsdato) {
+        return fødsel(1, fødselsdato);
     }
-
-    public static Foedsel søkerFødselEtterFødsel(){
-        return fødsel(1, LocalDate.now().minusDays(30));
-    }
-
-    public static Foedsel søkerFødselEtterFødselFlereBarn() {
-        return fødsel(2, LocalDate.now().minusMonths(1));
-    }
-
-    public static Foedsel søkerFødselEtterSøknadsfrist() {
-        return fødsel(1, LocalDate.now().minusMonths(7));
-    }
-
 
     public static Foedsel fødsel(int antall, LocalDate fødselsdato){
         Foedsel soekersRelasjonTilBarnet = new Foedsel();
@@ -35,22 +22,10 @@ public class SoekersRelasjonErketyper {
         return soekersRelasjonTilBarnet;
     }
 
-    public static Termin søkerTermin(LocalDate termindato) {
+    public static Termin termin(LocalDate termindato) {
         return termin(1, termindato);
     }
-    public static Termin søkerTermin(int antallBarn, LocalDate termindato) {
-        return termin(antallBarn, termindato);
-    }
-
-    public static Termin søkerTerminFørTermin() {
-        return termin(1, LocalDate.now().plusWeeks(3));
-    }
-
-    public static Termin søkerTerminEtterTermin() {
-        return termin(1, LocalDate.now().minusWeeks(3));
-    }
-
-    private static Termin termin(int antall, LocalDate termindato){
+    public static Termin termin(int antall, LocalDate termindato){
         Termin termin = new Termin();
         termin.setAntallBarn(antall);
         termin.setTermindato((termindato));
@@ -67,15 +42,7 @@ public class SoekersRelasjonErketyper {
         return soekersRelasjonTilBarnet;
     }
 
-    public static Adopsjon søkerAdopsjon(){
-        return adopsjon(false);
-    }
-
-    public static Adopsjon søkerAdopsjonAvEktefellesBarn(){
-        return adopsjon(true);
-    }
-
-    private static Adopsjon adopsjon(boolean ektefellesBarn){
+    public static Adopsjon adopsjon(boolean ektefellesBarn){
         Adopsjon adopsjon = new Adopsjon();
         adopsjon.setAntallBarn(1);
         adopsjon.setAdopsjonAvEktefellesBarn(ektefellesBarn);
@@ -86,26 +53,28 @@ public class SoekersRelasjonErketyper {
         return adopsjon;
     }
 
-    public static Omsorgsovertakelse søkerOmsorgsovertakelseGrunnetDød(){
-        return omsorgsovertakelse("ANDRE_FORELDER_DØD");
-
-        //todo implementer OVERTATT_OMSORG, OVERTATT_OMSORG_F, ADOPTERER ALENE, men avklar først hva de betyr funksjonelt
-    }
-
-    private static Omsorgsovertakelse omsorgsovertakelse(String aarsak){
+        //Mulige aarsaker ANDRE_FORELDER_DØD, OVERTATT_OMSORG, OVERTATT_OMSORG_F, ADOPTERER_ALENE
+    public static Omsorgsovertakelse omsorgsovertakelse(OmsorgsovertakelseÅrsak årsak){
         Omsorgsovertakelse omsorgsovertakelse = new Omsorgsovertakelse();
         omsorgsovertakelse.setAntallBarn(1);
         Omsorgsovertakelseaarsaker omsorgsovertakelseaarsaker = new Omsorgsovertakelseaarsaker();
-        omsorgsovertakelseaarsaker.setKode(aarsak);
+        if (årsak == OmsorgsovertakelseÅrsak.ANDRE_FORELDER_DØD) {
+            omsorgsovertakelseaarsaker.setKode("ANDRE_FORELDER_DØD");
+        }
+        else if (årsak == OmsorgsovertakelseÅrsak.OVERTATT_OMSORG) {
+            omsorgsovertakelseaarsaker.setKode("OVERTATT_OMSORG");
+        }
+        else if (årsak == OmsorgsovertakelseÅrsak.OVERTATT_OMSORG_F) {
+            omsorgsovertakelseaarsaker.setKode("OVERTATT_OMSORG_F");
+        }
+        else {
+            omsorgsovertakelseaarsaker.setKode("ADOPTERER_ALENE");
+        }
         omsorgsovertakelseaarsaker.setKodeverk("FAR_SOEKER_TYPE");
         omsorgsovertakelse.setOmsorgsovertakelseaarsak(omsorgsovertakelseaarsaker);
         omsorgsovertakelse.setOmsorgsovertakelsesdato((LocalDate.now().plusMonths(1)));
         omsorgsovertakelse.getFoedselsdato().add((LocalDate.now().minusMonths(6)));
 
         return omsorgsovertakelse;
-    }
-
-    public static SoekersRelasjonTilBarnet søkerFødsel4DagerEtterFødsel() {
-        return fødsel(1, LocalDate.now().minusDays(4));
     }
 }
