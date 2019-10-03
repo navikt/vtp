@@ -572,28 +572,33 @@ public class InntektsmeldingBuilder {
                 new ArrayList<>()));
         return builder;
     }
-    public static InntektsmeldingBuilder createDefaultSvangerskapspenger(Integer beløp, String fnr, String orgnummer){
-            InntektsmeldingBuilder inntektsmelding = new InntektsmeldingBuilder(
-                    UUID.randomUUID().toString().substring(0, 7),
-                    YtelseKodeliste.SVANGERSKAPSPENGER,
-                    ÅrsakInnsendingKodeliste.NY,
-                    fnr);
-            ObjectFactory of = new ObjectFactory();
-            inntektsmelding.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
-            Avsendersystem avsendersystem = new Avsendersystem();
-            avsendersystem.setSystemnavn("FS32");
-            avsendersystem.setSystemversjon("1.0");
-            avsendersystem.setInnsendingstidspunkt(of.createAvsendersystemInnsendingstidspunkt(LocalDateTime.now()));
-            inntektsmelding.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS32", "1.0"));
-            inntektsmelding.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
-                    "", //TODO arbeidsforhold id
-                    null,
-                    new BigDecimal(beløp),
-                    new ArrayList<>(),
-                    new ArrayList<>(),
-                    new ArrayList<>()));
-            return inntektsmelding;
-        }
+
+    public static InntektsmeldingBuilder createDefaultSvangerskapspenger(Integer beløp, String fnr, String orgnummer) {
+        return createDefaultSvangerskapspenger(beløp, fnr, orgnummer, "");
+    }
+
+    public static InntektsmeldingBuilder createDefaultSvangerskapspenger(Integer beløp, String fnr, String orgnummer, String arbeidsforholdId) {
+        InntektsmeldingBuilder inntektsmelding = new InntektsmeldingBuilder(
+                UUID.randomUUID().toString().substring(0, 7),
+                YtelseKodeliste.SVANGERSKAPSPENGER,
+                ÅrsakInnsendingKodeliste.NY,
+                fnr);
+        ObjectFactory of = new ObjectFactory();
+        inntektsmelding.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(orgnummer, "41925090"));
+        Avsendersystem avsendersystem = new Avsendersystem();
+        avsendersystem.setSystemnavn("FS32");
+        avsendersystem.setSystemversjon("1.0");
+        avsendersystem.setInnsendingstidspunkt(of.createAvsendersystemInnsendingstidspunkt(LocalDateTime.now()));
+        inntektsmelding.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem("FS32", "1.0"));
+        inntektsmelding.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+                arbeidsforholdId,
+                null,
+                new BigDecimal(beløp),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()));
+        return inntektsmelding;
+    }
 
     public static InntektsmeldingBuilder createDefaultSykepenger(Integer beløp, String fnr, String orgnummer, String arbeidsgiverFnr, int bruttoUtbetalt, LocalDate sykepengerFra, LocalDate sykepengerTil) {
         InntektsmeldingBuilder builder = new InntektsmeldingBuilder(
