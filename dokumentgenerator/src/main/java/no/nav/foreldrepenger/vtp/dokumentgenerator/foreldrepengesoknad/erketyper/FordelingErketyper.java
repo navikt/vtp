@@ -113,11 +113,10 @@ public class FordelingErketyper {
 
         return utsettelsesperiode;
     }
-
-    public static Uttaksperiode uttaksperiode(String stønadskontotype, LocalDate fom, LocalDate tom) {
-        return (new UttaksperiodeBuilder()
-                .medTidsperiode(fom, tom)
-                .medStønadskontoType(stønadskontotype)
+    //TODO Kan slettes
+    public static Uttaksperiode uttaksperiode(String stønadskontoType, LocalDate fom, LocalDate tom) {
+        return (new UttaksperiodeBuilder(
+                stønadskontoType, fom, tom)
                 .build());
     }
 
