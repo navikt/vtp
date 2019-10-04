@@ -8,32 +8,36 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
 
 public class UttaksperiodeBuilder {
-    private Uttaksperiode kladd = new Uttaksperiode();
+    private Uttaksperiode kladd;
 
-    public UttaksperiodeBuilder medTidsperiode(LocalDate fom, LocalDate tom){
+    public UttaksperiodeBuilder(String stønadskontoType, LocalDate fom, LocalDate tom) {
+        kladd = new Uttaksperiode();
+        medTidsperiode(fom, tom);
+        medStønadskontoType(stønadskontoType);
+    }
+
+    private UttaksperiodeBuilder medTidsperiode(LocalDate fom, LocalDate tom){
         this.kladd.setFom(fom);
         this.kladd.setTom(tom);
         return this;
     }
-    public UttaksperiodeBuilder medFlerbarnsdager(boolean flerbarnsdager){
-        this.kladd.setOenskerFlerbarnsdager(flerbarnsdager);
-        return this;
-    }
-    public UttaksperiodeBuilder medSamtidigUttak(boolean samtidigUttak, BigDecimal samtidigUttakProsent ){
-        this.kladd.setOenskerSamtidigUttak(samtidigUttak);
-        this.kladd.setSamtidigUttakProsent(samtidigUttakProsent.doubleValue());
-        return this;
-    }
-    public UttaksperiodeBuilder medStønadskontoType(String stønadskontotype) {
+    private UttaksperiodeBuilder medStønadskontoType(String stønadskontotype) {
         Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
         uttaksperiodetyper.setKode(stønadskontotype);
         this.kladd.setType(uttaksperiodetyper);
         return this;
     }
+
+    public UttaksperiodeBuilder medFlerbarnsdager(){
+        this.kladd.setOenskerFlerbarnsdager(true);
+        return this;
+    }
+    public UttaksperiodeBuilder medSamtidigUttak(BigDecimal samtidigUttakProsent ){
+        this.kladd.setOenskerSamtidigUttak(true);
+        this.kladd.setSamtidigUttakProsent(samtidigUttakProsent.doubleValue());
+        return this;
+    }
     public Uttaksperiode build(){
-        Objects.requireNonNull(kladd.getFom(), "FOM kan ikke være null");
-        Objects.requireNonNull(kladd.getFom(), "TOM kan ikke være null");
-        Objects.requireNonNull(kladd.getType(), "TYPE kan ikke være null");
         return this.kladd;
     }
 }
