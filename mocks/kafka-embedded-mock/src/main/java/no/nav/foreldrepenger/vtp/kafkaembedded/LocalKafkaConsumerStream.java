@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ public class LocalKafkaConsumerStream {
 
 
     public LocalKafkaConsumerStream(String bootstrapServers, Collection<String> topics) {
-        LOG.info("Starter konsumering av topics: {}", topics.stream().collect(Collectors.joining(",")));
+        LOG.info("Starter konsumering av topics: {}", String.join(",", topics));
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "vtp");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -52,6 +53,10 @@ public class LocalKafkaConsumerStream {
     public void start() {
         stream.start();
         LOG.info("Starter konsumering av topics");
+    }
+
+    public void stop() {
+        stream.close(Duration.ofSeconds(10));
     }
 
     private void handleMessage(String topic, String key, String message) {

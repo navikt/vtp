@@ -19,62 +19,20 @@ import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
 
 public class LocalKafkaServer {
 
-    final private static Logger LOG = LoggerFactory.getLogger(LocalKafkaServer.class);
     final static public String VTP_KAFKA_HOST = null != System.getenv("VTP_KAFKA_HOST") ? System.getenv("VTP_KAFKA_HOST") : "localhost";
+    final private static Logger log = LoggerFactory.getLogger(LocalKafkaServer.class);
+    private final Collection<String> bootstrapTopics;
+    private KafkaLocal kafka;
+    private LocalKafkaProducer localProducer;
+    private LocalKafkaConsumerStream localConsumer;
+    private AdminClient kafkaAdminClient;
+    private int zookeeperPort;
+    private int kafkaBrokerPort;
 
-    private static KafkaLocal kafka;
-    private static LocalKafkaProducer localProducer;
-    private static LocalKafkaConsumerStream localConsumer;
-    private static AdminClient kafkaAdminClient;
-
-    private static int zookeeperPort;
-    private static int kafkaBrokerPort;
-
-    public static int getZookeperPort() {
-        return zookeeperPort;
-    }
-
-    public static int getKafkaBrokerPort() {
-        return kafkaBrokerPort;
-    }
-
-    public static AdminClient getKafkaAdminClient() {
-        return kafkaAdminClient;
-    }
-
-    public static void startKafka(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
-        Logger LOG = LoggerFactory.getLogger(LocalKafkaServer.class);
-
-        final String bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
-
-        LocalKafkaServer.kafkaBrokerPort = kafkaBrokerPort;
-        LocalKafkaServer.zookeeperPort = zookeeperPort;
-
-        Properties kafkaProperties = setupKafkaProperties(zookeeperPort, kafkaBrokerPort);
-        Properties zkProperties = setupZookeperProperties(zookeeperPort);
-        System.setProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "kafkasecurity.conf");
-        LOG.info("Kafka startes med Jaas login config param: " + System.getProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM));
-
-
-        try {
-            kafka = new KafkaLocal(kafkaProperties, zkProperties);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.error("Kunne ikke starte Kafka producer og/eller consumer");
-        }
-
-
-        kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
-        kafkaAdminClient.createTopics(
-                bootstrapTopics.stream().map(
-                        name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
-
-        localConsumer = new LocalKafkaConsumerStream(bootstrapServers, bootstrapTopics);
-        localConsumer.start();
-
-        localProducer = new LocalKafkaProducer(bootstrapServers);
-
+    public LocalKafkaServer(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
+        this.zookeeperPort = zookeeperPort;
+        this.kafkaBrokerPort = kafkaBrokerPort;
+        this.bootstrapTopics = bootstrapTopics;
     }
 
     private static Properties createAdminClientProps(String boostrapServer) {
@@ -158,9 +116,54 @@ public class LocalKafkaServer {
         return kafkaProperties;
     }
 
-    public static LocalKafkaProducer getLocalProducer(){
-        return localProducer;
+    public int getZookeperPort() {
+        return zookeeperPort;
     }
 
+    public int getKafkaBrokerPort() {
+        return kafkaBrokerPort;
+    }
 
+    public AdminClient getKafkaAdminClient() {
+        return kafkaAdminClient;
+    }
+
+    public void start() {
+        final String bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
+
+        Properties kafkaProperties = setupKafkaProperties(zookeeperPort, kafkaBrokerPort);
+        Properties zkProperties = setupZookeperProperties(zookeeperPort);
+        System.setProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "kafkasecurity.conf");
+        log.info("Kafka startes med Jaas login config param: " + System.getProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM));
+
+
+        try {
+            kafka = new KafkaLocal(kafkaProperties, zkProperties);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Kunne ikke starte Kafka producer og/eller consumer");
+        }
+
+
+        kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
+        kafkaAdminClient.createTopics(
+                bootstrapTopics.stream().map(
+                        name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
+        localConsumer = new LocalKafkaConsumerStream(bootstrapServers, bootstrapTopics);
+
+        localProducer = new LocalKafkaProducer(bootstrapServers);
+        localConsumer.start();
+    }
+
+    public void stop() {
+        log.info("Stopper kafka server");
+        localConsumer.stop();
+        kafkaAdminClient.close();
+        kafka.stop();
+    }
+
+    public LocalKafkaProducer getLocalProducer() {
+        return localProducer;
+    }
 }
