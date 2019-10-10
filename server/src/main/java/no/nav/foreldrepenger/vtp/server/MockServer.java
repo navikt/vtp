@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.vtp.server;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
@@ -35,6 +34,7 @@ import no.nav.familie.topic.Topic;
 import no.nav.familie.topic.TopicManifest;
 import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
 import no.nav.foreldrepenger.vtp.felles.PropertiesUtils;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
@@ -63,6 +63,7 @@ public class MockServer {
 
     private final int port;
     private final LdapServer ldapServer;
+    private final LocalKafkaServer kafkaServer;
     private Server server;
     private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
@@ -81,6 +82,9 @@ public class MockServer {
         server.setHandler(contextHandlerCollection);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
+        int kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
+        int zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
+        kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
 
     }
 
@@ -98,12 +102,7 @@ public class MockServer {
     }
 
     private void startKafkaServer() {
-
-        // Properties.setProp(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "KafkaServerJaas.conf");
-
-        Integer kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
-        Integer zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
-        LocalKafkaServer.startKafka(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
+        kafkaServer.start();
     }
 
     private Set<String> getBootstrapTopics() {
@@ -133,7 +132,7 @@ public class MockServer {
         }
     }
 
-    private void startWebServer() throws IOException, Exception {
+    private void startWebServer() throws Exception {
         HandlerContainer handler = (HandlerContainer) server.getHandler();
 
         TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
@@ -144,7 +143,7 @@ public class MockServer {
         GsakRepo gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
-        addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo, LocalKafkaServer.getLocalProducer());
+        addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo, kafkaServer.getLocalProducer(), kafkaServer.getKafkaAdminClient());
 
 
         addWebResources(handler);
@@ -157,7 +156,7 @@ public class MockServer {
     }
 
     private void startLdapServer() {
-        Thread ldapThread = new Thread(() -> ldapServer.start(), "LdapServer");
+        Thread ldapThread = new Thread(ldapServer::start, "LdapServer");
         ldapThread.setDaemon(true);
         ldapThread.start();
     }
@@ -176,8 +175,8 @@ public class MockServer {
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
                                    DelegatingTestscenarioTemplateRepository templateRepository,
-                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer) {
-        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer);
+                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient) {
+        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {
@@ -250,12 +249,11 @@ public class MockServer {
                 new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
-        server.setConnectors(connectors.toArray(new Connector[connectors.size()]));
+        server.setConnectors(connectors.toArray(new Connector[0]));
     }
 
     private Integer getSslPort() {
-        Integer sslPort = Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
-        return sslPort;
+        return Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
     }
 
     public int getPort() {

@@ -17,7 +17,7 @@ import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
 public class LocalKafkaProducer {
     private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaProducer.class);
 
-    private final KafkaProducer producer;
+    private final KafkaProducer<String, String> producer;
 
     public LocalKafkaProducer(String bootstrapServer) {
         // Create Producer properties
@@ -48,14 +48,14 @@ public class LocalKafkaProducer {
     }
 
     public void sendMelding(String topic, String key, String value) {
-        producer.send(new ProducerRecord(topic, key, value), (recordMetadata, e) -> {
+        producer.send(new ProducerRecord<>(topic, key, value), (recordMetadata, e) -> {
             LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
         });
         producer.flush();
     }
 
     public void sendMelding(String topic, String value) {
-        producer.send(new ProducerRecord(topic, value), (recordMetadata, e) -> {
+        producer.send(new ProducerRecord<>(topic, value), (recordMetadata, e) -> {
             LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
         });
         producer.flush();
