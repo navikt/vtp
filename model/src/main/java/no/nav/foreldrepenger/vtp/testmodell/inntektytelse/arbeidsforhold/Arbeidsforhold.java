@@ -1,9 +1,10 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Random;
 
 public class Arbeidsforhold {
 
@@ -14,7 +15,7 @@ public class Arbeidsforhold {
     private String arbeidsforholdId;
 
     @JsonProperty("arbeidsforholdIdNav")
-    private Long arbeidsforholdIdnav;
+    private Long arbeidsforholdIdnav = Math.abs(new Random().nextLong());
 
     @JsonProperty("ansettelsesperiodeTom")
     private LocalDate ansettelsesperiodeTom;
@@ -54,7 +55,7 @@ public class Arbeidsforhold {
     }
 
     public Long getArbeidsforholdIdnav() {
-        return arbeidsforholdIdnav;
+        return this.arbeidsforholdIdnav;
     }
 
     public void setArbeidsforholdIdnav(Long arbeidsforholdIdnav) {
