@@ -62,7 +62,6 @@ public class LocalKafkaServer {
         final String zookeeperTempInstanceDataDir = "" + System.currentTimeMillis(); // For å hindre NodeExists-feil på restart p.g.a. at data allerede finnes i katalogen.
         zkProperties.put("dataDir", "target/zookeeper/" + zookeeperTempInstanceDataDir);
         zkProperties.put("clientPort", "" + zookeeperPort);
-        zkProperties.put("maxClientCnxns", "0");
         zkProperties.put("admin.enableServer", "false");
         zkProperties.put("jaasLoginRenew", "3600000");
 
