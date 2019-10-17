@@ -106,7 +106,6 @@
 		"arbeidsforhold": [
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1138161",
 				"ansettelsesperiodeFom": "2017-01-01",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "910909088",
@@ -125,7 +124,6 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1138161",
 				"ansettelsesperiodeFom": "2017-01-01",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "973861778",
@@ -144,7 +142,6 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1138161",
 				"ansettelsesperiodeFom": "2017-01-01",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "973861778",
@@ -164,7 +161,6 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1138161",
 				"ansettelsesperiodeFom": "2017-01-01",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "979191139",

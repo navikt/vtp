@@ -16,7 +16,7 @@
     "arbeidsforhold": [
       {
         "arbeidsforholdId": "ARB001-001",
-        "arbeidsforholdIdNav": "568161",
+
         "ansettelsesperiodeFom": "now() - P2Y",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
         "arbeidsgiverOrgnr": "910909088",
@@ -32,7 +32,7 @@
       },
       {
         "arbeidsforholdId": "ARB001-002",
-        "arbeidsforholdIdNav": "568162",
+
         "ansettelsesperiodeFom": "now() - P3W2D",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
         "arbeidsgiverOrgnr": "973861778",
