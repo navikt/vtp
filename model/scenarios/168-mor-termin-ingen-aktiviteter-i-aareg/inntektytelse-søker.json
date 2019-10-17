@@ -15,7 +15,7 @@
 		"arbeidsforhold": [
 			{
 			"arbeidsforholdId": "ARB001-001",
-			"arbeidsforholdIdNav": "1238161",
+
 			"ansettelsesperiodeFom": "now() - P48M",
 			"ansettelsesperiodeTom": "now() - P12M",
 			"arbeidsforholdstype": "ordinaertArbeidsforhold",

@@ -29,7 +29,7 @@
 		"arbeidsforhold": [
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1238161",
+
 				"ansettelsesperiodeFom": "2018-01-01",
 				"ansettelsesperiodeTom": "2019-09-27",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
@@ -47,7 +47,7 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1238162",
+
 				"ansettelsesperiodeFom": "2018-01-01",
 				"ansettelsesperiodeTom": "2020-01-01",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",

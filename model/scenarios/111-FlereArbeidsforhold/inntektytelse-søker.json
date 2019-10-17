@@ -46,7 +46,6 @@
 		"arbeidsforhold": [
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1238161",
 				"ansettelsesperiodeFom": "2017-01-01",
                 "ansettelsesperiodeTom": "2018-11-15",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
@@ -67,7 +66,6 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1118162",
 				"ansettelsesperiodeFom": "2017-01-01",
                 "ansettelsesperiodeTom": "2018-11-30",
 				"arbeidsforholdstype": "maritimtArbeidsforhold",
@@ -85,7 +83,6 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1118162",
 				"ansettelsesperiodeFom": "2017-01-01",
                 "ansettelsesperiodeTom": "2018-09-30",
 				"arbeidsforholdstype": "forenkletOppgjoersordning",

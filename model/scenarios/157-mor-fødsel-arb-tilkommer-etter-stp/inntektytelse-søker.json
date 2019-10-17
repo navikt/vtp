@@ -25,7 +25,7 @@
 		"arbeidsforhold": [
 			{
 				"arbeidsforholdId": "ARB001-001",
-				"arbeidsforholdIdNav": "1578161",
+
 				"ansettelsesperiodeFom": "now() - P12M",
 				"ansettelsesperiodeTom": "now()-P1M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
@@ -42,7 +42,7 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-003",
-				"arbeidsforholdIdNav": "1578161",
+
 				"ansettelsesperiodeFom": "now()",
 				"ansettelsesperiodeTom": "now() + P2M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
@@ -59,7 +59,7 @@
 			},
 			{
 				"arbeidsforholdId": "ARB001-002",
-				"arbeidsforholdIdNav": "1578162",
+
 				"ansettelsesperiodeFom": "now() - P12M",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "973861778",
