@@ -1,14 +1,9 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
@@ -19,6 +14,13 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class TestscenarioFraTemplateMapper {
 
@@ -43,6 +45,58 @@ public class TestscenarioFraTemplateMapper {
         TestscenarioImpl testScenario = new TestscenarioImpl(template.getTemplateNavn(), unikTestscenarioId, testScenarioRepository);
         load(testScenario, template, vars);
         return testScenario;
+    }
+
+    public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId){
+        TestscenarioImpl testscenario = new TestscenarioImpl("55-mor-uten-barn", unikTestscenarioId, testScenarioRepository);
+        loadFraJsonString(testscenarioJson, testscenario);
+        return testscenario;
+    }
+
+    private void loadFraJsonString(String testscenarioJson, TestscenarioImpl testscenario) {
+        Map<String,String> result = null;
+        try {
+            ObjectNode node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);
+            if (node.has("vars")) {
+                JsonNode vars = node.get("vars");
+                result = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
+            }
+
+            JsonMapper jsonMapper = new JsonMapper();
+            jsonMapper.addVars(result);
+            initJsonMapper(jsonMapper, testscenario);
+            ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
+
+            if(node.has("organisasjon")){
+                JsonNode organisasjon = node.get("organisasjon");
+                OrganisasjonModeller organisasjonModeller = objectMapper.convertValue(organisasjon, OrganisasjonModeller.class);
+                for (OrganisasjonModell organisasjonModell : organisasjonModeller.getModeller()) {
+                    testscenario.leggTil(organisasjonModell);
+                }
+            }
+
+            if(node.has("inntektytelse-søker")){
+                JsonNode inntektytelse_søker = node.get("inntektytelse-søker");
+                InntektYtelseModell søkerInntektYtelse = objectMapper.convertValue(inntektytelse_søker, InntektYtelseModell.class);
+                testscenario.setSøkerInntektYtelse(søkerInntektYtelse);
+            }
+
+            if(node.has("inntektytelse-annenpart")){
+                JsonNode inntektytelse_annenpart = node.get("inntektytelse-annenpart");
+                InntektYtelseModell annenpartInntektYtelse = objectMapper.convertValue(inntektytelse_annenpart, InntektYtelseModell.class);
+                testscenario.setSøkerInntektYtelse(annenpartInntektYtelse);
+            }
+
+            if(node.has("personopplysninger")){
+                JsonNode personopplysningerResult = node.get("personopplysninger");
+                Personopplysninger personopplysninger = objectMapper.convertValue(personopplysningerResult, Personopplysninger.class);
+                testscenario.setPersonopplysninger(personopplysninger);
+            }
+
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Kunne ikke converte JSON tekst til object", e);
+        }
+        testScenarioRepository.indekser(testscenario);
     }
 
     private void load(TestscenarioImpl scenario, TestscenarioTemplate template, Map<String, String> overrideVars) {

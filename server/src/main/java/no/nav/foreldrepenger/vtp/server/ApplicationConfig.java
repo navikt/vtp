@@ -1,10 +1,32 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.jaxrs.config.BeanConfig;
+import no.nav.foreldrepenger.vtp.server.api.expect.ExpectRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.feed.FeedRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.sak.SakRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioTemplateRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.scenario_over_rest.TestscenarioOverRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
+import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
+import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
+import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
+import no.nav.infotrygdfeed.InfotrygdfeedMock;
+import no.nav.sigrun.SigrunMock;
+import no.nav.tjeneste.fpformidling.FpFormidlingMock;
+import no.nav.vtp.DummyRestTjeneste;
+import no.nav.vtp.DummyRestTjenesteBoolean;
+import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
+import no.nav.vtp.personfeed.PersonfeedMock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
@@ -19,36 +41,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-
-import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
-
-import no.nav.vtp.DummyRestTjeneste;
-import no.nav.vtp.DummyRestTjenesteBoolean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import io.swagger.jaxrs.config.BeanConfig;
-import no.nav.foreldrepenger.vtp.server.api.expect.ExpectRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.feed.FeedRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.sak.SakRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioTemplateRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
-import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
-import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
-import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
-import no.nav.vtp.personfeed.PersonfeedMock;
-import no.nav.infotrygdfeed.InfotrygdfeedMock;
-import no.nav.sigrun.SigrunMock;
-import no.nav.tjeneste.fpformidling.FpFormidlingMock;
-import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ApplicationConfig extends Application {
 
@@ -75,6 +72,7 @@ public class ApplicationConfig extends Application {
         classes.add(InfotrygdfeedMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
+        classes.add(TestscenarioOverRestTjeneste.class);
         classes.add(ExpectRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
