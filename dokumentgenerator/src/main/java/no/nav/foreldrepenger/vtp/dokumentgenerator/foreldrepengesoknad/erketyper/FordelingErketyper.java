@@ -55,7 +55,6 @@ public class FordelingErketyper {
                 uttaksperiode(STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL, familehendelseDato.minusWeeks(3), familehendelseDato.minusDays(1)),
                 uttaksperiode(STØNADSKONTOTYPE_MØDREKVOTE, familehendelseDato, familehendelseDato.plusWeeks(15).minusDays(1)),
                 uttaksperiode(STØNADSKONTOTYPE_FELLESPERIODE, familehendelseDato.plusWeeks(15), familehendelseDato.plusWeeks(31).minusDays(1)));
-
     }
 
     public static Fordeling fordelingMorHappyCaseEkstraUttakFørFødsel(LocalDate familehendelseDato) {
@@ -79,25 +78,19 @@ public class FordelingErketyper {
     }
 
     public static Gradering graderingsperiodeArbeidstaker(String stønadskontotype, LocalDate fom, LocalDate tom, String arbeidsgiverIdentifikator, Integer arbeidstidsprosent) {
-        Gradering graderinsperiode = new GraderingBuilder()
-                .medStønadskontoType(stønadskontotype)
-                .medTidsperiode(fom, tom)
+        Gradering graderinsperiode = new GraderingBuilder(stønadskontotype, fom, tom)
                 .medGraderingArbeidstaker(arbeidsgiverIdentifikator, arbeidstidsprosent)
                 .build();
         return graderinsperiode;
     }
     public static Gradering graderingsperiodeFL(String stønadskontotype, LocalDate fom, LocalDate tom, Integer arbeidstidsprosent) {
-        Gradering graderinsperiode = new GraderingBuilder()
-                .medStønadskontoType(stønadskontotype)
-                .medTidsperiode(fom, tom)
+        Gradering graderinsperiode = new GraderingBuilder(stønadskontotype, fom, tom)
                 .medGraderingFL(arbeidstidsprosent)
                 .build();
         return graderinsperiode;
     }
     public static Gradering graderingsperiodeSN(String stønadskontotype, LocalDate fom, LocalDate tom, Integer arbeidstidsprosent) {
-        Gradering graderinsperiode = new GraderingBuilder()
-                .medStønadskontoType(stønadskontotype)
-                .medTidsperiode(fom, tom)
+        Gradering graderinsperiode = new GraderingBuilder(stønadskontotype, fom, tom)
                 .medGraderingSN(arbeidstidsprosent)
                 .build();
         return graderinsperiode;
@@ -157,12 +150,12 @@ public class FordelingErketyper {
         return generiskFordeling(uttaksperiode(STØNADSKONTOTYPE_FEDREKVOTE, familehendelseDato.plusWeeks(10).plusDays(1), familehendelseDato.plusWeeks(16)));
     }
 
-    public static Fordeling generiskFordeling(Uttaksperiode... perioder) {
+    public static Fordeling generiskFordeling(LukketPeriodeMedVedlegg... perioder) {
         Fordeling fordeling = new Fordeling();
         fordeling.setAnnenForelderErInformert(true);
 
-        for (Uttaksperiode uttaksperiode : perioder) {
-            fordeling.getPerioder().add(uttaksperiode);
+        for (LukketPeriodeMedVedlegg lukketPeriodeMedVedlegg : perioder) {
+            fordeling.getPerioder().add(lukketPeriodeMedVedlegg);
         }
 
         return fordeling;

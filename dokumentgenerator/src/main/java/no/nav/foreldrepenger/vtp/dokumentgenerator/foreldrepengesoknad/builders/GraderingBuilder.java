@@ -9,7 +9,12 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class GraderingBuilder {
-    private Gradering kladd = new Gradering();
+    public GraderingBuilder(String stønadskontoType, LocalDate fom, LocalDate tom) {
+        kladd = new Gradering();
+        this.medStønadskontoType(stønadskontoType);
+        this.medTidsperiode(fom, tom);
+    }
+    private Gradering kladd ;
 
     public GraderingBuilder medGraderingArbeidstaker (String arbeidsgiverIdentifikator, Integer arbeidstidsprosent ) {
         Virksomhet virksomhet = new Virksomhet();
@@ -38,7 +43,7 @@ public class GraderingBuilder {
         this.kladd.setErSelvstNæringsdrivende(true);
         return this;
     }
-    public GraderingBuilder medTidsperiode(LocalDate fom, LocalDate tom){
+    private GraderingBuilder medTidsperiode(LocalDate fom, LocalDate tom){
         this.kladd.setFom(fom);
         this.kladd.setTom(tom);
         return this;
@@ -52,7 +57,7 @@ public class GraderingBuilder {
         this.kladd.setSamtidigUttakProsent(samtidigUttakProsent.doubleValue());
         return this;
     }
-    public GraderingBuilder medStønadskontoType(String stønadskontotype) {
+    private GraderingBuilder medStønadskontoType(String stønadskontotype) {
         Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
         uttaksperiodetyper.setKode(stønadskontotype);
         this.kladd.setType(uttaksperiodetyper);
