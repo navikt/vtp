@@ -48,22 +48,22 @@ public class TestscenarioFraTemplateMapper {
     }
 
     public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId){
-        TestscenarioImpl testscenario = new TestscenarioImpl("55-mor-uten-barn", unikTestscenarioId, testScenarioRepository);
-        loadFraJsonString(testscenarioJson, testscenario);
+        TestscenarioImpl testscenario = new TestscenarioImpl("Midlertidig-templatenavn", unikTestscenarioId, testScenarioRepository);
+        loadFraJsonString(testscenario, testscenarioJson);
         return testscenario;
     }
 
-    private void loadFraJsonString(String testscenarioJson, TestscenarioImpl testscenario) {
-        Map<String,String> result = null;
+    private void loadFraJsonString(TestscenarioImpl testscenario, String testscenarioJson) {
+        Map<String,String> defaultVars = null;
         try {
             ObjectNode node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);
             if (node.has("vars")) {
                 JsonNode vars = node.get("vars");
-                result = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
+                defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
             }
 
             JsonMapper jsonMapper = new JsonMapper();
-            jsonMapper.addVars(result);
+            jsonMapper.addVars(defaultVars);
             initJsonMapper(jsonMapper, testscenario);
             ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
 
