@@ -39,6 +39,20 @@ public class TestscenarioDto extends TestscenarioReferanse {
     }
 
     public TestscenarioDto(
+            String testscenarioId,
+            Map<String, String> variabler,
+            TestscenarioPersonopplysningDto testscenarioPersonopplysningDto,
+            TestscenariodataDto scenariodataDto,
+            TestscenariodataDto scenariodataAnnenpartDto
+    ) {
+        super(testscenarioId, null);
+        this.personopplysninger = testscenarioPersonopplysningDto;
+        this.variabler = variabler;
+        this.scenariodataDto = scenariodataDto;
+        this.scenariodataAnnenpartDto = scenariodataAnnenpartDto;
+    }
+
+    public TestscenarioDto(
             TestscenarioTemplate template,
             String testscenarioId,
             Map<String, String> variabler,

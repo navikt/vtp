@@ -17,19 +17,11 @@ public class TestscenarioRequestDto {
     private InntektYtelseModell inntektytelseSøker;
 
     @JsonProperty("inntektytelse-annenpart")
-
     private InntektYtelseModell inntektYtelseAnnenpart;
 
     @JsonProperty("organisasjon")
     private OrganisasjonModeller organisasjon;
 
-    public OrganisasjonModeller getOrganisasjon() {
-        return organisasjon;
-    }
-
-    public void setOrganisasjon(OrganisasjonModeller organisasjon) {
-        this.organisasjon = organisasjon;
-    }
 
     public Personopplysninger getPersonopplysninger() {
         return personopplysninger;
@@ -45,5 +37,21 @@ public class TestscenarioRequestDto {
 
     public void setInntektytelseSøker(InntektYtelseModell inntektytelseSøker) {
         this.inntektytelseSøker = inntektytelseSøker;
+    }
+
+    public InntektYtelseModell getInntektYtelseAnnenpart() {
+        return inntektYtelseAnnenpart;
+    }
+
+    public void setInntektYtelseAnnenpart(InntektYtelseModell inntektYtelseAnnenpart) {
+        this.inntektYtelseAnnenpart = inntektYtelseAnnenpart;
+    }
+
+    public OrganisasjonModeller getOrganisasjon() {
+        return organisasjon;
+    }
+
+    public void setOrganisasjon(OrganisasjonModeller organisasjon) {
+        this.organisasjon = organisasjon;
     }
 }
