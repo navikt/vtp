@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenariodataDto;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
@@ -16,12 +15,14 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Api(tags = {"Testscenario-test"})
@@ -34,12 +35,46 @@ public class TestscenarioOverRestTjeneste {
     private TestscenarioRepository testscenarioRepository;
 
 
-    // TODO(EW) getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
+    @PUT
+    @Path("/endrescenario/{id}")
+    @ApiOperation(value="", notes="Patcher et testcase. Serialiserer uten sjekk, du må selv ha styr på typer")
+    public Response endreScenario(TestscenarioDto testscenarioDto) {
+
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
+    @DELETE
+    @Path("/slettscenario/{id}")
+    @ApiOperation(value="", notes="Sletter initialisert testscenario som matcher id")
+    public Response slettScenario(@PathParam("id") String id) {
+        if(testscenarioRepository.slettScenario(id)) {
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @GET
+    @Path("/initialiserte")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="", notes = "Henter alle initialiserte scenarior i minnet til VTP", response = TestscenarioDto.class)
+    public List<TestscenarioDto> hentInitialiserteScenario() {
+        Collection<Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
+        List<TestscenarioDto> testscenarioList = new ArrayList<>();
+
+        testscenarios.forEach(testscenario -> {
+            testscenarioList.add(konverterTilTestscenarioDto(testscenario));
+        });
+
+        return testscenarioList;
+    }
+
     @POST
     @Path("/initialiser")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng"), response = TestscenarioDto.class)
+    @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
     public TestscenarioDto initialiserTestScenario(String testscenarioJson) {
+        // TODO(EW) getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
         return konverterTilTestscenarioDto(testscenario);
     }
