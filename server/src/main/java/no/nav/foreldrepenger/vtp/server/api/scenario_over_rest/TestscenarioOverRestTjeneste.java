@@ -74,7 +74,7 @@ public class TestscenarioOverRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
     public TestscenarioDto initialiserTestScenario(String testscenarioJson) {
-        // TODO(EW) getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
+        // getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
         return konverterTilTestscenarioDto(testscenario);
     }

@@ -47,6 +47,7 @@ public class TestscenarioFraTemplateMapper {
         return testScenario;
     }
 
+    // TODO(EW) Finne ut hva jeg skal gjøre med templatenavn. Sendes over rest? settet til null?
     public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId){
         TestscenarioImpl testscenario = new TestscenarioImpl("Midlertidig-templatenavn", unikTestscenarioId, testScenarioRepository);
         loadFraJsonString(testscenario, testscenarioJson);
