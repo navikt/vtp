@@ -36,15 +36,15 @@ public class TestscenarioOverRestTjeneste {
     private TestscenarioRepository testscenarioRepository;
 
 
+    // TODO(EW) getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes?
     @POST
     @Path("/initialiser")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng"), response = TestscenarioResponseDto.class)
     public TestscenarioDto initialiserTestScenario(String testscenarioJson) {
-        LOG.info("testscenario er sendt over og ser slikt ut: {}", testscenarioJson);
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
         TestscenarioDto testscenarioDto = konverterTilTestscenarioDto(testscenario);
-        return testscenarioDto; //
+        return testscenarioDto;
     }
 
 
@@ -73,7 +73,7 @@ public class TestscenarioOverRestTjeneste {
             ArbeidsforholdModell arbeidsforholdModellAnnenpart = scenario.getAnnenpartInntektYtelse().getArbeidsforholdModell();
             scenariodataAnnenpart = new TestscenariodataDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
         }
-        // TODO(EW) scenario.getVariabelContainer().getVars() er tom, men burde returnerten hashmap med 6 entries!
+
         return new TestscenarioDto(scenario.getId(), scenario.getVariabelContainer().getVars(),
                 testscenarioPersonopplysning, scenariodataSøker, scenariodataAnnenpart);
     }

@@ -62,7 +62,7 @@ public class TestscenarioFraTemplateMapper {
                 defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
             }
 
-            JsonMapper jsonMapper = new JsonMapper();
+            JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
             jsonMapper.addVars(defaultVars);
             initJsonMapper(jsonMapper, testscenario);
             ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
