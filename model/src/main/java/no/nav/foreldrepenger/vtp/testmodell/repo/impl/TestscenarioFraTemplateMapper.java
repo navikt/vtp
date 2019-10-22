@@ -84,7 +84,7 @@ public class TestscenarioFraTemplateMapper {
             if(node.has("inntektytelse-annenpart")){
                 JsonNode inntektytelse_annenpart = node.get("inntektytelse-annenpart");
                 InntektYtelseModell annenpartInntektYtelse = objectMapper.convertValue(inntektytelse_annenpart, InntektYtelseModell.class);
-                testscenario.setSøkerInntektYtelse(annenpartInntektYtelse);
+                testscenario.setAnnenpartInntektYtelse(annenpartInntektYtelse);
             }
 
             if(node.has("personopplysninger")){

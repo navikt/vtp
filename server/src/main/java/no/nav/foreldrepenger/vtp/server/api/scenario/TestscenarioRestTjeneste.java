@@ -54,7 +54,7 @@ public class TestscenarioRestTjeneste {
     public Response endreScenario(TestscenarioDto testscenarioDto){
 
 
-        return Response.ok().build();
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @DELETE
@@ -88,7 +88,7 @@ public class TestscenarioRestTjeneste {
     @POST
     @Path("/{key}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key"), response = TestscenarioDto.class)
+    @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key i VTPs eksempel templates"), response = TestscenarioDto.class)
     public TestscenarioDto initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
 
         TestscenarioTemplate template = templateRepository.finn(templateKey);

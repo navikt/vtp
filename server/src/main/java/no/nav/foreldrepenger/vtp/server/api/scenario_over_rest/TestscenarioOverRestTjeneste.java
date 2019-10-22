@@ -30,32 +30,27 @@ public class TestscenarioOverRestTjeneste {
 
     private static final Logger LOG = LoggerFactory.getLogger(TestscenarioOverRestTjeneste.class);
 
-    private static final String TEMPLATE_KEY = "key";
-
     @Context
     private TestscenarioRepository testscenarioRepository;
 
 
-    // TODO(EW) getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes?
+    // TODO(EW) getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
     @POST
     @Path("/initialiser")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng"), response = TestscenarioResponseDto.class)
+    @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng"), response = TestscenarioDto.class)
     public TestscenarioDto initialiserTestScenario(String testscenarioJson) {
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
-        TestscenarioDto testscenarioDto = konverterTilTestscenarioDto(testscenario);
-        return testscenarioDto;
+        return konverterTilTestscenarioDto(testscenario);
     }
 
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario scenario) {
-
         String fnrSøker = scenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = scenario.getPersonopplysninger().getAnnenPart().getIdent();
         String aktørIdSøker = scenario.getPersonopplysninger().getSøker().getAktørIdent();
         String aktørIdAnnenPart = scenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(scenario);
-
         TestscenarioPersonopplysningDto testscenarioPersonopplysning = new TestscenarioPersonopplysningDto(
                 fnrSøker,
                 fnrAnnenPart,
@@ -79,7 +74,6 @@ public class TestscenarioOverRestTjeneste {
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
-
         Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
                 .stream()
                 .filter(modell -> modell.getTil() instanceof BarnModell)
