@@ -163,7 +163,19 @@
 
     </dependencies>
     <build>
+        <finalName>app</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>no.nav.foreldrepenger.vtp.server.MockServer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
