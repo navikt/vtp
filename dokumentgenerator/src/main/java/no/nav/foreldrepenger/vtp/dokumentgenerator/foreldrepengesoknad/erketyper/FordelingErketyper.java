@@ -2,18 +2,15 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketype
 
 import java.time.LocalDate;
 
+import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.OverføringÅrsak;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.SøkersRolle;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.builders.GraderingBuilder;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.builders.UttaksperiodeBuilder;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Oppholdsaarsaker;
+import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Overfoeringsaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Gradering;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.LukketPeriodeMedVedlegg;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Oppholdsperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Utsettelsesperiode;
-import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
+import no.nav.vedtak.felles.xml.soeknad.uttak.v3.*;
 
 public class FordelingErketyper {
 
@@ -111,6 +108,20 @@ public class FordelingErketyper {
         return (new UttaksperiodeBuilder(
                 stønadskontoType, fom, tom)
                 .build());
+    }
+    public static Overfoeringsperiode overføringsperiode(OverføringÅrsak overføringÅrsak, String overføringAv, LocalDate fom, LocalDate tom) {
+        Overfoeringsaarsaker overfoeringsaarsaker = new Overfoeringsaarsaker();
+        overfoeringsaarsaker.setKode(overføringÅrsak.name());
+
+        Uttaksperiodetyper uttaksperiodetyper = new Uttaksperiodetyper();
+        uttaksperiodetyper.setKode(overføringAv);
+
+        Overfoeringsperiode overfoeringsperiode = new Overfoeringsperiode();
+        overfoeringsperiode.setAarsak(overfoeringsaarsaker);
+        overfoeringsperiode.setOverfoeringAv(uttaksperiodetyper);
+        overfoeringsperiode.setFom(fom);
+        overfoeringsperiode.setTom(tom);
+        return overfoeringsperiode;
     }
 
     public static Oppholdsperiode oppholdsperiode(String oppholdsårsak, LocalDate fom, LocalDate tom) {
