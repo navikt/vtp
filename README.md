@@ -22,16 +22,20 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 # Hvordan komme igang - Oppsett og konfigurasjon
 
+* VTP trenger Keystore og Truststore liggende i mappe .modig på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
-Starte server
+## Starte server fra IDE
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
 * Trenger parameter -Dscenarios.dir="../model/scenarios" dersom denne ikke ligger under working dir (dvs. i IDE).
 * Swagger UI: https://localhost:8063/swagger/ - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
-* VTP trenger Keystore og Truststore liggende i mappe .modig på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
-Front-end
+## Starte server fra Shell
+---
+* Kjør run-java.sh (denne fungerer også for Git-Bash)
+
+##Front-end
 ---
 * I mappen frontend kjør yarn run serve. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
 * Dersom bygg feiler på utviklerimage, forsøk å oppdater node / yarn. Oppdaterte versjoner ligger på http://a34apvl063.devillo.no:81/software/.  
