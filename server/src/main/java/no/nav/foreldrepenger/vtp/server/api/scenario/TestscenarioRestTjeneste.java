@@ -47,43 +47,32 @@ public class TestscenarioRestTjeneste {
         this.testscenarioRepository = testscenarioRepository;
     }
 
+    @GET
+    @Path("/initialiserte")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
+    public List<TestscenarioDto> hentInitialiserteCaser() {
+        Collection<Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
+        List<TestscenarioDto> testscenarioList = new ArrayList<>();
+
+        testscenarios.forEach(testscenario -> {
+            if (testscenario.getTemplateNavn() != null) {
+                String templateKey = templateRepository.finnMedTemplatenavn(testscenario.getTemplateNavn()).getTemplateKey();
+                testscenarioList.add(konverterTilTestscenarioDto(testscenario, templateKey, testscenario.getTemplateNavn()));
+            } else {
+                testscenarioList.add(konverterTilTestscenarioDto(testscenario, null, null));
+            }
+        });
+
+        return testscenarioList;
+    }
 
     @PUT
     @Path("/endrescenario/{id}")
     @ApiOperation(value="", notes="Patcher et testcase. Serialiserer uten sjekk, du må selv ha styr på typer")
     public Response endreScenario(TestscenarioDto testscenarioDto){
-
-
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
-
-    @DELETE
-    @Path("/slettscenario/{id}")
-    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario")
-    public Response slettScenario(@PathParam("id") String id) {
-        if(testscenarioRepository.slettScenario(id)){
-            return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
-
-    @GET
-    @Path("/initialiserte")
-    @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
-    public List<TestscenarioDto> hentInitialiserteCaser() {
-
-        Collection<Testscenario> testscenarios = this.testscenarioRepository.getTestscenarios();
-        List<TestscenarioDto> testList = new ArrayList<>();
-
-        testscenarios.stream().forEach(ts -> {
-            testList.add(konverterTilTestscenarioDto(ts));
-
-        });
-
-        return testList;
-    }
-
 
     @POST
     @Path("/{key}")
@@ -98,44 +87,70 @@ public class TestscenarioRestTjeneste {
         return konverterTilTestscenarioDto(testscenario, templateKey);
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
+    public TestscenarioDto initialiserTestScenario(String testscenarioJson) {
+        // getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
+        Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
+        return konverterTilTestscenarioDto(testscenario);
+    }
+
+    @DELETE
+    @Path("/slettscenario/{id}")
+    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario")
+    public Response slettScenario(@PathParam("id") String id) {
+        if(testscenarioRepository.slettScenario(id)){
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+
+
+
+
+
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts) {
-        return konverterTilTestscenarioDto(ts, null);
+        return konverterTilTestscenarioDto(ts, null, null);
     }
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts, String templateKey) {
-        TestscenarioTemplate template;
-        if (templateKey == null) {
-            template = templateRepository.finnMedTemplatenavn(ts.getTemplateNavn());
-        } else {
-            template = templateRepository.finn(templateKey);
+        String templateName = null;
+        if (templateKey != null) {
+            templateName = templateRepository.finn(templateKey).getTemplateNavn();
         }
+        return konverterTilTestscenarioDto(ts, templateKey, templateName);
+    }
 
-        String fnrSøker = ts.getPersonopplysninger().getSøker().getIdent();
-        String fnrAnnenPart = ts.getPersonopplysninger().getAnnenPart().getIdent();
-        String aktørIdSøker = ts.getPersonopplysninger().getSøker().getAktørIdent();
-        String aktørIdAnnenPart = ts.getPersonopplysninger().getAnnenPart().getAktørIdent();
-        Optional<LocalDate> fødselsdato = fødselsdatoBarn(ts);
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
+        String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
+        String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
+        String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
+        String aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
+        Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
 
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker, fnrAnnenPart, aktørIdSøker, aktørIdAnnenPart, fødselsdato.orElse(null));
 
-        ArbeidsforholdModell arbeidsforholdModell = ts.getSøkerInntektYtelse().getArbeidsforholdModell();
-        InntektskomponentModell inntektskomponentModell = ts.getSøkerInntektYtelse().getInntektskomponentModell();
+        ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
+        InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
         TestscenariodataDto scenariodata = new TestscenariodataDto(inntektskomponentModell, arbeidsforholdModell);
 
         TestscenariodataDto scenariodataAnnenpart = null;
-        if (ts.getAnnenpartInntektYtelse() != null) {
-            ArbeidsforholdModell arbeidsforholdModellAnnenpart = ts.getAnnenpartInntektYtelse().getArbeidsforholdModell();
-            InntektskomponentModell inntektskomponentModellAnnenpart = ts.getAnnenpartInntektYtelse().getInntektskomponentModell();
+        if (testscenario.getAnnenpartInntektYtelse() != null) {
+            ArbeidsforholdModell arbeidsforholdModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getArbeidsforholdModell();
+            InntektskomponentModell inntektskomponentModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getInntektskomponentModell();
             scenariodataAnnenpart = new TestscenariodataDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
 
         }
 
-        return new TestscenarioDto(template, ts.getId(), ts.getVariabelContainer().getVars(), scenarioPersonopplysninger, scenariodata, scenariodataAnnenpart);
+        return new TestscenarioDto(templateKey, templateName, testscenario.getId(), testscenario.getVariabelContainer().getVars(),
+                scenarioPersonopplysninger, scenariodata, scenariodataAnnenpart);
 
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
-
         Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
                 .stream()
                 .filter(modell -> modell.getTil() instanceof BarnModell)

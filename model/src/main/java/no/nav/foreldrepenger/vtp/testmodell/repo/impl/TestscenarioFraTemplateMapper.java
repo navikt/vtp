@@ -47,24 +47,23 @@ public class TestscenarioFraTemplateMapper {
         return testScenario;
     }
 
-    // TODO(EW) Finne ut hva jeg skal gjøre med templatenavn. Sendes over rest? settet til null?
+    // TODO(EW) Finne ut hva jeg skal gjøre med templatenavn. Sendes over rest?
     public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId){
-        TestscenarioImpl testscenario = new TestscenarioImpl("Midlertidig-templatenavn", unikTestscenarioId, testScenarioRepository);
-        loadFraJsonString(testscenario, testscenarioJson);
+        TestscenarioImpl testscenario = new TestscenarioImpl(null, unikTestscenarioId, testScenarioRepository);
+        loadTestscenarioFraJsonString(testscenario, testscenarioJson);
         return testscenario;
     }
 
-    private void loadFraJsonString(TestscenarioImpl testscenario, String testscenarioJson) {
-        Map<String,String> defaultVars = null;
+    private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, String testscenarioJson) {
         try {
+            JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
             ObjectNode node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);
             if (node.has("vars")) {
                 JsonNode vars = node.get("vars");
-                defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
+                Map<String,String> defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
+                jsonMapper.addVars(defaultVars);
             }
 
-            JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
-            jsonMapper.addVars(defaultVars);
             initJsonMapper(jsonMapper, testscenario);
             ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
 

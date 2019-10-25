@@ -13,7 +13,6 @@ import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.sak.SakRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioTemplateRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.scenario_over_rest.TestscenarioOverRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
@@ -72,7 +71,6 @@ public class ApplicationConfig extends Application {
         classes.add(InfotrygdfeedMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
-        classes.add(TestscenarioOverRestTjeneste.class);
         classes.add(ExpectRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
