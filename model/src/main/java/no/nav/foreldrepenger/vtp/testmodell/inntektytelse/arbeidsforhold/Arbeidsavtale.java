@@ -5,9 +5,6 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Arbeidsavtale {
-
-
-
     @JsonProperty("yrke")
     private Yrke yrke;
 

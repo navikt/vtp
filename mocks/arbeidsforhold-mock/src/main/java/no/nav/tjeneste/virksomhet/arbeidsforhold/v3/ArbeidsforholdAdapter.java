@@ -15,6 +15,8 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.G
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.ObjectFactory;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Organisasjon;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.PermisjonOgPermittering;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.PermisjonsOgPermitteringsBeskrivelse;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Person;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Yrker;
 
@@ -28,7 +30,7 @@ public class ArbeidsforholdAdapter {
 
     public Arbeidsforhold fra(String fnr, no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforholdModell){
 
-        Arbeidsforhold arbeidsforhold = objectFactory.createArbeidsforhold();
+        var arbeidsforhold = objectFactory.createArbeidsforhold();
         arbeidsforhold.setArbeidsforholdID(arbeidsforholdModell.getArbeidsforholdId());
         arbeidsforhold.setArbeidsforholdIDnav(arbeidsforholdModell.getArbeidsforholdIdnav());
         arbeidsforhold.setOpprettelsestidspunkt(ConversionUtils.convertToXMLGregorianCalendar(arbeidsforholdModell.getAnsettelsesperiodeFom()));
@@ -48,6 +50,10 @@ public class ArbeidsforholdAdapter {
 
         for (no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtale : arbeidsforholdModell.getArbeidsavtaler()) {
             arbeidsforhold.getArbeidsavtale().add(fra(arbeidsavtale));
+        }
+
+        for (no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Permisjon permisjon : arbeidsforholdModell.getPermisjoner()) {
+            arbeidsforhold.getPermisjonOgPermittering().add(fra(permisjon));
         }
 
         if (arbeidsforholdModell.getArbeidsgiverAktorId() != null && !arbeidsforholdModell.getArbeidsgiverAktorId().equals("")){
@@ -82,11 +88,22 @@ public class ArbeidsforholdAdapter {
         yrker.setValue("SnekkerValue");
         arbeidsavtale.setYrke(yrker);
 
-
         return arbeidsavtale;
     }
 
+    public PermisjonOgPermittering fra(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Permisjon permisjonModell){
+        var permisjonOgPermittering = objectFactory.createPermisjonOgPermittering();
+        var permisjonsOgPermitteringsBeskrivelse = new PermisjonsOgPermitteringsBeskrivelse();
+        permisjonsOgPermitteringsBeskrivelse.setKodeRef(permisjonModell.getPermisjonstype().getKode());
+        permisjonOgPermittering.setPermisjonOgPermittering(permisjonsOgPermitteringsBeskrivelse);
+        permisjonOgPermittering.setPermisjonsprosent(BigDecimal.valueOf(permisjonModell.getStillingsprosent()));
+        var gyldighetsperiode = new Gyldighetsperiode();
+        gyldighetsperiode.setFom(ConversionUtils.convertToXMLGregorianCalendar(permisjonModell.getFomGyldighetsperiode()));
+        gyldighetsperiode.setTom(ConversionUtils.convertToXMLGregorianCalendar(permisjonModell.getTomGyldighetsperiode()));
+        permisjonOgPermittering.setPermisjonsPeriode(gyldighetsperiode);
 
+        return permisjonOgPermittering;
+    }
 
     private BigDecimal lagBD(String number) {
         BigDecimal bd = new BigDecimal(number);

@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.ArbeidsforholdV3;
@@ -32,7 +33,6 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHi
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHistorikkSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.feil.ArbeidsforholdIkkeFunnet;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.feil.UgyldigInput;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidsgiverRequest;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidsgiverResponse;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidstakerRequest;
@@ -113,9 +113,9 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 
             if (inntektYtelseModell.isPresent() && inntektYtelseModell.get().getArbeidsforholdModell() != null) {
                 ArbeidsforholdModell arbeidsforholdModell = inntektYtelseModell.get().getArbeidsforholdModell();
-                List<Arbeidsforhold> responseArbeidsforhold = new ArrayList<>();
+                List<no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold> responseArbeidsforhold = new ArrayList<>();
 
-                for (no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold arbeidsforhold : arbeidsforholdModell.getArbeidsforhold()) {
+                for (Arbeidsforhold arbeidsforhold : arbeidsforholdModell.getArbeidsforhold()) {
                     responseArbeidsforhold.add(arbeidsforholdAdapter.fra(fnr, arbeidsforhold));
                 }
 
@@ -157,9 +157,9 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
 */
         for (String fnr : identer) {
             ArbeidsforholdModell arbeidsforholdModell = scenarioRepository.getInntektYtelseModell(fnr).orElse(new InntektYtelseModell()).getArbeidsforholdModell();
-            Optional<no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold> first = arbeidsforholdModell.getArbeidsforhold().stream().filter(t -> t.getArbeidsforholdIdnav().equals(arbeidsforholdId)).findFirst();
+            Optional<Arbeidsforhold> first = arbeidsforholdModell.getArbeidsforhold().stream().filter(t -> t.getArbeidsforholdIdnav().equals(arbeidsforholdId)).findFirst();
             if (first.isPresent()) {
-                Arbeidsforhold responseArbeidsforhold = adapter.fra(fnr, first.get());
+                no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold responseArbeidsforhold = adapter.fra(fnr, first.get());
                 response.setArbeidsforhold(responseArbeidsforhold);
                 return response;
             }

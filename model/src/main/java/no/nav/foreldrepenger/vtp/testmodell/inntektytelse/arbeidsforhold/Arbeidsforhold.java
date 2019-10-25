@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,6 +10,9 @@ public class Arbeidsforhold {
 
     @JsonProperty("arbeidsavtaler")
     private List<Arbeidsavtale> arbeidsavtaler;
+
+    @JsonProperty("permisjoner")
+    private List<Permisjon> permisjoner = new ArrayList<>();
 
     @JsonProperty("arbeidsforholdId")
     private String arbeidsforholdId;
@@ -43,6 +47,14 @@ public class Arbeidsforhold {
 
     public void setArbeidsavtaler(List<Arbeidsavtale> arbeidsavtaler) {
         this.arbeidsavtaler = arbeidsavtaler;
+    }
+
+    public List<Permisjon> getPermisjoner() {
+        return permisjoner;
+    }
+
+    public void setPermisjoner(List<Permisjon> permisjoner) {
+        this.permisjoner = permisjoner;
     }
 
     public String getArbeidsforholdId() {

@@ -1,0 +1,53 @@
+{
+	"arena": {
+		"saker": [
+		]
+	},
+	"inntektskomponent": {
+		"inntektsperioder": [
+			{
+				"fom": "2018-01-01",
+				"tom": "2019-09-27",
+				"beløp": 30000,
+				"orgnr": "910909088",
+				"type": "Lønnsinntekt",
+				"fordel": "kontantytelse",
+				"beskrivelse": "testbeskrivelsesomfungererennsålenge"
+			}
+		]
+	},
+	"aareg": {
+		"arbeidsforhold": [
+			{
+				"arbeidsforholdId": "ARB001-001",
+				"ansettelsesperiodeFom": "2018-01-01",
+				"ansettelsesperiodeTom": "2019-09-27",
+				"arbeidsforholdstype": "ordinaertArbeidsforhold",
+				"arbeidsgiverOrgnr": "910909088",
+				"arbeidsavtaler" : [
+					{
+						"fomGyldighetsperiode": "2018-01-01",
+						"sisteLønnsendringsdato": "2019-01-01",
+						"avlønningstype": "fastlønn",
+						"avtaltArbeidstimerPerUke": "40",
+						"stillingsprosent" : 100,
+						"beregnetAntallTimerPerUke": "40"
+					}
+				],
+				"permisjoner" : [
+					{
+						"stillingsprosent": 100,
+						"fomGyldighetsperiode": "2019-09-01",
+						"tomGyldighetsperiode": "2019-09-27",
+						"permisjonType": "velferdspermisjon"
+					}
+				]
+			}
+		]
+	},
+	"sigrun": {
+		"inntektsår": [
+
+		]
+	}
+ }
