@@ -47,55 +47,71 @@ public class TestscenarioFraTemplateMapper {
         return testScenario;
     }
 
-    // TODO(EW) Finne ut hva jeg skal gjøre med templatenavn. Sendes over rest?
-    public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId){
-        TestscenarioImpl testscenario = new TestscenarioImpl(null, unikTestscenarioId, testScenarioRepository);
-        loadTestscenarioFraJsonString(testscenario, testscenarioJson);
-        return testscenario;
+    public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId) {
+        ObjectNode node = hentObjecetNodeForTestscenario(testscenarioJson);
+        String templateNavn = hentTemplateNavnFraJsonString(node);
+        TestscenarioImpl testscenarioImpl = new TestscenarioImpl(templateNavn, unikTestscenarioId, testScenarioRepository);
+        loadTestscenarioFraJsonString(testscenarioImpl, node);
+        return testscenarioImpl;
     }
 
-    private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, String testscenarioJson) {
+    private ObjectNode hentObjecetNodeForTestscenario(String testscenarioJson) {
+        ObjectNode node;
         try {
-            JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
-            ObjectNode node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);
-            if (node.has("vars")) {
-                JsonNode vars = node.get("vars");
-                Map<String,String> defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
-                jsonMapper.addVars(defaultVars);
-            }
-
-            initJsonMapper(jsonMapper, testscenario);
-            ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
-
-            if(node.has("organisasjon")){
-                JsonNode organisasjon = node.get("organisasjon");
-                OrganisasjonModeller organisasjonModeller = objectMapper.convertValue(organisasjon, OrganisasjonModeller.class);
-                for (OrganisasjonModell organisasjonModell : organisasjonModeller.getModeller()) {
-                    testscenario.leggTil(organisasjonModell);
-                }
-            }
-
-            if(node.has("inntektytelse-søker")){
-                JsonNode inntektytelse_søker = node.get("inntektytelse-søker");
-                InntektYtelseModell søkerInntektYtelse = objectMapper.convertValue(inntektytelse_søker, InntektYtelseModell.class);
-                testscenario.setSøkerInntektYtelse(søkerInntektYtelse);
-            }
-
-            if(node.has("inntektytelse-annenpart")){
-                JsonNode inntektytelse_annenpart = node.get("inntektytelse-annenpart");
-                InntektYtelseModell annenpartInntektYtelse = objectMapper.convertValue(inntektytelse_annenpart, InntektYtelseModell.class);
-                testscenario.setAnnenpartInntektYtelse(annenpartInntektYtelse);
-            }
-
-            if(node.has("personopplysninger")){
-                JsonNode personopplysningerResult = node.get("personopplysninger");
-                Personopplysninger personopplysninger = objectMapper.convertValue(personopplysningerResult, Personopplysninger.class);
-                testscenario.setPersonopplysninger(personopplysninger);
-            }
-
+            node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Kunne ikke converte JSON tekst til object", e);
+            throw new IllegalArgumentException("Kunne ikke converte JSON streng til ObjectNode", e);
         }
+        return node;
+    }
+
+    private String hentTemplateNavnFraJsonString(ObjectNode node) {
+        if (node.has("scenario-navn")) {
+            JsonNode scenarioNavn = node.get("scenario-navn");
+            return new ObjectMapper().convertValue(scenarioNavn, String.class);
+        } else {
+            return null;
+        }
+    }
+
+
+    private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, ObjectNode node) {
+        JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
+        if (node.has("vars")) {
+            JsonNode vars = node.get("vars");
+            Map<String,String> defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<Map<String,String>>(){});
+            jsonMapper.addVars(defaultVars);
+        }
+
+        initJsonMapper(jsonMapper, testscenario);
+        ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
+
+        if(node.has("organisasjon")){
+            JsonNode organisasjon = node.get("organisasjon");
+            OrganisasjonModeller organisasjonModeller = objectMapper.convertValue(organisasjon, OrganisasjonModeller.class);
+            for (OrganisasjonModell organisasjonModell : organisasjonModeller.getModeller()) {
+                testscenario.leggTil(organisasjonModell);
+            }
+        }
+
+        if(node.has("inntektytelse-søker")){
+            JsonNode inntektytelseSøker = node.get("inntektytelse-søker");
+            InntektYtelseModell søkerInntektYtelse = objectMapper.convertValue(inntektytelseSøker, InntektYtelseModell.class);
+            testscenario.setSøkerInntektYtelse(søkerInntektYtelse);
+        }
+
+        if(node.has("inntektytelse-annenpart")){
+            JsonNode inntektytelseAnnenpart = node.get("inntektytelse-annenpart");
+            InntektYtelseModell annenpartInntektYtelse = objectMapper.convertValue(inntektytelseAnnenpart, InntektYtelseModell.class);
+            testscenario.setAnnenpartInntektYtelse(annenpartInntektYtelse);
+        }
+
+        if(node.has("personopplysninger")){
+            JsonNode personopplysningerResult = node.get("personopplysninger");
+            Personopplysninger personopplysninger = objectMapper.convertValue(personopplysningerResult, Personopplysninger.class);
+            testscenario.setPersonopplysninger(personopplysninger);
+        }
+
         testScenarioRepository.indekser(testscenario);
     }
 
