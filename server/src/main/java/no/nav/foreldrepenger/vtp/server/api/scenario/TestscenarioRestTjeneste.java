@@ -1,16 +1,5 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
@@ -24,6 +13,13 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.time.LocalDate;
+import java.util.*;
 
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenario")
@@ -39,13 +35,6 @@ public class TestscenarioRestTjeneste {
     @Context
     private TestscenarioRepository testscenarioRepository;
 
-    public void setTemplateRepository(TestscenarioTemplateRepository templateRepository) {
-        this.templateRepository = templateRepository;
-    }
-
-    public void setTestscenarioRepository(TestscenarioRepository testscenarioRepository) {
-        this.testscenarioRepository = testscenarioRepository;
-    }
 
     @GET
     @Path("/initialiserte")
@@ -78,22 +67,23 @@ public class TestscenarioRestTjeneste {
     @Path("/{key}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key i VTPs eksempel templates"), response = TestscenarioDto.class)
-    public TestscenarioDto initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
+    public Response initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
 
         TestscenarioTemplate template = templateRepository.finn(templateKey);
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
-        return konverterTilTestscenarioDto(testscenario, templateKey);
+        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(testscenario, templateKey)).build();
+
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
-    public TestscenarioDto initialiserTestScenario(String testscenarioJson) {
-        // getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY) inkluderes ved behov.
+    public Response initialiserTestScenario(String testscenarioJson) {
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
-        return konverterTilTestscenarioDto(testscenario);
+        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(testscenario)).build();
+
     }
 
     @DELETE
@@ -106,9 +96,6 @@ public class TestscenarioRestTjeneste {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-
-
-
 
 
 
@@ -174,11 +161,4 @@ public class TestscenarioRestTjeneste {
         return result;
     }
 
-    private int getTemplateKeyFromString(String s) {
-        Matcher matcher = Pattern.compile("\\d+").matcher(s);
-        matcher.find();
-        int i = Integer.valueOf(matcher.group());
-
-        return i;
-    }
 }
