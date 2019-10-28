@@ -26,6 +26,10 @@ public class TestscenarioPersonopplysningDto {
     private LocalDate fødselsdato;
 
 
+    public TestscenarioPersonopplysningDto() {
+        // Trenger denne for deserialisering i AT
+    }
+
     public TestscenarioPersonopplysningDto(String søkerIdent, String annenpartIdent, String søkerAktørIdent, String annenpartAktørIdent,LocalDate fødselsdato) {
         this.søkerIdent = søkerIdent;
         this.annenpartIdent = annenpartIdent;
