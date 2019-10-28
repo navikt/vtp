@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class TestscenarioPersonopplysningDto {
@@ -23,10 +24,6 @@ public class TestscenarioPersonopplysningDto {
 
     @JsonProperty("fødselsdato")
     private LocalDate fødselsdato;
-
-    public TestscenarioPersonopplysningDto() {
-
-    }
 
 
     public TestscenarioPersonopplysningDto(String søkerIdent, String annenpartIdent, String søkerAktørIdent, String annenpartAktørIdent,LocalDate fødselsdato) {

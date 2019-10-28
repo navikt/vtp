@@ -33,6 +33,11 @@ public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuil
     }
 
     @Override
+    public Testscenario opprettTestscenarioFraJsonString(String testscenarioJson) {
+        return delegate.opprettTestscenarioFraJsonString(testscenarioJson);
+    }
+
+    @Override
     public Boolean slettScenario(String id) {
         return delegate.slettScenario(id);
     }
