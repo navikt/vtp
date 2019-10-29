@@ -27,6 +27,7 @@ public class TestscenarioRepositoryImpl extends TestscenarioBuilderRepositoryImp
         super(basisdata);
     }
 
+
     @Override
     public TestscenarioImpl opprettTestscenario(TestscenarioTemplate template) {
         return opprettTestscenario(template, Collections.emptyMap());

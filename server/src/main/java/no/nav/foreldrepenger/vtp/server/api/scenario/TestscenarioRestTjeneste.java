@@ -13,8 +13,6 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -24,8 +22,6 @@ import java.util.*;
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
-
-//    private static final Logger LOG = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
 
     private static final String TEMPLATE_KEY = "key";
     private static final String SCENARIO_ID = "id";
@@ -46,10 +42,9 @@ public class TestscenarioRestTjeneste {
 
         testscenarios.forEach(testscenario -> {
             if (testscenario.getTemplateNavn() != null) {
-                String templateKey = templateRepository.finnMedTemplatenavn(testscenario.getTemplateNavn()).getTemplateKey();
-                testscenarioList.add(konverterTilTestscenarioDto(testscenario, templateKey, testscenario.getTemplateNavn()));
+                testscenarioList.add(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()));
             } else {
-                testscenarioList.add(konverterTilTestscenarioDto(testscenario, null, null));
+                testscenarioList.add(konverterTilTestscenarioDto(testscenario));
             }
         });
 
@@ -61,7 +56,16 @@ public class TestscenarioRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Returnerer testscenario som matcher id", response = TestscenarioDto.class)
     public Response hentScenario(@PathParam(SCENARIO_ID) String id){
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+        if (testscenarioRepository.getTestscenario(id) != null) {
+            Testscenario testscenario = testscenarioRepository.getTestscenario(id);
+            return Response.status(Response.Status.OK).entity(konverterTilTestscenarioDto(
+                    testscenario,
+                    testscenario.getTemplateNavn()
+            )).build();
+        } else {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+
     }
 
     @PUT
@@ -90,7 +94,10 @@ public class TestscenarioRestTjeneste {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
-        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(testscenario, templateKey)).build();
+        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(
+                testscenario,
+                testscenario.getTemplateNavn()
+        )).build();
     }
 
     @POST
@@ -98,7 +105,10 @@ public class TestscenarioRestTjeneste {
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
     public Response initialiserTestScenario(String testscenarioJson) {
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
-        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(testscenario)).build();
+        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(
+                testscenario,
+                testscenario.getTemplateNavn()
+        )).build();
     }
 
     @DELETE
@@ -114,17 +124,26 @@ public class TestscenarioRestTjeneste {
 
 
 
-    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts) {
-        return konverterTilTestscenarioDto(ts, null, null);
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario) {
+        return konverterTilTestscenarioDto(testscenario, null, null);
     }
 
-    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts, String templateKey) {
-        String templateName = null;
-        if (templateKey != null) {
-            templateName = templateRepository.finn(templateKey).getTemplateNavn();
+    private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateNavn) {
+        String templateKey = null;
+        if (templateNavn != null) {
+            templateKey = templateRepository.finnMedTemplatenavn(testscenario.getTemplateNavn()).getTemplateKey();
         }
-        return konverterTilTestscenarioDto(ts, templateKey, templateName);
+        return konverterTilTestscenarioDto(testscenario, templateKey, templateNavn);
     }
+
+//    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts, String templateKey) {
+//        String templateName = null;
+//        if (templateKey != null) {
+//            templateName = templateRepository.finn(templateKey).getTemplateNavn();
+//        }
+//        return konverterTilTestscenarioDto(ts, templateKey, templateName);
+//    }
+
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();

@@ -8,6 +8,9 @@ public interface TestscenarioRepository extends TestscenarioBuilderRepository {
     @Override
     Collection<Testscenario> getTestscenarios();
 
+    @Override
+    Testscenario getTestscenario(String id);
+
     Testscenario opprettTestscenario(TestscenarioTemplate template);
 
     Testscenario opprettTestscenario(TestscenarioTemplate template, Map<String, String> userSuppliedVariables);

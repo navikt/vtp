@@ -25,6 +25,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
     private final BasisdataProvider basisdata;
+    private final Map<String, TestscenarioImpl> scenariosTest = new TreeMap<>();
     private final List<TestscenarioImpl> scenarios = new ArrayList<>();
 
     private final Map<String, LokalIdentIndeks> identer = new ConcurrentHashMap<>();
@@ -49,6 +50,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     }
 
     @Override
+    public Testscenario getTestscenario(String id) {
+        return scenariosTest.get(id);
+    }
+
+    @Override
     public BasisdataProvider getBasisdata() {
         return basisdata;
     }
@@ -60,6 +66,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     public void indekser(TestscenarioImpl testScenario) {
         scenarios.add(testScenario);
+        scenariosTest.put(testScenario.getId(), testScenario);
         Personopplysninger personopplysninger = testScenario.getPersonopplysninger();
         if (personopplysninger == null) {
             log.warn("TestscenarioImpl mangler innhold:" + testScenario);

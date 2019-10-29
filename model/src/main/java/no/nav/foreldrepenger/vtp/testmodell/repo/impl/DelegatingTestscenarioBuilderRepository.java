@@ -33,6 +33,11 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     }
 
     @Override
+    public Testscenario getTestscenario(String id) {
+        return delegate.getTestscenario(id);
+    }
+
+    @Override
     public PersonIndeks getPersonIndeks() {
         return delegate.getPersonIndeks();
     }

@@ -27,6 +27,8 @@ public interface TestscenarioBuilderRepository {
 
     Collection<Testscenario> getTestscenarios();
 
+    Testscenario getTestscenario(String id);
+
     Boolean slettScenario(String id);
 
     Boolean endreTestscenario(Testscenario testscenario);

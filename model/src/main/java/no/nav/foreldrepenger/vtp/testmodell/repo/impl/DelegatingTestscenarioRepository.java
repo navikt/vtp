@@ -23,6 +23,11 @@ public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuil
     }
 
     @Override
+    public Testscenario getTestscenario(String id) {
+        return delegate.getTestscenario(id);
+    }
+
+    @Override
     public Testscenario opprettTestscenario(TestscenarioTemplate template) {
         return delegate.opprettTestscenario(template);
     }
