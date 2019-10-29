@@ -22,12 +22,13 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Api(tags = {"Testscenario"})
-@Path("/api/testscenario")
+@Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
 
     private static final String TEMPLATE_KEY = "key";
+    private static final String SCENARIO_ID = "id";
 
     @Context
     private TestscenarioTemplateRepository templateRepository;
@@ -37,7 +38,6 @@ public class TestscenarioRestTjeneste {
 
 
     @GET
-    @Path("/initialiserte")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
     public List<TestscenarioDto> hentInitialiserteCaser() {
@@ -56,10 +56,27 @@ public class TestscenarioRestTjeneste {
         return testscenarioList;
     }
 
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "", notes = "Returnerer testscenario som matcher id", response = TestscenarioDto.class)
+    public Response hentScenario(@PathParam(SCENARIO_ID) String id){
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
     @PUT
-    @Path("/endrescenario/{id}")
-    @ApiOperation(value="", notes="Patcher et testcase. Serialiserer uten sjekk, du må selv ha styr på typer")
-    public Response endreScenario(TestscenarioDto testscenarioDto){
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="", notes="Oppdaterer hele scenario som matcher id", response = TestscenarioDto.class)
+    public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, TestscenarioDto testscenarioDto){
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="", notes="Oppdaterer deler av et scenario som matcher id", response = TestscenarioDto.class)
+    public Response endreScenario(@PathParam(SCENARIO_ID) String id, TestscenarioDto testscenarioDto){
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
@@ -74,7 +91,6 @@ public class TestscenarioRestTjeneste {
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
         return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(testscenario, templateKey)).build();
-
     }
 
     @POST
@@ -83,13 +99,12 @@ public class TestscenarioRestTjeneste {
     public Response initialiserTestScenario(String testscenarioJson) {
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
         return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(testscenario)).build();
-
     }
 
     @DELETE
-    @Path("/slettscenario/{id}")
-    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario")
-    public Response slettScenario(@PathParam("id") String id) {
+    @Path("/{id}")
+    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario som matcher id")
+    public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
         if(testscenarioRepository.slettScenario(id)){
             return Response.noContent().build();
         } else {
