@@ -76,7 +76,7 @@ public class TestscenarioRestTjeneste {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value="", notes="Oppdaterer deler av et scenario som matcher id", response = TestscenarioDto.class)
-    public Response endreScenario(@PathParam(SCENARIO_ID) String id, TestscenarioDto testscenarioDto){
+    public Response endreScenario(@PathParam(SCENARIO_ID) String id, String patchArray){
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
