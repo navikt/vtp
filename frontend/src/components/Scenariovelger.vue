@@ -35,7 +35,6 @@
     export default {
         data() {
             return {
-               
             }
         },
         computed: {
@@ -66,7 +65,7 @@
         methods: {
             opprett() {
                 axios
-                    .post(this.getApiUrl + "/testscenario/" + this.selected)
+                    .post(this.getApiUrl + "/testscenarios/" + this.selected)
                     .then(() => {
                         this.$store.dispatch('refreshScenarios');
                     });

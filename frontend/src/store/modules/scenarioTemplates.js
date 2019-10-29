@@ -89,7 +89,7 @@ const actions = {
     },
     refreshScenarios: ({commit, rootGetters}) => {
         axios
-            .get(rootGetters.getApiUrl + "/testscenario/initialiserte")
+            .get(rootGetters.getApiUrl + "/testscenarios")
             .then(response => {
                 commit('setInitializedScenarios', response.data);
                 /*
@@ -101,7 +101,7 @@ const actions = {
     },
     slettScenario: (context, scenarioId) => {
         axios
-            .delete(context.rootGetters.getApiUrl + "/testscenario/slettscenario/" + scenarioId)
+            .delete(context.rootGetters.getApiUrl + "/testscenarios/" + scenarioId)
             .then( () => {
                 context.dispatch('refreshScenarios');
             })
