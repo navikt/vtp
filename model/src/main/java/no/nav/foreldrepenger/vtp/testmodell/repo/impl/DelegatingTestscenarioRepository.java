@@ -1,11 +1,11 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.util.Collection;
-import java.util.Map;
-
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+
+import java.util.Map;
 
 /** Delegerer alle kall til en 'reell' implementasjon. Denne kan således endres under kjøring. */
 public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuilderRepository implements TestscenarioRepository {
@@ -18,7 +18,7 @@ public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuil
     }
 
     @Override
-    public Collection<Testscenario> getTestscenarios() {
+    public Map<String, TestscenarioImpl> getTestscenarios() {
         return delegate.getTestscenarios();
     }
 

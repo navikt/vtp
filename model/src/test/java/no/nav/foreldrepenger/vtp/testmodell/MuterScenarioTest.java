@@ -24,6 +24,6 @@ public class MuterScenarioTest {
         Assert.assertTrue(testScenarioRepository.getTestscenarios().size() > 0);
         testScenarioRepository.slettScenario(testScenario.getId());
 
-        Assert.assertTrue(testScenarioRepository.getTestscenarios().stream().filter(ts -> (ts.getId() == testScenario.getId())).count() == 0);
+        Assert.assertTrue(testScenarioRepository.getTestscenarios().values().stream().filter(ts -> (ts.getId() == testScenario.getId())).count() == 0);
     }
 }

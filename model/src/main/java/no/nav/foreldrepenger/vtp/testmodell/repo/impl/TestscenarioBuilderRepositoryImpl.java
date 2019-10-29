@@ -25,9 +25,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
     private final BasisdataProvider basisdata;
-    private final Map<String, TestscenarioImpl> scenariosTest = new TreeMap<>();
-    private final List<TestscenarioImpl> scenarios = new ArrayList<>();
-
+    private final Map<String, TestscenarioImpl> scenarios = new LinkedHashMap<>(); // not tread-safe but maintains order
     private final Map<String, LokalIdentIndeks> identer = new ConcurrentHashMap<>();
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
@@ -45,13 +43,13 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
 
     @Override
-    public Collection<Testscenario> getTestscenarios() {
-        return Collections.unmodifiableCollection(scenarios);
+    public Map<String, TestscenarioImpl> getTestscenarios() {
+        return scenarios;
     }
 
     @Override
     public Testscenario getTestscenario(String id) {
-        return scenariosTest.get(id);
+        return scenarios.get(id);
     }
 
     @Override
@@ -65,8 +63,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     }
 
     public void indekser(TestscenarioImpl testScenario) {
-        scenarios.add(testScenario);
-        scenariosTest.put(testScenario.getId(), testScenario);
+        scenarios.put(testScenario.getId(), testScenario);
         Personopplysninger personopplysninger = testScenario.getPersonopplysninger();
         if (personopplysninger == null) {
             log.warn("TestscenarioImpl mangler innhold:" + testScenario);
@@ -127,8 +124,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     @Override
     public Boolean slettScenario(String id) {
         int preSize = scenarios.size();
-        scenarios.removeIf(s -> Objects.equals(s.getId(), id));
-
+        scenarios.remove(id);
         if (scenarios.size() < preSize) {
             return true;
         } else {

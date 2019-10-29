@@ -1,9 +1,5 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
@@ -12,6 +8,11 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuilderRepository {
 
@@ -28,7 +29,7 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     }
 
     @Override
-    public Collection<Testscenario> getTestscenarios() {
+    public Map<String, TestscenarioImpl> getTestscenarios() {
         return delegate.getTestscenarios();
     }
 

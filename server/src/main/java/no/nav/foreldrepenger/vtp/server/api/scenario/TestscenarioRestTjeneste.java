@@ -9,10 +9,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeids
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -37,10 +34,10 @@ public class TestscenarioRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
     public List<TestscenarioDto> hentInitialiserteCaser() {
-        Collection<Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
+        Map<String, TestscenarioImpl> testscenarios = testscenarioRepository.getTestscenarios();
         List<TestscenarioDto> testscenarioList = new ArrayList<>();
 
-        testscenarios.forEach(testscenario -> {
+        testscenarios.forEach((key, testscenario) -> {
             if (testscenario.getTemplateNavn() != null) {
                 testscenarioList.add(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()));
             } else {
@@ -135,15 +132,6 @@ public class TestscenarioRestTjeneste {
         }
         return konverterTilTestscenarioDto(testscenario, templateKey, templateNavn);
     }
-
-//    private TestscenarioDto konverterTilTestscenarioDto(Testscenario ts, String templateKey) {
-//        String templateName = null;
-//        if (templateKey != null) {
-//            templateName = templateRepository.finn(templateKey).getTemplateNavn();
-//        }
-//        return konverterTilTestscenarioDto(ts, templateKey, templateName);
-//    }
-
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();

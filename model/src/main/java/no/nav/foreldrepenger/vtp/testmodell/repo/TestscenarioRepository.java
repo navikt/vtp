@@ -1,12 +1,11 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
-import java.util.Collection;
 import java.util.Map;
 
 public interface TestscenarioRepository extends TestscenarioBuilderRepository {
 
     @Override
-    Collection<Testscenario> getTestscenarios();
+    Map<String, TestscenarioImpl> getTestscenarios();
 
     @Override
     Testscenario getTestscenario(String id);
