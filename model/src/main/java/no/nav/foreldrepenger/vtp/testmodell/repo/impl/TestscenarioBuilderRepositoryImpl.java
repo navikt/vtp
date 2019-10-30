@@ -25,7 +25,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
     private final BasisdataProvider basisdata;
-    private final Map<String, TestscenarioImpl> scenarios = new LinkedHashMap<>(); // not tread-safe but maintains order
+    private final Map<String, TestscenarioImpl> scenarios = new ConcurrentHashMap<>(); // not ordered for front-end
     private final Map<String, LokalIdentIndeks> identer = new ConcurrentHashMap<>();
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
@@ -85,20 +85,18 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
             personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
             testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));
+
+            inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
+            if (personopplysninger.getAnnenPart() != null) {
+                inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
+            }
         }
 
-        inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
-        if (personopplysninger.getAnnenPart() != null) {
-            inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
-        }
-
-        //Stig
         OrganisasjonModeller organisasjonModeller = testScenario.getOrganisasjonModeller();
-        List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
-        organisasjonIndeks.leggTil(modeller);
-/*        for (OrganisasjonModell modell : modeller) {
-            organisasjonIndeks.leggTil(modell);
-        }*/
+        if (organisasjonModeller != null) {
+            List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
+            organisasjonIndeks.leggTil(modeller);
+        }
     }
 
     @Override
@@ -123,9 +121,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     @Override
     public Boolean slettScenario(String id) {
-        int preSize = scenarios.size();
-        scenarios.remove(id);
-        if (scenarios.size() < preSize) {
+        if (scenarios.remove(id) != null) {
             return true;
         } else {
             return false;
@@ -134,7 +130,6 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     @Override
     public Boolean endreTestscenario(Testscenario testscenario) {
-
         return null;
     }
 
