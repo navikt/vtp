@@ -91,10 +91,10 @@ public class TestscenarioRestTjeneste {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
 
-        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(
-                testscenario,
-                testscenario.getTemplateNavn()
-        )).build();
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
+                .build();
     }
 
     @POST
@@ -102,10 +102,10 @@ public class TestscenarioRestTjeneste {
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
     public Response initialiserTestScenario(String testscenarioJson) {
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
-        return Response.status(Response.Status.CREATED).entity(konverterTilTestscenarioDto(
-                testscenario,
-                testscenario.getTemplateNavn()
-        )).build();
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
+                .build();
     }
 
     @DELETE
@@ -139,8 +139,12 @@ public class TestscenarioRestTjeneste {
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
         String aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
-
-        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(fnrSøker, fnrAnnenPart, aktørIdSøker, aktørIdAnnenPart, fødselsdato.orElse(null));
+        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(
+                fnrSøker,
+                fnrAnnenPart,
+                aktørIdSøker,
+                aktørIdAnnenPart,
+                fødselsdato.orElse(null));
 
         ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
         InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
@@ -151,11 +155,16 @@ public class TestscenarioRestTjeneste {
             ArbeidsforholdModell arbeidsforholdModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getArbeidsforholdModell();
             InntektskomponentModell inntektskomponentModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getInntektskomponentModell();
             scenariodataAnnenpart = new TestscenariodataDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
-
         }
 
-        return new TestscenarioDto(templateKey, templateName, testscenario.getId(), testscenario.getVariabelContainer().getVars(),
-                scenarioPersonopplysninger, scenariodata, scenariodataAnnenpart);
+        return new TestscenarioDto(
+                templateKey,
+                templateName,
+                testscenario.getId(),
+                testscenario.getVariabelContainer().getVars(),
+                scenarioPersonopplysninger,
+                scenariodata,
+                scenariodataAnnenpart);
 
     }
 
