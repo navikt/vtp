@@ -34,7 +34,7 @@ public class TestscenarioRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter alle templates som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
     public List<TestscenarioDto> hentInitialiserteCaser() {
-        Map<String, TestscenarioImpl> testscenarios = testscenarioRepository.getTestscenarios();
+        Map<String, Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
         List<TestscenarioDto> testscenarioList = new ArrayList<>();
 
         testscenarios.forEach((key, testscenario) -> {

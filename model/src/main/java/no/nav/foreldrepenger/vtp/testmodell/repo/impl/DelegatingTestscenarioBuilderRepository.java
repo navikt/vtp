@@ -29,7 +29,7 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     }
 
     @Override
-    public Map<String, TestscenarioImpl> getTestscenarios() {
+    public Map<String, Testscenario> getTestscenarios() {
         return delegate.getTestscenarios();
     }
 

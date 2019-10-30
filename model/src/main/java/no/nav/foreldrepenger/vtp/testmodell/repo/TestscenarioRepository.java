@@ -5,7 +5,7 @@ import java.util.Map;
 public interface TestscenarioRepository extends TestscenarioBuilderRepository {
 
     @Override
-    Map<String, TestscenarioImpl> getTestscenarios();
+    Map<String, Testscenario> getTestscenarios();
 
     @Override
     Testscenario getTestscenario(String id);

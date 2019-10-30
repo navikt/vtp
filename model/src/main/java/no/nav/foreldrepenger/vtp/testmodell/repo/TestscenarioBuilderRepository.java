@@ -25,7 +25,7 @@ public interface TestscenarioBuilderRepository {
 
     BasisdataProvider getBasisdata();
 
-    Map<String, TestscenarioImpl> getTestscenarios();
+    Map<String, Testscenario> getTestscenarios();
 
     Testscenario getTestscenario(String id);
 

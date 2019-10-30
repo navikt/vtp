@@ -25,7 +25,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
     private final BasisdataProvider basisdata;
-    private final Map<String, TestscenarioImpl> scenarios = new ConcurrentHashMap<>(); // not ordered for front-end
+    private final Map<String, Testscenario> scenarios = new ConcurrentHashMap<>(); // not ordered for front-end
     private final Map<String, LokalIdentIndeks> identer = new ConcurrentHashMap<>();
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
@@ -43,7 +43,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
 
     @Override
-    public Map<String, TestscenarioImpl> getTestscenarios() {
+    public Map<String, Testscenario> getTestscenarios() {
         return scenarios;
     }
 
@@ -121,11 +121,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     @Override
     public Boolean slettScenario(String id) {
-        if (scenarios.remove(id) != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return scenarios.remove(id) != null;
     }
 
     @Override
