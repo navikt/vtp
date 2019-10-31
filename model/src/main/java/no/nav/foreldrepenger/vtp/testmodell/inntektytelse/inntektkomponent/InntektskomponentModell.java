@@ -52,27 +52,27 @@ public class InntektskomponentModell {
     private List<FrilansArbeidsforholdsperiode> splittFrilansArbeidsforholdTilMånedligeIntervall(FrilansArbeidsforholdsperiode fap) {
         List<FrilansArbeidsforholdsperiode> frilansArbeidsforholdsperioderPerMåned = new ArrayList<>();
         LocalDate tomDato = (fap.getFrilansTom() != null) ? fap.getFrilansTom() : LocalDate.now();
-        Stream.iterate(fap.getFrilansFom(), d -> d.plusMonths(1))
-            .limit(ChronoUnit.MONTHS.between(fap.getFrilansFom(), tomDato) + 1).forEach(p -> {
-                LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
-                frilansArbeidsforholdsperioderPerMåned.add(new FrilansArbeidsforholdsperiode(init.withDayOfMonth(1),
-                    init.withDayOfMonth(init.lengthOfMonth()),
+        LocalDate dateCounter = fap.getFrilansFom().withDayOfMonth(1);
+        while (!dateCounter.isEqual(tomDato.withDayOfMonth(1))) {
+            frilansArbeidsforholdsperioderPerMåned.add(new FrilansArbeidsforholdsperiode(dateCounter.withDayOfMonth(1),
+                    dateCounter.withDayOfMonth(dateCounter.lengthOfMonth()),
                     fap.getOrgnr(), fap.getStillingsprosent(), fap.getAktorId(), fap.getPersonligArbeidsgiver()));
-            });
+            dateCounter = dateCounter.plusMonths(1);
+        }
         return frilansArbeidsforholdsperioderPerMåned;
     }
 
     private List<Inntektsperiode> splittInntektsperioderTilMånedligeIntervall(Inntektsperiode ip) {
         List<Inntektsperiode> inntektsperioderPaaMaaned = new ArrayList<>();
         LocalDate tomDato = (ip.getTom() != null) ? ip.getTom() : LocalDate.now();
-        Stream.iterate(ip.getFom(), d -> d.plusMonths(1))
-            .limit(ChronoUnit.MONTHS.between(ip.getFom(), tomDato) + 1).forEach(p -> {
-                LocalDate init = LocalDate.of(p.getYear(), p.getMonth(), p.getDayOfMonth());
-                inntektsperioderPaaMaaned.add(new Inntektsperiode(init.withDayOfMonth(1), init.withDayOfMonth(init.lengthOfMonth()),
+        LocalDate dateCounter = ip.getFom().withDayOfMonth(1);
+        while (!dateCounter.isEqual(tomDato.withDayOfMonth(1))) {
+            inntektsperioderPaaMaaned.add(new Inntektsperiode(dateCounter.withDayOfMonth(1), dateCounter.withDayOfMonth(dateCounter.lengthOfMonth()),
                     ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse(), ip.getSkatteOgAvgiftsregel(),
                     ip.getInngaarIGrunnlagForTrekk(), ip.getUtloeserArbeidsgiveravgift(), ip.getPersonligArbeidsgiver()));
-
-            });
+            dateCounter = dateCounter.plusMonths(1);
+        }
         return inntektsperioderPaaMaaned;
     }
+
 }
