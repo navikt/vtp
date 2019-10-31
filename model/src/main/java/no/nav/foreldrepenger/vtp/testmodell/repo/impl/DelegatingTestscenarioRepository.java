@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 

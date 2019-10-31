@@ -55,10 +55,10 @@ public class TestscenarioRestTjeneste {
     public Response hentScenario(@PathParam(SCENARIO_ID) String id){
         if (testscenarioRepository.getTestscenario(id) != null) {
             Testscenario testscenario = testscenarioRepository.getTestscenario(id);
-            return Response.status(Response.Status.OK).entity(konverterTilTestscenarioDto(
-                    testscenario,
-                    testscenario.getTemplateNavn()
-            )).build();
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
+                    .build();
         } else {
             return Response.status(Response.Status.NO_CONTENT).build();
         }
