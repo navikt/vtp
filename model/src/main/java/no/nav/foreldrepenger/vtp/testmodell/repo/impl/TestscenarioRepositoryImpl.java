@@ -41,10 +41,10 @@ public class TestscenarioRepositoryImpl extends TestscenarioBuilderRepositoryImp
     }
 
     @Override
-    public TestscenarioImpl opprettTestscenarioFraJsonString(String testscenarioJson) {
+    public TestscenarioImpl opprettTestscenarioFraJsonString(String testscenarioJson, Map<String, String> variables) {
         String unikTestscenarioId = UUID.randomUUID().toString();
         TestscenarioFraTemplateMapper mapper = new TestscenarioFraTemplateMapper(this);
-        return mapper.lagTestscenarioFraJsonString(testscenarioJson, unikTestscenarioId);
+        return mapper.lagTestscenarioFraJsonString(testscenarioJson, unikTestscenarioId, variables);
     }
 
 

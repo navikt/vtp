@@ -14,6 +14,6 @@ public interface TestscenarioRepository extends TestscenarioBuilderRepository {
 
     Testscenario opprettTestscenario(TestscenarioTemplate template, Map<String, String> userSuppliedVariables);
 
-    Testscenario opprettTestscenarioFraJsonString(String testscenarioJson);
+    Testscenario opprettTestscenarioFraJsonString(String testscenarioJson, Map<String, String> userSuppliedVariables);
 
 }

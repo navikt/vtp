@@ -100,8 +100,9 @@ public class TestscenarioRestTjeneste {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
-    public Response initialiserTestScenario(String testscenarioJson) {
-        Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson);
+    public Response initialiserTestScenario(String testscenarioJson,  @Context UriInfo uriInfo) {
+        Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
+        Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson, userSuppliedVariables);
         return Response
                 .status(Response.Status.CREATED)
                 .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
@@ -128,7 +129,7 @@ public class TestscenarioRestTjeneste {
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateNavn) {
         String templateKey = null;
         if (templateNavn != null) {
-            templateKey = templateRepository.finnMedTemplatenavn(testscenario.getTemplateNavn()).getTemplateKey();
+            templateKey = templateNavn.replaceFirst("[-_].+$", "");
         }
         return konverterTilTestscenarioDto(testscenario, templateKey, templateNavn);
     }

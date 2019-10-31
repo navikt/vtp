@@ -38,8 +38,8 @@ public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuil
     }
 
     @Override
-    public Testscenario opprettTestscenarioFraJsonString(String testscenarioJson) {
-        return delegate.opprettTestscenarioFraJsonString(testscenarioJson);
+    public Testscenario opprettTestscenarioFraJsonString(String testscenarioJson, Map<String, String> userSuppliedVariables) {
+        return delegate.opprettTestscenarioFraJsonString(testscenarioJson, userSuppliedVariables);
     }
 
     @Override
