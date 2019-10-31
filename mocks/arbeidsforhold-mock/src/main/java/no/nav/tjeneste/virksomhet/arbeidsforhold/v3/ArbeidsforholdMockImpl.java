@@ -150,11 +150,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
         List<String> identer = new ArrayList<>();
         identer.addAll(identerSøkere());
         identer.addAll(identerAnnenpart());
-        /*List<String> identer = scenarioRepository.getPersonIndeks().getAlleSøkere()
-                .stream()
-                .map(t-> t.getSøker().getIdent())
-                .collect(Collectors.toList());
-*/
+
         for (String fnr : identer) {
             ArbeidsforholdModell arbeidsforholdModell = scenarioRepository.getInntektYtelseModell(fnr).orElse(new InntektYtelseModell()).getArbeidsforholdModell();
             Optional<Arbeidsforhold> first = arbeidsforholdModell.getArbeidsforhold().stream().filter(t -> t.getArbeidsforholdIdnav().equals(arbeidsforholdId)).findFirst();

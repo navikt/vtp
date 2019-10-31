@@ -17,6 +17,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
+import no.nav.tjeneste.virksomhet.inntekt.v3.feil.UgyldigInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +92,12 @@ public class InntektMockImpl implements InntektV3 {
     public HentInntektListeBolkResponse hentInntektListeBolk(@WebParam(name = "request", targetNamespace = "") HentInntektListeBolkRequest request) throws HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter, HentInntektListeBolkUgyldigInput {
 
         LOG.info("hentInntektListeBolk. AktoerIdentListe: {}", request.getIdentListe().stream().map(t -> getIdentFromAktoer(t)).collect(Collectors.joining(",")));
+
+        if(request.getFormaal() == null || request.getAinntektsfilter() == null){
+            LOG.warn("Request ugyldig. Mangler Formål eller A-inntektsfilter. ");
+            throw new HentInntektListeBolkUgyldigInput("Formål eller A-inntektsfilter mangler", new UgyldigInput());
+        }
+
         HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
 
         if (request.getIdentListe() != null
