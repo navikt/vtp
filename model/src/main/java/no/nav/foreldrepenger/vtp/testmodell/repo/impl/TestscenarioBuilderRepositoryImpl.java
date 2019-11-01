@@ -25,8 +25,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
     private final BasisdataProvider basisdata;
-    private final List<TestscenarioImpl> scenarios = new ArrayList<>();
-
+    private final Map<String, Testscenario> scenarios = new ConcurrentHashMap<>(); // not ordered for front-end
     private final Map<String, LokalIdentIndeks> identer = new ConcurrentHashMap<>();
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
@@ -44,8 +43,13 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
 
     @Override
-    public Collection<Testscenario> getTestscenarios() {
-        return Collections.unmodifiableCollection(scenarios);
+    public Map<String, Testscenario> getTestscenarios() {
+        return scenarios;
+    }
+
+    @Override
+    public Testscenario getTestscenario(String id) {
+        return scenarios.get(id);
     }
 
     @Override
@@ -59,7 +63,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     }
 
     public void indekser(TestscenarioImpl testScenario) {
-        scenarios.add(testScenario);
+        scenarios.put(testScenario.getId(), testScenario);
         Personopplysninger personopplysninger = testScenario.getPersonopplysninger();
         if (personopplysninger == null) {
             log.warn("TestscenarioImpl mangler innhold:" + testScenario);
@@ -81,20 +85,18 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
             personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
             testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));
+
+            inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
+            if (personopplysninger.getAnnenPart() != null) {
+                inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
+            }
         }
 
-        inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
-        if (personopplysninger.getAnnenPart() != null) {
-            inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
-        }
-
-        //Stig
         OrganisasjonModeller organisasjonModeller = testScenario.getOrganisasjonModeller();
-        List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
-        organisasjonIndeks.leggTil(modeller);
-/*        for (OrganisasjonModell modell : modeller) {
-            organisasjonIndeks.leggTil(modell);
-        }*/
+        if (organisasjonModeller != null) {
+            List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
+            organisasjonIndeks.leggTil(modeller);
+        }
     }
 
     @Override
@@ -119,19 +121,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     @Override
     public Boolean slettScenario(String id) {
-        int preSize = scenarios.size();
-        scenarios.removeIf(s -> Objects.equals(s.getId(), id));
-
-        if (scenarios.size() < preSize) {
-            return true;
-        } else {
-            return false;
-        }
+        return scenarios.remove(id) != null;
     }
 
     @Override
     public Boolean endreTestscenario(Testscenario testscenario) {
-
         return null;
     }
 

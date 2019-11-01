@@ -47,11 +47,11 @@ public class TestscenarioFraTemplateMapper {
         return testScenario;
     }
 
-    public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId) {
+    public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId, Map<String, String> vars) {
         ObjectNode node = hentObjecetNodeForTestscenario(testscenarioJson);
         String templateNavn = hentTemplateNavnFraJsonString(node);
         TestscenarioImpl testscenarioImpl = new TestscenarioImpl(templateNavn, unikTestscenarioId, testScenarioRepository);
-        loadTestscenarioFraJsonString(testscenarioImpl, node);
+        loadTestscenarioFraJsonString(testscenarioImpl, node, vars);
         return testscenarioImpl;
     }
 
@@ -75,7 +75,7 @@ public class TestscenarioFraTemplateMapper {
     }
 
 
-    private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, ObjectNode node) {
+    private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars) {
         JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
         if (node.has("vars")) {
             JsonNode vars = node.get("vars");
@@ -83,6 +83,7 @@ public class TestscenarioFraTemplateMapper {
             jsonMapper.addVars(defaultVars);
         }
 
+        jsonMapper.addVars(overrideVars);
         initJsonMapper(jsonMapper, testscenario);
         ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
 
