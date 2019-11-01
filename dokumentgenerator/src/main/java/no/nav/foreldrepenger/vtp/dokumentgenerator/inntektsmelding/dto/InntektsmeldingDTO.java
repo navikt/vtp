@@ -6,7 +6,7 @@ import java.util.List;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakBeregnetInntektEndringKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-
+@Deprecated
 public class InntektsmeldingDTO {
 
     private String inntektsmeldingID;

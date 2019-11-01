@@ -53,7 +53,7 @@ import no.seres.xsd.nav.inntektsmelding_m._20181211.SykepengerIArbeidsgiverperio
 import no.seres.xsd.nav.inntektsmelding_m._20181211.UtsettelseAvForeldrepenger;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.UtsettelseAvForeldrepengerListe;
 
-
+@Deprecated
 public class InntektsmeldingBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(InntektsmeldingBuilder.class);
     InntektsmeldingM inntektsmelding;
