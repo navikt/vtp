@@ -34,10 +34,6 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-http-spi</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>no.nav.foreldrepenger.vtp</groupId>
-			<artifactId>core</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
