@@ -23,6 +23,7 @@
         <module>model</module>
         <module>mocks</module>
         <module>server</module>
+        <module>autotest</module>
     </modules>
 
     <properties>
