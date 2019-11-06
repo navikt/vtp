@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.tjeneste.virksomhet.saf.modell.JournalpostResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
@@ -26,11 +27,9 @@ public class safMock {
     private static final String DOKUMENT_INFO_ID = "dokumentInfoId";
     private static final String VARIANT_FORMAT = "variantFormat";
 
+    @Context
     private JournalRepository journalRepository;
 
-    public safMock() {
-        this.journalRepository = JournalRepositoryImpl.getInstance();
-    }
 
 
     @GET
@@ -61,10 +60,6 @@ public class safMock {
     private JournalpostResponseDto konverterTilJournalpostResponseDto(Optional<JournalpostModell> journalpostModell) {
         // TODO-EW To be implemented.
         return null;
-    }
-
-    public class JournalpostResponseDto {
-        // TODO-EW To be implemented.
     }
 
 
