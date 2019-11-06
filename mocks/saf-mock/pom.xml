@@ -22,5 +22,15 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jaxrs</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java</artifactId>
+            <version>13.0</version>
+        </dependency>
     </dependencies>
 </project>

@@ -2,16 +2,15 @@ package no.nav.tjeneste.virksomhet.saf;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.tjeneste.virksomhet.saf.modell.JournalpostResponseDto;
+import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
+import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
+import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,36 +30,44 @@ public class safMock {
     private JournalRepository journalRepository;
 
 
+    @POST
+    @Path("/graphql")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "", notes = "Henter journalpost")
+    public Response hentJournalpostListe() {
+        // TODO - Må implementeres.
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
 
     @GET
     @Path("/hentdokument/{journalpostId}/{dokumentInfoId}/{variantFormat}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter journalpost", response = JournalpostResponseDto.class)
-    public Response hentKjerneJournalpost( @PathParam(JOURNALPOST_ID) String journalpostId,
-                                           @PathParam(DOKUMENT_INFO_ID) String dokumentInfoId,
-                                           @PathParam(VARIANT_FORMAT) String variantFormat ) {
+    @ApiOperation(value = "", notes = "Henter dokument", response = HentDokumentResponse.class)
+    public Response hentDokument( @PathParam(JOURNALPOST_ID) String journalpostId,
+                                  @PathParam(DOKUMENT_INFO_ID) String dokumentInfoId,
+                                  @PathParam(VARIANT_FORMAT) String variantFormat ) throws HentDokumentDokumentIkkeFunnet {
 
-        Optional<JournalpostModell> journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
-        if (journalpostModell.isPresent()) {
-            LOG.info("Henter journalpost med journalpostId: " + journalpostModell.get().getJournalpostId());
+        HentDokumentResponse dokumentResponse = new HentDokumentResponse();
+        Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
+        if (dokumentModell.isPresent()) {
+            LOG.info("Henter dokument på følgende dokumentId: " + dokumentModell.get().getDokumentId());
+            String innhold = dokumentModell.get().getInnhold();
+            dokumentResponse.setDokument(innhold.getBytes());
             return Response
                     .status(Response.Status.OK)
-                    .entity(konverterTilJournalpostResponseDto(journalpostModell))
+                    .entity(dokumentResponse)
                     .build();
-
         } else {
-            LOG.info("Kunne ikke finne journalpost med journalpostId: " + journalpostId);
-            return Response.status(Response.Status.NO_CONTENT).build();
+            throw new HentDokumentDokumentIkkeFunnet("Kunne ikke finne dokument", new DokumentIkkeFunnet());
         }
-
-
     }
 
-    //
-    private JournalpostResponseDto konverterTilJournalpostResponseDto(Optional<JournalpostModell> journalpostModell) {
-        // TODO-EW To be implemented.
-        return null;
-    }
+
+//    private JournalpostResponseDto konverterTilJournalpostResponseDto(Optional<JournalpostModell> journalpostModell) {
+//        //To be implemented.
+//        return null;
+//    }
 
 
 }
