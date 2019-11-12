@@ -15,7 +15,6 @@ import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class InntektsmeldingBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(InntektsmeldingBuilder.class);
     private InntektsmeldingM inntektsmeldingKladd;
-    public ArbeidsforholdBuilder arbeidsforholdKladd;
+    public ArbeidsforholdBuilder arbeidsforholdBuilderKladd;
     private ObjectFactory objectFactory;
 
     private ÅrsakInnsendingKodeliste aarsakTilInnsending;
@@ -36,7 +35,7 @@ public class InntektsmeldingBuilder {
     private ArbeidsgiverPrivat arbeidsgiverPrivat;
     private OpphoerAvNaturalytelseListe opphoerAvNaturalytelseListe;
     private GjenopptakelseNaturalytelseListe gjenopptakelseNaturalytelseListe;
-    private Arbeidsforhold arbeidsforhold; //OBS!!
+    private Arbeidsforhold arbeidsforhold;
     private Arbeidsgiver arbeidsgiver;
     private String arbeidstakerFNR;
     private Refusjon refusjon;
@@ -44,11 +43,10 @@ public class InntektsmeldingBuilder {
     private Boolean naerRelasjon = null;
     private Avsendersystem avsendersystem;
 
-    public InntektsmeldingBuilder(ArbeidsforholdBuilder arbeidsforholdBuilder,
-                                  String arbeidstakerFNR) {
+    public InntektsmeldingBuilder(ArbeidsforholdBuilder arbeidsforholdBuilderKladd, String arbeidstakerFNR) {
         inntektsmeldingKladd = new InntektsmeldingM();
         objectFactory = new ObjectFactory();
-        arbeidsforholdKladd = arbeidsforholdBuilder;
+        this.arbeidsforholdBuilderKladd = arbeidsforholdBuilderKladd;
         medArbeidstakerFNR(arbeidstakerFNR);
         medStartdatoForeldrepengerperiodenFOM(startdatoForeldrepengeperiodenFOM);
     }
@@ -90,10 +88,6 @@ public class InntektsmeldingBuilder {
     }
     public InntektsmeldingBuilder medGjenopptakelseNaturalytelseListe(GjenopptakelseNaturalytelseListe gjenopptakelseNaturalytelseListe) {
         this.gjenopptakelseNaturalytelseListe = gjenopptakelseNaturalytelseListe;
-        return this;
-    }
-    public InntektsmeldingBuilder medArbeidsforhold(Arbeidsforhold arbeidsforhold){
-        this.arbeidsforhold = arbeidsforhold;
         return this;
     }
     public InntektsmeldingBuilder medArbeidstakerFNR(String arbeidstakerFNR) {
@@ -332,7 +326,6 @@ public class InntektsmeldingBuilder {
         if (arbeidsgiver == null && arbeidsgiverPrivat == null) {
             throw new NullPointerException("Inntektsmelding må ha arbeidsgiver eller arbeidsgiverPrivat");
         }
-        medArbeidsforhold(arbeidsforholdKladd.build());
         Objects.requireNonNull(ytelse, "Ytelse kan ikke være null");
         Objects.requireNonNull(aarsakTilInnsending, "Årsak til innsending kan ikke være null");
 
@@ -393,8 +386,8 @@ public class InntektsmeldingBuilder {
 
     }
     public InntektsmeldingM build() {
-        this.inntektsmeldingKladd.setSkjemainnhold(
-                buildSkjemainnhold());
+        this.arbeidsforhold = arbeidsforholdBuilderKladd.build();
+        this.inntektsmeldingKladd.setSkjemainnhold(buildSkjemainnhold());
         return inntektsmeldingKladd;
     }
 }
