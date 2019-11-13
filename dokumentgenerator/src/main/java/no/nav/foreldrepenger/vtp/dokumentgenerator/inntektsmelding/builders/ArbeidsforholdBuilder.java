@@ -25,11 +25,10 @@ public class ArbeidsforholdBuilder {
     private List<Periode> avtaltFerieListeList;
 
 
-    public ArbeidsforholdBuilder(BigDecimal beregnetInntektBelop) {
+    public ArbeidsforholdBuilder() {
         utsettelseAvForeldrepengerList = new ArrayList<>();
         graderingIForeldrepengerList = new ArrayList<>();
         avtaltFerieListeList = new ArrayList<>();
-        medBeregnetInntekt(beregnetInntektBelop);
     }
     public ArbeidsforholdBuilder medBeregnetInntekt(BigDecimal beregnetInntektBelop) {
         this.beregnetInntektBelop = beregnetInntektBelop;

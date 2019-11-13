@@ -30,11 +30,9 @@ public class InntektsmeldingBuilderTest{
     }
     @Test
     public void IMtest(){
-        ArbeidsforholdBuilder arbeidsforholdBuilder = new ArbeidsforholdBuilder(BigDecimal.valueOf(30000));
-        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder(
-                arbeidsforholdBuilder,
-                "1111111");
-        inntektsmeldingBuilder
+        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder()
+                .medBeregnetInntekt(BigDecimal.valueOf(3000))
+                .medArbeidstakerFNR("111111")
                 .medStartdatoForeldrepengerperiodenFOM(LocalDate.now().plusWeeks(2))
                 .medArbeidsgiver("13213123", "3333333")
                 .medArbeidstakerFNR("121313212313")
