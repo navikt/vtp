@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
+import no.nav.infotrygdks.InfotrygdKontantstotteMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -69,6 +70,7 @@ public class ApplicationConfig extends Application {
         classes.add(SigrunMock.class);
         classes.add(PersonfeedMock.class);
         classes.add(InfotrygdfeedMock.class);
+        classes.add(InfotrygdKontantstotteMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(ExpectRestTjeneste.class);

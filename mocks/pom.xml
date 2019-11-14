@@ -19,6 +19,7 @@
         <module>gsak-mock</module>
         <module>infotrygd-mock</module>
         <module>infotrygdfeed-mock</module>
+        <module>infotrygd-kontantstotte-mock</module>
         <module>inntekt-mock</module>
         <module>joark-mock</module>
         <module>kafka-embedded-mock</module>
