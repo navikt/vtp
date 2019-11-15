@@ -210,6 +210,12 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>dokarkiv-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>server</artifactId>
                 <version>${project.version}</version>
             </dependency>

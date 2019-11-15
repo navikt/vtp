@@ -14,6 +14,7 @@
     <modules>
         <module>arbeidsforhold-mock</module>
         <module>arena-mock</module>
+        <module>dokarkiv-mock</module>
         <module>dokumentproduksjon-mock</module>
         <module>dummy-mock</module>
         <module>gsak-mock</module>

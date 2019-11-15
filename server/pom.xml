@@ -91,6 +91,10 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>dummy-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>dokarkiv-mock</artifactId>
+        </dependency>
 
 
         <!-- NAV biblioteker -->
