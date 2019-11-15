@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;
+import no.nav.pip.egen.ansatt.v1.EgenAnsattServiceMockImpl;
 import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
@@ -85,6 +86,7 @@ public class SoapWebServiceConfig {
         publishWebService(new BehandleJournalV3ServiceMockImpl(),"/soap/services/behandlejournal/v3");
         publishWebService(new SimulerFpServiceMockImpl(), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
+        publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

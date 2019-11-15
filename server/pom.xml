@@ -87,6 +87,10 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>dummy-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>egenansatt-mock</artifactId>
+        </dependency>
 
 
         <!-- NAV biblioteker -->

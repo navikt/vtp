@@ -16,6 +16,7 @@
         <module>arena-mock</module>
         <module>dokumentproduksjon-mock</module>
         <module>dummy-mock</module>
+        <module>egenansatt-mock</module>
         <module>gsak-mock</module>
         <module>infotrygd-mock</module>
         <module>infotrygdfeed-mock</module>
