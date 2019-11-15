@@ -1,6 +1,7 @@
 package no.nav.infotrygdks;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -19,13 +20,13 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = {"infotrygd-kontantstotte"})
 @Path("/infotrygd-kontantstotte/v1/harBarnAktivKontantstotte")
 public class InfotrygdKontantstotteMock {
+    private static final Logger LOG = LoggerFactory.getLogger(InfotrygdKontantstotteMock.class);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "infotrygd-kontantstotte", notes = (""))
-    public Response harBarnAktivKontantstøtte(/*@Context UriInfo uri,
-                                              @Context HttpHeaders httpHeaders,
-                                              @QueryParam("fnr") String fnr*/) {
+    public Response harBarnAktivKontantstøtte(@HeaderParam("fnr") String fnr) {
+        LOG.info("infotrygd-kontantstotte. fnr: {}", fnr);
 
         return Response.status(200).entity("{ \"harAktivKontantstotte\": true }").build();
     }
