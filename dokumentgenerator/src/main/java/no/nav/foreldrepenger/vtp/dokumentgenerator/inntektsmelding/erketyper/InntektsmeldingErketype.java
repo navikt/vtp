@@ -2,21 +2,18 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.builders.ArbeidsforholdBuilder;
+import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.builders.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.dto.EksempelArbeidsgiver;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.dto.InntektsmeldingDTO;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.EndringIRefusjon;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.GraderingIForeldrepenger;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.NaturalytelseDetaljer;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.Periode;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.UtsettelseAvForeldrepenger;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 
-
+@Deprecated
 public class InntektsmeldingErketype {
 
     public String standardInntektsmelding(String fnr, String arbeidsforholdId){
@@ -35,8 +32,8 @@ public class InntektsmeldingErketype {
 
     }
 
-    public InntektsmeldingBuilder makeInntektsmeldingFromRequest(InntektsmeldingDTO request) {
-        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder(
+    public no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder makeInntektsmeldingFromRequest(InntektsmeldingDTO request) {
+        no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder inntektsmeldingBuilder = new no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder(
                 request.getInntektsmeldingID(),
                 request.getInntektsmeldingYtelse(),
                 request.getInntektsmeldingType(),
@@ -53,19 +50,19 @@ public class InntektsmeldingErketype {
             inntektsmeldingBuilder.setNaaerRelasjon(request.getNaerRelasjon());
         }
 
-        inntektsmeldingBuilder.setAvsendersystem(InntektsmeldingBuilder.createAvsendersystem(
+        inntektsmeldingBuilder.setAvsendersystem(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createAvsendersystem(
                 "FS32",
                 "1.0"));
 
         if (request.getOrganisasjonsnummer() != null) {
-            inntektsmeldingBuilder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(
+            inntektsmeldingBuilder.setArbeidsgiver(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createArbeidsgiver(
                     request.getOrganisasjonsnummer(),
                     "41925090"
             ));
         }
 
         if (request.getOrganisasjonsnummer() == null && request.getEksempelArbeidsgiver() != null) {
-            inntektsmeldingBuilder.setArbeidsgiver(InntektsmeldingBuilder.createArbeidsgiver(
+            inntektsmeldingBuilder.setArbeidsgiver(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createArbeidsgiver(
                     request.getEksempelArbeidsgiver().getVirkNummer(),
                     request.getEksempelArbeidsgiver().getKontaktInfoTLF()));
         }
@@ -74,7 +71,7 @@ public class InntektsmeldingErketype {
         if(request.getInntektsmeldingEndringIRefusjonDTOS() != null){
             request.getInntektsmeldingEndringIRefusjonDTOS().forEach(t ->
                 endringIRefusjonListe.add(
-                        InntektsmeldingBuilder.createEndringIRefusjon(
+                        no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createEndringIRefusjon(
                                 t.getEndringsdato(),
                                 t.getRefusjonsbeloepPrMnd()
                         )
@@ -83,7 +80,7 @@ public class InntektsmeldingErketype {
         }
 
         if (request.getRefusjonBeloepPrMnd() != null) {
-            inntektsmeldingBuilder.setRefusjon(InntektsmeldingBuilder.createRefusjon(
+            inntektsmeldingBuilder.setRefusjon(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createRefusjon(
                     new BigDecimal(request.getRefusjonBeloepPrMnd()),
                     request.getRefusjonOpphoersdato(),
                     endringIRefusjonListe
@@ -94,7 +91,7 @@ public class InntektsmeldingErketype {
         if (request.getOpphoerAVNaturalytelseDTOliste() != null) {
             request.getOpphoerAVNaturalytelseDTOliste().forEach(t ->
                     opphorAvNaturytelseListe.add(
-                            InntektsmeldingBuilder.createNaturalytelseDetaljer(
+                            no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createNaturalytelseDetaljer(
                                     new BigDecimal(t.getBelopPrMnd()),
                                     t.getFom(),
                                     t.getNaturalytelsestype()
@@ -107,7 +104,7 @@ public class InntektsmeldingErketype {
         if (request.getGjenopptakelseAvNaturalytelseDTOListe() != null) {
             request.getGjenopptakelseAvNaturalytelseDTOListe().forEach(t ->
                     gjenopptakelseAvNaturalytelseListe.add(
-                            InntektsmeldingBuilder.createNaturalytelseDetaljer(
+                            no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createNaturalytelseDetaljer(
                                     new BigDecimal(t.getBelopPrMnd()),
                                     t.getFom(),
                                     t.getNaturalytelsetype()
@@ -119,11 +116,11 @@ public class InntektsmeldingErketype {
         if(request.getInntektsmeldingSykepengerIArbeidsgiverperiodenDTO() != null){
             List<Periode> arbeidsgiverperiodeListe = new ArrayList<>();
             request.getInntektsmeldingSykepengerIArbeidsgiverperiodenDTO().getArbeidsgiverperiode().forEach(t ->
-                    arbeidsgiverperiodeListe.add(InntektsmeldingBuilder.createPeriode(t.getFom(),t.getTom()))
+                    arbeidsgiverperiodeListe.add(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createPeriode(t.getFom(),t.getTom()))
             );
 
             inntektsmeldingBuilder.setSykepengerIArbeidsgiverperioden(
-                    InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
+                    no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createSykepengerIArbeidsgiverperioden(
                             new BigDecimal(request.getInntektsmeldingSykepengerIArbeidsgiverperiodenDTO().getBruttoUtbetaltSykepenger()),
                             arbeidsgiverperiodeListe,
                             request.getInntektsmeldingSykepengerIArbeidsgiverperiodenDTO().getBegrunnelseForReduksjon()
@@ -135,18 +132,18 @@ public class InntektsmeldingErketype {
         List<UtsettelseAvForeldrepenger> utsettelseAvForeldrepengerListe = new ArrayList<>();
         if (request.getUtsettelseAvForeldrepengerDTOliste() != null) {
             request.getUtsettelseAvForeldrepengerDTOliste().forEach(t ->
-                    utsettelseAvForeldrepengerListe.add(InntektsmeldingBuilder.createUtsettelseAvForeldrepenger(
+                    utsettelseAvForeldrepengerListe.add(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createUtsettelseAvForeldrepenger(
                             t.getUtesettelseAvForeldrepenger(),
-                            InntektsmeldingBuilder.createPeriode(t.getFom(), t.getTom())
+                            no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createPeriode(t.getFom(), t.getTom())
                     )));
         }
 
         List<GraderingIForeldrepenger> graderingIForeldrepengerListe = new ArrayList<>();
         if (request.getGraderingForeldrepengerDTOliste() != null) {
             request.getGraderingForeldrepengerDTOliste().forEach(t ->
-                    graderingIForeldrepengerListe.add(InntektsmeldingBuilder.createGraderingIForeldrepenger(
+                    graderingIForeldrepengerListe.add(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createGraderingIForeldrepenger(
                             new BigDecimal(t.getArbeidstidsprosent()),
-                            InntektsmeldingBuilder.createPeriode(t.getFom(), t.getTom())
+                            no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createPeriode(t.getFom(), t.getTom())
                     ))
             );
         }
@@ -154,14 +151,14 @@ public class InntektsmeldingErketype {
         List<Periode> avtaltFerieListe = new ArrayList<>();
         if(request.getInntektsmeldingArbeidsforholdAvtaltFerieDTOS() != null){
             request.getInntektsmeldingArbeidsforholdAvtaltFerieDTOS().forEach(t ->
-                    avtaltFerieListe.add(InntektsmeldingBuilder.createPeriode(
+                    avtaltFerieListe.add(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createPeriode(
                             t.getFom(),
                             t.getTom()
                     ))
             );
         }
 
-        inntektsmeldingBuilder.setArbeidsforhold(InntektsmeldingBuilder.createArbeidsforhold(
+        inntektsmeldingBuilder.setArbeidsforhold(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createArbeidsforhold(
                 request.getArbeidsforholdId(),
                 request.getKodelisteArsakEndring(),
                 new BigDecimal(request.getBeregnetInntektBelop()),

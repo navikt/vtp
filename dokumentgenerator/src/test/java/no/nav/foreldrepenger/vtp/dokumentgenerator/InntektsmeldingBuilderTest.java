@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.builders.ArbeidsforholdBuilder;
+import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.builders.InntektsmeldingBuilder;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.InntektsmeldingM;
 import org.junit.Assert;
 import org.junit.Test;
 
-import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder;
 import no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingErketype;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.YtelseKodeliste;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakInnsendingKodeliste;
@@ -26,10 +28,23 @@ public class InntektsmeldingBuilderTest{
 
         Assert.assertTrue(xml.toLowerCase().contains("virksomhetsnummer"));
     }
+    @Test
+    public void IMtest(){
+        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder()
+                .medBeregnetInntekt(BigDecimal.valueOf(3000))
+                .medArbeidstakerFNR("111111")
+                .medStartdatoForeldrepengerperiodenFOM(LocalDate.now().plusWeeks(2))
+                .medArbeidsgiver("13213123", "3333333")
+                .medArbeidstakerFNR("121313212313")
+                .medYtelse(YtelseKodeliste.FORELDREPENGER)
+                .medAarsakTilInnsending(ÅrsakInnsendingKodeliste.NY);
+        InntektsmeldingM im = inntektsmeldingBuilder.build();
+        System.out.println("end");
+    }
 
     @Test
     public void inntektsmeldingOmsorgspengerTest(){
-        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
+        no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder inntektsmeldingBuilder = new no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
         String inntektesmeldingXML = inntektsmeldingBuilder.createInntektesmeldingXML();
         Assert.assertNotEquals(0, inntektesmeldingXML.length());
 
@@ -70,7 +85,7 @@ public class InntektsmeldingBuilderTest{
 
     @Test
     public void inntektsmeldingPleiepengerTest(){
-        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
+        no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder inntektsmeldingBuilder = new no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
         String inntektesmeldingXML = inntektsmeldingBuilder.createInntektesmeldingXML();
         Assert.assertNotEquals(0, inntektesmeldingXML.length());
 
@@ -91,12 +106,12 @@ public class InntektsmeldingBuilderTest{
 
     @Test
     public void arbeidsgiverErPrivatTestr(){
-        InntektsmeldingBuilder inntektsmeldingBuilder = new InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
+        no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder inntektsmeldingBuilder = new no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder("123", YtelseKodeliste.FORELDREPENGER, ÅrsakInnsendingKodeliste.NY, "12345678", LocalDate.now());
         String inntektesmeldingXML = inntektsmeldingBuilder.createInntektesmeldingXML();
         Assert.assertNotEquals(0, inntektesmeldingXML.length());
 
 
-        inntektsmeldingBuilder.setArbeidsgiverPrivat(InntektsmeldingBuilder.createArbeidsgiverPrivat("123"));
+        inntektsmeldingBuilder.setArbeidsgiverPrivat(no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.erketyper.InntektsmeldingBuilder.createArbeidsgiverPrivat("123"));
 
         String inntektesmeldingXML1 = inntektsmeldingBuilder.createInntektesmeldingXML();
         Assert.assertTrue(inntektesmeldingXML1.contains("arbeidsgiverFnr"));
