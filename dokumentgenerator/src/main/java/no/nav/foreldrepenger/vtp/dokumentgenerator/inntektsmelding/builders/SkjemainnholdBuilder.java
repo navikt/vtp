@@ -214,7 +214,6 @@ public class SkjemainnholdBuilder {
         }
         Objects.requireNonNull(ytelse, "Ytelse kan ikke være null");
         Objects.requireNonNull(aarsakTilInnsending, "Årsak til innsending kan ikke være null");
-        Objects.requireNonNull(startdatoForeldrepengeperiodenFOM, "startdatoForeldrepengeperiodenFOM kan ikke være null");
         Objects.requireNonNull(arbeidstakerFNR, "arbeidstakerFNR kan ikke være null");
 
         skjemainnhold = new Skjemainnhold();
