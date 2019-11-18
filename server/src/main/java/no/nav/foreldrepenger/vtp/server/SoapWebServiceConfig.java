@@ -28,6 +28,7 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.DokumentproduksjonV2Mock
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
+import no.nav.tjeneste.virksomhet.innsynjournal.v2.InnsynJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalV2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
@@ -87,6 +88,7 @@ public class SoapWebServiceConfig {
         publishWebService(new SimulerFpServiceMockImpl(), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
         publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
+        publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
