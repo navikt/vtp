@@ -19,6 +19,7 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
+import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -81,6 +82,7 @@ public class ApplicationConfig extends Application {
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteBoolean.class);
         classes.add(MedlemskapsunntakMock.class);
+        classes.add(OppgaveKontantstotteMockImpl.class);
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);
