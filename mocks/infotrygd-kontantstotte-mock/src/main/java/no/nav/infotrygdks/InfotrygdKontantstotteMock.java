@@ -24,6 +24,6 @@ public class InfotrygdKontantstotteMock {
     public Response harBarnAktivKontantstøtte(@HeaderParam("fnr") String fnr) {
         LOG.info("infotrygd-kontantstotte. fnr: {}", fnr);
 
-        return Response.status(200).entity("{ \"harAktivKontantstotte\": true }").build();
+        return Response.status(200).entity("{ \"harAktivKontantstotte\": false }").build();
     }
 }
