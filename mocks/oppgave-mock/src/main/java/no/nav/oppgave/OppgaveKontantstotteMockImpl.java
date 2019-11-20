@@ -25,7 +25,8 @@ import io.swagger.annotations.*;
 public class OppgaveKontantstotteMockImpl {
     private static final Logger LOG = LoggerFactory.getLogger(OppgaveKontantstotteMockImpl.class);
 
-    private Oppgave.Builder oppgaveMock = new Oppgave.Builder() // TODO TN lag scenario
+    //TODO (TEAM FAMILIE) Lag mock-responser fra scenario NOSONAR
+    private Oppgave.Builder oppgaveMock = new Oppgave.Builder()
             .medTema("KON")
             .medAktivDato(LocalDate.now())
             .medVersjon(1)

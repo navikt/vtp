@@ -17,10 +17,6 @@
             <artifactId>resteasy-jaxrs</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
             <version>4.2.1</version>
@@ -48,40 +44,4 @@
             <version>3.7</version>
         </dependency>
 	</dependencies>
-
-    <build>
-    <finalName>${project.artifactId}</finalName>
-    <plugins>
-    <plugin>
-    <groupId>io.swagger</groupId>
-    <artifactId>swagger-codegen-maven-plugin</artifactId>
-    <version>2.3.1</version>
-    <executions>
-    <execution>
-        <goals>
-            <goal>generate</goal>
-        </goals>
-        <configuration>
-
-            <inputSpec>${project.basedir}/src/main/resources/oppgave-swagger.json</inputSpec>
-            <language>jaxrs</language>
-            <generateApis>false</generateApis>
-
-            <modelPackage>no.nav.oppgave.v1</modelPackage>
-            <modelNameSuffix></modelNameSuffix>
-
-            <generateSupportingFiles>false</generateSupportingFiles>
-
-            <configOptions>
-                <java8>true</java8>
-                <useBeanValidation>false</useBeanValidation>
-                <sourceFolder>oppgave</sourceFolder>
-            </configOptions>
-
-        </configuration>
-    </execution>
-    </executions>
-    </plugin>
-    </plugins>
-    </build>
 </project>
