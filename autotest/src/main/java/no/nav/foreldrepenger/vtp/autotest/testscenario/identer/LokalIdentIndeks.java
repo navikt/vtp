@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.vtp.autotest.testscenario.identer;
 
-
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
 
 import java.util.Collections;
