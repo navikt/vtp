@@ -256,7 +256,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
                 <artifactId>fp-topics-manifest</artifactId>
-                <version>5.0_20190613132816_304a09e</version>
+                <version>5.0_20191120094331_2b23521</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
