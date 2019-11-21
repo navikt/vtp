@@ -4,10 +4,10 @@ import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.Medlemskapperi
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.Landkode;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SivilstandModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.StatsborgerskapModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell.Kjønn;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell.Kjønn;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonopplysningerTest {
+    // TODO(EW) - Finne ut hvor disse testene ører hjemme?
 
     @Test
     public void skal_skrive_scenario_til_personopplysninger_json() throws Exception {

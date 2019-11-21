@@ -1,8 +1,8 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerIdent;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerIdent;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.FamilierelasjonModell;
 
 import java.util.Collection;
 import java.util.HashMap;

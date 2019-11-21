@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell;
+package no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.MedlemskapModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.*;
 
 import java.time.LocalDate;
 import java.util.*;

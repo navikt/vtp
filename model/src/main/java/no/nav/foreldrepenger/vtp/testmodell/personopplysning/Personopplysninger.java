@@ -1,23 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.AnnenPartModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Personopplysninger {
 

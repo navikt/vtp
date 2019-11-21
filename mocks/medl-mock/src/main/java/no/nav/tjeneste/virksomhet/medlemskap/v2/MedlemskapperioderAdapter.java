@@ -1,20 +1,15 @@
 package no.nav.tjeneste.virksomhet.medlemskap.v2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.KildeMedTerm;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LandkodeMedTerm;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.LovvalgMedTerm;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.PeriodetypeMedTerm;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.StatuskodeMedTerm;
-import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.TrygdedekningMedTerm;
+import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.kodeverk.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MedlemskapperioderAdapter {
 

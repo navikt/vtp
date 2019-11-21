@@ -2,9 +2,9 @@ package no.nav.foreldrepenger.vtp.autotest.testscenario.util;
 
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonNavn;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SivilstandModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.AnnenPartModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

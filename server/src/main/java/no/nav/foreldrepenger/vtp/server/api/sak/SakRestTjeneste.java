@@ -10,8 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

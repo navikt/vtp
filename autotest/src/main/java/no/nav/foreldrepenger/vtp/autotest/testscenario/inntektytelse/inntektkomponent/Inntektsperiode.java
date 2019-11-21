@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonArbeidsgiver;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonArbeidsgiver;
 
 import java.time.LocalDate;
 

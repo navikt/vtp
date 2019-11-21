@@ -7,7 +7,7 @@ import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseM
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PostboksadresseModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.UstrukturertAdresseModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;

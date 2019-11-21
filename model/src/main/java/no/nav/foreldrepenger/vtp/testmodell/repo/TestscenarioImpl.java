@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.vtp.testmodell.repo;
 
 import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseIndeks;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonArbeidsgiver;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;

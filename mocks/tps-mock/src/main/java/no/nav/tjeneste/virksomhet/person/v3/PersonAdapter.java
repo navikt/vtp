@@ -1,30 +1,12 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GeografiskTilknytningModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.GeografiskTilknytning;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoennstyper;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kommune;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Land;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Person;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personnavn;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatus;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstand;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Sivilstander;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Spraak;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.*;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 public class PersonAdapter {
 

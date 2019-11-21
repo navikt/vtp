@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkom
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonArbeidsgiver;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonArbeidsgiver;
 
 import java.time.LocalDate;
 

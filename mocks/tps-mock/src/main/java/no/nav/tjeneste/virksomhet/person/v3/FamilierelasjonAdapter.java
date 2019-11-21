@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.FamilierelasjonModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjoner;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Person;

@@ -3,9 +3,9 @@ package no.nav.foreldrepenger.vtp.testmodell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
@@ -21,6 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScenariosTest {
+    // TODO(EW) - Finne ut hvor disse testene ører hjemme?
 
     private static final String TEST_SCENARIO_NAVN = "100-mor-og-far-bosatt-i-norge";
 

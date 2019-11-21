@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
 
 public class PersonNavn {
     @JsonProperty("fornavn")

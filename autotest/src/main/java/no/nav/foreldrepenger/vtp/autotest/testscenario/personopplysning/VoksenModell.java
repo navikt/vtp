@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell;
+package no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning;
 
 
 import java.time.LocalDate;
