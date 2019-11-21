@@ -95,10 +95,10 @@ public class MockServer {
     }
 
     public void start() throws Exception {
-        startKafkaServer();
-
         startLdapServer();
         startWebServer();
+        startKafkaServer();
+
     }
 
     private void startKafkaServer() {

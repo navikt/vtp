@@ -27,6 +27,18 @@
 			<classifier>jaxws</classifier>
 		</dependency>
 
+		<dependency>
+			<groupId>no.nav.tjenester.fim</groupId>
+			<artifactId>nav-fim-arbeidsevnevurdering-v1-tjenestespesifikasjon</artifactId>
+			<classifier>jaxws</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>no.nav.tjenester.fim</groupId>
+			<artifactId>nav-fim-ytelseskontrakt-v2-tjenestespesifikasjon</artifactId>
+			<classifier>jaxws</classifier>
+		</dependency>
+
 		<!-- 3dje parts biblioteker -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>

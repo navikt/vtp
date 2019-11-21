@@ -336,6 +336,20 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-arbeidsevnevurdering-v1-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-ytelseskontrakt-v2-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>2.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
                 <artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
                 <version>3.1.1</version>
                 <classifier>jaxws</classifier>
