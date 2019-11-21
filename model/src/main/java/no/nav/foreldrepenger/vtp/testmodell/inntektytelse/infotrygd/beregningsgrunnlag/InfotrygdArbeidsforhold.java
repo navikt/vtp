@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetModell;
 

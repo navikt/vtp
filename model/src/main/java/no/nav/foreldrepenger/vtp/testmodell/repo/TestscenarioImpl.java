@@ -1,20 +1,20 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.LokalIdentIndeks;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseIndeks;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonArbeidsgiver;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
-import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 
 public class TestscenarioImpl implements Testscenario {
 

@@ -3,12 +3,12 @@ package no.nav.tjeneste.virksomhet.person.v3;
 import java.time.LocalDate;
 import java.util.List;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GateadresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PostboksadresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.UstrukturertAdresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PostboksadresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Gateadresse;

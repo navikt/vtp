@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonstatusModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonstatusPeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;

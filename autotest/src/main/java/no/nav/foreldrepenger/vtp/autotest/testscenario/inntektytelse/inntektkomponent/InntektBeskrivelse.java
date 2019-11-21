@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent;
+package no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent;
 
 public class InntektBeskrivelse {
 

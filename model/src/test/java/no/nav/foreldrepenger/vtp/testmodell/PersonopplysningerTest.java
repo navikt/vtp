@@ -1,31 +1,26 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.MedlemskapperiodeModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.Landkode;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SivilstandModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.StatsborgerskapModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell.Kjønn;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.*;
+import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import org.junit.Test;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import org.junit.Test;
-
-import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell.Kjønn;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell.Diskresjonskoder;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SivilstandModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.StringTestscenarioTemplate;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioFraTemplateMapper;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioTilTemplateMapper;
-import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PersonopplysningerTest {
 
@@ -43,7 +38,7 @@ public class PersonopplysningerTest {
         scenario.setPersonopplysninger(personopplysninger);
         søker.setStatsborgerskap(new StatsborgerskapModell(Landkode.NOR));
         søker.setSivilstand(new SivilstandModell("GIFT"));
-        søker.setDiskresjonskode(Diskresjonskoder.UDEF);
+        søker.setDiskresjonskode(PersonModell.Diskresjonskoder.UDEF);
         søker.setSpråk("nb-NO");
         MedlemskapperiodeModell medlemskapperiode = new MedlemskapperiodeModell();
         søker.leggTil(medlemskapperiode);

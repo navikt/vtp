@@ -1,23 +1,22 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 import com.fasterxml.jackson.core.type.TypeReference;
-
+import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.FiktiveFnr;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.IdentGenerator;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseIndeks;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
-import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
-import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetModell;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 public class BasisdataProviderFileImpl implements BasisdataProvider {
 

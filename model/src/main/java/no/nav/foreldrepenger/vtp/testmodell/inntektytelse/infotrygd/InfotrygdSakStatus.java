@@ -7,8 +7,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.Landkode;
 
 public class InfotrygdSakStatus {
     private static Map<String, String> VALID_KODER;

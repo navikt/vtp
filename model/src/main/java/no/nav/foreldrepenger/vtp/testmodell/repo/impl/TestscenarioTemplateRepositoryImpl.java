@@ -15,10 +15,10 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
 /**
  * TestscenarioRepository av alle test templates.

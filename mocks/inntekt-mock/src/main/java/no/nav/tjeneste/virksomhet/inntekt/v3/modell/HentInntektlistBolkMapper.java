@@ -1,32 +1,15 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3.modell;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AapenPeriode;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektInformasjon;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsforholdFrilanser;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Inntekt;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Loennsbeskrivelse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Loennsinntekt;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Organisasjon;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Periode;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.YtelseFraOffentlige;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.YtelseFraOffentligeBeskrivelse;
+import java.util.*;
 
 public class HentInntektlistBolkMapper {
 

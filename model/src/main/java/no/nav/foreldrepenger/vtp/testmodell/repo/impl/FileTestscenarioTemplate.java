@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Set;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.repo.TemplateVariable;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.FindTemplateVariables;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.vtp.testmodell.util.FindTemplateVariables;
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.testmodell.repo.TemplateVariable;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 
 public class FileTestscenarioTemplate implements TestscenarioTemplate {

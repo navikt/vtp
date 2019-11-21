@@ -1,10 +1,11 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.repo.TemplateVariable;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Set;
-
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
 /** En template for et test case inklusiv testdata. */
 public interface TestscenarioTemplate {

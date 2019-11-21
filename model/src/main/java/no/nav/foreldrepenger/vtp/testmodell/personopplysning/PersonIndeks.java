@@ -1,10 +1,15 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerIdent;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 
 public class PersonIndeks {
 

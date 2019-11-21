@@ -12,9 +12,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell.Rolle;
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.LokalIdentIndeks;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
 
 public class Personopplysninger {
 
@@ -73,7 +76,7 @@ public class Personopplysninger {
         return Collections.unmodifiableList(familierelasjonerBarn);
     }
 
-    public Stream<FamilierelasjonModell> getFamilierelasjoner(Rolle rolle) {
+    public Stream<FamilierelasjonModell> getFamilierelasjoner(FamilierelasjonModell.Rolle rolle) {
         return getFamilierelasjoner().stream().filter(f -> rolle.equals(f.getRolle()));
     }
 

@@ -2,10 +2,10 @@ package no.nav.tjeneste.virksomhet.person.v3;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GeografiskTilknytningModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BrukerModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;

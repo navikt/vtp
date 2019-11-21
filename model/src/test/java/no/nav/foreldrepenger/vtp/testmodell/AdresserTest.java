@@ -1,26 +1,20 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.type.TypeReference;
-
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.*;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import org.junit.Test;
+
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdresserTest {
 

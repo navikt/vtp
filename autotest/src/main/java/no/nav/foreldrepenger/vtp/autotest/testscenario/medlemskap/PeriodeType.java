@@ -1,14 +1,13 @@
-package no.nav.foreldrepenger.vtp.testmodell.medlemskap;
+package no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.Landkode;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
 
 public class PeriodeType {
 

@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /** Scanner input for template variable og finner type, path etc. */
 public class FindTemplateVariables {
 
-    static final Pattern TEMPLATE_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.+)\\}");
+    public static final Pattern TEMPLATE_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.+)\\}");
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final FindTemplateVariableModule module = new FindTemplateVariableModule();

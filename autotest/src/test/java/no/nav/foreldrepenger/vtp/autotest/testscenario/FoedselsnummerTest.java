@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell;
+package no.nav.foreldrepenger.vtp.autotest.testscenario;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 import org.junit.Assert;
 import org.junit.Test;
 
-import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.FiktiveFnr;
 
 public class FoedselsnummerTest {
 

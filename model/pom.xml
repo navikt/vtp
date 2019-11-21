@@ -17,6 +17,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>no.nav.foreldrepenger.vtp</groupId>
+			<artifactId>autotest</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-parameter-names</artifactId>
 		</dependency>

@@ -1,26 +1,24 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Optional;
-
-import org.junit.Test;
-
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell.Rolle;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseType;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GateadresseModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.brukermodell.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
+import org.junit.Test;
+
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScenariosTest {
 
@@ -58,7 +56,7 @@ public class ScenariosTest {
 
         assertThat(søker.getIdent()).isNotNull();
 
-        FamilierelasjonModell familierelasjon = pers.getFamilierelasjoner(Rolle.BARN).findFirst().get();
+        FamilierelasjonModell familierelasjon = pers.getFamilierelasjoner(FamilierelasjonModell.Rolle.BARN).findFirst().get();
         assertThat(familierelasjon.getTil()).isNotNull();
         assertThat(familierelasjon.getTil()).isInstanceOf(BarnModell.class);
         // sjekk variable er satt inn
