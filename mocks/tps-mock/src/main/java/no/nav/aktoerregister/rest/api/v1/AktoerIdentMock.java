@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -34,7 +33,6 @@ public class AktoerIdentMock {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "beregnetskatt", notes = ("Returnerer beregnetskatt fra Sigrun"))
     public Map<String, IdentinfoForAktoer> alleIdenterForIdenter(@HeaderParam(NAV_IDENTER_HEADER_KEY) Set<String> requestIdenter,
                                                                  @QueryParam(IDENTGRUPPE) String identgruppe,
                                                                  @QueryParam(GJELDENDE) boolean gjeldende,
