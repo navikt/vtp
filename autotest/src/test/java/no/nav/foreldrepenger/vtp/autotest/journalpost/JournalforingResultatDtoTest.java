@@ -1,8 +1,7 @@
-package no.nav.foreldrepenger.vtp.autotest;
+package no.nav.foreldrepenger.vtp.autotest.journalpost;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.foreldrepenger.vtp.autotest.journalpost.JournalforingResultatDto;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.containsString;
