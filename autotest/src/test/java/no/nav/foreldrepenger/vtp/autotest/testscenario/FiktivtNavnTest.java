@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.autotest.testscenario;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonNavn;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.FiktivtNavn;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonNavn;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.FiktivtNavn;
 import org.junit.Assert;
 import org.junit.Test;
 

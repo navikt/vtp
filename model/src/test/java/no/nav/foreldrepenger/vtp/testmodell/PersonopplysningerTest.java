@@ -1,13 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.Landkode;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SivilstandModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.StatsborgerskapModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell.Kjønn;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.medlemskap.MedlemskapperiodeModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.Landkode;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SivilstandModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.StatsborgerskapModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BrukerModell.Kjønn;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;

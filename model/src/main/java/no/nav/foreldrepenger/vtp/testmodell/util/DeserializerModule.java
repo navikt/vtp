@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
 import org.threeten.extra.PeriodDuration;
 
 import com.fasterxml.jackson.core.JsonParser;

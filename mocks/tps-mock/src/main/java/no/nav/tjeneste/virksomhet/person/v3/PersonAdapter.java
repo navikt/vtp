@@ -1,8 +1,8 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.GeografiskTilknytningModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.GeografiskTilknytningModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.*;
 

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.Landkode;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.Landkode;
 
 public class Feilkode {
     private static List<String> VALID_KODER;

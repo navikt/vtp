@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.repo.TemplateVariable;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.FindTemplateVariables;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.autotest.scenario.repo.TemplateVariable;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.FindTemplateVariables;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;

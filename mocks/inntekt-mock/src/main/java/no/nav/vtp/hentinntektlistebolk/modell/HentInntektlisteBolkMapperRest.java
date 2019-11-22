@@ -1,8 +1,8 @@
 package no.nav.vtp.hentinntektlistebolk.modell;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.tjenester.aordningen.inntektsinformasjon.*;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.Inntekt;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.InntektType;
@@ -85,17 +85,17 @@ public class HentInntektlisteBolkMapperRest {
         return YearMonth.of(ldt.getYear(), ldt.getMonth()).compareTo(yearMonth) == 0;
     }
 
-    private static InntektType fraModellInntektstype(no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType modellType) {
-        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType.LØNNSINNTEKT)) {
+    private static InntektType fraModellInntektstype(no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektType modellType) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektType.LØNNSINNTEKT)) {
             return InntektType.LOENNSINNTEKT;
         }
-        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType.NÆRINGSINNTEKT)) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektType.NÆRINGSINNTEKT)) {
             return InntektType.NAERINGSINNTEKT;
         }
-        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType.PENSJON_ELLER_TRYGD)) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektType.PENSJON_ELLER_TRYGD)) {
             return InntektType.PENSJON_ELLER_TRYGD;
         }
-        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType.YTELSE_FRA_OFFENTLIGE)) {
+        if (modellType.equals(no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektType.YTELSE_FRA_OFFENTLIGE)) {
             return InntektType.YTELSE_FRA_OFFENTLIGE;
         }
         throw new IllegalStateException("Inntektstype kunne ikke konverteres: " + modellType.getKode());

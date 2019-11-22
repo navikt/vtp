@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AnnenPartModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.autotest.scenario.identer.LokalIdentIndeks;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
 
 import java.util.*;
 import java.util.stream.Stream;

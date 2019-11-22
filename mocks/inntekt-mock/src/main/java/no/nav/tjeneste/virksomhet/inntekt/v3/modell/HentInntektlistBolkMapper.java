@@ -1,9 +1,9 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3.modell;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektType;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektType;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.*;
 

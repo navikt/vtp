@@ -1,10 +1,10 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.FiktiveFnr;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.IdentGenerator;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseIndeks;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.identer.FiktiveFnr;
+import no.nav.foreldrepenger.vtp.autotest.scenario.identer.IdentGenerator;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseIndeks;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;

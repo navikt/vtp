@@ -13,7 +13,7 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

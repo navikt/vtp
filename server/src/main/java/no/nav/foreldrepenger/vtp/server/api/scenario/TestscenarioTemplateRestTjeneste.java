@@ -1,8 +1,13 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
-import java.util.List;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.autotest.template.TemplateDto;
+import no.nav.foreldrepenger.vtp.autotest.template.TemplateReferanse;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,14 +17,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 @Api(tags = { "Testscenario/templates" })
 @Path("/api/testscenario/templates")

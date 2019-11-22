@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
 
 /** NB - Single-use only. Variable lest/skrevet caches internt i modul. Variable som brukes vil deles på tvers av invokeringer.*/
 public class JsonMapper {

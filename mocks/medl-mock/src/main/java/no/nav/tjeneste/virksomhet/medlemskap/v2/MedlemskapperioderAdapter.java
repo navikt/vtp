@@ -1,8 +1,8 @@
 package no.nav.tjeneste.virksomhet.medlemskap.v2;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.medlemskap.MedlemskapperiodeModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.medlemskap.v2.informasjon.Medlemsperiode;

@@ -1,9 +1,9 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseType;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseType;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;

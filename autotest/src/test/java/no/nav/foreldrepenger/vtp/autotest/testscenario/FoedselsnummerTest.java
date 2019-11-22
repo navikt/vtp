@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 import org.junit.Assert;
 import org.junit.Test;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.FiktiveFnr;
+import no.nav.foreldrepenger.vtp.autotest.scenario.identer.FiktiveFnr;
 
 public class FoedselsnummerTest {
 

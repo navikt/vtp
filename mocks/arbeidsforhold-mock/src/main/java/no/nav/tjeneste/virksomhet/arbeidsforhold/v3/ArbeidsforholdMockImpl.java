@@ -1,7 +1,7 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.arbeidsforhold.Arbeidsforhold;
+import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.*;

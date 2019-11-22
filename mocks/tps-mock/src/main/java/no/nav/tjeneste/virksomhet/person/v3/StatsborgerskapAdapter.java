@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.StatsborgerskapModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.StatsborgerskapModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;

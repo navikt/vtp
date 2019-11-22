@@ -1,10 +1,10 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.PersonNavn;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AnnenPartModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.SøkerModell;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.util.TestdataUtil;
+import no.nav.foreldrepenger.vtp.autotest.scenario.identer.LokalIdentIndeks;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonNavn;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SøkerModell;
+import no.nav.foreldrepenger.vtp.autotest.scenario.util.TestdataUtil;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;

@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
-import no.nav.foreldrepenger.vtp.autotest.testscenario.identer.IdentGenerator;
-import no.nav.foreldrepenger.vtp.autotest.testscenario.personopplysning.AdresseIndeks;
+import no.nav.foreldrepenger.vtp.autotest.scenario.identer.IdentGenerator;
+import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetIndeks;
 
