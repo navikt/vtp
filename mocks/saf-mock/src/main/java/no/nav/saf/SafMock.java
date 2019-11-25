@@ -1,14 +1,18 @@
-package no.nav.tjeneste.virksomhet.saf;
+package no.nav.saf;
+
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
 import graphql.ExecutionResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.tjeneste.virksomhet.journal.v2.binding.HentDokumentDokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.feil.DokumentIkkeFunnet;
 import no.nav.tjeneste.virksomhet.journal.v2.meldinger.HentDokumentResponse;
-import no.nav.tjeneste.virksomhet.saf.graphql.GraphQLTjeneste;
+import no.nav.saf.graphql.GraphQLTjeneste;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +20,19 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import java.util.Map;
 import java.util.Optional;
 
 @Api(tags = {"saf"})
 @Path("/api/saf")
-public class safMock {
+public class SafMock {
 
-    private static final Logger LOG = LoggerFactory.getLogger(safMock.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SafMock.class);
+
+    private static final String X_CORRELATION_ID = "X-Correlation-ID";
+    private static final String NAV_CALLID = "Nav-Callid";
+    private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
 
     private static final String JOURNALPOST_ID = "journalpostId";
     private static final String DOKUMENT_INFO_ID = "dokumentInfoId";
@@ -34,9 +44,10 @@ public class safMock {
     private GraphQLTjeneste graphQLTjeneste;
 
 
-    public safMock (GraphQLTjeneste graphQLTjeneste) {
+    public SafMock(GraphQLTjeneste graphQLTjeneste) {
         // instansieres ved oppstart.
         this.graphQLTjeneste = graphQLTjeneste;
+        this.journalRepository = JournalRepositoryImpl.getInstance();
     }
 
 
@@ -45,20 +56,14 @@ public class safMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter journalpost")
-    public Response hentJournalpostListe(String jsonRequest) {
-        // TODO(EW) - Må implementeres. Alternativt, fjerne graphQLTjenesten o
-        ExecutionResult executionResult = graphQLTjeneste.executeStatement(jsonRequest);
-        String result = executionResult.getData().toString();
-        // Konvert to JournalpostListeResponseDto og returner.
+    public Map<String, Object> graphQLRequest(@HeaderParam(AUTHORIZATION) String authorizationHeader,
+                                              @HeaderParam(X_CORRELATION_ID) String xCorrelationId,
+                                              @HeaderParam(NAV_CALLID) String navCallid,
+                                              @HeaderParam(NAV_CONSUMER_ID) String navConsumerId,
+                                              GraphQLRequest request) {
 
-//        return Response
-//                .status(Response.Status.OK)
-//                .entity(result)
-//                .build();
-
-        return Response
-                .status(Response.Status.NOT_IMPLEMENTED)
-                .build();
+        ExecutionResult executionResult = graphQLTjeneste.executeStatement(request, journalRepository);
+        return executionResult.toSpecification();
     }
 
 

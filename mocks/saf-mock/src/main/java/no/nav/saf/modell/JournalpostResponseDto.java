@@ -1,4 +1,4 @@
-package no.nav.tjeneste.virksomhet.saf.modell;
+package no.nav.saf.modell;
 
 import java.util.List;
 
