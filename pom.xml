@@ -209,6 +209,18 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>egenansatt-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>innsynjournal-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- CXF - for å kunne stubbe WS-trust -->
             <dependency>
                 <groupId>org.apache.cxf</groupId>
