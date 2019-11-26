@@ -10,7 +10,7 @@ spec:
   port: 8063 # Required. The port number which is exposed by the container and should receive HTTP traffic.
   liveness: # HTTP endpoint that signals 200 OK when the application is running.
     path: /rest/isAlive
-    initialDelay: 30
+    initialDelay: 20
     timeout: 5
     periodSeconds: 10     # How often (in seconds) to perform the probe. Default to 10 seconds
     failureThreshold: 27 # when a Pod starts and the probe fails,
@@ -18,7 +18,7 @@ spec:
     # Defaults to 3
   readiness: # HTTP endpoint that signals 200 OK when it is okay to start routing traffic to the application.
     path: /rest/isReady
-    initialDelay: 30
+    initialDelay: 20
     timeout: 5
     periodSeconds: 10
     failureThreshold: 27
