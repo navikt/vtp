@@ -91,8 +91,8 @@ public class SoapWebServiceConfig {
         publishWebService(new BehandleJournalV3ServiceMockImpl(),"/soap/services/behandlejournal/v3");
         publishWebService(new SimulerFpServiceMockImpl(), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
-        publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
-        publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
+//        publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
+//        publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
