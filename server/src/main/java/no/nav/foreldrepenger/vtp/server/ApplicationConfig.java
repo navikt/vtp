@@ -21,6 +21,7 @@ import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
+import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
@@ -81,6 +82,7 @@ public class ApplicationConfig extends Application {
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteBoolean.class);
 //        classes.add(MedlemskapsunntakMock.class);
+        classes.add(InnsynMock.class);
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);
