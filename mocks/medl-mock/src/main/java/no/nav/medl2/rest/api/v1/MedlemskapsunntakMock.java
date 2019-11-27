@@ -1,7 +1,6 @@
 package no.nav.medl2.rest.api.v1;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +15,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.Providers;
 
 import no.nav.tjenester.medlemskapsunntak.api.v1.Medlemskapsunntak;
 
@@ -28,10 +29,18 @@ import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PAR
 import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_STATUSER;
 import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_TIL_OG_MED;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 @Path("medl2/api/v1/medlemskapsunntak")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(tags = {"Medlemskapsunntak"})
 public class MedlemskapsunntakMock {
+
+    @Context
+    private Providers providers;
 
     @GET
     @Path("/{unntakId}")
@@ -57,9 +66,19 @@ public class MedlemskapsunntakMock {
     }
 
     private static class Dato {
+        private static final ObjectMapper objectMapper = new ObjectMapper();
+        static {
+            objectMapper.registerModule(new Jdk8Module());
+            objectMapper.registerModule(new JavaTimeModule());
+        }
+
         LocalDate dato; //NOSONAR
-        Dato(String localDate) {
-            dato = localDate == null ? null : LocalDate.parse(localDate, DateTimeFormatter.ISO_DATE);
+
+        public Dato(String localDate) {
+            try {
+                dato = objectMapper.readValue(localDate, LocalDate.class);
+            } catch (JsonProcessingException ignore) {
+            }
         }
     }
 }

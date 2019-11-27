@@ -81,7 +81,7 @@ public class ApplicationConfig extends Application {
         classes.add(FpFormidlingMock.class);
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteBoolean.class);
-//        classes.add(MedlemskapsunntakMock.class);
+        classes.add(MedlemskapsunntakMock.class);
         classes.add(InnsynMock.class);
         // tekniske ting
         classes.add(Oauth2RestService.class);
