@@ -1,9 +1,8 @@
 package no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.builders;
 
-import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketyper.FordelingErketyper;
 import no.nav.inntektsmelding.xml.kodeliste._20180702.*;
-import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import no.seres.xsd.nav.inntektsmelding_m._20181211.ObjectFactory;
+import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,13 +14,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class InntektsmeldingBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(InntektsmeldingBuilder.class);
     private InntektsmeldingM inntektsmeldingKladd;
     private ArbeidsforholdBuilder arbeidsforholdBuilderKladd;
     private SkjemainnholdBuilder skjemainnholdBuilderKladd;
+    private RefusjonBuilder refusjonBuilderKladd;
 
 
 
@@ -70,26 +69,6 @@ public class InntektsmeldingBuilder {
         this.skjemainnholdBuilderKladd.medArbeidstakerFNR(arbeidstakerFNR);
         return this;
     }
-    public InntektsmeldingBuilder medRefusjon(BigDecimal refusjonsBelopPerMnd) {
-        this.skjemainnholdBuilderKladd.medRefusjon(refusjonsBelopPerMnd);
-        return this;
-    }
-    public InntektsmeldingBuilder medRefusjon(BigDecimal refusjonsBelopPerMnd,
-                                              LocalDate refusjonsOpphordato,
-                                              Map<LocalDate, BigDecimal> endringRefusjonMap) {
-        skjemainnholdBuilderKladd.medRefusjon(refusjonsBelopPerMnd, refusjonsOpphordato, endringRefusjonMap);
-        return this;
-    }
-    public InntektsmeldingBuilder medRefusjon(BigDecimal refusjonsBelopPerMnd,
-                                              LocalDate refusjonsOpphordato,
-                                              List<EndringIRefusjon> endringIRefusjonList) {
-        this.skjemainnholdBuilderKladd.medRefusjon(refusjonsBelopPerMnd, refusjonsOpphordato, endringIRefusjonList);
-        return this;
-    }
-    public InntektsmeldingBuilder medRefusjon(Refusjon refusjon) {
-        this.skjemainnholdBuilderKladd.medRefusjon(refusjon);
-        return this;
-    }
     public InntektsmeldingBuilder medSykepengerIArbeidsgiverperioden(SykepengerIArbeidsgiverperioden sykepengerIArbeidsgiverperioden) {
         this.skjemainnholdBuilderKladd.medSykepengerIArbeidsgiverperioden(sykepengerIArbeidsgiverperioden);
         return this;
@@ -120,6 +99,35 @@ public class InntektsmeldingBuilder {
     }
     public InntektsmeldingBuilder medArbeidsforhold(Arbeidsforhold arbeidsforhold) {
         this.skjemainnholdBuilderKladd.medArbeidsforhold(arbeidsforhold);
+        return this;
+    }
+
+    public InntektsmeldingBuilder medRefusjonsBelopPerMnd(BigDecimal refusjonsBelopPerMnd) {
+        if(refusjonBuilderKladd == null) {
+            refusjonBuilderKladd = new RefusjonBuilder();
+        }
+        this.refusjonBuilderKladd.medRefusjonsBelopPerMnd(refusjonsBelopPerMnd);
+        return this;
+    }
+    public InntektsmeldingBuilder medEndringIRefusjonslist(List<EndringIRefusjon> endringIRefusjonList) {
+        if(refusjonBuilderKladd == null) {
+            refusjonBuilderKladd = new RefusjonBuilder();
+        }
+        this.refusjonBuilderKladd.medEndringIRefusjonslist(endringIRefusjonList);
+        return this;
+    }
+    public InntektsmeldingBuilder medEndringIRefusjonslist(Map<LocalDate, BigDecimal> endringRefusjonMap) {
+        if(refusjonBuilderKladd == null) {
+            refusjonBuilderKladd = new RefusjonBuilder();
+        }
+        this.refusjonBuilderKladd.medEndringIRefusjonslist(endringRefusjonMap);
+        return this;
+    }
+    public InntektsmeldingBuilder medRefusjonsOpphordato(LocalDate refusjonsOpphordato) {
+        if(refusjonBuilderKladd == null) {
+            refusjonBuilderKladd = new RefusjonBuilder();
+        }
+        this.refusjonBuilderKladd.medRefusjonsOpphordato(refusjonsOpphordato);
         return this;
     }
 
@@ -187,6 +195,9 @@ public class InntektsmeldingBuilder {
 
     public InntektsmeldingM build() {
         this.skjemainnholdBuilderKladd.medArbeidsforhold(arbeidsforholdBuilderKladd.build());
+        if (refusjonBuilderKladd != null) {
+            this.skjemainnholdBuilderKladd.medRefusjon(refusjonBuilderKladd.build());
+        }
         this.inntektsmeldingKladd.setSkjemainnhold(skjemainnholdBuilderKladd.build());
         return inntektsmeldingKladd;
     }
