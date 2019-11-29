@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.servlet.http.HttpServletResponse;
 
 @Api(tags = {"aktoerregister"})
-@Path("/api/v1/identer")
+@Path("/aktoerregister/api/v1/identer")
 public class AktoerIdentMock {
 
     private static final String NAV_IDENTER_HEADER_KEY = "Nav-Personidenter";
