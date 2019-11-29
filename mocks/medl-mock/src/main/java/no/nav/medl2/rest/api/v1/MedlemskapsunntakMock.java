@@ -28,7 +28,7 @@ import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PAR
 import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_STATUSER;
 import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_TIL_OG_MED;
 
-@Path("/api/v1/medlemskapsunntak")
+@Path("medl2/api/v1/medlemskapsunntak")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(tags = {"Medlemskapsunntak"})
 public class MedlemskapsunntakMock {
