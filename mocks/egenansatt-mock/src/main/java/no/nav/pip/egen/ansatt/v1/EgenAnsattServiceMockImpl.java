@@ -1,9 +1,13 @@
 package no.nav.pip.egen.ansatt.v1;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +16,10 @@ import no.nav.tjeneste.pip.egen.ansatt.v1.EgenAnsattV1;
 import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgenAnsattRequest;
 import no.nav.tjeneste.pip.egen.ansatt.v1.WSHentErEgenAnsattEllerIFamilieMedEgenAnsattResponse;
 
+@Addressing
+@WebService(name = "EgenAnsatt_v1", targetNamespace = "http://nav.no/tjeneste/pip/egenAnsatt/v1/")
+@HandlerChain(file="Handler-chain.xml")
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class EgenAnsattServiceMockImpl implements EgenAnsattV1 {
     private static final Logger LOG = LoggerFactory.getLogger(EgenAnsattServiceMockImpl.class);
 

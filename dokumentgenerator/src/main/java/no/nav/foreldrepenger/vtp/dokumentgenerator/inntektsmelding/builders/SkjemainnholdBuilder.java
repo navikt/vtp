@@ -7,15 +7,11 @@ import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class SkjemainnholdBuilder {
 
     private ObjectFactory objectFactory;
-
     private ÅrsakInnsendingKodeliste aarsakTilInnsending;
     private YtelseKodeliste ytelse;
     private LocalDate startdatoForeldrepengeperiodenFOM;
@@ -33,34 +29,34 @@ public class SkjemainnholdBuilder {
     private Boolean naerRelasjon = null;
     private Avsendersystem avsendersystem;
 
-    public SkjemainnholdBuilder() {
+    SkjemainnholdBuilder() {
         objectFactory = new ObjectFactory();
     }
-    public SkjemainnholdBuilder medPleiepengerPeriodeListe(PleiepengerPeriodeListe pleiepengerPeriodeListe) {
+    SkjemainnholdBuilder medPleiepengerPeriodeListe(PleiepengerPeriodeListe pleiepengerPeriodeListe) {
         this.pleiepengerPeriodeListe = pleiepengerPeriodeListe;
         return this;
     }
-    public SkjemainnholdBuilder medOmsorgspenger(Omsorgspenger omsorgspenger) {
+    SkjemainnholdBuilder medOmsorgspenger(Omsorgspenger omsorgspenger) {
         this.omsorgspenger = omsorgspenger;
         return this;
     }
-    public SkjemainnholdBuilder medArbeidsgiver(String virksomhetsnummer, String kontaktinformasjonTLF){
+    SkjemainnholdBuilder medArbeidsgiver(String virksomhetsnummer, String kontaktinformasjonTLF){
         this.arbeidsgiver = createArbeidsgiver(virksomhetsnummer, kontaktinformasjonTLF);
         return this;
     }
-    public SkjemainnholdBuilder medArbeidsgiver(Arbeidsgiver arbeidsgiver){
+    SkjemainnholdBuilder medArbeidsgiver(Arbeidsgiver arbeidsgiver){
         this.arbeidsgiver = arbeidsgiver;
         return this;
     }
-    public SkjemainnholdBuilder medArbeidsgiverPrivat(String arbeidsgiverFnr, String kontaktinformasjonTLF) {
+    SkjemainnholdBuilder medArbeidsgiverPrivat(String arbeidsgiverFnr, String kontaktinformasjonTLF) {
         medArbeidsgiverPrivat(createArbeidsgiverPrivat(arbeidsgiverFnr, kontaktinformasjonTLF));
         return this;
     }
-    public SkjemainnholdBuilder medArbeidsgiverPrivat(ArbeidsgiverPrivat arbeidsgiverPrivat) {
+    SkjemainnholdBuilder medArbeidsgiverPrivat(ArbeidsgiverPrivat arbeidsgiverPrivat) {
         this.arbeidsgiverPrivat = arbeidsgiverPrivat;
         return this;
     }
-    public SkjemainnholdBuilder medOpphoerAvNaturalytelseListe(BigDecimal belopPrMnd, LocalDate fom, NaturalytelseKodeliste kodelisteNaturalytelse) {
+    SkjemainnholdBuilder medOpphoerAvNaturalytelseListe(BigDecimal belopPrMnd, LocalDate fom, NaturalytelseKodeliste kodelisteNaturalytelse) {
         if (this.opphoerAvNaturalytelseListe == null) {
             opphoerAvNaturalytelseListe = new OpphoerAvNaturalytelseListe();
         }
@@ -68,74 +64,55 @@ public class SkjemainnholdBuilder {
                 .add(createNaturalytelseDetaljer(belopPrMnd, fom, kodelisteNaturalytelse));
         return this;
     }
-    public SkjemainnholdBuilder medOpphoerAvNaturalytelseListe(OpphoerAvNaturalytelseListe opphoerAvNaturalytelseListe) {
+    SkjemainnholdBuilder medOpphoerAvNaturalytelseListe(OpphoerAvNaturalytelseListe opphoerAvNaturalytelseListe) {
         this.opphoerAvNaturalytelseListe = opphoerAvNaturalytelseListe;
         return this;
     }
-    public SkjemainnholdBuilder medGjenopptakelseNaturalytelseListe(GjenopptakelseNaturalytelseListe gjenopptakelseNaturalytelseListe) {
+    SkjemainnholdBuilder medGjenopptakelseNaturalytelseListe(GjenopptakelseNaturalytelseListe gjenopptakelseNaturalytelseListe) {
         this.gjenopptakelseNaturalytelseListe = gjenopptakelseNaturalytelseListe;
         return this;
     }
-    public SkjemainnholdBuilder medArbeidstakerFNR(String arbeidstakerFNR) {
+    SkjemainnholdBuilder medArbeidstakerFNR(String arbeidstakerFNR) {
         this.arbeidstakerFNR = arbeidstakerFNR;
         return this;
     }
-    public SkjemainnholdBuilder medRefusjon(BigDecimal refusjonsBelopPerMnd) {
-        this.refusjon = createRefusjon(refusjonsBelopPerMnd, null, null);
-        return this;
-    }
-    public SkjemainnholdBuilder medRefusjon(BigDecimal refusjonsBelopPerMnd,
-                                              LocalDate refusjonsOpphordato,
-                                              Map<LocalDate, BigDecimal> endringRefusjonMap) {
-        medRefusjon(refusjonsBelopPerMnd, refusjonsOpphordato,
-                endringRefusjonMap.entrySet().stream().map(
-                        entry -> createEndringIRefusjon(entry.getKey(), entry.getValue())
-                ).collect(Collectors.toList()));
-        return this;
-    }
-    public SkjemainnholdBuilder medRefusjon(BigDecimal refusjonsBelopPerMnd,
-                                              LocalDate refusjonsOpphordato,
-                                              List<EndringIRefusjon> endringIRefusjonList) {
-        this.refusjon = createRefusjon(refusjonsBelopPerMnd, refusjonsOpphordato, endringIRefusjonList);
-        return this;
-    }
-    public SkjemainnholdBuilder medRefusjon(Refusjon refusjon) {
+    SkjemainnholdBuilder medRefusjon(Refusjon refusjon) {
         this.refusjon = refusjon;
         return this;
     }
-    public SkjemainnholdBuilder medSykepengerIArbeidsgiverperioden(SykepengerIArbeidsgiverperioden sykepengerIArbeidsgiverperioden) {
+    SkjemainnholdBuilder medSykepengerIArbeidsgiverperioden(SykepengerIArbeidsgiverperioden sykepengerIArbeidsgiverperioden) {
         this.sykepengerIArbeidsgiverperioden = sykepengerIArbeidsgiverperioden;
         return this;
     }
-    public SkjemainnholdBuilder medNaerRelasjon(Boolean naerRelasjon) {
+    SkjemainnholdBuilder medNaerRelasjon(Boolean naerRelasjon) {
         this.naerRelasjon = naerRelasjon;
         return this;
     }
-    public SkjemainnholdBuilder medAarsakTilInnsending(ÅrsakInnsendingKodeliste aarsakTilInnsending) {
+    SkjemainnholdBuilder medAarsakTilInnsending(ÅrsakInnsendingKodeliste aarsakTilInnsending) {
         this.aarsakTilInnsending = aarsakTilInnsending;
         return this;
     }
-    public SkjemainnholdBuilder medStartdatoForeldrepengerperiodenFOM(LocalDate startidspunktForeldrepenger) {
+    SkjemainnholdBuilder medStartdatoForeldrepengerperiodenFOM(LocalDate startidspunktForeldrepenger) {
         this.startdatoForeldrepengeperiodenFOM = startidspunktForeldrepenger;
         objectFactory.createSkjemainnholdStartdatoForeldrepengeperiode(startidspunktForeldrepenger);
         return this;
     }
-    public SkjemainnholdBuilder medYtelse(YtelseKodeliste ytelse) {
+    SkjemainnholdBuilder medYtelse(YtelseKodeliste ytelse) {
         this.ytelse = ytelse;
         return this;
 
     }
-    public SkjemainnholdBuilder medAvsendersystem(Avsendersystem avsendersystem) {
+    SkjemainnholdBuilder medAvsendersystem(Avsendersystem avsendersystem) {
         this.avsendersystem = avsendersystem;
         return this;
 
     }
-    public SkjemainnholdBuilder medAvsendersystem(String avsenderSystem, String systemVersjon) {
+    SkjemainnholdBuilder medAvsendersystem(String avsenderSystem, String systemVersjon) {
         this.avsendersystem = createAvsendersystem(avsenderSystem, systemVersjon);
         return this;
 
     }
-    public SkjemainnholdBuilder medArbeidsforhold(Arbeidsforhold arbeidsforhold) {
+    SkjemainnholdBuilder medArbeidsforhold(Arbeidsforhold arbeidsforhold) {
         this.arbeidsforhold = arbeidsforhold;
         return this;
     }
@@ -164,35 +141,6 @@ public class SkjemainnholdBuilder {
         kontaktinformasjon.setKontaktinformasjonNavn("Corpolarsen");
         arbeidsgiver.setKontaktinformasjon(kontaktinformasjon);
         return arbeidsgiver;
-    }
-    public Refusjon createRefusjon(BigDecimal refusjonsBelopPerMnd, LocalDate refusjonsOpphordato, List<EndringIRefusjon> endringIRefusjonList) {
-
-        ObjectFactory objectFactory = new ObjectFactory();
-        Refusjon refusjon = objectFactory.createRefusjon();
-
-        refusjon.setRefusjonsbeloepPrMnd(
-                objectFactory.createRefusjonRefusjonsbeloepPrMnd(refusjonsBelopPerMnd));
-
-        if (endringIRefusjonList != null && endringIRefusjonList.size() > 0) {
-            EndringIRefusjonsListe endringIRefusjonsListe = objectFactory.createEndringIRefusjonsListe();
-            endringIRefusjonsListe.getEndringIRefusjon().addAll(endringIRefusjonList);
-            refusjon.setEndringIRefusjonListe(
-                    objectFactory.createRefusjonEndringIRefusjonListe(endringIRefusjonsListe)
-            );
-        }
-
-
-        if (refusjonsOpphordato != null) {
-            refusjon.setRefusjonsopphoersdato(objectFactory.createRefusjonRefusjonsopphoersdato(                   refusjonsOpphordato));
-        }
-        return refusjon;
-    }
-    private EndringIRefusjon createEndringIRefusjon(LocalDate endringsdato, BigDecimal refusjonsbeloepPrMnd) {
-        ObjectFactory objectFactory = new ObjectFactory();
-        EndringIRefusjon endringIRefusjon = objectFactory.createEndringIRefusjon();
-        endringIRefusjon.setEndringsdato(objectFactory.createEndringIRefusjonEndringsdato(endringsdato));
-        endringIRefusjon.setRefusjonsbeloepPrMnd(objectFactory.createEndringIRefusjonRefusjonsbeloepPrMnd(refusjonsbeloepPrMnd));
-        return endringIRefusjon;
     }
     private NaturalytelseDetaljer createNaturalytelseDetaljer(BigDecimal belopPrMnd, LocalDate fom, NaturalytelseKodeliste kodelisteNaturalytelse) {
         ObjectFactory objectFactory = new ObjectFactory();
