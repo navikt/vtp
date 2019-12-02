@@ -13,6 +13,10 @@
     <name>VTP ::saf-mock</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <apigen.version>5.0.0</apigen.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
@@ -40,5 +44,47 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.distelli.graphql</groupId>
+            <artifactId>graphql-apigen-deps</artifactId>
+            <version>${apigen.version}</version>
+        </dependency>
     </dependencies>
+
+<!--
+    Hvis Saf-tjenesten sin modell (saf.graphql) skulle endre seg, kan denne kommenteres inn for å kjøre kodegenerering på nytt.
+    Desverre kompilerer det ikke ut av boksen, så quick-fiksen ble å kommentere det ut etter kjøring og bytte
+    ut alle forekomster av Date og DateTime i kildefilene med LocalDate og LocalDateTime v.h.a. find/replace.
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.distelli.graphql</groupId>
+                <artifactId>graphql-apigen</artifactId>
+                <version>${apigen.version}</version>
+                <configuration>
+                    &lt;!&ndash; Optional. This is only needed if you omit the @java(package:"...")
+                         annotations from your schema types. Using this feature
+                         also means your GraphQL schema can NOT be depended upon
+                         by GraphQL schemas defined in other maven projects. See:
+                         https://github.com/Distelli/graphql-apigen/issues/5#issuecomment-275923555
+                    &ndash;&gt;
+                    <defaultPackageName>no.nav.saf</defaultPackageName>
+                    &lt;!&ndash; Optional. Location of your schema file(s). Default is ${project.basedir}/schema. The
+                         expected extension is *.graphql. &ndash;&gt;
+                    <sourceDirectory>${project.basedir}/src/main/resources/schemas</sourceDirectory>
+                    &lt;!&ndash; Optional. Output folder for Java source. Default is ${project.basedir}/target/generated-sources/apigen.
+                    <outputDirectory>output/folder</outputDirectory>&ndash;&gt;
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>java-apigen</id>
+                        <goals>
+                            <goal>apigen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>-->
 </project>

@@ -1,6 +1,6 @@
-package no.nav.saf.journalpost;
+package no.nav.saf.graphql;
 
-import no.nav.saf.domain.visningsmodell.Journalpost;
+import no.nav.saf.generatedsources.Journalpost;
 
 public interface JournalpostCoordinator {
     Journalpost hentJournalpost(String journalpostId);

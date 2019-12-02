@@ -44,9 +44,8 @@ public class SafMock {
     private GraphQLTjeneste graphQLTjeneste;
 
 
-    public SafMock(GraphQLTjeneste graphQLTjeneste) {
-        // instansieres ved oppstart.
-        this.graphQLTjeneste = graphQLTjeneste;
+    public SafMock() {
+        this.graphQLTjeneste = GraphQLTjeneste.getInstance();
         this.journalRepository = JournalRepositoryImpl.getInstance();
     }
 

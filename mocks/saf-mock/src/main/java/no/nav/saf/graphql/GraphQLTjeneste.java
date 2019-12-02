@@ -13,10 +13,10 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.saf.domain.kode.Arkivsakssystem;
-import no.nav.saf.domain.visningsmodell.Journalpost;
-import no.nav.saf.domain.visningsmodell.Sak;
-import no.nav.saf.journalpost.JournalpostCoordinator;
+
+import no.nav.saf.generatedsources.Arkivsaksystem;
+import no.nav.saf.generatedsources.Journalpost;
+import no.nav.saf.generatedsources.Sak;
 
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
@@ -25,10 +25,23 @@ import java.util.Objects;
 
 public class GraphQLTjeneste {
 
-    private static final String SCHEME_PATH = "schemas/saf.graphqls";
+    private static final String SCHEME_PATH = "schemas/saf.graphql";
 
     private TypeDefinitionRegistry typeRegistry;
     private SchemaGenerator schemaGenerator;
+
+    private static GraphQLTjeneste instance;
+
+    public static synchronized GraphQLTjeneste getInstance(){
+
+        if(instance == null){
+            instance = new GraphQLTjeneste();
+            instance.init();
+        }
+
+        return instance;
+    }
+
 
     public void init() {
         SchemaParser schemaParser = new SchemaParser();
@@ -61,11 +74,11 @@ public class GraphQLTjeneste {
         return new JournalpostCoordinator() {
             @Override
             public Journalpost hentJournalpost(String journalpostId) {
-                return Journalpost.builder()
+                return new Journalpost.Builder()
                         .withJournalpostId("12345678")
                         .withDatoOpprettet(LocalDateTime.now())
-                        .withSak(Sak.builder()
-                                .withArkivsaksystem(Arkivsakssystem.GSAK)
+                        .withSak(new Sak.Builder()
+                                .withArkivsaksystem(Arkivsaksystem.GSAK)
                                 .withArkivsaksnummer("123")
                                 .withDatoOpprettet(LocalDateTime.now()).build())
                         .build();

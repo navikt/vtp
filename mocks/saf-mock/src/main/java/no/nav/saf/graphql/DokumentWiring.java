@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
-import no.nav.saf.domain.visningsmodell.Journalpost;
+import no.nav.saf.generatedsources.Journalpost;
 import no.nav.saf.exceptions.SafFunctionalException;
-import no.nav.saf.journalpost.JournalpostCoordinator;
 import no.nav.saf.SafMock;
 
 public class DokumentWiring {
