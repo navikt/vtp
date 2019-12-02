@@ -1,9 +1,13 @@
 package no.nav.tjeneste.virksomhet.innsynjournal.v2;
 
+import javax.jws.HandlerChain;
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,10 @@ import no.nav.tjeneste.virksomhet.innsynjournal.v2.meldinger.HentTilgjengeligJou
 import no.nav.tjeneste.virksomhet.innsynjournal.v2.meldinger.IdentifiserJournalpostRequest;
 import no.nav.tjeneste.virksomhet.innsynjournal.v2.meldinger.IdentifiserJournalpostResponse;
 
+@Addressing
+@WebService(name = "InnsynJournal_v2", targetNamespace = "http://nav.no/tjeneste/virksomhet/innsynJournal/v2")
+@HandlerChain(file="Handler-chain.xml")
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class InnsynJournalServiceMockImpl implements InnsynJournalV2 {
     private static final Logger LOG = LoggerFactory.getLogger(InnsynJournalServiceMockImpl.class);
 
