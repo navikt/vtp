@@ -1,0 +1,52 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: vtp
+  namespace: t4
+  labels:
+    team: teamforeldrepenger
+spec:
+  image: repo.adeo.no:5443/vtp:1.0_20191126135811_3711213 # Required. Docker image.
+  port: 8063 # Required. The port number which is exposed by the container and should receive HTTP traffic.
+  liveness: # HTTP endpoint that signals 200 OK when the application is running.
+    path: /rest/isAlive
+    initialDelay: 20
+    timeout: 5
+    periodSeconds: 10     # How often (in seconds) to perform the probe. Default to 10 seconds
+    failureThreshold: 27 # when a Pod starts and the probe fails,
+    # nais will try failureThreshold times before giving up and restarting the Pod
+    # Defaults to 3
+  readiness: # HTTP endpoint that signals 200 OK when it is okay to start routing traffic to the application.
+    path: /rest/isReady
+    initialDelay: 20
+    timeout: 5
+    periodSeconds: 10
+    failureThreshold: 27
+  replicas: # Optional. Set min = max to disable autoscaling.
+    min: 1 # minimum number of replicas.
+    max: 1 # maximum number of replicas.
+    cpuThresholdPercentage: 80 # total cpu percentage threshold on deployment, at which point it will increase number of pods if current < max
+  leaderElection: false # Optional. If true, a http endpoint will be available at $ELECTOR_PATH that return the current leader
+  # Compare this value with the $HOSTNAME to see if the current instance is the leader
+  istio: # Optional.
+    enabled: false # Optional. When true, envoy-proxy sidecar will be injected into pod and https urls envvars will be rewritten
+  resources: # Optional. See: http://kubernetes.io/docs/user-guide/compute-resources/
+    limits:
+      cpu: "2000m" # app will have its cpu usage throttled if exceeding this limit
+      memory: "2048Mi"  # app will be killed if exceeding these limits
+    requests: # App is guaranteed the requested resources and  will be scheduled on nodes with at least this amount of resources available
+      cpu: "600m"
+      memory: "1024Mi"
+  ingresses: # Optional. List of ingress URLs that will route HTTP traffic to the application.
+    - "https://vtp-t4.nais.preprod.local/"
+  vault:
+    enabled: false
+  env:
+    - name: VTP_KAFKA_DISABLE
+      value: "true"
+    - name: VTP_LDAP_DISABLE
+      value: "true"
+    - name: NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE
+      value: "/etc/ssl/certs/java/cacerts"
+    - name: NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD
+      value: "changeme"

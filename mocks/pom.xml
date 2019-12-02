@@ -17,10 +17,12 @@
         <module>dokarkiv-mock</module>
         <module>dokumentproduksjon-mock</module>
         <module>dummy-mock</module>
+        <module>egenansatt-mock</module>
         <module>gsak-mock</module>
         <module>infotrygd-mock</module>
         <module>infotrygdfeed-mock</module>
         <module>infotrygd-kontantstotte-mock</module>
+        <module>innsynjournal-mock</module>
         <module>inntekt-mock</module>
         <module>joark-mock</module>
         <module>kafka-embedded-mock</module>
@@ -29,11 +31,16 @@
         <module>medl-mock</module>
         <module>norg2-mock</module>
         <module>oppdrag-mock</module>
+        <module>oppgave-mock</module>
         <module>organisasjon-mock</module>
         <module>personfeed-mock</module>
         <module>sigrun-mock</module>
         <module>tps-mock</module>
     </modules>
+
+    <properties>
+        <ks-tjenestespesifikasjoner.version>1.2019.09.25-00.21-49b69f0625e0</ks-tjenestespesifikasjoner.version>
+    </properties>
 
     <dependencies>
         <dependency>

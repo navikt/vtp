@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.WebServiceFeature;
 
+import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingMockImpl;
+import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV2MockImpl;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalV1ServiceMock;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
@@ -15,6 +17,7 @@ import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;
+import no.nav.pip.egen.ansatt.v1.EgenAnsattServiceMockImpl;
 import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
@@ -27,6 +30,7 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.DokumentproduksjonV2Mock
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdberegningsgrunnlag.v1.FinnGrunnlagListeMockImpl;
 import no.nav.tjeneste.virksomhet.infotrygd.infotrygdsak.v1.FinnSakListeMockImpl;
 import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.InngaaendeJournalServiceMockImpl;
+import no.nav.tjeneste.virksomhet.innsynjournal.v2.InnsynJournalServiceMockImpl;
 import no.nav.tjeneste.virksomhet.inntekt.v3.InntektMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v2.JournalV2ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.journal.v3.JournalV3ServiceMockImpl;
@@ -75,6 +79,8 @@ public class SoapWebServiceConfig {
 
         publishWebService(new DokumentproduksjonV2MockImpl(journalRepository), "/soap/dokprod/ws/dokumentproduksjon/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/soap/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
+        publishWebService(new ArbeidsevnevurderingMockImpl(),"/soap/ail_ws/Arbeidsevnevurdering_v1");
+        publishWebService(new YtelseskontraktV2MockImpl(),"/soap/ail_ws/Ytelseskontrakt_v2");
         publishWebService(new MedlemServiceMockImpl(repo), "/soap/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/soap/norg2/ws/Arbeidsfordeling/v1");
         publishWebService(new InntektMockImpl(repo), "/soap/inntektskomponenten-ws/inntekt/v3/Inntekt");
@@ -85,6 +91,8 @@ public class SoapWebServiceConfig {
         publishWebService(new BehandleJournalV3ServiceMockImpl(),"/soap/services/behandlejournal/v3");
         publishWebService(new SimulerFpServiceMockImpl(), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
+        publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
+        publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

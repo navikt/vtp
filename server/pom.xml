@@ -95,6 +95,18 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>dokarkiv-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>      
+            <artifactId>egenansatt-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>innsynjournal-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>oppgave-mock</artifactId>
+        </dependency>
 
 
         <!-- NAV biblioteker -->

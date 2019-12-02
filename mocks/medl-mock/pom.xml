@@ -22,13 +22,25 @@
         <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
-            </dependency>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.tjenester</groupId>
+            <artifactId>medlemskapsunntak-api-v1</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <!-- 3dje parts biblioteker -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http-spi</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+        </dependency>
+
 
     </dependencies>
 

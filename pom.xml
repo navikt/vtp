@@ -35,8 +35,8 @@
 
         <java.version>11</java.version>
 
-        <cxf.version>3.3.1</cxf.version>
-        <swagger.version>1.5.21</swagger.version>
+        <cxf.version>3.3.4</cxf.version>
+        <swagger.version>1.6.0</swagger.version>
 
     </properties>
 
@@ -54,7 +54,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.9.8</version>
+                <version>2.10.1</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -189,6 +189,11 @@
                 <artifactId>oppdrag-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>oppgave-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -217,6 +222,18 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>egenansatt-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>innsynjournal-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -267,7 +284,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
                 <artifactId>fp-topics-manifest</artifactId>
-                <version>5.0_20190613132816_304a09e</version>
+                <version>5.0_20191120094331_2b23521</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
@@ -283,12 +300,12 @@
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
-                <version>2.2.1</version>
+                <version>2.3.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-streams</artifactId>
-                <version>2.2.1</version>
+                <version>2.3.1</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -314,7 +331,7 @@
             <dependency>
                 <groupId>no.nav.tjenestespesifikasjoner</groupId>
                 <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
-                <version>1.2019.07.10-12.21-b55f47790a9d</version>
+                <version>1.2019.09.25-00.21-49b69f0625e0</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>
@@ -345,6 +362,20 @@
                 <version>3.0.1</version>
                 <classifier>jaxws</classifier>
             </dependency>
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-arbeidsevnevurdering-v1-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>no.nav.tjenester.fim</groupId>
+                <artifactId>nav-fim-ytelseskontrakt-v2-tjenestespesifikasjon</artifactId>
+                <classifier>jaxws</classifier>
+                <version>2.0.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>no.nav.tjenester.fim</groupId>
                 <artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
@@ -511,13 +542,13 @@
             <dependency>
                 <groupId>org.jboss</groupId>
                 <artifactId>jandex</artifactId>
-                <version>2.1.1.Final</version>
+                <version>2.1.2.Final</version>
             </dependency>
 
             <dependency>
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
-                <version>2.3.3</version>
+                <version>2.3.5</version>
             </dependency>
 
             <dependency>
@@ -529,13 +560,13 @@
             <dependency>
                 <groupId>com.unboundid</groupId>
                 <artifactId>unboundid-ldapsdk</artifactId>
-                <version>4.0.8</version>
+                <version>4.0.13</version>
             </dependency>
 
             <dependency>
                 <groupId>org.bitbucket.b_c</groupId>
                 <artifactId>jose4j</artifactId>
-                <version>0.6.4</version>
+                <version>0.7.0</version>
             </dependency>
 
             <dependency>
@@ -569,7 +600,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.25</version>
+                <version>1.7.29</version>
             </dependency>
 
             <dependency>
@@ -588,7 +619,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>5.4.2</version>
+                <version>5.5.2</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.vintage</groupId>
@@ -604,13 +635,13 @@
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>3.10.0</version>
+                <version>3.14.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>2.25.1</version>
+                <version>3.2.0</version>
                 <scope>test</scope>
             </dependency>
 
@@ -663,7 +694,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.8.1</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
@@ -674,7 +705,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>3.2.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -684,7 +715,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M2</version>
+                    <version>3.0.0-M4</version>
                     <configuration>
                         <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
                     </configuration>
@@ -697,7 +728,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.0</version>
+                    <version>2.22.2</version>
                     <executions>
                         <execution>
                             <id>failsafe-integration-test</id>
