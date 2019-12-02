@@ -95,6 +95,11 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>innsynjournal-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>oppgave-mock</artifactId>
+        </dependency>
+
 
         <!-- NAV biblioteker -->
 

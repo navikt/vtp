@@ -184,6 +184,11 @@
                 <artifactId>oppdrag-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>oppgave-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>

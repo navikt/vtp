@@ -33,6 +33,17 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>no.nav.foreldrepenger.vtp</groupId>
 			<artifactId>core</artifactId>
 		</dependency>

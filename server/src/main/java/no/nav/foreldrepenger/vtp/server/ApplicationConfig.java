@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.jaxrs.config.BeanConfig;
+import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
 import no.nav.foreldrepenger.vtp.server.api.expect.ExpectRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
@@ -19,6 +20,7 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
+import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
@@ -82,7 +84,10 @@ public class ApplicationConfig extends Application {
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteBoolean.class);
         classes.add(MedlemskapsunntakMock.class);
+        classes.add(OppgaveKontantstotteMockImpl.class);
+        classes.add(AktoerIdentMock.class);
         classes.add(InnsynMock.class);
+
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(PdpRestTjeneste.class);
