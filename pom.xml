@@ -822,12 +822,6 @@
         </plugins>
     </build>
 
-    <scm>
-        <connection>scm:git:https://github.com/navikt/vtp.git</connection>
-        <developerConnection>scm:git:https://github.com/navikt/vtp.git</developerConnection>
-        <url>https://github.com/navikt/vtp</url>
-        <tag>HEAD</tag>
-    </scm>
 
     <distributionManagement>
         <repository>
