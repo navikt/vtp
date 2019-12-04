@@ -1,19 +1,18 @@
 package no.nav.foreldrepenger.vtp.server.api.kafka;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +54,25 @@ public class KafkaRestTjeneste {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/topics/{topic}")
+    @ApiOperation(value = "", notes = ("Oppretter ny (tom) Kafka topic."))
+    public Response createTopic(@PathParam("topic") String topic) {
+        LOG.info("Request: oppretter topic: {}", topic);
+        kafkaAdminClient.createTopics(Collections.singleton(new NewTopic(topic, 1, (short) 1)));
+
+        return Response
+                .status(Response.Status.CREATED)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/send/{topic}")
     @ApiOperation(value = "", notes = ("Legger melding på Kafka topic"))
-    public Response sendMessage(@PathParam("topic") String topic, String message) {
+    public Response sendMessage(@PathParam("topic") String topic, @QueryParam("key") String key, String message) {
         LOG.info("Request: send message to topic [{}]: {}", topic, message);
-        localKafkaProducer.sendMelding(topic, message);
+        localKafkaProducer.sendMelding(topic, key, message);
 
         return Response
                 .status(Response.Status.OK)
@@ -67,5 +80,4 @@ public class KafkaRestTjeneste {
                 .entity(message)
                 .build();
     }
-
 }
