@@ -14,12 +14,14 @@
     <modules>
         <module>arbeidsforhold-mock</module>
         <module>arena-mock</module>
+        <module>dokarkiv-mock</module>
         <module>dokumentproduksjon-mock</module>
         <module>dummy-mock</module>
         <module>egenansatt-mock</module>
         <module>gsak-mock</module>
         <module>infotrygd-mock</module>
         <module>infotrygdfeed-mock</module>
+        <module>infotrygd-kontantstotte-mock</module>
         <module>innsynjournal-mock</module>
         <module>inntekt-mock</module>
         <module>joark-mock</module>
