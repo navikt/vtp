@@ -33,7 +33,6 @@ public class OidcTokenGenerator {
     public OidcTokenGenerator(String brukerId, String nonce) {
         additionalClaims.put("azp", "OIDC");
         additionalClaims.put("acr", "Level4");
-        additionalClaims.put("sub", "dummy");
         this.subject = brukerId;
         this.nonce = nonce;
 
