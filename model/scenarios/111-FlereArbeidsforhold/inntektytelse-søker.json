@@ -17,7 +17,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-10-31",
 				"beløp": 30000,
-				"orgnr": "979191139",
+				"orgnr": "342352362",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn",
@@ -69,7 +69,7 @@
 				"ansettelsesperiodeFom": "2017-01-01",
                 "ansettelsesperiodeTom": "2018-11-30",
 				"arbeidsforholdstype": "maritimtArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191139",
+				"arbeidsgiverOrgnr": "342352362",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "2017-01-01",

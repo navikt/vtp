@@ -59,7 +59,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-12-31",
 				"beløp": 25000,
-				"orgnr": "979191139",
+				"orgnr": "342352362",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -68,7 +68,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-12-31",
 				"beløp": 10000,
-				"orgnr": "979191139",
+				"orgnr": "342352362",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -97,7 +97,7 @@
 			{
 				"frilansFom":"2018-01-01",
 				"frilansTom":"2018-12-31",
-				"orgnr":"979191139",
+				"orgnr":"342352362",
 				"stillingsprosent":"25"
 			}
 		]
@@ -163,7 +163,7 @@
 				"arbeidsforholdId": "ARB001-001",
 				"ansettelsesperiodeFom": "2017-01-01",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
-				"arbeidsgiverOrgnr": "979191139",
+				"arbeidsgiverOrgnr": "342352362",
 
 
 				"arbeidsavtaler" : [
