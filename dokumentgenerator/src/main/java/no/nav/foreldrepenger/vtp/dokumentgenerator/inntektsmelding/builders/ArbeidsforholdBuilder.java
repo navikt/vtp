@@ -23,6 +23,7 @@ public class ArbeidsforholdBuilder {
     private List<UtsettelseAvForeldrepenger> utsettelseAvForeldrepengerList;
     private List<GraderingIForeldrepenger> graderingIForeldrepengerList;
     private List<Periode> avtaltFerieListeList;
+    private LocalDate foersteFravaersdag = null;
 
 
     public ArbeidsforholdBuilder() {
@@ -64,6 +65,11 @@ public class ArbeidsforholdBuilder {
     }
     public ArbeidsforholdBuilder medArbeidsforholdId(String arbeidsforholdId) {
         this.arbeidsforholdId = arbeidsforholdId;
+        return this;
+    }
+
+    public ArbeidsforholdBuilder medFørsteFraværsdag(LocalDate førsteFraværsdag) {
+        this.foersteFravaersdag = førsteFraværsdag;
         return this;
     }
 
@@ -122,6 +128,10 @@ public class ArbeidsforholdBuilder {
             graderingIForeldrepengerListe.getGraderingIForeldrepenger().addAll(graderingIForeldrepengerList);
             arbeidsforhold.setGraderingIForeldrepengerListe(
                     objectFactory.createArbeidsforholdGraderingIForeldrepengerListe(graderingIForeldrepengerListe));
+        }
+        if (foersteFravaersdag != null) {
+            JAXBElement<LocalDate> arbeidsforholdFoersteFravaersdag = objectFactory.createArbeidsforholdFoersteFravaersdag(foersteFravaersdag);
+            arbeidsforhold.setFoersteFravaersdag(arbeidsforholdFoersteFravaersdag);
         }
 
         Objects.requireNonNull(beregnetInntektBelop, "Beregnet inntekt kan ikke være null");

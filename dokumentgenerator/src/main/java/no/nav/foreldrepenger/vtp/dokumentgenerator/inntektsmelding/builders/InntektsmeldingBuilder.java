@@ -168,6 +168,10 @@ public class InntektsmeldingBuilder {
         return this;
     }
 
+    public InntektsmeldingBuilder medFørsteFraværsdag(LocalDate førsteFraværsdag) {
+        this.arbeidsforholdBuilderKladd.medFørsteFraværsdag(førsteFraværsdag);
+        return this;
+    }
 
     public String createInntektesmeldingXML() {
         return createInntektsmeldingXML(this.build());
