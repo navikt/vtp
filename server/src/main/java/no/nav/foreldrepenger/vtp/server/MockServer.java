@@ -95,13 +95,15 @@ public class MockServer {
     }
 
     public void start() throws Exception {
-        startWebServer();
+
         if(!tjenesteDisabled(VTPTjeneste.LDAP)){
             startLdapServer();
         }
         if(!tjenesteDisabled(VTPTjeneste.KAFKA)){
             startKafkaServer();
         }
+        startWebServer();
+
 
     }
 
