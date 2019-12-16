@@ -232,7 +232,7 @@ public class MockServer {
         https.setSendServerVersion(false);
         https.setSendXPoweredBy(false);
         https.addCustomizer(new SecureRequestCustomizer());
-        SslContextFactory sslContextFactory = new SslContextFactory();
+        SslContextFactory sslContextFactory = new SslContextFactory.Server();
 
         sslContextFactory.setCertAlias("localhost-ssl");
         sslContextFactory.setKeyStorePath(KeystoreUtils.getKeystoreFilePath());
