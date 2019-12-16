@@ -55,7 +55,7 @@ public class StatsborgerskapAdapter {
     static Periode lagPeriode(LocalDate fom, LocalDate tom) {
         Periode periode = new Periode();
         periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(tom));
+        periode.withTom(ConversionUtils.convertToXMLGregorianCalendar(tom));
         return periode;
     }
 }
