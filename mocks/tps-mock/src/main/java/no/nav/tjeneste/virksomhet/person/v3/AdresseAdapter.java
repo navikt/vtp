@@ -148,14 +148,14 @@ public class AdresseAdapter {
     private static Periode lagPeriode(LocalDate fom, LocalDate tom) {
         Periode periode = new Periode();
         periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(tom));
+        periode.withTom(ConversionUtils.convertToXMLGregorianCalendar(tom));
         return periode;
     }
 
     private static Gyldighetsperiode lagGyldighetsperiode(LocalDate fom, LocalDate tom) {
         Gyldighetsperiode periode = new Gyldighetsperiode();
         periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(fom));
-        periode.withFom(ConversionUtils.convertToXMLGregorianCalendar(tom));
+        periode.withTom(ConversionUtils.convertToXMLGregorianCalendar(tom));
         return periode;
     }
 
