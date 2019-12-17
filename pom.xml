@@ -284,7 +284,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
                 <artifactId>fp-topics-manifest</artifactId>
-                <version>5.0_20191120094331_2b23521</version>
+                <version>5.1_20191210141010_6a7f399</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
