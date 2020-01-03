@@ -6,8 +6,8 @@
 	"inntektskomponent": {
 		"inntektsperioder": [
 			{
-				"fom": "2018-01-01",
-				"tom": "2019-09-27",
+				"fom": "now() - P2Y",
+				"tom": "now()",
 				"beløp": 30000,
 				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
