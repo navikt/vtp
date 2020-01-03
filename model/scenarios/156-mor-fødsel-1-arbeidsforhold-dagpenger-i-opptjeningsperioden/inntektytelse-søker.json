@@ -12,6 +12,7 @@
 						"vedtakDato": "now() - P12M",
 						"kravMottattDato": "now() - P12M",
 						"status": "IVERK",
+						"dagsats": 1000,
 						"meldekort": [
 							{
 								"fom": "now() - P12M",
