@@ -1,14 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
-import no.nav.foreldrepenger.vtp.autotest.scenario.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.Landkode;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SivilstandModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.StatsborgerskapModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BrukerModell.Kjønn;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SøkerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapperiodeModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.*;
@@ -34,7 +27,7 @@ public class PersonopplysningerTest {
         TestscenarioImpl scenario = new TestscenarioImpl("test", "test-1", testScenarioRepository);
         JsonMapper jsonMapper =  new JsonMapper(scenario.getVariabelContainer());
         String lokalIdent = "#id1#";
-        SøkerModell søker = new SøkerModell(lokalIdent, "Donald", LocalDate.now().minusYears(20), Kjønn.M);
+        SøkerModell søker = new SøkerModell(lokalIdent, "Donald", LocalDate.now().minusYears(20), BrukerModell.Kjønn.M);
         Personopplysninger personopplysninger = new Personopplysninger(søker);
         scenario.setPersonopplysninger(personopplysninger);
         søker.setStatsborgerskap(new StatsborgerskapModell(Landkode.NOR));

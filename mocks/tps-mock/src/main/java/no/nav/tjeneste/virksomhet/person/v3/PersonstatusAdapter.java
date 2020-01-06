@@ -1,15 +1,15 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonstatusModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonstatusPeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser;
 import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PersonstatusAdapter {
     public static final String ENDRET_AV = "vtp";

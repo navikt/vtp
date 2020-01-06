@@ -1,13 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.Landkode;
 
 public class InfotrygdArbeidskategori {
     private static Map<String, String> VALID_KODER;

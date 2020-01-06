@@ -1,15 +1,15 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.BostedsadressePeriode;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
 import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BostedsadresseAdapter {
     public static final String ENDRET_AV = "vtp";

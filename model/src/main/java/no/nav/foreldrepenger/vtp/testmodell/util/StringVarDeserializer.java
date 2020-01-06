@@ -13,8 +13,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.FindTemplateVariables;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
 
 public class StringVarDeserializer extends JsonDeserializer<String> implements ContextualDeserializer, ResolvableDeserializer {
     private final JsonDeserializer<?> delegate;

@@ -1,15 +1,15 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.Landkode;
 
 /**
  * Infotrygd stønadsklasse 2.

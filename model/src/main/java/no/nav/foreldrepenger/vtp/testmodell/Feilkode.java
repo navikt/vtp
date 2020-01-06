@@ -1,13 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.Landkode;
 
 public class Feilkode {
     private static List<String> VALID_KODER;

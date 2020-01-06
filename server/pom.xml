@@ -17,6 +17,10 @@
         <!-- Prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>autotest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>ldap-mock</artifactId>
         </dependency>
         <dependency>

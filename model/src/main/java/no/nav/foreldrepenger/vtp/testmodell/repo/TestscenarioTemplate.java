@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
-import no.nav.foreldrepenger.vtp.autotest.scenario.repo.TemplateVariable;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
+import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
 import java.io.IOException;
 import java.io.Reader;

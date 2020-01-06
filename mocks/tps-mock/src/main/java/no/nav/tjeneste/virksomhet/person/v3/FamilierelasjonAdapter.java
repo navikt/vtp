@@ -1,13 +1,13 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjon;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Familierelasjoner;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Person;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class FamilierelasjonAdapter {
 

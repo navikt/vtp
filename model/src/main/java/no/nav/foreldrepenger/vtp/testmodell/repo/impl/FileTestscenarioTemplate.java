@@ -1,22 +1,17 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Set;
-
-import no.nav.foreldrepenger.vtp.autotest.scenario.repo.TemplateVariable;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.FindTemplateVariables;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TemplateVariable;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.vtp.testmodell.util.FindTemplateVariables;
+import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+import java.io.*;
+import java.util.Set;
 
 public class FileTestscenarioTemplate implements TestscenarioTemplate {
 

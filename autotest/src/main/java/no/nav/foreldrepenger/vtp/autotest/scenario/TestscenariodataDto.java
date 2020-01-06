@@ -3,8 +3,8 @@ package no.nav.foreldrepenger.vtp.autotest.scenario;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class TestscenariodataDto {

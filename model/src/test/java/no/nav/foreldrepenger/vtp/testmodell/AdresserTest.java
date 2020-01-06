@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.*;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;

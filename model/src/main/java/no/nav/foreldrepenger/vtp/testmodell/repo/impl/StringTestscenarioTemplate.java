@@ -1,18 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TemplateVariable;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.vtp.testmodell.util.FindTemplateVariables;
+import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-
-import no.nav.foreldrepenger.vtp.autotest.scenario.repo.TemplateVariable;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.FindTemplateVariables;
-import no.nav.foreldrepenger.vtp.autotest.scenario.util.VariabelContainer;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 
 public class StringTestscenarioTemplate implements TestscenarioTemplate {
 

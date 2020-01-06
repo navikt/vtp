@@ -1,31 +1,12 @@
 package no.nav.tjeneste.virksomhet.person.v3;
 
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.*;
+import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
+
 import java.time.LocalDate;
 import java.util.List;
-
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PostboksadresseModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.UstrukturertAdresseModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Gateadresse;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Gyldighetsperiode;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Landkoder;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresse;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseNorge;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUtland;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadresse;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostadressePeriode;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postadressetyper;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.PostboksadresseNorsk;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Postnummer;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.StrukturertAdresse;
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse;
-import no.nav.tjeneste.virksomhet.person.v3.metadata.Endringstyper;
 
 public class AdresseAdapter {
     public static final String ENDRET_AV = "vtp";

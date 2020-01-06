@@ -1,12 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.AdresseType;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SøkerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;

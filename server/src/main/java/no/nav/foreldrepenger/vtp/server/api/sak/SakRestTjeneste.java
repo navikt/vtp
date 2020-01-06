@@ -1,7 +1,15 @@
 package no.nav.foreldrepenger.vtp.server.api.sak;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.autotest.sak.OpprettSakRequestDTO;
+import no.nav.foreldrepenger.vtp.autotest.sak.OpprettSakResponseDTO;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
+import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -9,18 +17,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import no.nav.foreldrepenger.vtp.autotest.sak.OpprettSakRequestDTO;
-import no.nav.foreldrepenger.vtp.autotest.sak.OpprettSakResponseDTO;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.autotest.scenario.personopplysning.SøkerModell;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
-import no.nav.tjeneste.virksomhet.sak.v1.informasjon.Sak;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "Gsak repository")
 @Path("/api/sak")
