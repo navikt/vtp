@@ -11,7 +11,7 @@
 				"tema": "FA",
 				"behandlingstema": "FØ",
 				"type": "S",
-				"status": "FI",
+				"status": "A",
 				"resultat": "I"
 			}
 		],
@@ -24,6 +24,7 @@
 				"vedtak": [
 					{
 						"fom": "now() - P9M",
+						"tom": "now()",
 						"utbetalingsgrad": 100
 					}
 				],
