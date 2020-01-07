@@ -26,6 +26,9 @@ public class InfotrygdSakStatus {
         koder.put("VD", "Videresendt direktoratet");
         koder.put("VI", "Venter iverksetting");
         koder.put("VT", "Videresendt trygderetten");
+        koder.put("L", "Løpende");
+        koder.put("A", "Avsluttet");
+        koder.put("I", "Ikke Startet");
 
         VALID_KODER = Collections.unmodifiableMap(koder);
     }
