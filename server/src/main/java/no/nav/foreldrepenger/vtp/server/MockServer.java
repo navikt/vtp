@@ -3,11 +3,7 @@ package no.nav.foreldrepenger.vtp.server;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -112,8 +108,23 @@ public class MockServer {
     }
 
     private Set<String> getBootstrapTopics() {
-        Field[] fields = TopicManifest.class.getFields();
-        HashSet<String> topicSet = Stream.of(fields)
+        /*
+         * Unngå å legge til flere topics i denne listen: Benytt heller miljøvariablen "CREATE_TOPICS".
+         *
+         * Listen under kan fjernes hvis alle som starter VTP og trenger topic-ene under kjører med:
+         * CREATE_TOPICS=topicManTrenger1, topicManTrenger2
+         */
+        final List<String> topicsOldMethod = List.of("privat-foreldrepenger-mottatBehandling-fpsak",
+                "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
+                "privat-foreldrepenger-fprisk-utfor-t4",
+                "privat-foreldrepenger-tilkjentytelse-v1-local",
+                "privat-foreldrepenger-dokumenthendelse-vtp",
+                "privat-foreldrepenger-historikkinnslag-vtp");
+
+        final List<String> topics = getEnvValueList("CREATE_TOPICS");
+
+        final Field[] fields = TopicManifest.class.getFields();
+        final HashSet<String> topicSet = Stream.of(fields)
                 .filter(f -> Modifier.isStatic(f.getModifiers()))
                 .filter(f -> f.getType().equals(Topic.class))
                 .map(this::getTopic)
@@ -121,13 +132,16 @@ public class MockServer {
                 .map(Topic.class::cast)
                 .map(Topic::getTopic)
                 .collect(Collectors.toCollection(HashSet::new));
-        topicSet.addAll(List.of("privat-foreldrepenger-mottatBehandling-fpsak",
-                "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
-                "privat-foreldrepenger-fprisk-utfor-t4",
-                "privat-foreldrepenger-tilkjentytelse-v1-local",
-                "privat-foreldrepenger-dokumenthendelse-vtp",
-                "privat-foreldrepenger-historikkinnslag-vtp"));
+        topicSet.addAll(topicsOldMethod);
+        topicSet.addAll(topics);
         return topicSet;
+    }
+
+    private static List<String> getEnvValueList(String envName) {
+        return Arrays.asList((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
+                .stream()
+                .map(s -> s.trim())
+                .collect(Collectors.toList());
     }
 
     private Object getTopic(Field f) {
