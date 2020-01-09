@@ -14,7 +14,7 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.ObjectFactory;
 
 import javax.xml.bind.JAXBElement;
 import java.util.Objects;
-
+@Deprecated
 public class ForeldrepengerYtelseBuilder {
     private Foreldrepenger kladd;
 

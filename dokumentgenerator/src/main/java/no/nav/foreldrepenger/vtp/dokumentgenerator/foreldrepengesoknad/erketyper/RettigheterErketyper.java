@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketyper;
 
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Rettigheter;
-
+@Deprecated
 public class RettigheterErketyper {
     public static Rettigheter beggeForeldreRettIkkeAleneomsorg(){
         Rettigheter rettigheter = new Rettigheter();

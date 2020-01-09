@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Uttaksperiode;
-
+@Deprecated
 public class UttaksperiodeBuilder {
     private Uttaksperiode kladd;
 

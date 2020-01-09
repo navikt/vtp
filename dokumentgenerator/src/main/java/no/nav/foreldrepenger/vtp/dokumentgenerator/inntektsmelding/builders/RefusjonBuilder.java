@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-
+@Deprecated
 public class RefusjonBuilder {
     ObjectFactory objectFactory = new ObjectFactory();
     Refusjon refusjonKladd;

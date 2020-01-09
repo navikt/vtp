@@ -7,7 +7,7 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.SoekersRelasjonTilBarnet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.UkjentForelder;
 
 import static no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.builders.ytelse.ForeldrepengerYtelseBuilder.standardAnnenForelder;
-
+@Deprecated
 public class EngangstønadYtelseBuilder {
     private Engangsstønad kladd;
 

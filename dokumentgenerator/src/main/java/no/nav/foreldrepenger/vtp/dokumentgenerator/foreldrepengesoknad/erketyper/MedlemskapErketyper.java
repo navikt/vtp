@@ -7,7 +7,7 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.OppholdNorge;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.OppholdUtlandet;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Periode;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Land;
-
+@Deprecated
 public class MedlemskapErketyper {
     public static Medlemskap medlemskapNorge(){
         Medlemskap medlemskap = new Medlemskap();

@@ -11,7 +11,7 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Foreldrepenger;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Fordeling;
 
 import java.time.LocalDate;
-
+@Deprecated
 public class SøknadErketyper {
 
     public static SøknadBuilder foreldrepengesøknadTerminErketype(String aktorID, SøkersRolle søkersRolle,

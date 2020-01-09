@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.dto;
 
 import java.time.LocalDate;
-
+@Deprecated
 public class InntektsmeldingArbeidsforholdAvtaltFerieDTO {
 
     private LocalDate fom;

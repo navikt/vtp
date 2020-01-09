@@ -96,7 +96,7 @@
             <artifactId>dokarkiv-mock</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>      
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>egenansatt-mock</artifactId>
         </dependency>
         <dependency>

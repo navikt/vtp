@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketype
 import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.SøkersRolle;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Bruker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Brukerroller;
-
+@Deprecated
 public class SoekerErketyper {
 
     public static Bruker morSoeker(String aktoerId){
