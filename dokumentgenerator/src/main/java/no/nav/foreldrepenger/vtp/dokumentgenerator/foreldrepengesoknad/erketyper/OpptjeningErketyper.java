@@ -14,7 +14,7 @@ import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Opptjening;
 import no.nav.vedtak.felles.xml.soeknad.foreldrepenger.v3.Regnskapsfoerer;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.AnnenOpptjeningTyper;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Virksomhetstyper;
-
+@Deprecated
 public class OpptjeningErketyper {
 
     private OpptjeningErketyper(){}

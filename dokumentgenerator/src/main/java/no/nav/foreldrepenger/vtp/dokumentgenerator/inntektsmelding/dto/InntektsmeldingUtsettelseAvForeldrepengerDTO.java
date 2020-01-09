@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.dto;
 import java.time.LocalDate;
 
 import no.nav.inntektsmelding.xml.kodeliste._20180702.ÅrsakUtsettelseKodeliste;
-
+@Deprecated
 public class InntektsmeldingUtsettelseAvForeldrepengerDTO {
 
 

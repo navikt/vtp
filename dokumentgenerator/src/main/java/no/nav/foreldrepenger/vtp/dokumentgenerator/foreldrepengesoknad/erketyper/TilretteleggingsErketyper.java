@@ -12,7 +12,7 @@ import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.HelTilrettelegging
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.IngenTilrettelegging;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.ObjectFactory;
 import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.Tilrettelegging;
-
+@Deprecated
 public class TilretteleggingsErketyper{
 
     public static Tilrettelegging helTilrettelegging(LocalDate behovForTilretteleggingFom, LocalDate tilrettelagtArbeidFom, Arbeidsforhold arbeidsforhold){

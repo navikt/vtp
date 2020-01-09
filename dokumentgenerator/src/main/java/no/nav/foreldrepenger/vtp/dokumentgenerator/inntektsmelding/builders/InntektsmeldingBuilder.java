@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
+@Deprecated
 public class InntektsmeldingBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(InntektsmeldingBuilder.class);
     private InntektsmeldingM inntektsmeldingKladd;

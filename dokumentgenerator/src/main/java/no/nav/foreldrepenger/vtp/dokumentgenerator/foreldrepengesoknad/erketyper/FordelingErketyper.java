@@ -11,7 +11,7 @@ import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Overfoeringsaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Utsettelsesaarsaker;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Uttaksperiodetyper;
 import no.nav.vedtak.felles.xml.soeknad.uttak.v3.*;
-
+@Deprecated
 public class FordelingErketyper {
 
     public static final String STØNADSKONTOTYPE_FORELDREPENGER_FØR_FØDSEL = "FORELDREPENGER_FØR_FØDSEL";

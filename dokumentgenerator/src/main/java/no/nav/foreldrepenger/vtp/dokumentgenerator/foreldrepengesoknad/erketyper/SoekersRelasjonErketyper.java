@@ -8,7 +8,7 @@ import no.nav.vedtak.felles.xml.soeknad.felles.v3.Foedsel;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Omsorgsovertakelse;
 import no.nav.vedtak.felles.xml.soeknad.felles.v3.Termin;
 import no.nav.vedtak.felles.xml.soeknad.kodeverk.v3.Omsorgsovertakelseaarsaker;
-
+@Deprecated
 public class SoekersRelasjonErketyper {
     public static Foedsel fødsel(LocalDate fødselsdato) {
         return fødsel(1, fødselsdato);

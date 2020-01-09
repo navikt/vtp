@@ -3,7 +3,7 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.dto;
 import java.util.List;
 
 import no.nav.inntektsmelding.xml.kodeliste._20180702.BegrunnelseIngenEllerRedusertUtbetalingKodeliste;
-
+@Deprecated
 public class InntektsmeldingSykepengerIArbeidsgiverperiodenDTO {
 
     private Integer bruttoUtbetaltSykepenger;

@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.vtp.dokumentgenerator.inntektsmelding.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@Deprecated
 public class InntektsmeldingEndringIRefusjonDTO {
 
     LocalDate endringsdato;

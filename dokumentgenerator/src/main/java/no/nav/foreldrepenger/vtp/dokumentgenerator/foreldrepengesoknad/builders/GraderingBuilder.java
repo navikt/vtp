@@ -7,7 +7,7 @@ import no.nav.vedtak.felles.xml.soeknad.uttak.v3.Virksomhet;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
-
+@Deprecated
 public class GraderingBuilder {
     public GraderingBuilder(String stønadskontoType, LocalDate fom, LocalDate tom) {
         kladd = new Gradering();

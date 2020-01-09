@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+@Deprecated
 public class ArbeidsforholdBuilder {
     private ObjectFactory objectFactory = new ObjectFactory();
 //    private Arbeidsforhold arbeidsforholdKladd;

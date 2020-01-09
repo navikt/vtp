@@ -24,7 +24,7 @@ import no.nav.vedtak.felles.xml.soeknad.v3.OmYtelse;
 import no.nav.vedtak.felles.xml.soeknad.v3.Soeknad;
 
 import static no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.erketyper.SoekerErketyper.soekerAvType;
-
+@Deprecated
 public class SøknadBuilder {
 
     private Soeknad kladd;

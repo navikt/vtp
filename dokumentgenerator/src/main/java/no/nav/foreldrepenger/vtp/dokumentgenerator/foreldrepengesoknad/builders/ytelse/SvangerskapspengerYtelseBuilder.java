@@ -8,7 +8,7 @@ import no.nav.vedtak.felles.xml.soeknad.svangerskapspenger.v1.TilretteleggingLis
 
 import java.time.LocalDate;
 import java.util.List;
-
+@Deprecated
 public class SvangerskapspengerYtelseBuilder {
     private Svangerskapspenger kladd;
 

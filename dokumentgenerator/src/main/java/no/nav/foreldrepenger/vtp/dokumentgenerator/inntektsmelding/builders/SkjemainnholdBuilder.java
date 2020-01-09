@@ -8,7 +8,7 @@ import no.seres.xsd.nav.inntektsmelding_m._20181211.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
-
+@Deprecated
 public class SkjemainnholdBuilder {
 
     private ObjectFactory objectFactory;

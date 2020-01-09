@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
+@Deprecated
 public enum EksempelArbeidsgiver {
     STATOILSOKKEL("Statoil ASA avd Sokkelvirksomhet","973861778","973861778","19069011369","22552255"),
     COLORLINE("Color Line Crew AS","973135678","991779434","19069011369","99009900"),
