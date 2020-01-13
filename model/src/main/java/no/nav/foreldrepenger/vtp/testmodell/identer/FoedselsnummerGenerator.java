@@ -56,12 +56,17 @@ public class FoedselsnummerGenerator {
 
         int birthNumber = 999;
 
+
         if(this.kjonn == Kjonn.KVINNE) {
             birthNumber = 100+ random.nextInt(900/2) *2;
         } else if(this.kjonn == Kjonn.MANN) {
             birthNumber = 100+ random.nextInt(900/2) *2 + 1;
         } else {
             birthNumber = 999;
+        }
+
+        if(this.identType == IdentType.DNR){
+            day = String.valueOf(Integer.parseInt(day) + 40);
         }
 
         int fullYear = this.fodselsdato.getYear();
