@@ -1,14 +1,13 @@
-package no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.util;
+package no.nav.foreldrepenger.vtp.felles;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 public class DateUtil {
     private DateUtil() {
