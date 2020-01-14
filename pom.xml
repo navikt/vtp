@@ -23,7 +23,6 @@
         <module>model</module>
         <module>mocks</module>
         <module>server</module>
-        <module>dokumentgenerator</module>
     </modules>
 
     <properties>
@@ -78,11 +77,6 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>dokumentgenerator</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

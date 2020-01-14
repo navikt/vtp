@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.vtp.dokumentgenerator.foreldrepengesoknad.util.DateUtil;
+import no.nav.foreldrepenger.vtp.felles.DateUtil;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
