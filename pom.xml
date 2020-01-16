@@ -34,7 +34,7 @@
 
         <java.version>11</java.version>
 
-        <cxf.version>3.3.4</cxf.version>
+        <cxf.version>3.3.5</cxf.version>
         <swagger.version>1.6.0</swagger.version>
 
     </properties>
