@@ -1,6 +1,21 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 
-import java.io.StringWriter;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.*;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Aktoer;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Person;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserDokumentutkastResponse;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkeredigerbartDokumentResponse;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkeredigerbartVedleggResponse;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentResponse;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentResponse;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.jws.HandlerChain;
 import javax.jws.WebService;
@@ -10,73 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import no.nav.foreldrepenger.vtp.felles.ExpectPredicate;
-import no.nav.foreldrepenger.vtp.felles.ExpectRepository;
-import no.nav.foreldrepenger.vtp.felles.ExpectRepository.Mock;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseAvbrytelseIkkeTillatt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostAlleredeAvbrutt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostIkkeUnderArbeid;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytVedleggDokumentAlleredeAvbrutt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytVedleggDokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytVedleggDokumentIkkeVedlegg;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytVedleggJournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytVedleggJournalpostIkkeUnderArbeid;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.DokumentproduksjonV2;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.EndreDokumentTilRedigerbartDokumentAlleredeRedigerbart;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.EndreDokumentTilRedigerbartDokumentErAvbrutt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.EndreDokumentTilRedigerbartDokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.EndreDokumentTilRedigerbartDokumentIkkeRedigerbart;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.EndreDokumentTilRedigerbartJournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.EndreDokumentTilRedigerbartJournalpostIkkeUnderArbeid;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.FerdigstillForsendelseDokumentUnderRedigering;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.FerdigstillForsendelseJournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.FerdigstillForsendelseJournalpostIkkeUnderArbeid;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseDokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseDokumentTillatesIkkeGjenbrukt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseEksterntVedleggIkkeTillatt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseJournalpostIkkeFerdigstilt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseJournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseJournalpostIkkeUnderArbeid;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.KnyttVedleggTilForsendelseUlikeFagomraader;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartDokumentDokumentErRedigerbart;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartDokumentDokumentErVedlegg;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartVedleggDokumentErRedigerbart;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartVedleggForsendelseIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartVedleggJournalpostIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartVedleggJournalpostIkkeUnderArbeid;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserIkkeredigerbartVedleggVedleggIkkeTillatt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserRedigerbartDokumentDokumentErVedlegg;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.ProduserRedigerbartDokumentDokumentIkkeRedigerbart;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.RedigerDokumentDokumentIkkeFunnet;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.RedigerDokumentPessimistiskLaasing;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.RedigerDokumentRedigeringIkkeTillatt;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Aktoer;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Person;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.AvbrytForsendelseRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.AvbrytVedleggRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.EndreDokumentTilRedigerbartRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.FerdigstillForsendelseRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.KnyttVedleggTilForsendelseRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserDokumentutkastRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserDokumentutkastResponse;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkeredigerbartDokumentRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkeredigerbartDokumentResponse;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkeredigerbartVedleggRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkeredigerbartVedleggResponse;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentResponse;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentRequest;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentResponse;
+import java.io.StringWriter;
 
 
 @Addressing
@@ -116,11 +65,6 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         Aktoer bruker = request.getDokumentbestillingsinformasjon().getBruker();
 
         String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
-
-        ExpectRepository.hit(Mock.DOKUMENTPRODUKSJON,
-                "produserIkkeredigerbartDokument",
-                new ExpectPredicate("aktør", ((Person) bruker).getIdent()),
-                data);
 
         LOG.info("Dokument produsert: " + data);
 

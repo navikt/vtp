@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.jaxrs.config.BeanConfig;
-import no.nav.dokarkiv.DokarkivMock;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
-import no.nav.foreldrepenger.vtp.server.api.expect.ExpectRestTjeneste;
+import no.nav.dokarkiv.DokarkivMock;
 import no.nav.foreldrepenger.vtp.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
@@ -79,7 +78,6 @@ public class ApplicationConfig extends Application {
         classes.add(InfotrygdKontantstotteMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
-        classes.add(ExpectRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
         classes.add(FeedRestTjeneste.class);
