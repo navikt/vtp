@@ -46,7 +46,7 @@
                 <!-- NB jetty avhengigher før resteasy -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-bom</artifactId>
-                <version>9.4.25.v20191220</version>
+                <version>9.4.26.v20200117</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
