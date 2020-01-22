@@ -1,135 +1,69 @@
 package no.nav.foreldrepenger.vtp.testmodell.util;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonNavn;
-
 import java.io.BufferedReader;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
+
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell.Kjønn;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonNavn;
 
 public class FiktivtNavn {
-
-    private static List<String> etternavn = new ArrayList<>();
-    private static List<String> fornavnKvinner = new ArrayList<>();
-    private static List<String> fornavnMenn = new ArrayList<>();
-
-    private static void ensureThatListsAreLoaded() {
-        loadNames("/basedata/etternavn.txt", etternavn, "Duck");
-        loadNames("/basedata/fornavn-kvinner.txt", fornavnKvinner, "Dolly");
-        loadNames("/basedata/fornavn-menn.txt", fornavnMenn, "Donaldo");
-    }
-
-    static public PersonNavn getRandomFemaleName() {
-        ensureThatListsAreLoaded();
-        String lastName = getRandomLastName();
-        return getRandomFemaleName(lastName);
-    }
-
-
-    static public PersonNavn getRandomFemaleName(String lastName) {
-        ensureThatListsAreLoaded();
-        return getRandomNameFromList(fornavnKvinner, lastName);
-    }
-
-    static public PersonNavn getRandomMaleName() {
-        ensureThatListsAreLoaded();
-        String lastName = getRandomLastName();
-        return getRandomMaleName(lastName);
-    }
-
-    static public PersonNavn getRandomMaleName(String lastName) {
-        ensureThatListsAreLoaded();
-        return getRandomNameFromList(fornavnMenn, lastName);
-    }
-
-    static public PersonNavn getRandomNameFromList(List<String> list, String lastName) {
-        List<String> firstNames = getAlitterationsFromList(list, lastName);
-        PersonNavn navn = new PersonNavn();
-        if (firstNames.size() > 0) {
-            navn.setFornavn(getRandomStringFromList(firstNames));
-        } else {
-            navn.setFornavn(getRandomStringFromList(fornavnMenn));
+    
+    private enum Navnelager {
+        SINGLETON;
+        
+        private List<String> etternavn = loadNames("/basedata/etternavn.txt");
+        private List<String> fornavnKvinner = loadNames("/basedata/fornavn-kvinner.txt");
+        private List<String> fornavnMenn = loadNames("/basedata/fornavn-menn.txt");
+        
+        String getRandomFornavnMann() {
+            return getRandom(fornavnMenn);
         }
-        navn.setEtternavn(lastName);
-        return navn;
-    }
-
-    static private String getRandomLastName() {
-        return getRandomStringFromList(etternavn);
-    }
-
-    static private String getRandomStringFromList(List<String> nameList) {
-        int rnd = new Random().nextInt(nameList.size());
-        return nameList.get(rnd);
-    }
-
-    static public List<String> getAlitterationsFromList(List<String> list, String word) {
-        List<String> validFirstLetters = new ArrayList<>();
-        List<String> validFirstTwoLetters = new ArrayList<>();
-        String firstLetter = word.substring(0, 1).toUpperCase();
-        String firstTwoLetters = word.substring(0, 2).toUpperCase();
-
-        validFirstLetters.add(firstLetter);
-        validFirstTwoLetters.add(firstTwoLetters);
-        if (firstTwoLetters.equals("CH") || firstTwoLetters.equals("CA")) {
-            validFirstLetters.add("K");
+        
+        String getRandomFornavnKvinne() {
+            return getRandom(fornavnKvinner);
         }
-
-        if (firstTwoLetters.equals("AA")) {
-            validFirstLetters.clear();
-            validFirstLetters.add("Å");
+        
+        String getRandomEtternavn() {
+            return getRandom(etternavn);
         }
-
-        if (firstLetter.equals("Å")) {
-            validFirstTwoLetters.add("AA");
+        
+        private static String getRandom(List<String> liste) {
+            return liste.get(new Random().nextInt(liste.size()));
         }
-
-        if (firstLetter.equals("J")) {
-            validFirstTwoLetters.add("GJ");
-        }
-
-        if (firstTwoLetters.equals("GJ")) {
-            validFirstLetters.clear();
-            validFirstLetters.add("J");
-        }
-
-        if (firstLetter.equals("Z")) {
-            validFirstLetters.add("S");
-        }
-
-        if (firstLetter.equals("K")) {
-            validFirstTwoLetters.add("CA");
-            validFirstTwoLetters.add("CH");
-        }
-
-        if (firstLetter.equals("W")) {
-            validFirstLetters.add("V");
-        }
-        if (firstLetter.equals("V")) {
-            validFirstLetters.add("W");
-        }
-        return list
-                .stream()
-                .filter(s -> validFirstLetters.contains(s.substring(0, 1).toUpperCase()) ||
-                        validFirstTwoLetters.contains(s.substring(0, 2).toUpperCase()))
-                .collect(Collectors.toList());
-    }
-
-    static private void loadNames(String resourceName, List<String> targetList, String fallbackName) {
-        if (targetList.size() == 0) {
-            try (InputStream inputStream = FiktivtNavn.class.getResourceAsStream(resourceName)) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+        
+        private static List<String> loadNames(String resourceName) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(FiktivtNavn.class.getResourceAsStream(resourceName)))) {
+                final List<String> resultat = new ArrayList<>();
                 String strLine;
                 while ((strLine = br.readLine()) != null) {
                     String capitalizedName = strLine.substring(0, 1).toUpperCase() + strLine.substring(1);
-                    targetList.add(capitalizedName);
+                    resultat.add(capitalizedName);
                 }
-            } catch (Exception exp) {
-                targetList.add(fallbackName);
+                return resultat;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
+
+    static public PersonNavn getRandomFemaleName() {
+        return getRandomFemaleName(Navnelager.SINGLETON.getRandomEtternavn());
+    }
+
+    static public PersonNavn getRandomFemaleName(String lastName) {
+        return new PersonNavn(Navnelager.SINGLETON.getRandomFornavnKvinne(), lastName, Kjønn.K);
+    }
+
+    static public PersonNavn getRandomMaleName() {
+        return getRandomMaleName(Navnelager.SINGLETON.getRandomEtternavn());
+    }
+
+    static public PersonNavn getRandomMaleName(String lastName) {
+        return new PersonNavn(Navnelager.SINGLETON.getRandomFornavnMann(), lastName, Kjønn.M);
+    }
+
 }
