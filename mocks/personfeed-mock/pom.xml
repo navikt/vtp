@@ -30,6 +30,10 @@
             <groupId>no.nav.tjenester</groupId>
             <artifactId>person-api-feed-common-v1</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>testmodell</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
