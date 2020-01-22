@@ -17,6 +17,7 @@ import javax.jws.WebService;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.Holder;
 import javax.xml.ws.soap.Addressing;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -50,10 +51,11 @@ public class ArbeidsevnevurderingMockImpl implements ArbeidsevnevurderingV1 {
     }
 
     @Override
-    public void ping() {
+    public void ping(Holder<Object> holder) {
         LOG.info("ArbeidsevnevurderingV1:ping kalt");
 
     }
+
 
     private XMLGregorianCalendar xmlGregorianCalendarFromLocalDate(LocalDate date){
         GregorianCalendar gcal = GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()));

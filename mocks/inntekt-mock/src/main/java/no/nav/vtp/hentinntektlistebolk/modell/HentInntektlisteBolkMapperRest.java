@@ -67,7 +67,8 @@ public class HentInntektlisteBolkMapperRest {
         List<Inntektsperiode> inntektsperiodeList = modellPeriode.stream().filter(t -> localDateTimeInYearMonth(t.getTom(), måned))
             .collect(Collectors.toList());
         return inntektsperiodeList.stream().map(temp -> {
-            Inntekt inntekt = new Inntekt(fraModellInntektstype(temp.getType()));
+            Inntekt inntekt = new Inntekt();
+            inntekt.setInntektType(fraModellInntektstype(temp.getType()));
             inntekt.setBeloep(new BigDecimal(temp.getBeløp()));
             inntekt.setBeskrivelse(temp.getBeskrivelse());
             inntekt.setFordel(temp.getFordel().getKode());
