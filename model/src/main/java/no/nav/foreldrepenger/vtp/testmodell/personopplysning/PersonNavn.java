@@ -2,6 +2,8 @@ package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell.Kjønn;
+
 public class PersonNavn {
     @JsonProperty("fornavn")
     private String fornavn;
@@ -11,6 +13,18 @@ public class PersonNavn {
 
     @JsonProperty("kjønn")
     private BrukerModell.Kjønn kjønn;
+
+    
+    public PersonNavn() {
+        
+    }
+
+    public PersonNavn(String fornavn, String etternavn, Kjønn kjønn) {
+        this.fornavn = fornavn;
+        this.etternavn = etternavn;
+        this.kjønn = kjønn;
+    }
+
 
     public String getFornavn() {
         return fornavn;
