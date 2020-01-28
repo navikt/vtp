@@ -16,14 +16,13 @@
 	<dependencies>
 		<!-- 3dje parts NAV felleskomponenter -->
 		<dependency>
-			<groupId>no.nav.tjenester</groupId>
-			<artifactId>nav-person-v3-tjenestespesifikasjon</artifactId>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
+			<artifactId>person-v3-tjenestespesifikasjon</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>no.nav.tjenester.fim</groupId>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
 			<artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
-			<classifier>jaxws</classifier>
 		</dependency>
 
 		<!-- Eksterne avhengigheter -->
