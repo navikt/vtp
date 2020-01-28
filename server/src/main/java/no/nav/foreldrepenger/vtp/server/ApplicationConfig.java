@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.swagger.api.PaaroerendeSykdomApi;
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
 import no.nav.dokarkiv.DokarkivMock;
@@ -21,6 +20,7 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.infotrygdks.InfotrygdKontantstotteMock;
+import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.sigrun.SigrunMock;
@@ -43,11 +43,13 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import javax.ws.rs.ext.*;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -89,7 +91,7 @@ public class ApplicationConfig extends Application {
         classes.add(MedlemskapsunntakMock.class);
         classes.add(OppgaveKontantstotteMockImpl.class);
         classes.add(AktoerIdentMock.class);
-        classes.add(PaaroerendeSykdomApi.class);
+        classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
 
         // tekniske ting
@@ -104,6 +106,8 @@ public class ApplicationConfig extends Application {
         classes.add(MyExceptionMapper.class);
         classes.add(CorsFilter.class); // todo legg på en sjekk på om man kjører på localhost, fjern hvis man er deployed
         classes.add(KafkaRestTjeneste.class);
+
+        classes.add(LocalDateStringConverterProvider.class);
 
         return classes;
     }
@@ -160,6 +164,31 @@ public class ApplicationConfig extends Application {
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
         }
     }
+
+    @Provider
+    public static class LocalDateStringConverterProvider implements ParamConverterProvider {
+
+        @Override
+        public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
+            if(rawType.isAssignableFrom(LocalDate.class)) {
+                return (ParamConverter<T>) new LocalDateStringConverter();
+            }
+            return null;
+        }
+    }
+
+    public static class LocalDateStringConverter implements ParamConverter<LocalDate> {
+        @Override
+        public LocalDate fromString(String s) {
+            return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
+        }
+
+        @Override
+        public String toString(LocalDate localDate) {
+            return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        }
+    }
+
 
     @Provider
     public static class CorsFilter implements ContainerResponseFilter {

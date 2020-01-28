@@ -31,12 +31,12 @@
                             <!--<configHelp>true</configHelp>-->
                             <language>jaxrs-cxf-cdi</language>
 
-                            <!--<apiPackage>no.nav.xxx</apiPackage>
-                            <modelPackage>no.nav.xxx.model</modelPackage>-->
+                            <apiPackage>no.nav.infotrygdpaaroerendesykdom.generated.api</apiPackage>
+                            <modelPackage>no.nav.infotrygdpaaroerendesykdom.generated.model</modelPackage>
                             <invokerPackage>no.nav.infotrygdpaaroerendesykdom.generated</invokerPackage>
 
                             <!--kun modell ... -->
-                            <!--<generateApis>false</generateApis>-->
+                            <generateApis>false</generateApis>
                             <generateSupportingFiles>false</generateSupportingFiles>
 
                             <!-- pass any necessary config options -->
