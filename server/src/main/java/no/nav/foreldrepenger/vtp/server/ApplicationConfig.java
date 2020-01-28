@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.api.PaaroerendeSykdomApi;
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
 import no.nav.dokarkiv.DokarkivMock;
@@ -88,6 +89,7 @@ public class ApplicationConfig extends Application {
         classes.add(MedlemskapsunntakMock.class);
         classes.add(OppgaveKontantstotteMockImpl.class);
         classes.add(AktoerIdentMock.class);
+        classes.add(PaaroerendeSykdomApi.class);
         classes.add(InnsynMock.class);
 
         // tekniske ting

@@ -73,6 +73,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>infotrygd-paaroerende-sykdom-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>personfeed-mock</artifactId>
         </dependency>
         <dependency>
