@@ -2,12 +2,10 @@ package no.nav.infotrygdpaaroerendesykdom.rest;
 
 import io.swagger.annotations.*;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdBeregningsgrunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.Kodeverdi;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.PaaroerendeSykdom;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.SakDto;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.SakResult;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.*;
 
 import javax.enterprise.context.RequestScoped;
 import javax.validation.constraints.NotNull;
@@ -55,7 +53,10 @@ public class PårørendeSykdomMock {
 
         InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
 
-        List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream().map(this::mapYtelseToSak).collect(Collectors.toList());
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream()
+                .map(this::mapYtelseToSak)
+                .filter(it -> it.getTema().getKode().equals("BS"))
+                .collect(Collectors.toList());
 
         SakResult result = new SakResult();
         result.setSaker(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() == null).collect(Collectors.toList()));
@@ -76,8 +77,16 @@ public class PårørendeSykdomMock {
             @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
             @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
     public Response paaroerendeSykdomUsingGET1( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
-        PaaroerendeSykdom p = new PaaroerendeSykdom();
-        List<PaaroerendeSykdom> result = List.of(p);
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+        if(inntektYtelseModell.isEmpty()) {
+            return Response.ok(List.of(new PaaroerendeSykdom())).build();
+        }
+
+        List<PaaroerendeSykdom> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
+                .map(this::mapGrunnlagToPaaroerendeSykdom)
+                .filter(it -> it.getTema().getKode().equals("BS"))
+                .collect(Collectors.toList());
+
         return Response.ok(result).build();
     }
 
@@ -97,7 +106,6 @@ public class PårørendeSykdomMock {
         sak.iverksatt(toLocalDate(ytelse.getIverksatt()));
         sak.setOpphoerFom(toLocalDate(ytelse.getOpphørFom()));
         sak.setRegistrert(toLocalDate(ytelse.getRegistrert()));
-
 
         if(ytelse.getResultat() != null) {
             Kodeverdi resultat = new Kodeverdi();
@@ -119,6 +127,53 @@ public class PårørendeSykdomMock {
         sak.setVedtatt(toLocalDate(ytelse.getVedtatt()));
 
         return sak;
+    }
+
+    private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdBeregningsgrunnlag grunnlag) {
+        // todo: velg riktig underklasse: InfotrygdPårørendeSykdomBeregningsgrunnlag, modellklasse setter ikke tema/behandlingstema
+        // todo: riktig underklasse har fødselsdato...
+
+        // todo: Legg til manglende felt i modellen
+        // todo: mangler scenarioer
+
+        PaaroerendeSykdom r = new PaaroerendeSykdom();
+//        r.setArbeidsforhold();
+
+//            r.setArbeidskategori();
+        r.setBehandlingstema(kodeverdi(grunnlag.getBehandlingTema().getKode()));
+//            r.foedselsdatoPleietrengende()
+//            r.setFoedselsnummerPleietrengende();
+        r.setIdentdato(grunnlag.getStartdato());
+        r.setIverksatt(grunnlag.getStartdato());
+
+        if(grunnlag.getTom() != null) {
+            r.setOpphoerFom(grunnlag.getTom().plusDays(1));
+        }
+
+        if(grunnlag.getFom() != null && grunnlag.getTom() != null) {
+            Periode periode = new Periode();
+            periode.setFom(grunnlag.getFom());
+            periode.setTom(grunnlag.getTom());
+            r.setPeriode(periode);
+        }
+
+//            r.setRegistrert();
+//            r.setSaksbehandlerId();
+//            r.setStatus();
+
+        r.setTema(kodeverdi(grunnlag.getBehandlingTema().getTema()));
+
+        r.setVedtak(grunnlag.getVedtak().stream().map( vedtak -> {
+            Vedtak v = new Vedtak();
+            Periode periode = new Periode();
+            periode.setFom(vedtak.getFom());
+            periode.setTom(vedtak.getTom());
+            v.setPeriode(periode);
+            v.setUtbetalingsgrad(vedtak.getUtbetalingsgrad());
+            return v;
+        }).collect(Collectors.toList()));
+
+        return r;
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {
