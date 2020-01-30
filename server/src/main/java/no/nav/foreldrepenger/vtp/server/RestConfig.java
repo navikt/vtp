@@ -6,6 +6,7 @@ import javax.servlet.ServletContextEvent;
 
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.server.HandlerContainer;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -42,6 +43,7 @@ public class RestConfig {
                 @SuppressWarnings("rawtypes")
                 Map<Class, Object> defaultContextObjects = deployment.getDispatcher().getDefaultContextObjects();
                 defaultContextObjects.put(TestscenarioRepository.class, testScenarioRepository);
+                defaultContextObjects.put(TestscenarioBuilderRepository.class, testScenarioRepository);
                 defaultContextObjects.put(TestscenarioTemplateRepository.class, templateRepository);
                 defaultContextObjects.put(GsakRepo.class,gsakRepo);
                 defaultContextObjects.put(LocalKafkaProducer.class, localKafkaProducer);

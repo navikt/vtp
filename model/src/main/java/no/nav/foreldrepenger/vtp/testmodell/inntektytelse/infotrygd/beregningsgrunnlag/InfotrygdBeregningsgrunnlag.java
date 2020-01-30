@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdBehandlingstema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 
 /**
@@ -51,7 +52,7 @@ public abstract class InfotrygdBeregningsgrunnlag {
      * For engangsstønad - FE, AE
      */
     @JsonProperty("behandlingstema")
-    private InfotrygdBeregningsgrunnlagBehandlingtema behandlingstema;
+    private InfotrygdBehandlingstema behandlingstema;
 
     @JsonInclude(Include.NON_EMPTY)
     @JsonProperty("vedtak")
@@ -81,11 +82,11 @@ public abstract class InfotrygdBeregningsgrunnlag {
         this.tom = tom;
     }
 
-    public InfotrygdBeregningsgrunnlagBehandlingtema getBehandlingTema() {
+    public InfotrygdBehandlingstema getBehandlingTema() {
         return behandlingstema;
     }
 
-    public void setBehandlingTema(InfotrygdBeregningsgrunnlagBehandlingtema behandlingTema) {
+    public void setBehandlingTema(InfotrygdBehandlingstema behandlingTema) {
         this.behandlingstema = behandlingTema;
     }
 
