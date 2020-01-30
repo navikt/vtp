@@ -47,7 +47,12 @@ public class PårørendeSykdomMock {
             @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
     public Response hentSakUsingGET( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
-        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get(); // todo
+
+        if(inntektYtelseModellOptional.isEmpty()) {
+            return Response.ok(new SakDto()).build();
+        }
+
+        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
 
         List<SakDto> xx = inntektYtelseModell.getInfotrygdModell().getYtelser().stream().map(ytelse -> {
             SakDto sak = new SakDto();
