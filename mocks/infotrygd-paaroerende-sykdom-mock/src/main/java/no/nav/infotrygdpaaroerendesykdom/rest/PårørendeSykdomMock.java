@@ -2,6 +2,7 @@ package no.nav.infotrygdpaaroerendesykdom.rest;
 
 import io.swagger.annotations.*;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.infotrygdpaaroerendesykdom.generated.model.Kodeverdi;
 import no.nav.infotrygdpaaroerendesykdom.generated.model.PaaroerendeSykdom;
@@ -54,49 +55,11 @@ public class PårørendeSykdomMock {
 
         InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
 
-        List<SakDto> xx = inntektYtelseModell.getInfotrygdModell().getYtelser().stream().map(ytelse -> {
-            SakDto sak = new SakDto();
-
-            Kodeverdi tema = new Kodeverdi();
-            tema.setKode(ytelse.getBehandlingtema().getTema());
-            tema.setTermnavn("ukjent tema");
-            sak.setTema(tema);
-
-            Kodeverdi behandlingstema = new Kodeverdi();
-            behandlingstema.setKode(ytelse.getBehandlingtema().getKode());
-            behandlingstema.setTermnavn("ukjent behandlingstema");
-            sak.setBehandlingstema(behandlingstema);
-
-            sak.iverksatt(toLocalDate(ytelse.getIverksatt()));
-            sak.setOpphoerFom(toLocalDate(ytelse.getOpphørFom()));
-            sak.setRegistrert(toLocalDate(ytelse.getRegistrert()));
-
-
-            if(ytelse.getResultat() != null) {
-                Kodeverdi resultat = new Kodeverdi();
-                resultat.setKode(ytelse.getResultat().getKode());
-                resultat.setTermnavn("ukjent resultat");
-                sak.setResultat(resultat);
-            }
-
-            sak.setSakId(ytelse.getSakId());
-
-            if(ytelse.getSakStatus() != null) {
-                sak.setStatus(kodeverdi(ytelse.getSakStatus().getKode()));
-            }
-
-            if(ytelse.getSakType() != null) {
-                sak.setType(kodeverdi(ytelse.getSakType().getKode()));
-            }
-
-            sak.setVedtatt(toLocalDate(ytelse.getVedtatt()));
-
-            return sak;
-        }).collect(Collectors.toList());
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream().map(this::mapYtelseToSak).collect(Collectors.toList());
 
         SakResult result = new SakResult();
-        result.setSaker(xx.stream().filter(s -> s.getOpphoerFom() == null).collect(Collectors.toList()));
-        result.setVedtak(xx.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
+        result.setSaker(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() == null).collect(Collectors.toList()));
+        result.setVedtak(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
 
         return Response.ok(result).build();
     }
@@ -116,6 +79,46 @@ public class PårørendeSykdomMock {
         PaaroerendeSykdom p = new PaaroerendeSykdom();
         List<PaaroerendeSykdom> result = List.of(p);
         return Response.ok(result).build();
+    }
+
+    private SakDto mapYtelseToSak(InfotrygdYtelse ytelse) {
+        SakDto sak = new SakDto();
+
+        Kodeverdi tema = new Kodeverdi();
+        tema.setKode(ytelse.getBehandlingtema().getTema());
+        tema.setTermnavn("ukjent tema");
+        sak.setTema(tema);
+
+        Kodeverdi behandlingstema = new Kodeverdi();
+        behandlingstema.setKode(ytelse.getBehandlingtema().getKode());
+        behandlingstema.setTermnavn("ukjent behandlingstema");
+        sak.setBehandlingstema(behandlingstema);
+
+        sak.iverksatt(toLocalDate(ytelse.getIverksatt()));
+        sak.setOpphoerFom(toLocalDate(ytelse.getOpphørFom()));
+        sak.setRegistrert(toLocalDate(ytelse.getRegistrert()));
+
+
+        if(ytelse.getResultat() != null) {
+            Kodeverdi resultat = new Kodeverdi();
+            resultat.setKode(ytelse.getResultat().getKode());
+            resultat.setTermnavn("ukjent resultat");
+            sak.setResultat(resultat);
+        }
+
+        sak.setSakId(ytelse.getSakId());
+
+        if(ytelse.getSakStatus() != null) {
+            sak.setStatus(kodeverdi(ytelse.getSakStatus().getKode()));
+        }
+
+        if(ytelse.getSakType() != null) {
+            sak.setType(kodeverdi(ytelse.getSakType().getKode()));
+        }
+
+        sak.setVedtatt(toLocalDate(ytelse.getVedtatt()));
+
+        return sak;
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {
