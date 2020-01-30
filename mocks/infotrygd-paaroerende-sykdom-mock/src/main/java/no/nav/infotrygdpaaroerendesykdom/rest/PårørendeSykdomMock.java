@@ -131,7 +131,7 @@ public class PårørendeSykdomMock {
 
     private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdBeregningsgrunnlag grunnlag) {
         // todo: velg riktig underklasse: InfotrygdPårørendeSykdomBeregningsgrunnlag, modellklasse setter ikke tema/behandlingstema
-        // todo: riktig underklasse har fødselsdato...
+        // todo: riktig underklasse har fødselsdato og arbeidsforhold og arbeidskategori...
 
         // todo: Legg til manglende felt i modellen
         // todo: mangler scenarioer
@@ -159,7 +159,7 @@ public class PårørendeSykdomMock {
 
 //            r.setRegistrert();
 //            r.setSaksbehandlerId();
-//            r.setStatus();
+//            r.setStatus(); // todo: ingen verdi for PN, men har for de andre ytelsene
 
         r.setTema(kodeverdi(grunnlag.getBehandlingTema().getTema()));
 
