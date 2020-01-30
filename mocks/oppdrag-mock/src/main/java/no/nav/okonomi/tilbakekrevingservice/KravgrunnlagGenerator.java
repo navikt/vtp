@@ -54,24 +54,27 @@ class KravgrunnlagGenerator {
         periode.setFom(konvertDato(LocalDate.of(2016, 3, 16)));
         periode.setTom(konvertDato(LocalDate.of(2016, 3, 25)));
         kravgrunnlagPeriode1.setPeriode(periode);
-        kravgrunnlagPeriode1.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(6000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL));
-        kravgrunnlagPeriode1.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(6000.00), BigDecimal.valueOf(6000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL));
+        kravgrunnlagPeriode1.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(6000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
+        kravgrunnlagPeriode1.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(6000.00), BigDecimal.valueOf(6000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
+        kravgrunnlagPeriode1.setBelopSkattMnd(new BigDecimal(2700));
 
         DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode2 = new DetaljertKravgrunnlagPeriodeDto();
         periode = new PeriodeDto();
         periode.setFom(konvertDato(LocalDate.of(2016, 3, 26)));
         periode.setTom(konvertDato(LocalDate.of(2016, 3, 31)));
         kravgrunnlagPeriode2.setPeriode(periode);
-        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(3000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL));
-        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(3000.00), BigDecimal.valueOf(3000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL));
+        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(3000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
+        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(3000.00), BigDecimal.valueOf(3000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
+        kravgrunnlagPeriode2.setBelopSkattMnd(new BigDecimal(2700));
 
         DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode3 = new DetaljertKravgrunnlagPeriodeDto();
         periode = new PeriodeDto();
         periode.setFom(konvertDato(LocalDate.of(2016, 4, 1)));
         periode.setTom(konvertDato(LocalDate.of(2016, 4, 30)));
         kravgrunnlagPeriode3.setPeriode(periode);
-        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(21000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL));
-        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL));
+        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(21000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
+        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
+        kravgrunnlagPeriode3.setBelopSkattMnd(new BigDecimal(6300));
 
 
         DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode4 = new DetaljertKravgrunnlagPeriodeDto();
@@ -79,14 +82,19 @@ class KravgrunnlagGenerator {
         periode.setFom(konvertDato(LocalDate.of(2016, 5, 1)));
         periode.setTom(konvertDato(LocalDate.of(2016, 5, 26)));
         kravgrunnlagPeriode4.setPeriode(periode);
-        kravgrunnlagPeriode4.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(9000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL));
-        kravgrunnlagPeriode4.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(9000.00), BigDecimal.valueOf(9000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL));
+        kravgrunnlagPeriode4.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(9000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
+        kravgrunnlagPeriode4.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(9000.00), BigDecimal.valueOf(9000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
+        kravgrunnlagPeriode4.setBelopSkattMnd(new BigDecimal(2700));
 
         return Lists.newArrayList(kravgrunnlagPeriode1, kravgrunnlagPeriode2, kravgrunnlagPeriode3, kravgrunnlagPeriode4);
     }
 
-    private static DetaljertKravgrunnlagBelopDto hentBeløp(BigDecimal nyBeløp, BigDecimal tilbakekrevesBeløp,
-                                                    BigDecimal opprUtbetBeløp, BigDecimal uInnkrevdBeløp, TypeKlasseDto typeKlasse) {
+    private static DetaljertKravgrunnlagBelopDto hentBeløp(BigDecimal nyBeløp,
+                                                           BigDecimal tilbakekrevesBeløp,
+                                                           BigDecimal opprUtbetBeløp,
+                                                           BigDecimal uInnkrevdBeløp,
+                                                           TypeKlasseDto typeKlasse,
+                                                           int skatteprosent) {
         DetaljertKravgrunnlagBelopDto detaljertKravgrunnlagBelop = new DetaljertKravgrunnlagBelopDto();
         detaljertKravgrunnlagBelop.setTypeKlasse(typeKlasse);
         detaljertKravgrunnlagBelop.setBelopNy(nyBeløp);
@@ -94,6 +102,7 @@ class KravgrunnlagGenerator {
         detaljertKravgrunnlagBelop.setBelopTilbakekreves(tilbakekrevesBeløp);
         detaljertKravgrunnlagBelop.setBelopUinnkrevd(uInnkrevdBeløp);
         detaljertKravgrunnlagBelop.setKodeKlasse("FPATAL");
+        detaljertKravgrunnlagBelop.setSkattProsent(BigDecimal.valueOf(skatteprosent));
 
         return detaljertKravgrunnlagBelop;
     }
