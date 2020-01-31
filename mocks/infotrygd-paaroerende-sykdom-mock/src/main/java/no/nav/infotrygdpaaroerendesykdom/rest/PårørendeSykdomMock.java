@@ -2,7 +2,9 @@ package no.nav.infotrygdpaaroerendesykdom.rest;
 
 import io.swagger.annotations.*;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdBeregningsgrunnlag;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.infotrygdpaaroerendesykdom.generated.model.*;
@@ -83,7 +85,8 @@ public class PårørendeSykdomMock {
         }
 
         List<PaaroerendeSykdom> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
-                .map(this::mapGrunnlagToPaaroerendeSykdom)
+                .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
+                .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it))
                 .filter(it -> it.getTema().getKode().equals("BS"))
                 .collect(Collectors.toList());
 
@@ -129,20 +132,25 @@ public class PårørendeSykdomMock {
         return sak;
     }
 
-    private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdBeregningsgrunnlag grunnlag) {
-        // todo: velg riktig underklasse: InfotrygdPårørendeSykdomBeregningsgrunnlag, modellklasse setter ikke tema/behandlingstema
-        // todo: riktig underklasse har fødselsdato og arbeidsforhold og arbeidskategori...
-
-        // todo: Legg til manglende felt i modellen
-        // todo: mangler scenarioer
-
+    private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdPårørendeSykdomBeregningsgrunnlag grunnlag) {
         PaaroerendeSykdom r = new PaaroerendeSykdom();
-//        r.setArbeidsforhold();
 
-//            r.setArbeidskategori();
+        List<Arbeidsforhold> arbeidsforholdListe = grunnlag.getArbeidsforhold().stream()
+                .map(this::mapArbeidsforhold)
+                .collect(Collectors.toList());
+
+        r.setArbeidsforhold(arbeidsforholdListe);
+
+        if(grunnlag.getArbeidskategori() != null) {
+            r.setArbeidskategori(kodeverdi(grunnlag.getArbeidskategori().getKode()));
+        }
+
         r.setBehandlingstema(kodeverdi(grunnlag.getBehandlingTema().getKode()));
-//            r.foedselsdatoPleietrengende()
-//            r.setFoedselsnummerPleietrengende();
+        r.setFoedselsdatoPleietrengende(grunnlag.getFødselsdatoPleietrengende());
+
+        // Feltet finnes ikke i modellen. Legges til ved behov
+        // r.setFoedselsnummerPleietrengende();
+
         r.setIdentdato(grunnlag.getStartdato());
         r.setIverksatt(grunnlag.getStartdato());
 
@@ -157,9 +165,10 @@ public class PårørendeSykdomMock {
             r.setPeriode(periode);
         }
 
-//            r.setRegistrert();
-//            r.setSaksbehandlerId();
-//            r.setStatus(); // todo: ingen verdi for PN, men har for de andre ytelsene
+        // Disse feltene finnes ikke i modellen. Legges til ved behov
+        // r.setRegistrert();
+        // r.setSaksbehandlerId();
+        // r.setStatus(); // ingen verdi for PN, men har for de andre ytelsene
 
         r.setTema(kodeverdi(grunnlag.getBehandlingTema().getTema()));
 
@@ -174,6 +183,20 @@ public class PårørendeSykdomMock {
         }).collect(Collectors.toList()));
 
         return r;
+    }
+
+    private Arbeidsforhold mapArbeidsforhold(InfotrygdArbeidsforhold arbeidsforhold) {
+        Arbeidsforhold af = new Arbeidsforhold();
+        af.setArbeidsgiverOrgnr(arbeidsforhold.getOrgnr());
+        af.setInntektForPerioden(arbeidsforhold.getBeløp());
+
+        if(arbeidsforhold.getInntektsPeriodeType() != null) {
+            af.setInntektsperiode(kodeverdi(arbeidsforhold.getInntektsPeriodeType().getKode()));
+        }
+
+        af.refusjon(false); // Feltet finnes ikke i modellen. Legges til ved behov
+
+        return af;
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {
