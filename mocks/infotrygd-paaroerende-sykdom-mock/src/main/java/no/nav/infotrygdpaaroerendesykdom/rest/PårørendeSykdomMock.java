@@ -79,7 +79,7 @@ public class PårørendeSykdomMock {
     public Response paaroerendeSykdomUsingGET1( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
         if(inntektYtelseModell.isEmpty()) {
-            return Response.ok(List.of(new PaaroerendeSykdom())).build();
+            return Response.ok(List.of()).build();
         }
 
         List<PaaroerendeSykdom> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
