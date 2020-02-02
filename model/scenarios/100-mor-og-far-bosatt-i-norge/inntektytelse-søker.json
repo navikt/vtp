@@ -66,5 +66,63 @@
 				"fødselsdatoBarn": "now()"
 			}
 		]
+	},
+	"trex": {
+		"foreldrepenger": [
+			{
+				"status": {
+					"kode": "I",
+					"termnavn": "status"
+				},
+				"tema": {
+					"kode": "FA",
+					"termnavn": "tema"
+				},
+				"dekningsgrad": 100,
+				"foedselsdatoBarn": "now()",
+				"arbeidskategori": {
+					"kode": "01",
+					"termnavn": "kategori"
+				},
+				"arbeidsforhold":  [
+					{
+						"orgnr": "910909088",
+						"inntekt": 10000,
+						"inntektsperiode": {
+							"kode": "M",
+							"termnavn": "inntektperiode"
+						},
+						"refusjon": true
+					}
+				],
+				"periode": {
+					"fom": "now()",
+					"tom": "now()"
+				},
+				"behandlingstema": {
+					"kode": "FØ",
+					"termnavn": "behandlingstema"
+				},
+				"identdato": "now()",
+				"iverksatt": "now()",
+				"opphørFom": "now() + P1D",
+				"gradering": 100,
+				"opprinneligIdentdato": null,
+				"registrert": null,
+				"saksbehandlerId": "ABC",
+				"vedtak": [
+					{
+						"periode": {
+							"fom": "now()",
+							"tom": "now()"
+						},
+						"utbetalingsgrad": 100
+					}
+				]
+			}
+		],
+		"svangerskapspenger": [],
+		"sykepenger": [],
+		"barnsykdom": []
 	}
 }

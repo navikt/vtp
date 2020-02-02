@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 
 @JsonInclude(Include.NON_EMPTY)
 public class InntektYtelseModell {
@@ -18,6 +19,9 @@ public class InntektYtelseModell {
 
     @JsonProperty("infotrygd")
     private InfotrygdModell infotrygdModell;
+
+    @JsonProperty("trex")
+    private TRexModell tRexModell;
 
     @JsonProperty("inntektskomponent")
     private InntektskomponentModell inntektskomponentModell;
@@ -51,6 +55,17 @@ public class InntektYtelseModell {
 
     public void setInfotrygdModell(InfotrygdModell infotrygdModell) {
         this.infotrygdModell = infotrygdModell;
+    }
+
+    public TRexModell gettRexModell() {
+        if (tRexModell == null) {
+            this.tRexModell = new TRexModell();
+        }
+        return tRexModell;
+    }
+
+    public void settRexModell(TRexModell tRexModell) {
+        this.tRexModell = tRexModell;
     }
 
     public InntektskomponentModell getInntektskomponentModell() {
