@@ -17,14 +17,14 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
  *
  * @see https://confluence.adeo.no/pages/viewpage.action?pageId=220537850
  */
-public class InfotrygdSakBehandlingtema {
+public class InfotrygdBehandlingstema {
     private static Map<String, Entry<String, String>> VALID_KODER;
     static {
         Map<String, Entry<String, String>> koder = new HashMap<>();
-
+        registrer(koder, null, "Sykepenger", "SP");
+        registrer(koder, "SP", "Sykepenger", "SP");
         registrer(koder, "RS", "Sykepenger utenlandsopphold", "SP");
         registrer(koder, "RT", "Sykepenger reisetilskudd", "SP");
-        registrer(koder, "SP", "Sykepenger", "FA");
         registrer(koder, "SU", "Sykepenger forsikringsrisiko", "SP");
 
         registrer(koder, "BT", "Stønad til barnetilsyn", "EF");
@@ -32,23 +32,32 @@ public class InfotrygdSakBehandlingtema {
         registrer(koder, "OG", "Overgangsstønad", "EF");
         registrer(koder, "UT", "Skolepenger", "EF");
 
+        registrer(koder, "SP", "Sykepenger", "FA");
         registrer(koder, "FØ", "Foreldrepenger fødsel", "FA");
         registrer(koder, "AP", "Foreldrepenger Adopsjon", "FA");
         registrer(koder, "SV", "Svangerskapspenger", "FA");
         registrer(koder, "AE", "Engangsstønad Adopsjon", "FA");
         registrer(koder, "FE", "Engansstønad Fødsel", "FA");
         registrer(koder, "FU", "Foreldrepenger fødsel utland", "FA");
+        registrer(koder, "Z", "Svangerskapspenger", "FA"); // todo: kan noen av tjenestene egentlig returnere Z??
+
+        registrer(koder, "OM", "Omsorgspenger", "BS");
+        registrer(koder, "OP", "Opplæringspenger", "BS");
+        registrer(koder, "PB", "Pleiepenger sykt barn (identdato før 1.10.2017)", "BS");
+        registrer(koder, "PI", "Pleiepenger (identdato før 1.10.2017)", "BS");
+        registrer(koder, "PP", "Pleiepenger pårørende", "BS");
+        registrer(koder, "PN", "Pleiepenger ny ordning (identdato etter 1.10.2017)", "BS");
         VALID_KODER = Collections.unmodifiableMap(koder);
     }
 
-    public static final InfotrygdSakBehandlingtema FORELDREPENGER_FØDSEL = new InfotrygdSakBehandlingtema("FØ");
+    public static final InfotrygdBehandlingstema FORELDREPENGER_FØDSEL = new InfotrygdBehandlingstema("FØ");
 
-    public static final InfotrygdSakBehandlingtema SYKEPENGER = new InfotrygdSakBehandlingtema("SP");
+    public static final InfotrygdBehandlingstema SYKEPENGER = new InfotrygdBehandlingstema("SP");
 
     private String kode;
 
     @JsonCreator
-    public InfotrygdSakBehandlingtema(String kode) {
+    public InfotrygdBehandlingstema(String kode) {
         this.kode = kode == null ? this.kode : kode;
         if (kode != null && !VALID_KODER.containsKey(kode)) {
             throw new IllegalArgumentException("Kode er ikke gyldig Infotrygd Behandlingstema: " + kode);
