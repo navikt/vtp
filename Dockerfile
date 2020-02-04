@@ -14,6 +14,7 @@ COPY server/kafkasecurity.conf /app/
 COPY server/src/main/resources/logback.xml logback.xml
 COPY server/target/app.jar app.jar
 COPY run-java.sh /
+COPY mocks/dokumentproduksjon-mock/src/main/resources/statiskBrev.pdf /
 
 EXPOSE 8636 8063 8060 8389 9093
 

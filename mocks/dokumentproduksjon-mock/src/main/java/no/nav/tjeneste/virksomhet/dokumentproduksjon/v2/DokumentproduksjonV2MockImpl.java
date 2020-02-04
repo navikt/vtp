@@ -1,5 +1,10 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
@@ -25,7 +30,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @Addressing
@@ -34,7 +44,7 @@ import java.io.StringWriter;
 public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2MockImpl.class);
-
+    private static final String OUTPUT_DIR = "statiskBrev.pdf";
 
     private JournalRepository journalRepository;
 
@@ -51,8 +61,18 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     }
 
     @Override
-    public ProduserDokumentutkastResponse produserDokumentutkast(ProduserDokumentutkastRequest produserDokumentutkastRequest) {
-        throw new UnsupportedOperationException("Ikke implementert");
+    public ProduserDokumentutkastResponse produserDokumentutkast(ProduserDokumentutkastRequest request) {
+        String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
+        String dokumenttypeId =  request.getDokumenttypeId();
+
+        generatePDFFromString(OUTPUT_DIR, data);
+        byte[] bytes = pdfToByte(OUTPUT_DIR);
+
+        ProduserDokumentutkastResponse response = new ProduserDokumentutkastResponse();
+        response.setDokumentutkast(bytes);
+
+        LOG.info("Brev med id {} returneres til fpformidling for forhåndsvisning", dokumenttypeId);
+        return response;
     }
 
     @Override
@@ -69,6 +89,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         LOG.info("Dokument produsert: " + data);
 
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
+
 
 
         LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());
@@ -133,6 +154,37 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
             String message = "Kunne ikke produsere text fra xml: " + e.getMessage();
             LOG.warn(message);
             return message;
+        }
+    }
+
+    private static void generatePDFFromString(String filename, String tekst) {
+        try {
+            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+            PdfWriter.getInstance(document, new FileOutputStream(filename));
+            document.open();
+            addContent(document, tekst);
+            document.close();
+        } catch (Exception e) {
+            LOG.info("Noe gikk galt med generering av PDF " + e.getMessage());;
+        }
+    }
+
+    private static void addContent(com.itextpdf.text.Document document, String text) throws DocumentException, IOException {
+        BaseFont courier = BaseFont.createFont();
+        Font font = new Font(courier, 7);
+        document.add(new Paragraph(text, font));
+    }
+
+
+    private byte[] pdfToByte(String filePath) {
+        try {
+            Path pdfPath = Paths.get(filePath);
+            byte[] pdf = Files.readAllBytes(pdfPath);
+            return pdf;
+        } catch (IOException e) {
+            String message = "Noe gikk galt med når pdfen skulle konverters til byte array" + e.getMessage();
+            LOG.warn(message);
+            return null;
         }
     }
 }

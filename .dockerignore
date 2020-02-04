@@ -6,3 +6,4 @@
 !server/src/main/resources/logback.xml
 !server/kafkasecurity.conf
 !*.sh
+!mocks/dokumentproduksjon-mock/src/main/resources/statiskBrev.pdf
