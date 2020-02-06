@@ -30,9 +30,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,7 +42,7 @@ import java.nio.file.Paths;
 public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2MockImpl.class);
-    private static final String OUTPUT_DIR = "statiskBrev.pdf";
+    private static final String OUTPUT_PDF = "statiskBrev.pdf";
 
     private JournalRepository journalRepository;
 
@@ -65,13 +63,13 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
         String dokumenttypeId =  request.getDokumenttypeId();
 
-        generatePDFFromString(OUTPUT_DIR, data);
-        byte[] bytes = pdfToByte(OUTPUT_DIR);
+        generatePDFFromString(OUTPUT_PDF, data);
+        byte[] bytes = pdfToByte(OUTPUT_PDF);
 
         ProduserDokumentutkastResponse response = new ProduserDokumentutkastResponse();
         response.setDokumentutkast(bytes);
 
-        LOG.info("Brev med id {} returneres til fpformidling for forhåndsvisning", dokumenttypeId);
+        LOG.info("Brev med dokumentTypeId {} returneres til fpformidling for forhåndsvisning", dokumenttypeId);
         return response;
     }
 
@@ -157,7 +155,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         }
     }
 
-    private static void generatePDFFromString(String filename, String tekst) {
+    private void generatePDFFromString(String filename, String tekst) {
         try {
             com.itextpdf.text.Document document = new com.itextpdf.text.Document();
             PdfWriter.getInstance(document, new FileOutputStream(filename));
@@ -165,7 +163,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
             addContent(document, tekst);
             document.close();
         } catch (Exception e) {
-            LOG.info("Noe gikk galt med generering av PDF " + e.getMessage());;
+            LOG.info("Noe gikk galt med generering av PDF:" + e.getMessage());;
         }
     }
 
@@ -182,7 +180,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
             byte[] pdf = Files.readAllBytes(pdfPath);
             return pdf;
         } catch (IOException e) {
-            String message = "Noe gikk galt med når pdfen skulle konverters til byte array" + e.getMessage();
+            String message = "Noe gikk galt med når pdfen skulle konverters til byte array: " + e.getMessage();
             LOG.warn(message);
             return null;
         }
