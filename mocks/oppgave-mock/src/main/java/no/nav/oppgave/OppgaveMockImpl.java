@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Api(tags = "Oppgave Mock")
-@Path("api/v1/oppgaver")
+@Path("oppgave/api/v1/oppgaver")
 public class OppgaveMockImpl {
 
     private static final Logger LOG = LoggerFactory.getLogger(OppgaveMockImpl.class);
