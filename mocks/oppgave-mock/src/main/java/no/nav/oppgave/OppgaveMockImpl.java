@@ -45,7 +45,7 @@ public class OppgaveMockImpl {
 
         LOG.info("Opprettet oppgave: {}", oppgave);
 
-        return Response.ok()
+        return Response.status(Response.Status.CREATED)
                 .entity(oppgave)
                 .build();
     }
