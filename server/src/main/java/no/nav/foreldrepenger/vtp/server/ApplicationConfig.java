@@ -26,6 +26,7 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import no.nav.oppgave.OppgaveMockImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +100,7 @@ public class ApplicationConfig extends Application {
         classes.add(DummyRestTjenesteBoolean.class);
         classes.add(MedlemskapsunntakMock.class);
         classes.add(OppgaveKontantstotteMockImpl.class);
+        classes.add(OppgaveMockImpl.class);
         classes.add(AktoerIdentMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
