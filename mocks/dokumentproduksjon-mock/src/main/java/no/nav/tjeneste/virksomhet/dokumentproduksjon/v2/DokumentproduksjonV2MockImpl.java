@@ -1,13 +1,9 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering.PdfGenerator;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.*;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Aktoer;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Person;
@@ -17,6 +13,7 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkere
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentResponse;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentResponse;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -30,7 +27,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,7 +62,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
         String dokumenttypeId =  request.getDokumenttypeId();
 
-        generatePDFFromString(OUTPUT_PDF, data);
+        genererPdfFraString(data, OUTPUT_PDF);
         byte[] bytes = pdfToByte(OUTPUT_PDF);
 
         ProduserDokumentutkastResponse response = new ProduserDokumentutkastResponse();
@@ -155,24 +154,18 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         }
     }
 
-    private void generatePDFFromString(String filename, String tekst) {
+    private void genererPdfFraString(String brev, String filepath) {
         try {
-            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-            PdfWriter.getInstance(document, new FileOutputStream(filename));
-            document.open();
-            addContent(document, tekst);
-            document.close();
-        } catch (Exception e) {
-            LOG.info("Noe gikk galt med generering av PDF:" + e.getMessage());;
+            PDDocument doc = new PDDocument();
+            PdfGenerator renderer = new PdfGenerator(doc, brev);
+            renderer.renderText(60);
+            renderer.close();
+            doc.save(new File(filepath));
+            doc.close();
+        } catch (IOException e) {
+            LOG.warn("Kunne ikke generer PDF fra string: " + e.getMessage());
         }
     }
-
-    private static void addContent(com.itextpdf.text.Document document, String text) throws DocumentException, IOException {
-        BaseFont courier = BaseFont.createFont();
-        Font font = new Font(courier, 7);
-        document.add(new Paragraph(text, font));
-    }
-
 
     private byte[] pdfToByte(String filePath) {
         try {
