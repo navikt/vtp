@@ -1,46 +1,4 @@
 {
-	"infotrygd": {
-		"ytelser": [
-			{
-				"sakId": "9999",
-				"registrert": "now() - P9M",
-				"iverksatt": "now() - P9M",
-				"endret": "now()",
-				"opphør": "now() + PT2400H",
-				"saksbehandlerId": "helloworld",
-				"tema": "FA",
-				"behandlingstema": "FØ",
-				"type": "S",
-				"status": "FI",
-				"resultat": "I"
-			}
-		],
-		"grunnlag": [
-			{
-				"@type": "foreldrepenger",
-				"startdato": "now() - P9M",
-				"fom": "now() - P9M",
-				"behandlingstema": "FØ",
-				"vedtak": [
-					{
-						"fom": "now() - P9M",
-						"utbetalingsgrad": 100
-					}
-				],
-				"arbeidskategori": "01",
-				"arbeidsforhold": [
-					{
-						"orgnr": "1",
-						"beløp": 10000,
-						"inntektsperiode": "M"
-					}
-				],
-				"dekningsgrad": 100,
-				"gradering": 100,
-				"fødselsdatoBarn": "now()"
-			}
-		]
-	},
 	"trex": {
 		"foreldrepenger": [
 			{

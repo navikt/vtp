@@ -162,12 +162,6 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>infotrygdfeed-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>norg2-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
