@@ -2,13 +2,13 @@
 <brevdata xmlns:ns2="http://nav.no/tjeneste/virksomhet/dokumentproduksjon/v2">
 	<felles>
 		<spraakkode>NB</spraakkode>
-		<fagsaksnummer>130142901</fagsaksnummer>
+		<fagsaksnummer>00000000</fagsaksnummer>
 		<signerendeSaksbehandler>
 			<signerendeSaksbehandlerNavn>saksbeh</signerendeSaksbehandlerNavn>
 		</signerendeSaksbehandler>
 		<automatiskBehandlet>false</automatiskBehandlet>
 		<sakspart>
-			<sakspartId>13079443659</sakspartId>
+			<sakspartId>11111111111</sakspartId>
 			<sakspartTypeKode>PERSON</sakspartTypeKode>
 			<sakspartNavn>HUND INGUNN</sakspartNavn>
 		</sakspart>
@@ -17,7 +17,7 @@
 			<geografiskEnhet>N/A</geografiskEnhet>
 		</signerendeBeslutter>
 		<mottaker>
-			<mottakerId>13079443659</mottakerId>
+			<mottakerId>11111111111</mottakerId>
 			<mottakerTypeKode>PERSON</mottakerTypeKode>
 			<mottakerNavn>HUND INGUNN</mottakerNavn>
 			<mottakerAdresse>

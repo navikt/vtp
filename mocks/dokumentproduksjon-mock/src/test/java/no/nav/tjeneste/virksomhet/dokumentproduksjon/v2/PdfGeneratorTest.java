@@ -4,7 +4,10 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering.PdfGenerat
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
