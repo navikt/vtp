@@ -26,7 +26,6 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
-import no.nav.oppgave.OppgaveMockImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,11 +48,11 @@ import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
-import no.nav.infotrygdfeed.InfotrygdfeedMock;
 import no.nav.infotrygdks.InfotrygdKontantstotteMock;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.oppgave.OppgaveKontantstotteMockImpl;
+import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
@@ -86,7 +85,6 @@ public class ApplicationConfig extends Application {
         classes.add(SigrunMock.class);
         classes.add(DokarkivMock.class);
         classes.add(PersonfeedMock.class);
-        classes.add(InfotrygdfeedMock.class);
         classes.add(InfotrygdKontantstotteMock.class);
         classes.add(InfotrygdGrunnlagMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
