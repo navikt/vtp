@@ -170,7 +170,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
             Path pdfPath = Paths.get(filePath);
             return Files.readAllBytes(pdfPath);
         } catch (IOException e) {
-            String message = "Noe gikk galt med når pdfen skulle konverters til byte array: " + e.getMessage();
+            String message = "Noe gikk galt når pdfen skulle konverters til byte array: " + e.getMessage();
             LOG.warn(message);
             return null;
         }
