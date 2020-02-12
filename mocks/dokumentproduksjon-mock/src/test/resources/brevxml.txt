@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<brevdata xmlns:ns2="http://nav.no/tjeneste/virksomhet/dokumentproduksjon/v2">
+	<felles>
+		<spraakkode>NB</spraakkode>
+		<fagsaksnummer>130142901</fagsaksnummer>
+		<signerendeSaksbehandler>
+			<signerendeSaksbehandlerNavn>saksbeh</signerendeSaksbehandlerNavn>
+		</signerendeSaksbehandler>
+		<automatiskBehandlet>false</automatiskBehandlet>
+		<sakspart>
+			<sakspartId>13079443659</sakspartId>
+			<sakspartTypeKode>PERSON</sakspartTypeKode>
+			<sakspartNavn>HUND INGUNN</sakspartNavn>
+		</sakspart>
+		<signerendeBeslutter>
+			<signerendeBeslutterNavn>beslut</signerendeBeslutterNavn>
+			<geografiskEnhet>N/A</geografiskEnhet>
+		</signerendeBeslutter>
+		<mottaker>
+			<mottakerId>13079443659</mottakerId>
+			<mottakerTypeKode>PERSON</mottakerTypeKode>
+			<mottakerNavn>HUND INGUNN</mottakerNavn>
+			<mottakerAdresse>
+				<adresselinje1>Fjordlandet 10 B</adresselinje1>
+				<postNr>2500</postNr>
+				<poststed>TYNSET</poststed>
+				<land>NORGE</land>
+			</mottakerAdresse>
+		</mottaker>
+		<navnAvsenderEnhet>NAV Familie- og pensjonsytelser</navnAvsenderEnhet>
+		<kontaktInformasjon>
+			<kontaktTelefonnummer>55553333</kontaktTelefonnummer>
+			<returadresse>
+				<navEnhetsNavn>NAV Familie- og pensjonsytelser</navEnhetsNavn>
+				<adresselinje>Postboks 6600 Etterstad</adresselinje>
+				<postNr>0607</postNr>
+				<poststed>OSLO</poststed>
+			</returadresse>
+			<postadresse>
+				<navEnhetsNavn>NAV Familie- og pensjonsytelser</navEnhetsNavn>
+				<adresselinje>Postboks 6600 Etterstad</adresselinje>
+				<postNr>0607</postNr>
+				<poststed>OSLO</poststed>
+			</postadresse>
+		</kontaktInformasjon>
+		<dokumentDato>2020-01-30</dokumentDato>
+	</felles>
+	<fag>
+		<behandlingsType>FOERSTEGANGSBEHANDLING</behandlingsType>
+		<relasjonskode>MOR</relasjonskode>
+		<behandlingsResultat>INNVILGET</behandlingsResultat>
+		<mottattDato>2020-01-30</mottattDato>
+		<dekningsgrad>100</dekningsgrad>
+		<bruttoBeregningsgrunnlag>180000</bruttoBeregningsgrunnlag>
+		<dagsats>692</dagsats>
+		<månedsbeløp>14993</månedsbeløp>
+		<stønadsperiodeFom>2020-01-07</stønadsperiodeFom>
+		<stønadsperiodeTom>2020-08-31</stønadsperiodeTom>
+		<totalBrukerAndel>0</totalBrukerAndel>
+		<totalArbeidsgiverAndel>1</totalArbeidsgiverAndel>
+		<antallArbeidsgivere>1</antallArbeidsgivere>
+		<annenForelderHarRett>true</annenForelderHarRett>
+		<annenForelderHarRettVurdert>IKKE_VURDERT</annenForelderHarRettVurdert>
+		<aleneomsorg>IKKE_VURDERT</aleneomsorg>
+		<ikkeOmsorg>false</ikkeOmsorg>
+		<antallBarn>1</antallBarn>
+		<barnErFødt>true</barnErFødt>
+		<fødselsHendelse>false</fødselsHendelse>
+		<gjelderFoedsel>true</gjelderFoedsel>
+		<dagerTaptFørTermin>0</dagerTaptFørTermin>
+		<antallPerioder>1</antallPerioder>
+		<antallInnvilget>1</antallInnvilget>
+		<antallAvslag>0</antallAvslag>
+		<prematurDager>0</prematurDager>
+		<besteBeregning>false</besteBeregning>
+		<periodeListe>
+			<periode>
+				<innvilget>true</innvilget>
+				<årsak>2006</årsak>
+				<periodeFom>2020-01-07</periodeFom>
+				<periodeTom>2020-08-31</periodeTom>
+				<periodeDagsats>692</periodeDagsats>
+				<antallTapteDager>0</antallTapteDager>
+				<arbeidsforholdListe>
+					<arbeidsforhold>
+						<arbeidsgiverNavn>BEDRIFT AS</arbeidsgiverNavn>
+						<aktivitetDagsats>692</aktivitetDagsats>
+						<gradering>false</gradering>
+						<uttaksgrad>100</uttaksgrad>
+						<prosentArbeid>0</prosentArbeid>
+						<stillingsprosent>100</stillingsprosent>
+						<utbetalingsgrad>100</utbetalingsgrad>
+					</arbeidsforhold>
+				</arbeidsforholdListe>
+			</periode>
+		</periodeListe>
+		<disponibleDager>0</disponibleDager>
+		<disponibleFellesDager>0</disponibleFellesDager>
+		<sisteDagAvSistePeriode>2020-08-31</sisteDagAvSistePeriode>
+		<seksG>599148</seksG>
+		<inntektOverSeksG>false</inntektOverSeksG>
+		<klageFristUker>6</klageFristUker>
+		<lovhjemmel>
+			<vurdering>§§ 14-9, 14-10 og 14-12</vurdering>
+			<beregning>§§ 14-7 og 8-30</beregning>
+		</lovhjemmel>
+		<konsekvensForYtelse>INGEN_ENDRING</konsekvensForYtelse>
+		<antallBeregningsgrunnlagRegeler>1</antallBeregningsgrunnlagRegeler>
+		<beregningsgrunnlagRegelListe>
+			<beregningsgrunnlagRegel>
+				<regelStatus>ARBEIDSTAKER</regelStatus>
+				<antallArbeidsgivereIBeregningUtenEtterlønnSluttpakke>1</antallArbeidsgivereIBeregningUtenEtterlønnSluttpakke>
+				<SNNyoppstartet>false</SNNyoppstartet>
+				<andelListe>
+					<andel>
+						<status>ARBEIDSTAKER</status>
+						<arbeidsgiverNavn>BEDRIFT AS</arbeidsgiverNavn>
+						<dagsats>692</dagsats>
+						<månedsinntekt>15000</månedsinntekt>
+						<årsinntekt>180000</årsinntekt>
+						<etterlønnSluttpakke>false</etterlønnSluttpakke>
+					</andel>
+				</andelListe>
+			</beregningsgrunnlagRegel>
+		</beregningsgrunnlagRegelListe>
+		<forMyeUtbetalt>INGEN</forMyeUtbetalt>
+		<inntektMottattArbgiver>false</inntektMottattArbgiver>
+	</fag>
+</brevdata>

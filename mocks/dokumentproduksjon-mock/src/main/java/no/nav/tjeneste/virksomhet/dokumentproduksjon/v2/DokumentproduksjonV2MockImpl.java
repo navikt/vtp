@@ -27,9 +27,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -167,11 +165,10 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         }
     }
 
-    private byte[] pdfToByte(String filePath) {
+    static byte[] pdfToByte(String filePath) {
         try {
             Path pdfPath = Paths.get(filePath);
-            byte[] pdf = Files.readAllBytes(pdfPath);
-            return pdf;
+            return Files.readAllBytes(pdfPath);
         } catch (IOException e) {
             String message = "Noe gikk galt med når pdfen skulle konverters til byte array: " + e.getMessage();
             LOG.warn(message);
