@@ -618,7 +618,11 @@
                 <version>3.2.4</version>
                 <scope>test</scope>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>2.0.18</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.javassist</groupId>

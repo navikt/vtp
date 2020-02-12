@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering.PdfGenerator;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.*;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Aktoer;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.informasjon.Person;
@@ -12,6 +13,7 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserIkkere
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentResponse;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentResponse;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -25,7 +27,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 @Addressing
@@ -34,7 +41,7 @@ import java.io.StringWriter;
 public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2MockImpl.class);
-
+    private static final String OUTPUT_PDF = "statiskBrev.pdf";
 
     private JournalRepository journalRepository;
 
@@ -51,8 +58,18 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     }
 
     @Override
-    public ProduserDokumentutkastResponse produserDokumentutkast(ProduserDokumentutkastRequest produserDokumentutkastRequest) {
-        throw new UnsupportedOperationException("Ikke implementert");
+    public ProduserDokumentutkastResponse produserDokumentutkast(ProduserDokumentutkastRequest request) {
+        String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
+        String dokumenttypeId =  request.getDokumenttypeId();
+
+        genererPdfFraString(data, OUTPUT_PDF);
+        byte[] bytes = pdfToByte(OUTPUT_PDF);
+
+        ProduserDokumentutkastResponse response = new ProduserDokumentutkastResponse();
+        response.setDokumentutkast(bytes);
+
+        LOG.info("Brev med dokumentTypeId {} returneres til fpformidling for forhåndsvisning", dokumenttypeId);
+        return response;
     }
 
     @Override
@@ -69,6 +86,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         LOG.info("Dokument produsert: " + data);
 
         String dokumenttypeId = request.getDokumentbestillingsinformasjon().getDokumenttypeId();
+
 
 
         LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());
@@ -133,6 +151,30 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
             String message = "Kunne ikke produsere text fra xml: " + e.getMessage();
             LOG.warn(message);
             return message;
+        }
+    }
+
+    private void genererPdfFraString(String brev, String filepath) {
+        try {
+            PDDocument doc = new PDDocument();
+            PdfGenerator renderer = new PdfGenerator(doc, brev);
+            renderer.renderText(60);
+            renderer.close();
+            doc.save(new File(filepath));
+            doc.close();
+        } catch (IOException e) {
+            LOG.warn("Kunne ikke generer PDF fra string: " + e.getMessage());
+        }
+    }
+
+    static byte[] pdfToByte(String filePath) {
+        try {
+            Path pdfPath = Paths.get(filePath);
+            return Files.readAllBytes(pdfPath);
+        } catch (IOException e) {
+            String message = "Noe gikk galt når pdfen skulle konverters til byte array: " + e.getMessage();
+            LOG.warn(message);
+            return null;
         }
     }
 }
