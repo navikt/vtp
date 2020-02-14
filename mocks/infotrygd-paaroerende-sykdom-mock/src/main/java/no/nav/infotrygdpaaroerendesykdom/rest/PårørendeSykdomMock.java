@@ -43,9 +43,7 @@ public class PårørendeSykdomMock {
     }, tags={ "paaroerende-sykdom-controller",  })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SakResult.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-            @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
     public Response hentSakUsingGET( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
 
@@ -55,14 +53,7 @@ public class PårørendeSykdomMock {
 
         InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
 
-        List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream()
-                .map(this::mapYtelseToSak)
-                .filter(it -> it.getTema().getKode().equals("BS"))
-                .collect(Collectors.toList());
-
-        SakResult result = new SakResult();
-        result.setSaker(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() == null).collect(Collectors.toList()));
-        result.setVedtak(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
+        SakResult result = getSakResult(inntektYtelseModell);
 
         return Response.ok(result).build();
     }
@@ -75,9 +66,7 @@ public class PårørendeSykdomMock {
     }, tags={ "paaroerende-sykdom-controller" })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = PaaroerendeSykdom.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class),
-            @ApiResponse(code = 403, message = "Forbidden", response = Void.class),
-            @ApiResponse(code = 404, message = "Not Found", response = Void.class) })
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
     public Response paaroerendeSykdomUsingGET1( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
         if(inntektYtelseModell.isEmpty()) {
@@ -91,6 +80,31 @@ public class PårørendeSykdomMock {
                 .collect(Collectors.toList());
 
         return Response.ok(result).build();
+    }
+
+    @GET
+    @Path("/vedtakForPleietrengende")
+    @Produces({ "application/json" })
+    @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags={ "paaroerende-sykdom-controller" })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = VedtakPleietrengendeDto.class, responseContainer = "List"),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    public Response finnVedtakForPleietrengendeUsingGET( @NotNull @ApiParam(value = "Pleietrengendes fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.")  @QueryParam("tom") LocalDate tom) {
+        return Response.ok(List.of()).build();
+    }
+
+    private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream()
+                .map(this::mapYtelseToSak)
+                .filter(it -> it.getTema().getKode().equals("BS"))
+                .collect(Collectors.toList());
+
+        SakResult result = new SakResult();
+        result.setSaker(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() == null).collect(Collectors.toList()));
+        result.setVedtak(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
+        return result;
     }
 
     private SakDto mapYtelseToSak(InfotrygdYtelse ytelse) {
