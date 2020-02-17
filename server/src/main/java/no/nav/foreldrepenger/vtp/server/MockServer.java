@@ -163,7 +163,13 @@ public class MockServer {
         GsakRepo gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
-        addRestServices(handler, testScenarioRepository, templateRepository, gsakRepo, kafkaServer.getLocalProducer(), kafkaServer.getKafkaAdminClient());
+        addRestServices(handler,
+                testScenarioRepository,
+                templateRepository,
+                gsakRepo,
+                kafkaServer.getLocalProducer(),
+                kafkaServer.getKafkaAdminClient(),
+                journalRepository);
 
 
         addWebResources(handler);
@@ -197,8 +203,9 @@ public class MockServer {
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
                                    DelegatingTestscenarioTemplateRepository templateRepository,
-                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient) {
-        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient);
+                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient,
+                                   JournalRepository journalRepository) {
+        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {

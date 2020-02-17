@@ -6,6 +6,7 @@ import javax.servlet.ServletContextEvent;
 
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.server.HandlerContainer;
@@ -30,7 +31,11 @@ public class RestConfig {
         this.templateRepository = templateRepository;
     }
 
-    public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository, GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient) {
+    public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
+                      GsakRepo gsakRepo,
+                      LocalKafkaProducer localKafkaProducer,
+                      AdminClient kafkaAdminClient,
+                      JournalRepository journalRepository) {
         // Setup RESTEasy's HttpServletDispatcher at "/api/*".
         final ServletContextHandler context = new ServletContextHandler(handler, "/rest");
 
@@ -45,6 +50,7 @@ public class RestConfig {
                 defaultContextObjects.put(TestscenarioRepository.class, testScenarioRepository);
                 defaultContextObjects.put(TestscenarioBuilderRepository.class, testScenarioRepository);
                 defaultContextObjects.put(TestscenarioTemplateRepository.class, templateRepository);
+                defaultContextObjects.put(JournalRepository.class, journalRepository);
                 defaultContextObjects.put(GsakRepo.class,gsakRepo);
                 defaultContextObjects.put(LocalKafkaProducer.class, localKafkaProducer);
                 defaultContextObjects.put(AdminClient.class, kafkaAdminClient);

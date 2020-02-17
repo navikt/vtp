@@ -103,6 +103,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>journalpost-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>infotrygd-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -209,7 +214,7 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>dokarkiv-mock</artifactId>
+                <artifactId>dokdist-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
