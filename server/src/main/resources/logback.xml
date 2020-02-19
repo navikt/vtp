@@ -10,8 +10,8 @@
 			<level>INFO</level>
 		</filter>
 	</appender>
-
-	<logger name="no.nav" level="${log.level.no.nav:-INFO}" />
+	<variable name="NAV_LOG_LEVEL" value="${NAV_LOG_LEVEL:-INFO}" />
+	<logger name="no.nav" level="${NAV_LOG_LEVEL}" />
 
 	<!-- skru paa for aa logge all sql statements med parametere -->
 	<logger name="org.apache" level="${log.level.org.apache:-WARN}" />
@@ -29,7 +29,6 @@
     <logger name="org.apache.kafka.clients.producer" level="${log.level.org.apache.kafka:-INFO}"/>
     <logger name="org.apache.kafka.clients.producer.ProducerConfig" level="${log.level.org.apache.kafka:-WARN}"/>
 	<logger name="org.apache.zookeeper" level="${log.level.org.apache.zookeeper:-INFO}"/>
-
 
 	<root level="${log.level.root:-WARN}">
 		<appender-ref ref="STDOUT" />
