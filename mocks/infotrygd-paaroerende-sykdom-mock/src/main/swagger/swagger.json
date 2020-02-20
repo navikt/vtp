@@ -1,0 +1,535 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api Documentation",
+    "version": "1.0",
+    "title": "Api Documentation",
+    "termsOfService": "urn:tos",
+    "contact": {},
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "paaroerende-sykdom-controller",
+      "description": "Paaroerende Sykdom Controller"
+    },
+    {
+      "name": "table-controller",
+      "description": "Table Controller"
+    }
+  ],
+  "paths": {
+    "/grunnlag": {
+      "get": {
+        "tags": [
+          "paaroerende-sykdom-controller"
+        ],
+        "summary": "paaroerendeSykdom",
+        "operationId": "paaroerendeSykdomUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fnr",
+            "in": "query",
+            "description": "fnr",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fom",
+            "in": "query",
+            "description": "fom",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "tom",
+            "in": "query",
+            "description": "tom",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaaroerendeSykdom"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/paaroerendeSykdom/grunnlag": {
+      "get": {
+        "tags": [
+          "paaroerende-sykdom-controller"
+        ],
+        "summary": "paaroerendeSykdom",
+        "operationId": "paaroerendeSykdomUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fnr",
+            "in": "query",
+            "description": "fnr",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fom",
+            "in": "query",
+            "description": "fom",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "tom",
+            "in": "query",
+            "description": "tom",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PaaroerendeSykdom"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/paaroerendeSykdom/sak": {
+      "get": {
+        "tags": [
+          "paaroerende-sykdom-controller"
+        ],
+        "summary": "hentSak",
+        "operationId": "hentSakUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fnr",
+            "in": "query",
+            "description": "fnr",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fom",
+            "in": "query",
+            "description": "fom",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "tom",
+            "in": "query",
+            "description": "tom",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SakResult"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/saker": {
+      "get": {
+        "tags": [
+          "paaroerende-sykdom-controller"
+        ],
+        "summary": "hentSak",
+        "operationId": "hentSakUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fnr",
+            "in": "query",
+            "description": "fnr",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fom",
+            "in": "query",
+            "description": "fom",
+            "required": true,
+            "type": "string",
+            "format": "date"
+          },
+          {
+            "name": "tom",
+            "in": "query",
+            "description": "tom",
+            "required": false,
+            "type": "string",
+            "format": "date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SakResult"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/tables": {
+      "get": {
+        "tags": [
+          "table-controller"
+        ],
+        "summary": "get",
+        "operationId": "getUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Arbeidsforhold": {
+      "type": "object",
+      "required": [
+        "arbeidsgiverOrgnr",
+        "inntektsperiode",
+        "refusjon"
+      ],
+      "properties": {
+        "arbeidsgiverOrgnr": {
+          "type": "string"
+        },
+        "inntektForPerioden": {
+          "type": "number"
+        },
+        "inntektsperiode": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "refusjon": {
+          "type": "boolean"
+        }
+      },
+      "title": "Arbeidsforhold"
+    },
+    "Kodeverdi": {
+      "type": "object",
+      "required": [
+        "kode",
+        "termnavn"
+      ],
+      "properties": {
+        "kode": {
+          "type": "string"
+        },
+        "termnavn": {
+          "type": "string"
+        }
+      },
+      "title": "Kodeverdi"
+    },
+    "PaaroerendeSykdom": {
+      "type": "object",
+      "required": [
+        "arbeidsforhold",
+        "behandlingstema",
+        "identdato",
+        "vedtak"
+      ],
+      "properties": {
+        "arbeidsforhold": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Arbeidsforhold"
+          }
+        },
+        "arbeidskategori": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "behandlingstema": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "foedselsdatoPleietrengende": {
+          "type": "string",
+          "format": "date"
+        },
+        "foedselsnummerPleietrengende": {
+          "type": "string"
+        },
+        "identdato": {
+          "type": "string",
+          "format": "date"
+        },
+        "iverksatt": {
+          "type": "string",
+          "format": "date"
+        },
+        "opphoerFom": {
+          "type": "string",
+          "format": "date"
+        },
+        "periode": {
+          "$ref": "#/definitions/Periode"
+        },
+        "registrert": {
+          "type": "string",
+          "format": "date"
+        },
+        "saksbehandlerId": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "tema": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "vedtak": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Vedtak"
+          }
+        }
+      },
+      "title": "PaaroerendeSykdom"
+    },
+    "Periode": {
+      "type": "object",
+      "required": [
+        "fom",
+        "tom"
+      ],
+      "properties": {
+        "fom": {
+          "type": "string",
+          "format": "date"
+        },
+        "tom": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "title": "Periode"
+    },
+    "SakDto": {
+      "type": "object",
+      "properties": {
+        "behandlingstema": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "iverksatt": {
+          "type": "string",
+          "format": "date"
+        },
+        "opphoerFom": {
+          "type": "string",
+          "format": "date"
+        },
+        "registrert": {
+          "type": "string",
+          "format": "date"
+        },
+        "resultat": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "sakId": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "tema": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "type": {
+          "$ref": "#/definitions/Kodeverdi"
+        },
+        "vedtatt": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "title": "SakDto"
+    },
+    "SakResult": {
+      "type": "object",
+      "required": [
+        "saker",
+        "vedtak"
+      ],
+      "properties": {
+        "saker": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SakDto"
+          }
+        },
+        "vedtak": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SakDto"
+          }
+        }
+      },
+      "title": "SakResult"
+    },
+    "Vedtak": {
+      "type": "object",
+      "required": [
+        "periode",
+        "utbetalingsgrad"
+      ],
+      "properties": {
+        "periode": {
+          "$ref": "#/definitions/Periode"
+        },
+        "utbetalingsgrad": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "Vedtak"
+    }
+  }
+}

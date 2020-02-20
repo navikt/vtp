@@ -19,14 +19,13 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaVedtak;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.SakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakBehandlingtema;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdBehandlingstema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdTema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidskategori;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdBeregningsgrunnlag;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdBeregningsgrunnlagBehandlingtema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdForeldrepengerBeregningsgrunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdInntektsperiodeType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdVedtak;
@@ -98,7 +97,7 @@ public class InntektYtelseTest {
     private InfotrygdYtelse lagInfotrygdYtelse() {
         LocalDateTime now = LocalDateTime.now();
         InfotrygdYtelse yt = new InfotrygdYtelse();
-        yt.setBehandlingTema(InfotrygdSakBehandlingtema.FORELDREPENGER_FØDSEL);
+        yt.setBehandlingTema(InfotrygdBehandlingstema.FORELDREPENGER_FØDSEL);
         yt.setTema(InfotrygdTema.FA);
         yt.setRegistrert(now);
         yt.setIverksatt(now);
@@ -122,7 +121,7 @@ public class InntektYtelseTest {
         LocalDate today = LocalDate.now();
 
         InfotrygdForeldrepengerBeregningsgrunnlag fbg = new InfotrygdForeldrepengerBeregningsgrunnlag();
-        fbg.setBehandlingTema(InfotrygdBeregningsgrunnlagBehandlingtema.FORELDREPENGER_FØDSEL);
+        fbg.setBehandlingTema(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdBehandlingstema.FORELDREPENGER_FØDSEL);
         fbg.setFom(today);
         fbg.setDekningsgrad(100);
         fbg.setFødselsdatoBarn(today);

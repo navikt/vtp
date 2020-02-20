@@ -14,26 +14,23 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>no.nav.sbl.dialogarena</groupId>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
 			<artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.tjenester.fim</groupId>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
 			<artifactId>nav-fim-oppgave-v3-tjenestespesifikasjon</artifactId>
-			<classifier>jaxws</classifier>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.tjenester.fim</groupId>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
 			<artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
-			<classifier>jaxws</classifier>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.tjenester.fim</groupId>
-			<artifactId>nav-fim-oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
-			<classifier>jaxws</classifier>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
+			<artifactId>oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.sbl.dialogarena</groupId>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
 			<artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
 		</dependency>
 		<dependency>

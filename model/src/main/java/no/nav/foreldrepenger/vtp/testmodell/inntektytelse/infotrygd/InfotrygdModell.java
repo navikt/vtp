@@ -25,7 +25,7 @@ public class InfotrygdModell {
     @JsonProperty("grunnlag")
     private List<InfotrygdBeregningsgrunnlag> grunnlag = new ArrayList<>();
 
-    public Feilkode getFeilkode() {
+    public Feilkode getFeilkode() { // todo: hva er dette?
         return feilkode;
     }
 

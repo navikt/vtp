@@ -38,6 +38,14 @@ public class FoedselsnummerTest {
     }
 
     @Test
+    public void fiktiv_dnr() {
+        FiktiveFnr fiktiveFnr = new FiktiveFnr();
+        String fnr = fiktiveFnr.tilfeldigKvinneDnr();
+        assertThat(fnr).hasSize(11);
+        Assert.assertTrue(Integer.parseInt((fnr.substring(0,1))) >= 4);
+    }
+
+    @Test
     public void fiktiv_fnr_barn(){
         FiktiveFnr fiktiveFnr = new FiktiveFnr();
         String fnr = fiktiveFnr.tilfeldigBarnUnderTreAarFnr();

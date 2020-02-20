@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.identer;
 
+import no.nav.foreldrepenger.vtp.testmodell.enums.IdentType;
 import no.nav.foreldrepenger.vtp.testmodell.enums.Kjonn;
 import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
@@ -19,7 +20,6 @@ public class FiktiveFnr implements IdentGenerator {
                 .FodselsnummerGeneratorBuilder()
                 .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
                 .buildAndGenerate();
-
     }
 
     /** Returnerer FNR for mann > 18 år */
@@ -50,6 +50,17 @@ public class FiktiveFnr implements IdentGenerator {
                 .FodselsnummerGeneratorBuilder()
                 .fodselsdato(TestdataUtil.generateBirthdateNowMinusThreeYears())
                 .buildAndGenerate();
-
     }
+
+    /** Returnerer DNR for kvinne > 18 år */
+    @Override
+    public String tilfeldigKvinneDnr() {
+        return new FoedselsnummerGenerator
+                .FodselsnummerGeneratorBuilder()
+                .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
+                .identType(IdentType.DNR)
+                .buildAndGenerate();
+    }
+
+
 }

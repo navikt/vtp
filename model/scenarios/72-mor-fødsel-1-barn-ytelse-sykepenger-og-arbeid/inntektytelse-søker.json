@@ -1,46 +1,61 @@
 {
-	"infotrygd": {
-		"ytelser": [
+	"trex": {
+		"foreldrepenger": [
 			{
-				"sakId": "9999",
-				"registrert": "now() - P9M",
+				"status": {
+					"kode": "L",
+					"termnavn": "status"
+				},
+				"tema": {
+					"kode": "FA",
+					"termnavn": "tema"
+				},
+				"dekningsgrad": 100,
+				"foedselsdatoBarn": "now()",
+				"arbeidskategori": {
+					"kode": "01",
+					"termnavn": "ketegori"
+				},
+				"arbeidsforhold":  [
+					{
+						"orgnr": "910909088",
+						"inntekt": 10000,
+						"inntektsperiode": {
+							"kode": "M",
+							"termnavn": "inntektperiode"
+						},
+						"refusjon": true
+					}
+				],
+				"periode": {
+					"fom": "now() - P9M",
+					"tom": "now()"
+				},
+				"behandlingstema": {
+					"kode": "FØ",
+					"termnavn": "behandlingstema"
+				},
+				"identdato": "now() - P9M",
 				"iverksatt": "now() - P9M",
-				"endret": "now()",
-				"opphør": "now() + PT2400H",
-				"saksbehandlerId": "helloworld",
-				"tema": "FA",
-				"behandlingstema": "FØ",
-				"type": "S",
-				"status": "A",
-				"resultat": "I"
-			}
-		],
-		"grunnlag": [
-			{
-				"@type": "foreldrepenger",
-				"startdato": "now() - P9M",
-				"fom": "now() - P9M",
-				"behandlingstema": "FØ",
+				"opphørFom": "now() + P1D",
+				"gradering": 100,
+				"opprinneligIdentdato": null,
+				"registrert": null,
+				"saksbehandlerId": "ABC",
 				"vedtak": [
 					{
-						"fom": "now() - P9M",
-						"tom": "now()",
+						"periode": {
+							"fom": "now() - P9M",
+							"tom": "now()"
+						},
 						"utbetalingsgrad": 100
 					}
-				],
-				"arbeidskategori": "01",
-				"arbeidsforhold": [
-					{
-						"orgnr": "1",
-						"beløp": 10000,
-						"inntektsperiode": "M"
-					}
-				],
-				"dekningsgrad": 100,
-				"gradering": 100,
-				"fødselsdatoBarn": "now()"
+				]
 			}
-		]
+		],
+		"svangerskapspenger": [],
+		"sykepenger": [],
+		"barnsykdom": []
 	},
 	"inntektskomponent": {
 		"inntektsperioder": [

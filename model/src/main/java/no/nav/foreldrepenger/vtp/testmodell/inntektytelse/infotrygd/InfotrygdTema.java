@@ -24,6 +24,7 @@ public class InfotrygdTema {
         koder.put("FA", "Foreldrepenger");
         koder.put("EF", "Enslig forsørger");
         koder.put("SP", "Sykepenger");
+        koder.put("BS", "Barns sykdom");
 
         VALID_KODER = Collections.unmodifiableMap(koder);
     }

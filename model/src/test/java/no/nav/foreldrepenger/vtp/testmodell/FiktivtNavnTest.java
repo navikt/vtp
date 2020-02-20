@@ -20,26 +20,4 @@ public class FiktivtNavnTest {
         Assert.assertTrue(randomMaleName.getFornavn().length() > 1);
         Assert.assertTrue(randomMaleName.getEtternavn().length() > 1);
     }
-
-    @Test
-    public void hente_navn_på_forbokstaver() {
-        List<String> inputList = new ArrayList<>();
-        inputList.add("Word");
-        inputList.add("NotAWordThatStartsWith W");
-        List<String> outputList1 = FiktivtNavn.getAlitterationsFromList(inputList, "Vord");
-        Assert.assertTrue(outputList1.size() == 1);
-        Assert.assertTrue(outputList1.get(0) == "Word");
-
-        List<String> outputList2 = FiktivtNavn.getAlitterationsFromList(inputList, "AnotherWord");
-        Assert.assertTrue(outputList2.size() == 0);
-    }
-    /*
-    @Test
-    public void printNames(){
-        for (int x = 0; x <= 5; x++)
-            System.out.println(FiktivtNavn.getRandomMaleName().getFulltnavn());
-        for (int x = 0; x <= 5; x++)
-            System.out.println(FiktivtNavn.getRandomFemaleName().getFulltnavn());
-    }
-    */
 }

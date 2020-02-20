@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakBehandlingtema;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdBehandlingstema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakResultat;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakType;
@@ -44,7 +44,7 @@ public class InfotrygdYtelse {
 
     /** Stønadsklasse 2. Påkrevd */
     @JsonProperty("behandlingstema")
-    private InfotrygdSakBehandlingtema behandlingstema;
+    private InfotrygdBehandlingstema behandlingstema;
 
     @JsonProperty("type")
     private InfotrygdSakType sakType;
@@ -121,11 +121,11 @@ public class InfotrygdYtelse {
         this.tema = tema;
     }
 
-    public InfotrygdSakBehandlingtema getBehandlingtema() {
+    public InfotrygdBehandlingstema getBehandlingtema() {
         return behandlingstema;
     }
 
-    public void setBehandlingTema(InfotrygdSakBehandlingtema behandlingTema) {
+    public void setBehandlingTema(InfotrygdBehandlingstema behandlingTema) {
         this.behandlingstema = behandlingTema;
     }
 

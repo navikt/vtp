@@ -15,17 +15,14 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.oppdrag</groupId>
             <artifactId>oppdrag-klient</artifactId>
-            <classifier>jaxb</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
             <artifactId>fpoppdrag-v2</artifactId>
-            <classifier>jaxb</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
             <artifactId>okonomistotte-v1</artifactId>
-            <classifier>jaxb</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.tjenester</groupId>

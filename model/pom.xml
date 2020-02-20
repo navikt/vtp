@@ -31,10 +31,10 @@
 			<groupId>org.threeten</groupId>
 			<artifactId>threeten-extra</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>no.nav.tjenester.fim</groupId>
-            <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>no.nav.tjenestespesifikasjoner</groupId>
+			<artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>no.nav.tjenester</groupId>
 			<artifactId>person-api-feed-v2</artifactId>
