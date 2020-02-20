@@ -6,9 +6,6 @@
 			<charset>UTF-8</charset>
 			<pattern>%d [%-5level] [%thread] %logger{5} - [%X{consumerId}, %X{callId}, %X{userId}, %X{prosess}] - %msg%n</pattern>
 		</encoder>
-		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-			<level>INFO</level>
-		</filter>
 	</appender>
 	<variable name="NAV_LOG_LEVEL" value="${NAV_LOG_LEVEL:-INFO}" />
 	<logger name="no.nav" level="${NAV_LOG_LEVEL}" />
