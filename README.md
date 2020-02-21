@@ -38,7 +38,7 @@ guide linux:
 ```
 $EDITOR ~/.profile
 /#add lines at the bottom of the file:  
-     export MAVEN_HOME, =/~/jdk-11.0.6/
+     export MAVEN_HOME, =/~/jdk-x.x.x/
      export JAVA_HOME=/~/apache-maven-x.x.x
 ```
 
