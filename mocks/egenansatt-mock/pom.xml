@@ -19,6 +19,10 @@
             <artifactId>egenansatt-v1-tjenestespesifikasjon</artifactId>
             <version>${ks-tjenestespesifikasjoner.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

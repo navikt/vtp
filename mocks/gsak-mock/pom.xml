@@ -14,6 +14,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.jvnet.jaxb2_commons</groupId>
+			<artifactId>jaxb2-basics-runtime</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>no.nav.tjenestespesifikasjoner</groupId>
 			<artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
 		</dependency>
