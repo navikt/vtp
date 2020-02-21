@@ -24,20 +24,38 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 * VTP trenger Keystore og Truststore liggende i mappe .modig på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
+## Teknologi, må være installert før du fortsetter
+* Node.js (https://nodejs.org/en/download/)
+* Yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
+* Java (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+* Maven (http://maven.apache.org/download.cgi)
+
+Etter installsjon må du legge til enviorment variabler for MAVEN_HOME, JAVA_HOME. Samt sette path i sysem envoirment.
+
+guide windows: https://howtodoinjava.com/maven/how-to-install-maven-on-windows/
+
+guide linux:
+```
+$EDITOR ~/.profile
+/#add lines at the bottom of the file:  
+     export MAVEN_HOME, =/~/jdk-11.0.6/
+     export JAVA_HOME=/~/apache-maven-x.x.x
+```
+
 ## Starte server fra IDE
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
-* Trenger parameter -Dscenarios.dir="../model/scenarios" dersom denne ikke ligger under working dir (dvs. i IDE).
-* Swagger UI: https://localhost:8063/swagger/ - Bruk HTTP for kall
+* Trenger parameter `-Dscenarios.dir="../model/scenarios"` dersom denne ikke ligger under working dir (dvs. i IDE).
+* Swagger UI: **https://localhost:8063/swagger/** - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
 
 ## Starte server fra Shell
 ---
-* Kjør run-java.sh (denne fungerer også for Git-Bash)
+* Kjør **run-java.sh** (denne fungerer også for Git-Bash)
 
 ##Front-end
 ---
-* I mappen frontend kjør yarn run serve. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
+* I mappen frontend kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
 * Dersom bygg feiler på utviklerimage, forsøk å oppdater node / yarn. Oppdaterte versjoner ligger på http://a34apvl063.devillo.no:81/software/.  
 
 
@@ -52,7 +70,7 @@ Kjør tester
 Koble FP*-applikasjoner til VTP
 ------
 
-* Start applikasjonen med --vtp i oppstartsparameterne for å gå mot VTP istedet for testmiljø. 
+* Start applikasjonen med `--vtp` i oppstartsparameterne for å gå mot VTP istedet for testmiljø. 
 
 Sikkerhet
 ----
