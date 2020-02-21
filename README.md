@@ -24,6 +24,8 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 * VTP trenger Keystore og Truststore liggende i mappe .modig på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
+guide for å sette Keystore og Truststore: https://howtodoinjava.com/maven/how-to-install-maven-on-windows/
+
 ## Teknologi, må være installert før du fortsetter
 * Node.js (https://nodejs.org/en/download/)
 * Yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
