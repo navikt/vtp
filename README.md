@@ -26,6 +26,8 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 guide for å sette Keystore og Truststore: https://howtodoinjava.com/maven/how-to-install-maven-on-windows/
 
+* Intelliji må konfigureres med å sette classpath of module til server, og sette working directory til $MODULE_WORKING_DIR$ i run/debug-konfiguration.
+
 ## Teknologi, må være installert før du fortsetter
 * Node.js (https://nodejs.org/en/download/)
 * Yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
@@ -44,16 +46,16 @@ $EDITOR ~/.profile
      export JAVA_HOME=/~/apache-maven-x.x.x
 ```
 
-## Starte server fra IDE
+## Starte backnend-server via IDE
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
 * Trenger parameter `-Dscenarios.dir="../model/scenarios"` dersom denne ikke ligger under working dir (dvs. i IDE).
 * Swagger UI: **https://localhost:8063/swagger/** - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
 
-## Starte server fra Shell
+## Starte frontend-server via Shell
 ---
-* Kjør **run-java.sh** (denne fungerer også for Git-Bash)
+* Kjør `run-java.sh` i en CLI (kan bruke gitbash).
 
 ##Front-end
 ---
