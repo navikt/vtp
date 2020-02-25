@@ -136,9 +136,14 @@ public class TestscenarioRestTjeneste {
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
-        String fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
+        String fnrAnnenPart = null;
+        String aktørIdAnnenPart = null;
+        if(testscenario.getPersonopplysninger().getAnnenPart() != null) {
+            fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
+            aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
+
+        }
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
-        String aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(
                 fnrSøker,
@@ -147,9 +152,12 @@ public class TestscenarioRestTjeneste {
                 aktørIdAnnenPart,
                 fødselsdato.orElse(null));
 
-        ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
-        InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
-        TestscenariodataDto scenariodata = new TestscenariodataDto(inntektskomponentModell, arbeidsforholdModell);
+        TestscenariodataDto scenariodata = new TestscenariodataDto();
+        if(testscenario.getSøkerInntektYtelse() != null) {
+            ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
+            InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
+            scenariodata = new TestscenariodataDto(inntektskomponentModell, arbeidsforholdModell);
+        }
 
         TestscenariodataDto scenariodataAnnenpart = null;
         if (testscenario.getAnnenpartInntektYtelse() != null) {
