@@ -5,6 +5,8 @@ ENV DUMMYPROP=fraDockerfile
 
 ARG JAR_FILE
 
+# curl brukes av healthcheck i docker-compose.
+RUN apt-get -qq update && apt-get -qq -y install curl
 RUN mkdir /app/lib
 COPY server/target/lib/*.jar /app/lib/
 COPY model/scenarios/ /app/model/scenarios/
