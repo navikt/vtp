@@ -1,15 +1,11 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering.PdfGenerator;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class PdfGeneratorTest {
 
@@ -18,20 +14,7 @@ public class PdfGeneratorTest {
 
     @Test
     public void PdfGeneratorTest() {
-        try (InputStream inputStream = classLoader.getResourceAsStream(INPUT_XML)){
-            String inputString = readFromInputStream(inputStream);
 
-            PDDocument doc = new PDDocument();
-            PdfGenerator renderer = new PdfGenerator(doc, inputString);
-            renderer.renderText(60);
-            renderer.close();
-            int numberOfPages = doc.getNumberOfPages();
-            doc.close();
-
-            assertThat(numberOfPages).isEqualTo(2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
