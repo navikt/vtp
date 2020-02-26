@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           echo "Building artifacts $(echo $GITHUB_SHA | cut -c1-7)"
-          mvn install -e --quiet --batch-mode --settings .github/workflows/.m2/settings.xml
+          mvn deploy -e --quiet --batch-mode --settings .github/workflows/.m2/settings.xml
           echo "Deployed artifacts"
           echo ::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
           echo ::set-env name=IMAGE::$IMAGE_BASE:$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
