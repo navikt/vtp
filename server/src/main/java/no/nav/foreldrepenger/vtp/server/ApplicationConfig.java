@@ -26,7 +26,7 @@ import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
-import no.nav.tjenester.pensjon.tjenestepensjon.v1.SimulerOffentligTjenestepensjonTjenesteRestEndPoint;
+import no.nav.tjenester.pensjon.tjenestepensjon.SimulerOffentligTjenestepensjonTjenesteRestEndPoint;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;

@@ -29,6 +29,8 @@ public class SimulerOffentligTjenestepensjonService {
         return response;
     }
 
+
+
     private List<SimulertPensjon> buildResponseSingletonList() {
         return Arrays.asList(new SimulertPensjon());
     }

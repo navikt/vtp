@@ -36,9 +36,6 @@ public class SimulerOffentligTjenestepensjonTjenesteRestEndPoint {
         }
     }
 
-
-
-
     @POST
     @Path("/{fnr}/tpordninger")
     @ApiOperation(

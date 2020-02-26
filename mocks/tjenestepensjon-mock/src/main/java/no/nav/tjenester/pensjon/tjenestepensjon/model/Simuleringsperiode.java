@@ -1,5 +1,6 @@
 package no.nav.tjenester.pensjon.tjenestepensjon.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
@@ -11,37 +12,43 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Simuleringsperiode {
 
-    @JsonProperty(value = "datoFom", required = true)
+    @JsonCreator
+    public Simuleringsperiode(
+            @JsonProperty(value = "datoFom", required = true) LocalDate datoFom,
+            @JsonProperty(value = "utg", required = true) int utg,
+            @JsonProperty(value = "stillingsprosentOffentlig", required = true) int stillingsprosentOffentlig,
+            @JsonProperty(value = "poengArTom1991", required = true) int poengArTom1991,
+            @JsonProperty(value = "poengArFom1992", required = true) int poengArFom1992,
+            @JsonProperty(value = "sluttpoengtall", required = true) Double sluttpoengtall,
+            @JsonProperty(value = "anvendtTrygdetid", required = true) int anvendtTrygdetid,
+            @JsonProperty(value = "forholdstall", required = true) Double forholdstall,
+            @JsonProperty(value = "delingstall", required = true) Double delingstall,
+            @JsonProperty(value = "uforegradVedOmregning", required = true) int uforegradVedOmregning,
+            @JsonProperty(value = "delytelser", required = true) List<Delytelse> delytelser
+    ) {
+        this.datoFom = datoFom;
+        this.utg = utg;
+        this.stillingsprosentOffentlig = stillingsprosentOffentlig;
+        this.poengArTom1991 = poengArTom1991;
+        this.poengArFom1992 = poengArFom1992;
+        this.sluttpoengtall = sluttpoengtall;
+        this.anvendtTrygdetid = anvendtTrygdetid;
+        this.forholdstall = forholdstall;
+        this.delingstall = delingstall;
+        this.uforegradVedOmregning = uforegradVedOmregning;
+        this.delytelser = delytelser;
+    }
+
     private LocalDate datoFom;
-
-    @JsonProperty(required = true)
     private int utg;
-
-    @JsonProperty(required = true)
     private int stillingsprosentOffentlig;
-
-    @JsonProperty(required = true)
     private int poengArTom1991;
-
-    @JsonProperty(required = true)
     private int poengArFom1992;
-
-    @JsonProperty(required = true)
     private Double sluttpoengtall;
-
-    @JsonProperty(required = true)
     private int anvendtTrygdetid;
-
-    @JsonProperty(required = true)
     private Double forholdstall;
-
-    @JsonProperty(required = true)
     private Double delingstall;
-
-    @JsonProperty(required = true)
     private int uforegradVedOmregning;
-
-    @JsonProperty(required = true)
     private List<Delytelse> delytelser;
 
     public LocalDate getDatoFom() {

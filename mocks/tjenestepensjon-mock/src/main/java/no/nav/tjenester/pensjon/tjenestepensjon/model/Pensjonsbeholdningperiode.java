@@ -1,5 +1,6 @@
 package no.nav.tjenester.pensjon.tjenestepensjon.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
@@ -10,15 +11,21 @@ import java.time.LocalDate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Pensjonsbeholdningperiode {
 
-    @JsonProperty(required = true)
+    @JsonCreator
+    public Pensjonsbeholdningperiode(
+            @JsonProperty(value = "datoFom", required = true) LocalDate datoFom,
+            @JsonProperty(value = "pensjonsbeholdning", required = true) Integer pensjonsbeholdning,
+            @JsonProperty(value = "garantipensjonsbeholdning", required = true) Integer garantipensjonsbeholdning,
+            @JsonProperty(value = "garantilleggsbeholdning", required = true) Integer garantilleggsbeholdning
+    ) {
+        this.datoFom = datoFom;
+        this.pensjonsbeholdning = pensjonsbeholdning;
+        this.garantipensjonsbeholdning = garantipensjonsbeholdning;
+        this.garantilleggsbeholdning = garantilleggsbeholdning;
+    }
+
     private LocalDate datoFom;
-
-    @JsonProperty(required = true)
     private Integer pensjonsbeholdning;
-
-    @JsonProperty(required = true)
     private Integer garantipensjonsbeholdning = 0;
-
-    @JsonProperty(required = true)
     private Integer garantilleggsbeholdning = 0;
 }
