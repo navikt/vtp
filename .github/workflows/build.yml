@@ -1,0 +1,47 @@
+name: Bygg og deploy
+
+on:
+  push:
+    branches:
+      - master    # Push events on master branch
+env:
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/vtp
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1
+        with:
+          path: ~/.github/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: Build artifacts & deploy
+        shell: bash
+        run: |
+          echo "Building artifacts $(echo $GITHUB_SHA | cut -c1-7)"
+          mvn clean install -e --quiet --batch-mode --settings .github/workflows/.m2/settings.xml
+          echo "Deployed artifacts"
+          echo ::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
+          echo ::set-env name=IMAGE::$IMAGE_BASE:$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
+        env:
+          GITHUB_USERNAME: x-access-token
+          GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Bygg, tag og push Docker image
+        run: |
+          docker build --pull --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
+          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://docker.pkg.github.com
+          docker push ${IMAGE_BASE}:latest
+          docker push $IMAGE
+        env:
+          GITHUB_USERNAME: x-access-token
+          GITHUB_PASSWORD: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
