@@ -20,22 +20,7 @@ jobs:
         shell: bash
         run: |
           echo "Building $(echo $GITHUB_SHA | cut -c1-7)"
-          mvn deploy --batch-mode --settings ./.github/.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
-          echo "Deployed artifacts"
-          echo ::set-env name=TAG::$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
-          echo ::set-env name=IMAGE::$IMAGE_BASE:$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
+          mvn clean install --batch-mode --settings ./.github/.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-$(git log -1 --pretty='%ad' --date=format:'%Y%m%d%H%M%S')-$(echo $GITHUB_SHA | cut -c1-7)
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Bygg, tag og push Docker image
-        run: |
-          docker build --pull --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
-          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://docker.pkg.github.com
-          docker push ${IMAGE_BASE}:latest
-          docker push $IMAGE
-        env:
-          GITHUB_USERNAME: x-access-token
-          GITHUB_PASSWORD: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
