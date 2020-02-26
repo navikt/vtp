@@ -55,11 +55,11 @@ $EDITOR ~/.profile
 
 ## Starte frontend-server via Shell
 ---
-* Kjør `run-java.sh` i en CLI (kan bruke gitbash). Dette gjøres i front end mappen i prosjektet: ~vtp/frontend.
+* Kjør `run-java.sh` i en CLI (kan bruke gitbash). Dette gjøres i root mappen til vtp prosjektet.
 
 ##Front-end
 ---
-* I mappen frontend kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
+* I mappen frontend (~vtp/frontend) kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
 * Dersom bygg feiler på utviklerimage, forsøk å oppdater node / yarn. Oppdaterte versjoner ligger på http://a34apvl063.devillo.no:81/software/.  
 
 
