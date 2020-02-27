@@ -14,16 +14,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PdfGeneratorTest {
 
     private static final String INPUT_XML = "brevxml.txt";
+    private static final String INPUT_TEXT = "paragraph.txt";
+    private static final int fontSize = 8;
     private final ClassLoader classLoader = PdfGeneratorTest.class.getClassLoader();
 
     @Test
-    public void PdfGeneratorTest() {
+    public void PdfGeneratorXmlTest() {
         try (InputStream inputStream = classLoader.getResourceAsStream(INPUT_XML)){
             String inputString = readFromInputStream(inputStream);
 
             PDDocument doc = new PDDocument();
-            PdfGenerator renderer = new PdfGenerator(doc, inputString);
-            renderer.renderText(60);
+            PdfGenerator renderer = new PdfGenerator(doc, inputString, fontSize);
+            renderer.renderText();
             renderer.close();
             int numberOfPages = doc.getNumberOfPages();
             doc.close();
@@ -34,6 +36,23 @@ public class PdfGeneratorTest {
         }
     }
 
+    @Test
+    public void PdfGeneratorLongParagraphTest() {
+        try (InputStream inputStream = classLoader.getResourceAsStream(INPUT_TEXT)){
+            String inputString = readFromInputStream(inputStream);
+
+            PDDocument doc = new PDDocument();
+            PdfGenerator renderer = new PdfGenerator(doc, inputString, fontSize);
+            renderer.renderText();
+            renderer.close();
+            int numberOfPages = doc.getNumberOfPages();
+            doc.close();
+
+            assertThat(numberOfPages).isGreaterThan(1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private String readFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
