@@ -26,7 +26,8 @@ import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
-import no.nav.tjenester.pensjon.tjenestepensjon.SimulerOffentligTjenestepensjonTjenesteRestEndPoint;
+import no.nav.tjenester.pensjon.tjenestepensjon.TPconfigRestEndPoint;
+import no.nav.tjenester.pensjon.tjenestepensjon.TPregisteretRestEndpoint;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
@@ -96,7 +97,8 @@ public class ApplicationConfig extends Application {
         classes.add(AktoerIdentMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
-        classes.add(SimulerOffentligTjenestepensjonTjenesteRestEndPoint.class);
+        classes.add(TPconfigRestEndPoint.class);
+        classes.add(TPregisteretRestEndpoint.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
