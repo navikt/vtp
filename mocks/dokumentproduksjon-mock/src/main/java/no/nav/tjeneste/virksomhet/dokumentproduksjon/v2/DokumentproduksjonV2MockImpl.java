@@ -3,7 +3,7 @@ package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering.PdfGenerator;
+import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering.PdfGeneratorUtil;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseAvbrytelseIkkeTillatt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostAlleredeAvbrutt;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.binding.AvbrytForsendelseJournalpostIkkeFunnet;
@@ -59,7 +59,6 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedige
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentResponse;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentRequest;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentResponse;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -73,12 +72,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.ws.soap.Addressing;
-import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 @Addressing
@@ -87,10 +81,11 @@ import java.nio.file.Paths;
 public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
 
     private static final Logger LOG = LoggerFactory.getLogger(DokumentproduksjonV2MockImpl.class);
-    private static final String OUTPUT_PDF = "statiskBrev.pdf";
-    private static final int fontSize = 8;
+
 
     private JournalRepository journalRepository;
+
+    private PdfGeneratorUtil pdfGeneratorUtil = new PdfGeneratorUtil();
 
     public DokumentproduksjonV2MockImpl(){}
 
@@ -109,8 +104,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         String data = xmlToString(((Element) request.getBrevdata()).getOwnerDocument());
         String dokumenttypeId =  request.getDokumenttypeId();
 
-        genererPdfFraString(data, OUTPUT_PDF);
-        byte[] bytes = pdfToByte(OUTPUT_PDF);
+        byte[] bytes = pdfGeneratorUtil.genererPdfByteArrayFraString(data);
 
         ProduserDokumentutkastResponse response = new ProduserDokumentutkastResponse();
         response.setDokumentutkast(bytes);
@@ -201,27 +195,4 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         }
     }
 
-    private void genererPdfFraString(String brev, String filepath) {
-        try {
-            PDDocument doc = new PDDocument();
-            PdfGenerator renderer = new PdfGenerator(doc, brev, fontSize);
-            renderer.renderText();
-            renderer.close();
-            doc.save(new File(filepath));
-            doc.close();
-        } catch (IOException e) {
-            LOG.warn("Kunne ikke generer PDF fra string: " + e.getMessage());
-        }
-    }
-
-    static byte[] pdfToByte(String filePath) {
-        try {
-            Path pdfPath = Paths.get(filePath);
-            return Files.readAllBytes(pdfPath);
-        } catch (IOException e) {
-            String message = "Noe gikk galt når pdfen skulle konverters til byte array: " + e.getMessage();
-            LOG.warn(message);
-            return null;
-        }
-    }
 }

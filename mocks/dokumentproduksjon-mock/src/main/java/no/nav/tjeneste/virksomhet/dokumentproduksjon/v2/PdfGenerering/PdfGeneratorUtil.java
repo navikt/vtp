@@ -6,47 +6,72 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PdfGenerator implements AutoCloseable {
+public class PdfGeneratorUtil {
 
-    private final ClassLoader classLoader = PdfGenerator.class.getClassLoader();
+    private static final Logger LOG = LoggerFactory.getLogger(PdfGeneratorUtil.class);
+
+
+    private final ClassLoader classLoader = PdfGeneratorUtil.class.getClassLoader();
     private static final String FONT = "fonts/OpenSans-Regular.ttf";
+    private static final String OUTPUT_PDF = "statiskBrev.pdf";
+    private static final int FONT_SIZE = 8;
 
-    final PDDocument doc;
-    final String[] pdfcontent;
+    PDDocument doc;
     private PDFont font;
     private PDPageContentStream content = null;
     private int textRenderingLineStartY;
-    private int textRenderingLineStartX ;
+    private int textRenderingLineStartX;
     private int textRenderingLineEndX;
     private int textRenderingLineEndY;
     private int textRenderingLineCurrentY;
-    private final int fontSize;
     private int fontHeight;
 
-
-    public PdfGenerator(PDDocument doc, String message, int fontSize) {
-        this.pdfcontent = message.replaceAll("\t", "  ").split(System.getProperty("line.separator"));
-        this.doc = doc;
-        this.fontSize = fontSize;
+    public PdfGeneratorUtil() {
         loadAndSetFont();
     }
 
 
-    public void renderText() throws IOException {
+
+
+    public byte[] genererPdfByteArrayFraString(String brev) {
+        try {
+            PDDocument doc = new PDDocument();
+            String[] pdfcontent = brev.replaceAll("\t", "  ").split(System.getProperty("line.separator"));
+            renderText(pdfcontent);
+            doc.save(new File(OUTPUT_PDF));
+            doc.close();
+            Path pdfPath = Paths.get(OUTPUT_PDF);
+            return Files.readAllBytes(pdfPath);
+        } catch (IOException e) {
+            String message = "Kunne ikke generere PDF:  " + e.getMessage();
+            LOG.warn(message);
+            throw new IllegalStateException("Kunne ikke generere PDF");
+        }
+    }
+
+
+    private void renderText(String[] pdfcontent) throws IOException {
         newPage();
         for (String strTemp : pdfcontent) {
             List<String> lines = autowrappingLongLines(strTemp);
-            for (String line: lines) {
+            for (String line : lines) {
                 renderLine(line);
             }
         }
+        close();
     }
 
 
@@ -58,7 +83,7 @@ public class PdfGenerator implements AutoCloseable {
             if (indexOfNextSpace < 0)
                 indexOfNextSpace = text.length();
             String subString = text.substring(0, indexOfNextSpace);
-            float sizeOfSubstring = fontSize * font.getStringWidth(subString) / 1000;
+            float sizeOfSubstring = FONT_SIZE * font.getStringWidth(subString) / 1000;
             if (sizeOfSubstring > textRenderingLineEndX) {
                 if (lastSpace < 0)
                     lastSpace = indexOfNextSpace;
@@ -80,9 +105,9 @@ public class PdfGenerator implements AutoCloseable {
     private void renderLine(String info) throws IOException {
         if (content == null || textRenderingLineCurrentY < textRenderingLineEndY)
             newPage();
-        textRenderingLineCurrentY -=fontHeight;
+        textRenderingLineCurrentY -= fontHeight;
         content.beginText();
-        content.setFont(font, fontSize);
+        content.setFont(font, FONT_SIZE);
         content.newLineAtOffset(textRenderingLineStartX, textRenderingLineCurrentY);
         content.showText(info);
         content.endText();
@@ -101,7 +126,7 @@ public class PdfGenerator implements AutoCloseable {
     private void setPdfPageProperties(PDPage page) throws IOException {
         content.setNonStrokingColor(Color.BLACK);
         PDRectangle mediabox = page.getMediaBox();
-        int margin = 2*fontHeight;
+        int margin = 2 * fontHeight;
         textRenderingLineStartY = (int) (mediabox.getUpperRightY()) - margin;
         textRenderingLineEndY = (int) (mediabox.getLowerLeftX()) + 2 * margin;
         textRenderingLineStartX = (int) (mediabox.getLowerLeftX()) + 2 * margin;
@@ -111,20 +136,17 @@ public class PdfGenerator implements AutoCloseable {
 
 
     private void loadAndSetFont() {
-        try (InputStream fontInputStream = classLoader.getResourceAsStream(FONT)){
+        try (InputStream fontInputStream = classLoader.getResourceAsStream(FONT)) {
             this.font = PDType0Font.load(doc, fontInputStream);
-            double tempFontHeightDouble = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
+            double tempFontHeightDouble = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * FONT_SIZE;
             this.fontHeight = (int) Math.round(tempFontHeightDouble);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    @Override
-    public void close() throws IOException {
-        if (content != null)
-        {
+    private void close() throws IOException {
+        if (content != null) {
             content.close();
             content = null;
         }
