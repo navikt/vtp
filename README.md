@@ -24,11 +24,12 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 * VTP trenger Keystore og Truststore liggende i mappe `.modig` på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
-guide for å sette Keystore og Truststore: https://howtodoinjava.com/maven/how-to-install-maven-on-windows/
+guide for å sette Keystore og Truststore: https://confluence.adeo.no/display/TVF/Sett+opp+keystore+og+truststore+for+lokal+test
 
 * Intelliji må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.
 
 ## Teknologi, må være installert før du fortsetter
+* OpenJDK (https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
 * Node.js (https://nodejs.org/en/download/)
 * Yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 * Java (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
