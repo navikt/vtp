@@ -22,8 +22,8 @@ public class PdfGenerator implements AutoCloseable {
     final String[] pdfcontent;
     private PDFont font;
     private PDPageContentStream content = null;
-    private int textRenderingLineStartY = 0;
-    private int textRenderingLineStartX = 0;
+    private int textRenderingLineStartY;
+    private int textRenderingLineStartX ;
     private int textRenderingLineEndX;
     private int textRenderingLineEndY;
     private int textRenderingLineCurrentY;
