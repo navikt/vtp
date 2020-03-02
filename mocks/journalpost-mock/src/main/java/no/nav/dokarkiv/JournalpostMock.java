@@ -30,8 +30,8 @@ public class JournalpostMock {
     @POST
     @Path("/journalpost")
     @ApiOperation(value = "lag journalpost", notes = (""))
-    public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest, @QueryParam("foersoekFerdigstill") Boolean foersoekFerdigstill) {
-        LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", foersoekFerdigstill);
+    public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest, @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
+        LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", forsoekFerdigstill);
 
         JournalpostModell modell = new JournalpostMapper().tilModell(opprettJournalpostRequest);
         String journalpostId = journalRepository.leggTilJournalpost(modell);
