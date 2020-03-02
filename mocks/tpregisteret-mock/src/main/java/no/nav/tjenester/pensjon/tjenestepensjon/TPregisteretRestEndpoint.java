@@ -6,12 +6,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.tjenester.pensjon.tjenestepensjon.model.request.SimulerPensjonRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
@@ -36,18 +35,17 @@ public class TPregisteretRestEndpoint {
         }
     }
 
-    @POST
+    @GET
     @Path("/{fnr}/tpordninger")
     @ApiOperation(
             value = "Stub for simuler tjenestepensjon",
             notes = ("ApiOperation b")
     )
     public Response buildPermitResponse(
-            @ApiParam(value = "PathParam fnr(fødselsnummer)", required = true) @NotNull @PathParam("fnr") Integer fnr,
-            @ApiParam(value = "SimulerPensjonRequest body", required = true) @NotNull SimulerPensjonRequest body
+            @ApiParam(value = "PathParam fnr(fødselsnummer)", required = true) @NotNull @PathParam("fnr") Integer fnr
     ) {
         return Response.status(OK).entity(
-                simulerOffentligTPService.validateRequestAndRespond(body)
+                simulerOffentligTPService.validateRequestAndRespond(null)
         ).build();
     }
 }
