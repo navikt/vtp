@@ -35,18 +35,6 @@ guide for å sette Keystore og Truststore: https://confluence.adeo.no/display/TV
 * Java (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 * Maven (http://maven.apache.org/download.cgi)
 
-Etter installsjon må du legge til enviorment variabler for `MAVEN_HOME`, `JAVA_HOME`. Samt sette path i system envoirment.
-
-guide windows: https://howtodoinjava.com/maven/how-to-install-maven-on-windows/
-
-guide linux (max er basert på linux, så burde være likt):
-```
-$EDITOR ~/.profile
-/#add lines at the bottom of the file:  
-     export MAVEN_HOME, =/~/jdk-x.x.x/
-     export JAVA_HOME=/~/apache-maven-x.x.x
-```
-
 ## Starte backnend-server via IDE
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
