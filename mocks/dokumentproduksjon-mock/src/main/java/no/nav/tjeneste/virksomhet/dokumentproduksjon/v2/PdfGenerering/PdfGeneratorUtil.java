@@ -23,14 +23,13 @@ public class PdfGeneratorUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(PdfGeneratorUtil.class);
 
-
     private final ClassLoader classLoader = PdfGeneratorUtil.class.getClassLoader();
-    private static final String FONT = "fonts/OpenSans-Regular.ttf";
+    private static final String FONT_FILE = "fonts/OpenSans-Regular.ttf";
     private static final String OUTPUT_PDF = "statiskBrev.pdf";
     private static final int FONT_SIZE = 8;
 
-    PDDocument doc;
     private PDFont font;
+    private PDDocument doc = null;
     private PDPageContentStream content = null;
     private int textRenderingLineStartY;
     private int textRenderingLineStartX;
@@ -44,21 +43,18 @@ public class PdfGeneratorUtil {
     }
 
 
-
-
     public byte[] genererPdfByteArrayFraString(String brev) {
         try {
-            PDDocument doc = new PDDocument();
+            if (doc == null) {
+                loadAndSetFont();
+            }
             String[] pdfcontent = brev.replaceAll("\t", "  ").split(System.getProperty("line.separator"));
             renderText(pdfcontent);
-            doc.save(new File(OUTPUT_PDF));
-            doc.close();
+            saveAndClosePdf();
             Path pdfPath = Paths.get(OUTPUT_PDF);
             return Files.readAllBytes(pdfPath);
         } catch (IOException e) {
-            String message = "Kunne ikke generere PDF:  " + e.getMessage();
-            LOG.warn(message);
-            throw new IllegalStateException("Kunne ikke generere PDF");
+            throw new IllegalStateException("Kunne ikke generere PDF", e);
         }
     }
 
@@ -67,7 +63,10 @@ public class PdfGeneratorUtil {
         newPage();
         for (String strTemp : pdfcontent) {
             List<String> lines = autowrappingLongLines(strTemp);
-            for (String line : lines) {
+            int numberOfLines = lines.size();
+            for (int i = 0; i < numberOfLines; i++) {
+                String line = lines.get(i);
+                setCharacterSpacingForLinje(line, i == (numberOfLines - 1));
                 renderLine(line);
             }
         }
@@ -122,6 +121,18 @@ public class PdfGeneratorUtil {
         setPdfPageProperties(page);
     }
 
+    private void setCharacterSpacingForLinje(String linje, boolean setCharSpacingToZero) throws IOException {
+        float charSpacing = 0;
+        if (linje.length() > 0 && !setCharSpacingToZero) {
+            float breddeTilLinje = FONT_SIZE * font.getStringWidth(linje) / 1000;
+            float plassTilOvers = textRenderingLineEndX - breddeTilLinje;
+            if (plassTilOvers > 0) {
+                charSpacing = plassTilOvers / (linje.length() - 1);
+            }
+        }
+        content.setCharacterSpacing(charSpacing);
+    }
+
 
     private void setPdfPageProperties(PDPage page) throws IOException {
         content.setNonStrokingColor(Color.BLACK);
@@ -136,7 +147,8 @@ public class PdfGeneratorUtil {
 
 
     private void loadAndSetFont() {
-        try (InputStream fontInputStream = classLoader.getResourceAsStream(FONT)) {
+        try (InputStream fontInputStream = classLoader.getResourceAsStream(FONT_FILE)) {
+            this.doc = new PDDocument();
             this.font = PDType0Font.load(doc, fontInputStream);
             double tempFontHeightDouble = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * FONT_SIZE;
             this.fontHeight = (int) Math.round(tempFontHeightDouble);
@@ -144,6 +156,16 @@ public class PdfGeneratorUtil {
             e.printStackTrace();
         }
     }
+
+
+    private void saveAndClosePdf() throws IOException {
+        if (doc != null) {
+            doc.save(new File(OUTPUT_PDF));
+            doc.close();
+            doc = null;
+        }
+    }
+
 
     private void close() throws IOException {
         if (content != null) {
