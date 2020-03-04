@@ -22,6 +22,6 @@ public class DokarkivMock {
     public Response lagJournalpost(@QueryParam("foersoekFerdigstill") Boolean foersoekFerdigstill) {
         LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", foersoekFerdigstill);
 
-        return Response.status(200).entity("{ \"journalpostId\": 1, \"melding\": \"foo\", \"journalpostferdigstilt\": false, \"dokumenter\": [] }").build();
+        return Response.status(200).entity("{ \"journalpostId\": 1, \"melding\": \"foo\", \"journalpostferdigstilt\": false, \"dokumenter\": [ { \"dokumentInfoId\": \"12345\"} ] }").build();
     }
 }
