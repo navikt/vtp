@@ -22,22 +22,32 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 # Hvordan komme igang - Oppsett og konfigurasjon
 
-* VTP trenger Keystore og Truststore liggende i mappe .modig på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
+* VTP trenger Keystore og Truststore liggende i mappe `.modig` på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
 
-## Starte server fra IDE
+guide for å sette Keystore og Truststore: https://confluence.adeo.no/display/TVF/Sett+opp+keystore+og+truststore+for+lokal+test
+
+* Intelliji må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.
+
+## Teknologi, må være installert før du fortsetter
+* Java (https://adoptopenjdk.net/)
+* Node.js (https://nodejs.org/en/download/)
+* Yarn (https://classic.yarnpkg.com/)
+* Maven (http://maven.apache.org/)
+
+## Starte backnend-server via IDE
 ----
 * Start mock serveren ved å kjøre MockServer (lokalt).
-* Trenger parameter -Dscenarios.dir="../model/scenarios" dersom denne ikke ligger under working dir (dvs. i IDE).
-* Swagger UI: https://localhost:8063/swagger/ - Bruk HTTP for kall
+* Trenger parameter `-Dscenarios.dir="../model/scenarios"` dersom denne ikke ligger under working dir (dvs. i IDE).
+* Swagger UI: **https://localhost:8063/swagger/** - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
 
-## Starte server fra Shell
+## Starte frontend-server via Shell
 ---
-* Kjør run-java.sh (denne fungerer også for Git-Bash)
+* Kjør `run-java.sh` i en CLI (kan bruke gitbash). Dette gjøres i root mappen til vtp prosjektet.
 
 ##Front-end
 ---
-* I mappen frontend kjør yarn run serve. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
+* I mappen frontend (~vtp/frontend) kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
 * Dersom bygg feiler på utviklerimage, forsøk å oppdater node / yarn. Oppdaterte versjoner ligger på http://a34apvl063.devillo.no:81/software/.  
 
 
@@ -52,7 +62,7 @@ Kjør tester
 Koble FP*-applikasjoner til VTP
 ------
 
-* Start applikasjonen med --vtp i oppstartsparameterne for å gå mot VTP istedet for testmiljø. 
+* Start applikasjonen med `--vtp` i oppstartsparameterne for å gå mot VTP istedet for testmiljø. 
 
 Sikkerhet
 ----
