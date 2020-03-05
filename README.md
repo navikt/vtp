@@ -29,11 +29,10 @@ guide for å sette Keystore og Truststore: https://confluence.adeo.no/display/TV
 * Intelliji må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.
 
 ## Teknologi, må være installert før du fortsetter
-* OpenJDK (https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
+* Java (https://adoptopenjdk.net/)
 * Node.js (https://nodejs.org/en/download/)
-* Yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
-* Java (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-* Maven (http://maven.apache.org/download.cgi)
+* Yarn (https://classic.yarnpkg.com/)
+* Maven (http://maven.apache.org/)
 
 ## Starte backnend-server via IDE
 ----
