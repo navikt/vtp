@@ -22,6 +22,7 @@ public class Arkivtema {
         koder.add("SYM");
         koder.add("SYK");
         koder.add("ENF");
+        koder.add("OMS");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -30,6 +31,7 @@ public class Arkivtema {
     public static Arkivfiltype SYM = new Arkivfiltype("SYM");
     public static Arkivfiltype SYK = new Arkivfiltype("SYK");
     public static Arkivfiltype ENF = new Arkivfiltype("ENF");
+    public static Arkivfiltype OMS = new Arkivfiltype("OMS");
 
     private String kode;
 

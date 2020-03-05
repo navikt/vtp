@@ -26,6 +26,7 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import no.nav.dokdistfordeling.DokdistfordelingMock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +38,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
-import no.nav.dokarkiv.DokarkivMock;
+import no.nav.dokarkiv.JournalpostMock;
 import no.nav.foreldrepenger.vtp.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
@@ -83,7 +84,7 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
-        classes.add(DokarkivMock.class);
+        classes.add(JournalpostMock.class);
         classes.add(PersonfeedMock.class);
         classes.add(InfotrygdKontantstotteMock.class);
         classes.add(InfotrygdGrunnlagMock.class);
@@ -102,6 +103,7 @@ public class ApplicationConfig extends Application {
         classes.add(AktoerIdentMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
+        classes.add(DokdistfordelingMock.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
