@@ -29,7 +29,7 @@
         "tags": [
           "paaroerende-sykdom-controller"
         ],
-        "summary": "paaroerendeSykdom",
+        "summary": "Finner beregningsgrunnlag basert på fødselsnummeret til søker.",
         "operationId": "paaroerendeSykdomUsingGET",
         "produces": [
           "*/*"
@@ -38,25 +38,30 @@
           {
             "name": "fnr",
             "in": "query",
-            "description": "fnr",
+            "description": "Søkers fødselsnummer",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "allowEmptyValue": false
           },
           {
             "name": "fom",
             "in": "query",
-            "description": "fom",
+            "description": "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": true,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           },
           {
             "name": "tom",
             "in": "query",
-            "description": "tom",
+            "description": "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": false,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           }
         ],
         "responses": {
@@ -94,7 +99,7 @@
         "tags": [
           "paaroerende-sykdom-controller"
         ],
-        "summary": "paaroerendeSykdom",
+        "summary": "Finner beregningsgrunnlag basert på fødselsnummeret til søker.",
         "operationId": "paaroerendeSykdomUsingGET_1",
         "produces": [
           "*/*"
@@ -103,25 +108,30 @@
           {
             "name": "fnr",
             "in": "query",
-            "description": "fnr",
+            "description": "Søkers fødselsnummer",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "allowEmptyValue": false
           },
           {
             "name": "fom",
             "in": "query",
-            "description": "fom",
+            "description": "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": true,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           },
           {
             "name": "tom",
             "in": "query",
-            "description": "tom",
+            "description": "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": false,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           }
         ],
         "responses": {
@@ -159,7 +169,7 @@
         "tags": [
           "paaroerende-sykdom-controller"
         ],
-        "summary": "hentSak",
+        "summary": "Finner saker og vedtak basert på fødselsnummeret til søker.",
         "operationId": "hentSakUsingGET",
         "produces": [
           "*/*"
@@ -168,25 +178,30 @@
           {
             "name": "fnr",
             "in": "query",
-            "description": "fnr",
+            "description": "Søkers fødselsnummer",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "allowEmptyValue": false
           },
           {
             "name": "fom",
             "in": "query",
-            "description": "fom",
+            "description": "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": true,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           },
           {
             "name": "tom",
             "in": "query",
-            "description": "tom",
+            "description": "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": false,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           }
         ],
         "responses": {
@@ -221,7 +236,7 @@
         "tags": [
           "paaroerende-sykdom-controller"
         ],
-        "summary": "hentSak",
+        "summary": "Finner saker og vedtak basert på fødselsnummeret til søker.",
         "operationId": "hentSakUsingGET_1",
         "produces": [
           "*/*"
@@ -230,25 +245,30 @@
           {
             "name": "fnr",
             "in": "query",
-            "description": "fnr",
+            "description": "Søkers fødselsnummer",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "allowEmptyValue": false
           },
           {
             "name": "fom",
             "in": "query",
-            "description": "fom",
+            "description": "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": true,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           },
           {
             "name": "tom",
             "in": "query",
-            "description": "tom",
+            "description": "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
             "required": false,
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
           }
         ],
         "responses": {
@@ -298,6 +318,76 @@
                 "items": {
                   "type": "string"
                 }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/vedtakForPleietrengende": {
+      "get": {
+        "tags": [
+          "paaroerende-sykdom-controller"
+        ],
+        "summary": "Finner vedtak basert på fødselsnummeret til pleietrengende.",
+        "operationId": "finnVedtakForPleietrengendeUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fnr",
+            "in": "query",
+            "description": "Pleietrengendes fødselsnummer",
+            "required": true,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "fom",
+            "in": "query",
+            "description": "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
+          },
+          {
+            "name": "tom",
+            "in": "query",
+            "description": "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/VedtakPleietrengendeDto"
               }
             }
           },
@@ -530,6 +620,23 @@
         }
       },
       "title": "Vedtak"
+    },
+    "VedtakPleietrengendeDto": {
+      "type": "object",
+      "properties": {
+        "soekerFnr": {
+          "type": "string",
+          "description": "Søkers fødselsnummer"
+        },
+        "vedtak": {
+          "type": "array",
+          "description": "Vedtak for pleietrengende som tilhører denne søkeren",
+          "items": {
+            "$ref": "#/definitions/SakDto"
+          }
+        }
+      },
+      "title": "VedtakPleietrengendeDto"
     }
   }
 }
