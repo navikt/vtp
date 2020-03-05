@@ -39,11 +39,12 @@ public class JournalpostMock {
 
         Optional<JournalpostModell> journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
 
-        List<DokumentInfo> dokumentInfos = journalpostModell.get().getDokumentModellList().stream().map(it -> {
-            DokumentInfo dokinfo = new DokumentInfo();
-            dokinfo.setDokumentInfoId(it.getDokumentId());
-            return dokinfo;
-        }).collect(Collectors.toList());
+        List<DokumentInfo> dokumentInfos = journalpostModell.get().getDokumentModellList().stream()
+                .map(it -> {
+                    DokumentInfo dokinfo = new DokumentInfo();
+                    dokinfo.setDokumentInfoId(it.getDokumentId());
+                    return dokinfo;
+                }).collect(Collectors.toList());
 
         OpprettJournalpostResponse response = new OpprettJournalpostResponse();
         response.setDokumenter(dokumentInfos);
