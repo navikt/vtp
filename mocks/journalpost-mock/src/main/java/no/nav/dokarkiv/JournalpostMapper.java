@@ -12,8 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class JournalpostMapper {
@@ -27,7 +30,7 @@ public class JournalpostMapper {
         modell.setArkivtema(mapArkivtema(journalpostRequest.getTema()));
         modell.setAvsenderFnr(mapAvsenderFraBruker(journalpostRequest.getBruker()));
         modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
-        modell.setMottattDato(journalpostRequest.getDatoMottatt().toLocalDateTime());
+        modell.setMottattDato(Optional.ofNullable(journalpostRequest.getDatoMottatt()).map(OffsetDateTime::toLocalDateTime).orElse(LocalDateTime.now()));
 
         List<DokumentModell> dokumentModeller = new ArrayList<>();
         if(!journalpostRequest.getDokumenter().isEmpty()) {
@@ -89,6 +92,8 @@ public class JournalpostMapper {
         switch (bruker.getIdType()){
             case FNR:
                 return bruker.getId();
+            case AKTOERID:
+                return bruker.getId().substring(2); //TODO: Implementere AKTØRID i modell
             default:
                 LOG.warn("Ikke støtte for annen brukertype enn person i journalpostmodell");
                 throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
