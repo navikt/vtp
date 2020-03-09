@@ -27,11 +27,11 @@ public class Arkivtema {
         VALID_KODER = Collections.unmodifiableList(koder);
     }
 
-    public static Arkivfiltype FOR = new Arkivfiltype("FOR");
-    public static Arkivfiltype SYM = new Arkivfiltype("SYM");
-    public static Arkivfiltype SYK = new Arkivfiltype("SYK");
-    public static Arkivfiltype ENF = new Arkivfiltype("ENF");
-    public static Arkivfiltype OMS = new Arkivfiltype("OMS");
+    public static Arkivtema FOR = new Arkivtema("FOR");
+    public static Arkivtema SYM = new Arkivtema("SYM");
+    public static Arkivtema SYK = new Arkivtema("SYK");
+    public static Arkivtema ENF = new Arkivtema("ENF");
+    public static Arkivtema OMS = new Arkivtema("OMS");
 
     private String kode;
 
