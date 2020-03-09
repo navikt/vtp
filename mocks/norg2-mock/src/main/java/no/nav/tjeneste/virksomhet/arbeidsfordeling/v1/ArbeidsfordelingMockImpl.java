@@ -25,6 +25,7 @@ import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Enhetsstatus;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Enhetstyper;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Kodeverdi;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Organisasjonsenhet;
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Tema;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnAlleBehandlendeEnheterListeRequest;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnAlleBehandlendeEnheterListeResponse;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeEnhetListeRequest;
@@ -53,8 +54,10 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
         LOG.info("finnBehandlendeEnhetListe. Diskresjonskode: {}, tema: {}", getKodeverdi(request.getArbeidsfordelingKriterier().getDiskresjonskode()),
                 getKodeverdi(request.getArbeidsfordelingKriterier().getTema()));
         Diskresjonskoder diskrKode = request.getArbeidsfordelingKriterier().getDiskresjonskode();
+        Tema tema = request.getArbeidsfordelingKriterier().getTema();
         String diskrKodeStr = (diskrKode != null ? diskrKode.getValue() : null);
-        Organisasjonsenhet enhet = lagOrganisasjonsenhet(diskrKodeStr);
+        String temaStr = tema == null ? null : tema.getValue();
+        Organisasjonsenhet enhet = lagOrganisasjonsenhet(diskrKodeStr, temaStr);
 
         FinnBehandlendeEnhetListeResponse response = new FinnBehandlendeEnhetListeResponse();
         response.getBehandlendeEnhetListe().add(enhet);
@@ -81,12 +84,21 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
 
         LOG.info("finnAlleBehandlendeEnheterListe. Diskresjonskode: {}, tema: {}", getKodeverdi(request.getArbeidsfordelingKriterier().getDiskresjonskode()),
                 getKodeverdi(request.getArbeidsfordelingKriterier().getTema()));
+        Tema tema = request.getArbeidsfordelingKriterier().getTema();
+        String temaStr = tema == null ? null : tema.getValue();
         FinnAlleBehandlendeEnheterListeResponse response = new FinnAlleBehandlendeEnheterListeResponse();
-        repo.getEnheterIndeks().getAlleEnheter().forEach(e -> response.getBehandlendeEnhetListe().add(lagEnhet(e)));
+        repo.getEnheterIndeks().getAlleEnheter().stream().filter(e -> skalEnhetMed(e, temaStr)).forEach(e -> response.getBehandlendeEnhetListe().add(lagEnhet(e)));
         return response;
     }
 
-    private Organisasjonsenhet lagOrganisasjonsenhet(String diskrKode) {
+    private boolean skalEnhetMed(Norg2Modell enhet, String tema) {
+        if (tema == null) return true;
+        if ("FOR".equalsIgnoreCase(tema) && "YTA".equalsIgnoreCase(enhet.getType())) return false;
+        if ("OMS".equalsIgnoreCase(tema) && "FPY".equalsIgnoreCase(enhet.getType())) return false;
+        return true;
+    }
+
+    private Organisasjonsenhet lagOrganisasjonsenhet(String diskrKode, String tema) {
 
         List<String> spesielleDiskrKoder = Arrays.asList("UFB", "SPSF", "SPFO");
 
@@ -94,7 +106,7 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
         if (diskrKode != null && spesielleDiskrKoder.contains(diskrKode)) {
             modell = repo.getEnheterIndeks().finnByDiskresjonskode(diskrKode);
         } else {
-            modell = repo.getEnheterIndeks().finnByDiskresjonskode("NORMAL");
+            modell = repo.getEnheterIndeks().finnByDiskresjonskode("NORMAL-"+tema);
         }
 
         return lagEnhet(modell);
@@ -104,7 +116,6 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
         Organisasjonsenhet enhet = new Organisasjonsenhet();
         enhet.setEnhetId(modell.getEnhetId());
         enhet.setEnhetNavn(modell.getNavn());
-        enhet.setOrganisasjonsnummer(modell.getOrganisasjonsnummer());
 
         String status = modell.getStatus();
         if (status != null) {
