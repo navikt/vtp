@@ -13,18 +13,6 @@
 
 	<dependencies>
 	       <!-- Eksterne avhengigheter -->
-        <dependency>
-            <groupId>no.nav.tjenestespesifikasjoner</groupId>
-            <artifactId>nav-infotrygdSak-v1-tjenestespesifikasjon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tjenestespesifikasjoner</groupId>
-            <artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.tjenestespesifikasjoner</groupId>
-            <artifactId>nav-infotrygdBeregningsgrunnlag-v1-tjenestespesifikasjon</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.jboss.resteasy</groupId>

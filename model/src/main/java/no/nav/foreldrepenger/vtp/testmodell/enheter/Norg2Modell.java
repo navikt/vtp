@@ -13,9 +13,6 @@ public class Norg2Modell {
     @JsonProperty("navn")
     private String navn;
 
-    @JsonProperty("organisasjonsnummer")
-    private String organisasjonsnummer;
-
     @JsonProperty("type")
     private String type;
 
@@ -44,14 +41,6 @@ public class Norg2Modell {
 
     public void setNavn(String navn) {
         this.navn = navn;
-    }
-
-    public String getOrganisasjonsnummer() {
-        return organisasjonsnummer;
-    }
-
-    public void setOrganisasjonsnummer(String organisasjonsnummer) {
-        this.organisasjonsnummer = organisasjonsnummer;
     }
 
     public String getType() {

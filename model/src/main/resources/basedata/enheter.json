@@ -3,32 +3,35 @@
 		"diskresjonskode": "UFB",
 		"enhetId": "1900",
 		"navn": "NAV Troms",
-		"organisasjonsnummer": "974652293",
-		"type": "FORVALTNING",
-		"status": "AKTIV"
-	},
-	{
-		"diskresjonskode": "SPSF",
-		"enhetId": "1001",
-		"navn": "NAV Kristiansand",
-		"organisasjonsnummer": "974240270",
-		"type": "FORVALTNING",
+		"type": "KONTAKT",
 		"status": "AKTIV"
 	},
 	{
 		"diskresjonskode": "SPFO",
-		"enhetId": "2103",
-		"navn": "NAV Viken",
-		"organisasjonsnummer": "993844896",
-		"type": "FORVALTNING",
+		"enhetId": "1001",
+		"navn": "NAV Kristiansand",
+		"type": "KONTAKT",
 		"status": "AKTIV"
 	},
 	{
-		"diskresjonskode": "NORMAL",
-		"enhetId": "0300",
-		"navn": "NAV Oslo",
-		"organisasjonsnummer": "974652269",
-		"type": "FORVALTNING",
+		"diskresjonskode": "SPSF",
+		"enhetId": "2103",
+		"navn": "NAV Viken",
+		"type": "KO",
 		"status": "AKTIV"
+	},
+	{
+		"diskresjonskode": "NORMAL-FOR",
+		"enhetId": "4833",
+		"navn": "NAV Familie og Pensjonsytelser Oslo",
+		"type": "FPY",
+		"status": "AKTIV"
+	},
+	{
+		"diskresjonskode": "NORMAL-OMS",
+	 	"navn": "NAV Arbeid og ytelser Arendal",
+	 	"enhetId": "4409",
+	 	"status": "AKTIV",
+	 	"type": "YTA"
 	}
-]
+ ]
