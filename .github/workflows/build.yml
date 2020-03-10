@@ -11,36 +11,39 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/cache@v1
+      - uses: actions/checkout@v2
+      - name: Set cache key
+        run: |
+          echo "::set-env name=CACHE_KEY::$(date +%U)"
+      - uses: actions/cache@v1.1.2
         with:
-          path: ~/.github/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
       - uses: actions/setup-java@v1
         with:
           java-version: 1.11
+      - name: Set build version
+        run: |
+          echo "::set-env name=BUILD_VERSION::$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)"
 
       - name: Build artifacts & deploy
         shell: bash
         run: |
-          echo "Building artifacts $(echo $GITHUB_SHA | cut -c1-7)"
-          mvn clean install --batch-mode --settings ./.github/.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-$(date "+%Y.%m.%d")-$(echo $GITHUB_SHA | cut -c1-7)
+          echo "Building artifacts $BUILD_VERSION"
+          mvn deploy -e --batch-mode --settings ./.m2/settings.xml -Dmaven.wagon.http.pool=false --file pom.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dfile.encoding=UTF-8 -DinstallAtEnd=true -DdeployAtEnd=true
           echo "Deployed artifacts"
-          echo ::set-env name=TAG::$(date "+%Y.%m.%d")-$(echo $GITHUB_SHA | cut -c1-7)
-          echo ::set-env name=IMAGE::$IMAGE_BASE:$(date "+%Y.%m.%d")-$(echo $GITHUB_SHA | cut -c1-7)
+          echo "::set-env name=TAG::$(mvn help:evaluate --batch-mode --settings ./.m2/settings.xml --file .flattened -Dexpression=project.version -q -DforceStdout)"
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bygg, tag og push Docker image
         run: |
-          docker build --pull --tag ${IMAGE} --tag ${IMAGE_BASE}:latest .
+          docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest .
           echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://docker.pkg.github.com
           docker push ${IMAGE_BASE}:latest
-          docker push $IMAGE
+          docker push ${IMAGE_BASE}:${TAG}
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GITHUB_ACCESS_TOKEN }}

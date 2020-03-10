@@ -43,4 +43,16 @@
         <ks-tjenestespesifikasjoner.version>1.2019.12.18-12.22-ce897c4eb2c1</ks-tjenestespesifikasjoner.version>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
+    </build>
 </project>
