@@ -36,7 +36,7 @@ public class PårørendeSykdomMock {
     // todo: sjekk Autorization-token
 
     @GET
-    @Path("/sak")
+    @Path("/saker")
     @Produces({ "application/json" })
     @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
             @Authorization(value = "JWT")
