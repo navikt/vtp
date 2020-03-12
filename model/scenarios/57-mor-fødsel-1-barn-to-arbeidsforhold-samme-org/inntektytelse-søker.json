@@ -3,17 +3,17 @@
 		"inntektsperioder": [
 			{
 				"fom": "now() - P2Y",
-				"tom": "now() - P2M",
-				"beløp": 30000,
+				"tom": "now()",
+				"beløp": 20000,
 				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
 			},
 			{
-				"fom": "now() - P3Y",
-				"tom": "now() - P2M",
-				"beløp": 20000,
+				"fom": "now() - P2Y",
+				"tom": "now()",
+				"beløp": 20001,
 				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
@@ -42,12 +42,12 @@
 			{
 				"arbeidsforholdId": "ARB001-002",
 
-				"ansettelsesperiodeFom": "now() - P3Y",
+				"ansettelsesperiodeFom": "now() - P2Y",
 				"arbeidsforholdstype": "ordinaertArbeidsforhold",
 				"arbeidsgiverOrgnr": "910909088",
 				"arbeidsavtaler" : [
 					{
-						"fomGyldighetsperiode": "now() - P3Y",
+						"fomGyldighetsperiode": "now() - P2Y",
 						"avlønningstype": "fastlønn",
 						"avtaltArbeidstimerPerUke": "20",
 						"stillingsprosent" : 50,
@@ -68,7 +68,7 @@
 					},
 					{
 						"tekniskNavn": "noeannet",
-						"beløp": 6000
+						"beløp": 5000
 					}
 				]
 			}
