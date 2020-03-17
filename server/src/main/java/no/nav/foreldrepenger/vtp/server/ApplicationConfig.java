@@ -26,6 +26,7 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,6 @@ import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
-import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
@@ -88,8 +88,8 @@ public class ApplicationConfig extends Application {
         classes.add(JournalpostMock.class);
         classes.add(PersonfeedMock.class);
         classes.add(InfotrygdKontantstotteMock.class);
-        classes.add(InfotrygdGrunnlagMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
+        classes.add(ArbeidsfordelingMockImpl.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
