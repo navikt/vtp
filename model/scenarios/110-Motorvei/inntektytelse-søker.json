@@ -5,7 +5,7 @@
 				"fom": "2017-01-01",
 				"tom": "2018-12-31",
 				"beløp": 37000,
-				"orgnr": "342352362",
+				"orgnr": "910909088",
 				"type": "Lønnsinntekt",
 				"fordel": "kontantytelse",
 				"beskrivelse": "fastloenn"
@@ -18,7 +18,7 @@
 				"arbeidsforholdId": "ARB001-002",
 				"ansettelsesperiodeFom": "2017-01-01",
 				"arbeidsforholdstype": "maritimtArbeidsforhold",
-				"arbeidsgiverOrgnr": "342352362",
+				"arbeidsgiverOrgnr": "910909088",
 				"arbeidsavtaler" : [
 					{
 						"fomGyldighetsperiode": "2017-01-01",
