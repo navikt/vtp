@@ -20,7 +20,7 @@ public class DokdistfordelingMock {
     public Response lagJournalpost(String request) {
         LOG.info("Distribuer dokument request: [{}]", request);
 
-        return Response.status(200).entity("{ \"bestillingsId\": "+ UUID.randomUUID().toString() +"}").build();
+        return Response.status(200).entity("{ \"bestillingsId\": \""+ UUID.randomUUID().toString() +"\"}").build();
     }
 
 }
