@@ -22,6 +22,7 @@ public class JournalpostModell {
     private Arkivtema arkivtema;
     private String journaltilstand;
     private Journalposttyper journalposttype;
+    private JournalpostBruker bruker;
 
     public String getJournalpostId() {
         return journalpostId;
@@ -114,6 +115,14 @@ public class JournalpostModell {
     public Journalposttyper getJournalposttype() { return journalposttype; }
 
     public void setJournalposttype(Journalposttyper journalposttype) { this.journalposttype = journalposttype;}
+
+    public JournalpostBruker getBruker() {
+        return bruker;
+    }
+
+    public void setBruker(JournalpostBruker bruker) {
+        this.bruker = bruker;
+    }
 
     @Override
     public String toString() {

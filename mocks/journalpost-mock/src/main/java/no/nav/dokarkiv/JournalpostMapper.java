@@ -6,6 +6,7 @@ import no.nav.dokarkiv.generated.model.DokumentVariant;
 import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.*;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class JournalpostMapper {
         JournalpostModell modell = new JournalpostModell();
         modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalpostType()));
         modell.setArkivtema(mapArkivtema(journalpostRequest.getTema()));
-        modell.setAvsenderFnr(mapAvsenderFraBruker(journalpostRequest.getBruker()));
+        modell.setBruker(mapAvsenderFraBruker(journalpostRequest.getBruker()));
         modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
         modell.setMottattDato(Optional.ofNullable(journalpostRequest.getDatoMottatt()).map(OffsetDateTime::toLocalDateTime).orElse(LocalDateTime.now()));
 
@@ -55,6 +56,21 @@ public class JournalpostMapper {
 
         return modell;
 
+    }
+
+
+    public JournalpostBruker mapAvsenderFraBruker(Bruker bruker){
+        switch (bruker.getIdType()){
+            case FNR:
+                return new JournalpostBruker(bruker.getId(),BrukerType.FNR);
+            case AKTOERID:
+                return new JournalpostBruker(bruker.getId(),BrukerType.AKTOERID);
+            case ORGNR:
+                return new JournalpostBruker(bruker.getId(),BrukerType.ORGNR);
+            default:
+                LOG.warn("Ikke støtte for annen brukertype enn person i journalpostmodell");
+                throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
+        }
     }
 
     private DokumentModell mapDokument(Dokument dokument, DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost){
@@ -88,17 +104,7 @@ public class JournalpostMapper {
         return dokumentVariantInnhold;
     }
 
-    private String mapAvsenderFraBruker(Bruker bruker){
-        switch (bruker.getIdType()){
-            case FNR:
-                return bruker.getId();
-            case AKTOERID:
-                return bruker.getId().substring(2); //TODO: Implementere AKTØRID i modell
-            default:
-                LOG.warn("Ikke støtte for annen brukertype enn person i journalpostmodell");
-                throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
-        }
-    }
+
 
     private Arkivtema mapArkivtema(String tema){
         return new Arkivtema(tema);
