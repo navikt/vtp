@@ -13,7 +13,8 @@ VTP hjelper deg med å:
 
 # Henvendelser
 
-Team Foreldrepenger <teamforeldrepenger(at)nav.no>
+- Team Foreldrepenger <teamforeldrepenger(at)nav.no>
+- Team Sykdom i familien
 
 ## For NAV-ansatte
 

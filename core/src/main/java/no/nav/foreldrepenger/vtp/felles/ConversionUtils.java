@@ -49,12 +49,6 @@ public class ConversionUtils {
         }
     }
 
-    public static LocalDateTime convertToLocalDateTime(XMLGregorianCalendar xmlGregorianCalendar) {
-        if (xmlGregorianCalendar == null) {
-            return null;
-        }
-        return LocalDateTime.ofInstant(xmlGregorianCalendar.toGregorianCalendar().getTime().toInstant(), ZoneId.systemDefault());
-    }
 
     public static LocalDate convertToLocalDate(XMLGregorianCalendar xmlGregorianCalendar) {
         if (xmlGregorianCalendar == null) {

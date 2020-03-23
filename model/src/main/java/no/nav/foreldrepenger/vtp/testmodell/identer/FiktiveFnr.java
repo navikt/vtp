@@ -25,7 +25,6 @@ public class FiktiveFnr implements IdentGenerator {
     /** Returnerer FNR for mann > 18 år */
     @Override
     public String tilfeldigMannFnr() {
-        //return neste("mann");
         return new FoedselsnummerGenerator
                 .FodselsnummerGeneratorBuilder()
                 .kjonn(Kjonn.MANN)
