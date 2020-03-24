@@ -49,9 +49,14 @@ type Query {
         brukerId: BrukerIdInput!
 
         # Dato for eldste journalpost.
-        # Hvis angitt returneres alle journalposter fra denne datoen.
+        # Hvis angitt returneres alle journalposter fra og med denne datoen.
         # Hvis null er angitt så hentes alle journalposter.
         fraDato: Date
+
+        # Dato for nyeste journalpost.
+        # Hvis angitt returneres alle journalposter til og med denne datoen.
+        # Hvis null er angitt så hentes alle journalposter.
+        tilDato: Date
 
         # Filter for tema.
         # Hvis en tom liste er angitt som argument hentes journalposter på alle tema.
@@ -264,6 +269,10 @@ type Journalpost {
 
     # Antall ganger brevet har vært forsøkt sendt til bruker og deretter kommet i retur til NAV. Vil kun være satt for utgående forsendelser.
     antallRetur: String
+
+    # Brukes for sporing og feilsøking på tvers av systemer.
+    # Eksempler på eksternReferanseId kan være sykmeldingsId for sykmeldinger, Altinn ArchiveReference for Altinn-skjema eller SEDid for SED.
+    eksternReferanseId: String
 
     # Liste over fagspesifikke metadata som er tilknyttet journalpost.
     tilleggsopplysninger: [Tilleggsopplysning]

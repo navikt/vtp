@@ -14,6 +14,11 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>no.nav.foreldrepenger.vtp</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
+
 		<!-- Eksterne avhengigheter -->
 		<dependency>
 			<groupId>no.nav.tjenestespesifikasjoner</groupId>
