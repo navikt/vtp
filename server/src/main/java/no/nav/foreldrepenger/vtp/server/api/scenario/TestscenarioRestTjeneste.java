@@ -10,6 +10,8 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Innte
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -19,6 +21,7 @@ import java.util.*;
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
+    private static final Logger logger = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
 
     private static final String TEMPLATE_KEY = "key";
     private static final String SCENARIO_ID = "id";
@@ -87,10 +90,11 @@ public class TestscenarioRestTjeneste {
     @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key i VTPs eksempel templates"), response = TestscenarioDto.class)
     public Response initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
 
+
         TestscenarioTemplate template = templateRepository.finn(templateKey);
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
-
+        logger.info("Initialiserer testscenario i VTP fra template: [{}] med id: [{}] ", templateKey, testscenario.getId());
         return Response
                 .status(Response.Status.CREATED)
                 .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
@@ -103,6 +107,7 @@ public class TestscenarioRestTjeneste {
     public Response initialiserTestScenario(String testscenarioJson,  @Context UriInfo uriInfo) {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson, userSuppliedVariables);
+        logger.info("Initialiserer testscenario med ekstern testdatadefinisjon. Opprettet med id: [{}] ", testscenario.getId());
         return Response
                 .status(Response.Status.CREATED)
                 .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
@@ -113,13 +118,13 @@ public class TestscenarioRestTjeneste {
     @Path("/{id}")
     @ApiOperation(value = "", notes= "Sletter et initialisert testscenario som matcher id")
     public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
+        logger.info("Sletter testscenario med id: [{}]");
         if(testscenarioRepository.slettScenario(id)){
             return Response.noContent().build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-
 
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario) {
