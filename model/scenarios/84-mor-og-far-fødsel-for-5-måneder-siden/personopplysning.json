@@ -60,6 +60,16 @@
 	},
 	"familierelasjoner": [
 		{
+			"rolle": "BARN",
+			"til": {
+				"@type": "barn",
+				"ident": "${barn1}",
+				"fornavn": "${nevø1}",
+				"etternavn": "Duck",
+				"fødselsdato": "now()-P5M"
+			}
+		},
+		{
 			"rolle": "EKTE",
 			"til": {
 				"@type": "annenPart",
