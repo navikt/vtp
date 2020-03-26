@@ -102,7 +102,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         }
 
         List<Familierelasjon> familierelasjoner;
-        if(pers.getAnnenPart().getAktørIdent().equals(bruker.getAktørIdent())) { //TODO HACK for annenpart (annenpart burde ha en egen personopplysning fil eller liknende)
+        if(pers.getAnnenPart() != null && pers.getAnnenPart().getAktørIdent().equals(bruker.getAktørIdent())) { //TODO HACK for annenpart (annenpart burde ha en egen personopplysning fil eller liknende)
             familierelasjoner = new FamilierelasjonAdapter().tilFamilerelasjon(pers.getFamilierelasjonerForAnnenPart());
             familierelasjoner.forEach(fr -> person.getHarFraRolleI().add(fr));
         }
