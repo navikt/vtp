@@ -11,44 +11,47 @@ VTP hjelper deg med å:
 - REST-grensesnitt for å programatisk opprette testdata (for automatiske tester) 
 - GUI for å opprette testdata for mennesker.
 
-# Henvendelser
+Henvendelser
+----
 
 Team Foreldrepenger <teamforeldrepenger(at)nav.no>
 
-## For NAV-ansatte
+For NAV-ansatte
+----
 
 Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 
-# Hvordan komme igang - Oppsett og konfigurasjon
+Hvordan komme igang - Oppsett og konfigurasjon
+----
 
-* VTP trenger Keystore og Truststore liggende i mappe `.modig` på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet.
+* VTP har en front-end server og back-end server, for å få VTP til å kjøre må begge bli konfigurert og kjøre samtidig.
 
-guide for å sette Keystore og Truststore: https://confluence.adeo.no/display/TVF/Sett+opp+keystore+og+truststore+for+lokal+test
+* VTP trenger Keystore og Truststore liggende i mappe `.modig` på brukerens hjemme-mappe, eller konfigurert gjennom verdier angitt i avsnitt om sikkerhet (https://confluence.adeo.no/display/TVF/Sett+opp+keystore+og+truststore+for+lokal+test).
 
 * Intelliji må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.
 
-## Teknologi, må være installert før du fortsetter
+Teknologi, må være installert før du fortsetter
+----
+
 * OpenJDK (https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot)
 * Node.js (https://nodejs.org/en/download/)
 * Yarn (https://classic.yarnpkg.com/en/docs/install/#windows-stable)
 * Java (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 * Maven (http://maven.apache.org/download.cgi)
 
-## Starte backnend-server via IDE
+Starte back-end server via IDE
 ----
-* Start mock serveren ved å kjøre MockServer (lokalt).
+
+* Start mock serveren ved å kjøre MockServer som ligger i filen`~vtp\server\src\main\java\no\nav\foreldrepenger\vtp\server\MockServer`(lokalt).
 * Trenger parameter `-Dscenarios.dir="../model/scenarios"` dersom denne ikke ligger under working dir (dvs. i IDE).
 * Swagger UI: **https://localhost:8063/swagger/** - Bruk HTTP for kall
 * SoapWebServiceConfig.java inneholder endepunker for virtuelle tjenester.
 
-## Starte frontend-server via Shell
+Starte Front-end server
 ---
-* Kjør `run-java.sh` i en CLI (kan bruke gitbash). Dette gjøres i root mappen til vtp prosjektet.
-
-##Front-end
----
-* I mappen frontend (~vtp/frontend) kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
+* I root mappen til prosjektet Kjør scriptet `run-java.sh` i en CLI (kan bruke gitbash). Trenger bare å kjøre en gang for konfigurering.
+* For å starte front-end servern gå til mappen frontend (~vtp/frontend) kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
 * Dersom bygg feiler på utviklerimage, forsøk å oppdater node / yarn. Oppdaterte versjoner ligger på http://a34apvl063.devillo.no:81/software/.  
 
 
@@ -85,7 +88,9 @@ Se SoapWebServerConfig for liste over url til genererte wsdl'er. Nye webtjeneste
 Se ApplicationConfig for liste over registrerte REST-tjenester. Nye REST-tjenester registreres her. 
 
 
-### Kjøre via docker run / docker-compose
+Kjøre via docker run / docker-compose
+----
+
 Lagt til noen forenklinger på environment variabler når vi kjører opp VTP + Autotest i docker. Se
 `./resources/pipeline/readme.md` for mer info. Test certifikater er allerede lagt inn i imaget. Men man må
 fortsatt sette path riktig.
