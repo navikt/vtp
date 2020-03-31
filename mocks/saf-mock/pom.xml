@@ -63,12 +63,12 @@
                     <!-- Optional. Location of your schema file(s). Default is ${project.basedir}/schema. The
                          expected extension is *.graphql. -->
                     <sourceDirectory>${project.basedir}/src/main/resources/schemas</sourceDirectory>
-                    <!-- Optional. Output folder for Java source. Default is ${project.basedir}/target/generated-sources/apigen.
-                    <outputDirectory>output/folder</outputDirectory>-->
+                    <outputDirectory>${project.basedir}/target/generated-sources</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
                         <id>java-apigen</id>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>apigen</goal>
                         </goals>
