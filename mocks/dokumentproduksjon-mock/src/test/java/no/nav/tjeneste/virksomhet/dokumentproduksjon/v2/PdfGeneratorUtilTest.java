@@ -64,7 +64,7 @@ public class PdfGeneratorUtilTest {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
+                resultStringBuilder.append(line).append(System.getProperty("line.separator"));
             }
         }
         return resultStringBuilder.toString();
