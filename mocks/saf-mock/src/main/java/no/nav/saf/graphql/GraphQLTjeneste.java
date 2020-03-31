@@ -14,9 +14,9 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
-import no.nav.saf.generatedsources.Arkivsaksystem;
-import no.nav.saf.generatedsources.Journalpost;
-import no.nav.saf.generatedsources.Sak;
+import no.nav.saf.Arkivsaksystem;
+import no.nav.saf.Journalpost;
+import no.nav.saf.Sak;
 
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
@@ -87,28 +87,3 @@ public class GraphQLTjeneste {
     }
 
 }
-
-
-
-//    DataFetcher productsDataFetcher = new DataFetcher<List<ProductDTO>>() {
-//        @Override
-//        public List<ProductDTO> get(DataFetchingEnvironment environment) {
-//            List<ProductDTO> products = null;
-//            ProductDTO product1 = new ProductDTO();
-//            product1.setId(2);
-//            product1.setName("Espen");
-//            product1.setDescription("En gutt");
-//            product1.setCost(20.0);
-//
-//            System.out.println(product1);
-//            products.add(product1);
-//
-//            return products;
-//        }
-//    };
-//
-//    RuntimeWiring runtimeWiring = newRuntimeWiring()
-//            .type("Query1", typeWire -> typeWire
-//                    .dataFetcher("products", productsDataFetcher)
-//            )
-//            .build();
