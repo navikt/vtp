@@ -37,7 +37,7 @@
         <kafka.version>2.3.1</kafka.version>
         <cxf.version>3.3.5</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
-        <swagger.version>1.6.0</swagger.version>
+        <swagger.version>1.6.1</swagger.version>
 
     </properties>
 
