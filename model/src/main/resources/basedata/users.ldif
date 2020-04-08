@@ -51,6 +51,8 @@ memberOf: CN=0000-GA-INNTK_PENSJONSGIVENDE,OU=AccountGroups,OU=Groups,OU=NAV
  ,OU=BusinessUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
+memberOf: CN=0000-GA-PENSJON_SAKSBEHANDLER,OU=AccountGroups,OU=Groups,OU=NA
+ V,OU=BusinessUnits,DC=test,DC=local
  
 
 dn: CN=saksbeh6,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
