@@ -112,6 +112,10 @@
             <artifactId>oppgave-mock</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>nav-ansatt-mock</artifactId>
+        </dependency>
 
         <!-- NAV biblioteker -->
 
@@ -184,7 +188,12 @@
             <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>nav-ansatt-mock</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>app</finalName>

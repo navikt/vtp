@@ -37,6 +37,7 @@
         <module>sigrun-mock</module>
         <module>tps-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
+        <module>nav-ansatt-mock</module>
     </modules>
 
     <properties>
