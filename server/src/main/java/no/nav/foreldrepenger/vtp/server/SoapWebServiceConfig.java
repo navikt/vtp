@@ -89,7 +89,7 @@ public class SoapWebServiceConfig {
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
         publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
         publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
-        publishWebService(new NavAnsattServiceMockImpl(), "soap/esb/PSAKNAVAnsatt");
+        publishWebService(new NavAnsattServiceMockImpl(), "/soap/esb/nav-cons-pen-psak-navansattWeb/sca/PSAKNAVAnsattWSEXP");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

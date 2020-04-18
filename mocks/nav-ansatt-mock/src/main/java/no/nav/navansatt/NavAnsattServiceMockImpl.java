@@ -1,6 +1,7 @@
 package no.nav.navansatt;
 
 import no.nav.inf.psak.navansatt.*;
+import no.nav.lib.pen.psakpselv.asbo.ASBOPenFagomrade;
 import no.nav.lib.pen.psakpselv.asbo.ASBOPenFagomradeListe;
 import no.nav.lib.pen.psakpselv.asbo.navansatt.ASBOPenNAVAnsatt;
 import no.nav.lib.pen.psakpselv.asbo.navansatt.ASBOPenNAVAnsattListe;
@@ -23,7 +24,17 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     @WebResult(name = "hentNAVAnsattEnhetListeResponse", targetNamespace = "")
     @Override
     public ASBOPenNAVEnhetListe hentNAVAnsattEnhetListe(@WebParam(name = "hentNAVAnsattEnhetListeRequest",targetNamespace = "") ASBOPenNAVAnsatt asboPenNAVAnsatt) throws HentNAVAnsattEnhetListeFaultPenGeneriskMsg, HentNAVAnsattEnhetListeFaultPenNAVAnsattIkkeFunnetMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+        ASBOPenNAVEnhetListe response = new ASBOPenNAVEnhetListe();
+        ASBOPenNAVEnhet kardemommeby = new ASBOPenNAVEnhet();
+        kardemommeby.setEnhetsId("1234");
+        kardemommeby.setEnhetsNavn("Kardemomme by");
+
+        ASBOPenNAVEnhet hakkebakkeskogen = new ASBOPenNAVEnhet();
+        hakkebakkeskogen.setEnhetsId("5678");
+        hakkebakkeskogen.setEnhetsNavn("Hakkebakkeskogen");
+
+        response.setNAVEnheter(new ASBOPenNAVEnhet[] { kardemommeby, hakkebakkeskogen });
+        return response;
     }
 
     @WebMethod
@@ -32,7 +43,14 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     @WebResult(name = "hentNAVAnsattFagomradeListeResponse", targetNamespace = "")
     @Override
     public ASBOPenFagomradeListe hentNAVAnsattFagomradeListe(@WebParam(name = "hentNAVAnsattFagomradeListeRequest",targetNamespace = "") ASBOPenNAVAnsatt asboPenNAVAnsatt) throws HentNAVAnsattFagomradeListeFaultPenGenerisksMsg, HentNAVAnsattFagomradeListeFaultPenNAVAnsattIkkeFunnetMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+        ASBOPenFagomradeListe liste = new ASBOPenFagomradeListe();
+        ASBOPenFagomrade omrade = new ASBOPenFagomrade();
+        omrade.setFagomradeBeskrivelse("Spesialkompetanse for pepperkakebaking");
+        omrade.setFagomradeKode("424242");
+        omrade.setGyldig(true);
+        omrade.setTrekkgruppeKode("567890");
+        liste.setFagomrader(new ASBOPenFagomrade[] { omrade });
+        return liste;
     }
 
     @WebMethod
@@ -42,7 +60,27 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     @WebResult(name = "hentNAVAnsattListeResponse", targetNamespace = "")
     @Override
     public ASBOPenNAVAnsattListe hentNAVAnsattListe(@WebParam(name = "hentNAVAnsattListeRequest",targetNamespace = "") ASBOPenNAVEnhet asboPenNAVEnhet) throws HentNAVAnsattListeFaultPenNAVEnhetIkkeFunnetMsg, HentNAVAnsattListeFaultPenGenerisksMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+        ASBOPenNAVAnsattListe liste = new ASBOPenNAVAnsattListe();
+        ASBOPenNAVAnsatt skywalker = new ASBOPenNAVAnsatt();
+        skywalker.setAnsattId("z123456");
+        skywalker.setAnsattNavn("Luke Skywalker");
+        skywalker.setFornavn("Luke");
+        skywalker.setEtternavn("Skywalker");
+
+        ASBOPenNAVAnsatt leia = new ASBOPenNAVAnsatt();
+        leia.setAnsattId("z234567");
+        leia.setAnsattNavn("Prinsesse Leia");
+        leia.setFornavn("Prinsesse");
+        leia.setEtternavn("Leia");
+
+        ASBOPenNAVAnsatt vader = new ASBOPenNAVAnsatt();
+        vader.setAnsattId("z345678");
+        vader.setAnsattNavn("Darth Vader");
+        vader.setFornavn("Darth");
+        vader.setEtternavn("Vader");
+
+        liste.setNAVAnsatte(new ASBOPenNAVAnsatt[] { skywalker, leia, vader });
+        return liste;
     }
 
     @WebMethod

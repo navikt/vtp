@@ -38,7 +38,11 @@ objectClass: person
 objectClass: top
 cn: saksbeh
 objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+samaccountname: saksbeh
 displayName: Sara Saksbehandler
+givenname: Sara
+sn: Saksbehandler
+mail: sara.saksbehandler@example.com
 memberOf: CN=0000-GA-INNTK_8-30,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
  sUnits,DC=test,DC=local
 memberOf: CN=0000-GA-INNTK_8-28,OU=AccountGroups,OU=Groups,OU=NAV,OU=Busines
