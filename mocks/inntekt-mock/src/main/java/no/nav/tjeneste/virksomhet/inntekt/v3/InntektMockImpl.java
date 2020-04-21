@@ -17,7 +17,6 @@ import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 
-import no.nav.tjeneste.virksomhet.inntekt.v3.feil.UgyldigInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +42,7 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeHarIkkeTilg
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.binding.InntektV3;
+import no.nav.tjeneste.virksomhet.inntekt.v3.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
 import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
@@ -68,9 +68,6 @@ import no.nav.tjeneste.virksomhet.inntekt.v3.modell.HentInntektlistBolkMapper;
 public class InntektMockImpl implements InntektV3 {
 
     private static final Logger LOG = LoggerFactory.getLogger(InntektMockImpl.class);
-
-    private static ObjectFactory of = new ObjectFactory();
-    private static HentInntektlistBolkMapper hentInntektlistBolkMapper = new HentInntektlistBolkMapper();
 
     private TestscenarioBuilderRepository scenarioRepository;
 

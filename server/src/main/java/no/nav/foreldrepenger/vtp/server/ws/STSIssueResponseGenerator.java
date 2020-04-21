@@ -71,7 +71,7 @@ public class STSIssueResponseGenerator {
             tokenRequirements.setOnBehalfOf(null);
             tokenRequirements.setActAs(null);
             return providerParameters;
-        };
+        }
     };
 
     public STSIssueResponseGenerator() {

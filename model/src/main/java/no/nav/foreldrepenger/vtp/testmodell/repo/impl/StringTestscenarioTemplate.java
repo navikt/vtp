@@ -74,6 +74,7 @@ public class StringTestscenarioTemplate implements TestscenarioTemplate {
         return null == organisasjonTemplate ? null : new StringReader(organisasjonTemplate);
     }
 
+    @SuppressWarnings("resource")
     @Override
     public Set<TemplateVariable> getExpectedVars() {
         FindTemplateVariables finder = new FindTemplateVariables();

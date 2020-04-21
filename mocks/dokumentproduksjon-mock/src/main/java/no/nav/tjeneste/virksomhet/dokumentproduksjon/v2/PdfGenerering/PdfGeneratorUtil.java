@@ -1,14 +1,5 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +10,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PdfGeneratorUtil {
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
-    private static final Logger LOG = LoggerFactory.getLogger(PdfGeneratorUtil.class);
+public class PdfGeneratorUtil {
 
     private final ClassLoader classLoader = PdfGeneratorUtil.class.getClassLoader();
     private static final String FONT_FILE = "fonts/OpenSans-Regular.ttf";

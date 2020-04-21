@@ -18,6 +18,7 @@ import no.nav.tps.proxy.api.v1.innsyn.dto.Relasjon;
 @Api(tags = {"innsyn-controller"})
 public class InnsynMock {
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/person")
     public Personinfo hentPersoninfoForIdent(@NotNull @HeaderParam("Authorization") String authToken,
@@ -28,6 +29,7 @@ public class InnsynMock {
         return Personinfo.builder().build();
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/relasjon")
     public List<Relasjon> hentRelasjonsinfoForIdent(@NotNull @HeaderParam("Authorization") String authToken,
@@ -38,6 +40,7 @@ public class InnsynMock {
         return List.of(Relasjon.builder().build());
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/barn")
     public List<Relasjon> hentBarneListeForIdent(@NotNull @HeaderParam("Authorization") String authToken,

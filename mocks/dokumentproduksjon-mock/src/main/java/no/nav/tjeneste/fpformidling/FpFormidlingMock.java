@@ -22,6 +22,7 @@ public class FpFormidlingMock {
     public FpFormidlingMock() {
     }
 
+    @SuppressWarnings("unused")
     @POST
     @Path("/hent-dokumentmaler")
     @Produces(MediaType.APPLICATION_JSON)
@@ -30,6 +31,7 @@ public class FpFormidlingMock {
         return Response.ok(new HentBrevmalerDto(Collections.emptyList())).build();
     }
 
+    @SuppressWarnings("unused")
     @POST
     @Path("brev/maler")
     @Produces("application/json")

@@ -181,6 +181,7 @@ public class ApplicationConfig extends Application {
     @Provider
     public static class LocalDateStringConverterProvider implements ParamConverterProvider {
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
             if(rawType.isAssignableFrom(LocalDate.class)) {

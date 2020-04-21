@@ -68,6 +68,7 @@ public class TestscenarioRestTjeneste {
 
     }
 
+    @SuppressWarnings("unused")
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -76,6 +77,7 @@ public class TestscenarioRestTjeneste {
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
+    @SuppressWarnings("unused")
     @PATCH
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)

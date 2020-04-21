@@ -1,7 +1,5 @@
 package no.nav.oppgave;
 
-import static java.util.stream.Collectors.toList;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,6 +32,7 @@ public class OppgaveKontantstotteMockImpl {
             .medPrioritet(Prioritet.NORM)
             .medOppgavetype("BEH_SAK");
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/{id}")
     @ApiOperation(value = "Henter oppgave for en gitt id", response = OppgaveJson.class)
@@ -51,6 +50,7 @@ public class OppgaveKontantstotteMockImpl {
     }
 
 
+    @SuppressWarnings("unused")
     @GET
     @ApiOperation(value = "Søk etter oppgaver", response = FinnOppgaveResponse.class)
     @ApiImplicitParams({@ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header")})
@@ -72,6 +72,7 @@ public class OppgaveKontantstotteMockImpl {
     }
 
 
+    @SuppressWarnings("unused")
     @PUT
     @Path("/{id}")
     @ApiOperation(value = "Endrer en eksisterende oppgave", response = OppgaveJson.class)

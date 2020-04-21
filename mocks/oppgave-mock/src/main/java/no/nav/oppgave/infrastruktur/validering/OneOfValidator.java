@@ -5,7 +5,6 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @SuppressWarnings("WeakerAccess")
 public class OneOfValidator implements ConstraintValidator<OneOf, String> {

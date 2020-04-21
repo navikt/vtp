@@ -152,6 +152,7 @@ public class MockServer {
         }
     }
 
+    @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
         HandlerContainer handler = (HandlerContainer) server.getHandler();
 
@@ -209,6 +210,7 @@ public class MockServer {
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {
+        @SuppressWarnings("resource")
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
 
 
@@ -225,6 +227,7 @@ public class MockServer {
     }
 
     protected void addWebGui(HandlerContainer handlerContainer) {
+        @SuppressWarnings("resource")
         WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/webapps/frontend"), "/");
         //ctx.setDefaultsDescriptor(null);
         ctx.setThrowUnavailableOnStartupException(true);

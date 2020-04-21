@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.FeedRepositoryImpl;
 import no.nav.tjenester.person.feed.common.v1.Feed;
 
 @Api(tags = {"PersonFeed"})

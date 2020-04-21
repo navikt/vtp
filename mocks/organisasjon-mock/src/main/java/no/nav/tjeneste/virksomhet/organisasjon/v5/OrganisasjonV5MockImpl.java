@@ -1,6 +1,5 @@
 package no.nav.tjeneste.virksomhet.organisasjon.v5;
 
-import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.organisasjon.v5.binding.*;

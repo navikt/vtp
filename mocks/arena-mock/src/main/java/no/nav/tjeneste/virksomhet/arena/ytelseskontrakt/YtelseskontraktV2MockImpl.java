@@ -1,6 +1,5 @@
 package no.nav.tjeneste.virksomhet.arena.ytelseskontrakt;
 
-import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v2.binding.HentYtelseskontraktListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v2.binding.YtelseskontraktV2;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v2.informasjon.ytelseskontrakt.Bruker;
@@ -29,9 +28,6 @@ public class YtelseskontraktV2MockImpl implements YtelseskontraktV2 {
     @WebResult(name = "response", targetNamespace = "")
     public HentYtelseskontraktListeResponse hentYtelseskontraktListe(@WebParam(name = "request", targetNamespace = "") HentYtelseskontraktListeRequest hentYtelseskontraktListeRequest) throws HentYtelseskontraktListeSikkerhetsbegrensning {
         LOG.info("YtelseskontraktV2:hentYtelseskontraktListe kalt");
-
-        String personidentifikator = hentYtelseskontraktListeRequest.getPersonidentifikator();
-
 
         Ytelseskontrakt ytelseskontrakt = new Ytelseskontrakt();
         //Fyll ut ytelseskontrakt + map til modell

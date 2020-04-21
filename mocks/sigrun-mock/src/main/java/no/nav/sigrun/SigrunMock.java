@@ -39,6 +39,7 @@ public class SigrunMock {
         }
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "beregnetskatt", notes = ("Returnerer beregnetskatt fra Sigrun"))

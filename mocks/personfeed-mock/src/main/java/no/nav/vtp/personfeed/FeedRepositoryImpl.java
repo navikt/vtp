@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
+package no.nav.vtp.personfeed;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.vtp.testmodell.feed.HendelseContent;
-import no.nav.foreldrepenger.vtp.testmodell.repo.FeedRepository;
 import no.nav.tjenester.person.feed.common.v1.Feed;
 import no.nav.tjenester.person.feed.common.v1.FeedEntry;
 import no.nav.tjenester.person.feed.common.v1.Metadata;
+import no.nav.vtp.personfeed.død.HendelseContent;
 
-public class FeedRepositoryImpl implements FeedRepository {
+public class FeedRepositoryImpl {
 
     private List<FeedEntry> feedEntries;
     private Long sekvensnummer;
@@ -32,7 +31,6 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
 
-    @Override
     public FeedEntry leggTilHendelse(HendelseContent hendelseContent){
         FeedEntry feedEntry = FeedEntry.builder()
                 .sequence(genererSekvensnummer())
@@ -67,7 +65,6 @@ public class FeedRepositoryImpl implements FeedRepository {
                 .build();
     }
 
-    @Override
     public Long genererSekvensnummer(){
         return sekvensnummer++;
     }

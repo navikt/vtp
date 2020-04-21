@@ -35,11 +35,6 @@ public class JournalpostModellGenerator {
         return journalpostModell;
     }
 
-    public static JournalpostModell makeInntektsmeldingJournalpost(String xml, String fnr) {
-        throw new UnsupportedOperationException("Ikke implementert");
-
-    }
-
     public static JournalpostModell lagJournalpostUstrukturertDokument(String fnr, DokumenttypeId dokumenttypeId) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);

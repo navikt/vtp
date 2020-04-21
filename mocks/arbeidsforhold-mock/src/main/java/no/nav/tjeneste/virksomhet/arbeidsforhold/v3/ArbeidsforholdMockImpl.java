@@ -92,7 +92,6 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
         throw new UnsupportedOperationException("Ikke implementert");
     }
 
-    @SuppressWarnings("null")
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/finnArbeidsforholdPrArbeidstakerRequest")
     @WebResult(name = "parameters", targetNamespace = "")
@@ -143,7 +142,6 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
         LOG.info("Kall til HentArbeidsforholdHistorikk. Ber om historikk for arbeidsforholdsId: {}", request.getArbeidsforholdId());
 
         ArbeidsforholdAdapter adapter = new ArbeidsforholdAdapter();
-        //TODO: Bruker arbeidsforholdsIdNav for videre oppslag.
         Long arbeidsforholdId = request.getArbeidsforholdId();
 
         HentArbeidsforholdHistorikkResponse response = new HentArbeidsforholdHistorikkResponse();
