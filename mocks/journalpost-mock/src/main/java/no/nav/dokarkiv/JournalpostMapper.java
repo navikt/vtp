@@ -12,7 +12,6 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

@@ -84,7 +84,7 @@ public class CanonicalSerializerModule extends SimpleModule {
                 gen.writeString("now() + " + Period.between(now, value));
             }
 
-        };
+        }
 
     }
 
@@ -117,7 +117,7 @@ public class CanonicalSerializerModule extends SimpleModule {
 
         private LocalDateTime canonicalTime(LocalDateTime value) {
             return value.withNano(0).withSecond(0).withMinute(0);
-        };
+        }
 
     }
 }

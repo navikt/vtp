@@ -101,6 +101,7 @@ public class OppgaveMockImpl {
                 .build();
     }
 
+    @SuppressWarnings("resource")
     private Optional<Response> validerIkkeFunksjonelt(HttpHeaders httpHeaders) {
         // Validerer token på rett format
         String jwt = httpHeaders.getHeaderString("Authorization");

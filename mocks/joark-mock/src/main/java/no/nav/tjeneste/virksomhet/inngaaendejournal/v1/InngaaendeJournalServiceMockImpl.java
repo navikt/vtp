@@ -42,9 +42,6 @@ import no.nav.tjeneste.virksomhet.inngaaendejournal.v1.meldinger.UtledJournalfoe
 public class InngaaendeJournalServiceMockImpl implements InngaaendeJournalV1 {
     private static final Logger LOG = LoggerFactory.getLogger(InngaaendeJournalServiceMockImpl.class);
 
-
-    private static final String KOMMUNIKASJONSRETNING_INNGAAENDE = "I";
-
     public InngaaendeJournalServiceMockImpl(){}
 
     private JournalRepository journalRepository;

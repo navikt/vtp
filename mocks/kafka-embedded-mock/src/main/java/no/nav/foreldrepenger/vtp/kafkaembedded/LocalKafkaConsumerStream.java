@@ -3,10 +3,9 @@ package no.nav.foreldrepenger.vtp.kafkaembedded;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Properties;
-import java.util.stream.Collectors;
-
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -19,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
 
 public class LocalKafkaConsumerStream {
+    private static final Serde<String> STRING = Serdes.String();
+    
     private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaConsumerStream.class);
     private KafkaStreams stream;
 
@@ -28,8 +29,8 @@ public class LocalKafkaConsumerStream {
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "vtp");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, STRING.getClass().getName());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, STRING.getClass().getName());
         props.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
         props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, KeystoreUtils.getTruststoreFilePath());

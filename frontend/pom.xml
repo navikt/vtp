@@ -10,7 +10,6 @@
         <version>${revision}${sha1}${changelist}</version>
     </parent>
 
-    <groupId>no.nav.foreldrepenger.vtp</groupId>
     <artifactId>frontend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>frontend</name>

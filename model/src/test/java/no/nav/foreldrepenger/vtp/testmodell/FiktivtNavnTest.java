@@ -5,9 +5,6 @@ import no.nav.foreldrepenger.vtp.testmodell.util.FiktivtNavn;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FiktivtNavnTest {
 
     @Test
