@@ -29,9 +29,6 @@ public class YtelseskontraktV2MockImpl implements YtelseskontraktV2 {
     public HentYtelseskontraktListeResponse hentYtelseskontraktListe(@WebParam(name = "request", targetNamespace = "") HentYtelseskontraktListeRequest hentYtelseskontraktListeRequest) throws HentYtelseskontraktListeSikkerhetsbegrensning {
         LOG.info("YtelseskontraktV2:hentYtelseskontraktListe kalt");
 
-        String personidentifikator = hentYtelseskontraktListeRequest.getPersonidentifikator();
-
-
         Ytelseskontrakt ytelseskontrakt = new Ytelseskontrakt();
         //Fyll ut ytelseskontrakt + map til modell
 

@@ -6,12 +6,12 @@ import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
-import no.nav.foreldrepenger.vtp.testmodell.feed.DødfødselOpprettetHendelseContent;
-import no.nav.foreldrepenger.vtp.testmodell.feed.DødsmeldingOpprettetHendelseContent;
-import no.nav.foreldrepenger.vtp.testmodell.feed.FødselsmeldingOpprettetHendelseContent;
-import no.nav.foreldrepenger.vtp.testmodell.feed.HendelseContent;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.vtp.personfeed.død.DødfødselOpprettetHendelseContent;
+import no.nav.vtp.personfeed.død.DødsmeldingOpprettetHendelseContent;
+import no.nav.vtp.personfeed.død.FødselsmeldingOpprettetHendelseContent;
+import no.nav.vtp.personfeed.død.HendelseContent;
 
 public class PersonhendelseAdapter {
 

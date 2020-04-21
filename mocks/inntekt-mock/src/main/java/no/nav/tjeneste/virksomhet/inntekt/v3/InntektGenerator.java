@@ -55,6 +55,7 @@ public class InntektGenerator {
         return arbeidsInntektInformasjon;
     }
 
+    @SuppressWarnings("unused")
     private Inntekt lagInntekt(LocalDate fom, Aktoer aktoer) {
         Inntekt inntekt = objectFactory.createInntekt();
         inntekt.setBeloep(BigDecimal.valueOf(ThreadLocalRandom.current().nextInt(MIN_INNTEKT, MAX_INNTEKT)));

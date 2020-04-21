@@ -35,7 +35,7 @@ public class HentInntektlistBolkMapper {
         ArbeidsInntektIdent arbeidsInntektIdent = new ArbeidsInntektIdent();
         arbeidsInntektIdent.setIdent(aktoer);
         List<Inntekt> inntektsliste = mapInntektFraModell(modell.getInntektsperioderSplittMånedlig(), aktoer);
-        List<ArbeidsforholdFrilanser> arbeidsforholdFrilansereListe = mapArbeidsforholdFrilansFraModell(modell.getFrilansarbeidsforholdperioderSplittMånedlig(), aktoer);
+        List<ArbeidsforholdFrilanser> arbeidsforholdFrilansereListe = mapArbeidsforholdFrilansFraModell(modell.getFrilansarbeidsforholdperioderSplittMånedlig());
         Map<String, List<Inntekt>> inntektsMåneder = new HashMap<>();
 
         for (Inntekt inntekt : inntektsliste) {
@@ -68,7 +68,7 @@ public class HentInntektlistBolkMapper {
         return arbeidsInntektIdent;
     }
 
-    private static List<ArbeidsforholdFrilanser> mapArbeidsforholdFrilansFraModell(List<FrilansArbeidsforholdsperiode> modellPeriodeListe, Aktoer aktoer) {
+    private static List<ArbeidsforholdFrilanser> mapArbeidsforholdFrilansFraModell(List<FrilansArbeidsforholdsperiode> modellPeriodeListe) {
         List<ArbeidsforholdFrilanser> arbeidsforholdliste = new ArrayList<>();
 
         for(FrilansArbeidsforholdsperiode modellPeriode: modellPeriodeListe){

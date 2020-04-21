@@ -1,6 +1,5 @@
 package no.nav.medl2.rest.api.v1;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +28,6 @@ import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PAR
 import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_STATUSER;
 import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_TIL_OG_MED;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -42,6 +40,7 @@ public class MedlemskapsunntakMock {
     @Context
     private Providers providers;
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/{unntakId}")
     @ApiOperation(API_OPERATION_MEDLEMSKAPSUNNTAK)
@@ -51,6 +50,7 @@ public class MedlemskapsunntakMock {
         return null;
     }
 
+    @SuppressWarnings("unused")
     @GET
     @ApiOperation(API_OPERATION_MEDLEMSKAPSUNNTAK_I_PERIODE)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -72,14 +72,6 @@ public class MedlemskapsunntakMock {
             objectMapper.registerModule(new JavaTimeModule());
         }
 
-        LocalDate dato; //NOSONAR
-
-        public Dato(String localDate) {
-            try {
-                dato = objectMapper.readValue(localDate, LocalDate.class);
-            } catch (JsonProcessingException ignore) {
-            }
-        }
     }
 }
 

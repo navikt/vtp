@@ -18,6 +18,8 @@ import no.nav.tjeneste.virksomhet.kodeverk.v2.meldinger.FinnKodeverkListeRespons
 import no.nav.tjeneste.virksomhet.kodeverk.v2.meldinger.HentKodeverkRequest;
 import no.nav.tjeneste.virksomhet.kodeverk.v2.meldinger.HentKodeverkResponse;
 
+/** @deprecated brukes ikke?. */
+@Deprecated(forRemoval = true)
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkPortType")
 @HandlerChain(file = "Handler-chain.xml")
@@ -27,7 +29,8 @@ public class KodeverkServiceMockImpl implements KodeverkPortType {
 
     private TestscenarioBuilderRepository scenarioRepository;
 
-    public KodeverkServiceMockImpl() {}
+    public KodeverkServiceMockImpl() {
+    }
 
     public KodeverkServiceMockImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
@@ -40,10 +43,10 @@ public class KodeverkServiceMockImpl implements KodeverkPortType {
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/kodeverk/v2/KodeverkPortType/hentKodeverkRequest")
-    @WebResult(name="response", targetNamespace = "")
+    @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "hentKodeverk", targetNamespace = "http://nav.no/tjeneste/virksomhet/kodeverk/v2/", className = "no.nav.tjeneste.virksomhet.kodeverk.v2.HentKodeverk")
     @ResponseWrapper(localName = "hentKodeverkResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/kodeverk/v2/", className = "no.nav.tjeneste.virksomhet.kodeverk.v2.HentKodeverkResponse")
-    public HentKodeverkResponse hentKodeverk(@WebParam(name="respons", targetNamespace = "") HentKodeverkRequest request) {
+    public HentKodeverkResponse hentKodeverk(@WebParam(name = "respons", targetNamespace = "") HentKodeverkRequest request) {
 
         LOG.info("hentKodeverk. Blir kalt, kaster exception");
 
@@ -52,10 +55,10 @@ public class KodeverkServiceMockImpl implements KodeverkPortType {
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/kodeverk/v2/KodeverkPortType/finnKodeverkListeRequest")
-    @WebResult(name="response", targetNamespace = "")
+    @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "finnKodeverkListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/kodeverk/v2/", className = "no.nav.tjeneste.virksomhet.kodeverk.v2.FinnKodeverkListe")
     @ResponseWrapper(localName = "finnKodeverkListeResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/kodeverk/v2/", className = "no.nav.tjeneste.virksomhet.kodeverk.v2.FinnKodeverkListeResponse")
-    public FinnKodeverkListeResponse finnKodeverkListe(@WebParam(name="respons", targetNamespace = "") FinnKodeverkListeRequest request) {
+    public FinnKodeverkListeResponse finnKodeverkListe(@WebParam(name = "respons", targetNamespace = "") FinnKodeverkListeRequest request) {
 
         LOG.info("finnKodeverkListe. Blir kalt, kaster exception.");
 

@@ -38,6 +38,7 @@ public class InfotrygdGrunnlagMock {
         }
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/foreldrepenger")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,6 +54,10 @@ public class InfotrygdGrunnlagMock {
                 .toArray(Grunnlag[]::new);
     }
 
+    /**
+     * @param tom  
+     */
+    @SuppressWarnings("unused")
     @GET
     @Path("/svangerskapspenger")
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,6 +73,7 @@ public class InfotrygdGrunnlagMock {
                 .toArray(Grunnlag[]::new);
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/sykepenger")
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,6 +89,7 @@ public class InfotrygdGrunnlagMock {
                 .toArray(Grunnlag[]::new);
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/paaroerende-sykdom")
     @Produces(MediaType.APPLICATION_JSON)

@@ -34,6 +34,7 @@ public class PårørendeSykdomMock {
 
     // todo: sjekk Autorization-token
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/saker")
     @Produces({ "application/json" })
@@ -57,6 +58,7 @@ public class PårørendeSykdomMock {
         return Response.ok(result).build();
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/grunnlag")
     @Produces({ "application/json" })
@@ -81,6 +83,7 @@ public class PårørendeSykdomMock {
         return Response.ok(result).build();
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path("/vedtakForPleietrengende")
     @Produces({ "application/json" })

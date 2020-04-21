@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell.feed;
+package no.nav.vtp.personfeed.død;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

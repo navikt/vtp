@@ -48,14 +48,14 @@ public class TestscenarioFraTemplateMapper {
     }
 
     public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId, Map<String, String> vars) {
-        ObjectNode node = hentObjecetNodeForTestscenario(testscenarioJson);
+        ObjectNode node = hentObjectNodeForTestscenario(testscenarioJson);
         String templateNavn = hentTemplateNavnFraJsonString(node);
         TestscenarioImpl testscenarioImpl = new TestscenarioImpl(templateNavn, unikTestscenarioId, testScenarioRepository);
         loadTestscenarioFraJsonString(testscenarioImpl, node, vars);
         return testscenarioImpl;
     }
 
-    private ObjectNode hentObjecetNodeForTestscenario(String testscenarioJson) {
+    private ObjectNode hentObjectNodeForTestscenario(String testscenarioJson) {
         ObjectNode node;
         try {
             node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);

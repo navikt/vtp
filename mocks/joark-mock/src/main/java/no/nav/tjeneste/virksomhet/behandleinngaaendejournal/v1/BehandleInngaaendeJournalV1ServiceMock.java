@@ -25,6 +25,7 @@ import javax.xml.ws.soap.Addressing;
 public class BehandleInngaaendeJournalV1ServiceMock implements BehandleInngaaendeJournalV1 {
     private static final Logger LOG = LoggerFactory.getLogger(BehandleInngaaendeJournalV1ServiceMock.class);
 
+    @SuppressWarnings("unused")
     private JournalRepository journalRepository;
 
     public BehandleInngaaendeJournalV1ServiceMock(JournalRepository journalRepository) {
