@@ -1,15 +1,5 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.PdfGenerering;
 
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -17,11 +7,17 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
+import java.awt.Color;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PdfGeneratorUtil {
 
     private final ClassLoader classLoader = PdfGeneratorUtil.class.getClassLoader();
     private static final String FONT_FILE = "fonts/OpenSans-Regular.ttf";
-    private static final String OUTPUT_PDF = "statiskBrev.pdf";
     private static final int FONT_SIZE = 8;
 
     private PDFont font;
@@ -33,6 +29,7 @@ public class PdfGeneratorUtil {
     private int textRenderingLineEndY;
     private int textRenderingLineCurrentY;
     private int fontHeight;
+
 
     public PdfGeneratorUtil() {
         loadAndSetFont();
@@ -46,9 +43,7 @@ public class PdfGeneratorUtil {
             }
             String[] pdfcontent = brev.replaceAll("\t", "  ").split(System.getProperty("line.separator"));
             renderText(pdfcontent);
-            saveAndClosePdf();
-            Path pdfPath = Paths.get(OUTPUT_PDF);
-            return Files.readAllBytes(pdfPath);
+            return saveCloseAndReturnByteArray();
         } catch (IOException e) {
             throw new IllegalStateException("Kunne ikke generere PDF", e);
         }
@@ -154,12 +149,16 @@ public class PdfGeneratorUtil {
     }
 
 
-    private void saveAndClosePdf() throws IOException {
+    private byte[] saveCloseAndReturnByteArray() throws IOException {
         if (doc != null) {
-            doc.save(new File(OUTPUT_PDF));
-            doc.close();
-            doc = null;
+            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                doc.save(byteArrayOutputStream);
+                doc.close();
+                doc = null;
+                return byteArrayOutputStream.toByteArray();
+            }
         }
+        return new byte[0];
     }
 
 
