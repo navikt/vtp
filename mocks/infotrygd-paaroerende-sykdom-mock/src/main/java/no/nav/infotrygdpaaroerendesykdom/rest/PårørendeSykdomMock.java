@@ -97,6 +97,19 @@ public class PårørendeSykdomMock {
         return Response.ok(List.of()).build();
     }
 
+    @GET
+    @Path("/rammevedtak/omsorgspenger")
+    @Produces({ "application/json" })
+    @ApiOperation(value = "Finner rammevedtak basert på fødselsnummeret til søker.", notes = "", response = RammevedtakDto.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags={ "paaroerende-sykdom-controller" })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RammevedtakDto.class, responseContainer = "List"),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class) })
+    public Response finnRammevedtakForOmsorgspengerUsingGET( @NotNull @ApiParam(value = "Søkers fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.")  @QueryParam("tom") LocalDate tom) {
+        return Response.ok(List.of()).build();
+    }
+
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
         List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream()
                 .map(this::mapYtelseToSak)
