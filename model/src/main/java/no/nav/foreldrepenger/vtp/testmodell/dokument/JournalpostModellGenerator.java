@@ -29,7 +29,6 @@ public class JournalpostModellGenerator {
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
                 Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]
         ));
-
         journalpostModell.getDokumentModellList().add(dokumentModell);
 
         return journalpostModell;
