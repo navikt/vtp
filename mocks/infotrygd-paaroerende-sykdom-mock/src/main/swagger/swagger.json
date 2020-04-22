@@ -231,6 +231,76 @@
         "deprecated": false
       }
     },
+    "/rammevedtak/omsorgspenger": {
+      "get": {
+        "tags": [
+          "paaroerende-sykdom-controller"
+        ],
+        "summary": "Finner rammevedtak basert på fødselsnummeret til søker.",
+        "operationId": "finnRammevedtakForOmsorgspengerUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "fnr",
+            "in": "query",
+            "description": "Søkers fødselsnummer",
+            "required": true,
+            "type": "string",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "fom",
+            "in": "query",
+            "description": "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
+          },
+          {
+            "name": "tom",
+            "in": "query",
+            "description": "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "allowEmptyValue": false,
+            "x-example": "2019-01-01"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RammevedtakDto"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "JWT": [
+              "global"
+            ]
+          }
+        ],
+        "deprecated": false
+      }
+    },
     "/saker": {
       "get": {
         "tags": [
@@ -541,6 +611,27 @@
         }
       },
       "title": "Periode"
+    },
+    "RammevedtakDto": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "fom": {
+          "type": "string",
+          "format": "date"
+        },
+        "tekst": {
+          "type": "string"
+        },
+        "tom": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "title": "RammevedtakDto"
     },
     "SakDto": {
       "type": "object",
