@@ -1,17 +1,41 @@
 package no.nav.oppgave;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.swagger.annotations.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -99,6 +123,59 @@ public class OppgaveMockImpl {
         return Response.ok()
                 .entity(new HentOppgaverResponse(matching))
                 .build();
+    }
+
+    @GET
+    @Path("/{id}")
+    @ApiOperation(value = "Henter oppgave for en gitt id", response = OppgaveJson.class)
+    @ApiImplicitParams({@ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Konsument mangler gyldig token"),
+            @ApiResponse(code = 403, message = "Bruker er ikke autorisert for denne operasjonen"),
+            @ApiResponse(code = 404, message = "Det finnes ingen oppgave for angitt id"),
+            @ApiResponse(code = 409, message = "Konflikt"),
+            @ApiResponse(code = 500, message = "Ukjent feilsituasjon har oppstått i Oppgave")
+    }
+    )
+    public Response hentOppgave(@PathParam("id") Long id, @Context HttpHeaders httpHeaders) {
+        Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
+        if (validert.isPresent()) {
+            return validert.get();
+        }
+        LOG.info("Henter oppgave med id: {}", id);
+        return oppgaver.get(id) != null ? Response.ok(oppgaver.get(id)).build() : Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    @ApiOperation(value = "Endrer en eksisterende oppgave", response = OppgaveJson.class)
+    @ApiImplicitParams({@ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Oppgave patchet", responseHeaders = @ResponseHeader(name = "location", description = "Angir URI til den patchede oppgaven")),
+            @ApiResponse(code = 401, message = "Konsument mangler gyldig token"),
+            @ApiResponse(code = 403, message = "Bruker er ikke autorisert for denne operasjonen"),
+            @ApiResponse(code = 409, message = "Konflikt"),
+            @ApiResponse(code = 500, message = "Ukjent feilsituasjon har oppstått i Oppgave")
+    }
+    )
+    public Response patchOppgave(@Valid @ApiParam(value = "Oppgaven som endres", required = true) ObjectNode patch,
+                                 @PathParam("id") Long id,
+                                 @Context UriInfo uriInfo,
+                                 @Context HttpHeaders httpHeaders) {
+        Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
+        if (validert.isPresent()) {
+            return validert.get();
+        }
+        LOG.info("Mottatt patch oppgave request {}", patch);
+
+        ObjectNode oppgave = oppgaver.get(id);
+        if (oppgave == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+
+        var nystatus = patch.get("status");
+        oppgave.put("status", nystatus.textValue());
+        return Response.ok(oppgave).build();
     }
 
     @SuppressWarnings("resource")
