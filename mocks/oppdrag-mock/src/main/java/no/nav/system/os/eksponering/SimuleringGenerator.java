@@ -69,8 +69,13 @@ public class SimuleringGenerator {
             if(!YearMonth.from(periode.getFom()).isAfter(nesteMåned)) {
                 BeregningStoppnivaa stoppnivaa = new BeregningStoppnivaa();
                 stoppnivaa.setKodeFagomraade(oppdrag.getKodeFagomraade());
-                stoppnivaa.setUtbetalesTilId(oppdragslinje.getUtbetalesTilId());
-                stoppnivaa.setUtbetalesTilNavn("DUMMY");
+                if (oppdragslinje.getRefusjonsInfo() != null){
+                    stoppnivaa.setUtbetalesTilId(oppdragslinje.getRefusjonsInfo().getRefunderesId());
+                    stoppnivaa.setUtbetalesTilNavn("DUMMY FIRMA");
+                } else {
+                    stoppnivaa.setUtbetalesTilId(oppdragslinje.getUtbetalesTilId());
+                    stoppnivaa.setUtbetalesTilNavn("DUMMY");
+                }
                 stoppnivaa.setBehandlendeEnhet("8052");
                 LocalDate forfallsdato = periode.getFom().isBefore(LocalDate.now()) ? LocalDate.now() : periode.getTom().plusDays(1);
                 stoppnivaa.setForfall(dateTimeFormatter.format(forfallsdato));
