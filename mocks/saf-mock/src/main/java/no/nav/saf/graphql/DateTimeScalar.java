@@ -9,6 +9,8 @@ import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * @author Joakim Bjørnstad, Jbit AS
@@ -22,6 +24,10 @@ final class DateTimeScalar {
 				public Object serialize(Object dataFetcherResult) throws CoercingSerializeException {
 					if (dataFetcherResult instanceof LocalDateTime) {
 						return ((LocalDateTime) dataFetcherResult).truncatedTo(SECONDS).toString();
+					}
+					// TODO: En custommapping i pom er satt opp for denne, må fikses. Fikser her gjennom hardkoding
+					if (dataFetcherResult instanceof Date) {
+						return ((Date)dataFetcherResult).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().truncatedTo(SECONDS).toString();
 					}
 					throw new CoercingSerializeException("Serialisering av " + dataFetcherResult.getClass() + " til " + DATE_TIME.getName() + " er ikke implementert.");
 				}

@@ -24,6 +24,7 @@ import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.oppgave.OppgaveMockImpl;
+import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
@@ -91,6 +92,7 @@ public class ApplicationConfig extends Application {
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
+        classes.add(SafMock.class);
         classes.add(FeedRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
         classes.add(FpFormidlingMock.class);
