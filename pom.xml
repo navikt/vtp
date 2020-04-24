@@ -66,6 +66,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcomponents-client</artifactId>
+                <version>4.5.4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!-- fjernet fra SE i Java11 -->
             <dependency>
