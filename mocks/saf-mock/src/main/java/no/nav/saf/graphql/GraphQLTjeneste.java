@@ -130,11 +130,13 @@ public class GraphQLTjeneste {
 
     private Journalpost byggJournalpost(String journalpostId) {
         // TODO: Bygge builder rundt alt dette vrælet, så slipper man at det brekker for hver kontraktsendring
+        // Eller enda bedre: Få plugin til å generere builder
         RelevantDato registrert = new RelevantDato(Date.from(Instant.now()), Datotype.DATO_REGISTRERT);
         RelevantDato journalført = new RelevantDato(Date.from(Instant.now()), Datotype.DATO_JOURNALFOERT);
         String filtype = "PDF";
+        String brevkodeIM = "4936";
         Dokumentvariant dokumentvariant = new Dokumentvariant(Variantformat.ARKIV, "filnavn", "filuuid", filtype, true, SkjermingType.FEIL);
-        DokumentInfo dokumenter = new DokumentInfo("dokumentInfoId", "tittel", "brevkode", Dokumentstatus.FERDIGSTILT,
+        DokumentInfo dokumenter = new DokumentInfo("dokumentInfoId", "tittel", brevkodeIM, Dokumentstatus.FERDIGSTILT,
                 Date.from(Instant.now()), "originalJournalpostId", "skjerming", List.of(), List.of(dokumentvariant));
         return new Journalpost(
                 journalpostId,
