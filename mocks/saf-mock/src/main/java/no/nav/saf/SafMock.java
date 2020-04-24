@@ -63,28 +63,6 @@ public class SafMock {
     }
 
 
-    @GET
-    @Path("/hentdokument/{journalpostId}/{dokumentInfoId}/{variantFormat}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter dokument", response = HentDokumentResponse.class)
-    public Response hentDokument( @PathParam(JOURNALPOST_ID) String journalpostId,
-                                  @PathParam(DOKUMENT_INFO_ID) String dokumentInfoId,
-                                  @PathParam(VARIANT_FORMAT) String variantFormat ) throws HentDokumentDokumentIkkeFunnet {
-        // TODO(EW): Bruk den gamle responsklassen, HentDokumentResponse.
-        HentDokumentResponse dokumentResponse = new HentDokumentResponse();
-        Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
-        if (dokumentModell.isPresent()) {
-            LOG.info("Henter dokument på følgende dokumentId: " + dokumentModell.get().getDokumentId());
-            String innhold = dokumentModell.get().getInnhold();
-            dokumentResponse.setDokument(innhold.getBytes());
-            return Response
-                    .status(Response.Status.OK)
-                    .entity(dokumentResponse)
-                    .build();
-        } else {
-            throw new HentDokumentDokumentIkkeFunnet("Kunne ikke finne dokument", new DokumentIkkeFunnet());
-        }
-    }
 
 
 //    private JournalpostResponseDto konverterTilJournalpostResponseDto(Optional<JournalpostModell> journalpostModell) {

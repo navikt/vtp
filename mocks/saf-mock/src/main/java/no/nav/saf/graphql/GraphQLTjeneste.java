@@ -12,8 +12,6 @@ import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-
 import no.nav.saf.Arkivsaksystem;
 import no.nav.saf.Journalpost;
 import no.nav.saf.Sak;
