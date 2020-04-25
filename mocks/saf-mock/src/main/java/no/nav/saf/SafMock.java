@@ -15,9 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,35 +65,39 @@ public class SafMock {
         return executionResult.toSpecification();
     }
 
-/*
+
     @GET
-    @Path("/hentdokument/{journalpostId}/{dokumentInfoId}/{variantFormat}")
+    @Path("/rest/hentdokument/{journalpostId}/{dokumentInfoId}/{variantFormat}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter dokument", response = HentDokumentResponse.class)
+    @ApiOperation(value = "", notes = "Henter dokument", response = Response.class)
     public Response hentDokument( @PathParam(JOURNALPOST_ID) String journalpostId,
                                   @PathParam(DOKUMENT_INFO_ID) String dokumentInfoId,
-                                  @PathParam(VARIANT_FORMAT) String variantFormat ) throws HentDokumentDokumentIkkeFunnet {
-        // TODO(EW): Bruk den gamle responsklassen, HentDokumentResponse.
-        HentDokumentResponse dokumentResponse = new HentDokumentResponse();
+                                  @PathParam(VARIANT_FORMAT) String variantFormat ) {
+
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
         if (dokumentModell.isPresent()) {
             LOG.info("Henter dokument på følgende dokumentId: " + dokumentModell.get().getDokumentId());
             String innhold = dokumentModell.get().getInnhold();
-            dokumentResponse.setDokument(innhold.getBytes());
             return Response
                     .status(Response.Status.OK)
-                    .entity(dokumentResponse)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat)
+                    .entity(innhold.getBytes())
                     .build();
+        } else if (journalpostId != null) { // TODO: Fjern når SafMock ikke er WIP
+            try (InputStream is = getClass().getResourceAsStream("/dokumenter/foreldrepenger_soknad.pdf")) {
+                return Response
+                        .status(Response.Status.OK)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat)
+                        .entity(is.readAllBytes())
+                        .build();
+            } catch (IOException e) {
+                throw new RuntimeException(String.format("Kunne ikke lese dummyrespons for " +
+                        "journalpostId=%s, dokumentInfoId=%s, variantFormat=%s", journalpostId, dokumentInfoId, variantFormat));
+            }
+
         } else {
-            throw new HentDokumentDokumentIkkeFunnet("Kunne ikke finne dokument", new DokumentIkkeFunnet());
+            throw new RuntimeException(String.format("Kunne ikke finne dokument for " +
+                    "journalpostId=%s, dokumentInfoId=%s, variantFormat=%s", journalpostId, dokumentInfoId, variantFormat));
         }
-    }*/
-
-
-//    private JournalpostResponseDto konverterTilJournalpostResponseDto(Optional<JournalpostModell> journalpostModell) {
-//        //To be implemented.
-//        return null;
-//    }
-
-
+    }
 }

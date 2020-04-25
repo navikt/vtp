@@ -71,44 +71,44 @@ public class GraphQLTjeneste {
 
     public ExecutionResult executeStatement(GraphQLRequest request, JournalRepository testscenarioRepository) {
         if (request.getQuery().contains("dokumentoversiktFagsak(fagsak:")) {
-            return utførdokumentOversiktFagsak(request, testscenarioRepository);
+            return executeDokumentOversiktFagsak(request, testscenarioRepository);
         } else if (request.getQuery().contains("journalpost(journalpostId:")) {
-            return utførJournalpost(request, testscenarioRepository);
+            return executeJournalpost(request, testscenarioRepository);
         }
         throw new UnsupportedOperationException("Query er ikke støttet i mock");
     }
 
-    private ExecutionResult utførdokumentOversiktFagsak(GraphQLRequest request, JournalRepository testscenarioRepository) {
+    private ExecutionResult executeDokumentOversiktFagsak(GraphQLRequest request, JournalRepository testscenarioRepository) {
         String fagsakId = (String) request.getVariables().getOrDefault("fagsakId", "87654321");
         String fagsaksystem = (String) request.getVariables().getOrDefault("fagsaksystem", "87654321");
 
-        RuntimeWiring runtimeWiring = DokumentoversiktWiring.lagRuntimeWiring(opprettDokumentsiktFagsak(fagsaksystem, fagsakId, testscenarioRepository));
+        DokumentoversiktFagsakCoordinator coordinator = opprettDokumentsiktFagsak(fagsaksystem, fagsakId, testscenarioRepository);
+        RuntimeWiring runtimeWiring = DokumentWiringDokumentoversikt.lagRuntimeWiring(coordinator);
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
 
-        return GraphQL.newGraphQL(graphQLSchema)
-                .mutationExecutionStrategy(new AsyncSerialExecutionStrategy(new SimpleDataFetcherExceptionHandler()))
-                .queryExecutionStrategy(new AsyncExecutionStrategy(new SimpleDataFetcherExceptionHandler()))
-                .build().execute(ExecutionInput.newExecutionInput()
-                .query(request.getQuery())
-                .operationName(request.getOperationName())
-                .variables(request.getVariables() == null ? Collections.emptyMap() : request.getVariables())
-                .build());
+        return byggExecutionResult(request, graphQLSchema);
     }
 
-    private ExecutionResult utførJournalpost(GraphQLRequest request, JournalRepository testscenarioRepository) {
+
+    private ExecutionResult executeJournalpost(GraphQLRequest request, JournalRepository testscenarioRepository) {
         String journalpostId = (String) request.getVariables().getOrDefault("journalpostId", "87654321");
 
-        RuntimeWiring runtimeWiring = DokumentWiring.lagRuntimeWiring(opprettJournalpostFeed(journalpostId, testscenarioRepository));
+        JournalpostCoordinator coordinator = opprettJournalpost(journalpostId, testscenarioRepository);
+        RuntimeWiring runtimeWiring = DokumentWiringJournalpost.lagRuntimeWiring(coordinator);
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
 
+        return byggExecutionResult(request, graphQLSchema);
+    }
+
+    private ExecutionResult byggExecutionResult(GraphQLRequest request, GraphQLSchema graphQLSchema) {
         return GraphQL.newGraphQL(graphQLSchema)
                 .mutationExecutionStrategy(new AsyncSerialExecutionStrategy(new SimpleDataFetcherExceptionHandler()))
                 .queryExecutionStrategy(new AsyncExecutionStrategy(new SimpleDataFetcherExceptionHandler()))
                 .build().execute(ExecutionInput.newExecutionInput()
-                .query(request.getQuery())
-                .operationName(request.getOperationName())
-                .variables(request.getVariables() == null ? Collections.emptyMap() : request.getVariables())
-                .build());
+                        .query(request.getQuery())
+                        .operationName(request.getOperationName())
+                        .variables(request.getVariables() == null ? Collections.emptyMap() : request.getVariables())
+                        .build());
     }
 
     private DokumentoversiktFagsakCoordinator opprettDokumentsiktFagsak(String fagsakId, String fagsystem, JournalRepository journalRepository) {
@@ -169,7 +169,7 @@ public class GraphQLTjeneste {
         );
     }
 
-    private JournalpostCoordinator opprettJournalpostFeed(String journalpostId, JournalRepository journalRepository) {
+    private JournalpostCoordinator opprettJournalpost(String journalpostId, JournalRepository journalRepository) {
 
         //TODO: legg inn logikk for å bygge hentJournalpost-response
 
