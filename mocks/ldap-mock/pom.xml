@@ -21,9 +21,5 @@
 			<groupId>com.unboundid</groupId>
 			<artifactId>unboundid-ldapsdk</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>no.nav.foreldrepenger.vtp</groupId>
-			<artifactId>core</artifactId>
-		</dependency>
 	</dependencies>
 </project>

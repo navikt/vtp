@@ -13,6 +13,10 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
+		<dependency>
+			<groupId>no.nav.foreldrepenger.vtp</groupId>
+			<artifactId>core</artifactId>
+		</dependency>
 
 		<!-- 3dje parts NAV felleskomponenter -->
 		<dependency>
@@ -33,10 +37,6 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-http-spi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.foreldrepenger.vtp</groupId>
-			<artifactId>core</artifactId>
 		</dependency>
 	</dependencies>
 

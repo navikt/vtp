@@ -38,6 +38,7 @@
         <cxf.version>3.3.6</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.1</swagger.version>
+        <graphql-java.version>2020-04-04T07-05-23-9eae9c1</graphql-java.version>
 
     </properties>
 
@@ -201,6 +202,11 @@
                 <artifactId>oppgave-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>saf-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -334,6 +340,11 @@
             <dependency>
                 <groupId>no.nav.tjenestespesifikasjoner</groupId>
                 <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
+                <version>${tjenestespesifikasjoner.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.tjenestespesifikasjoner</groupId>
+                <artifactId>nav-journal-v2-tjenestespesifikasjon</artifactId>
                 <version>${tjenestespesifikasjoner.version}</version>
             </dependency>
             <dependency>
@@ -538,6 +549,12 @@
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>7.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.graphql-java</groupId>
+                <artifactId>graphql-java</artifactId>
+                <version>${graphql-java.version}</version>
             </dependency>
 
             <dependency>

@@ -12,12 +12,10 @@
     <name>VTP ::medl-mock</name>
 
     <dependencies>
-        <!-- Prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>core</artifactId>
         </dependency>
-
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
