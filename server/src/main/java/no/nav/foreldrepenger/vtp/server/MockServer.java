@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
@@ -86,6 +87,7 @@ public class MockServer {
 
     public static void main(String[] args) throws Exception {
         PropertiesUtils.initProperties();
+        KeyStoreTool.init();
         MockServer mockServer = new MockServer();
         mockServer.start();
     }

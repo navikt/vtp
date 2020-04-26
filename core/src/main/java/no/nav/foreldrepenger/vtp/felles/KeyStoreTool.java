@@ -27,7 +27,14 @@ public class KeyStoreTool {
     private static RsaJsonWebKey jwk = null;
     private static KeyStore keystore = null;
 
-    static synchronized void init() {
+    public static synchronized void init() {
+        if (keystore != null) {
+            return;
+        }
+
+        KeystoresGenerator.generateKeystoresIfNotExists();
+
+        org.apache.xml.security.Init.init();
 
         PublicKey myPublicKey;
         PrivateKey myPrivateKey;
@@ -76,18 +83,13 @@ public class KeyStoreTool {
 
 
     public static synchronized Credential getDefaultCredential() {
-        if (keystore == null) {
-            init();
-            org.apache.xml.security.Init.init();
-        }
+        init();
         KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(), getKeyStorePassword());
         return credentialAdapter;
     }
 
     public static synchronized RsaJsonWebKey getJsonWebKey() {
-        if (jwk == null) {
-            init();
-        }
+        init();
         return jwk;
     }
 
