@@ -20,6 +20,8 @@ public class JournalpostBuilder {
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getJournalpostId());
+        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()),
+                "fagsakId", modell.getFagsystemId()));
 
          List<DokumentInfo> dokumentInfoer = new ArrayList<>();
         if (finnHoveddokumentFraJournalpost(modell).isPresent()) {
