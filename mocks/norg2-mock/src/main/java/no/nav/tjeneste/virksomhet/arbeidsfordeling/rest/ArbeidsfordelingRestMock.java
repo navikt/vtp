@@ -3,6 +3,7 @@ package no.nav.tjeneste.virksomhet.arbeidsfordeling.rest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -50,10 +51,8 @@ public class ArbeidsfordelingRestMock {
     }
 
     private boolean skalEnhetMed(Norg2Modell enhet, String tema) {
-        if (tema == null) return true;
-        if ("FOR".equalsIgnoreCase(tema) && "YTA".equalsIgnoreCase(enhet.getType())) return false;
-        if ("OMS".equalsIgnoreCase(tema) && "FPY".equalsIgnoreCase(enhet.getType())) return false;
-        return true;
+        if (tema == null || enhet.getTema() == null) return true;
+        return tema.equalsIgnoreCase(enhet.getTema());
     }
 
     @POST
