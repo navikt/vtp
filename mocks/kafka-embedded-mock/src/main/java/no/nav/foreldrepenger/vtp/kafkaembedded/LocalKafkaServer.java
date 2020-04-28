@@ -24,7 +24,6 @@ public class LocalKafkaServer {
     private final Collection<String> bootstrapTopics;
     private KafkaLocal kafka;
     private LocalKafkaProducer localProducer;
-    private LocalKafkaConsumerStream localConsumer;
     private AdminClient kafkaAdminClient;
     private int zookeeperPort;
     private int kafkaBrokerPort;
@@ -149,15 +148,12 @@ public class LocalKafkaServer {
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
                         name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
-        localConsumer = new LocalKafkaConsumerStream(bootstrapServers, bootstrapTopics);
 
         localProducer = new LocalKafkaProducer(bootstrapServers);
-        localConsumer.start();
     }
 
     public void stop() {
         log.info("Stopper kafka server");
-        localConsumer.stop();
         kafkaAdminClient.close();
         kafka.stop();
     }
