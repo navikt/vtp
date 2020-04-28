@@ -18,6 +18,9 @@ public class Norg2Modell {
 
     @JsonProperty("status")
     private String status;
+    
+    @JsonProperty("tema")
+    private String tema;
 
     public String getDiskresjonskode() {
         return diskresjonskode;
@@ -42,6 +45,10 @@ public class Norg2Modell {
     public void setNavn(String navn) {
         this.navn = navn;
     }
+    
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
 
     public String getType() {
         return type;
@@ -53,6 +60,10 @@ public class Norg2Modell {
 
     public String getStatus() {
         return status;
+    }
+    
+    public String getTema() {
+        return tema;
     }
 
     public void setStatus(String status) {
