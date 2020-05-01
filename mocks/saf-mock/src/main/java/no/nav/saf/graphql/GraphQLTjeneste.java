@@ -1,5 +1,7 @@
 package no.nav.saf.graphql;
 
+import static java.util.stream.Collectors.toList;
+
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
@@ -12,32 +14,16 @@ import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.saf.Arkivsaksystem;
-import no.nav.saf.AvsenderMottaker;
-import no.nav.saf.AvsenderMottakerIdType;
-import no.nav.saf.Bruker;
-import no.nav.saf.BrukerIdType;
-import no.nav.saf.Datotype;
-import no.nav.saf.DokumentInfo;
 import no.nav.saf.Dokumentoversikt;
-import no.nav.saf.Dokumentstatus;
-import no.nav.saf.Dokumentvariant;
+import no.nav.saf.JournalpostBuilder;
 import no.nav.saf.Journalpost;
-import no.nav.saf.Journalposttype;
-import no.nav.saf.Journalstatus;
-import no.nav.saf.Kanal;
-import no.nav.saf.RelevantDato;
-import no.nav.saf.Sak;
 import no.nav.saf.SideInfo;
-import no.nav.saf.SkjermingType;
-import no.nav.saf.Tema;
-import no.nav.saf.Variantformat;
+import no.nav.saf.exceptions.SafFunctionalException;
 
 import java.io.InputStreamReader;
-import java.time.Instant;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,10 +65,10 @@ public class GraphQLTjeneste {
     }
 
     private ExecutionResult executeDokumentOversiktFagsak(GraphQLRequest request, JournalRepository testscenarioRepository) {
-        String fagsakId = (String) request.getVariables().getOrDefault("fagsakId", "87654321");
-        String fagsaksystem = (String) request.getVariables().getOrDefault("fagsaksystem", "87654321");
+        String fagsakId = (String) request.getVariables().get("fagsakId");
+        String fagsaksystem = (String) request.getVariables().get("fagsaksystem");
 
-        DokumentoversiktFagsakCoordinator coordinator = opprettDokumentsiktFagsak(fagsaksystem, fagsakId, testscenarioRepository);
+        DokumentoversiktFagsakCoordinator coordinator = opprettDokumentsiktFagsakCoordinator(testscenarioRepository);
         RuntimeWiring runtimeWiring = DokumentWiringDokumentoversikt.lagRuntimeWiring(coordinator);
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
 
@@ -93,7 +79,7 @@ public class GraphQLTjeneste {
     private ExecutionResult executeJournalpost(GraphQLRequest request, JournalRepository testscenarioRepository) {
         String journalpostId = (String) request.getVariables().getOrDefault("journalpostId", "87654321");
 
-        JournalpostCoordinator coordinator = opprettJournalpost(journalpostId, testscenarioRepository);
+        JournalpostCoordinator coordinator = opprettJournalpostCoordinator(testscenarioRepository);
         RuntimeWiring runtimeWiring = DokumentWiringJournalpost.lagRuntimeWiring(coordinator);
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
 
@@ -111,76 +97,24 @@ public class GraphQLTjeneste {
                         .build());
     }
 
-    private DokumentoversiktFagsakCoordinator opprettDokumentsiktFagsak(String fagsakId, String fagsystem, JournalRepository journalRepository) {
+    private DokumentoversiktFagsakCoordinator opprettDokumentsiktFagsakCoordinator(JournalRepository journalRepository) {
 
-        //TODO: legg inn logikk for å bygge hentJournalpost-response
+        return (fagsakId, fagsaksystem) -> {
+            // Fagsaksystem sees foreløpig bort fra i oppslaget. Kan vurderes å filtrere på kun "K9"
+            List<JournalpostModell> modeller = journalRepository.finnJournalposterMedSakId(fagsakId);
+            List<Journalpost> journalposter = modeller.stream()
+                    .map(jpModell -> JournalpostBuilder.buildFrom(jpModell))
+                    .collect(toList());
 
-        return new DokumentoversiktFagsakCoordinator() {
-
-
-            @Override
-            public Dokumentoversikt hentDokumentoversikt(String fagsakId, String fagsystem) {
-                Journalpost journalpost = byggJournalpost("journalpostId");
-
-                return new Dokumentoversikt(List.of(journalpost), new SideInfo("sluttpeker", false));
-
-            }
+            return new Dokumentoversikt(journalposter, new SideInfo("sluttpeker", false));
         };
     }
 
-    private Journalpost byggJournalpost(String journalpostId) {
-        // TODO: Bygge builder rundt alt dette vrælet, så slipper man at det brekker for hver kontraktsendring
-        // Eller enda bedre: Få plugin til å generere builder
-        RelevantDato registrert = new RelevantDato(Date.from(Instant.now()), Datotype.DATO_REGISTRERT);
-        RelevantDato journalført = new RelevantDato(Date.from(Instant.now()), Datotype.DATO_JOURNALFOERT);
-        String filtype = "PDF";
-        String brevkodeIM = "4936";
-        Dokumentvariant dokumentvariant = new Dokumentvariant(Variantformat.ARKIV, "filnavn", "filuuid", filtype, true, SkjermingType.FEIL);
-        DokumentInfo dokumenter = new DokumentInfo("dokumentInfoId", "tittel", brevkodeIM, Dokumentstatus.FERDIGSTILT,
-                Date.from(Instant.now()), "originalJournalpostId", "skjerming", List.of(), List.of(dokumentvariant));
-        return new Journalpost(
-                journalpostId,
-                "tittel",
-                Journalposttype.I,
-                Journalstatus.JOURNALFOERT,
-                Tema.AAP,
-                "temanavn",
-                "behandlingstema",
-                "behandlingstemanavn",
-                new Sak("arkivsaksnummer", Arkivsaksystem.GSAK, Date.from(Instant.now()), "fagsakId", "fagsaksystem"),
-                new Bruker("id", BrukerIdType.AKTOERID),
-                new AvsenderMottaker("id", AvsenderMottakerIdType.FNR, "navn", "land", true),
-                "avsenderMottakerId",
-                "avsenderMottakerNavn",
-                "avsenderMottakrLand",
-                "journalForendeEnhet",
-                "journalFoerendeEnhet",
-                "journalfortAvNavn",
-                "opprettetAvNavn",
-                Kanal.ALTINN,
-                "kanalnavn",
-                "skjerming",
-                Date.from(Instant.now()),
-                List.of(registrert, journalført),
-                "antallRetur",
-                "eksternReferanseId",
-                List.of(),
-                List.of(dokumenter)
-        );
-    }
+    private JournalpostCoordinator opprettJournalpostCoordinator(JournalRepository journalRepository) {
 
-    private JournalpostCoordinator opprettJournalpost(String journalpostId, JournalRepository journalRepository) {
-
-        //TODO: legg inn logikk for å bygge hentJournalpost-response
-
-        return new JournalpostCoordinator() {
-            @Override
-            public Journalpost hentJournalpost(String journalpostId) {
-
-                // TODO: Bygge builder rundt alt dette vrælet, så slipper man at det brekker for hver kontraktsendring
-                return byggJournalpost(journalpostId);
-            }
-        };
+        return journalpostId -> journalRepository.finnJournalpostMedJournalpostId(journalpostId)
+                .map(jpModell -> JournalpostBuilder.buildFrom(jpModell))
+                .orElseThrow(() ->  new SafFunctionalException("Fant ingen journalpost for journalpostId=" + journalpostId));
     }
 
 }
