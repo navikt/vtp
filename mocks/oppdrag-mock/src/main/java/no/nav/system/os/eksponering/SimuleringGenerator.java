@@ -43,7 +43,7 @@ public class SimuleringGenerator {
         List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
         for (Oppdragslinje oppdragslinje : oppdragslinjer) {
             LocalDate fom = LocalDate.parse(oppdragslinje.getDatoVedtakFom(), dateTimeFormatter);
-            if(!YearMonth.from(fom).isAfter(nesteMåned)) {
+            if (!YearMonth.from(fom).isAfter(nesteMåned)) {
                 beregning.getBeregningsPeriode().add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
             }
         }
@@ -66,10 +66,10 @@ public class SimuleringGenerator {
 
         YearMonth nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));
         for (Periode periode : perioder) {
-            if(!YearMonth.from(periode.getFom()).isAfter(nesteMåned)) {
+            if (!YearMonth.from(periode.getFom()).isAfter(nesteMåned)) {
                 BeregningStoppnivaa stoppnivaa = new BeregningStoppnivaa();
                 stoppnivaa.setKodeFagomraade(oppdrag.getKodeFagomraade());
-                if (oppdragslinje.getRefusjonsInfo() != null){
+                if (oppdragslinje.getRefusjonsInfo() != null) {
                     stoppnivaa.setUtbetalesTilId(oppdragslinje.getRefusjonsInfo().getRefunderesId());
                     stoppnivaa.setUtbetalesTilNavn("DUMMY FIRMA");
                 } else {
@@ -127,26 +127,28 @@ public class SimuleringGenerator {
         return stoppnivaaDetaljer;
     }
 
-    private List<Periode> splittOppIPeriodePerMnd(String datoVedtakFom, String datoVedtakTom) {
+    static List<Periode> splittOppIPeriodePerMnd(String datoVedtakFom, String datoVedtakTom) {
         List<Periode> perioder = new ArrayList<>();
 
         LocalDate startDato = LocalDate.parse(datoVedtakFom, dateTimeFormatter);
         LocalDate sluttDato = LocalDate.parse(datoVedtakTom, dateTimeFormatter);
+        if (sluttDato.isBefore(startDato)) {
+            throw new IllegalArgumentException("Startdato " + datoVedtakFom + " kan ikke være etter sluttdato " + datoVedtakTom);
+        }
 
-        LocalDate gjeldendeDato = startDato;
-        while (gjeldendeDato.isBefore(sluttDato)) {
-            LocalDate sisteDagIMnd = YearMonth.from(gjeldendeDato).atEndOfMonth();
+        LocalDate dato = startDato;
+        while (!dato.isAfter(sluttDato)) {
+            LocalDate sisteDagIMnd = YearMonth.from(dato).atEndOfMonth();
             if (sisteDagIMnd.isBefore(sluttDato)) {
-                perioder.add(new Periode(gjeldendeDato, sisteDagIMnd));
-                gjeldendeDato = sisteDagIMnd.plusDays(1);
+                perioder.add(new Periode(dato, sisteDagIMnd));
+                dato = sisteDagIMnd.plusDays(1);
             } else {
-                perioder.add(new Periode(gjeldendeDato, sluttDato));
-                gjeldendeDato = sluttDato.plusDays(1);
+                perioder.add(new Periode(dato, sluttDato));
+                dato = sluttDato.plusDays(1);
             }
         }
         return perioder;
     }
-
 
 
     static class Periode {
