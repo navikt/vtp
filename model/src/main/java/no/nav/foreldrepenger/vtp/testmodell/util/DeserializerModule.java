@@ -1,15 +1,5 @@
 package no.nav.foreldrepenger.vtp.testmodell.util;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.threeten.extra.PeriodDuration;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
@@ -20,6 +10,15 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.threeten.extra.PeriodDuration;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DeserializerModule extends SimpleModule {
 
@@ -68,14 +67,17 @@ public class DeserializerModule extends SimpleModule {
             if (matcher.matches()) {
                 String baseref = matcher.group(1);
                 LocalDate base = initTimeVar(baseref).toLocalDate();
-                String op = matcher.group(3);
-                if (op != null) {
-                    Period period = Period.parse(matcher.group(4));
-                    if ("-".equals(op)) {
-                        return base.minus(period);
-                    } else {
-                        return base.plus(period);
+                if (matcher.group(2) != null) {
+                    String[] split = matcher.group(2).split("(?<=\\G(\\w+(?!\\w+)|\\+|-|(<|>)(?!=)))\\s*");
+                    for (int i = 0; i < split.length; i += 2) {
+                        Period period = Period.parse(split[i+1]);
+                        if ("-".equals(split[i])) {
+                            base = base.minus(period);
+                        } else {
+                            base = base.plus(period);
+                        }
                     }
+                    return base;
                 } else {
                     return base;
                 }
