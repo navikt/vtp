@@ -67,7 +67,7 @@ public class DeserializerModule extends SimpleModule {
             if (matcher.matches()) {
                 String baseref = matcher.group(1);
                 LocalDate base = initTimeVar(baseref).toLocalDate();
-                if (matcher.group(2) != null) {
+                if (matcher.group(2) != null && matcher.group(3) != null) {
                     String[] split = matcher.group(2).split("(?<=\\G(\\w+(?!\\w+)|\\+|-|(<|>)(?!=)))\\s*");
                     for (int i = 0; i < split.length; i += 2) {
                         Period period = Period.parse(split[i+1]);
@@ -108,15 +108,17 @@ public class DeserializerModule extends SimpleModule {
             if (matcher.matches()) {
                 String baseref = matcher.group(1);
                 LocalDateTime base = initTimeVar(baseref);
-                String op = matcher.group(3);
-                if (op != null) {
-                    String per = matcher.group(4);
-                    PeriodDuration period = PeriodDuration.parse(per);
-                    if ("-".equals(op)) {
-                        return base.minus(period);
-                    } else {
-                        return base.plus(period);
+                if (matcher.group(2) != null && matcher.group(3) != null) {
+                    String[] split = matcher.group(2).split("(?<=\\G(\\w+(?!\\w+)|\\+|-|(<|>)(?!=)))\\s*");
+                    for (int i = 0; i < split.length; i += 2) {
+                        PeriodDuration period = PeriodDuration.parse(split[i+1]);
+                        if ("-".equals(split[i])) {
+                            base = base.minus(period);
+                        } else {
+                            base = base.plus(period);
+                        }
                     }
+                    return base;
                 } else {
                     return base;
                 }
