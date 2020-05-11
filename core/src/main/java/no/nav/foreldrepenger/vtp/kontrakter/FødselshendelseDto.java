@@ -17,6 +17,14 @@ public class FødselshendelseDto implements PersonhendelseDto {
     private String type = "fødselshendelse";
 
     @ApiModelProperty
+    @JsonProperty("endringstype")
+    private String endringstype;
+
+    @ApiModelProperty
+    @JsonProperty("tidligereHendelseId")
+    private String tidligereHendelseId;
+
+    @ApiModelProperty
     @JsonProperty("fnrMor")
     private String fnrMor;
 
@@ -39,6 +47,14 @@ public class FødselshendelseDto implements PersonhendelseDto {
 
     @Override
     public String getType(){return type;}
+
+    public String getEndringstype() {
+        return endringstype;
+    }
+
+    public String getTidligereHendelseId() {
+        return tidligereHendelseId;
+    }
 
     public String getFnrMor() {
         return fnrMor;

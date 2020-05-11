@@ -88,7 +88,7 @@ public class PersonhendelseAdapter {
     }
     //Foreløpig generering av aktør id for nytt barn. Bør dette barnet legges til i testscenariet?
     private String genererAktørIdForBarn(String fnr){
-        return "00" + fnr;
+        return "99" + fnr;
     }
 
     private String aktørIdFraFnr(String fnr){

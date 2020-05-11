@@ -1,0 +1,11 @@
+@namespace("no.nav.person.pdl.leesah.foedsel")
+protocol FoedselV1 {
+
+  record Foedsel {
+    union { null, int } foedselsaar = null;
+    union { null, date } foedselsdato = null;
+    union { null, string } foedeland = null;
+    union { null, string } foedested = null;
+    union { null, string } foedekommune = null;
+  }
+}

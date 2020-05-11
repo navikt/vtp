@@ -1,0 +1,9 @@
+@namespace("no.nav.person.pdl.leesah.familierelasjon")
+protocol FamilierelasjonV1 {
+
+  record Familierelasjon {
+    string relatertPersonsIdent;
+    string relatertPersonsRolle;
+    union { null, string } minRolleForPerson = null;
+  }
+}
