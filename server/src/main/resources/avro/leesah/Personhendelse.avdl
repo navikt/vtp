@@ -1,0 +1,31 @@
+@namespace("no.nav.person.pdl.leesah")
+protocol PersonhendelseProto {
+  import idl "doedfoedtbarn/DoedfoedtBarn.avdl";
+  import idl "doedsfall/Doedsfall.avdl";
+  import idl "foedsel/Foedsel.avdl";
+  import idl "familierelasjon/Familierelasjon.avdl";
+
+  enum Endringstype {
+    OPPRETTET,
+    KORRIGERT,
+    ANNULLERT,
+    OPPHOERT
+  }
+
+  record Personhendelse {
+    string hendelseId;
+    array<string> personidenter;
+
+    string master;
+    timestamp_ms opprettet;
+
+    string opplysningstype;
+    Endringstype endringstype;
+    union { null, string } tidligereHendelseId = null; // Peker til tidligere hendelse ved korrigering og annullering.
+
+    union { null, no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn } doedfoedtBarn = null;
+    union { null, no.nav.person.pdl.leesah.doedsfall.Doedsfall } doedsfall = null;
+    union { null, no.nav.person.pdl.leesah.foedsel.Foedsel } foedsel = null;
+    union { null, no.nav.person.pdl.leesah.familierelasjon.Familierelasjon } familierelasjon = null;
+  }
+}

@@ -1,0 +1,7 @@
+@namespace("no.nav.person.pdl.leesah.doedfoedtbarn")
+protocol DoedfoedtBarnV1 {
+
+  record DoedfoedtBarn {
+    union { null, date } dato = null;
+  }
+}

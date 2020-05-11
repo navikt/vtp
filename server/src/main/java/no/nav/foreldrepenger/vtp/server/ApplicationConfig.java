@@ -42,6 +42,7 @@ import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.vtp.server.api.feed.FeedRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.sak.SakRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioTemplateRestTjeneste;
@@ -100,6 +101,7 @@ public class ApplicationConfig extends Application {
         classes.add(SakRestMock.class);
         classes.add(SafMock.class);
         classes.add(FeedRestTjeneste.class);
+        classes.add(PdlLeesahRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
         classes.add(FpFormidlingMock.class);
         classes.add(DummyRestTjeneste.class);
