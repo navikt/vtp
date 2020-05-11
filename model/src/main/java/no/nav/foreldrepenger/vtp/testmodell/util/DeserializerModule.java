@@ -55,20 +55,18 @@ public class DeserializerModule extends SimpleModule {
 
         @Override
         public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            String text = p.getText();
-
-            String reformatted = text;
+            String reformatted = p.getText();
             for (Map.Entry<String, String> v : vars.getVars().entrySet()) {
                 reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
             }
 
-            Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))?$");
+            Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))*$");
             Matcher matcher = testRegexp.matcher(reformatted);
             if (matcher.matches()) {
                 String baseref = matcher.group(1);
                 LocalDate base = initTimeVar(baseref).toLocalDate();
                 if (matcher.group(2) != null && matcher.group(3) != null) {
-                    String[] split = matcher.group(2).split("(?<=\\G(\\w+(?!\\w+)|\\+|-|(<|>)(?!=)))\\s*");
+                    String[] split = matcher.group(2).split("(?<=(\\w(?!\\w)|\\+|-(?!=)))\\s*");
                     for (int i = 0; i < split.length; i += 2) {
                         Period period = Period.parse(split[i+1]);
                         if ("-".equals(split[i])) {
@@ -97,19 +95,17 @@ public class DeserializerModule extends SimpleModule {
 
         @Override
         public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            String text = p.getText();
-
-            String reformatted = text;
+            String reformatted = p.getText();
             for (Map.Entry<String, String> v : vars.getVars().entrySet()) {
                 reformatted = reformatted.replace("${" + v.getKey() + "}", v.getValue());
             }
-            Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))?$");
+            Pattern testRegexp = Pattern.compile("^(now|basedate)\\(\\)\\s*(([+-])\\s*(P[0-9TYMWDHS].*))*$");
             Matcher matcher = testRegexp.matcher(reformatted);
             if (matcher.matches()) {
                 String baseref = matcher.group(1);
                 LocalDateTime base = initTimeVar(baseref);
                 if (matcher.group(2) != null && matcher.group(3) != null) {
-                    String[] split = matcher.group(2).split("(?<=\\G(\\w+(?!\\w+)|\\+|-|(<|>)(?!=)))\\s*");
+                    String[] split = matcher.group(2).split("(?<=(\\w(?!\\w)|\\+|-(?!=)))\\s*");
                     for (int i = 0; i < split.length; i += 2) {
                         PeriodDuration period = PeriodDuration.parse(split[i+1]);
                         if ("-".equals(split[i])) {
