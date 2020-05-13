@@ -23,6 +23,7 @@ public class Arkivtema {
         koder.add("SYK");
         koder.add("ENF");
         koder.add("OMS");
+        koder.add("FRI");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -32,6 +33,7 @@ public class Arkivtema {
     public static Arkivtema SYK = new Arkivtema("SYK");
     public static Arkivtema ENF = new Arkivtema("ENF");
     public static Arkivtema OMS = new Arkivtema("OMS");
+    public static Arkivtema FRI = new Arkivtema("FRI");
 
     private String kode;
 
