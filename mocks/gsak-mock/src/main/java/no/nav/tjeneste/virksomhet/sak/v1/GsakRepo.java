@@ -7,7 +7,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
@@ -25,6 +28,7 @@ public class GsakRepo {
     private static final String SAKSBEHANDLER_IDENT = "MinSaksbehandler";
 
     private Map<String, Sak> bySakId;
+    private Map<Long, ObjectNode> jsonBySakId;
     private AtomicInteger sakIder;
     private AtomicInteger oppgaveIder;
 
@@ -33,6 +37,22 @@ public class GsakRepo {
         sakIder = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
         oppgaveIder = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
         bySakId = new HashMap<>();
+        jsonBySakId = new ConcurrentHashMap<>();
+    }
+
+    public ObjectNode leggTilSak(ObjectNode input) {
+        Long sakId = (long) sakIder.incrementAndGet();
+        input.put("id", sakId);
+        jsonBySakId.put(sakId, input);
+        return input;
+    }
+
+    public ObjectNode hentSak(Long id) {
+        return jsonBySakId.get(id);
+    }
+
+    public Map<Long, ObjectNode> alleSaker() {
+        return jsonBySakId;
     }
 
     public Sak hentSak(String sakId) throws HentSakSakIkkeFunnet {
