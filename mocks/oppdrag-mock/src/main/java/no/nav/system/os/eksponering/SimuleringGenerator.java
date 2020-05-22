@@ -1,14 +1,5 @@
 package no.nav.system.os.eksponering;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
 import no.nav.system.os.entiteter.beregningskjema.Beregning;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer;
@@ -18,36 +9,60 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.S
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdrag;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdragslinje;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimuleringGenerator {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
         SimulerBeregningResponse response = new SimulerBeregningResponse();
-        no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse innerResponse = new no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse();
-        response.setResponse(innerResponse);
-        innerResponse.setSimulering(lagBeregning(simulerBeregningRequest));
+        Beregning beregning = lagBeregning(simulerBeregningRequest);
+        if (beregning == null) {
+            response.setResponse(null);
+        } else {
+            no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse innerResponse =
+                    new no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse();
+            response.setResponse(innerResponse);
+            innerResponse.setSimulering(beregning);
+        }
         return response;
 
     }
 
     private Beregning lagBeregning(SimulerBeregningRequest simulerBeregningRequest) {
         Beregning beregning = new Beregning();
+        leggTilBeregningsperioder(simulerBeregningRequest, beregning);
+        if (beregning.getBeregningsPeriode().size() == 0) {
+            return null;
+        }
+
         beregning.setGjelderId(simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId());
         beregning.setGjelderNavn("DUMMY");
         beregning.setDatoBeregnet("2018-10-10");
         beregning.setKodeFaggruppe("DUMMY");
         beregning.setBelop(BigDecimal.valueOf(1234L));
 
+        return beregning;
+    }
+
+    private void leggTilBeregningsperioder(SimulerBeregningRequest simulerBeregningRequest, Beregning beregning) {
         YearMonth nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));
         List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
+        List<BeregningsPeriode> beregningsPeriode = beregning.getBeregningsPeriode();
         for (Oppdragslinje oppdragslinje : oppdragslinjer) {
             LocalDate fom = LocalDate.parse(oppdragslinje.getDatoVedtakFom(), dateTimeFormatter);
             if (!YearMonth.from(fom).isAfter(nesteMåned)) {
-                beregning.getBeregningsPeriode().add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
+                beregningsPeriode.add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
             }
         }
-        return beregning;
     }
 
     private BeregningsPeriode opprettBeregningsperiode(Oppdragslinje oppdragslinje, Oppdrag oppdrag) {
