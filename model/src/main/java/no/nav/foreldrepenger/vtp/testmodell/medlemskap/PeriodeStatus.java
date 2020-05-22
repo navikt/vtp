@@ -8,8 +8,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
-
 public class PeriodeStatus {
 
     private static List<String> VALID_KODER;
@@ -61,7 +59,7 @@ public class PeriodeStatus {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Landkode) obj).getKode());
+        return Objects.equals(getKode(), ((PeriodeStatus) obj).getKode());
     }
 
     @Override
