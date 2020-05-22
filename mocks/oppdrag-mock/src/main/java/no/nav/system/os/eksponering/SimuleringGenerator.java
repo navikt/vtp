@@ -28,7 +28,8 @@ public class SimuleringGenerator {
         if (beregning == null) {
             response.setResponse(null);
         } else {
-            no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse innerResponse = new no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse();
+            no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse innerResponse =
+                    new no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.SimulerBeregningResponse();
             response.setResponse(innerResponse);
             innerResponse.setSimulering(beregning);
         }
@@ -38,17 +39,8 @@ public class SimuleringGenerator {
 
     private Beregning lagBeregning(SimulerBeregningRequest simulerBeregningRequest) {
         Beregning beregning = new Beregning();
-
-        YearMonth nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));
-        List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
-        List<BeregningsPeriode> beregningsPeriode = beregning.getBeregningsPeriode();
-        for (Oppdragslinje oppdragslinje : oppdragslinjer) {
-            LocalDate fom = LocalDate.parse(oppdragslinje.getDatoVedtakFom(), dateTimeFormatter);
-            if (!YearMonth.from(fom).isAfter(nesteMåned)) {
-                beregningsPeriode.add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
-            }
-        }
-        if (beregningsPeriode.size() == 0) {
+        leggTilBeregningsperioder(simulerBeregningRequest, beregning);
+        if (beregning.getBeregningsPeriode().size() == 0) {
             return null;
         }
 
@@ -58,8 +50,19 @@ public class SimuleringGenerator {
         beregning.setKodeFaggruppe("DUMMY");
         beregning.setBelop(BigDecimal.valueOf(1234L));
 
-
         return beregning;
+    }
+
+    private void leggTilBeregningsperioder(SimulerBeregningRequest simulerBeregningRequest, Beregning beregning) {
+        YearMonth nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));
+        List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
+        List<BeregningsPeriode> beregningsPeriode = beregning.getBeregningsPeriode();
+        for (Oppdragslinje oppdragslinje : oppdragslinjer) {
+            LocalDate fom = LocalDate.parse(oppdragslinje.getDatoVedtakFom(), dateTimeFormatter);
+            if (!YearMonth.from(fom).isAfter(nesteMåned)) {
+                beregningsPeriode.add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
+            }
+        }
     }
 
     private BeregningsPeriode opprettBeregningsperiode(Oppdragslinje oppdragslinje, Oppdrag oppdrag) {
