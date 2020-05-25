@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,9 +114,12 @@ public class PårørendeSykdomMock {
             return Response.ok(List.of()).build();
         }
         
+        
+        
         List<RammevedtakDto> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
                 .filter(it -> it instanceof InfotrygdRammevedtaksGrunnlag)
                 .map(it -> mapGrunnlagToRammevedtak((InfotrygdRammevedtaksGrunnlag) it))
+                .filter(it -> datoOverlapper(fom, tom, it.getFom(), it.getTom()))
                 //Legg til filter på fra og til (TODO)
                 .collect(Collectors.toList());
         
@@ -123,6 +127,22 @@ public class PårørendeSykdomMock {
     }
 
     
+
+    private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
+        if(fom1 == null) {
+            fom1 = LocalDate.MIN;
+        }
+        if(tom1 == null) {
+            tom1 = LocalDate.MAX;
+        }
+        if(fom2 == null) {
+            fom2 = LocalDate.MIN;
+        }
+        if(tom2 == null) {
+            tom2 = LocalDate.MAX;
+        }
+        return (fom1.isBefore(tom2) && (tom1.isAfter(fom2)));
+    }
 
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
         List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream()
