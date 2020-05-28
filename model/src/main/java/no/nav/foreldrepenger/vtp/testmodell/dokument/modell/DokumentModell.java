@@ -13,6 +13,7 @@ public class DokumentModell {
     private DokumenttypeId dokumenttypeId;
     private Boolean erSensitiv;
     private String tittel;
+    private String brevkode;
     private String innhold;
     private DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost;
     private List<DokumentVariantInnhold> dokumentVariantInnholdListe = new ArrayList<>();
@@ -79,4 +80,12 @@ public class DokumentModell {
     public Dokumentkategori getDokumentkategori() { return dokumentkategori; }
 
     public void setDokumentkategori(Dokumentkategori dokumentkategori) { this.dokumentkategori = dokumentkategori;}
+
+    public String getBrevkode() {
+        return brevkode;
+    }
+
+    public void setBrevkode(String brevkode) {
+        this.brevkode = brevkode;
+    }
 }
