@@ -59,6 +59,7 @@ import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
+import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -106,6 +107,7 @@ public class ApplicationConfig extends Application {
         classes.add(MedlemskapsunntakMock.class);
         classes.add(OppgaveKontantstotteMockImpl.class);
         classes.add(OppgaveMockImpl.class);
+        classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AktoerIdentMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
