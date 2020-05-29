@@ -31,7 +31,7 @@ public class OrganisasjonJson {
         this.type = "Virksomhet";
         this.organisasjonsnummer = org.getOrgnummer();
         this.navn = new Navn();
-        var max = Arrays.stream(org.getNavn().getNavnelinje()).count() - 1;
+        var max = Arrays.stream(org.getNavn().getNavnelinje()).count();
         if (max > 0)
             this.navn.navnelinje1 = org.getNavn().getNavnelinje()[0];
         if (max > 1)
