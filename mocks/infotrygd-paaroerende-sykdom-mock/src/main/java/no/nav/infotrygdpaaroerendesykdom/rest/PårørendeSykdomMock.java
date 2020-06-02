@@ -4,6 +4,7 @@ import io.swagger.annotations.*;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdRammevedtaksGrunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.infotrygdpaaroerendesykdom.generated.model.*;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -107,7 +109,39 @@ public class PårørendeSykdomMock {
             @ApiResponse(code = 200, message = "OK", response = RammevedtakDto.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class) })
     public Response finnRammevedtakForOmsorgspengerUsingGET( @NotNull @ApiParam(value = "Søkers fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.")  @QueryParam("tom") LocalDate tom) {
-        return Response.ok(List.of()).build();
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+        if(inntektYtelseModell.isEmpty()) {
+            return Response.ok(List.of()).build();
+        }
+        
+        
+        
+        List<RammevedtakDto> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
+                .filter(it -> it instanceof InfotrygdRammevedtaksGrunnlag)
+                .map(it -> mapGrunnlagToRammevedtak((InfotrygdRammevedtaksGrunnlag) it))
+                .filter(it -> datoOverlapper(fom, tom, it.getFom(), it.getTom()))
+                //Legg til filter på fra og til (TODO)
+                .collect(Collectors.toList());
+        
+        return Response.ok(result).build();
+    }
+
+    
+
+    private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
+        if(fom1 == null) {
+            fom1 = LocalDate.MIN;
+        }
+        if(tom1 == null) {
+            tom1 = LocalDate.MAX;
+        }
+        if(fom2 == null) {
+            fom2 = LocalDate.MIN;
+        }
+        if(tom2 == null) {
+            tom2 = LocalDate.MAX;
+        }
+        return (fom1.isBefore(tom2) && (tom1.isAfter(fom2)));
     }
 
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
@@ -212,6 +246,19 @@ public class PårørendeSykdomMock {
         }).collect(Collectors.toList()));
 
         return r;
+    }
+    
+    private RammevedtakDto mapGrunnlagToRammevedtak(InfotrygdRammevedtaksGrunnlag it) {
+        if(it == null) {
+            return null;
+        }
+        RammevedtakDto rammevedtak = new RammevedtakDto();
+        rammevedtak.setDate(it.getStartdato());
+        rammevedtak.setFom(it.getFom());
+        rammevedtak.setTom(it.getTom());
+        rammevedtak.setTekst(it.getRammevedtakTekst());
+        return rammevedtak;
+        
     }
 
     private Arbeidsforhold mapArbeidsforhold(InfotrygdArbeidsforhold arbeidsforhold) {
