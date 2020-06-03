@@ -11,6 +11,7 @@
         "registreringsDato": "now() - P10Y",
         "datoSistEndret": "now() - P1Y",
         "postadresse": {
+          "@type": "ustrukturert",
           "adresseLinje1": "NEDRE LINDHAUGEN 88",
           "adresseLinje2": "",
           "adresseLinje3": "",
