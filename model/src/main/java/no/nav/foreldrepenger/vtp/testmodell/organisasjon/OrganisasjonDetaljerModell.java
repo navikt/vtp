@@ -17,7 +17,7 @@ public class OrganisasjonDetaljerModell {
     private LocalDate datoSistEndret;
 
     @JsonProperty("postadresse")
-    @JsonIgnoreProperties
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private UstrukturertAdresseModell postadresse;
 
     public OrganisasjonDetaljerModell() {
