@@ -145,7 +145,7 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
     @Override
     public void knyttVedleggTilForsendelse(KnyttVedleggTilForsendelseRequest knyttVedleggTilForsendelseRequest) throws KnyttVedleggTilForsendelseJournalpostIkkeFerdigstilt, KnyttVedleggTilForsendelseUlikeFagomraader, KnyttVedleggTilForsendelseJournalpostIkkeUnderArbeid, KnyttVedleggTilForsendelseJournalpostIkkeFunnet, KnyttVedleggTilForsendelseDokumentIkkeFunnet, KnyttVedleggTilForsendelseEksterntVedleggIkkeTillatt, KnyttVedleggTilForsendelseDokumentTillatesIkkeGjenbrukt {
         //throw new UnsupportedOperationException("Ikke implementert");
-        return;
+        //TODO implementere denne (ref PFP-9272)
     }
 
     @Override
