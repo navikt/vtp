@@ -87,12 +87,7 @@ public class JournalpostMapper {
 
         dokumentModell.setDokumentVariantInnholdListe(dokumentVariantInnholds);
         dokumentModell.setDokumentTilknyttetJournalpost(dokumentTilknyttetJournalpost);
-
-        //TODO: Map videre felter
-        dokument.getDokumentKategori();
-        dokument.getBrevkode();
-        dokument.getDokumentKategori();
-        dokument.getDokumentvarianter();
+        dokumentModell.setBrevkode(dokument.getBrevkode());
 
         return dokumentModell;
     }

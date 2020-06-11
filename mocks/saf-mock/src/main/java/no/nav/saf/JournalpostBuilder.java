@@ -60,7 +60,11 @@ public class JournalpostBuilder {
         DokumentInfo dokInfo = new DokumentInfo();
         dokInfo.setTittel("tittel");
         dokInfo.setDokumentInfoId(dokModell.getDokumentId());
-        dokInfo.setBrevkode(dokumentTypeIdTilBrevkode(dokModell.getDokumentType())); // TODO: Hvordan skal vi mappe denne mot DokumentTypeId og DokumentKategori?
+        if (dokModell.getBrevkode() != null) {
+            dokInfo.setBrevkode(dokModell.getBrevkode());
+        } else {
+            dokInfo.setBrevkode(dokumentTypeIdTilBrevkode(dokModell.getDokumentType())); // TODO: Hvordan skal vi mappe denne mot DokumentTypeId og DokumentKategori?
+        }
         dokInfo.setDokumentstatus(Dokumentstatus.FERDIGSTILT);
         dokInfo.setDatoFerdigstilt(Date.from(Instant.now()));
 
