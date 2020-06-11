@@ -26,6 +26,7 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,6 +107,7 @@ public class ApplicationConfig extends Application {
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
         classes.add(DokdistfordelingMock.class);
+        classes.add(STSRestTjeneste.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
