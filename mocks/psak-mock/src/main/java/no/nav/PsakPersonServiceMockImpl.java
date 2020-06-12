@@ -1,30 +1,21 @@
 package no.nav;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.inf.psak.person.*;
 import no.nav.lib.pen.psakpselv.asbo.ASBOPenTomRespons;
 import no.nav.lib.pen.psakpselv.asbo.person.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.jws.*;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Addressing
 @WebService(targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", name = "PSAKPerson")
 @HandlerChain(file = "Handler-chain.xml")
 public class PsakPersonServiceMockImpl implements PSAKPerson {
-    private static final Logger LOG = LoggerFactory.getLogger(PsakPersonServiceMockImpl.class);
-
-    private TestscenarioBuilderRepository repo;
+    private final TestscenarioBuilderRepository repo;
 
     public PsakPersonServiceMockImpl(TestscenarioBuilderRepository repo) {
         this.repo = repo;
@@ -38,15 +29,10 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     public ASBOPenFinnPersonResponse finnPerson(
             @WebParam(name = "finnPersonRequest", targetNamespace = "") no.nav.lib.pen.psakpselv.asbo.person.ASBOPenFinnPersonRequest finnPersonRequest
     ) throws FinnPersonFaultPenGeneriskMsg {
-        LOG.warn("Kall på finnPerson i PsakPerson");
         ASBOPenFinnPersonResponse asboPenFinnPersonResponse = new ASBOPenFinnPersonResponse();
-        LocalDate localDate = finnPersonRequest.getFodselsdatosok().getFodselsdato().toInstant()
-                .atZone(ZoneId.systemDefault()).toLocalDate();
-
         ASBOPenPersonListe liste = new ASBOPenPersonListe();
         liste.setPersoner(repo.getPersonIndeks().getAlleSøkere().parallelStream()
                 .map(Personopplysninger::getSøker)
-                //.filter(p -> p.getFødselsdato().isEqual(localDate))
                 .map(PsakPersonAdapter::toASBOPerson)
                 .toArray(ASBOPenPerson[]::new));
 
