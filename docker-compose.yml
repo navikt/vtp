@@ -1,6 +1,7 @@
 version: '3'
 services:
   vtp:
+    container_name: vtp
     build: .
     networks:
       default:
@@ -11,5 +12,6 @@ services:
       - 8389:8389 # LDAP
     environment:
       - DISABLE_SSL=true
+      - ISSO_OAUTH2_ISSUER=psak-localhost
     volumes:
       - "~/.modig/:/root/.modig"

@@ -38,6 +38,7 @@
         <module>tps-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
         <module>nav-ansatt-mock</module>
+        <module>psak-mock</module>
     </modules>
 
     <properties>

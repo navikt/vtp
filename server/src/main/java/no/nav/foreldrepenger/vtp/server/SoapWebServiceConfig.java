@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.WebServiceFeature;
 
+import no.nav.PsakPersonServiceMockImpl;
 import no.nav.navansatt.NavAnsattServiceMockImpl;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -90,6 +91,7 @@ public class SoapWebServiceConfig {
         publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
         publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
         publishWebService(new NavAnsattServiceMockImpl(), "/soap/esb/nav-cons-pen-psak-navansattWeb/sca/PSAKNAVAnsattWSEXP");
+        publishWebService(new PsakPersonServiceMockImpl(repo), "/soap/esb/nav-cons-pen-psak-personWeb/sca/PSAKPersonWSEXP");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
