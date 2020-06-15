@@ -35,9 +35,6 @@ public class OrganisasjonsMapper {
             if (!(null == detaljer.getDatoSistEndret())) {
                 organisasjonsDetaljer.setDatoSistEndret(ConversionUtils.convertToXMLGregorianCalendar(detaljer.getDatoSistEndret()));
             }
-            if(!(null == detaljer.getPostadresse())) {
-                organisasjonsDetaljer.getPostadresse();
-            }
         }
         return organisasjonsDetaljer;
     }
