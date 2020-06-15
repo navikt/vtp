@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -47,6 +48,9 @@ public class OrganisasjonJson {
             this.organisasjonDetaljer.registreringsdato = org.getOrganisasjonDetaljer().getRegistreringsDato().atStartOfDay();
         } else {
             this.organisasjonDetaljer.registreringsdato = LocalDateTime.now().minusYears(1);
+        }
+        if (org.getOrganisasjonDetaljer().getPostadresse() != null) {
+            this.organisasjonDetaljer.postadresse = org.getOrganisasjonDetaljer().getPostadresse();
         }
     }
 
@@ -122,6 +126,8 @@ public class OrganisasjonJson {
         private LocalDateTime registreringsdato;
         @JsonProperty("opphoersdato")
         private LocalDate opphoersdato;
+        @JsonProperty("postadresse")
+        private UstrukturertAdresseModell postadresse;
 
         private OrganisasjonDetaljer() {
         }
@@ -133,6 +139,8 @@ public class OrganisasjonJson {
         private LocalDate getOpphoersdato() {
             return opphoersdato;
         }
+
+        private UstrukturertAdresseModell getPostadresse() { return postadresse; }
 
         @Override
         public String toString() {
