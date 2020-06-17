@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.repo;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 
@@ -20,6 +21,8 @@ public interface TestscenarioBuilderRepository {
     Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId);
 
     Optional<OrganisasjonModell> getOrganisasjon(String orgnr);
+
+    Optional<OrganisasjonAdresseModell> getOrganisasjonAdresse(String orgnr);
 
     LokalIdentIndeks getIdenter(String unikScenarioId);
 

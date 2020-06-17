@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -22,14 +22,14 @@ public class OrganisasjonJson {
     @JsonProperty("organisasjonsnummer")
     private String organisasjonsnummer;
     @JsonProperty("type")
-    private String type;
+    private OrganisasjonstypeEReg type;
     @JsonProperty("navn")
     private Navn navn;
     @JsonProperty("organisasjonDetaljer")
     private OrganisasjonDetaljer organisasjonDetaljer;
 
     public OrganisasjonJson(OrganisasjonModell org) {
-        this.type = "Virksomhet";
+        this.type = OrganisasjonstypeEReg.VIRKSOMHET;
         this.organisasjonsnummer = org.getOrgnummer();
         this.navn = new Navn();
         var max = Arrays.stream(org.getNavn().getNavnelinje()).count();
@@ -49,20 +49,17 @@ public class OrganisasjonJson {
         } else {
             this.organisasjonDetaljer.registreringsdato = LocalDateTime.now().minusYears(1);
         }
-        if (org.getOrganisasjonDetaljer().getPostadresse() != null) {
-            this.organisasjonDetaljer.postadresse = org.getOrganisasjonDetaljer().getPostadresse();
-        }
     }
 
     private OrganisasjonJson() {
-        this.type = "Virksomhet";
+        this.type = OrganisasjonstypeEReg.VIRKSOMHET;
     }
 
     public String getOrganisasjonsnummer() {
         return organisasjonsnummer;
     }
 
-    public String getType() {
+    public OrganisasjonstypeEReg getType() {
         return type;
     }
 
@@ -126,21 +123,17 @@ public class OrganisasjonJson {
         private LocalDateTime registreringsdato;
         @JsonProperty("opphoersdato")
         private LocalDate opphoersdato;
-        @JsonProperty("postadresse")
-        private UstrukturertAdresseModell postadresse;
 
         private OrganisasjonDetaljer() {
         }
 
-        private LocalDateTime getRegistreringsdato() {
+        public LocalDateTime getRegistreringsdato() {
             return registreringsdato;
         }
 
-        private LocalDate getOpphoersdato() {
+        public LocalDate getOpphoersdato() {
             return opphoersdato;
         }
-
-        private UstrukturertAdresseModell getPostadresse() { return postadresse; }
 
         @Override
         public String toString() {

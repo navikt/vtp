@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
@@ -65,6 +66,9 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     public Optional<OrganisasjonModell> getOrganisasjon(String orgnr) {
         return delegate.getOrganisasjon(orgnr);
     }
+
+    @Override
+    public Optional<OrganisasjonAdresseModell> getOrganisasjonAdresse(String orgnr) { return delegate.getOrganisasjonAdresse(orgnr); }
 
     @Override
     public Boolean slettScenario(String id) {

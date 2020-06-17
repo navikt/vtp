@@ -3,14 +3,12 @@ package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.*;
 import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +32,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     @Override
     public Optional<OrganisasjonModell> getOrganisasjon(String orgnr) {
         return organisasjonIndeks.getModellForIdent(orgnr);
+    }
+
+    @Override
+    public Optional<OrganisasjonAdresseModell> getOrganisasjonAdresse(String orgnr){
+        return organisasjonIndeks.getAdresseModellForIdent(orgnr);
     }
 
 
@@ -96,6 +99,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         if (organisasjonModeller != null) {
             List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
             organisasjonIndeks.leggTil(modeller);
+        }
+        OrganisasjonAdresseModeller organisasjonAdresseModeller = testScenario.getOrganisasjonAdresseModeller();
+        if (organisasjonAdresseModeller != null) {
+            List<OrganisasjonAdresseModell> modeller = organisasjonAdresseModeller.getModells();
+            organisasjonIndeks.leggTilAdresse(modeller);
         }
     }
 

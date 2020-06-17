@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.vtp.testmodell.organisasjon;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 
 import java.time.LocalDate;
 
@@ -14,9 +13,6 @@ public class OrganisasjonDetaljerModell {
 
     @JsonProperty("datoSistEndret")
     private LocalDate datoSistEndret;
-
-    @JsonProperty("postadresse")
-    private UstrukturertAdresseModell postadresse;
 
     public OrganisasjonDetaljerModell() {
     }
@@ -37,7 +33,4 @@ public class OrganisasjonDetaljerModell {
         this.datoSistEndret = datoSistEndret;
     }
 
-    public UstrukturertAdresseModell getPostadresse() { return postadresse; }
-
-    public void setPostadresse(UstrukturertAdresseModell postadresse) { this.postadresse = postadresse; }
 }

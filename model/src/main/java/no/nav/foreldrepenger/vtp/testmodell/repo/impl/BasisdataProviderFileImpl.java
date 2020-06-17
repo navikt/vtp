@@ -10,6 +10,7 @@ import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -36,6 +37,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         loadEnheter();
         loadVirksomheter();
         loadOrganisasjoner();
+//        loadOrganisasjonsAdresser();
     }
 
     public static synchronized BasisdataProviderFileImpl getInstance() throws IOException{
@@ -97,8 +99,21 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         try (InputStream is = getClass().getResourceAsStream("/basedata/organisasjon.json")) {
             TypeReference<List<OrganisasjonModell>> typeRef = new TypeReference<List<OrganisasjonModell>>() {
             };
+            TypeReference<List<OrganisasjonAdresseModell>> typeAdrRef = new TypeReference<List<OrganisasjonAdresseModell>>() {
+            };
             List<OrganisasjonModell> organisasjoner = jsonMapper.lagObjectMapper().readValue(is, typeRef);
+            List<OrganisasjonAdresseModell> organisasjonAdresseModells = jsonMapper.lagObjectMapper().readValue(is, typeAdrRef);
             organisasjonIndeks.leggTil(organisasjoner);
+            organisasjonIndeks.leggTilAdresse(organisasjonAdresseModells);
+        }
+    }
+
+    private void loadOrganisasjonsAdresser() throws IOException {
+        try (InputStream inputStream = getClass().getResourceAsStream("basedata/organisasjon.json")) {
+            TypeReference<List<OrganisasjonAdresseModell>> typeAdrRef = new TypeReference<List<OrganisasjonAdresseModell>>() {
+            };
+            List<OrganisasjonAdresseModell> organisasjonAdresseModells = jsonMapper.lagObjectMapper().readValue(inputStream, typeAdrRef);
+            organisasjonIndeks.leggTilAdresse(organisasjonAdresseModells);
         }
     }
 }

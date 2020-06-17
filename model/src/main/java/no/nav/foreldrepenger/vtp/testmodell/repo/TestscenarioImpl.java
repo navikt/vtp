@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModeller;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -32,6 +33,8 @@ public class TestscenarioImpl implements Testscenario {
     private InntektYtelseModell annenpartInntektYtelse;
 
     private OrganisasjonModeller organisasjonModeller = new OrganisasjonModeller();
+
+    private OrganisasjonAdresseModeller organisasjonAdresseModeller = new OrganisasjonAdresseModeller();
 
     private ScenarioVirksomheter scenarioVirksomheter;
 
@@ -87,6 +90,10 @@ public class TestscenarioImpl implements Testscenario {
 
     public OrganisasjonModeller getOrganisasjonModeller() {
         return organisasjonModeller;
+    }
+
+    public OrganisasjonAdresseModeller getOrganisasjonAdresseModeller() {
+        return organisasjonAdresseModeller;
     }
 
     public void leggTil(OrganisasjonModell organisasjonModell) {

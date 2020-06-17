@@ -9,16 +9,7 @@
          },
          "organisasjonDetaljer": {
             "registreringsDato": "now() - P10Y",
-            "datoSistEndret": "now() - P1Y",
-            "postadresse": {
-               "@type": "ustrukturert",
-               "adresseLinje1": "NEDRE LINDHAUGEN 88",
-               "adresseLinje2": "",
-               "adresseLinje3": "",
-               "adresseLinje4": "",
-               "postNr": "1772",
-               "poststed": "HALDEN"
-            }
+            "datoSistEndret": "now() - P1Y"
          }
       }
    ]
