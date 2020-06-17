@@ -37,7 +37,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         loadEnheter();
         loadVirksomheter();
         loadOrganisasjoner();
-//        loadOrganisasjonsAdresser();
+        loadOrganisasjonsAdresser();
     }
 
     public static synchronized BasisdataProviderFileImpl getInstance() throws IOException{
@@ -99,12 +99,8 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         try (InputStream is = getClass().getResourceAsStream("/basedata/organisasjon.json")) {
             TypeReference<List<OrganisasjonModell>> typeRef = new TypeReference<List<OrganisasjonModell>>() {
             };
-            TypeReference<List<OrganisasjonAdresseModell>> typeAdrRef = new TypeReference<List<OrganisasjonAdresseModell>>() {
-            };
             List<OrganisasjonModell> organisasjoner = jsonMapper.lagObjectMapper().readValue(is, typeRef);
-            List<OrganisasjonAdresseModell> organisasjonAdresseModells = jsonMapper.lagObjectMapper().readValue(is, typeAdrRef);
             organisasjonIndeks.leggTil(organisasjoner);
-            organisasjonIndeks.leggTilAdresse(organisasjonAdresseModells);
         }
     }
 

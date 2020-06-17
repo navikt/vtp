@@ -27,7 +27,7 @@ public class OrganisasjonAdresse {
     @JsonProperty("navn")
     private Navn navn;
     @JsonProperty("organisasjonDetaljer")
-    private OrganisasjonDetaljer organisasjonDetaljer;
+    public OrganisasjonDetaljer organisasjonDetaljer;
 
     public OrganisasjonAdresse(OrganisasjonAdresseModell adresseModell) {
         this.organisasjonsnummer = adresseModell.getOrganisasjonsnummer();

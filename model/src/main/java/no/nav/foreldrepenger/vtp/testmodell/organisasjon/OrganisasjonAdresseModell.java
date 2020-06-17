@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganisasjonAdresseModell {
     @JsonProperty("orgnummer")
     private String orgnummer;
@@ -54,7 +55,8 @@ public class OrganisasjonAdresseModell {
     }
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private static class OrganisasjonDetaljer {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class OrganisasjonDetaljer {
         @JsonProperty("registreringsdato")
         private LocalDateTime registreringsdato;
         @JsonProperty("opphoersdato")
