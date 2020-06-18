@@ -1,22 +1,14 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.lang.reflect.Method;
-
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.WebServiceFeature;
-
 import no.nav.PsakPersonServiceMockImpl;
-import no.nav.navansatt.NavAnsattServiceMockImpl;
-import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
-import org.eclipse.jetty.http.spi.JettyHttpContext;
-import org.eclipse.jetty.http.spi.JettyHttpServer;
-
 import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.navansatt.NavAnsattServiceMockImpl;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;
 import no.nav.pip.egen.ansatt.v1.EgenAnsattServiceMockImpl;
 import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
+import no.nav.tjeneste.organisasjonenhet.v2.OrganisasjonEnhetMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
@@ -41,6 +33,13 @@ import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
+import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
+import org.eclipse.jetty.http.spi.JettyHttpContext;
+import org.eclipse.jetty.http.spi.JettyHttpServer;
+
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.WebServiceFeature;
+import java.lang.reflect.Method;
 
 public class SoapWebServiceConfig {
 
@@ -80,6 +79,7 @@ public class SoapWebServiceConfig {
         publishWebService(new YtelseskontraktV2MockImpl(),"/soap/ail_ws/Ytelseskontrakt_v2");
         publishWebService(new MedlemServiceMockImpl(repo), "/soap/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/soap/norg2/ws/Arbeidsfordeling/v1");
+        publishWebService(new OrganisasjonEnhetMock(), "/soap/norg2/ws/OrganisasjonEnhet/v2");
         publishWebService(new InntektMockImpl(repo), "/soap/inntektskomponenten-ws/inntekt/v3/Inntekt");
         publishWebService(new OppgaveServiceMockImpl(), "/soap/nav-gsak-ws/OppgaveV3");
         publishWebService(new ArbeidsforholdMockImpl(repo), "/soap/aareg-core/ArbeidsforholdService/v3");
