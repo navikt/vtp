@@ -3,7 +3,6 @@ package no.nav.aktoerregister.rest.api.v1;
 import io.swagger.annotations.Api;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
@@ -25,10 +24,7 @@ public class AktoerIdentMock {
     //TODO (TEAM FAMILIE) Lag mock-responser fra scenario NOSONAR
     private String personIdentMock = "12345678910";
     private String aktørIdMock = "1234567891011";
-
-
     @GET
-    @Path("/psakKanIkkeBrukeDenne")
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, IdentinfoForAktoer> alleIdenterForIdenter(@HeaderParam(NAV_IDENTER_HEADER_KEY) Set<String> requestIdenter,
                                                                  @QueryParam(IDENTGRUPPE) String identgruppe,
@@ -51,25 +47,6 @@ public class AktoerIdentMock {
         //noinspection OptionalGetWithoutIsPresent
         resultMap.put(requestIdenter.stream().findFirst().get(), new IdentinfoForAktoer(List.of(identinfo), null)); //NOSONAR
 
-        return resultMap;
-    }
-
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, IdentinfoForAktoer> getIdenter(@HeaderParam(NAV_IDENTER_HEADER_KEY) Set<String> requestIdenter,
-                                                      @NotNull  @QueryParam(IDENTGRUPPE) String identgruppe,
-                                                      @NotNull  @QueryParam(GJELDENDE) boolean gjeldende) {
-        validateRequest(requestIdenter);
-        Identinfo identinfo;
-        if (AKTOERID_IDENTGRUPPE.equals(identgruppe)) {
-            identinfo = new Identinfo(personIdentMock, PERSONIDENT_IDENTGRUPPE, true);
-        } else {
-            identinfo = new Identinfo(aktørIdMock, AKTOERID_IDENTGRUPPE, true);
-        }
-        Map<String, IdentinfoForAktoer> resultMap = new HashMap<>();
-        resultMap.put(requestIdenter.stream().findFirst().orElseThrow(IllegalArgumentException::new),
-                new IdentinfoForAktoer(List.of(identinfo), null));
         return resultMap;
     }
 
