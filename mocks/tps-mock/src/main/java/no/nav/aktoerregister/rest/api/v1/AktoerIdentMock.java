@@ -1,19 +1,14 @@
 package no.nav.aktoerregister.rest.api.v1;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-
 import io.swagger.annotations.Api;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Api(tags = {"aktoerregister"})
 @Path("/aktoerregister/api/v1/identer")
@@ -29,8 +24,6 @@ public class AktoerIdentMock {
     //TODO (TEAM FAMILIE) Lag mock-responser fra scenario NOSONAR
     private String personIdentMock = "12345678910";
     private String aktørIdMock = "1234567891011";
-
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, IdentinfoForAktoer> alleIdenterForIdenter(@HeaderParam(NAV_IDENTER_HEADER_KEY) Set<String> requestIdenter,

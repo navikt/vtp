@@ -19,6 +19,11 @@
             <version>0.1.6-18b5febea668</version>
         </dependency>
         <dependency>
+            <groupId>no.nav.pensjon</groupId>
+            <artifactId>pen-esb-wsclient-legacy</artifactId>
+            <version>0.1.6-18b5febea668</version>
+        </dependency>
+        <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>testmodell</artifactId>
         </dependency>
@@ -27,5 +32,4 @@
             <artifactId>tps-mock</artifactId>
         </dependency>
     </dependencies>
-
 </project>

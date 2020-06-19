@@ -51,8 +51,15 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     }
 
     @Override
-    public ASBOPenPerson hentBrukerprofil(ASBOPenPerson hentBrukerprofilRequest) throws HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg, HentBrukerprofilFaultPenGeneriskMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+    @WebMethod
+    @RequestWrapper(localName = "hentBrukerprofil", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentBrukerprofil")
+    @ResponseWrapper(localName = "hentBrukerprofilResponse", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentBrukerprofilResponse")
+    @WebResult(name = "hentBrukerprofilResponse", targetNamespace = "")
+    public no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentBrukerprofil(
+            @WebParam(name = "hentBrukerprofilRequest", targetNamespace = "")
+                    no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentBrukerprofilRequest
+    ) throws HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg, HentBrukerprofilFaultPenGeneriskMsg {
+        return hentBrukerprofilRequest;
     }
 
     @Override
@@ -76,8 +83,19 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     }
 
     @Override
-    public ASBOPenPerson hentSamboerforhold(ASBOPenHentSamboerforholdRequest hentSamboerforholdRequest) throws HentSamboerforholdFaultPenPersonIkkeFunnetMsg, HentSamboerforholdFaultPenGeneriskMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+    @WebMethod
+    @RequestWrapper(localName = "hentSamboerforhold", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentSamboerforhold")
+    @ResponseWrapper(localName = "hentSamboerforholdResponse", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentSamboerforholdResponse")
+    @WebResult(name = "hentSamboerforholdResponse", targetNamespace = "")
+    public no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentSamboerforhold(
+            @WebParam(name = "hentSamboerforholdRequest", targetNamespace = "")
+                    no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentSamboerforholdRequest hentSamboerforholdRequest
+    ) throws HentSamboerforholdFaultPenPersonIkkeFunnetMsg, HentSamboerforholdFaultPenGeneriskMsg {
+        return repo.getPersonIndeks().getAlleSøkere().parallelStream()
+                .map(Personopplysninger::getSøker)
+                .map(PsakPersonAdapter::toASBOPerson)
+                .findFirst()
+                .orElseThrow(HentSamboerforholdFaultPenGeneriskMsg::new);
     }
 
     @Override
@@ -156,8 +174,15 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     }
 
     @Override
-    public ASBOPenPerson hentKontoinformasjon(ASBOPenPerson hentKontoinformasjonRequest) throws HentKontoinformasjonFaultPenPersonIkkeFunnetMsg, HentKontoinformasjonFaultPenGeneriskMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+    @WebMethod
+    @RequestWrapper(localName = "hentKontoinformasjon", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentKontoinformasjon")
+    @ResponseWrapper(localName = "hentKontoinformasjonResponse", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentKontoinformasjonResponse")
+    @WebResult(name = "hentKontoinformasjonsResponse", targetNamespace = "")
+    public no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentKontoinformasjon(
+            @WebParam(name = "hentKontoinformasjonRequest", targetNamespace = "")
+                    no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentKontoinformasjonRequest
+    ) throws HentKontoinformasjonFaultPenPersonIkkeFunnetMsg, HentKontoinformasjonFaultPenGeneriskMsg {
+        return hentKontoinformasjonRequest;
     }
 
     @Override
