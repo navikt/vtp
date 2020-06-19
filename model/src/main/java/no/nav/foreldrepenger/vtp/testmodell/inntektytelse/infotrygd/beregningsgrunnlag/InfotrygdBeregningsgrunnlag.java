@@ -24,7 +24,8 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.Infot
         @Type(InfotrygdForeldrepengerBeregningsgrunnlag.class),
         @Type(InfotrygdSykepengerBeregningsgrunnlag.class),
         @Type(InfotrygdEngangsstønadBeregningsgrunnlag.class),
-        @Type(InfotrygdPårørendeSykdomBeregningsgrunnlag.class)
+        @Type(InfotrygdPårørendeSykdomBeregningsgrunnlag.class),
+        @Type(InfotrygdRammevedtaksGrunnlag.class)
 })
 public abstract class InfotrygdBeregningsgrunnlag {
 

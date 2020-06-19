@@ -6,26 +6,18 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PdfGeneratorUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PdfGeneratorUtil.class);
-
     private final ClassLoader classLoader = PdfGeneratorUtil.class.getClassLoader();
     private static final String FONT_FILE = "fonts/OpenSans-Regular.ttf";
-    private static final String OUTPUT_PDF = "statiskBrev.pdf";
     private static final int FONT_SIZE = 8;
 
     private PDFont font;
@@ -37,6 +29,7 @@ public class PdfGeneratorUtil {
     private int textRenderingLineEndY;
     private int textRenderingLineCurrentY;
     private int fontHeight;
+
 
     public PdfGeneratorUtil() {
         loadAndSetFont();
@@ -50,9 +43,7 @@ public class PdfGeneratorUtil {
             }
             String[] pdfcontent = brev.replaceAll("\t", "  ").split(System.getProperty("line.separator"));
             renderText(pdfcontent);
-            saveAndClosePdf();
-            Path pdfPath = Paths.get(OUTPUT_PDF);
-            return Files.readAllBytes(pdfPath);
+            return saveCloseAndReturnByteArray();
         } catch (IOException e) {
             throw new IllegalStateException("Kunne ikke generere PDF", e);
         }
@@ -158,12 +149,16 @@ public class PdfGeneratorUtil {
     }
 
 
-    private void saveAndClosePdf() throws IOException {
+    private byte[] saveCloseAndReturnByteArray() throws IOException {
         if (doc != null) {
-            doc.save(new File(OUTPUT_PDF));
-            doc.close();
-            doc = null;
+            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+                doc.save(byteArrayOutputStream);
+                doc.close();
+                doc = null;
+                return byteArrayOutputStream.toByteArray();
+            }
         }
+        return new byte[0];
     }
 
 

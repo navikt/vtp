@@ -8,8 +8,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;

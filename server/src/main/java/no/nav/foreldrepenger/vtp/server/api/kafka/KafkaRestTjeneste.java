@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.vtp.server.api.kafka;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import javax.ws.rs.*;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 
 @Api(tags = "Kafka services")
 @Path("/api/kafka")

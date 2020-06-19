@@ -25,6 +25,7 @@
 		"enhetId": "4833",
 		"navn": "NAV Familie og Pensjonsytelser Oslo",
 		"type": "FPY",
+        "tema": "FOR",
 		"status": "AKTIV"
 	},
 	{
@@ -32,13 +33,23 @@
 	 	"navn": "NAV Arbeid og ytelser Arendal",
 	 	"enhetId": "4409",
 	 	"status": "AKTIV",
-	 	"type": "YTA"
+	 	"type": "YTA",
+        "tema": "OMS"
 	},
 	 {
 		 "diskresjonskode": "NORMAL-SYK",
 		 "navn": "NAV Arbeid og ytelser Arendal",
 		 "enhetId": "4409",
 		 "status": "AKTIV",
-		 "type": "YTA"
-	 }
+		 "type": "YTA",
+         "tema": "SYK"
+	 },
+     {
+         "diskresjonskode": "NORMAL-FRI",
+         "navn": "NAV Familie- og pensjonsytelser midlertidig enhet",
+         "enhetId": "4863",
+         "status": "AKTIV",
+         "type": "KO",
+         "tema": "FRI"
+     }
  ]

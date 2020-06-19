@@ -1,73 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>mocks</artifactId>
-        <groupId>no.nav.foreldrepenger.vtp</groupId>
-        <version>${revision}${sha1}${changelist}</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>mocks</artifactId>
+		<groupId>no.nav.foreldrepenger.vtp</groupId>
+		<version>${revision}${sha1}${changelist}</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
 
-    <artifactId>journalpost-mock</artifactId>
-    <name>VTP ::dokarkiv-mock</name>
-    <packaging>jar</packaging>
+	<artifactId>journalpost-mock</artifactId>
+	<name>VTP ::dokarkiv-mock</name>
+	<packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>testmodell</artifactId>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>no.nav.foreldrepenger.vtp</groupId>
+			<artifactId>testmodell</artifactId>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <plugins>
-            <!-- activate the plugin -->
-            <plugin>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>2.4.12</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <!-- specify the swagger yaml -->
-                            <inputSpec>${basedir}/src/main/swagger/swagger.json</inputSpec>
-                            <!--<configHelp>true</configHelp>-->
-                            <language>jaxrs-cxf-cdi</language>
+	<build>
+		<plugins>
+			<!-- activate the plugin -->
+			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>2.4.14</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<!-- specify the swagger yaml -->
+							<inputSpec>${basedir}/src/main/swagger/swagger.json</inputSpec>
+							<!--<configHelp>true</configHelp> -->
+							<language>jaxrs-cxf-cdi</language>
 
-                            <apiPackage>no.nav.dokarkiv.generated.api</apiPackage>
-                            <modelPackage>no.nav.dokarkiv.generated.model</modelPackage>
-                            <invokerPackage>no.nav.dokarkiv.generated</invokerPackage>
+							<apiPackage>no.nav.dokarkiv.generated.api</apiPackage>
+							<modelPackage>no.nav.dokarkiv.generated.model</modelPackage>
+							<invokerPackage>no.nav.dokarkiv.generated</invokerPackage>
 
-                            <!--kun modell ... -->
-                            <generateApis>false</generateApis>
-                            <generateSupportingFiles>false</generateSupportingFiles>
+							<!--kun modell ... -->
+							<generateApis>false</generateApis>
+							<generateSupportingFiles>false</generateSupportingFiles>
 
-                            <!-- pass any necessary config options -->
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                                <interfaceOnly>true</interfaceOnly>
-                                <java8>false</java8>
-                                <implFolder>ignore-this-folder</implFolder>
-                                <sourceFolder>src/main/java</sourceFolder>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+							<!-- pass any necessary config options -->
+							<configOptions>
+								<dateLibrary>java8</dateLibrary>
+								<interfaceOnly>true</interfaceOnly>
+								<java8>false</java8>
+								<implFolder>ignore-this-folder</implFolder>
+								<sourceFolder>src/main/java</sourceFolder>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/swagger/src/main/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 
 </project>

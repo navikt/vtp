@@ -12,10 +12,6 @@ public class OrganisasjonIndeks {
         return Optional.ofNullable(organisasjoner.get(orgnr));
     }
 
-    public synchronized OrganisasjonModell roundRobin(int round) {
-        return organisasjoner.get(round % organisasjoner.size());
-    }
-
     public synchronized void leggTil(List<OrganisasjonModell> modeller) {
         modeller.forEach(o -> organisasjoner.put(o.getOrgnummer(), o));
     }

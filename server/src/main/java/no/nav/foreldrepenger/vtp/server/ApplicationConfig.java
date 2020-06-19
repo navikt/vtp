@@ -54,10 +54,13 @@ import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.oppgave.OppgaveMockImpl;
+import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
+import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
+import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
@@ -94,6 +97,8 @@ public class ApplicationConfig extends Application {
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestTjeneste.class);
+        classes.add(SakRestMock.class);
+        classes.add(SafMock.class);
         classes.add(FeedRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
         classes.add(FpFormidlingMock.class);
@@ -102,6 +107,7 @@ public class ApplicationConfig extends Application {
         classes.add(MedlemskapsunntakMock.class);
         classes.add(OppgaveKontantstotteMockImpl.class);
         classes.add(OppgaveMockImpl.class);
+        classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AktoerIdentMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
@@ -181,6 +187,7 @@ public class ApplicationConfig extends Application {
     @Provider
     public static class LocalDateStringConverterProvider implements ParamConverterProvider {
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
             if(rawType.isAssignableFrom(LocalDate.class)) {
@@ -215,7 +222,8 @@ public class ApplicationConfig extends Application {
                     "Access-Control-Allow-Credentials", "true");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Headers",
-                    "origin, content-type, accept, authorization");
+                    "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, " +
+                        "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Methods",
                     "GET, POST, PUT, DELETE, OPTIONS, HEAD");

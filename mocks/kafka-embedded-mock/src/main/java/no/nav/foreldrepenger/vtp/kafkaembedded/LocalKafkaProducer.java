@@ -43,10 +43,6 @@ public class LocalKafkaProducer {
 
     }
 
-    KafkaProducer getKafkaProducer() {
-        return producer;
-    }
-
     public void sendMelding(String topic, String key, String value) {
         producer.send(new ProducerRecord<>(topic, key, value), (recordMetadata, e) -> {
             LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());

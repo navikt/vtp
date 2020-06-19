@@ -12,8 +12,13 @@
     <packaging>jar</packaging>
 
 	<dependencies>
-	       <!-- Eksterne avhengigheter -->
 
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+
+	       <!-- Eksterne avhengigheter -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
@@ -28,11 +33,5 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http-spi</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
-
 	</dependencies>
-
 </project>

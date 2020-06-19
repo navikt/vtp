@@ -31,6 +31,7 @@ public class AktoerIdentMock {
     private String aktørIdMock = "1234567891011";
 
 
+    @SuppressWarnings("unused")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, IdentinfoForAktoer> alleIdenterForIdenter(@HeaderParam(NAV_IDENTER_HEADER_KEY) Set<String> requestIdenter,

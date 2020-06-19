@@ -3,13 +3,11 @@ package no.nav.dokarkiv;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.dokarkiv.generated.model.*;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;

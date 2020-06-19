@@ -35,6 +35,10 @@
             <classifier>jaxws</classifier>
         </dependency>
         <dependency>
+            <groupId>no.nav.tjenestespesifikasjoner</groupId>
+            <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
         </dependency>

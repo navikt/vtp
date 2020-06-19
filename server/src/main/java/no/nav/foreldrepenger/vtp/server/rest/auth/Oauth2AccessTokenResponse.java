@@ -18,7 +18,7 @@ public class Oauth2AccessTokenResponse {
     private int expiresIn = 3600;
 
     @JsonProperty("token_type")
-    private String tokenType = "JWKS";
+    private String tokenType = "Bearer";
 
     public Oauth2AccessTokenResponse(String idToken) {
         this.idToken = idToken;

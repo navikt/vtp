@@ -53,7 +53,7 @@ public class Inntektsperiode {
 
     public Inntektsperiode(){ }
 
-    public Inntektsperiode(LocalDate fom, LocalDate tom, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel,
+    public Inntektsperiode(LocalDate fom, LocalDate tom, String aktorId, Integer beløp, String orgnr, InntektType inntektType, InntektFordel inntektFordel,
                            String beskrivelse, String skatteOgAvgiftsregel, Boolean inngaarIGrunnlagForTrekk, Boolean utloeserArbeidsgiveravgift, PersonArbeidsgiver arbeidsgiver){
         this.fom = fom;
         this.tom = tom;

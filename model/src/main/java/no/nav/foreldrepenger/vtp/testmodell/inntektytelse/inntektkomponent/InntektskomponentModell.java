@@ -1,12 +1,9 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -68,7 +65,7 @@ public class InntektskomponentModell {
         LocalDate dateCounter = ip.getFom().withDayOfMonth(1);
         while (!dateCounter.isEqual(tomDato.withDayOfMonth(1))) {
             inntektsperioderPaaMaaned.add(new Inntektsperiode(dateCounter.withDayOfMonth(1), dateCounter.withDayOfMonth(dateCounter.lengthOfMonth()),
-                    ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse(), ip.getSkatteOgAvgiftsregel(),
+                    ip.getAktorId(), ip.getBeløp(), ip.getOrgnr(), ip.getType(), ip.getFordel(), ip.getBeskrivelse(), ip.getSkatteOgAvgiftsregel(),
                     ip.getInngaarIGrunnlagForTrekk(), ip.getUtloeserArbeidsgiveravgift(), ip.getPersonligArbeidsgiver()));
             dateCounter = dateCounter.plusMonths(1);
         }

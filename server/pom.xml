@@ -111,6 +111,10 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>oppgave-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>saf-mock</artifactId>
+        </dependency>
 
 
         <!-- NAV biblioteker -->

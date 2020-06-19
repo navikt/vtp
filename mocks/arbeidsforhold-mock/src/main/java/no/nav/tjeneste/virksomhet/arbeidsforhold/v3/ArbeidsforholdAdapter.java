@@ -2,12 +2,9 @@ package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 
 import java.math.BigDecimal;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Aktoer;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AnsettelsesPeriode;
-import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.AntallTimerIPerioden;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsavtale;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforholdstyper;
@@ -77,12 +74,16 @@ public class ArbeidsforholdAdapter {
     public Arbeidsavtale fra(no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale arbeidsavtaleModell){
         Arbeidsavtale arbeidsavtale = objectFactory.createArbeidsavtale();
 
-        arbeidsavtale.setAvtaltArbeidstimerPerUke(lagBD(arbeidsavtaleModell.getAvtaltArbeidstimerPerUke()));
-        arbeidsavtale.setStillingsprosent(lagBD(arbeidsavtaleModell.getStillingsprosent()));
-        arbeidsavtale.setBeregnetAntallTimerPrUke(lagBD(arbeidsavtaleModell.getBeregnetAntallTimerPerUke()));
-        arbeidsavtale.setSisteLoennsendringsdato(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getSisteLønnnsendringsdato()));
+        if(arbeidsavtaleModell.getAvtaltArbeidstimerPerUke()!= null)
+            arbeidsavtale.setAvtaltArbeidstimerPerUke(BigDecimal.valueOf(arbeidsavtaleModell.getAvtaltArbeidstimerPerUke()));
+        arbeidsavtale.setStillingsprosent(BigDecimal.valueOf(arbeidsavtaleModell.getStillingsprosent()));
+        if(arbeidsavtaleModell.getBeregnetAntallTimerPerUke() != null)
+            arbeidsavtale.setBeregnetAntallTimerPrUke(BigDecimal.valueOf(arbeidsavtaleModell.getBeregnetAntallTimerPerUke()));
+        if(arbeidsavtaleModell.getSisteLønnnsendringsdato() != null)
+            arbeidsavtale.setSisteLoennsendringsdato(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getSisteLønnnsendringsdato()));
         arbeidsavtale.setFomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getFomGyldighetsperiode()));
-        arbeidsavtale.setTomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getTomGyldighetsperiode()));
+        if(arbeidsavtaleModell.getTomGyldighetsperiode() != null)
+            arbeidsavtale.setTomGyldighetsperiode(ConversionUtils.convertToXMLGregorianCalendar(arbeidsavtaleModell.getTomGyldighetsperiode()));
         Yrker yrker = new Yrker();
         yrker.setKodeRef("SnekkerKode");
         yrker.setValue("SnekkerValue");
@@ -105,16 +106,6 @@ public class ArbeidsforholdAdapter {
         return permisjonOgPermittering;
     }
 
-    private BigDecimal lagBD(String number) {
-        BigDecimal bd = new BigDecimal(number);
-        return bd;
-    }
-
-    private BigDecimal lagBD(Integer number) {
-        BigDecimal bd = new BigDecimal(number);
-        return bd;
-    }
-
     private Aktoer lagPersonAktoer(String ident){
         Person arbeidsgiverPerson = objectFactory.createPerson();
         NorskIdent norskIdent = new NorskIdent();
@@ -129,11 +120,4 @@ public class ArbeidsforholdAdapter {
         return arbeidsgiverOrganisasjon;
     }
 
-    AntallTimerIPerioden lagTimePostering(String timer, XMLGregorianCalendar gperiode) {
-        AntallTimerIPerioden postering = objectFactory.createAntallTimerIPerioden();
-        postering.setAntallTimer(lagBD(timer));
-        postering.setRapporteringsperiode(gperiode);
-
-        return postering;
-    }
 }

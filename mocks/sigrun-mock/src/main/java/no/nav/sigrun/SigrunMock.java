@@ -1,9 +1,14 @@
 package no.nav.sigrun;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Oppføring;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,16 +18,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Api(tags = {"Sigrun/beregnetskatt"})
 @Path("/api/beregnetskatt")
@@ -39,6 +37,7 @@ public class SigrunMock {
         }
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "beregnetskatt", notes = ("Returnerer beregnetskatt fra Sigrun"))
@@ -67,25 +66,30 @@ public class SigrunMock {
             return Response.status(400, "Kan ikke ha tomt felt for både aktoerid og naturligident.").build();
         } else if (inntektsAar == null) {
             LOG.info("sigrun. Inntektsår må være oppgitt.");
-            Response.status(404, "Det forespurte inntektsåret er ikke støttet.");
+            return Response.status(404, "Det forespurte inntektsåret er ikke støttet.").build();
         }
 
         Optional<InntektYtelseModell> inntektYtelseModell = testscenarioRepository.getInntektYtelseModell(brukerFnr);
-        String response = "";
+        String finalInntektsAar = inntektsAar;
+        String response;
 
-        if (inntektYtelseModell.isPresent() && !inntektYtelseModell.get().getSigrunModell().getInntektsår().isEmpty()) {
-            List<Inntektsår> inntektsår = inntektYtelseModell.get().getSigrunModell().getInntektsår();
-            String test = inntektsår.get(0).getOppføring().stream().map(t -> t.toString()).collect(Collectors.joining(",\n"));
-
-            response = String.format("[\n%s\n]", test);
-        } else if (!inntektYtelseModell.isPresent()){
-            LOG.info("Kunne ikke finne bruker.");
-            return Response.status(404,"Kunne ikke finne bruker").build();
+        if (inntektYtelseModell.isPresent()) {
+            Optional<Inntektsår> aktuellInntektsår = inntektYtelseModell.get().getSigrunModell().getInntektsår().stream()
+                    .filter(inntektsår -> inntektsår.getÅr().equalsIgnoreCase(finalInntektsAar))
+                    .findFirst();
+            if (aktuellInntektsår.isPresent()) {
+                String test = aktuellInntektsår.get().getOppføring().stream()
+                        .map(Oppføring::toString)
+                        .collect(Collectors.joining(",\n"));
+                response = String.format("[\n%s\n]", test);
+            } else {
+                LOG.info("Kunne ikke finne inntektsår");
+                return Response.status(404, "Kunne ikke finne inntektsår").build();
+            }
         } else {
-            LOG.info("Kunne ikke finne inntektsår");
-            return Response.status(404,"Kunne ikke finne inntektsår").build();
+            LOG.info("Kunne ikke finne bruker.");
+            return Response.status(404, "Kunne ikke finne bruker").build();
         }
         return Response.status(200).entity(response).build();
     }
-
 }

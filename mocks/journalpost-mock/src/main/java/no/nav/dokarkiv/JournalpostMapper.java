@@ -1,9 +1,6 @@
 package no.nav.dokarkiv;
 
-import no.nav.dokarkiv.generated.model.Bruker;
-import no.nav.dokarkiv.generated.model.Dokument;
-import no.nav.dokarkiv.generated.model.DokumentVariant;
-import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
+import no.nav.dokarkiv.generated.model.*;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
@@ -12,7 +9,6 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -30,7 +26,13 @@ public class JournalpostMapper {
         modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalpostType()));
         modell.setArkivtema(mapArkivtema(journalpostRequest.getTema()));
         modell.setBruker(mapAvsenderFraBruker(journalpostRequest.getBruker()));
-        modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
+        var sak = journalpostRequest.getSak();
+        if (sak.getSakstype() == Sak.SakstypeEnum.FAGSAK) {
+            modell.setSakId(journalpostRequest.getSak().getFagsakId());
+            modell.setFagsystemId(journalpostRequest.getSak().getFagsaksystem().value());
+        } else {
+            modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
+        }
         modell.setMottattDato(Optional.ofNullable(journalpostRequest.getDatoMottatt()).map(OffsetDateTime::toLocalDateTime).orElse(LocalDateTime.now()));
 
         List<DokumentModell> dokumentModeller = new ArrayList<>();
@@ -85,6 +87,7 @@ public class JournalpostMapper {
 
         dokumentModell.setDokumentVariantInnholdListe(dokumentVariantInnholds);
         dokumentModell.setDokumentTilknyttetJournalpost(dokumentTilknyttetJournalpost);
+        dokumentModell.setBrevkode(dokument.getBrevkode());
 
         return dokumentModell;
     }
