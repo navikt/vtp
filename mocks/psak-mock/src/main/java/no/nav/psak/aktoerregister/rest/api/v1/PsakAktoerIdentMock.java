@@ -7,6 +7,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
 
+/**
+ * Dette er en kopi av AktoerIdentMock med endepunkt som forventer ingen payload.
+ * Vi beholder den opprinnelige AktoerIdentMock for å ikke knekke FP-løsningen
+ */
+//TODO avklare denne med FP
 @Api(tags = {"aktoerregister"})
 @Path("/psak/aktoerregister/api/v1/identer")
 public class PsakAktoerIdentMock {
