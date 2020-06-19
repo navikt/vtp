@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import no.nav.PsakPersonServiceMockImpl;
+import no.nav.*;
 import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -92,6 +92,10 @@ public class SoapWebServiceConfig {
         publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
         publishWebService(new NavAnsattServiceMockImpl(), "/soap/esb/nav-cons-pen-psak-navansattWeb/sca/PSAKNAVAnsattWSEXP");
         publishWebService(new PsakPersonServiceMockImpl(repo), "/soap/esb/nav-cons-pen-psak-personWeb/sca/PSAKPersonWSEXP");
+        publishWebService(new HenvendelseMock(), "/soap/esb/nav-cons-pen-psak-henvendelseWeb/sca/PSAKHenvendelseWSEXP");
+        publishWebService(new SakMock(), "/soap/esb/nav-tjeneste-sak_v1Web/sca/SakWSEXP");
+        publishWebService(new JournalMock(),"/soap/esb/nav-tjeneste-journal_v2Web/sca/JournalWSEXP");
+        publishWebService(new PsakNavOrgEnhetMock(), "/soap/esb/nav-cons-pen-psak-navorgenhetWeb/sca/PSAKNAVOrgEnhetWSEXP");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

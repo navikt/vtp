@@ -51,8 +51,15 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     }
 
     @Override
-    public ASBOPenPerson hentBrukerprofil(ASBOPenPerson hentBrukerprofilRequest) throws HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg, HentBrukerprofilFaultPenGeneriskMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+    @WebMethod
+    @RequestWrapper(localName = "hentBrukerprofil", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentBrukerprofil")
+    @ResponseWrapper(localName = "hentBrukerprofilResponse", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentBrukerprofilResponse")
+    @WebResult(name = "hentBrukerprofilResponse", targetNamespace = "")
+    public no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentBrukerprofil(
+            @WebParam(name = "hentBrukerprofilRequest", targetNamespace = "")
+                    no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentBrukerprofilRequest
+    ) throws HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg, HentBrukerprofilFaultPenGeneriskMsg {
+        return hentBrukerprofilRequest;
     }
 
     @Override
