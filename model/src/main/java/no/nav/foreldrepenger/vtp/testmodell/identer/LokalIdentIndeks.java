@@ -44,9 +44,6 @@ public class LokalIdentIndeks {
     public String getIdent(String lokalIdent) {
         String key = key(lokalIdent);
         String ident = identer.get(key);
-//        if (ident == null) {
-//            throw new IllegalStateException("Kjenner ikke ident for lokal id: " + lokalIdent + ", mulig ikke lastet ennå?");
-//        }
         return ident;
     }
 }

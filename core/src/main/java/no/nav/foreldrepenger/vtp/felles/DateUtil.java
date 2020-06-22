@@ -40,15 +40,4 @@ public class DateUtil {
         }
     }
 
-    public static XMLGregorianCalendar convertToXMLGregorianCalendarRemoveTimezone(LocalDate localDate) {
-        return localDate == null ? null : datatypeFactoryInstance().newXMLGregorianCalendar(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), -2147483648, -2147483648, -2147483648, -2147483648, -2147483648);
-    }
-
-    public static LocalDateTime convertToLocalDateTime(XMLGregorianCalendar xmlGregorianCalendar) {
-        return xmlGregorianCalendar == null ? null : LocalDateTime.ofInstant(xmlGregorianCalendar.toGregorianCalendar().getTime().toInstant(), ZoneId.systemDefault());
-    }
-
-    public static LocalDate convertToLocalDate(XMLGregorianCalendar xmlGregorianCalendar) {
-        return xmlGregorianCalendar == null ? null : xmlGregorianCalendar.toGregorianCalendar().toZonedDateTime().toLocalDate();
-    }
 }
