@@ -127,11 +127,11 @@ public class OrganisasjonJson {
         private OrganisasjonDetaljer() {
         }
 
-        public LocalDateTime getRegistreringsdato() {
+        private LocalDateTime getRegistreringsdato() {
             return registreringsdato;
         }
 
-        public LocalDate getOpphoersdato() {
+        private LocalDate getOpphoersdato() {
             return opphoersdato;
         }
 

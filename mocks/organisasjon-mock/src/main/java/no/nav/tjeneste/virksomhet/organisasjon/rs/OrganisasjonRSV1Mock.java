@@ -20,7 +20,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
@@ -64,17 +63,17 @@ public class OrganisasjonRSV1Mock {
 
     @SuppressWarnings("unused")
     @GET
-    @Path("/{orgnummer}")
+    @Path("/hentOrganisasjonAdresse/{orgnummer}")
     @ApiOperation(value = "Henter adresse informasjon for et organisasjonsnummer")
     public Response hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
                                      @Context HttpHeaders httpHeaders,
                                      @Context UriInfo uriInfo) {
         if (orgnummer != null) {
             LOG.info("EREG REST {}", orgnummer);
-            Optional<OrganisasjonAdresseModell> organisasjonAdresse = scenarioRepository.getOrganisasjonAdresse(orgnummer);
-            if (organisasjonAdresse.isPresent()) {
-                OrganisasjonAdresseModell adresseModell = organisasjonAdresse.get();
-                OrganisasjonAdresse adresse = new OrganisasjonAdresse(adresseModell);
+            Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
+            if (organisasjonModell.isPresent()) {
+                OrganisasjonModell modell = organisasjonModell.get();
+                OrganisasjonAdresse adresse = new OrganisasjonAdresse(modell);
                 return Response.ok(adresse).build();
             } else {
                 return Response.ok().build();

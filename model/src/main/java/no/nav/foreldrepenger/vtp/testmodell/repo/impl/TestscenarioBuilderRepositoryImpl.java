@@ -34,12 +34,6 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         return organisasjonIndeks.getModellForIdent(orgnr);
     }
 
-    @Override
-    public Optional<OrganisasjonAdresseModell> getOrganisasjonAdresse(String orgnr){
-        return organisasjonIndeks.getAdresseModellForIdent(orgnr);
-    }
-
-
     protected TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
         this.basisdata = basisdata;
     }
@@ -99,11 +93,6 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         if (organisasjonModeller != null) {
             List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
             organisasjonIndeks.leggTil(modeller);
-        }
-        OrganisasjonAdresseModeller organisasjonAdresseModeller = testScenario.getOrganisasjonAdresseModeller();
-        if (organisasjonAdresseModeller != null) {
-            List<OrganisasjonAdresseModell> modeller = organisasjonAdresseModeller.getModells();
-            organisasjonIndeks.leggTilAdresse(modeller);
         }
     }
 

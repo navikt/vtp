@@ -1,18 +1,24 @@
 package no.nav.foreldrepenger.vtp.testmodell.organisasjon;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganisasjonDetaljerModell {
 
     @JsonProperty("registreringsDato")
     private LocalDate registreringsDato;
-
     @JsonProperty("datoSistEndret")
     private LocalDate datoSistEndret;
+    @JsonProperty("forretningsadresser")
+    private List<AdresseEReg> forretningsadresser;
+    @JsonProperty("postadresser")
+    private List<AdresseEReg> postadresser;
 
     public OrganisasjonDetaljerModell() {
     }
@@ -33,4 +39,11 @@ public class OrganisasjonDetaljerModell {
         this.datoSistEndret = datoSistEndret;
     }
 
+    public List<AdresseEReg> getForretningsadresser() {
+        return forretningsadresser;
+    }
+
+    public List<AdresseEReg> getPostadresser() {
+        return postadresser;
+    }
 }

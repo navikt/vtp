@@ -10,7 +10,6 @@ import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -37,7 +36,6 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         loadEnheter();
         loadVirksomheter();
         loadOrganisasjoner();
-        loadOrganisasjonsAdresser();
     }
 
     public static synchronized BasisdataProviderFileImpl getInstance() throws IOException{
@@ -104,12 +102,4 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         }
     }
 
-    private void loadOrganisasjonsAdresser() throws IOException {
-        try (InputStream inputStream = getClass().getResourceAsStream("basedata/organisasjon.json")) {
-            TypeReference<List<OrganisasjonAdresseModell>> typeAdrRef = new TypeReference<List<OrganisasjonAdresseModell>>() {
-            };
-            List<OrganisasjonAdresseModell> organisasjonAdresseModells = jsonMapper.lagObjectMapper().readValue(inputStream, typeAdrRef);
-            organisasjonIndeks.leggTilAdresse(organisasjonAdresseModells);
-        }
-    }
 }

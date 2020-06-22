@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.AdresseEReg;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonAdresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
 
 import java.time.LocalDate;
@@ -27,36 +27,36 @@ public class OrganisasjonAdresse {
     @JsonProperty("navn")
     private Navn navn;
     @JsonProperty("organisasjonDetaljer")
-    public OrganisasjonDetaljer organisasjonDetaljer;
+    private OrganisasjonDetaljer organisasjonDetaljer;
 
-    public OrganisasjonAdresse(OrganisasjonAdresseModell adresseModell) {
-        this.organisasjonsnummer = adresseModell.getOrganisasjonsnummer();
-        if (adresseModell.getType() != null){
-            this.type = adresseModell.getType();
-        }
+    public OrganisasjonAdresse(OrganisasjonModell modell) {
+        this.organisasjonsnummer = modell.getOrgnummer();
+        if (modell.getType() != null){
+            this.type = modell.getType();
+        } else {this.type = OrganisasjonstypeEReg.VIRKSOMHET;}
         this.navn = new Navn();
-        var max = Arrays.stream(adresseModell.getNavn().getNavnelinje()).count();
+        var max = Arrays.stream(modell.getNavn().getNavnelinje()).count();
         if (max > 0)
-            this.navn.navnelinje1 = adresseModell.getNavn().getNavnelinje()[0];
+            this.navn.navnelinje1 = modell.getNavn().getNavnelinje()[0];
         if (max > 1)
-            this.navn.navnelinje2 = adresseModell.getNavn().getNavnelinje()[1];
+            this.navn.navnelinje2 = modell.getNavn().getNavnelinje()[1];
         if (max > 2)
-            this.navn.navnelinje3 = adresseModell.getNavn().getNavnelinje()[2];
+            this.navn.navnelinje3 = modell.getNavn().getNavnelinje()[2];
         if (max > 3)
-            this.navn.navnelinje4 = adresseModell.getNavn().getNavnelinje()[3];
+            this.navn.navnelinje4 = modell.getNavn().getNavnelinje()[3];
         if (max > 4)
-            this.navn.navnelinje5 = adresseModell.getNavn().getNavnelinje()[4];
+            this.navn.navnelinje5 = modell.getNavn().getNavnelinje()[4];
         this.organisasjonDetaljer = new OrganisasjonDetaljer();
-        if (adresseModell.getOrganisasjonDetaljer() != null && adresseModell.getRegistreringsdato() != null) {
-            this.organisasjonDetaljer.registreringsdato = adresseModell.getRegistreringsdato().atStartOfDay();
+        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getRegistreringsDato() != null) {
+            this.organisasjonDetaljer.registreringsdato = modell.getOrganisasjonDetaljer().getRegistreringsDato().atStartOfDay();
         } else {
             this.organisasjonDetaljer.registreringsdato = LocalDateTime.now().minusYears(1);
         }
-        if (adresseModell.getOrganisasjonDetaljer() != null && adresseModell.getForretningsadresser() != null){
-            this.organisasjonDetaljer.forretningsadresser = adresseModell.getForretningsadresser();
+        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getForretningsadresser() != null){
+            this.organisasjonDetaljer.forretningsadresser = modell.getOrganisasjonDetaljer().getForretningsadresser();
         }
-        if (adresseModell.getOrganisasjonDetaljer() != null && adresseModell.getPostadresser() != null){
-            this.organisasjonDetaljer.postadresser = adresseModell.getPostadresser();
+        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getPostadresser() != null){
+            this.organisasjonDetaljer.postadresser = modell.getOrganisasjonDetaljer().getPostadresser();
         }
     }
 
@@ -93,7 +93,7 @@ public class OrganisasjonAdresse {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    private static class OrganisasjonDetaljer {
+    static class OrganisasjonDetaljer {
         @JsonProperty("registreringsdato")
         private LocalDateTime registreringsdato;
         @JsonProperty("opphoersdato")

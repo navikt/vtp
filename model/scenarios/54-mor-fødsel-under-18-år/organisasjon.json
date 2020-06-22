@@ -9,7 +9,18 @@
          },
          "organisasjonDetaljer": {
             "registreringsDato": "now() - P10Y",
-            "datoSistEndret": "now() - P1Y"
+            "datoSistEndret": "now() - P1Y",
+            "postadresser": [
+               {
+                  "adresselinje1": "NEDRE LINDHAUGEN 88",
+                  "adresselinje2": "",
+                  "adresselinje3": "",
+                  "kommunenummer": "",
+                  "landkode": "NO",
+                  "postnummer": "1772",
+                  "poststed": "HALDEN"
+               }
+            ]
          }
       }
    ]
