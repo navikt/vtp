@@ -198,6 +198,10 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>psak-mock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>dialog-mock</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>app</finalName>
