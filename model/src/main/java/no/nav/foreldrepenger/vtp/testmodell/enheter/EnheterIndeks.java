@@ -2,12 +2,12 @@ package no.nav.foreldrepenger.vtp.testmodell.enheter;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class EnheterIndeks {
 
-    private Map<String, Norg2Modell> byDiskresjonskode = new ConcurrentHashMap<>();
+    private Map<String, Norg2Modell> byDiskresjonskode = new HashMap<>();
 
     public void leggTil(Collection<Norg2Modell> enheter) {
         enheter.forEach(m -> byDiskresjonskode.putIfAbsent(m.getDiskresjonskode(), m));
