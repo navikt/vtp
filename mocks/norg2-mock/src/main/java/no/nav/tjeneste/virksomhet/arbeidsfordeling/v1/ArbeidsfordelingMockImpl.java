@@ -1,35 +1,25 @@
 package no.nav.tjeneste.virksomhet.arbeidsfordeling.v1;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-import javax.xml.ws.soap.Addressing;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.ArbeidsfordelingV1;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnAlleBehandlendeEnheterListeUgyldigInput;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.binding.FinnBehandlendeEnhetListeUgyldigInput;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Diskresjonskoder;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Enhetsstatus;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Enhetstyper;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Kodeverdi;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Organisasjonsenhet;
-import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.Tema;
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.informasjon.*;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnAlleBehandlendeEnheterListeRequest;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnAlleBehandlendeEnheterListeResponse;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeEnhetListeRequest;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.meldinger.FinnBehandlendeEnhetListeResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jws.*;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Addressing
 @WebService(name = "Arbeidsfordeling_v1", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsfordeling/v1/")
@@ -105,8 +95,10 @@ public class ArbeidsfordelingMockImpl implements ArbeidsfordelingV1 {
         Norg2Modell modell;
         if (diskrKode != null && spesielleDiskrKoder.contains(diskrKode)) {
             modell = repo.getEnheterIndeks().finnByDiskresjonskode(diskrKode);
-        } else {
-            modell = repo.getEnheterIndeks().finnByDiskresjonskode("NORMAL-"+tema);
+        }
+        else {
+            modell = Optional.ofNullable(repo.getEnheterIndeks().finnByDiskresjonskode(tema))
+                    .orElseGet(() -> repo.getEnheterIndeks().finnByDiskresjonskode("NORMAL-"+tema));
         }
 
         return lagEnhet(modell);

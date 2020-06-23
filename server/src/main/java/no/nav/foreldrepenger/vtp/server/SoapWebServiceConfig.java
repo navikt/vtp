@@ -96,6 +96,7 @@ public class SoapWebServiceConfig {
         publishWebService(new SakMock(), "/soap/esb/nav-tjeneste-sak_v1Web/sca/SakWSEXP");
         publishWebService(new JournalMock(),"/soap/esb/nav-tjeneste-journal_v2Web/sca/JournalWSEXP");
         publishWebService(new PsakNavOrgEnhetMock(), "/soap/esb/nav-cons-pen-psak-navorgenhetWeb/sca/PSAKNAVOrgEnhetWSEXP");
+        publishWebService(new DialogMock(),"/soap/henvendelse/services/domene.Virksomhet/Dialog_v1");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

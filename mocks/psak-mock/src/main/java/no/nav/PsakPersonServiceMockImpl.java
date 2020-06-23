@@ -59,7 +59,8 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentBrukerprofilRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentBrukerprofilRequest
     ) throws HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg, HentBrukerprofilFaultPenGeneriskMsg {
-        return hentBrukerprofilRequest;
+        return PsakPersonAdapter.getPreviouslyConverted(hentBrukerprofilRequest.getFodselsnummer())
+                .orElse(hentBrukerprofilRequest);
     }
 
     @Override
@@ -78,8 +79,23 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     }
 
     @Override
-    public ASBOPenPerson hentFamilierelasjoner(ASBOPenHentFamilierelasjonerRequest hentFamilierelasjonerRequest) throws HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg, HentFamilierelasjonerFaultPenGeneriskMsg {
-        throw new UnsupportedOperationException("Ikke implementert");
+    @WebMethod
+    @RequestWrapper(localName = "hentFamilierelasjoner", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentFamilierelasjoner")
+    @ResponseWrapper(localName = "hentFamilierelasjonerResponse", targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", className = "no.nav.inf.psak.person.HentFamilierelasjonerResponse")
+    @WebResult(name = "hentFamilierelasjonerResponse", targetNamespace = "")
+    public no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentFamilierelasjoner(
+            @WebParam(name = "hentFamilierelasjonerRequest", targetNamespace = "")
+                    no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentFamilierelasjonerRequest hentFamilierelasjonerRequest
+    ) throws HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg, HentFamilierelasjonerFaultPenGeneriskMsg{
+        return PsakPersonAdapter.getPreviouslyConverted(hentFamilierelasjonerRequest.getFodselsnummer())
+                    .map(p -> {p.setRelasjoner(new ASBOPenRelasjonListe()); return p;}) // konsumenten tåler ikke null
+                .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
+                    .map(Personopplysninger::getSøker)
+                    .filter(p -> p.getIdent().equals(hentFamilierelasjonerRequest.getFodselsnummer()))
+                    .map(PsakPersonAdapter::toASBOPerson)
+                    .peek(p -> p.setRelasjoner(new ASBOPenRelasjonListe())) // konsumenten tåler ikke null
+                    .findFirst()
+                    .orElseThrow(HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg::new));
     }
 
     @Override
@@ -91,11 +107,12 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentSamboerforholdRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentSamboerforholdRequest hentSamboerforholdRequest
     ) throws HentSamboerforholdFaultPenPersonIkkeFunnetMsg, HentSamboerforholdFaultPenGeneriskMsg {
-        return repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                .map(Personopplysninger::getSøker)
-                .map(PsakPersonAdapter::toASBOPerson)
-                .findFirst()
-                .orElseThrow(HentSamboerforholdFaultPenGeneriskMsg::new);
+        return PsakPersonAdapter.getPreviouslyConverted(hentSamboerforholdRequest.getFodselsnummer())
+                .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
+                    .map(Personopplysninger::getSøker)
+                    .map(PsakPersonAdapter::toASBOPerson)
+                    .findFirst()
+                    .orElseThrow(HentSamboerforholdFaultPenGeneriskMsg::new));
     }
 
     @Override
@@ -182,7 +199,8 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentKontoinformasjonRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentKontoinformasjonRequest
     ) throws HentKontoinformasjonFaultPenPersonIkkeFunnetMsg, HentKontoinformasjonFaultPenGeneriskMsg {
-        return hentKontoinformasjonRequest;
+        return PsakPersonAdapter.getPreviouslyConverted(hentKontoinformasjonRequest.getFodselsnummer())
+                .orElse(hentKontoinformasjonRequest);
     }
 
     @Override
@@ -193,11 +211,12 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     public ASBOPenPerson hentPerson(
             @WebParam(name = "hentPersonRequest", targetNamespace = "") no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentPersonRequest hentPersonRequest)
             throws HentPersonFaultPenPersonIkkeFunnetMsg, HentPersonFaultPenGeneriskMsg {
-        return repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                .map(Personopplysninger::getSøker)
-                .map(PsakPersonAdapter::toASBOPerson)
-                .findFirst()
-                .orElseThrow(HentPersonFaultPenPersonIkkeFunnetMsg::new);
+        return PsakPersonAdapter.getPreviouslyConverted(hentPersonRequest.getPerson().getFodselsnummer())
+                .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
+                    .map(Personopplysninger::getSøker)
+                    .map(PsakPersonAdapter::toASBOPerson)
+                    .findFirst()
+                    .orElseThrow(HentPersonFaultPenPersonIkkeFunnetMsg::new));
     }
 
     @Override

@@ -40,5 +40,19 @@
 		 "enhetId": "4409",
 		 "status": "AKTIV",
 		 "type": "YTA"
+	 },
+	 {
+		 "diskresjonskode": "PEN",
+		 "navn": "NAV Familie- og pensjonsytelser Steinkjer",
+		 "enhetId": "4817",
+		 "status": "AKTIV",
+		 "type": "FPY"
+	 },
+	 {
+		 "diskresjonskode": "UFO",
+		 "navn": "NAV Arbeid og ytelser Tønsberg",
+		 "enhetId": "4407",
+		 "status": "AKTIV",
+		 "type": "UFO"
 	 }
  ]

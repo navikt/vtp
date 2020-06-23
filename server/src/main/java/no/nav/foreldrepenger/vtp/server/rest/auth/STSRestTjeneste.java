@@ -1,17 +1,19 @@
 package no.nav.foreldrepenger.vtp.server.rest.auth;
 
 import io.swagger.annotations.Api;
+import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
+import org.jose4j.jws.AlgorithmIdentifiers;
+import org.jose4j.jws.JsonWebSignature;
+import org.jose4j.lang.JoseException;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXB;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Base64;
 
 @Api(tags = {"Security Token Service"})
@@ -38,6 +40,19 @@ public class STSRestTjeneste {
         response.setExpires_in(LocalDateTime.MAX);
 
         return response;
+    }
+
+    @GET
+    @Path("/token")
+    @Produces({MediaType.APPLICATION_JSON})
+    public UserTokenResponse dummyToken(@QueryParam("grant_type") String grant_type,
+                                        @QueryParam("scope") String scope) throws JoseException {
+        JsonWebSignature jws = new JsonWebSignature();
+        jws.setAlgorithmHeaderValue("RS256");
+        jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
+        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
+        String token = jws.getCompactSerialization();
+        return new UserTokenResponse(token, LocalDateTime.MAX.toEpochSecond(ZoneOffset.UTC), "jwt");
     }
 
     public static class SAMLResponse {
@@ -89,4 +104,51 @@ public class STSRestTjeneste {
         }
     }
 
+    public static class UserTokenResponse {
+        private String access_token;
+        private Long expires_in;
+        private String token_type;
+        private final LocalDateTime issuedTime = LocalDateTime.now();
+
+        @SuppressWarnings("unused")
+        public UserTokenResponse() {
+            //Required by Jackson when mapping json object
+        }
+
+        public UserTokenResponse(String access_token, Long expires_in, String token_type) {
+            this.access_token = access_token;
+            this.expires_in = expires_in;
+            this.token_type = token_type;
+        }
+
+        /**
+         *
+         * @param expirationLeeway the amount of seconds to be subtracted from the expirationTime to avoid returning false positives
+         * @return <code>true</code> if "now" is after the expirationtime(minus leeway), else returns <code>false</code>
+         */
+        public boolean isExpired(long expirationLeeway) {
+            return LocalDateTime.now().isAfter(issuedTime.plusSeconds(expires_in).minusSeconds(expirationLeeway));
+        }
+
+        public String getAccess_token() {
+            return access_token;
+        }
+
+        public Long getExpires_in() {
+            return expires_in;
+        }
+
+        public String getToken_type() {
+            return token_type;
+        }
+
+        @Override
+        public String toString() {
+            return "UserTokenImpl{" +
+                    "access_token='" + access_token + '\'' +
+                    ", expires_in=" + expires_in +
+                    ", token_type='" + token_type + '\'' +
+                    '}';
+        }
+    }
 }
