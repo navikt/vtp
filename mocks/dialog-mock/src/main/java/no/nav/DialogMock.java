@@ -36,7 +36,6 @@ public class DialogMock implements DialogV1 {
                     no.nav.tjeneste.virksomhet.dialog.v1.meldinger.WSHentDialogerRequest request
     ) throws HentDialogerPersonIkkeFunnet {
         WSHentDialogerResponse response = new WSHentDialogerResponse();
-        LOG.warn("Uførte kall til DialogMock");
         return response;
     }
 }
