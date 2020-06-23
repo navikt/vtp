@@ -43,7 +43,7 @@ public class OrganisasjonRSV1Mock {
             @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
     })
-    public Response hentOrganisasjon(@PathParam("orgnummer") String orgnummer,
+    public OrganisasjonJson hentOrganisasjon(@PathParam("orgnummer") String orgnummer,
                                      @Context HttpHeaders httpHeaders,
                                      @Context UriInfo uriInfo) {
         if (orgnummer != null) {
@@ -52,9 +52,9 @@ public class OrganisasjonRSV1Mock {
             if (organisasjonModell.isPresent()) {
                 OrganisasjonModell modell = organisasjonModell.get();
                 OrganisasjonJson organisasjon = new OrganisasjonJson(modell);
-                return Response.ok(organisasjon).build();
+                return organisasjon;
             } else {
-                return Response.ok().build();
+                return null;
             }
         } else {
             throw new IllegalArgumentException("Orgnummer ikke angitt");
@@ -63,9 +63,13 @@ public class OrganisasjonRSV1Mock {
 
     @SuppressWarnings("unused")
     @GET
-    @Path("/hentOrganisasjonAdresse/{orgnummer}")
+    @Path("/{orgnummer}")
     @ApiOperation(value = "Henter adresse informasjon for et organisasjonsnummer")
-    public Response hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
+    })
+    public OrganisasjonAdresse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
                                      @Context HttpHeaders httpHeaders,
                                      @Context UriInfo uriInfo) {
         if (orgnummer != null) {
@@ -74,9 +78,9 @@ public class OrganisasjonRSV1Mock {
             if (organisasjonModell.isPresent()) {
                 OrganisasjonModell modell = organisasjonModell.get();
                 OrganisasjonAdresse adresse = new OrganisasjonAdresse(modell);
-                return Response.ok(adresse).build();
+                return adresse;
             } else {
-                return Response.ok().build();
+                return null;
             }
         } else {
             throw new IllegalArgumentException("Orgnummer ikke angitt");
