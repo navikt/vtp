@@ -30,7 +30,9 @@ public class PsakPersonAdapter {
         asboPenPerson.setDiskresjonskode(søker.getDiskresjonskode());
         asboPenPerson.setDodsdato(fetchDate(søker.getDødsdato()).orElse(null));
         asboPenPerson.setSivilstand("UGIF"); //søker.getSivilstand().getKode()); ikke støtte til relasjoner i modellen
-        asboPenPerson.setSivilstandDato(fetchDate(søker.getSivilstand().getEndringstidspunkt()).orElse(createTwoYearAgo()));
+        asboPenPerson.setSivilstandDato(fetchDate(søker.getSivilstand().getEndringstidspunkt())
+                .orElse(fetchDate(søker.getFødselsdato())
+                        .orElse(null)));
         asboPenPerson.setSprakKode(søker.getSpråk2Bokstaver());
         asboPenPerson.setSprakBeskrivelse(søker.getSpråk());
         asboPenPerson.setBostedsAdresse(søker.getAdresse(AdresseType.BOSTEDSADRESSE)
@@ -50,10 +52,6 @@ public class PsakPersonAdapter {
     private static Optional<GregorianCalendar> fetchDate(LocalDate date) {
         return Optional.ofNullable(date)
                 .map(d -> GregorianCalendar.from(d.atStartOfDay(ZoneId.systemDefault())));
-    }
-
-    private static GregorianCalendar createTwoYearAgo(){
-        return GregorianCalendar.from(LocalDate.now().minusYears(2).atStartOfDay(ZoneId.systemDefault()));
     }
 
     private static ASBOPenBostedsAdresse convert(GateadresseModell adresse) {
