@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
@@ -43,16 +42,15 @@ public class OrganisasjonRSV1Mock {
             @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
     })
-    public OrganisasjonJson hentOrganisasjon(@PathParam("orgnummer") String orgnummer,
-                                     @Context HttpHeaders httpHeaders,
-                                     @Context UriInfo uriInfo) {
+    public OrganisasjonEReg hentOrganisasjon(@PathParam("orgnummer") String orgnummer,
+                                             @Context HttpHeaders httpHeaders,
+                                             @Context UriInfo uriInfo) {
         if (orgnummer != null) {
             LOG.info("EREG REST {}", orgnummer);
             Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
             if (organisasjonModell.isPresent()) {
                 OrganisasjonModell modell = organisasjonModell.get();
-                OrganisasjonJson organisasjon = new OrganisasjonJson(modell);
-                return organisasjon;
+                return new OrganisasjonEReg(modell);
             } else {
                 return null;
             }
@@ -77,8 +75,7 @@ public class OrganisasjonRSV1Mock {
             Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
             if (organisasjonModell.isPresent()) {
                 OrganisasjonModell modell = organisasjonModell.get();
-                OrganisasjonAdresse adresse = new OrganisasjonAdresse(modell);
-                return adresse;
+                return new OrganisasjonAdresse(modell);
             } else {
                 return null;
             }
