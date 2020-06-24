@@ -250,6 +250,12 @@
             </dependency>
 
             <dependency>
+                <groupId>no.nav.tjenestespesifikasjoner</groupId>
+                <artifactId>dkif-tjenestespesifikasjon</artifactId>
+                <version>${tjenestespesifikasjoner.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
                 <version>2.1.1</version>

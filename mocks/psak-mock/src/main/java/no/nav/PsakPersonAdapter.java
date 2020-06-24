@@ -1,10 +1,7 @@
 package no.nav;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
-import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenBostedsAdresse;
-import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson;
-import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenRelasjon;
-import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenRelasjonListe;
+import no.nav.lib.pen.psakpselv.asbo.person.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -46,6 +43,7 @@ public class PsakPersonAdapter {
                 .map(PsakPersonAdapter::convert)
                 .orElse(null));
         asboPenPerson.setErEgenansatt(false);
+        asboPenPerson.setBrukerprofil(new ASBOPenBrukerprofil());
         return asboPenPerson;
     }
 

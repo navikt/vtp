@@ -33,6 +33,7 @@ import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
+import no.nav.tjenestespesifikasjoner.DigitalKontaktinformasjonV1Mock;
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
@@ -97,6 +98,7 @@ public class SoapWebServiceConfig {
         publishWebService(new JournalMock(),"/soap/esb/nav-tjeneste-journal_v2Web/sca/JournalWSEXP");
         publishWebService(new PsakNavOrgEnhetMock(), "/soap/esb/nav-cons-pen-psak-navorgenhetWeb/sca/PSAKNAVOrgEnhetWSEXP");
         publishWebService(new DialogMock(),"/soap/henvendelse/services/domene.Virksomhet/Dialog_v1");
+        publishWebService(new DigitalKontaktinformasjonV1Mock(),"/soap/ws/DigitalKontaktinformasjon/v1");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
