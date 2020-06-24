@@ -105,6 +105,9 @@ public class InntektYtelseModell {
     }
 
     public OppdragModell getOppdragModell() {
+        if (oppdragModell == null) {
+            this.oppdragModell = new OppdragModell();
+        }
         return oppdragModell;
     }
 }

@@ -48,13 +48,19 @@ public class SimulerFpServiceMockImpl implements SimulerFpService {
     @WebMethod
     @WebResult(name = "simulerBeregningResponse", targetNamespace = "http://nav.no/system/os/tjenester/simulerFpService/simulerFpServiceGrensesnitt", partName = "parameters")
     public SimulerBeregningResponse simulerBeregning(SimulerBeregningRequest simulerBeregningRequest) throws SimulerBeregningFeilUnderBehandling {
-        LOG.info("Simulerer beregning.");
+
         Boolean negativSimulering = false;
-        // Hvor hentes fødselsnummeret fra? Finner det ikke i SimulerBeregningRequest?
-        // Den ligger i: simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId()
-        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId());
-        if (inntektYtelseModell.isPresent()) {
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(
+                simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId());
+
+        if (inntektYtelseModell.isPresent() && inntektYtelseModell.get().getOppdragModell().getNegativSimulering() != null) {
             negativSimulering=inntektYtelseModell.get().getOppdragModell().getNegativSimulering();
+        }
+
+        if (negativSimulering) {
+            LOG.info("Simulerer beregning med NEGATIVT resultat.");
+        } else {
+            LOG.info("Simulerer beregning med POSITIVT resultat.");
         }
 
         SimuleringGenerator simuleringGenerator = new SimuleringGenerator();
