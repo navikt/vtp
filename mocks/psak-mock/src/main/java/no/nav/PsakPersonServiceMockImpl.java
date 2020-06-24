@@ -86,11 +86,9 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentFamilierelasjonerRequest hentFamilierelasjonerRequest
     ) throws HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg, HentFamilierelasjonerFaultPenGeneriskMsg{
         return PsakPersonAdapter.getPreviouslyConverted(hentFamilierelasjonerRequest.getFodselsnummer())
-                    .map(p -> {p.setRelasjoner(new ASBOPenRelasjonListe()); return p;}) // konsumenten tåler ikke null
                 .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
                     .filter(p -> p.getSøker().getIdent().equals(hentFamilierelasjonerRequest.getFodselsnummer()))
                     .map(PsakPersonAdapter::toASBOPerson)
-                    .peek(p -> p.setRelasjoner(new ASBOPenRelasjonListe())) // konsumenten tåler ikke null
                     .findFirst()
                     .orElseThrow(HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg::new));
     }
