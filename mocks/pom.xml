@@ -39,6 +39,7 @@
         <module>infotrygd-paaroerende-sykdom-mock</module>
         <module>nav-ansatt-mock</module>
         <module>psak-mock</module>
+        <module>digital-kontakt-informasjon-mock</module>
     </modules>
 
     <properties>

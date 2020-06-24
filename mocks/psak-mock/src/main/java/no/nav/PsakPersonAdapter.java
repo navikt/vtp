@@ -1,26 +1,29 @@
 package no.nav;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
-import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenBostedsAdresse;
-import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
+import no.nav.lib.pen.psakpselv.asbo.person.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PsakPersonAdapter {
     private PsakPersonAdapter(){}
 
     private static final Map<String, ASBOPenPerson> PERSONER = new HashMap<>();
 
-    public static ASBOPenPerson toASBOPerson(SøkerModell søker) {
+    public static ASBOPenPerson toASBOPerson(Personopplysninger personopplysninger) {
+        ASBOPenPerson asboPenPerson = populateAsboPenPerson(personopplysninger.getSøker());
+        asboPenPerson.setRelasjoner(fetchRelasjoner(personopplysninger));
+
+        PERSONER.put(asboPenPerson.getFodselsnummer(), asboPenPerson);
+        return asboPenPerson;
+    }
+
+    private static ASBOPenPerson populateAsboPenPerson(VoksenModell søker) {
         ASBOPenPerson asboPenPerson = new ASBOPenPerson();
-        asboPenPerson.setRelasjoner(null);
         asboPenPerson.setFodselsnummer(søker.getIdent());
         asboPenPerson.setFornavn(søker.getFornavn());
         asboPenPerson.setEtternavn(søker.getEtternavn());
@@ -29,7 +32,7 @@ public class PsakPersonAdapter {
         asboPenPerson.setStatusKode(søker.getPersonstatus().getPersonstatusType().toString());
         asboPenPerson.setDiskresjonskode(søker.getDiskresjonskode());
         asboPenPerson.setDodsdato(fetchDate(søker.getDødsdato()).orElse(null));
-        asboPenPerson.setSivilstand("UGIF"); //søker.getSivilstand().getKode()); ikke støtte til relasjoner i modellen
+        asboPenPerson.setSivilstand(søker.getSivilstand().getKode());
         asboPenPerson.setSivilstandDato(fetchDate(søker.getSivilstand().getEndringstidspunkt())
                 .orElse(fetchDate(søker.getFødselsdato())
                         .orElse(null)));
@@ -40,9 +43,37 @@ public class PsakPersonAdapter {
                 .map(PsakPersonAdapter::convert)
                 .orElse(null));
         asboPenPerson.setErEgenansatt(false);
-
-        PERSONER.put(asboPenPerson.getFodselsnummer(), asboPenPerson);
+        asboPenPerson.setBrukerprofil(new ASBOPenBrukerprofil());
         return asboPenPerson;
+    }
+
+    private static ASBOPenRelasjonListe fetchRelasjoner(Personopplysninger personopplysninger) {
+        List<ASBOPenRelasjon> relasjonList =  personopplysninger.getFamilierelasjoner().stream()
+                .map(fr -> populateAsboPenRelasjon(personopplysninger, fr))
+                .collect(Collectors.toList());
+
+        ASBOPenRelasjonListe liste = new ASBOPenRelasjonListe();
+        liste.setRelasjoner(relasjonList.toArray(ASBOPenRelasjon[]::new));
+        return liste;
+    }
+
+    private static ASBOPenRelasjon populateAsboPenRelasjon(Personopplysninger personopplysninger, FamilierelasjonModell fr) {
+        ASBOPenRelasjon relasjon = new ASBOPenRelasjon();
+        relasjon.setRelasjonsType(fr.getRolle().name());
+        ASBOPenPerson annen = Stream.ofNullable(personopplysninger.getAnnenPart())
+                .filter(p -> p.getIdent().equals(fr.getTil().getIdent()))
+                .map(PsakPersonAdapter::populateAsboPenPerson)
+                .peek(p -> relasjon.setFom(fetchDate(personopplysninger.getSøker().getSivilstand().getFom()).orElse(null)))
+                .peek(p -> relasjon.setTom(fetchDate(personopplysninger.getSøker().getSivilstand().getTom()).orElse(null)))
+                .findFirst().orElseGet(() -> createShallowASBOPerson(fr));
+        relasjon.setPerson(annen);
+        return relasjon;
+    }
+
+    private static ASBOPenPerson createShallowASBOPerson(FamilierelasjonModell familierelasjon) {
+        ASBOPenPerson annen = new ASBOPenPerson();
+        annen.setFodselsnummer(familierelasjon.getTil().getIdent());
+        return annen;
     }
 
     public static Optional<ASBOPenPerson> getPreviouslyConverted(String foedselsnummer){
@@ -62,5 +93,4 @@ public class PsakPersonAdapter {
         asboPenBostedsAdresse.setPostnummer(adresse.getPostnummer());
         return asboPenBostedsAdresse;
     }
-
 }

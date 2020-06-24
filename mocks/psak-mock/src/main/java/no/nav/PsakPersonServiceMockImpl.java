@@ -1,6 +1,5 @@
 package no.nav;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.inf.psak.person.*;
 import no.nav.lib.pen.psakpselv.asbo.ASBOPenTomRespons;
@@ -32,7 +31,6 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
         ASBOPenFinnPersonResponse asboPenFinnPersonResponse = new ASBOPenFinnPersonResponse();
         ASBOPenPersonListe liste = new ASBOPenPersonListe();
         liste.setPersoner(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                .map(Personopplysninger::getSøker)
                 .map(PsakPersonAdapter::toASBOPerson)
                 .toArray(ASBOPenPerson[]::new));
 
@@ -88,12 +86,9 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentFamilierelasjonerRequest hentFamilierelasjonerRequest
     ) throws HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg, HentFamilierelasjonerFaultPenGeneriskMsg{
         return PsakPersonAdapter.getPreviouslyConverted(hentFamilierelasjonerRequest.getFodselsnummer())
-                    .map(p -> {p.setRelasjoner(new ASBOPenRelasjonListe()); return p;}) // konsumenten tåler ikke null
                 .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                    .map(Personopplysninger::getSøker)
-                    .filter(p -> p.getIdent().equals(hentFamilierelasjonerRequest.getFodselsnummer()))
+                    .filter(p -> p.getSøker().getIdent().equals(hentFamilierelasjonerRequest.getFodselsnummer()))
                     .map(PsakPersonAdapter::toASBOPerson)
-                    .peek(p -> p.setRelasjoner(new ASBOPenRelasjonListe())) // konsumenten tåler ikke null
                     .findFirst()
                     .orElseThrow(HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg::new));
     }
@@ -109,7 +104,6 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     ) throws HentSamboerforholdFaultPenPersonIkkeFunnetMsg, HentSamboerforholdFaultPenGeneriskMsg {
         return PsakPersonAdapter.getPreviouslyConverted(hentSamboerforholdRequest.getFodselsnummer())
                 .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                    .map(Personopplysninger::getSøker)
                     .map(PsakPersonAdapter::toASBOPerson)
                     .findFirst()
                     .orElseThrow(HentSamboerforholdFaultPenGeneriskMsg::new));
@@ -213,7 +207,6 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             throws HentPersonFaultPenPersonIkkeFunnetMsg, HentPersonFaultPenGeneriskMsg {
         return PsakPersonAdapter.getPreviouslyConverted(hentPersonRequest.getPerson().getFodselsnummer())
                 .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                    .map(Personopplysninger::getSøker)
                     .map(PsakPersonAdapter::toASBOPerson)
                     .findFirst()
                     .orElseThrow(HentPersonFaultPenPersonIkkeFunnetMsg::new));
