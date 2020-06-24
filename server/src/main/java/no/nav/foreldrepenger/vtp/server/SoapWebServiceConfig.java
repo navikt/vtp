@@ -1,14 +1,5 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.lang.reflect.Method;
-
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.WebServiceFeature;
-
-import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
-import org.eclipse.jetty.http.spi.JettyHttpContext;
-import org.eclipse.jetty.http.spi.JettyHttpServer;
-
 import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -39,6 +30,13 @@ import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
+import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
+import org.eclipse.jetty.http.spi.JettyHttpContext;
+import org.eclipse.jetty.http.spi.JettyHttpServer;
+
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.WebServiceFeature;
+import java.lang.reflect.Method;
 
 public class SoapWebServiceConfig {
 
@@ -83,8 +81,8 @@ public class SoapWebServiceConfig {
         publishWebService(new ArbeidsforholdMockImpl(repo), "/soap/aareg-core/ArbeidsforholdService/v3");
         publishWebService(new OrganisasjonV4MockImpl(repo), "/soap/ereg/ws/OrganisasjonService/v4");
         publishWebService(new OrganisasjonV5MockImpl(repo),"/soap/ereg/ws/OrganisasjonService/v5");
+        publishWebService(new SimulerFpServiceMockImpl(repo), "/soap/cics/services/oppdragService");
         publishWebService(new BehandleJournalV3ServiceMockImpl(),"/soap/services/behandlejournal/v3");
-        publishWebService(new SimulerFpServiceMockImpl(), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
         publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
         publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");

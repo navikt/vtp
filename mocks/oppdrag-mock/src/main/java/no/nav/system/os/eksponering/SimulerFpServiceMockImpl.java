@@ -1,15 +1,7 @@
 package no.nav.system.os.eksponering;
 
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.ws.soap.Addressing;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SendInnOppdragFeilUnderBehandling;
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerBeregningFeilUnderBehandling;
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService;
@@ -17,6 +9,16 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.S
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SendInnOppdragResponse;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jws.HandlerChain;
+import javax.jws.WebMethod;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.xml.ws.soap.Addressing;
+import java.util.Optional;
 
 
 @Addressing
@@ -27,6 +29,13 @@ public class SimulerFpServiceMockImpl implements SimulerFpService {
 
     private static Logger LOG = LoggerFactory.getLogger(SimulerFpServiceMockImpl.class);
 
+    private TestscenarioBuilderRepository scenarioRepository;
+
+    public SimulerFpServiceMockImpl(TestscenarioBuilderRepository scenarioRepository) {
+        this.scenarioRepository = scenarioRepository;
+    }
+
+    public SimulerFpServiceMockImpl() {}
 
     @Override
     @WebMethod
@@ -40,7 +49,14 @@ public class SimulerFpServiceMockImpl implements SimulerFpService {
     @WebResult(name = "simulerBeregningResponse", targetNamespace = "http://nav.no/system/os/tjenester/simulerFpService/simulerFpServiceGrensesnitt", partName = "parameters")
     public SimulerBeregningResponse simulerBeregning(SimulerBeregningRequest simulerBeregningRequest) throws SimulerBeregningFeilUnderBehandling {
         LOG.info("Simulerer beregning.");
+        Boolean negativSimulering = false;
+        // Hvor hentes fødselsnummeret fra? Finner det ikke i SimulerBeregningRequest?
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+        if (inntektYtelseModell.isPresent()) {
+            negativSimulering=inntektYtelseModell.get().getOppdragModell().getNegativSimulering();
+        }
+
         SimuleringGenerator simuleringGenerator = new SimuleringGenerator();
-        return simuleringGenerator.opprettSimuleringsResultat(simulerBeregningRequest);
+        return simuleringGenerator.opprettSimuleringsResultat(simulerBeregningRequest, negativSimulering);
     }
 }

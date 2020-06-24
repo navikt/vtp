@@ -3,11 +3,11 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.oppdrag.OppdragModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 
@@ -31,6 +31,9 @@ public class InntektYtelseModell {
 
     @JsonProperty("sigrun")
     private SigrunModell sigrunModell;
+
+    @JsonProperty("oppdrag")
+    private OppdragModell oppdragModell;
 
     public InntektYtelseModell() {
     }
@@ -99,5 +102,9 @@ public class InntektYtelseModell {
 
     public void setSigrunModell(SigrunModell sigrunModell) {
         this.sigrunModell = sigrunModell;
+    }
+
+    public OppdragModell getOppdragModell() {
+        return oppdragModell;
     }
 }

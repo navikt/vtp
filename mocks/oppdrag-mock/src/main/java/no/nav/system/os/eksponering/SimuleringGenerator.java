@@ -22,7 +22,8 @@ public class SimuleringGenerator {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
+    public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest,
+                                                               Boolean negativSimulering) {
         SimulerBeregningResponse response = new SimulerBeregningResponse();
         Beregning beregning = lagBeregning(simulerBeregningRequest);
         if (beregning == null) {
