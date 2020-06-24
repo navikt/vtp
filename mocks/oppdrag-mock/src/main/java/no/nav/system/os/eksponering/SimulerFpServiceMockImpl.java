@@ -51,7 +51,8 @@ public class SimulerFpServiceMockImpl implements SimulerFpService {
         LOG.info("Simulerer beregning.");
         Boolean negativSimulering = false;
         // Hvor hentes fødselsnummeret fra? Finner det ikke i SimulerBeregningRequest?
-        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+        // Den ligger i: simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId()
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId());
         if (inntektYtelseModell.isPresent()) {
             negativSimulering=inntektYtelseModell.get().getOppdragModell().getNegativSimulering();
         }
