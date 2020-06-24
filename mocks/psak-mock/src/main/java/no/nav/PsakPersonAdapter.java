@@ -2,6 +2,7 @@ package no.nav;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenBostedsAdresse;
 import no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson;
@@ -18,7 +19,8 @@ public class PsakPersonAdapter {
 
     private static final Map<String, ASBOPenPerson> PERSONER = new HashMap<>();
 
-    public static ASBOPenPerson toASBOPerson(SøkerModell søker) {
+    public static ASBOPenPerson toASBOPerson(Personopplysninger personopplysninger) {
+        SøkerModell søker = personopplysninger.getSøker();
         ASBOPenPerson asboPenPerson = new ASBOPenPerson();
         asboPenPerson.setRelasjoner(null);
         asboPenPerson.setFodselsnummer(søker.getIdent());
