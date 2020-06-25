@@ -29,8 +29,8 @@ class KravgrunnlagGenerator {
         detaljertKravgrunnlag.setDatoVedtakFagsystem(konvertDato(LocalDate.of(2019, 3, 14)));
         detaljertKravgrunnlag.setEnhetAnsvarlig(ENHET);
         detaljertKravgrunnlag.setFagsystemId("10000000000000000");
-        detaljertKravgrunnlag.setKodeFagomraade("FP");
-        detaljertKravgrunnlag.setKodeHjemmel("1234239042304");
+        detaljertKravgrunnlag.setKodeFagomraade("PENAP");
+        detaljertKravgrunnlag.setKodeHjemmel("22-15-1-1");
         detaljertKravgrunnlag.setKontrollfelt("42354353453454");
         detaljertKravgrunnlag.setReferanse("1");
         detaljertKravgrunnlag.setRenterBeregnes(JaNeiDto.N);
@@ -44,6 +44,7 @@ class KravgrunnlagGenerator {
         detaljertKravgrunnlag.setVedtakGjelderId("10127435540"); //mock verdi
         detaljertKravgrunnlag.setVedtakIdOmgjort(BigInteger.valueOf(207407));
         detaljertKravgrunnlag.getTilbakekrevingsPeriode().addAll(hentPerioder());
+
 
         return detaljertKravgrunnlag;
     }

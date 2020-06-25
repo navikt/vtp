@@ -30,7 +30,7 @@ public class TilbakekrevingServiceMockImpl implements TilbakekrevingPortType {
     @WebMethod
     @WebResult(name = "kravgrunnlagHentListeResponse", targetNamespace = "http://okonomi.nav.no/tilbakekrevingService/", partName = "parameters")
     public KravgrunnlagHentListeResponse kravgrunnlagHentListe(KravgrunnlagHentListeRequest kravgrunnlagHentListeRequest) {
-        throw new UnsupportedOperationException();
+        return  TilbakekrevingServiceMapper.opprettKravgrunnlagHentListeResponse();
     }
 
     @Override
