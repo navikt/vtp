@@ -51,8 +51,8 @@ public class SimuleringGenerator {
 
         beregning.setGjelderId(simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId());
         beregning.setGjelderNavn("DUMMY");
-        beregning.setDatoBeregnet("2018-10-10");
-        beregning.setKodeFaggruppe("DUMMY");
+        beregning.setDatoBeregnet(dateTimeFormatter.format(LocalDate.now()));
+        beregning.setKodeFaggruppe("KORTTID");
         beregning.setBelop(BigDecimal.valueOf(1234L));
 
         return beregning;
@@ -175,6 +175,7 @@ public class SimuleringGenerator {
         stoppnivaaDetaljer.setTrekkVedtakId(0L);
         //stonadId
         if (sequence == 4){ stoppnivaaDetaljer.setStonadId("1234"); }
+        else { stoppnivaaDetaljer.setStonadId(""); }
         //korrigering
         if (sequence == 2){ stoppnivaaDetaljer.setKorrigering("J"); }
         else { stoppnivaaDetaljer.setKorrigering(""); }
@@ -187,6 +188,7 @@ public class SimuleringGenerator {
         else { stoppnivaaDetaljer.setSats(BigDecimal.ZERO); }
         //typeSats
         if (sequence == 4){ stoppnivaaDetaljer.setTypeSats("DAG"); }
+        else { stoppnivaaDetaljer.setTypeSats(""); }
         //antallSats
         if (sequence >= 1 && sequence <= 2) { stoppnivaaDetaljer.setAntallSats(BigDecimal.valueOf(0)); }
         else { stoppnivaaDetaljer.setAntallSats(BigDecimal.valueOf(antallVirkedager)); }
@@ -199,6 +201,7 @@ public class SimuleringGenerator {
         stoppnivaaDetaljer.setKravhaverId("");
         //delytelseId
         if (sequence == 4){ stoppnivaaDetaljer.setDelytelseId("3523"); }
+        else { stoppnivaaDetaljer.setDelytelseId(""); }
         //bostedsenhet
         stoppnivaaDetaljer.setBostedsenhet("4643");
         //skyldnerId ?
