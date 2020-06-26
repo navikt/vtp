@@ -38,7 +38,7 @@
         <cxf.version>3.3.6</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.1</swagger.version>
-        <graphql-java.version>2020-04-04T07-05-23-9eae9c1</graphql-java.version>
+        <graphql-java.version>2020-06-07T01-09-40-d94eacc</graphql-java.version>
 
     </properties>
 
@@ -49,7 +49,7 @@
                 <!-- NB jetty avhengigher før resteasy -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-bom</artifactId>
-                <version>9.4.28.v20200408</version>
+                <version>9.4.30.v20200611</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -542,7 +542,7 @@
             <dependency>
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
-                <version>2.3.7</version>
+                <version>2.3.8</version>
             </dependency>
 
             <dependency>
@@ -560,7 +560,7 @@
             <dependency>
                 <groupId>com.unboundid</groupId>
                 <artifactId>unboundid-ldapsdk</artifactId>
-                <version>5.0.1</version>
+                <version>5.1.0</version>
             </dependency>
 
             <dependency>
@@ -737,12 +737,12 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
-                    <version>1.2.2</version>
+                    <version>1.2.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M4</version>
+                    <version>3.0.0-M5</version>
                     <configuration>
                         <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
                     </configuration>

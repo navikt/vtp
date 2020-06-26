@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-//TODO (OL): Redundant med koder to ganger? Refaktorer.
 public class Behandlingstema {
 
     private static List<String> VALID_KODER;

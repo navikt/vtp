@@ -11,7 +11,8 @@ Virtuell Tjeneste Plattform (VTP)
 - REST-grensesnitt for å programatisk opprette testdata (for automatiske tester) 
 - GUI for å opprette testdata for mennesker.
 
-## Henvendelser
+# Henvendelser
+
 - Team Foreldrepenger <teamforeldrepenger(at)nav.no>
 - Team Sykdom-i-familien
 

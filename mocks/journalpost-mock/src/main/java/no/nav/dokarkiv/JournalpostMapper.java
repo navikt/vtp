@@ -96,7 +96,10 @@ public class JournalpostMapper {
         DokumentVariantInnhold dokumentVariantInnhold = new DokumentVariantInnhold(
                 new Arkivfiltype(dokumentVariant.getFiltype()),
                 new Variantformat(dokumentVariant.getVariantformat()),
-                dokumentVariant.getFysiskDokument()
+                List.of("JSON","XML")
+                        .contains(dokumentVariant.getFiltype()) ?
+                        dokumentVariant.getFysiskDokument() :
+                        new byte[0]
         );
         return dokumentVariantInnhold;
     }
@@ -112,7 +115,7 @@ public class JournalpostMapper {
             return Journalposttyper.INNGAAENDE_DOKUMENT;
         } else if (type.value().equalsIgnoreCase("UTGAAENDE")){
             return Journalposttyper.UTGAAENDE_DOKUMENT;
-        } else if(type.value().equalsIgnoreCase("NOTAT"))          {
+        } else if(type.value().equalsIgnoreCase("NOTAT")){
             return Journalposttyper.NOTAT;
         } else {
             throw new IllegalArgumentException("Verdi journalposttype ikke støttet");

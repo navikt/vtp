@@ -34,6 +34,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         return organisasjonIndeks.getModellForIdent(orgnr);
     }
 
+  
     protected TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
         this.basisdata = basisdata;
     }
