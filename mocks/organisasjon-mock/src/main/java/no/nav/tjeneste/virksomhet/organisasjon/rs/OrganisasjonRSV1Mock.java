@@ -34,30 +34,6 @@ public class OrganisasjonRSV1Mock {
     @Context
     private TestscenarioBuilderRepository scenarioRepository;
 
-    @SuppressWarnings("unused")
-    @GET
-    @Path("/{orgnummer}")
-    @ApiOperation(value = "Henter informasjon for et organisasjonsnummer")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
-    })
-    public OrganisasjonEReg hentOrganisasjon(@PathParam("orgnummer") String orgnummer,
-                                             @Context HttpHeaders httpHeaders,
-                                             @Context UriInfo uriInfo) {
-        if (orgnummer != null) {
-            LOG.info("EREG REST {}", orgnummer);
-            Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
-            if (organisasjonModell.isPresent()) {
-                OrganisasjonModell modell = organisasjonModell.get();
-                return new OrganisasjonEReg(modell);
-            } else {
-                return null;
-            }
-        } else {
-            throw new IllegalArgumentException("Orgnummer ikke angitt");
-        }
-    }
 
     @SuppressWarnings("unused")
     @GET
