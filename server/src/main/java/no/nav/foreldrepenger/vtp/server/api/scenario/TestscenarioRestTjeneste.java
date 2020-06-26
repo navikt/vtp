@@ -1,22 +1,45 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
-import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
-import no.nav.foreldrepenger.vtp.kontrakter.TestscenariodataDto;
+import no.nav.foreldrepenger.vtp.autotest.scenario.TestscenarioDto;
+import no.nav.foreldrepenger.vtp.autotest.scenario.TestscenarioPersonopplysningDto;
+import no.nav.foreldrepenger.vtp.autotest.scenario.TestscenariodataDto;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.time.LocalDate;
-import java.util.*;
+import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenarios")

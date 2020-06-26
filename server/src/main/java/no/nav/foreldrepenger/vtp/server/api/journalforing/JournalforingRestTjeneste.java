@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.autotest.journalpost.JournalforingResultatDto;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
@@ -74,7 +75,7 @@ public class JournalforingRestTjeneste {
         return res;
     }
 
-    
+
     @POST
     @Path("/ustrukturertjournalpost/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     public JournalforingResultatDto lagUstrukturertJournalpost(@PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeid, @QueryParam(JOURNALSTATUS) String journalstatus){
