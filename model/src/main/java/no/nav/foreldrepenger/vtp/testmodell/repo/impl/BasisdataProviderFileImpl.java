@@ -101,4 +101,5 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
             organisasjonIndeks.leggTil(organisasjoner);
         }
     }
+
 }

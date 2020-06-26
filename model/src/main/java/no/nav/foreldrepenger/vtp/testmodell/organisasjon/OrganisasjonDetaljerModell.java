@@ -1,22 +1,24 @@
 package no.nav.foreldrepenger.vtp.testmodell.organisasjon;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganisasjonDetaljerModell {
 
     @JsonProperty("registreringsDato")
     private LocalDate registreringsDato;
-
     @JsonProperty("datoSistEndret")
     private LocalDate datoSistEndret;
-
-    @JsonProperty("postadresse")
-    private UstrukturertAdresseModell postadresse;
+    @JsonProperty("forretningsadresser")
+    private List<AdresseEReg> forretningsadresser;
+    @JsonProperty("postadresser")
+    private List<AdresseEReg> postadresser;
 
     public OrganisasjonDetaljerModell() {
     }
@@ -37,7 +39,11 @@ public class OrganisasjonDetaljerModell {
         this.datoSistEndret = datoSistEndret;
     }
 
-    public UstrukturertAdresseModell getPostadresse() { return postadresse; }
+    public List<AdresseEReg> getForretningsadresser() {
+        return forretningsadresser;
+    }
 
-    public void setPostadresse(UstrukturertAdresseModell postadresse) { this.postadresse = postadresse; }
+    public List<AdresseEReg> getPostadresser() {
+        return postadresser;
+    }
 }
