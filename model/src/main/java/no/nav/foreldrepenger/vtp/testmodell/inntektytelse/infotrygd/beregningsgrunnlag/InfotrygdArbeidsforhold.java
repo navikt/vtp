@@ -43,14 +43,6 @@ public class InfotrygdArbeidsforhold {
         return virksomhet;
     }
 
-    public String getLokalOrgnr() {
-        return lokalOrgnr;
-    }
-
-    public void setLokalOrgnr(String lokalOrgnr) {
-        this.lokalOrgnr = lokalOrgnr;
-    }
-
     public BigDecimal getBeløp() {
         return beløp;
     }
