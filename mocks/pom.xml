@@ -15,6 +15,7 @@
         <module>arbeidsforhold-mock</module>
         <module>arena-mock</module>
         <module>journalpost-mock</module>
+        <module>dialog-mock</module>
         <module>dokumentproduksjon-mock</module>
         <module>dokdist-mock</module>
         <module>dummy-mock</module>
