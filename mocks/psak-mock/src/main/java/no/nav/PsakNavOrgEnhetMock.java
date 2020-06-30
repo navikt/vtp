@@ -28,8 +28,9 @@ public class PsakNavOrgEnhetMock implements PSAKNAVOrgEnhet {
                     no.nav.lib.pen.psakpselv.asbo.navorgenhet.ASBOPenNAVEnhet hentNAVEnhetRequest
     ) throws HentNAVEnhetFaultPenNAVEnhetIkkeFunnetMsg, HentNAVEnhetFaultPenGeneriskMsg {
         ASBOPenNAVEnhet enhet = new ASBOPenNAVEnhet();
-        enhet.setEnhetsId("1235");
-        enhet.setEnhetsNavn("Kutoppen");
+        enhet.setEnhetsId("4407");
+        enhet.setEnhetsNavn("NAV Arbeid og ytelser Tønsberg");
+        enhet.setOrgNivaKode("GR");
         return enhet;
     }
 

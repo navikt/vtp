@@ -35,8 +35,8 @@ public class OrganisasjonEnhetMock implements OrganisasjonEnhetV2 {
             @WebParam(name = "request", targetNamespace = "") FinnNAVKontorRequest request) throws FinnNAVKontorUgyldigInput {
         FinnNAVKontorResponse response = new FinnNAVKontorResponse();
         Organisasjonsenhet orgEnhet = new Organisasjonsenhet();
-        orgEnhet.setEnhetId("1235");
-        orgEnhet.setEnhetNavn("Kutoppen");
+        orgEnhet.setEnhetId("4407");
+        orgEnhet.setEnhetNavn("NAV Arbeid og ytelser Tønsberg");
         response.setNAVKontor(orgEnhet);
         return response;
     }

@@ -25,15 +25,11 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     @Override
     public ASBOPenNAVEnhetListe hentNAVAnsattEnhetListe(@WebParam(name = "hentNAVAnsattEnhetListeRequest",targetNamespace = "") ASBOPenNAVAnsatt asboPenNAVAnsatt) throws HentNAVAnsattEnhetListeFaultPenGeneriskMsg, HentNAVAnsattEnhetListeFaultPenNAVAnsattIkkeFunnetMsg {
         ASBOPenNAVEnhetListe response = new ASBOPenNAVEnhetListe();
-        ASBOPenNAVEnhet kardemommeby = new ASBOPenNAVEnhet();
-        kardemommeby.setEnhetsId("1234");
-        kardemommeby.setEnhetsNavn("Kardemomme by");
+        ASBOPenNAVEnhet orgEnhet = new ASBOPenNAVEnhet();
+        orgEnhet.setEnhetsId("4407");
+        orgEnhet.setEnhetsNavn("NAV Arbeid og ytelser Tønsberg");
 
-        ASBOPenNAVEnhet hakkebakkeskogen = new ASBOPenNAVEnhet();
-        hakkebakkeskogen.setEnhetsId("5678");
-        hakkebakkeskogen.setEnhetsNavn("Hakkebakkeskogen");
-
-        response.setNAVEnheter(new ASBOPenNAVEnhet[] { kardemommeby, hakkebakkeskogen });
+        response.setNAVEnheter(new ASBOPenNAVEnhet[] { orgEnhet });
         return response;
     }
 

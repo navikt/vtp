@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXB;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Base64;
 
 @Api(tags = {"Security Token Service"})
@@ -52,7 +51,7 @@ public class STSRestTjeneste {
         jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
         String token = jws.getCompactSerialization();
-        return new UserTokenResponse(token, LocalDateTime.MAX.toEpochSecond(ZoneOffset.UTC), "jwt");
+        return new UserTokenResponse(token, 600000L, "jwt");
     }
 
     public static class SAMLResponse {

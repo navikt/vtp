@@ -1,66 +1,34 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3;
 
 
+import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.tjeneste.virksomhet.inntekt.v3.binding.*;
+import no.nav.tjeneste.virksomhet.inntekt.v3.feil.UgyldigInput;
+import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.*;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkResponse;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentDetaljerteAbonnerteInntekterResponse;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentForventetInntektResponse;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeBolkResponse;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeForOpplysningspliktigResponse;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeResponse;
+import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.*;
+import no.nav.tjeneste.virksomhet.inntekt.v3.modell.HentInntektlistBolkMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jws.*;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.Addressing;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-import javax.xml.ws.soap.Addressing;
-
-import no.nav.tjeneste.virksomhet.inntekt.v3.feil.UgyldigInput;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkHarIkkeTilgangTilOensketAInntektsfilter;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentAbonnerteInntekterBolkUgyldigInput;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterHarIkkeTilgangTilOensketAInntektsfilter;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterManglendeAbonnent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterPersonIkkeFunnet;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentDetaljerteAbonnerteInntekterUgyldigInput;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentForventetInntektPersonIkkeFunnet;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentForventetInntektSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentForventetInntektUgyldigInput;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeBolkHarIkkeTilgangTilOensketAInntektsfilter;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeBolkUgyldigInput;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeForOpplysningspliktigHarIkkeTilgangTilOensketAInntektsfilter;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeForOpplysningspliktigUgyldigInput;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeHarIkkeTilgangTilOensketAInntektsfilter;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeSikkerhetsbegrensning;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.HentInntektListeUgyldigInput;
-import no.nav.tjeneste.virksomhet.inntekt.v3.binding.InntektV3;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.Aktoer;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.AktoerId;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.ArbeidsInntektMaaned;
-import no.nav.tjeneste.virksomhet.inntekt.v3.informasjon.inntekt.PersonIdent;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkRequest;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentAbonnerteInntekterBolkResponse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentDetaljerteAbonnerteInntekterRequest;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentDetaljerteAbonnerteInntekterResponse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentForventetInntektRequest;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentForventetInntektResponse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeBolkRequest;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeBolkResponse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeForOpplysningspliktigRequest;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeForOpplysningspliktigResponse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeRequest;
-import no.nav.tjeneste.virksomhet.inntekt.v3.meldinger.HentInntektListeResponse;
-import no.nav.tjeneste.virksomhet.inntekt.v3.modell.HentInntektlistBolkMapper;
 
 @Addressing
 @WebService(name = "Inntekt_v3", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3")
@@ -153,7 +121,9 @@ public class InntektMockImpl implements InntektV3 {
     @ResponseWrapper(localName = "hentForventetInntektResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentForventetInntektResponse")
     public HentForventetInntektResponse hentForventetInntekt(@WebParam(name = "request", targetNamespace = "") HentForventetInntektRequest hentForventetInntektRequest) throws HentForventetInntektPersonIkkeFunnet, HentForventetInntektSikkerhetsbegrensning, HentForventetInntektUgyldigInput {
-        throw new UnsupportedOperationException("Ikke implementert");
+        HentForventetInntektResponse hentForventetInntektResponse = new HentForventetInntektResponse();
+        hentForventetInntektResponse.setIdent(hentForventetInntektRequest.getIdent());
+        return hentForventetInntektResponse;
     }
 
     @Override
