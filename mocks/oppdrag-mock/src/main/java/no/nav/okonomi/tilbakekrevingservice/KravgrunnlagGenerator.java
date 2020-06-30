@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagBelopDto;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagDto;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagPeriodeDto;
+import no.nav.tilbakekreving.kravgrunnlag.hentliste.v1.ReturnertKravgrunnlagDto;
 import no.nav.tilbakekreving.typer.v1.JaNeiDto;
 import no.nav.tilbakekreving.typer.v1.PeriodeDto;
 import no.nav.tilbakekreving.typer.v1.TypeGjelderDto;
@@ -73,8 +74,8 @@ class KravgrunnlagGenerator {
         periode.setFom(konvertDato(LocalDate.of(2016, 4, 1)));
         periode.setTom(konvertDato(LocalDate.of(2016, 4, 30)));
         kravgrunnlagPeriode3.setPeriode(periode);
-        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(21000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
-        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
+        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(21000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 20));
+        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 20));
         kravgrunnlagPeriode3.setBelopSkattMnd(new BigDecimal(6300));
 
 
@@ -106,6 +107,28 @@ class KravgrunnlagGenerator {
         detaljertKravgrunnlagBelop.setSkattProsent(BigDecimal.valueOf(skatteprosent));
 
         return detaljertKravgrunnlagBelop;
+    }
+
+    public static ReturnertKravgrunnlagDto createReturnertKravgrunnlagDto() {
+        ReturnertKravgrunnlagDto kravgrunnlag = new ReturnertKravgrunnlagDto();
+        kravgrunnlag.setKravgrunnlagId(BigInteger.valueOf(152806));
+        kravgrunnlag.setKodeStatusKrav("NY");
+        kravgrunnlag.setGjelderId("10127435540"); // mock verdi
+        kravgrunnlag.setTypeGjelderId(TypeGjelderDto.PERSON);
+        kravgrunnlag.setUtbetalesTilId("10127435540"); // mock verdi
+        kravgrunnlag.setTypeUtbetId(TypeGjelderDto.PERSON);
+        kravgrunnlag.setKodeFagomraade("PENAP");
+        kravgrunnlag.setFagsystemId("10000000000000000");
+        kravgrunnlag.setDatoVedtakFagsystem(konvertDato(LocalDate.of(2019, 3, 14)));
+        kravgrunnlag.setBelopSumFeilutbetalt(BigDecimal.valueOf(39000));
+        kravgrunnlag.setEnhetBosted(ENHET);
+        kravgrunnlag.setEnhetAnsvarlig(ENHET);
+        kravgrunnlag.setDatoKravDannet(konvertDato(LocalDate.of(2016, 6, 1)));
+        PeriodeDto periodeDto = new PeriodeDto();
+        periodeDto.setFom(konvertDato(LocalDate.of(2016, 3, 1)));
+        periodeDto.setTom(konvertDato(LocalDate.of(2016, 5, 26)));
+        kravgrunnlag.setPeriode(periodeDto);
+        return kravgrunnlag;
     }
 
     private static XMLGregorianCalendar konvertDato(LocalDate localDate) {

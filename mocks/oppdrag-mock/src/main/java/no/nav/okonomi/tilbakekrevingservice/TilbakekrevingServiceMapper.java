@@ -1,10 +1,6 @@
 package no.nav.okonomi.tilbakekrevingservice;
 
-import no.nav.tilbakekreving.kravgrunnlag.hentliste.v1.ReturnertKravgrunnlagDto;
 import no.nav.tilbakekreving.typer.v1.MmelDto;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 class TilbakekrevingServiceMapper {
 
@@ -27,11 +23,7 @@ class TilbakekrevingServiceMapper {
     public static KravgrunnlagHentListeResponse opprettKravgrunnlagHentListeResponse() {
         KravgrunnlagHentListeResponse respons = new KravgrunnlagHentListeResponse();
         respons.setMmel(opprettMmel());
-        ReturnertKravgrunnlagDto kravgrunnlag = new ReturnertKravgrunnlagDto();
-        kravgrunnlag.setKravgrunnlagId(BigInteger.ONE);
-        kravgrunnlag.setKodeStatusKrav("NY");
-        kravgrunnlag.setBelopSumFeilutbetalt(BigDecimal.valueOf(20000));
-        respons.getKravgrunnlagListe().add(kravgrunnlag);
+        respons.getKravgrunnlagListe().add(KravgrunnlagGenerator.createReturnertKravgrunnlagDto());
         return respons;
     }
 
