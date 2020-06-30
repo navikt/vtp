@@ -4,16 +4,20 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.inf.psak.person.*;
 import no.nav.lib.pen.psakpselv.asbo.ASBOPenTomRespons;
 import no.nav.lib.pen.psakpselv.asbo.person.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jws.*;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
+import java.util.Optional;
 
 @Addressing
 @WebService(targetNamespace = "http://nav-cons-pen-psak-person/no/nav/inf", name = "PSAKPerson")
 @HandlerChain(file = "Handler-chain.xml")
 public class PsakPersonServiceMockImpl implements PSAKPerson {
+    private static final Logger LOG = LoggerFactory.getLogger(PsakPersonServiceMockImpl.class);
     private final TestscenarioBuilderRepository repo;
 
     public PsakPersonServiceMockImpl(TestscenarioBuilderRepository repo) {
@@ -57,8 +61,7 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentBrukerprofilRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentBrukerprofilRequest
     ) throws HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg, HentBrukerprofilFaultPenGeneriskMsg {
-        return PsakPersonAdapter.getPreviouslyConverted(hentBrukerprofilRequest.getFodselsnummer())
-                .orElse(hentBrukerprofilRequest);
+        return getASBOPerson(hentBrukerprofilRequest.getFodselsnummer()).orElseThrow(HentBrukerprofilFaultPenBrukerprofilIkkeFunnetMsg::new);
     }
 
     @Override
@@ -85,12 +88,7 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentFamilierelasjonerRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentFamilierelasjonerRequest hentFamilierelasjonerRequest
     ) throws HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg, HentFamilierelasjonerFaultPenGeneriskMsg{
-        return PsakPersonAdapter.getPreviouslyConverted(hentFamilierelasjonerRequest.getFodselsnummer())
-                .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                    .filter(p -> p.getSøker().getIdent().equals(hentFamilierelasjonerRequest.getFodselsnummer()))
-                    .map(PsakPersonAdapter::toASBOPerson)
-                    .findFirst()
-                    .orElseThrow(HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg::new));
+        return getASBOPerson(hentFamilierelasjonerRequest.getFodselsnummer()).orElseThrow(HentFamilierelasjonerFaultPenPersonIkkeFunnetMsg::new);
     }
 
     @Override
@@ -102,11 +100,7 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentSamboerforholdRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentSamboerforholdRequest hentSamboerforholdRequest
     ) throws HentSamboerforholdFaultPenPersonIkkeFunnetMsg, HentSamboerforholdFaultPenGeneriskMsg {
-        return PsakPersonAdapter.getPreviouslyConverted(hentSamboerforholdRequest.getFodselsnummer())
-                .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                    .map(PsakPersonAdapter::toASBOPerson)
-                    .findFirst()
-                    .orElseThrow(HentSamboerforholdFaultPenGeneriskMsg::new));
+        return getASBOPerson(hentSamboerforholdRequest.getFodselsnummer()).orElseThrow(HentSamboerforholdFaultPenGeneriskMsg::new);
     }
 
     @Override
@@ -193,8 +187,7 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
             @WebParam(name = "hentKontoinformasjonRequest", targetNamespace = "")
                     no.nav.lib.pen.psakpselv.asbo.person.ASBOPenPerson hentKontoinformasjonRequest
     ) throws HentKontoinformasjonFaultPenPersonIkkeFunnetMsg, HentKontoinformasjonFaultPenGeneriskMsg {
-        return PsakPersonAdapter.getPreviouslyConverted(hentKontoinformasjonRequest.getFodselsnummer())
-                .orElse(hentKontoinformasjonRequest);
+        return getASBOPerson(hentKontoinformasjonRequest.getFodselsnummer()).orElseThrow(HentKontoinformasjonFaultPenPersonIkkeFunnetMsg::new);
     }
 
     @Override
@@ -205,11 +198,25 @@ public class PsakPersonServiceMockImpl implements PSAKPerson {
     public ASBOPenPerson hentPerson(
             @WebParam(name = "hentPersonRequest", targetNamespace = "") no.nav.lib.pen.psakpselv.asbo.person.ASBOPenHentPersonRequest hentPersonRequest)
             throws HentPersonFaultPenPersonIkkeFunnetMsg, HentPersonFaultPenGeneriskMsg {
-        return PsakPersonAdapter.getPreviouslyConverted(hentPersonRequest.getPerson().getFodselsnummer())
-                .orElse(repo.getPersonIndeks().getAlleSøkere().parallelStream()
-                    .map(PsakPersonAdapter::toASBOPerson)
-                    .findFirst()
-                    .orElseThrow(HentPersonFaultPenPersonIkkeFunnetMsg::new));
+        return getASBOPerson(hentPersonRequest.getPerson().getFodselsnummer()).orElseThrow(HentPersonFaultPenPersonIkkeFunnetMsg::new);
+    }
+
+    private Optional<ASBOPenPerson> getASBOPerson(String fodselsnummer) {
+        return PsakPersonAdapter.getPreviouslyConverted(fodselsnummer)
+                .or(() -> hentFraRepo(fodselsnummer))
+                .or(() -> logIkkeFunnet(fodselsnummer));
+    }
+
+    private Optional<ASBOPenPerson> hentFraRepo(String fodselsnummer) {
+        return repo.getPersonIndeks().getAlleSøkere().parallelStream()
+            .filter(p -> p.getSøker().getIdent().equals(fodselsnummer))
+            .map(PsakPersonAdapter::toASBOPerson)
+            .findFirst();
+    }
+
+    private Optional<ASBOPenPerson> logIkkeFunnet(String fodselsnummer) {
+        LOG.warn("Klarte ikke å finne person med fnr: " + fodselsnummer + " verken i repo eller blant konverterte: " + PsakPersonAdapter.getPreviouslyConverted());
+        return Optional.empty();
     }
 
     @Override

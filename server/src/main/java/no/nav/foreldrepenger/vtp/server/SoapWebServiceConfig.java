@@ -12,9 +12,10 @@ import no.nav.tjeneste.organisasjonenhet.v2.OrganisasjonEnhetMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
-import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingMockImpl;
+import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingV1Mock;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV2MockImpl;
+import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV3Mock;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalV1ServiceMock;
 import no.nav.tjeneste.virksomhet.behandlejournal.v3.BehandleJournalV3ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
@@ -76,8 +77,9 @@ public class SoapWebServiceConfig {
 
         publishWebService(new DokumentproduksjonV2MockImpl(journalRepository), "/soap/dokprod/ws/dokumentproduksjon/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/soap/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
-        publishWebService(new ArbeidsevnevurderingMockImpl(),"/soap/ail_ws/Arbeidsevnevurdering_v1");
+        publishWebService(new ArbeidsevnevurderingV1Mock(), "/soap/ail_ws/Arbeidsevnevurdering_v1");
         publishWebService(new YtelseskontraktV2MockImpl(),"/soap/ail_ws/Ytelseskontrakt_v2");
+        publishWebService(new YtelseskontraktV3Mock(),"/soap/ail_ws/Ytelseskontrakt_v3");
         publishWebService(new MedlemServiceMockImpl(repo), "/soap/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/soap/norg2/ws/Arbeidsfordeling/v1");
         publishWebService(new OrganisasjonEnhetMock(), "/soap/norg2/ws/OrganisasjonEnhet/v2");
@@ -93,12 +95,16 @@ public class SoapWebServiceConfig {
         publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
         publishWebService(new NavAnsattServiceMockImpl(), "/soap/esb/nav-cons-pen-psak-navansattWeb/sca/PSAKNAVAnsattWSEXP");
         publishWebService(new PsakPersonServiceMockImpl(repo), "/soap/esb/nav-cons-pen-psak-personWeb/sca/PSAKPersonWSEXP");
+        publishWebService(new PenPersonServiceMockImpl(repo), "/soap/esb/nav-cons-pen-pen-personWeb/sca/PENPersonWSEXP");
         publishWebService(new HenvendelseMock(), "/soap/esb/nav-cons-pen-psak-henvendelseWeb/sca/PSAKHenvendelseWSEXP");
         publishWebService(new SakMock(), "/soap/esb/nav-tjeneste-sak_v1Web/sca/SakWSEXP");
         publishWebService(new JournalMock(),"/soap/esb/nav-tjeneste-journal_v2Web/sca/JournalWSEXP");
         publishWebService(new PsakNavOrgEnhetMock(), "/soap/esb/nav-cons-pen-psak-navorgenhetWeb/sca/PSAKNAVOrgEnhetWSEXP");
         publishWebService(new DialogMock(),"/soap/henvendelse/services/domene.Virksomhet/Dialog_v1");
         publishWebService(new DigitalKontaktinformasjonV1Mock(),"/soap/ws/DigitalKontaktinformasjon/v1");
+        publishWebService(new PenTjenestePensjonMock(), "/soap/esb/nav-cons-pen-pen-tjenestepensjonWeb/sca/PENTjenestepensjonWSEXP");
+        publishWebService(new OppgaveBehandlingMock(), "/soap/esb/nav-tjeneste-oppgavebehandling_v2Web/sca/OppgavebehandlingWSEXP");
+        publishWebService(new MedlemskapMock(), "/soap/esb/nav-tjeneste-medlemskap_v1Web/sca/MedlemskapWSEXP");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

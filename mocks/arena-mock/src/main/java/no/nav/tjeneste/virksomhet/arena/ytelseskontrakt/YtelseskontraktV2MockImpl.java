@@ -1,6 +1,5 @@
 package no.nav.tjeneste.virksomhet.arena.ytelseskontrakt;
 
-import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingMockImpl;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v2.binding.HentYtelseskontraktListeSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v2.binding.YtelseskontraktV2;
 import no.nav.tjeneste.virksomhet.ytelseskontrakt.v2.informasjon.ytelseskontrakt.Bruker;

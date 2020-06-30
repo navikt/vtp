@@ -233,3 +233,24 @@ memberOf: CN=0000-GA-INNTK,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnit
  s,DC=test,DC=local
 memberOf: CN=0000-GA-fpsak-Oppgavestyrer,OU=AccountGroups,OU=Groups,OU=NAV,O
  U=BusinessUnits,DC=test,DC=local
+
+dn: CN=pssak,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+objectClass: user
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: pssak
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local
+displayName: Pesys saksbehandler
+memberOf: CN=0000-GA-INNTK_UFOERE,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-PENSJON_NDU,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-ga-pensjon_ufore,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-Pensjon_attestering,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-Pensjon_SPESIAL_BEREGNING_RESTPENSJON_PENSJONSBEHOLDNING,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-PENSJON_FULLMAKTADM,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-Pensjon_SPESIAL_PGI,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-PENSJON_SAKSBEHANDLER,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-Pensjon_Utland,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-Pensjon_UTVIDET,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+memberOf: CN=0000-GA-Pensjon,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local

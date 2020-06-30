@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.jaxrs.config.BeanConfig;
+import no.nav.InstitusjonOppholdMock;
+import no.nav.PensjonsPoengMock;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -103,6 +105,8 @@ public class ApplicationConfig extends Application {
         classes.add(InnsynMock.class);
         classes.add(DokdistfordelingMock.class);
         classes.add(STSRestTjeneste.class);
+        classes.add(InstitusjonOppholdMock.class);
+        classes.add(PensjonsPoengMock.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);

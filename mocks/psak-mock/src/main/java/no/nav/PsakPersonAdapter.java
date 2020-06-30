@@ -17,8 +17,6 @@ public class PsakPersonAdapter {
     public static ASBOPenPerson toASBOPerson(Personopplysninger personopplysninger) {
         ASBOPenPerson asboPenPerson = populateAsboPenPerson(personopplysninger.getSøker());
         asboPenPerson.setRelasjoner(fetchRelasjoner(personopplysninger));
-
-        PERSONER.put(asboPenPerson.getFodselsnummer(), asboPenPerson);
         return asboPenPerson;
     }
 
@@ -44,6 +42,23 @@ public class PsakPersonAdapter {
                 .orElse(null));
         asboPenPerson.setErEgenansatt(false);
         asboPenPerson.setBrukerprofil(new ASBOPenBrukerprofil());
+        ASBOPenPersonUtland personUtland = new ASBOPenPersonUtland();
+        personUtland.setStatsborgerKode("NOR");
+        personUtland.setStatsborgerskap("NOR");
+        asboPenPerson.setPersonUtland(personUtland);
+        ASBOPenHistorikk historikk = new ASBOPenHistorikk();
+        historikk.setBostedsadresser(null);
+        asboPenPerson.setHistorikk(historikk);
+
+        ASBOPenUtbetalingsinformasjon utbetalingsinformasjon = new ASBOPenUtbetalingsinformasjon();
+        ASBOPenNorskKonto norskKonto = new ASBOPenNorskKonto();
+        norskKonto.setKontonummer("1234.45678.0232.7777");
+
+        utbetalingsinformasjon.setNorskKonto(norskKonto);
+        utbetalingsinformasjon.setUtbetalingsType("NORKNT");
+        asboPenPerson.setUtbetalingsinformasjon(utbetalingsinformasjon);
+
+        PERSONER.put(asboPenPerson.getFodselsnummer(), asboPenPerson);
         return asboPenPerson;
     }
 
@@ -78,6 +93,10 @@ public class PsakPersonAdapter {
 
     public static Optional<ASBOPenPerson> getPreviouslyConverted(String foedselsnummer){
         return Optional.ofNullable(PERSONER.get(foedselsnummer));
+    }
+
+    public static String getPreviouslyConverted(){
+        return PERSONER.keySet().toString();
     }
 
     private static Optional<GregorianCalendar> fetchDate(LocalDate date) {
