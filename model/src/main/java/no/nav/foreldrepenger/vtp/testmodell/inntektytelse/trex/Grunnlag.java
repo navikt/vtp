@@ -16,7 +16,7 @@ public class Grunnlag {
     private Arbeidskategori kategori;
     private List<Arbeidsforhold> arbeidsforhold;
     private Periode periode;
-    private Behandlingstema behandlingsTema;
+    private Behandlingstema behandlingstema;
     private LocalDate identdato;
     private LocalDate iverksatt;
     private LocalDate opphørFom;
@@ -34,7 +34,7 @@ public class Grunnlag {
             @JsonProperty("kategori") @JsonAlias("arbeidskategori") Arbeidskategori kategori,
             @JsonProperty("arbeidsforhold") List<Arbeidsforhold> arbeidsforhold,
             @JsonProperty("periode") Periode periode,
-            @JsonProperty("behandlingstema") Behandlingstema behandlingsTema,
+            @JsonProperty("behandlingstema") Behandlingstema behandlingstema,
             @JsonProperty("identdato") LocalDate identdato,
             @JsonProperty("iverksatt") LocalDate iverksatt,
             @JsonProperty("opphørFom") @JsonAlias("opphoerFom") LocalDate opphørFom,
@@ -50,7 +50,7 @@ public class Grunnlag {
         this.kategori = kategori;
         this.arbeidsforhold = arbeidsforhold;
         this.periode = periode;
-        this.behandlingsTema = behandlingsTema;
+        this.behandlingstema = behandlingstema;
         this.identdato = identdato;
         this.iverksatt = iverksatt;
         this.opphørFom = opphørFom;
@@ -89,8 +89,8 @@ public class Grunnlag {
         return periode;
     }
 
-    public Behandlingstema getBehandlingsTema() {
-        return behandlingsTema;
+    public Behandlingstema getBehandlingstema() {
+        return behandlingstema;
     }
 
     public LocalDate getIdentdato() {
@@ -127,7 +127,7 @@ public class Grunnlag {
 
     @Override
     public int hashCode() {
-        return Objects.hash(arbeidsforhold, behandlingsTema, dekningsgrad, fødselsdatoBarn, gradering, identdato,
+        return Objects.hash(arbeidsforhold, behandlingstema, dekningsgrad, fødselsdatoBarn, gradering, identdato,
                 iverksatt, kategori, opphørFom, opprinneligIdentdato, periode, registrert, saksbehandlerId, status,
                 tema, vedtak);
 
@@ -143,7 +143,7 @@ public class Grunnlag {
         }
         Grunnlag that = (Grunnlag) obj;
         return Objects.equals(that.arbeidsforhold, this.arbeidsforhold) &&
-                Objects.equals(that.behandlingsTema, this.behandlingsTema) &&
+                Objects.equals(that.behandlingstema, this.behandlingstema) &&
                 Objects.equals(that.dekningsgrad, this.dekningsgrad) &&
                 Objects.equals(that.fødselsdatoBarn, this.fødselsdatoBarn) &&
                 Objects.equals(that.gradering, this.gradering) &&
@@ -163,7 +163,7 @@ public class Grunnlag {
     public String toString() {
         return getClass().getSimpleName() + "[status=" + status + ", tema=" + tema + ", dekningsgrad=" + dekningsgrad
                 + ", fødselsdatoBarn=" + fødselsdatoBarn + ", kategori=" + kategori + ", arbeidsforhold="
-                + arbeidsforhold + ", periode=" + periode + ", behandlingsTema=" + behandlingsTema + ", identdato="
+                + arbeidsforhold + ", periode=" + periode + ", behandlingstema=" + behandlingstema + ", identdato="
                 + identdato + ", iverksatt=" + iverksatt + ", opphørFom=" + opphørFom + ", gradering=" + gradering
                 + ", opprinneligIdentdato=" + opprinneligIdentdato + ", registrert=" + registrert + ", saksbehandlerId="
                 + saksbehandlerId + ", vedtak=" + vedtak + "]";

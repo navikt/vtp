@@ -1,22 +1,43 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
-import no.nav.foreldrepenger.vtp.kontrakter.TestscenariodataDto;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.time.LocalDate;
-import java.util.*;
+import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenarios")
@@ -120,7 +141,7 @@ public class TestscenarioRestTjeneste {
     @Path("/{id}")
     @ApiOperation(value = "", notes= "Sletter et initialisert testscenario som matcher id")
     public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
-        logger.info("Sletter testscenario med id: [{}]");
+        logger.info("Sletter testscenario med id: [{}]", id);
         if(testscenarioRepository.slettScenario(id)){
             return Response.noContent().build();
         } else {
@@ -159,19 +180,8 @@ public class TestscenarioRestTjeneste {
                 aktørIdAnnenPart,
                 fødselsdato.orElse(null));
 
-        TestscenariodataDto scenariodata = new TestscenariodataDto();
-        if(testscenario.getSøkerInntektYtelse() != null) {
-            ArbeidsforholdModell arbeidsforholdModell = testscenario.getSøkerInntektYtelse().getArbeidsforholdModell();
-            InntektskomponentModell inntektskomponentModell = testscenario.getSøkerInntektYtelse().getInntektskomponentModell();
-            scenariodata = new TestscenariodataDto(inntektskomponentModell, arbeidsforholdModell);
-        }
-
-        TestscenariodataDto scenariodataAnnenpart = null;
-        if (testscenario.getAnnenpartInntektYtelse() != null) {
-            ArbeidsforholdModell arbeidsforholdModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getArbeidsforholdModell();
-            InntektskomponentModell inntektskomponentModellAnnenpart = testscenario.getAnnenpartInntektYtelse().getInntektskomponentModell();
-            scenariodataAnnenpart = new TestscenariodataDto(inntektskomponentModellAnnenpart, arbeidsforholdModellAnnenpart);
-        }
+        InntektYtelseModell søkerInntektYtelse = testscenario.getSøkerInntektYtelse();
+        InntektYtelseModell annenpartInntektYtelse = testscenario.getAnnenpartInntektYtelse();
 
         return new TestscenarioDto(
                 templateKey,
@@ -179,9 +189,8 @@ public class TestscenarioRestTjeneste {
                 testscenario.getId(),
                 testscenario.getVariabelContainer().getVars(),
                 scenarioPersonopplysninger,
-                scenariodata,
-                scenariodataAnnenpart);
-
+                søkerInntektYtelse,
+                annenpartInntektYtelse);
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {

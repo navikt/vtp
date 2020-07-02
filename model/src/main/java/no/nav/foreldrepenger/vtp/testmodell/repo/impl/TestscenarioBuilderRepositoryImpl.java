@@ -1,22 +1,30 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.*;
-import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonNavn;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
+import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
 public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRepository {
 
@@ -34,7 +42,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         return organisasjonIndeks.getModellForIdent(orgnr);
     }
 
-  
+
     protected TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
         this.basisdata = basisdata;
     }
@@ -123,7 +131,8 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     }
 
     @Override
-    public Boolean endreTestscenario(Testscenario testscenario) {
+    public Boolean endreTestscenario(String id, Testscenario testscenario) {
+        scenarios.replace(id, testscenario);
         return null;
     }
 

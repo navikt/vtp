@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
@@ -36,6 +37,18 @@ public class InntektYtelseModell {
     private OppdragModell oppdragModell;
 
     public InntektYtelseModell() {
+    }
+
+    public InntektYtelseModell(ArenaModell arenaModell, InfotrygdModell infotrygdModell, TRexModell tRexModell,
+                               InntektskomponentModell inntektskomponentModell, ArbeidsforholdModell arbeidsforholdModell,
+                               SigrunModell sigrunModell, OppdragModell oppdragModell) {
+        this.arenaModell = arenaModell;
+        this.infotrygdModell = infotrygdModell;
+        this.tRexModell = tRexModell;
+        this.inntektskomponentModell = inntektskomponentModell;
+        this.arbeidsforholdModell = arbeidsforholdModell;
+        this.sigrunModell = sigrunModell;
+        this.oppdragModell = oppdragModell;
     }
 
     public ArenaModell getArenaModell() {

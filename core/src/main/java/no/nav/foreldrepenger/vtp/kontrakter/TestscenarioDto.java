@@ -1,13 +1,15 @@
 package no.nav.foreldrepenger.vtp.kontrakter;
 
+import java.util.Collections;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Collections;
-import java.util.Map;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class TestscenarioDto extends TestscenarioReferanse {
@@ -20,11 +22,11 @@ public class TestscenarioDto extends TestscenarioReferanse {
     private Map<String, String> variabler;
 
     @JsonProperty("scenariodata")
-    private TestscenariodataDto scenariodataDto;
+    private InntektYtelseModell scenariodataDto;
 
     @JsonInclude(content = Include.NON_EMPTY)
     @JsonProperty("scenariodataAnnenpart")
-    private TestscenariodataDto scenariodataAnnenpartDto;
+    private InntektYtelseModell scenariodataAnnenpartDto;
 
     public TestscenarioDto() {
         super(null, null);
@@ -36,12 +38,11 @@ public class TestscenarioDto extends TestscenarioReferanse {
             String testscenarioId,
             Map<String, String> variabler,
             TestscenarioPersonopplysningDto testscenarioPersonopplysningDto,
-            TestscenariodataDto scenariodataDto,
-            TestscenariodataDto scenariodataAnnenpartDto
+            InntektYtelseModell scenariodataDto,
+            InntektYtelseModell scenariodataAnnenpartDto
     ) {
         super(testscenarioId, templateKey);
         this.personopplysninger = testscenarioPersonopplysningDto;
-        this.variabler = variabler;
         this.scenariodataDto = scenariodataDto;
         this.scenariodataAnnenpartDto = scenariodataAnnenpartDto;
         this.setTemplateNavn(templateName);
@@ -56,11 +57,11 @@ public class TestscenarioDto extends TestscenarioReferanse {
         return Collections.unmodifiableMap(variabler);
     }
 
-    public TestscenariodataDto getScenariodata() {
+    public InntektYtelseModell getScenariodata() {
         return scenariodataDto;
     }
 
-    public TestscenariodataDto getScenariodataAnnenpart() {
+    public InntektYtelseModell getScenariodataAnnenpart() {
         return scenariodataAnnenpartDto;
     }
 }

@@ -1,13 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import java.util.Map;
+import java.util.Optional;
+
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
-
-import java.util.Map;
-import java.util.Optional;
 
 public interface TestscenarioBuilderRepository {
 
@@ -31,6 +31,6 @@ public interface TestscenarioBuilderRepository {
 
     Boolean slettScenario(String id);
 
-    Boolean endreTestscenario(Testscenario testscenario);
+    Boolean endreTestscenario(String id, Testscenario testscenario);
 
 }
