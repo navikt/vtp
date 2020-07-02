@@ -20,7 +20,7 @@
 					{
 						"orgnr": "910909088",
 						"inntekt": 10000,
-						"inntektsperiode": {
+						"inntektperiode": {
 							"kode": "M",
 							"termnavn": "inntektperiode"
 						},

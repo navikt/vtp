@@ -17,7 +17,7 @@ public class Arbeidsforhold {
     public Arbeidsforhold(
             @JsonProperty("orgnr") @JsonAlias("arbeidsgiverOrgnr") Orgnummer orgnr,
             @JsonProperty("inntekt") @JsonAlias("inntektForPerioden") Integer inntekt,
-            @JsonProperty("inntektsperiode") Inntektsperiode inntektperiode,
+            @JsonProperty("inntektperiode") Inntektsperiode inntektperiode,
             @JsonProperty("refusjon") Boolean refusjon) {
         this.orgnr = orgnr;
         this.inntekt = inntekt;
