@@ -105,6 +105,9 @@ public class SoapWebServiceConfig {
         publishWebService(new PenTjenestePensjonMock(), "/soap/esb/nav-cons-pen-pen-tjenestepensjonWeb/sca/PENTjenestepensjonWSEXP");
         publishWebService(new OppgaveBehandlingMock(), "/soap/esb/nav-tjeneste-oppgavebehandling_v2Web/sca/OppgavebehandlingWSEXP");
         publishWebService(new MedlemskapMock(), "/soap/esb/nav-tjeneste-medlemskap_v1Web/sca/MedlemskapWSEXP");
+        publishWebService(new PENFullmaktMock(), "/soap/esb/nav-cons-pen-pen-fullmaktWeb/sca/PENFullmaktWSEXP");
+        publishWebService(new PENOppdragMock(), "/soap/esb/nav-cons-pen-pen-oppdragWeb/sca/PENOppdragWSEXP");
+        publishWebService(new PSAKPPEN015Mock(), "/soap/esb/nav-cons-pen-psak-ppen015Web/sca/PSAKPPEN015WSEXP");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {
