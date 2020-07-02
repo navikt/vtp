@@ -43,6 +43,7 @@ public class TestscenarioDto extends TestscenarioReferanse {
     ) {
         super(testscenarioId, templateKey);
         this.personopplysninger = testscenarioPersonopplysningDto;
+        this.variabler = variabler;
         this.scenariodataDto = scenariodataDto;
         this.scenariodataAnnenpartDto = scenariodataAnnenpartDto;
         this.setTemplateNavn(templateName);
