@@ -20,7 +20,7 @@
 					{
 						"orgnr": "1",
 						"inntekt": 10000,
-						"inntektperiode": {
+						"inntektsperiode": {
 							"kode": "M",
 							"termnavn": "inntektperiode"
 						},
