@@ -1,0 +1,2549 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api Documentation",
+    "version": "1.0",
+    "title": "Api Documentation",
+    "termsOfService": "urn:tos",
+    "contact": {},
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "host": "http://app-q1.adeo.no",
+  "basePath": "/norg2",
+  "tags": [
+    {
+      "name": "arbeidsfordeling",
+      "description": "Tilrettelegger oppslag og vedlikehold av informasjon om  ruting av arbeidsoppgaver til enheter"
+    },
+    {
+      "name": "enhet",
+      "description": "Tilrettelegger oppslag og vedlikehold av enheter og kontaktinformajson om enheter"
+    },
+    {
+      "name": "enhetskontaktinfo",
+      "description": "Tilrettelegger oppslag av NAV enheter suplert med kontaktinformasjon og overordnet enhet"
+    },
+    {
+      "name": "kodeverk",
+      "description": "Tilrettelegger oppslag i kodeverk"
+    },
+    {
+      "name": "kompetansekoe",
+      "description": "Tilrettelegger oppslag og vedlikehold av kompetansekøer"
+    },
+    {
+      "name": "kontaktinformasjon",
+      "description": "Tilretelegger oppslag og oppdatering av kontaktinforsjon for enheter"
+    },
+    {
+      "name": "navkontor",
+      "description": "Tilrettelegger oppretting, oppdatering og sletting av NAV kontorer"
+    },
+    {
+      "name": "organisering",
+      "description": "Tilrettelegger vedlikehold av orgraniseringsforhold mellom enheter"
+    },
+    {
+      "name": "publikumsmottak",
+      "description": "Tilrettelegger oppslag og vedlikehold av informasjon om publikumsmottak for enheter"
+    },
+    {
+      "name": "temakoder",
+      "description": "Tilrettelegger oppslag og oppretting/oppdatering av temakoder"
+    }
+  ],
+  "paths": {
+    "/api/v1/arbeidsfordeling": {
+      "post": {
+        "tags": [
+          "arbeidsfordeling"
+        ],
+        "summary": "Returnerer alle arbeidsfordelinger basert på et oppgitt set av søkekriterier",
+        "operationId": "findArbeidsfordelingByCriteriaUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Søkekriterie",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsFordelingCriteriaSkjermet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsArbeidsfordelingShort"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "arbeidsfordeling"
+        ],
+        "summary": "Oppretter en ny arbeidsfordeling for en enhet",
+        "operationId": "createArbeidsfordelingUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "rsArbeidsfordeling",
+            "description": "Ny arbeidsfordeling til en enhet",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsfordeling"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsfordeling"
+            }
+          },
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsfordeling"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/arbeidsfordeling/enheter": {
+      "post": {
+        "tags": [
+          "arbeidsfordeling"
+        ],
+        "summary": "Returnerer en liste med enheter oppgaver spesifisert i søkekriteriet kan rutes til",
+        "operationId": "getBehandlendeEnheterUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "alle",
+            "in": "query",
+            "description": "Hvorvidt alle enheter skal returneres. Dersom ikke spesifiert, eller satt til false, returneres kun enheter best egnet for arbeidsfordelingen",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "allowEmptyValue": false,
+            "x-example": false
+          },
+          {
+            "name": "enhetstype",
+            "in": "query",
+            "description": "Enhetstyper resulterende enheter skal filtreres på",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "allowEmptyValue": false
+          },
+          {
+            "in": "body",
+            "name": "requestCriteria",
+            "description": "Søkekriterie",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsfordelingCriteria"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsArbeidsfordeling"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/arbeidsfordeling/{arbeidsfordelingId}": {
+      "post": {
+        "tags": [
+          "arbeidsfordeling"
+        ],
+        "summary": "Oppdaterer en arbeidsfordeling for en enhet",
+        "operationId": "updateArbeidsfordelingUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "arbeidsfordelingId",
+            "in": "path",
+            "description": "ID til arbeidsfordelingen som skal oppdateres",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "rsArbeidsfordeling",
+            "description": "Oppdatert arbeidsfordeling",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsfordeling"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsArbeidsfordeling"
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/arbeidsfordelinger": {
+      "post": {
+        "tags": [
+          "arbeidsfordeling"
+        ],
+        "summary": "Returnerer alle arbeidsfordelinger basert på multiple set av søkekriterier",
+        "operationId": "findArbeidsfordelingByMultipleCriteriasUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "criterias",
+            "description": "Søkekriterier",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsArbeidsfordelingCriteria"
+              }
+            }
+          },
+          {
+            "name": "skjermet",
+            "in": "query",
+            "description": "Skjermet. Hvis TRUE returnerer alternativ enhet for alle arbeidsfordelinger som tilfredsstiller kriteriene",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "allowEmptyValue": false,
+            "x-example": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsArbeidsfordelingShort"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet": {
+      "get": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Returnerer en filtrert liste av alle enheter",
+        "operationId": "getAllEnheterUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetStatusListe",
+            "in": "query",
+            "description": "Enhetsstatus resulterende enheter skal filtreres på",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "UNDER_ETABLERING",
+                "AKTIV",
+                "UNDER_AVVIKLING",
+                "NEDLAGT"
+              ]
+            },
+            "collectionFormat": "multi",
+            "allowEmptyValue": false,
+            "enum": [
+              "UNDER_ETABLERING",
+              "AKTIV",
+              "UNDER_AVVIKLING",
+              "NEDLAGT"
+            ]
+          },
+          {
+            "name": "enhetsnummerListe",
+            "in": "query",
+            "description": "Enhetsnumre for filtrering av enheter",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "allowEmptyValue": false
+          },
+          {
+            "name": "oppgavebehandlerFilter",
+            "in": "query",
+            "description": "Hvorvidt enheter skal være oppgavebehandlende",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "enum": [
+              "UFILTRERT",
+              "KUN_OPPGAVEBEHANDLERE",
+              "INGEN_OPPGAVEBEHANDLERE"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsEnhet"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Oppdaterer en eksisterende aktiv eller inaktiv enhet",
+        "operationId": "updateEnhetUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "enhet",
+            "description": "Oppdatert enhet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Oppretter en ny enhet",
+        "operationId": "createEnhetUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "enhet",
+            "description": "Ny enhet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          },
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/kontaktinformasjon/organisering/all": {
+      "get": {
+        "tags": [
+          "enhetskontaktinfo"
+        ],
+        "summary": "Returnerer alle NAV enheter, inkl. kontaktinformasjon og overordnet fylkesenhet",
+        "operationId": "hentAlleEnheterInkludertKontaktinformasjonUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "consumerId",
+            "in": "header",
+            "description": "Systemet som gjør kallet, som regel service brukeren til applikasjonen, for eks. srvnorg2",
+            "required": true,
+            "type": "string",
+            "x-example": "norg2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsEnhetInkludertKontaktinformasjon"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/kontaktinformasjon/organisering/{statuser}": {
+      "get": {
+        "tags": [
+          "enhetskontaktinfo"
+        ],
+        "summary": "Returnerer alle NAV enheter, inkl. kontaktinformasjon og overordnet fylkesenhet basert på oppgitte enhetstatuser",
+        "operationId": "hentAlleEnheterInkludertKontaktinformasjonMedStatusUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "consumerId",
+            "in": "header",
+            "description": "Systemet som gjør kallet, som regel service brukeren til applikasjonen, for eks. srvnorg2",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "statuser",
+            "in": "path",
+            "description": "Enhetsstatus resulterende enheter skal filtreres på",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "En komma-separert liste av av en eller flere av følgende: UNDER_ETABLERING",
+              "AKTIV",
+              "UNDER_AVVIKLING",
+              "NEDLAGT"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsEnhetInkludertKontaktinformasjon"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/kontaktinformasjon/tilleggsinformasjon": {
+      "put": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Oppdaterer tilleggsinformasjonen i kontaktinformasjonen for en eksisterende aktiv eller inaktiv enhet",
+        "operationId": "updateEnhetTilleggsinformasjonUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "enhetTilleggsinformasjon",
+            "description": "Oppdatert tillegsinformasjon i kontaktinformasjonen for en enhet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsEnhetTilleggsinformasjon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/kontaktinformasjoner": {
+      "post": {
+        "tags": [
+          "kontaktinformasjon"
+        ],
+        "summary": "Returnerer kontaktinformasjon for en liste av enheter",
+        "operationId": "getKontaktinformasjonForEnheterUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "enhetsnumre",
+            "description": "En liste med enhetsnumre kontaktinformasjon skal slås opp for",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsEnhetKontaktinformasjon"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/navkontor/{geografiskOmraade}": {
+      "get": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Returnerer en NAV kontor som er en lokalkontor for spesifisert geografisk område",
+        "operationId": "getEnhetByGeografiskOmraadeUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "disk",
+            "in": "query",
+            "description": "Diskresjonskode på saker et NAV kontor kan behandle",
+            "required": false,
+            "type": "string",
+            "allowEmptyValue": false,
+            "enum": [
+              "SPFO",
+              "SPSF",
+              "ANY"
+            ]
+          },
+          {
+            "name": "geografiskOmraade",
+            "in": "path",
+            "description": "Geografisk identifikator for NAV kontoret",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/navkontorer/{enhetsnummer}": {
+      "get": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Returnerer en list over NAV kontorer basert på enhetsnummer",
+        "operationId": "getNavKontorerByEnhetsnummerUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten oppslaget gjelder for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsNavKontor"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/publikumsmottak": {
+      "post": {
+        "tags": [
+          "publikumsmottak"
+        ],
+        "summary": "Oppdaterer informasjon om publikumsmottak for en enhet",
+        "operationId": "updatePublikumsmottakUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Oppdatert informasjon om publikumsmottak",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsPublikumsmottak"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsPublikumsmottak"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/simple": {
+      "get": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Returnerer alle enheter, inkludert inaktive",
+        "operationId": "getAllEnheterSimpleUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsEnhet"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/{enhetnummer}/organisering": {
+      "get": {
+        "tags": [
+          "organisering"
+        ],
+        "summary": "Returnerer alle organiseringer for en enhet",
+        "operationId": "getAllOrganiseringerForEnhetUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheter tilhørende orgraniseringer skal slås opp for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsOrganisering"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/{enhetsnummer}": {
+      "get": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Returnerer en enhet basert på enhetsnummer",
+        "operationId": "getEnhetUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten oppslaget gjelder for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsEnhet"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/{enhetsnummer}/arbeidsfordeling": {
+      "get": {
+        "tags": [
+          "arbeidsfordeling"
+        ],
+        "summary": "Returnerer alle arbeidsfordelinger for en enhet",
+        "operationId": "getAllArbeidsfordelingerForEnhetUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnumeret til enheten  arbeidsfordelinger gjelder for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "skjermet",
+            "in": "query",
+            "description": "Skjermet. Hvis TRUE returnerer alternativ enhet for arbeidsfordelingene for enheten",
+            "required": false,
+            "type": "boolean",
+            "default": false,
+            "allowEmptyValue": false,
+            "x-example": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsArbeidsfordelingShort"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/{enhetsnummer}/kontaktinformasjon": {
+      "get": {
+        "tags": [
+          "kontaktinformasjon"
+        ],
+        "summary": "Returnerer kontaktinformasjon for en enhet",
+        "operationId": "getKontaktinformasjonUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten kontaktinformasjon skal slås opp for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsEnhetKontaktinformasjon"
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "kontaktinformasjon"
+        ],
+        "summary": "Oppdaterer  kontaktinformasjon for en enhet",
+        "operationId": "updateKontaktinformasjonUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten kontaktinformasjon skal oppdateres for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Oppdatert kontaktinformasjon for en enhet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsEnhetKontaktinformasjon"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsEnhetKontaktinformasjon"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/{enhetsnummer}/overordnet": {
+      "get": {
+        "tags": [
+          "enhet"
+        ],
+        "summary": "Returnerer en liste med overordnete enheter av en oppgitt enhet",
+        "operationId": "hentOverordnetEnhetListeUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten overordnete enheter skal returneres for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organiseringsType",
+            "in": "query",
+            "description": "Organisasjonstype for filtrering av resulterende overordnete enheter",
+            "required": true,
+            "type": "string",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsEnhet"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/enhet/{enhetsnummer}/publikumsmottak": {
+      "get": {
+        "tags": [
+          "publikumsmottak"
+        ],
+        "summary": "Returnerer informasjon om publikumsmottak for en enhet",
+        "operationId": "getPublikumsmottakForEnhetUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten informasjon om publikumsmottak skal slås opp for",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsPublikumsmottak"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": [
+          "publikumsmottak"
+        ],
+        "summary": "Oppretter informasjon om publikumsmottak  for en enhet",
+        "operationId": "createPublikumsmottakUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "enhetsnummer",
+            "in": "path",
+            "description": "Enhetsnummeret til enheten informasjon om publikumsmottak skal slås opp for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "request",
+            "description": "Ny informasjon om publikumsmottak",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsPublikumsmottak"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsPublikumsmottak"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/kodeverk/{kodeverkNavn}": {
+      "get": {
+        "tags": [
+          "kodeverk"
+        ],
+        "summary": "Returnerer en liste med koder for et spesifisert kodeverk navn",
+        "operationId": "getKodeverkUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "kodeverkNavn",
+            "in": "path",
+            "description": "Kodeverket koder skal hentes fra",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "Diskresjonskoder",
+              "Oppgavetyper",
+              "Behandlingstyper",
+              "Behandlingstema",
+              "Tema",
+              "Temagrupper",
+              "Geografi",
+              "EnhetstyperNorg",
+              "Postnummer",
+              "Orgniva",
+              "Organiseringstype"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsKode"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/kompetansekoe": {
+      "post": {
+        "tags": [
+          "kompetansekoe"
+        ],
+        "summary": "Oppretter en ny kompentansekø",
+        "operationId": "createKompetansekoeUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "rsKompetansekoe",
+            "description": "Ny kompetansekø",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsKompetansekoe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RsKompetansekoe"
+            }
+          },
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/RsKompetansekoe"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/kompetansekoe/all": {
+      "get": {
+        "tags": [
+          "kompetansekoe"
+        ],
+        "summary": "Returnerer alle kompetansekøer",
+        "operationId": "findAllKompetansekoeUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsKompetansekoe"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/kompetansekoe/findby": {
+      "post": {
+        "tags": [
+          "kompetansekoe"
+        ],
+        "summary": "Returnererer en kompetansekø basert på oppgitt set av kriterier",
+        "operationId": "findKompetansekoeByUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "criterias",
+            "description": "Søkekriterie",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KompetansekoeCriteria"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsKompetansekoe"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/kompetansekoe/{kompetansekoeId}": {
+      "put": {
+        "tags": [
+          "kompetansekoe"
+        ],
+        "summary": "Oppdaterer en eksisterende kompentansekø",
+        "operationId": "updateKompetansekoeUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "kompetansekoeId",
+            "in": "path",
+            "description": "Identifikator for kompetansekøen",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "rsKompetansekoe",
+            "description": "Oppdatert kompetansekø",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsKompetansekoe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsKompetansekoe"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "kompetansekoe"
+        ],
+        "summary": "Sletter en eksisterende kompentansekø",
+        "operationId": "deleteKompetansekoeUsingDELETE",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "kompetansekoeId",
+            "in": "path",
+            "description": "Identifikator for kompetansekøen",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/navkontor/create": {
+      "post": {
+        "tags": [
+          "navkontor"
+        ],
+        "summary": "Registrerer en ny NAV kontor",
+        "operationId": "createNavKontorUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "newNavKontor",
+            "description": "Ny NAV kontor",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsNavKontor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsNavKontor"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/navkontor/delete/{navkontorId}": {
+      "delete": {
+        "tags": [
+          "navkontor"
+        ],
+        "summary": "Sletter en eksisterende NAV kontor",
+        "operationId": "deleteNavKontorUsingDELETE",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "navkontorId",
+            "in": "path",
+            "description": "Enhetsnummeret til NAV kontoret som skal slettes",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/navkontor/update": {
+      "put": {
+        "tags": [
+          "navkontor"
+        ],
+        "summary": "Oppdaterer eksisterende og oppretter nye NAV kontorer",
+        "operationId": "updateNavKontorUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "requestNavKontorer",
+            "description": "Liste med oppdaterte NAV kontorer",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsNavKontor"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsNavKontor"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/organisering": {
+      "put": {
+        "tags": [
+          "organisering"
+        ],
+        "summary": "Oppretter en organisering mellom to enheter",
+        "operationId": "createOrganiseringUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "organisering",
+            "description": "Ny orgranisering mellom to enheter",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsOrganisering"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RsOrganisering"
+            }
+          },
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/RsOrganisering"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/organisering/{organiseringId}": {
+      "post": {
+        "tags": [
+          "organisering"
+        ],
+        "summary": "Oppdaterer orgranisering mellom to enheter",
+        "operationId": "updateOrganiseringUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "organisering",
+            "description": "Oppdatert orgranisering mellom to enheter",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RsOrganisering"
+            }
+          },
+          {
+            "name": "organiseringId",
+            "in": "path",
+            "description": "ID til orgraniseringen mellom to enheter som skal oppdateres",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/RsOrganisering"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/organisering/{organiseringsId}": {
+      "delete": {
+        "tags": [
+          "organisering"
+        ],
+        "summary": "Sletter en organisering mellom to enheter",
+        "operationId": "deleteOrganiseringUsingDELETE",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organiseringsId",
+            "in": "path",
+            "description": "ID til orgraniseringen mellom to enheter som skal slettes",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/temakoder": {
+      "get": {
+        "tags": [
+          "temakoder"
+        ],
+        "summary": "Returnerer alle temakoder",
+        "operationId": "getTemakoderUsingGET",
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsTemakode"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "temakoder"
+        ],
+        "summary": "Oppdaterer en leste med eksisterende og oppretter nye temakoder",
+        "operationId": "updateTemakoderUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "\"Bearer \" + OIDC token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "rsTemakoder",
+            "description": "Liste med oppdaterte temakoder. Kun spesifiserte temakoder vil bli oppdatert",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsTemakode"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RsTemakode"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "KompetansekoeCriteria": {
+      "type": "object",
+      "properties": {
+        "behandlingstema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "geografi": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kompetansekoeNummer": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tema": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "KompetansekoeCriteria"
+    },
+    "RsAapningstid": {
+      "type": "object",
+      "properties": {
+        "dag": {
+          "type": "string"
+        },
+        "dato": {
+          "type": "string"
+        },
+        "fra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "kommentar": {
+          "type": "string"
+        },
+        "stengt": {
+          "type": "boolean"
+        },
+        "til": {
+          "type": "string"
+        }
+      },
+      "title": "RsAapningstid"
+    },
+    "RsAdresse": {
+      "type": "object",
+      "properties": {
+        "postnummer": {
+          "type": "string"
+        },
+        "poststed": {
+          "type": "string"
+        }
+      },
+      "title": "RsAdresse"
+    },
+    "RsArbeidsFordelingCriteriaSkjermet": {
+      "type": "object",
+      "properties": {
+        "behandlingstema": {
+          "type": "string"
+        },
+        "behandlingstype": {
+          "type": "string"
+        },
+        "diskresjonskode": {
+          "type": "string"
+        },
+        "enhetNummer": {
+          "type": "string"
+        },
+        "geografiskOmraade": {
+          "type": "string"
+        },
+        "oppgavetype": {
+          "type": "string"
+        },
+        "skjermet": {
+          "type": "boolean"
+        },
+        "tema": {
+          "type": "string"
+        },
+        "temagruppe": {
+          "type": "string"
+        }
+      },
+      "title": "RsArbeidsFordelingCriteriaSkjermet"
+    },
+    "RsArbeidsfordeling": {
+      "type": "object",
+      "properties": {
+        "alternateEnhetId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "alternateEnhetName": {
+          "type": "string"
+        },
+        "alternateEnhetNr": {
+          "type": "string"
+        },
+        "behandlingstema": {
+          "type": "string"
+        },
+        "behandlingstype": {
+          "type": "string"
+        },
+        "diskresjonskode": {
+          "type": "string"
+        },
+        "enhetId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "enhetNavn": {
+          "type": "string"
+        },
+        "enhetNr": {
+          "type": "string"
+        },
+        "geografiskOmraade": {
+          "type": "string"
+        },
+        "gyldigFra": {
+          "type": "string"
+        },
+        "gyldigTil": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "oppgavetype": {
+          "type": "string"
+        },
+        "skalTilLokalkontor": {
+          "type": "boolean"
+        },
+        "tema": {
+          "type": "string"
+        },
+        "temagruppe": {
+          "type": "string"
+        }
+      },
+      "title": "RsArbeidsfordeling"
+    },
+    "RsArbeidsfordelingCriteria": {
+      "type": "object",
+      "properties": {
+        "behandlingstema": {
+          "type": "string"
+        },
+        "behandlingstype": {
+          "type": "string"
+        },
+        "diskresjonskode": {
+          "type": "string"
+        },
+        "enhetNummer": {
+          "type": "string"
+        },
+        "geografiskOmraade": {
+          "type": "string"
+        },
+        "oppgavetype": {
+          "type": "string"
+        },
+        "tema": {
+          "type": "string"
+        },
+        "temagruppe": {
+          "type": "string"
+        }
+      },
+      "title": "RsArbeidsfordelingCriteria"
+    },
+    "RsArbeidsfordelingShort": {
+      "type": "object",
+      "properties": {
+        "behandlingstema": {
+          "type": "string"
+        },
+        "behandlingstype": {
+          "type": "string"
+        },
+        "diskresjonskode": {
+          "type": "string"
+        },
+        "enhetId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "enhetNavn": {
+          "type": "string"
+        },
+        "enhetNr": {
+          "type": "string"
+        },
+        "geografiskOmraade": {
+          "type": "string"
+        },
+        "gyldigFra": {
+          "type": "string"
+        },
+        "gyldigTil": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "oppgavetype": {
+          "type": "string"
+        },
+        "skalTilLokalkontor": {
+          "type": "boolean"
+        },
+        "tema": {
+          "type": "string"
+        },
+        "temagruppe": {
+          "type": "string"
+        }
+      },
+      "title": "RsArbeidsfordelingShort"
+    },
+    "RsEnhet": {
+      "type": "object",
+      "properties": {
+        "aktiveringsdato": {
+          "type": "string"
+        },
+        "antallRessurser": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "enhetId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "enhetNr": {
+          "type": "string"
+        },
+        "kanalstrategi": {
+          "type": "string"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "nedleggelsesdato": {
+          "type": "string"
+        },
+        "oppgavebehandler": {
+          "type": "boolean"
+        },
+        "orgNivaa": {
+          "type": "string"
+        },
+        "orgNrTilKommunaltNavKontor": {
+          "type": "string"
+        },
+        "organisasjonsnummer": {
+          "type": "string"
+        },
+        "sosialeTjenester": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "underAvviklingDato": {
+          "type": "string"
+        },
+        "underEtableringDato": {
+          "type": "string"
+        },
+        "versjon": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "RsEnhet"
+    },
+    "RsEnhetInkludertKontaktinformasjon": {
+      "type": "object",
+      "properties": {
+        "enhet": {
+          "$ref": "#/definitions/RsEnhet"
+        },
+        "habilitetskontor": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kontaktinformasjon": {
+          "$ref": "#/definitions/RsEnhetKontaktinformasjon"
+        },
+        "overordnetEnhet": {
+          "type": "string"
+        }
+      },
+      "title": "RsEnhetInkludertKontaktinformasjon"
+    },
+    "RsEnhetKontaktinformasjon": {
+      "type": "object",
+      "properties": {
+        "besoeksadresse": {
+          "$ref": "#/definitions/RsStedsadresse"
+        },
+        "enhetNr": {
+          "type": "string"
+        },
+        "epost": {
+          "$ref": "#/definitions/RsEpost"
+        },
+        "faksnummer": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "postadresse": {
+          "$ref": "#/definitions/RsAdresse"
+        },
+        "publikumsmottak": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RsPublikumsmottak"
+          }
+        },
+        "spesielleOpplysninger": {
+          "type": "string"
+        },
+        "telefonnummer": {
+          "type": "string"
+        },
+        "telefonnummerKommentar": {
+          "type": "string"
+        }
+      },
+      "title": "RsEnhetKontaktinformasjon"
+    },
+    "RsEnhetTilleggsinformasjon": {
+      "type": "object",
+      "properties": {
+        "enhetNr": {
+          "type": "string"
+        },
+        "kanalstrategi": {
+          "type": "string"
+        },
+        "orgNrTilKommunaltNavKontor": {
+          "type": "string"
+        },
+        "organisasjonsnummer": {
+          "type": "string"
+        },
+        "sosialeTjenester": {
+          "type": "string"
+        }
+      },
+      "title": "RsEnhetTilleggsinformasjon"
+    },
+    "RsEpost": {
+      "type": "object",
+      "properties": {
+        "adresse": {
+          "type": "string"
+        },
+        "kommentar": {
+          "type": "string"
+        },
+        "kunIntern": {
+          "type": "boolean"
+        }
+      },
+      "title": "RsEpost"
+    },
+    "RsKode": {
+      "type": "object",
+      "properties": {
+        "navn": {
+          "type": "string"
+        },
+        "term": {
+          "type": "string"
+        }
+      },
+      "title": "RsKode"
+    },
+    "RsKompetansekoe": {
+      "type": "object",
+      "properties": {
+        "behandlingstema": {
+          "type": "string"
+        },
+        "geografi": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "kompetansekoeNummer": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tema": {
+          "type": "string"
+        }
+      },
+      "title": "RsKompetansekoe"
+    },
+    "RsNavKontor": {
+      "type": "object",
+      "properties": {
+        "enhetId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "geografiskOmraade": {
+          "type": "string"
+        },
+        "navKontorId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "RsNavKontor"
+    },
+    "RsOrganisering": {
+      "type": "object",
+      "properties": {
+        "fra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "orgType": {
+          "type": "string"
+        },
+        "organiserer": {
+          "$ref": "#/definitions/RsSimpleEnhet"
+        },
+        "organisertUnder": {
+          "$ref": "#/definitions/RsSimpleEnhet"
+        },
+        "til": {
+          "type": "string"
+        }
+      },
+      "title": "RsOrganisering"
+    },
+    "RsPostboksadresse": {
+      "title": "RsPostboksadresse",
+      "allOf": [
+        {
+          "$ref": "#/definitions/RsAdresse"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "postboksanlegg": {
+              "type": "string"
+            },
+            "postboksnummer": {
+              "type": "string"
+            },
+            "postnummer": {
+              "type": "string"
+            },
+            "poststed": {
+              "type": "string"
+            }
+          },
+          "title": "RsPostboksadresse"
+        }
+      ]
+    },
+    "RsPublikumsmottak": {
+      "type": "object",
+      "properties": {
+        "aapningstider": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RsAapningstid"
+          }
+        },
+        "besoeksadresse": {
+          "$ref": "#/definitions/RsStedsadresse"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "stedsbeskrivelse": {
+          "type": "string"
+        }
+      },
+      "title": "RsPublikumsmottak"
+    },
+    "RsSimpleEnhet": {
+      "type": "object",
+      "properties": {
+        "gyldigFra": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "nr": {
+          "type": "string"
+        }
+      },
+      "title": "RsSimpleEnhet"
+    },
+    "RsStedsadresse": {
+      "title": "RsStedsadresse",
+      "allOf": [
+        {
+          "$ref": "#/definitions/RsAdresse"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "adresseTilleggsnavn": {
+              "type": "string"
+            },
+            "gatenavn": {
+              "type": "string"
+            },
+            "husbokstav": {
+              "type": "string"
+            },
+            "husnummer": {
+              "type": "string"
+            },
+            "postnummer": {
+              "type": "string"
+            },
+            "poststed": {
+              "type": "string"
+            }
+          },
+          "title": "RsStedsadresse"
+        }
+      ]
+    },
+    "RsTemakode": {
+      "type": "object",
+      "properties": {
+        "kode": {
+          "type": "string"
+        },
+        "paaKortliste": {
+          "type": "boolean"
+        },
+        "paaResultatvisning": {
+          "type": "boolean"
+        },
+        "temakodeId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "RsTemakode"
+    }
+  }
+}

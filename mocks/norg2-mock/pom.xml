@@ -46,4 +46,39 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>2.4.14</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+
+						<configuration>
+							<inputSpec>${basedir}/src/main/resources/norg2-api.json</inputSpec>
+
+							<generateApis>false</generateApis>
+							<generateModelDocumentation>false</generateModelDocumentation>
+							<generateModelTests>false</generateModelTests>
+							<generateSupportingFiles>false</generateSupportingFiles>
+
+							<language>jaxrs</language>
+							<output>${project.basedir}</output>
+
+							<modelNamePrefix>norg2</modelNamePrefix>
+							<modelPackage>no.nav.norg2.model</modelPackage>
+
+							<configOptions>
+								<sourceFolder>target/generated-sources/swagger</sourceFolder>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
