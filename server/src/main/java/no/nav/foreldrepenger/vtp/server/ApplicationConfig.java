@@ -31,6 +31,7 @@ import no.nav.psak.aktoerregister.rest.api.v1.PsakAktoerIdentMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.EnhetRestMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
 import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -87,6 +88,7 @@ public class ApplicationConfig extends Application {
         classes.add(InfotrygdKontantstotteMock.class);
         classes.add(InfotrygdGrunnlagMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
+        classes.add(EnhetRestMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
