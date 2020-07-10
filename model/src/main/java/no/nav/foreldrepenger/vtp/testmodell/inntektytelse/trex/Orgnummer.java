@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Orgnummer {
@@ -10,7 +11,7 @@ public class Orgnummer {
     private final String orgnr;
 
     @JsonCreator
-    public static Orgnummer forValue(String orgnr) {
+    public static Orgnummer forValue(@JsonProperty("orgnr") String orgnr) {
         return new Orgnummer(orgnr);
     }
 

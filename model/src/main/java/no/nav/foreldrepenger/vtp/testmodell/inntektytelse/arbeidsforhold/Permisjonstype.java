@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Permisjonstype {
@@ -33,7 +32,6 @@ public class Permisjonstype {
 
     private String kode;
 
-    @JsonCreator
     public Permisjonstype(String kode){
         this.kode = kode == null ? this.kode : kode;
         if(kode != null && !VALID_KODER.contains(kode)){

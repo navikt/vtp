@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -31,7 +32,7 @@ public class JsonMapper {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
         objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.registerModule(new ParameterNamesModule());
+        objectMapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
 
         objectMapper.setVisibility(PropertyAccessor.GETTER, Visibility.NONE);
         objectMapper.setVisibility(PropertyAccessor.SETTER, Visibility.NONE);

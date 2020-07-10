@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Prosent {
@@ -10,7 +11,7 @@ public class Prosent {
     private final Integer prosent;
 
     @JsonCreator
-    public static Prosent forValue(Integer value) {
+    public static Prosent forValue(@JsonProperty("prosent") Integer value) {
         return new Prosent(value);
     }
 
