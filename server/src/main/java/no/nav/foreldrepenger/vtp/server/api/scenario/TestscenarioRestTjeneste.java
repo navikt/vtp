@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenariodataDto;
+import no.nav.foreldrepenger.vtp.server.api.pensjon_testdata.PensjonTestdataService;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
@@ -31,6 +32,9 @@ public class TestscenarioRestTjeneste {
 
     @Context
     private TestscenarioRepository testscenarioRepository;
+
+    @Context
+    private PensjonTestdataService pensjonTestdataService;
 
 
     @GET
@@ -95,6 +99,9 @@ public class TestscenarioRestTjeneste {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
         logger.info("Initialiserer testscenario i VTP fra template: [{}] med id: [{}] ", templateKey, testscenario.getId());
+
+        pensjonTestdataService.opprettData(testscenario);
+
         return Response
                 .status(Response.Status.CREATED)
                 .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
