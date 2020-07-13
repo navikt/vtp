@@ -140,7 +140,7 @@ public class Oauth2RestService {
     }
 
     private List<Map.Entry<String, String>> getUsernames() throws NamingException {
-        List<SearchResult> allUsers = getAllUsers();
+        List<SearchResult> allUsers = UserRepository.getAllUsers();
 
         // Long story, økonomi forventer (per 2018-10-30) at alle interne brukere har max 8 bokstaver i bruker identen sin :-(
         // pass derfor på at CN er definert med maks 8 bokstaver.
@@ -161,33 +161,6 @@ public class Oauth2RestService {
         } catch (NamingException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    private List<SearchResult> getAllUsers() throws NamingException {
-        Hashtable<String, String> props = new Hashtable<>();
-        props.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        props.put(javax.naming.Context.SECURITY_AUTHENTICATION, "none");
-        if (null != System.getenv("LDAP_PROVIDER_URL")) {
-            props.put(javax.naming.Context.PROVIDER_URL, System.getenv("LDAP_PROVIDER_URL"));
-        } else {
-            props.put(javax.naming.Context.PROVIDER_URL, "ldap://localhost:8389/");
-        }
-
-        InitialLdapContext ctx = new InitialLdapContext(props, null);
-        LdapName base = new LdapName("ou=NAV,ou=BusinessUnits,dc=test,dc=local");
-
-        SearchControls controls = new SearchControls();
-        controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-        controls.setCountLimit(50);
-
-        NamingEnumeration<SearchResult> result = ctx.search(base, "cn=*", controls);
-
-        List<SearchResult> usernames = new ArrayList<>();
-
-        while (result.hasMore()) {
-            usernames.add(result.next());
-        }
-        return usernames;
     }
 
     // TODO (FC): Trengs denne fortsatt?
