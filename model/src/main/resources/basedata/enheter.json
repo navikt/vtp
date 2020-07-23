@@ -54,5 +54,12 @@
 		 "enhetId": "4407",
 		 "status": "AKTIV",
 		 "type": "UFO"
+	 },
+	 {
+		 "diskresjonskode": "WOW",
+		 "navn": "NAV Hollywood",
+		 "enhetId": "99768",
+		 "status": "AKTIV",
+		 "type": "FPY"
 	 }
  ]

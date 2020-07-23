@@ -1,5 +1,10 @@
 package no.nav.navansatt;
 
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.inf.psak.navansatt.*;
 import no.nav.lib.pen.psakpselv.asbo.ASBOPenFagomrade;
 import no.nav.lib.pen.psakpselv.asbo.ASBOPenFagomradeListe;
@@ -12,6 +17,9 @@ import javax.jws.*;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Addressing
 @WebService(name = "PSAKNAVAnsatt", targetNamespace = "http://nav-cons-pen-psak-navansatt/no/nav/inf")
@@ -24,13 +32,26 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     @WebResult(name = "hentNAVAnsattEnhetListeResponse", targetNamespace = "")
     @Override
     public ASBOPenNAVEnhetListe hentNAVAnsattEnhetListe(@WebParam(name = "hentNAVAnsattEnhetListeRequest",targetNamespace = "") ASBOPenNAVAnsatt asboPenNAVAnsatt) throws HentNAVAnsattEnhetListeFaultPenGeneriskMsg, HentNAVAnsattEnhetListeFaultPenNAVAnsattIkkeFunnetMsg {
-        ASBOPenNAVEnhetListe response = new ASBOPenNAVEnhetListe();
-        ASBOPenNAVEnhet orgEnhet = new ASBOPenNAVEnhet();
-        orgEnhet.setEnhetsId("4407");
-        orgEnhet.setEnhetsNavn("NAV Arbeid og ytelser Tønsberg");
+        try {
+            AnsatteIndeks ansatteIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
+            EnheterIndeks enheterIndeks = BasisdataProviderFileImpl.getInstance().getEnheterIndeks();
+            NAVAnsatt ansatt = ansatteIndeks.hentNAVAnsatt(asboPenNAVAnsatt.getAnsattId()).orElseThrow(() -> new HentNAVAnsattEnhetListeFaultPenNAVAnsattIkkeFunnetMsg("NAV-ansatt '" + asboPenNAVAnsatt.getAnsattId() + "' ikke funnet."));
 
-        response.setNAVEnheter(new ASBOPenNAVEnhet[] { orgEnhet });
-        return response;
+            List<ASBOPenNAVEnhet> enheter = new ArrayList<>();
+            for (String enhetId: ansatt.enheter) {
+                Norg2Modell enhet = enheterIndeks.finnByEnhetId(enhetId).orElseThrow(() -> new HentNAVAnsattEnhetListeFaultPenGeneriskMsg("Enhet ikke funnet: " + enhetId));
+                ASBOPenNAVEnhet asboEnhet = new ASBOPenNAVEnhet();
+                asboEnhet.setEnhetsId(enhet.getEnhetId());
+                asboEnhet.setEnhetsNavn(enhet.getNavn());
+                enheter.add(asboEnhet);
+            }
+
+            ASBOPenNAVEnhetListe response = new ASBOPenNAVEnhetListe();
+            response.setNAVEnheter(enheter.toArray(ASBOPenNAVEnhet[]::new));
+            return response;
+        } catch (IOException e) {
+            throw new HentNAVAnsattEnhetListeFaultPenGeneriskMsg(e.getMessage());
+        }
     }
 
     @WebMethod
@@ -55,28 +76,25 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     )
     @WebResult(name = "hentNAVAnsattListeResponse", targetNamespace = "")
     @Override
-    public ASBOPenNAVAnsattListe hentNAVAnsattListe(@WebParam(name = "hentNAVAnsattListeRequest",targetNamespace = "") ASBOPenNAVEnhet asboPenNAVEnhet) throws HentNAVAnsattListeFaultPenNAVEnhetIkkeFunnetMsg, HentNAVAnsattListeFaultPenGenerisksMsg {
-        ASBOPenNAVAnsattListe liste = new ASBOPenNAVAnsattListe();
-        ASBOPenNAVAnsatt skywalker = new ASBOPenNAVAnsatt();
-        skywalker.setAnsattId("z123456");
-        skywalker.setAnsattNavn("Luke Skywalker");
-        skywalker.setFornavn("Luke");
-        skywalker.setEtternavn("Skywalker");
-
-        ASBOPenNAVAnsatt leia = new ASBOPenNAVAnsatt();
-        leia.setAnsattId("z234567");
-        leia.setAnsattNavn("Prinsesse Leia");
-        leia.setFornavn("Prinsesse");
-        leia.setEtternavn("Leia");
-
-        ASBOPenNAVAnsatt vader = new ASBOPenNAVAnsatt();
-        vader.setAnsattId("z345678");
-        vader.setAnsattNavn("Darth Vader");
-        vader.setFornavn("Darth");
-        vader.setEtternavn("Vader");
-
-        liste.setNAVAnsatte(new ASBOPenNAVAnsatt[] { skywalker, leia, vader });
-        return liste;
+    public ASBOPenNAVAnsattListe hentNAVAnsattListe(@WebParam(name = "hentNAVAnsattListeRequest",targetNamespace = "") ASBOPenNAVEnhet enhet) throws HentNAVAnsattListeFaultPenNAVEnhetIkkeFunnetMsg, HentNAVAnsattListeFaultPenGenerisksMsg {
+        try {
+            ASBOPenNAVAnsattListe liste = new ASBOPenNAVAnsattListe();
+            liste.setNAVAnsatte(BasisdataProviderFileImpl.getInstance().getAnsatteIndeks().hentAlleAnsatte()
+                    .stream()
+                    .filter(ansatt -> ansatt.enheter.contains(enhet.getEnhetsId()))
+                    .map(ansatt -> {
+                ASBOPenNAVAnsatt asboAnsatt = new ASBOPenNAVAnsatt();
+                asboAnsatt.setAnsattId(ansatt.cn);
+                asboAnsatt.setAnsattNavn(ansatt.displayName);
+                asboAnsatt.setFornavn(ansatt.givenname);
+                asboAnsatt.setEtternavn(ansatt.sn);
+                return asboAnsatt;
+            }).toArray(ASBOPenNAVAnsatt[]::new));
+            return liste;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new HentNAVAnsattListeFaultPenGenerisksMsg(e.getMessage());
+        }
     }
 
     @WebMethod
@@ -85,9 +103,16 @@ public class NavAnsattServiceMockImpl implements PSAKNAVAnsatt {
     @WebResult(name = "hentNAVAnsattResponse", targetNamespace = "")
     @Override
     public ASBOPenNAVAnsatt hentNAVAnsatt(@WebParam(name = "hentNAVAnsattRequest",targetNamespace = "") ASBOPenNAVAnsatt asboPenNAVAnsatt) throws HentNAVAnsattFaultPenGeneriskMsg, HentNAVAnsattFaultPenNAVAnsattIkkeFunnetMsg {
-        asboPenNAVAnsatt.setAnsattNavn("Saksbehandler Saksbehandlersen");
-        asboPenNAVAnsatt.setFornavn("Saksbehandler");
-        asboPenNAVAnsatt.setEtternavn("Saksbehandlersen");
-        return asboPenNAVAnsatt;
+        try {
+            AnsatteIndeks indeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
+            NAVAnsatt ansatt = indeks.hentNAVAnsatt(asboPenNAVAnsatt.getAnsattId()).orElseThrow(() -> new HentNAVAnsattFaultPenNAVAnsattIkkeFunnetMsg("NAV-ansatt '" + asboPenNAVAnsatt.getAnsattId() + "' ikke funnet."));
+            asboPenNAVAnsatt.setAnsattNavn(ansatt.displayName);
+            asboPenNAVAnsatt.setFornavn(ansatt.givenname);
+            asboPenNAVAnsatt.setEtternavn(ansatt.sn);
+            return asboPenNAVAnsatt;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new HentNAVAnsattFaultPenGeneriskMsg(e.getMessage());
+        }
     }
 }
