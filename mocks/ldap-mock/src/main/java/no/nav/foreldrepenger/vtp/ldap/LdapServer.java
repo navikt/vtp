@@ -7,11 +7,18 @@ import java.net.URL;
 import java.security.KeyStore;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 
+import com.unboundid.ldap.sdk.Entry;
+import com.unboundid.ldif.LDIFAddChangeRecord;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +32,7 @@ import com.unboundid.ldif.LDIFReader;
 public class LdapServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(LdapServer.class);
-    private static final String BASEDATA_USERS_LDIF = "basedata/users.ldif";
+    private static final String BASEDATA_USERS_LDIF = "basedata/ldap_setup.ldif";
     private final int listenerPortLdaps = Integer.valueOf(System.getProperty("ldaps.port", "8636")); // 636 er default port for LDAPS
     private final int listenerPortLdap = Integer.valueOf(System.getProperty("ldap.port", "8389")); // 389 er default port for LDAP
 
@@ -55,6 +62,27 @@ public class LdapServer {
 
         directoryServer = new InMemoryDirectoryServer(cfg);
         readLdifFilesFromClasspath(directoryServer);
+        readNAVAnsatte(directoryServer);
+    }
+
+
+    private void readNAVAnsatte(InMemoryDirectoryServer server) throws Exception {
+        List<NAVAnsatt> ansatte = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks().hentAlleAnsatte();
+        for (NAVAnsatt ansatt : ansatte) {
+            Entry entry = new Entry("CN=" + ansatt.cn + "_xxx,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local");
+            entry.addAttribute("objectClass", "user", "organizationalPerson", "person", "top");
+            entry.addAttribute("objectCategory", "CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local");
+            entry.addAttribute("cn", ansatt.cn);
+            entry.addAttribute("samaccountname", ansatt.cn);
+            entry.addAttribute("displayName", ansatt.displayName);
+            entry.addAttribute("givenname", ansatt.givenname);
+            entry.addAttribute("sn", ansatt.sn);
+            entry.addAttribute("mail", ansatt.email);
+            entry.addAttribute("memberOf", ansatt.groups.stream().map(group -> "CN=" + group + ",OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local").collect(Collectors.toList()));
+
+            LOG.info("Added NAV-ansatt to LDAP: {}", Arrays.toString(entry.toLDIF()));
+            new LDIFAddChangeRecord(entry).processChange(server);
+        }
     }
 
     @SuppressWarnings("resource")

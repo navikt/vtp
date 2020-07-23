@@ -1,0 +1,224 @@
+[
+  {
+    "cn": "saksbeh",
+    "givenname": "Sara",
+    "sn": "Saksbehandler",
+    "displayName": "Sara Saksbehandler",
+    "email":"sara.saksbehandler@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-PENSJON_SAKSBEHANDLER"
+    ]
+  },
+  {
+    "cn": "saksbeh6",
+    "givenname": "Sa6a",
+    "sn": "Saksbehandler6",
+    "displayName": "Sa6a Saksbehandler6",
+    "email": "sa6a.saksbehandler6@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-GOSYS_KODE6",
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK"
+    ]
+  },
+  {
+    "cn": "saksbeh7",
+    "givenname": "Sa7a",
+    "sn": "Saksbehandler7",
+    "displayName": "Sa7a Saksbehandler7",
+    "email": "sa7a.saksbehandler7@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-GOSYS_KODE7",
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK"
+    ]
+  },
+  {
+    "cn": "oversty",
+    "givenname": "Ove",
+    "sn": "Overstyrer",
+    "displayName": "Ove Overstyrer",
+    "email": "ove.overstyrer@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-manuelt-overstyrer",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK"
+    ]
+  },
+  {
+    "cn": "klageb",
+    "givenname": "Klara",
+    "sn": "Klagebehandler",
+    "displayName": "Klara Klagebehandler",
+    "email": "klara.klagebehandler@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-PENSJON_KLAGEBEH",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK"
+    ]
+  },
+  {
+    "cn": "veil",
+    "givenname": "Vegard",
+    "sn": "Veileder",
+    "displayName": "Vegard Veileder",
+    "email": "vegard.veileder@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-veileder",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK"
+    ]
+  },
+  {
+    "cn": "oppgs",
+    "givenname": "Oline",
+    "sn": "Oppgavestyrer",
+    "displayName": "Oline Oppgavestyrer",
+    "email": "oline.oppgavestyrer@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-veileder",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-fpsak-Oppgavestyrer"
+    ]
+  },
+  {
+    "cn": "psaks",
+    "givenname": "Pesys",
+    "sn": "Saksbehandler",
+    "displayName": "Pesys Saksbehandler",
+    "email": "pesys.saksbehandler@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_UFOERE",
+      "0000-GA-PENSJON_NDU",
+      "0000-ga-pensjon_ufore",
+      "0000-GA-Pensjon_attestering",
+      "0000-GA-Pensjon_SPESIAL_BEREGNING_RESTPENSJON_PENSJONSBEHOLDNING",
+      "0000-GA-PENSJON_FULLMAKTADM",
+      "0000-GA-Pensjon_SPESIAL_PGI",
+      "0000-GA-PENSJON_SAKSBEHANDLER",
+      "0000-GA-Pensjon_Utland",
+      "0000-GA-Pensjon_UTVIDET",
+      "0000-GA-Pensjon"
+    ]
+  },
+  {
+    "cn": "psaka",
+    "givenname": "Pesys",
+    "sn": "Attesterer",
+    "displayName": "Pesys Attesterer",
+    "email": "pesys.attesterer@example.com",
+    "enheter": [
+      "4817"
+    ],
+    "groups": [
+      "0000-GA-INNTK_UFOERE",
+      "0000-GA-PENSJON_NDU",
+      "0000-ga-pensjon_ufore",
+      "0000-GA-Pensjon_attestering",
+      "0000-GA-Pensjon_SPESIAL_BEREGNING_RESTPENSJON_PENSJONSBEHOLDNING",
+      "0000-GA-PENSJON_FULLMAKTADM",
+      "0000-GA-Pensjon_SPESIAL_PGI",
+      "0000-GA-PENSJON_SAKSBEHANDLER",
+      "0000-GA-Pensjon_Utland",
+      "0000-GA-Pensjon_UTVIDET",
+      "0000-GA-Pensjon"
+    ]
+  },
+  {
+    "cn": "lukesky",
+    "givenname": "Luke",
+    "sn": "Skywalker",
+    "displayName": "Luke Skywalker",
+    "email": "luke.skywalker@example.com",
+    "enheter": [
+      "99768"
+    ],
+    "groups": [
+      "0000-GA-Pensjon",
+      "0000-GA-PENSJON_SAKSBEHANDLER"
+    ]
+  },
+  {
+    "cn": "prinleia",
+    "givenname": "Prinsesse Leia",
+    "sn": "Organa",
+    "displayName": "Prinsesse Leia Organa",
+    "email": "prinsesse.leia.organa@example.com",
+    "enheter": [
+      "99768"
+    ],
+    "groups": [
+      "0000-GA-Pensjon",
+      "0000-GA-PENSJON_SAKSBEHANDLER"
+    ]
+  },
+  {
+    "cn": "darthvad",
+    "givenname": "Darth",
+    "sn": "Vader",
+    "displayName": "Darth Vader",
+    "email": "darth.vader@example.com",
+    "enheter": [
+      "99768"
+    ],
+    "groups": [
+      "0000-GA-Pensjon",
+      "0000-GA-PENSJON_SAKSBEHANDLER"
+    ]
+  }
+]

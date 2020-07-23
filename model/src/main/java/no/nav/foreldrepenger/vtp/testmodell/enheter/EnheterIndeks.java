@@ -1,9 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.enheter;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class EnheterIndeks {
 
@@ -19,5 +16,12 @@ public class EnheterIndeks {
 
     public Collection<Norg2Modell> getAlleEnheter() {
         return Collections.unmodifiableCollection(byDiskresjonskode.values());
+    }
+
+    public Optional<Norg2Modell> finnByEnhetId(String enhetId) {
+        return byDiskresjonskode.values()
+                .stream()
+                .filter(enhet -> Objects.equals(enhetId, enhet.getEnhetId()))
+                .findFirst();
     }
 }

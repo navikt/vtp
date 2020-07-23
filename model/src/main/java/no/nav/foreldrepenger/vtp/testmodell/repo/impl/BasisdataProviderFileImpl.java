@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
@@ -23,6 +25,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
 
     private final VirksomhetIndeks virksomhetIndeks = new VirksomhetIndeks();
     private final EnheterIndeks enheterIndeks = new EnheterIndeks();
+    private final AnsatteIndeks ansatteIndeks = new AnsatteIndeks();
     private final AdresseIndeks adresseIndeks = new AdresseIndeks();
     private final OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
     private final IdentGenerator identGenerator = new FiktiveFnr();
@@ -34,6 +37,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private BasisdataProviderFileImpl() throws IOException{
         loadAdresser();
         loadEnheter();
+        loadAnsatte();
         loadVirksomheter();
         loadOrganisasjoner();
     }
@@ -54,6 +58,11 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     @Override
     public EnheterIndeks getEnheterIndeks() {
         return enheterIndeks;
+    }
+
+    @Override
+    public AnsatteIndeks getAnsatteIndeks() {
+        return ansatteIndeks;
     }
 
     @Override
@@ -81,6 +90,18 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
             };
             List<Norg2Modell> adresser = jsonMapper.lagObjectMapper().readValue(is, typeRef);
             enheterIndeks.leggTil(adresser);
+        }
+    }
+
+    private void loadAnsatte() throws IOException {
+        try (InputStream is = AnsatteIndeks.class.getResourceAsStream("/basedata/navansatte.json")) {
+            TypeReference<List<NAVAnsatt>> typeRef = new TypeReference<List<NAVAnsatt>>() {
+            };
+            final JsonMapper jsonMapper = new JsonMapper();
+            List<NAVAnsatt> ansatte = jsonMapper.lagObjectMapper().readValue(is, typeRef);
+            ansatteIndeks.leggTil(ansatte);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
