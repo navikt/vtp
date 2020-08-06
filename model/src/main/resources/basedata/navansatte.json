@@ -140,7 +140,7 @@
     "displayName": "Pesys Saksbehandler",
     "email": "pesys.saksbehandler@example.com",
     "enheter": [
-      "4817"
+      "4407"
     ],
     "groups": [
       "0000-GA-INNTK_UFOERE",
@@ -163,7 +163,7 @@
     "displayName": "Pesys Attesterer",
     "email": "pesys.attesterer@example.com",
     "enheter": [
-      "4817"
+      "4407"
     ],
     "groups": [
       "0000-GA-INNTK_UFOERE",
