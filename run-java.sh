@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 if [[ $MSYSTEM =~ MINGW* ]]; then
 	set -ex

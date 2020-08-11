@@ -26,16 +26,19 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.swagger.jaxrs.config.BeanConfig;
+
+import no.nav.InstitusjonOppholdMock;
+import no.nav.PDLMock;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -49,15 +52,20 @@ import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.AzureAdNAVAnsattService;
+import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
 import no.nav.infotrygdks.InfotrygdKontantstotteMock;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.oppgave.OppgaveMockImpl;
+import no.nav.psak.aktoerregister.rest.api.v1.PsakAktoerIdentMock;
 import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
+import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.EnhetRestMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
@@ -93,6 +101,7 @@ public class ApplicationConfig extends Application {
         classes.add(InfotrygdKontantstotteMock.class);
         classes.add(InfotrygdGrunnlagMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
+        classes.add(EnhetRestMock.class);
         classes.add(TestscenarioTemplateRestTjeneste.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
@@ -109,12 +118,18 @@ public class ApplicationConfig extends Application {
         classes.add(OppgaveMockImpl.class);
         classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AktoerIdentMock.class);
+        classes.add(PsakAktoerIdentMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
         classes.add(DokdistfordelingMock.class);
+        classes.add(STSRestTjeneste.class);
+        classes.add(InstitusjonOppholdMock.class);
+        classes.add(PDLMock.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
+        classes.add(AzureAdNAVAnsattService.class);
+        classes.add(MicrosoftGraphApiMock.class);
         classes.add(PdpRestTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);

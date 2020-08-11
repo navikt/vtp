@@ -1,6 +1,5 @@
 package no.nav.tjeneste.virksomhet.inntekt.v3;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +149,9 @@ public class InntektMockImpl implements InntektV3 {
     @ResponseWrapper(localName = "hentForventetInntektResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/inntekt/v3",
             className = "no.nav.tjeneste.virksomhet.inntekt.v3.HentForventetInntektResponse")
     public HentForventetInntektResponse hentForventetInntekt(@WebParam(name = "request", targetNamespace = "") HentForventetInntektRequest hentForventetInntektRequest) throws HentForventetInntektPersonIkkeFunnet, HentForventetInntektSikkerhetsbegrensning, HentForventetInntektUgyldigInput {
-        throw new UnsupportedOperationException("Ikke implementert");
+        HentForventetInntektResponse hentForventetInntektResponse = new HentForventetInntektResponse();
+        hentForventetInntektResponse.setIdent(hentForventetInntektRequest.getIdent());
+        return hentForventetInntektResponse;
     }
 
     @Override

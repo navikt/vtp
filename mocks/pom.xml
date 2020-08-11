@@ -15,6 +15,7 @@
         <module>arbeidsforhold-mock</module>
         <module>arena-mock</module>
         <module>journalpost-mock</module>
+        <module>dialog-mock</module>
         <module>dokumentproduksjon-mock</module>
         <module>dokdist-mock</module>
         <module>dummy-mock</module>
@@ -38,6 +39,9 @@
         <module>sigrun-mock</module>
         <module>tps-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
+        <module>nav-ansatt-mock</module>
+        <module>psak-mock</module>
+        <module>digital-kontakt-informasjon-mock</module>
     </modules>
 
     <properties>

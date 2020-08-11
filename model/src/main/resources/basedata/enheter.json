@@ -51,5 +51,26 @@
          "status": "AKTIV",
          "type": "KO",
          "tema": "FRI"
-     }
+     },
+	 {
+		 "diskresjonskode": "PEN",
+		 "navn": "NAV Familie- og pensjonsytelser Steinkjer",
+		 "enhetId": "4817",
+		 "status": "AKTIV",
+		 "type": "FPY"
+	 },
+	 {
+		 "diskresjonskode": "UFO",
+		 "navn": "NAV Arbeid og ytelser Tønsberg",
+		 "enhetId": "4407",
+		 "status": "AKTIV",
+		 "type": "UFO"
+	 },
+	 {
+		 "diskresjonskode": "WOW",
+		 "navn": "NAV Hollywood",
+		 "enhetId": "99768",
+		 "status": "AKTIV",
+		 "type": "FPY"
+	 }
  ]

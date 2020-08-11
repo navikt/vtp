@@ -20,6 +20,13 @@ class TilbakekrevingServiceMapper {
         return respons;
     }
 
+    public static KravgrunnlagHentListeResponse opprettKravgrunnlagHentListeResponse() {
+        KravgrunnlagHentListeResponse respons = new KravgrunnlagHentListeResponse();
+        respons.setMmel(opprettMmel());
+        respons.getKravgrunnlagListe().add(KravgrunnlagGenerator.createReturnertKravgrunnlagDto());
+        return respons;
+    }
+
     public static KravgrunnlagAnnulerResponse opprettKravgrunnlagAnnulerResponse(KravgrunnlagAnnulerRequest kravgrunnlagAnnulerRequest) {
         KravgrunnlagAnnulerResponse respons = new KravgrunnlagAnnulerResponse();
         respons.setMmel(opprettMmel());

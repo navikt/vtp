@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
@@ -33,11 +34,13 @@ import no.nav.foreldrepenger.vtp.felles.PropertiesUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
+import no.nav.foreldrepenger.vtp.server.api.pensjon_testdata.PensjonTestdataService;
+import no.nav.foreldrepenger.vtp.server.api.pensjon_testdata.PensjonTestdataServiceImpl;
+import no.nav.foreldrepenger.vtp.server.api.pensjon_testdata.PensjonTestdataServiceNull;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
@@ -86,6 +89,7 @@ public class MockServer {
 
     public static void main(String[] args) throws Exception {
         PropertiesUtils.initProperties();
+        KeyStoreTool.init();
         MockServer mockServer = new MockServer();
         mockServer.start();
     }
@@ -164,13 +168,16 @@ public class MockServer {
         GsakRepo gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
+        PensjonTestdataService pensjonTestdataService = createPensjonTestdataService();
+
         addRestServices(handler,
                 testScenarioRepository,
                 templateRepository,
                 gsakRepo,
                 kafkaServer.getLocalProducer(),
                 kafkaServer.getKafkaAdminClient(),
-                journalRepository);
+                journalRepository,
+                pensjonTestdataService);
 
 
         addWebResources(handler);
@@ -181,6 +188,15 @@ public class MockServer {
         // kjør soap oppsett etter jetty har startet
         if(!tjenesteDisabled(VTPTjeneste.SOAP)) {
             addSoapServices(testScenarioRepository, templateRepository, journalRepository, gsakRepo);
+        }
+    }
+
+    private PensjonTestdataService createPensjonTestdataService() {
+        final String url = System.getenv("PENSJON_TESTDATA_URL");
+        if (url != null) {
+            return new PensjonTestdataServiceImpl(url);
+        } else {
+            return new PensjonTestdataServiceNull();
         }
     }
 
@@ -202,11 +218,12 @@ public class MockServer {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository, gsakRepo);
     }
 
-    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
+    protected void addRestServices(HandlerContainer handler, TestscenarioBuilderRepository testScenarioRepository,
                                    DelegatingTestscenarioTemplateRepository templateRepository,
                                    GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient,
-                                   JournalRepository journalRepository) {
-        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository);
+                                   JournalRepository journalRepository,
+                                   PensjonTestdataService pensjonTestdataService) {
+        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository, pensjonTestdataService);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {

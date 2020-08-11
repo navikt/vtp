@@ -33,6 +33,11 @@
         </dependency>
         <!-- 3dje parts biblioteker -->
         <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.58</version>
+        </dependency>
+        <dependency>
         	<groupId>com.sun.xml.ws</groupId>
         	<artifactId>jaxws-rt</artifactId>
         </dependency>

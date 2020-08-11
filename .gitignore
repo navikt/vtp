@@ -28,3 +28,4 @@ resources/ssl-terminator/localhost.*
 /node_modules/.yarn-integrity
 yarn.lock
 /node_modules/
+mocks/dokumentproduksjon-mock/statiskBrev.pdf

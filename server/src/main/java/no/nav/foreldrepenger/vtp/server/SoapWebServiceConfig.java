@@ -1,17 +1,42 @@
 package no.nav.foreldrepenger.vtp.server;
 
+import java.lang.reflect.Method;
+
+import javax.xml.ws.Endpoint;
+import javax.xml.ws.WebServiceFeature;
+
+import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
+import org.eclipse.jetty.http.spi.JettyHttpContext;
+import org.eclipse.jetty.http.spi.JettyHttpServer;
+
+import no.nav.DialogMock;
+import no.nav.HenvendelseMock;
+import no.nav.JournalMock;
+import no.nav.MedlemskapMock;
+import no.nav.OppgaveBehandlingMock;
+import no.nav.PENFullmaktMock;
+import no.nav.PENOppdragMock;
+import no.nav.PSAKPPEN015Mock;
+import no.nav.PenPersonServiceMockImpl;
+import no.nav.PenTjenestePensjonMock;
+import no.nav.PsakNavOrgEnhetMock;
+import no.nav.PsakPersonServiceMockImpl;
+import no.nav.SakMock;
 import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.navansatt.NavAnsattServiceMockImpl;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;
 import no.nav.pip.egen.ansatt.v1.EgenAnsattServiceMockImpl;
 import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
+import no.nav.tjeneste.organisasjonenhet.v2.OrganisasjonEnhetMock;
 import no.nav.tjeneste.virksomhet.aktoer.v2.AktoerServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.v1.ArbeidsfordelingMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
-import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingMockImpl;
+import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingV1Mock;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV2MockImpl;
+import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV3Mock;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalV1ServiceMock;
 import no.nav.tjeneste.virksomhet.behandlejournal.v3.BehandleJournalV3ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
@@ -30,13 +55,7 @@ import no.nav.tjeneste.virksomhet.organisasjon.v5.OrganisasjonV5MockImpl;
 import no.nav.tjeneste.virksomhet.person.v3.PersonServiceMockImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.sak.v1.SakServiceMockImpl;
-import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
-import org.eclipse.jetty.http.spi.JettyHttpContext;
-import org.eclipse.jetty.http.spi.JettyHttpServer;
-
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.WebServiceFeature;
-import java.lang.reflect.Method;
+import no.nav.tjenestespesifikasjoner.DigitalKontaktinformasjonV1Mock;
 
 public class SoapWebServiceConfig {
 
@@ -72,10 +91,12 @@ public class SoapWebServiceConfig {
 
         publishWebService(new DokumentproduksjonV2MockImpl(journalRepository), "/soap/dokprod/ws/dokumentproduksjon/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/soap/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
-        publishWebService(new ArbeidsevnevurderingMockImpl(),"/soap/ail_ws/Arbeidsevnevurdering_v1");
+        publishWebService(new ArbeidsevnevurderingV1Mock(), "/soap/ail_ws/Arbeidsevnevurdering_v1");
         publishWebService(new YtelseskontraktV2MockImpl(),"/soap/ail_ws/Ytelseskontrakt_v2");
+        publishWebService(new YtelseskontraktV3Mock(),"/soap/ail_ws/Ytelseskontrakt_v3");
         publishWebService(new MedlemServiceMockImpl(repo), "/soap/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/soap/norg2/ws/Arbeidsfordeling/v1");
+        publishWebService(new OrganisasjonEnhetMock(), "/soap/norg2/ws/OrganisasjonEnhet/v2");
         publishWebService(new InntektMockImpl(repo), "/soap/inntektskomponenten-ws/inntekt/v3/Inntekt");
         publishWebService(new OppgaveServiceMockImpl(), "/soap/nav-gsak-ws/OppgaveV3");
         publishWebService(new ArbeidsforholdMockImpl(repo), "/soap/aareg-core/ArbeidsforholdService/v3");
@@ -86,6 +107,21 @@ public class SoapWebServiceConfig {
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
         publishWebService(new EgenAnsattServiceMockImpl(), "soap/tpsws/EgenAnsatt_v1");
         publishWebService(new InnsynJournalServiceMockImpl(), "soap/joark/InnsynJournal/v2");
+        publishWebService(new NavAnsattServiceMockImpl(), "/soap/esb/nav-cons-pen-psak-navansattWeb/sca/PSAKNAVAnsattWSEXP");
+        publishWebService(new PsakPersonServiceMockImpl(repo), "/soap/esb/nav-cons-pen-psak-personWeb/sca/PSAKPersonWSEXP");
+        publishWebService(new PenPersonServiceMockImpl(repo), "/soap/esb/nav-cons-pen-pen-personWeb/sca/PENPersonWSEXP");
+        publishWebService(new HenvendelseMock(), "/soap/esb/nav-cons-pen-psak-henvendelseWeb/sca/PSAKHenvendelseWSEXP");
+        publishWebService(new SakMock(), "/soap/esb/nav-tjeneste-sak_v1Web/sca/SakWSEXP");
+        publishWebService(new JournalMock(),"/soap/esb/nav-tjeneste-journal_v2Web/sca/JournalWSEXP");
+        publishWebService(new PsakNavOrgEnhetMock(), "/soap/esb/nav-cons-pen-psak-navorgenhetWeb/sca/PSAKNAVOrgEnhetWSEXP");
+        publishWebService(new DialogMock(),"/soap/henvendelse/services/domene.Virksomhet/Dialog_v1");
+        publishWebService(new DigitalKontaktinformasjonV1Mock(),"/soap/ws/DigitalKontaktinformasjon/v1");
+        publishWebService(new PenTjenestePensjonMock(), "/soap/esb/nav-cons-pen-pen-tjenestepensjonWeb/sca/PENTjenestepensjonWSEXP");
+        publishWebService(new OppgaveBehandlingMock(), "/soap/esb/nav-tjeneste-oppgavebehandling_v2Web/sca/OppgavebehandlingWSEXP");
+        publishWebService(new MedlemskapMock(), "/soap/esb/nav-tjeneste-medlemskap_v1Web/sca/MedlemskapWSEXP");
+        publishWebService(new PENFullmaktMock(), "/soap/esb/nav-cons-pen-pen-fullmaktWeb/sca/PENFullmaktWSEXP");
+        publishWebService(new PENOppdragMock(), "/soap/esb/nav-cons-pen-pen-oppdragWeb/sca/PENOppdragWSEXP");
+        publishWebService(new PSAKPPEN015Mock(), "/soap/esb/nav-cons-pen-psak-ppen015Web/sca/PSAKPPEN015WSEXP");
     }
 
     private void publishWebService(Object ws, String path, WebServiceFeature... features ) {

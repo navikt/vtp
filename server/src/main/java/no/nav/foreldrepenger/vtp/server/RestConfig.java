@@ -6,6 +6,7 @@ import javax.servlet.ServletContextEvent;
 
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 
+import no.nav.foreldrepenger.vtp.server.api.pensjon_testdata.PensjonTestdataService;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -17,25 +18,25 @@ import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 public class RestConfig {
 
     private final HandlerContainer handler;
-    private DelegatingTestscenarioTemplateRepository templateRepository;
+    private final DelegatingTestscenarioTemplateRepository templateRepository;
 
     public RestConfig(HandlerContainer handler, DelegatingTestscenarioTemplateRepository templateRepository) {
         this.handler = handler;
         this.templateRepository = templateRepository;
     }
 
-    public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
+    public void setup(TestscenarioBuilderRepository testScenarioRepository,
                       GsakRepo gsakRepo,
                       LocalKafkaProducer localKafkaProducer,
                       AdminClient kafkaAdminClient,
-                      JournalRepository journalRepository) {
+                      JournalRepository journalRepository,
+                      PensjonTestdataService pensjonTestdataService) {
         // Setup RESTEasy's HttpServletDispatcher at "/api/*".
         final ServletContextHandler context = new ServletContextHandler(handler, "/rest");
 
@@ -54,6 +55,7 @@ public class RestConfig {
                 defaultContextObjects.put(GsakRepo.class,gsakRepo);
                 defaultContextObjects.put(LocalKafkaProducer.class, localKafkaProducer);
                 defaultContextObjects.put(AdminClient.class, kafkaAdminClient);
+                defaultContextObjects.put(PensjonTestdataService.class, pensjonTestdataService);
             }
         });
 

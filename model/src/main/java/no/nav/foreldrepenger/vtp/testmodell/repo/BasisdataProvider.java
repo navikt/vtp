@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -10,6 +11,8 @@ public interface BasisdataProvider {
     VirksomhetIndeks getVirksomhetIndeks();
 
     EnheterIndeks getEnheterIndeks();
+
+    AnsatteIndeks getAnsatteIndeks();
 
     AdresseIndeks getAdresseIndeks();
 

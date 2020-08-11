@@ -1,19 +1,19 @@
 package no.nav.aktoerregister.rest.api.v1;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 
-import io.swagger.annotations.Api;
-
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.servlet.http.HttpServletResponse;
+
+import io.swagger.annotations.Api;
 
 @Api(tags = {"aktoerregister"})
 @Path("/aktoerregister/api/v1/identer")

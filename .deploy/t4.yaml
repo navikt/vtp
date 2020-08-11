@@ -6,7 +6,7 @@ metadata:
   labels:
     team: teamforeldrepenger
 spec:
-  image: repo.adeo.no:5443/vtp:1.0_20191126135811_3711213 # Required. Docker image.
+  image: repo.adeo.no:5443/vtp-pensjon:0.7 # Required. Docker image.
   port: 8063 # Required. The port number which is exposed by the container and should receive HTTP traffic.
   liveness: # HTTP endpoint that signals 200 OK when the application is running.
     path: /rest/isAlive
