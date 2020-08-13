@@ -12,6 +12,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arena.arbeidsevnevurdering.ArbeidsevnevurderingMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
 import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV2MockImpl;
+import no.nav.tjeneste.virksomhet.arena.ytelseskontrakt.YtelseskontraktV3Mock;
 import no.nav.tjeneste.virksomhet.behandleinngaaendejournal.v1.BehandleInngaaendeJournalV1ServiceMock;
 import no.nav.tjeneste.virksomhet.behandlejournal.v3.BehandleJournalV3ServiceMockImpl;
 import no.nav.tjeneste.virksomhet.behandleoppgave.v1.BehandleOppgaveServiceMockImpl;
@@ -74,6 +75,7 @@ public class SoapWebServiceConfig {
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/soap/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
         publishWebService(new ArbeidsevnevurderingMockImpl(),"/soap/ail_ws/Arbeidsevnevurdering_v1");
         publishWebService(new YtelseskontraktV2MockImpl(),"/soap/ail_ws/Ytelseskontrakt_v2");
+        publishWebService(new YtelseskontraktV3Mock(),"/soap/ail_ws/Ytelseskontrakt_v3");
         publishWebService(new MedlemServiceMockImpl(repo), "/soap/medl2/ws/Medlemskap/v2");
         publishWebService(new ArbeidsfordelingMockImpl(repo), "/soap/norg2/ws/Arbeidsfordeling/v1");
         publishWebService(new InntektMockImpl(repo), "/soap/inntektskomponenten-ws/inntekt/v3/Inntekt");
