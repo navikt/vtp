@@ -20,10 +20,13 @@ public class JournalpostBuilder {
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getJournalpostId());
-        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()),
-                "fagsakId", modell.getFagsystemId()));
+        journalpost.setDatoOpprettet(new Date());
+        journalpost.setEksternReferanseId("ekstern-" + modell.getJournalpostId());
+        journalpost.setAvsenderMottaker(new AvsenderMottaker("12345678901", AvsenderMottakerIdType.FNR, "Navn", "Norge", Boolean.FALSE));
 
-         List<DokumentInfo> dokumentInfoer = new ArrayList<>();
+        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), "fagsakId", modell.getFagsystemId()));
+
+        List<DokumentInfo> dokumentInfoer = new ArrayList<>();
         if (finnHoveddokumentFraJournalpost(modell).isPresent()) {
             // Dokumentinfo for hoveddokument skal alltid returneres først
             DokumentModell hoveddokument = finnHoveddokumentFraJournalpost(modell).get();
@@ -83,6 +86,10 @@ public class JournalpostBuilder {
             dokumentvarianter.add(dokVariant);
         }
         dokInfo.setDokumentvarianter(dokumentvarianter);
+
+        // Dummy-verdi
+        dokInfo.setLogiskeVedlegg(List.of(new LogiskVedlegg("id", "Tittel")));
+
         return dokInfo;
     }
 
