@@ -1,5 +1,8 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.v3;
 
+import static no.nav.foreldrepenger.vtp.felles.ConversionUtils.convertToLocalDate;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +36,7 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHi
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.binding.HentArbeidsforholdHistorikkSikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.feil.ArbeidsforholdIkkeFunnet;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.feil.UgyldigInput;
+import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Periode;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidsgiverRequest;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidsgiverResponse;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforholdPrArbeidstakerRequest;
@@ -115,7 +119,9 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
                 List<no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Arbeidsforhold> responseArbeidsforhold = new ArrayList<>();
 
                 for (Arbeidsforhold arbeidsforhold : arbeidsforholdModell.getArbeidsforhold()) {
-                    responseArbeidsforhold.add(arbeidsforholdAdapter.fra(fnr, arbeidsforhold));
+                    if (request.getArbeidsforholdIPeriode() == null || erOverlapp(request.getArbeidsforholdIPeriode(), arbeidsforhold)) {
+                        responseArbeidsforhold.add(arbeidsforholdAdapter.fra(fnr, arbeidsforhold));
+                    }
                 }
 
                 FinnArbeidsforholdPrArbeidstakerResponse response = new FinnArbeidsforholdPrArbeidstakerResponse();
@@ -130,6 +136,7 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
         LOG.warn("finnArbeidsforholdPrArbeidstaker ugyldig forespørsel");
         throw new FinnArbeidsforholdPrArbeidstakerUgyldigInput("Ikke gyldig input", new UgyldigInput());
     }
+
 
     @Override
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsforhold/v3/Arbeidsforhold_v3/hentArbeidsforholdHistorikkRequest")
@@ -175,4 +182,22 @@ public class ArbeidsforholdMockImpl implements ArbeidsforholdV3 {
                 .map(t -> t.getAnnenPart().getIdent())
                 .collect(Collectors.toList());
     }
+
+    private boolean erOverlapp(Periode arbeidsforholdIPeriode, Arbeidsforhold arbeidsforhold) {
+        LocalDate ansettelsesperiodeFom = arbeidsforhold.getAnsettelsesperiodeFom();
+        LocalDate ansettelsesperiodeTom = arbeidsforhold.getAnsettelsesperiodeTom();
+        LocalDate periodeFom = convertToLocalDate(arbeidsforholdIPeriode.getFom());
+        LocalDate periodeTom = convertToLocalDate(arbeidsforholdIPeriode.getTom());
+        if (!periodeFom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeFom.isAfter(ansettelsesperiodeTom))) {
+            return true;
+        }
+        if (periodeTom != null && !periodeTom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeTom.isAfter(ansettelsesperiodeTom))) {
+            return true;
+        }
+        if (!periodeFom.isAfter(ansettelsesperiodeFom) &&  (periodeTom == null || !periodeTom.isBefore(ansettelsesperiodeFom))) {
+            return true;
+        }
+        return false;
+    }
+
 }
