@@ -172,12 +172,6 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>personfeed-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>norg2-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -409,16 +403,6 @@
                 <groupId>no.nav.tjenestespesifikasjoner</groupId>
                 <artifactId>oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
                 <version>${tjenestespesifikasjoner.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>person-api-feed-v2</artifactId>
-                <version>1.1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>person-api-feed-common-v1</artifactId>
-                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>
