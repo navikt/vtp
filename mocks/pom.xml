@@ -34,7 +34,6 @@
         <module>oppdrag-mock</module>
         <module>oppgave-mock</module>
         <module>organisasjon-mock</module>
-        <module>personfeed-mock</module>
         <module>sigrun-mock</module>
         <module>tps-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
