@@ -3,7 +3,6 @@ package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Landkode {
@@ -14,9 +13,8 @@ public class Landkode {
     public static final Landkode SWE = new Landkode("SWE");
     public static final Landkode DEU = new Landkode("DEU");
 
-    private String iso3bokstavLandkode = "NOR"; // default til norge
+    private String iso3bokstavLandkode = "NOR"; // default til norgeDekningType
 
-    @JsonCreator
     public Landkode(String kode) {
         this.iso3bokstavLandkode=kode;
         if(!LANDKODE.matcher(kode).matches()) {

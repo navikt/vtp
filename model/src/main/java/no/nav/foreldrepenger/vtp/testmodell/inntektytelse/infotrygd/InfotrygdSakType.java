@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
@@ -46,7 +45,6 @@ public class InfotrygdSakType {
 
     private String kode;
 
-    @JsonCreator
     public InfotrygdSakType(String kode) {
         this.kode = kode == null ? this.kode : kode;
         if (kode != null && !VALID_KODER.containsKey(kode)) {

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
@@ -28,7 +27,6 @@ public class PeriodeType {
 
     private String kode;
 
-    @JsonCreator
     public PeriodeType(String kode) {
         this.kode = kode == null ? this.kode : kode;
         if (kode != null && !VALID_KODER.contains(kode)) {

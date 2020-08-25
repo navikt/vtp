@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Avlønningstype {
@@ -23,7 +22,7 @@ public class Avlønningstype {
     public static final Avlønningstype FASTLØNN = new Avlønningstype("fastlønn");
 
     private String kode;
-    @JsonCreator
+
     public Avlønningstype(String kode) {
         this.kode = kode == null ? this.kode : kode;
         if (kode!= null && !VALID_KODER.contains(kode)) {
