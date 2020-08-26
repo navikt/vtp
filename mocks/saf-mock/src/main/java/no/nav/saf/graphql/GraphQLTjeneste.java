@@ -65,9 +65,6 @@ public class GraphQLTjeneste {
     }
 
     private ExecutionResult executeDokumentOversiktFagsak(GraphQLRequest request, JournalRepository testscenarioRepository) {
-        String fagsakId = (String) request.getVariables().get("fagsakId");
-        String fagsaksystem = (String) request.getVariables().get("fagsaksystem");
-
         DokumentoversiktFagsakCoordinator coordinator = opprettDokumentsiktFagsakCoordinator(testscenarioRepository);
         RuntimeWiring runtimeWiring = DokumentWiringDokumentoversikt.lagRuntimeWiring(coordinator);
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
@@ -77,8 +74,6 @@ public class GraphQLTjeneste {
 
 
     private ExecutionResult executeJournalpost(GraphQLRequest request, JournalRepository testscenarioRepository) {
-        String journalpostId = (String) request.getVariables().getOrDefault("journalpostId", "87654321");
-
         JournalpostCoordinator coordinator = opprettJournalpostCoordinator(testscenarioRepository);
         RuntimeWiring runtimeWiring = DokumentWiringJournalpost.lagRuntimeWiring(coordinator);
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
