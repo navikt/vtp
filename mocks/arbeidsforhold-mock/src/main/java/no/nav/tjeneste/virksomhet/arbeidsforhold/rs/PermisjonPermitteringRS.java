@@ -34,8 +34,8 @@ public class PermisjonPermitteringRS {
     }
 
     public PermisjonPermitteringRS(Permisjon permisjon) {
-        this.prosent = new BigDecimal(permisjon.stillingsprosent);
-        this.type = permisjon.permisjonstype.getKode();
+        this.prosent = permisjon.getStillingsprosent() != null ? new BigDecimal(permisjon.getStillingsprosent()) : null;
+        this.type = permisjon.getPermisjonstype().getKode();
         this.periode = new PeriodeRS(permisjon.getFomGyldighetsperiode(), permisjon.getTomGyldighetsperiode());
     }
 

@@ -53,9 +53,9 @@ public class ArbeidsavtaleRS {
     }
 
     public ArbeidsavtaleRS(Arbeidsavtale avtale) {
-        this.stillingsprosent = new BigDecimal(avtale.getStillingsprosent());
-        this.antallTimerPrUke = new BigDecimal(avtale.getAvtaltArbeidstimerPerUke());
-        this.beregnetAntallTimerPrUke = new BigDecimal(avtale.getBeregnetAntallTimerPerUke());
+        this.stillingsprosent = avtale.getStillingsprosent() != null ? new BigDecimal(avtale.getStillingsprosent()) : null;
+        this.antallTimerPrUke = avtale.getAvtaltArbeidstimerPerUke() != null ? new BigDecimal(avtale.getAvtaltArbeidstimerPerUke()) : null;
+        this.beregnetAntallTimerPrUke = avtale.getBeregnetAntallTimerPerUke() != null ? new BigDecimal(avtale.getBeregnetAntallTimerPerUke()) : null;
         this.sistLoennsendring = avtale.getSisteLønnnsendringsdato();
         this.yrke = avtale.getYrke() != null && avtale.getYrke().getYrke() != null ? avtale.getYrke().getYrke() : "8269102";
         this.gyldighetsperiode = new PeriodeRS(avtale.getFomGyldighetsperiode(), avtale.getTomGyldighetsperiode());
