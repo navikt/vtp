@@ -43,7 +43,12 @@ public class OpplysningspliktigArbeidsgiverRS {
     public OpplysningspliktigArbeidsgiverRS(String organisasjonsnummer, String aktoerId) {
         this.type = organisasjonsnummer != null ? Type.Organisasjon : Type.Person;
         this.organisasjonsnummer = organisasjonsnummer;
-        this.aktoerId = aktoerId;
-        this.offentligIdent = aktoerId != null ? aktoerId.substring(aktoerId.length() - 11) : null;
+        if (aktoerId != null) {
+            if (aktoerId.length() == 13) {
+                this.aktoerId = aktoerId;
+            } else if (aktoerId.length() == 11) {
+                this.offentligIdent = aktoerId;
+            }
+        }
     }
 }
