@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -50,8 +52,17 @@ public abstract class BrukerModell {
         this.lokalIdent = lokalIdent;
         String ident = getIdent();
         if (ident != null && !Objects.equals(lokalIdent, ident)) {
-            this.vars.computeIfAbsent(lokalIdent, n -> ident);
+            this.vars.computeIfAbsent(cleanKey(lokalIdent), n -> ident);
+            this.vars.computeIfAbsent(cleanKey(lokalIdent) + ".aktørId", n -> getAktørIdent());
         }
+    }
+    
+    private static String cleanKey(String dirtyKey) { //Låner litt kode fra VariabelContainer for å kunne hente ut variabel nøkkel før man legger den inn
+        if(dirtyKey==null) {
+            return null;
+        }
+        Matcher matcher = Pattern.compile("\\$\\{(.+)\\}").matcher(dirtyKey);
+        return matcher.find() ? matcher.group(1) : dirtyKey;
     }
 
     protected LokalIdentIndeks getIdenter() {
