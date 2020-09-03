@@ -34,17 +34,17 @@
 			<artifactId>threeten-extra</artifactId>
 		</dependency>
 
-		  <!--  
+		  <!--
 		    *****************************************************************************************
-			NB IKKE LEGG TIL INTERNE AVHENGIGHETER HER - AVHENGIGHETER TIL NAV TJENESTESPESIFIKASJONE, 
-			PROSJEKTAVHENGIGHETER EL. MODELLEN DISTRIBUERES SOM ET BIBLIOTEK SÅ BØR VÆRE 
-			UAVHENGIG AV DET MESTE ANNET. 
+			NB IKKE LEGG TIL INTERNE AVHENGIGHETER HER - AVHENGIGHETER TIL NAV TJENESTESPESIFIKASJONE,
+			PROSJEKTAVHENGIGHETER EL. MODELLEN DISTRIBUERES SOM ET BIBLIOTEK SÅ BØR VÆRE
+			UAVHENGIG AV DET MESTE ANNET.
 			*****************************************************************************************
 		   -->
 
 		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

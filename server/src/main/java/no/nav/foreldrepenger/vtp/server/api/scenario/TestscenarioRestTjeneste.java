@@ -36,7 +36,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 
 @Api(tags = {"Testscenario"})
@@ -108,28 +107,11 @@ public class TestscenarioRestTjeneste {
     }
 
     @POST
-    @Path("/{key}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Initialiserer et test scenario basert på angitt template key i VTPs eksempel templates"), response = TestscenarioDto.class)
-    public Response initialiserTestscenario(@PathParam(TEMPLATE_KEY) String templateKey, @Context UriInfo uriInfo) {
-
-
-        TestscenarioTemplate template = templateRepository.finn(templateKey);
-        Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
-        Testscenario testscenario = testscenarioRepository.opprettTestscenario(template, userSuppliedVariables);
-        logger.info("Initialiserer testscenario i VTP fra template: [{}] med id: [{}] ", templateKey, testscenario.getId());
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
-                .build();
-    }
-
-    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
     public Response initialiserTestScenario(String testscenarioJson,  @Context UriInfo uriInfo) {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
-        Testscenario testscenario = testscenarioRepository.opprettTestscenarioFraJsonString(testscenarioJson, userSuppliedVariables);
+        Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);
         logger.info("Initialiserer testscenario med ekstern testdatadefinisjon. Opprettet med id: [{}] ", testscenario.getId());
         return Response
                 .status(Response.Status.CREATED)

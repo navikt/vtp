@@ -1,13 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 
@@ -26,7 +26,8 @@ public class FoedselsnummerTest {
         FiktiveFnr fiktiveFnr = new FiktiveFnr();
         String fnr = fiktiveFnr.tilfeldigMannFnr();
         assertThat(fnr).hasSize(11);
-        Assert.assertTrue(Integer.parseInt(fnr.substring(6,9)) % 2 == 1);
+
+        assertTrue(Integer.parseInt(fnr.substring(6,9)) % 2 == 1);
     }
 
     @Test
@@ -34,7 +35,7 @@ public class FoedselsnummerTest {
         FiktiveFnr fiktiveFnr = new FiktiveFnr();
         String fnr = fiktiveFnr.tilfeldigKvinneFnr();
         assertThat(fnr).hasSize(11);
-        Assert.assertTrue(Integer.parseInt(fnr.substring(6,9)) % 2 == 0);
+        assertTrue(Integer.parseInt(fnr.substring(6,9)) % 2 == 0);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class FoedselsnummerTest {
         FiktiveFnr fiktiveFnr = new FiktiveFnr();
         String fnr = fiktiveFnr.tilfeldigKvinneDnr();
         assertThat(fnr).hasSize(11);
-        Assert.assertTrue(Integer.parseInt((fnr.substring(0,1))) >= 4);
+        assertTrue(Integer.parseInt((fnr.substring(0,1))) >= 4);
     }
 
     @Test
