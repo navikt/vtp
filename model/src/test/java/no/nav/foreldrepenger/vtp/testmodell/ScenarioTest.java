@@ -44,7 +44,7 @@ public class ScenarioTest {
     }
 
     @Test
-    public void testerInstansieringAvScenario() throws Exception {
+    public void testerInstansieringAvScenario() {
         Object testscenarioObjekt = testscenarioHenter.hentScenario("1");
         String testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
         Testscenario testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
