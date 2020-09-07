@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -56,10 +57,8 @@ public class TestscenarioHenter {
 
 
     private Object LesOgReturnerScenarioFraJsonfil(String scenarioId) {
-        String scenarioNavn = henterNavnPåScenarioMappe(scenarioId);
-        if (scenarioNavn == null) {
-            throw new RuntimeException("Fant ikke scenario med scenario nummer [" + scenarioId + "]");
-        }
+        String scenarioNavn = henterNavnPåScenarioMappe(scenarioId).orElseThrow(() ->
+                new RuntimeException("Fant ikke scenario med scenario nummer [" + scenarioId + "]"));
 
         final ObjectNode root = mapper.createObjectNode();
         root.set("scenario-navn", mapper.convertValue(scenarioNavn, new TypeReference<>() {}));
@@ -86,16 +85,16 @@ public class TestscenarioHenter {
         }
     }
 
-    private String henterNavnPåScenarioMappe(String scenarioNummer) {
+    private Optional<String> henterNavnPåScenarioMappe(String scenarioNummer) {
         try (BufferedReader r = new BufferedReader(new InputStreamReader(
                 Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream(PATH_TIL_SCENARIO))))) {
             String navnPåMappe;
             while((navnPåMappe = r.readLine()) != null) {
                 if (navnPåMappe.startsWith(scenarioNummer + "-")) {
-                    return navnPåMappe;
+                    return Optional.ofNullable(navnPåMappe);
                 }
             }
-            return henterNavnPåScenarioMappeFraJARressurs(scenarioNummer);
+            return Optional.ofNullable(henterNavnPåScenarioMappeFraJARressurs(scenarioNummer));
         } catch (IOException e) {
             throw new IllegalArgumentException("Klarte ikke å hente resource {scenarios}", e);
         }
