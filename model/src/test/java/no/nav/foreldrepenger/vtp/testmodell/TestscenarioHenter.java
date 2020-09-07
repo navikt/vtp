@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell.repo;
+package no.nav.foreldrepenger.vtp.testmodell;
 
 import java.io.BufferedReader;
 import java.io.File;

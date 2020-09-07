@@ -43,6 +43,16 @@
         <ks-tjenestespesifikasjoner.version>1.2019.12.18-12.22-ce897c4eb2c1</ks-tjenestespesifikasjoner.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>testmodell</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
