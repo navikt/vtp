@@ -1,6 +1,5 @@
 FROM navikt/java:11
 
-ENV JAVA_OPTS="-Dscenarios.dir=/app/model/scenarios/"
 ENV DUMMYPROP=fraDockerfile
 
 ARG JAR_FILE
