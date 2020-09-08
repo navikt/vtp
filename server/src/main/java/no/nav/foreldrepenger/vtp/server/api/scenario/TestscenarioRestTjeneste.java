@@ -36,7 +36,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenarios")
@@ -45,9 +44,6 @@ public class TestscenarioRestTjeneste {
 
     private static final String TEMPLATE_KEY = "key";
     private static final String SCENARIO_ID = "id";
-
-    @Context
-    private TestscenarioTemplateRepository templateRepository;
 
     @Context
     private TestscenarioRepository testscenarioRepository;
