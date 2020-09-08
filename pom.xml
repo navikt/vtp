@@ -40,7 +40,7 @@
         <cxf.version>3.3.7</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.2</swagger.version>
-        <graphql-java.version>2020-08-25T07-38-57-05deb85</graphql-java.version>
+        <graphql-java.version>2020-09-08T04-57-53-264cb12</graphql-java.version>
 
     </properties>
 
