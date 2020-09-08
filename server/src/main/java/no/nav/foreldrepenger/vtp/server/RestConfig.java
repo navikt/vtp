@@ -4,10 +4,6 @@ import java.util.Map;
 
 import javax.servlet.ServletContextEvent;
 
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.server.HandlerContainer;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -15,20 +11,19 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 import org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap;
 
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 public class RestConfig {
 
     private final HandlerContainer handler;
-    private DelegatingTestscenarioTemplateRepository templateRepository;
 
-    public RestConfig(HandlerContainer handler, DelegatingTestscenarioTemplateRepository templateRepository) {
+    public RestConfig(HandlerContainer handler) {
         this.handler = handler;
-        this.templateRepository = templateRepository;
     }
 
     public void setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
@@ -49,7 +44,6 @@ public class RestConfig {
                 Map<Class, Object> defaultContextObjects = deployment.getDispatcher().getDefaultContextObjects();
                 defaultContextObjects.put(TestscenarioRepository.class, testScenarioRepository);
                 defaultContextObjects.put(TestscenarioBuilderRepository.class, testScenarioRepository);
-                defaultContextObjects.put(TestscenarioTemplateRepository.class, templateRepository);
                 defaultContextObjects.put(JournalRepository.class, journalRepository);
                 defaultContextObjects.put(GsakRepo.class,gsakRepo);
                 defaultContextObjects.put(LocalKafkaProducer.class, localKafkaProducer);

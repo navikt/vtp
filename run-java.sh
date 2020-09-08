@@ -6,9 +6,8 @@ if [[ $MSYSTEM =~ MINGW* ]]; then
 		-Dlogback.configurationFile=logback.xml \
 		-Dfile.encoding=UTF8 \
 		-Duser.timezone=Europe/Oslo \
-		-Dscenarios.dir=../model/scenarios \
-		no.nav.foreldrepenger.vtp.server.MockServer) 
-else 
+		no.nav.foreldrepenger.vtp.server.MockServer)
+else
 	exec java ${DEFAULT_JAVA_OPTS} ${JAVA_OPTS} -cp app.jar:lib/* \
 		-Dlogback.configurationFile=logback.xml \
 		-Dfile.encoding=UTF8 \

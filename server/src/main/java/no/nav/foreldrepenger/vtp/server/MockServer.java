@@ -3,7 +3,12 @@ package no.nav.foreldrepenger.vtp.server;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,14 +40,11 @@ import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 
@@ -156,17 +158,13 @@ public class MockServer {
     private void startWebServer() throws Exception {
         HandlerContainer handler = (HandlerContainer) server.getHandler();
 
-        TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
-        templateRepositoryImpl.load();
-
-        DelegatingTestscenarioTemplateRepository templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
-        DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
+        DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(
+                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         GsakRepo gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         addRestServices(handler,
                 testScenarioRepository,
-                templateRepository,
                 gsakRepo,
                 kafkaServer.getLocalProducer(),
                 kafkaServer.getKafkaAdminClient(),
@@ -180,7 +178,7 @@ public class MockServer {
 
         // kjør soap oppsett etter jetty har startet
         if(!tjenesteDisabled(VTPTjeneste.SOAP)) {
-            addSoapServices(testScenarioRepository, templateRepository, journalRepository, gsakRepo);
+            addSoapServices(testScenarioRepository, journalRepository, gsakRepo);
         }
     }
 
@@ -196,17 +194,15 @@ public class MockServer {
     }
 
     protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository,
-                                   @SuppressWarnings("unused") TestscenarioTemplateRepository templateRepository,
                                    JournalRepository journalRepository,
                                    GsakRepo gsakRepo) {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository, gsakRepo);
     }
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
-                                   DelegatingTestscenarioTemplateRepository templateRepository,
                                    GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient,
                                    JournalRepository journalRepository) {
-        new RestConfig(handler, templateRepository).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository);
+        new RestConfig(handler).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository);
     }
 
     protected void addWebResources(HandlerContainer handlerContainer) {

@@ -32,7 +32,6 @@ I verdikjedetester benyttes oftest Docker-image av VTP. Dette bygges i VTP sin p
 #### Starte backend-server via IDE
 * IntelliJ må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.
 * Start mock serveren ved å kjøre MockServer (lokalt).
-* Trenger parameter `-Dscenarios.dir="../model/scenarios"` dersom denne ikke ligger under working dir (dvs. i IDE).
 
 #### Kjøre via docker run / docker-compose
 ##### For å bygge docker image lokalt: 
