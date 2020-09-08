@@ -1,19 +1,17 @@
-package no.nav.foreldrepenger.fpmock.server;
+package no.nav.tjeneste.virksomhet.arbeidsforhold;
 
 import java.io.IOException;
+import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplate;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioTemplateRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioTemplateRepositoryImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.ArbeidsforholdMockImpl;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.NorskIdent;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.informasjon.arbeidsforhold.Regelverker;
@@ -21,31 +19,26 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.v3.meldinger.FinnArbeidsforhold
 
 public class ArbeidsforholdMockTest {
 
-    private TestscenarioRepository testRepo;
+    private static TestscenarioRepository testScenarioRepository;
+    private static TestscenarioHenter testscenarioHenter;
 
-    private TestscenarioTemplateRepository templateRepository;
 
-    @Before
-    public void setup() throws IOException {
-        System.setProperty("scenarios.dir", "../model/scenarios");
-        TestscenarioTemplateRepositoryImpl templateRepositoryImpl = TestscenarioTemplateRepositoryImpl.getInstance();
-        templateRepositoryImpl.load();
-
-        templateRepository = new DelegatingTestscenarioTemplateRepository(templateRepositoryImpl);
-        var testScenarioRepository = new DelegatingTestscenarioRepository(
-            TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        testRepo = testScenarioRepository;
+    @BeforeAll
+    public static void setup() throws IOException {
+        testScenarioRepository = new DelegatingTestscenarioRepository(
+                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
+        testscenarioHenter = TestscenarioHenter.getInstance();
 
     }
 
     @SuppressWarnings("unused")
     @Test
     public void finnArbeidsforholdPrArbeidstakerTest() throws Exception {
-        TestscenarioTemplate template = templateRepository.finn("50");
+        Object testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        String testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        Testscenario testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
 
-        Testscenario testscenario = testRepo.opprettTestscenario(template);
-
-        ArbeidsforholdMockImpl arbeidsforholdMock = new ArbeidsforholdMockImpl(testRepo);
+        ArbeidsforholdMockImpl arbeidsforholdMock = new ArbeidsforholdMockImpl(testScenarioRepository);
 
         FinnArbeidsforholdPrArbeidstakerRequest request = new FinnArbeidsforholdPrArbeidstakerRequest();
 
