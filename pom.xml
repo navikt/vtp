@@ -18,7 +18,6 @@
     </scm>
 
     <modules>
-        <module>frontend</module>
         <module>core</module>
         <module>model</module>
         <module>mocks</module>

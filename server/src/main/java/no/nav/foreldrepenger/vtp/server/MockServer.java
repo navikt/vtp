@@ -172,7 +172,6 @@ public class MockServer {
 
 
         addWebResources(handler);
-        addWebGui(handler);
 
         startServer();
 
@@ -219,22 +218,6 @@ public class MockServer {
         servletHolder.setInitParameter("dirAllowed", "false");
 
         ctx.addServlet(servletHolder, "/swagger");
-
-    }
-
-    protected void addWebGui(HandlerContainer handlerContainer) {
-        @SuppressWarnings("resource")
-        WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/webapps/frontend"), "/");
-        //ctx.setDefaultsDescriptor(null);
-        ctx.setThrowUnavailableOnStartupException(true);
-        ctx.setLogUrlOnStart(true);
-
-        DefaultServlet defaultServlet = new DefaultServlet();
-
-        ServletHolder servletHolder = new ServletHolder(defaultServlet);
-        servletHolder.setInitParameter("dirAllowed", "true");
-
-        ctx.addServlet(servletHolder, "/webapps/frontend");
 
     }
 

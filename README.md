@@ -21,8 +21,6 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 ## Teknologi som må installeres
 - Java (https://adoptopenjdk.net/)
-- Node.js (https://nodejs.org/en/download/)
-- Yarn (https://classic.yarnpkg.com/)
 - Maven (http://maven.apache.org/)
 
 ## Starte applikasjon
@@ -41,14 +39,25 @@ Imaget blir da tilgjengelig som vtp:latest
 ##### Hente docker-image bygget i pipe: 
 docker pull docker.pkg.github.com/navikt/vtp/vtp
 
-#### Starte front-end
-* I modulen frontend (/frontend), kjør `yarn run serve`. Når VTP bygges så pakkes det også med en statisk versjon av front-end som er tilgjengelig på rot av localhost:8060 eller https://localhost:8063.
-* Dersom bygg feiler på utviklerimage, forsøk å oppdater node / yarn. Oppdaterte versjoner ligger på http://a34apvl063.devillo.no:81/software/.  
-
-
 ## Opprette testdata 
-* Opprett testdata ved å legge scenario i /model/scenarios. Innledende tall brukes som referanse for å få instansiert scenario.
-* Tjenester for å opprette testdata finnes på [Swagger UI](https://localhost:8063/swagger/)  (Bruk HTTP for kall)
+Testscenarios opprettes ved hjelp av `TestscenarioRestTjeneste.java`. Her sende man inn en JSON-string av testpersonen(e),
+testpersonen blir instansiert i VTP og tilgjengliggjort i alle mockene, og den instansierte testpersonen returneres.
+
+JSON objektet har følgende struktur og godtar at en eller flere felter mangler:
+
+```json5
+{
+     "scenario-navn": "",
+     "personopplysninger": {  },
+     "inntektytelse-annenpart": {  },
+     "inntektytelse-søker": {  },
+     "organisasjon": {  },
+     "vars": {  }
+ }
+```
+Eksempel på hvordan en kan gjøre dette befinner seg i `model/src/test/ScenarioTest.java` med hjelpeklassen 
+`model/src/test/TestscenarioHenter.java`. Hjelpeklassen leser av .json filer og oversetter det til en JSON streng som
+kan bli brukt i requesten.
 
 ## Kjør tester
 * Automatiske tester for FPSAK (og andre FP*-familieapplikasjoner) ligger i eget repo på GitHub (private): [fpsak-autotest](https://github.com/navikt/fpsak-autotest)
