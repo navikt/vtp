@@ -25,6 +25,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>pdl-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>gsak-mock</artifactId>
         </dependency>
         <dependency>
