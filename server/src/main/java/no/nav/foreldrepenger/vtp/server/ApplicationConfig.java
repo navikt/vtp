@@ -53,6 +53,7 @@ import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.oppgave.OppgaveMockImpl;
+import no.nav.pdl.PdlMock;
 import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
@@ -107,6 +108,7 @@ public class ApplicationConfig extends Application {
         classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AaregRSV1Mock.class);
         classes.add(AktoerIdentMock.class);
+        classes.add(PdlMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(InnsynMock.class);
         classes.add(DokdistfordelingMock.class);
