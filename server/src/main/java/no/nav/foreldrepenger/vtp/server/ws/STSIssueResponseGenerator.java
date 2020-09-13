@@ -24,6 +24,7 @@ import org.apache.cxf.sts.token.delegation.UsernameTokenDelegationHandler;
 import org.apache.cxf.sts.token.provider.SAMLTokenProvider;
 import org.apache.cxf.sts.token.provider.TokenProvider;
 import org.apache.cxf.sts.token.provider.TokenProviderParameters;
+import org.apache.cxf.ws.security.sts.provider.model.ObjectFactory;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenCollectionType;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseCollectionType;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
@@ -113,6 +114,18 @@ public class STSIssueResponseGenerator {
         Principal principal = new CustomTokenPrincipal(USERNAME);
         Map<String, Object> messageContext = createMessageContext(principal);
         return issueOperation.issueSingle(request, principal, messageContext);
+    }
+
+    /** Issue a single token */
+    public RequestSecurityTokenResponseType buildRequestSecurityTokenResponseType(String tokenType){
+        ObjectFactory of = new ObjectFactory();
+        RequestSecurityTokenType request2 = of.createRequestSecurityTokenType();
+        request2.getAny().add(of.createTokenType(tokenType));
+        request2.getAny().add(of.createRequestType("http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue"));
+
+        Principal principal = new CustomTokenPrincipal(USERNAME);
+        Map<String, Object> messageContext = createMessageContext(principal);
+        return issueOperation.issueSingle(request2, principal, messageContext);
     }
 
     private static SecurityContext createSecurityContext(final Principal p) {
