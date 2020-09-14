@@ -47,7 +47,6 @@ public class STSRestTjeneste {
     public UserTokenResponse dummyToken(@QueryParam("grant_type") String grant_type,
                                         @QueryParam("scope") String scope) throws JoseException {
         JsonWebSignature jws = new JsonWebSignature();
-        jws.setAlgorithmHeaderValue("RS256");
         jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
         String token = jws.getCompactSerialization();

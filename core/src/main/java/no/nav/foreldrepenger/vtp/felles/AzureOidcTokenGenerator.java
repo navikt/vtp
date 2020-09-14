@@ -1,14 +1,18 @@
 package no.nav.foreldrepenger.vtp.felles;
 
-import com.google.common.base.Strings;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
-
-import java.util.*;
 
 
 public class AzureOidcTokenGenerator {
@@ -81,7 +85,7 @@ public class AzureOidcTokenGenerator {
         claims.setGeneratedJwtId();
         claims.setIssuedAt(issuedAt);
         claims.setSubject(subject);
-        if (!Strings.isNullOrEmpty(nonce)) {
+        if (Objects.nonNull(nonce) && !nonce.isBlank()) {
             claims.setClaim("nonce", nonce);
         }
         if (aud.size() == 1) {
