@@ -40,6 +40,7 @@
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.2</swagger.version>
         <graphql-java.version>2020-09-13T08-19-45-0d97d9d</graphql-java.version>
+        <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 
     </properties>
 
@@ -601,7 +602,7 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.2.3</version>
+                <version>${ch.qos.logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -613,6 +614,12 @@
                 <groupId>net.logstash.logback</groupId>
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>5.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${ch.qos.logback.version}</version>
             </dependency>
 
             <dependency>
