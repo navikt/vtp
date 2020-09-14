@@ -48,6 +48,8 @@ import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.AzureAdNAVAnsattService;
+import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
 import no.nav.infotrygdks.InfotrygdKontantstotteMock;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
@@ -115,6 +117,8 @@ public class ApplicationConfig extends Application {
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
+        classes.add(AzureAdNAVAnsattService.class);
+        classes.add(MicrosoftGraphApiMock.class);
         classes.add(PdpRestTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
