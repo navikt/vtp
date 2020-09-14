@@ -92,16 +92,6 @@ public class AzureAdNAVAnsattService {
         return tokenGenerator.create();
     }
 
-    // Authorize URL:
-    // https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/authorize
-    // ?response_type=code
-    // &client_id=15f01fee-bd6d-4427-bb70-fc9e75caa13a
-    // &redirect_uri=http%3A%2F%2Flocalhost%3A9080%2Fpsak%2Foidc%2Fcallback
-    // &scope=openid+profile+user.read
-    // &state=PpZ9uI3drAWm7vfLM1rvb-ev4fvzc9RmHqQxW725wWE
-    // &nonce=xJDu2DjmaiFY8ivIakELFLVZDY6OivuE1GAUJ0fIEf0
-    // &prompt=select_account
-
     @GET
     @Path("/{tenant}/v2.0/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
