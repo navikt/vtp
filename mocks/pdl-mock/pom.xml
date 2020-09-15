@@ -38,7 +38,7 @@
         <dependency>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>2.4.1</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -92,11 +92,12 @@
                             <customAnnotationsMapping>
                                 <EpochMillis>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class</EpochMillis>
                             </customAnnotationsMapping>
-<!--                            <generateClient>true</generateClient>
+                            <generateClient>true</generateClient>
+                            <!--<generateClient>true</generateClient>
                             <generateApis>false</generateApis>
                             <generateBuilder>false</generateBuilder>
-                            <generateToString>true</generateToString>
-                            <generateParameterizedFieldsResolvers>false</generateParameterizedFieldsResolvers>-->
+                            <generateToString>true</generateToString>-->
+                            <generateParameterizedFieldsResolvers>false</generateParameterizedFieldsResolvers>
                         </configuration>
                     </execution>
                 </executions>

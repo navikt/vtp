@@ -1,5 +1,8 @@
 package no.nav.pdl.graphql;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
@@ -7,14 +10,8 @@ import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-
-/**
- * @author Joakim Bjørnstad, Jbit AS
- */
-final class DateScalar {
-	static final GraphQLScalarType DATE = GraphQLScalarType.newScalar()
+public final class DateScalar {
+	public static final GraphQLScalarType DATE = GraphQLScalarType.newScalar()
 			.name("Date")
 			.description("Identifikasjon av et døgn i kalenderen etter ISO-8601 standarden.")
 			.coercing(new Coercing() {
@@ -22,6 +19,9 @@ final class DateScalar {
 				public Object serialize(Object dataFetcherResult) throws CoercingSerializeException {
 					if (dataFetcherResult instanceof LocalDate) {
 						return dataFetcherResult.toString();
+					}
+					if (dataFetcherResult instanceof String) {
+						return dataFetcherResult;
 					}
 					throw new CoercingSerializeException("Serialisering av " + dataFetcherResult.getClass() + " til " + DATE.getName() + " er ikke implementert.");
 				}
