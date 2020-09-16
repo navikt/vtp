@@ -14,16 +14,6 @@
 
 	<dependencies>
 
-		<!-- 3dje parts NAV felleskomponenter -->
-		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>nav-fim-organisasjon-v4-tjenestespesifikasjon</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>nav-fim-organisasjon-v5-tjenestespesifikasjon</artifactId>
-		</dependency>
-
 		<!-- 3dje parts biblioteker -->
 
 		<dependency>

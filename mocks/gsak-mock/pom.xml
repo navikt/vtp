@@ -38,26 +38,6 @@
 			<artifactId>jaxb2-basics-runtime</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>behandleoppgave-v1-tjenestespesifikasjon</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>nav-fim-oppgave-v3-tjenestespesifikasjon</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>nav-fim-sak-v1-tjenestespesifikasjon</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>oppgavebehandling-v3-tjenestespesifikasjon</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>no.nav.tjenestespesifikasjoner</groupId>
-			<artifactId>behandlesak-v2-tjenestespesifikasjon</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>no.nav.foreldrepenger.vtp</groupId>
 			<artifactId>core</artifactId>
 		</dependency>

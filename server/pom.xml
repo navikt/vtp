@@ -45,10 +45,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>infotrygd-kontantstotte-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>medl-mock</artifactId>
         </dependency>
         <dependency>
@@ -98,14 +94,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>dokdist-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>egenansatt-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>innsynjournal-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>

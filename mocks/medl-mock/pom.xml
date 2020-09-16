@@ -18,11 +18,6 @@
         </dependency>
         <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
-            <groupId>no.nav.tjenestespesifikasjoner</groupId>
-            <artifactId>nav-medlemskap-v2-tjenestespesifikasjon</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>medlemskapsunntak-api-v1</artifactId>
         </dependency>

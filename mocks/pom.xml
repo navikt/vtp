@@ -18,11 +18,8 @@
         <module>dokumentproduksjon-mock</module>
         <module>dokdist-mock</module>
         <module>dummy-mock</module>
-        <module>egenansatt-mock</module>
         <module>gsak-mock</module>
         <module>infotrygd-mock</module>
-        <module>infotrygd-kontantstotte-mock</module>
-        <module>innsynjournal-mock</module>
         <module>inntekt-mock</module>
         <module>joark-mock</module>
         <module>saf-mock</module>
@@ -39,10 +36,6 @@
         <module>pdl-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
     </modules>
-
-    <properties>
-        <ks-tjenestespesifikasjoner.version>1.2019.12.18-12.22-ce897c4eb2c1</ks-tjenestespesifikasjoner.version>
-    </properties>
 
     <dependencies>
         <dependency>
