@@ -81,16 +81,42 @@ public class Personopplysninger {
         return søker;
     }
 
+    public LokalIdentIndeks getIdenter() {
+        return identer;
+    }
+
+    public VariabelContainer getVars() {
+        return vars;
+    }
+
     public void leggTil(FamilierelasjonModell rel) {
         Objects.requireNonNull(this.identer, "identer er ikke satt");
         rel.getTil().setIdenter(identer);
         this.familierelasjoner.add(rel);
     }
 
-    public void leggTilBarn(BarnModell barn) {
+    public String leggTilDødfødsel(BarnModell barn) {
         Objects.requireNonNull(this.identer, "identer er ikke satt");
-        barn.setIdenter(identer);
-        this.familierelasjoner.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
+
+        // Lager ident og oppdaterer vars
+        var lokalIdent = henterUtUniktVariabelnavn();
+        var barnIdent = identer.getIdentForDødfødsel(lokalIdent, barn.getFødselsdato());
+        getVars().putVar(lokalIdent, barnIdent);
+
+        leggTilBarnIFamilierelasjonsModeller(barn, lokalIdent);
+        return  barnIdent;
+    }
+
+    public String leggTilBarn(BarnModell barn) {
+        Objects.requireNonNull(this.identer, "identer er ikke satt");
+
+        // Lager ident og oppdaterer vars
+        var lokalIdent = henterUtUniktVariabelnavn();
+        var barnIdent = identer.getBarnIdentForLokalIdent(lokalIdent);
+        getVars().putVar(lokalIdent, barnIdent);
+
+        leggTilBarnIFamilierelasjonsModeller(barn, lokalIdent);
+        return barnIdent;
     }
 
     public void setIdenter(LokalIdentIndeks identer) {
@@ -99,5 +125,40 @@ public class Personopplysninger {
         if (this.annenPart != null) {
             this.annenPart.setIdenter(identer);
         }
+    }
+
+    private void leggTilBarnIFamilierelasjonsModeller(BarnModell barn, String lokalIdent) {
+        barn.setVars(vars);
+        barn.setIdenter(identer);
+        barn.setLokalIdent(lokalIdent);
+        barn.setAdresseIndeks(søker.getAdresseIndeks());
+        this.familierelasjoner.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
+        this.familierelasjonerAnnenPart.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
+
+        if (familierelasjonerBarn.isEmpty()) {
+            if (søker.getKjønn().equals(BrukerModell.Kjønn.K)) {
+                this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.MORA, getSøker()));
+                if (annenPart != null && annenPart.getKjønn().equals(BrukerModell.Kjønn.K)) {
+                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.MMOR, getAnnenPart()));
+                } else {
+                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.FARA, getSøker()));
+                }
+            } else {
+                this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.FARA, getSøker()));
+                if (annenPart != null && annenPart.getKjønn().equals(BrukerModell.Kjønn.M)) {
+                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.FARA, getAnnenPart()));
+                } else {
+                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.MORA, getSøker()));
+                }
+            }
+        }
+    }
+
+    private String henterUtUniktVariabelnavn() {
+        var i = 1;
+        while (getVars().getVar("barn" + i) != null) {
+            i++;
+        }
+        return "${barn" + i + "}";
     }
 }

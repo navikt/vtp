@@ -56,7 +56,7 @@ public abstract class BrukerModell {
             this.vars.computeIfAbsent(cleanKey(lokalIdent) + ".aktørId", n -> getAktørIdent());
         }
     }
-    
+
     private static String cleanKey(String dirtyKey) { //Låner litt kode fra VariabelContainer for å kunne hente ut variabel nøkkel før man legger den inn
         if(dirtyKey==null) {
             return null;
@@ -69,6 +69,10 @@ public abstract class BrukerModell {
         return identer;
     }
 
+    public VariabelContainer getVars() {
+        return vars;
+    }
+
     protected String getLokalIdent() {
         return lokalIdent;
     }
@@ -77,7 +81,7 @@ public abstract class BrukerModell {
     public abstract String getIdent();
 
     public enum Kjønn {
-        M, K;
+        M, K
     }
 
     public void setIdenter(LokalIdentIndeks identer) {
@@ -85,6 +89,13 @@ public abstract class BrukerModell {
             throw new IllegalStateException("identer allerede satt");
         }
         this.identer = identer;
+    }
+
+    public void setVars(VariabelContainer vars) {
+        if (this.vars != null && vars != this.vars /* merk System.identy brukes her med vilje */) { // NOSONAR
+            throw new IllegalStateException("vars allerede satt");
+        }
+        this.vars = vars;
     }
 
     @JsonGetter()

@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.identer;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,9 +43,15 @@ public class LokalIdentIndeks {
         return identer.computeIfAbsent(key(lokalIdent), i -> identGenerator.tilfeldigBarnUnderTreAarFnr());
     }
 
+    public String getIdentForDødfødsel(String lokalIdent, LocalDate dødsdato) {
+        if (lokalIdent.matches("^\\d+$")) {
+            return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
+        }
+        return identer.computeIfAbsent(key(lokalIdent), i -> dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001");
+    }
+
     public String getIdent(String lokalIdent) {
         String key = key(lokalIdent);
-        String ident = identer.get(key);
-        return ident;
+        return identer.get(key);
     }
 }

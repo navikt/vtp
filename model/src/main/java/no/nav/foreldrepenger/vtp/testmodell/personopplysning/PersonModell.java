@@ -24,10 +24,10 @@ public abstract class PersonModell extends BrukerModell {
     KLIE, MILI, PEND, SPFO(7), SPSF(6), SVAL, UFB, URIK, UDEF;
         int kode;
 
-        private Diskresjonskoder() {
+        Diskresjonskoder() {
         }
 
-        private Diskresjonskoder(int kode) {
+        Diskresjonskoder(int kode) {
             this.kode = kode;
         }
 
@@ -100,20 +100,27 @@ public abstract class PersonModell extends BrukerModell {
         this.fødselsdato = fødselsdato;
     }
 
+    public AdresseIndeks getAdresseIndeks() {
+        return adresseIndeks;
+    }
+
+    public void setAdresseIndeks(AdresseIndeks adresseIndeks) {
+        this.adresseIndeks = adresseIndeks;
+    }
+
     public Optional<AdresseModell> getAdresse(AdresseType adresseType) {
         return getAdresser().stream().filter(a -> a.getAdresseType().equals(adresseType)).findFirst();
     }
 
     public List<AdresseModell> getAdresser() {
-        List<AdresseModell> adresseListe = adresser.stream().map((AdresseModell a) -> {
+
+        return adresser.stream().map((AdresseModell a) -> {
             if (a instanceof AdresseRefModell) {
                 return adresseIndeks.finnFra((AdresseRefModell) a);
             } else {
                 return a;
             }
-        }).collect(Collectors.toList());
-
-        return Collections.unmodifiableList(adresseListe);
+        }).collect(Collectors.toUnmodifiableList());
     }
 
     public List<AdresseModell> getAdresser(AdresseType type) {

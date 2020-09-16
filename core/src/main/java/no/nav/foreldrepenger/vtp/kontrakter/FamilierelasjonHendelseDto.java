@@ -44,6 +44,10 @@ public class FamilierelasjonHendelseDto implements PersonhendelseDto {
         return endringstype;
     }
 
+    public void setEndringstype(String endringstype) {
+        this.endringstype = endringstype;
+    }
+
     public String getFnr() {
         return fnr;
     }

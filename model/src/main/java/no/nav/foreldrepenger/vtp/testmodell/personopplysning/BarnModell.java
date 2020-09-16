@@ -13,6 +13,10 @@ public class BarnModell extends PersonModell {
         super();
     }
 
+    public BarnModell(String navn, LocalDate fødselsdato) {
+        super("temp", navn, fødselsdato);
+    }
+
     public BarnModell(String lokalIdent, String navn, LocalDate fødselsdato) {
         super(lokalIdent, navn, fødselsdato);
     }

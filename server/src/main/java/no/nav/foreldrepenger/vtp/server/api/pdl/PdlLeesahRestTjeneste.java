@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.server.api.pdl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
 
 import io.swagger.annotations.Api;
@@ -23,6 +25,10 @@ import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FamilierelasjonHendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.person.pdl.leesah.Endringstype;
 import no.nav.person.pdl.leesah.Personhendelse;
@@ -40,6 +46,13 @@ public class PdlLeesahRestTjeneste {
 
     @Context
     private TestscenarioRepository testscenarioRepository;
+
+    public PdlLeesahRestTjeneste() {
+    }
+
+    public PdlLeesahRestTjeneste(TestscenarioRepository testscenarioRepository) {
+        this.testscenarioRepository = testscenarioRepository;
+    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,14 +75,15 @@ public class PdlLeesahRestTjeneste {
             re.printStackTrace();
             return Response.status(Response.Status.BAD_REQUEST).entity(String.format("{\"error\": \"%s\"}",re.getMessage())).build();
         }
-        return Response.status(201).entity(String.format("{\"success\": \"Personhendelse opprettet\"}")).build();
+        return Response.status(201).entity("{\"success\": \"Personhendelse opprettet\"}").build();
     }
 
     private void produserFødselshendelse(FødselshendelseDto fødselshendelseDto) {
+        var barnIdent = registererNyttBarnPåForeldre(fødselshendelseDto);
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set("hendelseId", UUID.randomUUID().toString());
-        personhendelse.set("personidenter", List.of(fødselshendelseDto.getFnrBarn(), testscenarioRepository.getPersonIndeks().finnByIdent(fødselshendelseDto.getFnrBarn()).getAktørIdent()));
+        personhendelse.set("personidenter", List.of(barnIdent, testscenarioRepository.getPersonIndeks().finnByIdent(barnIdent).getAktørIdent()));
         personhendelse.set("master", "Freg");
         personhendelse.set("opprettet", LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set("opplysningstype", "FOEDSEL_V1");
@@ -84,10 +98,15 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("foedsel", fødsel.build());
         }
 
-        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", personhendelse.build());
+        sendHendelsePåKafka(personhendelse.build());
+    }
+
+    public void sendHendelsePåKafka(GenericData.Record record) {
+        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", record);
     }
 
     private void produserDødshendelse(DødshendelseDto dødshendelseDto) {
+        registrerDødshendelse(dødshendelseDto);
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set("hendelseId", UUID.randomUUID().toString());
@@ -106,10 +125,11 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("doedsfall", dødsfall.build());
         }
 
-        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", personhendelse.build());
+        sendHendelsePåKafka(personhendelse.build());
     }
 
     private void produserDødfødselshendelse(DødfødselhendelseDto dødfødselhendelseDto) {
+        registererDødfødselsHendelse(dødfødselhendelseDto);
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set("hendelseId", UUID.randomUUID().toString());
@@ -128,7 +148,7 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("doedfoedtBarn", dødfødtBarn.build());
         }
 
-        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", personhendelse.build());
+        sendHendelsePåKafka(personhendelse.build());
     }
 
     private void produserFamilierelasjonHendelse(FamilierelasjonHendelseDto familierelasjonHendelseDto) {
@@ -149,11 +169,63 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("familierelasjon", familierelasjon.build());
         }
 
-        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", personhendelse.build());
+        sendHendelsePåKafka(personhendelse.build());
     }
 
     private int oversettLocalDateTilAvroFormat(LocalDate localDate) {
         // Avro krever at dato angis som antall dager siden epoch som int
         return Long.valueOf(localDate.toEpochDay()).intValue();
+    }
+
+    private String registererNyttBarnPåForeldre(FødselshendelseDto fødselshendelseDto) {
+        var personIndeks = testscenarioRepository.getPersonIndeks();
+        Personopplysninger personopplysninger;
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(fødselshendelseDto.getFnrMor());
+        if (personopplysninger == null) {
+            personopplysninger = personIndeks.finnPersonopplysningerByIdent(fødselshendelseDto.getFnrFar());
+        }
+
+        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", fødselshendelseDto.getFødselsdato());
+        var barnIdent = personopplysninger.leggTilBarn(barnModell);
+
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjonerForAnnenPart());
+        personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
+
+        return barnIdent;
+    }
+
+    private void registrerDødshendelse(DødshendelseDto dødshendelseDto) {
+        var personIndeks = testscenarioRepository.getPersonIndeks();
+        Personopplysninger personopplysninger;
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødshendelseDto.getFnr());
+        setDødsdatoerIIndeksene(personopplysninger, dødshendelseDto);
+    }
+
+    private void setDødsdatoerIIndeksene(Personopplysninger personopplysninger, DødshendelseDto dødshendelseDto){
+        if (dødshendelseDto.getFnr().equalsIgnoreCase(personopplysninger.getSøker().getIdent())) {
+            personopplysninger.getSøker().setDødsdato(dødshendelseDto.getDoedsdato());
+        } else if (dødshendelseDto.getFnr().equalsIgnoreCase(personopplysninger.getAnnenPart().getIdent())) {
+            personopplysninger.getAnnenPart().setDødsdato(dødshendelseDto.getDoedsdato());
+        }
+        setDødsdatoForFamilirelasjoner(personopplysninger.getFamilierelasjoner(), dødshendelseDto);
+        setDødsdatoForFamilirelasjoner(personopplysninger.getFamilierelasjonerForAnnenPart(), dødshendelseDto);
+        setDødsdatoForFamilirelasjoner(personopplysninger.getFamilierelasjonerForBarnet(), dødshendelseDto);
+    }
+
+    private void setDødsdatoForFamilirelasjoner(Collection<FamilierelasjonModell> familierelasjonModell, DødshendelseDto dødshendelseDto) {
+        familierelasjonModell.stream()
+                .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(dødshendelseDto.getFnr()))
+                .map(fr -> (PersonModell) fr.getTil())
+                .forEach(personModell -> personModell.setDødsdato(dødshendelseDto.getDoedsdato()));
+    }
+
+    private String registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
+        var personIndeks = testscenarioRepository.getPersonIndeks();
+        Personopplysninger personopplysninger;
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødfødselhendelseDto.getFnr());
+
+        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.getDoedfoedselsdato());
+        return personopplysninger.leggTilDødfødsel(barnModell);
     }
 }
