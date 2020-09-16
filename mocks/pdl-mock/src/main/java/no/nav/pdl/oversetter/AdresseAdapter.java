@@ -86,8 +86,6 @@ public class AdresseAdapter {
     public static Person setAdresser(Person pers, PersonModell person) {
         List<AdresseModell> adresser = person.getAdresser();
         // TODO: Hva med hemmelig adresse (adressebeskyttelse)? Ny i PDL
-        // TODO: Hvordan skal vi håndtere "setGjeldendePostadressetype" ved overgang til PDL? Er denne relevant lenger?
-
         for (AdresseModell a : adresser) {
             switch (a.getAdresseType()) {
                 case BOSTEDSADRESSE:
@@ -102,7 +100,8 @@ public class AdresseAdapter {
                         pers.setKontaktadresse(List.of(kontaktadresse));
                         break;
                     }
-                    throw new UnsupportedOperationException("Har ikke implementert støtte for å konvertere fra " + a.getClass());
+                    System.out.println("Ukjent adressetype: " + a);
+                    break;
                 case MIDLERTIDIG_POSTADRESSE:
                     // TODO: Hvordan skal denne oversettes med PDL?
                     // MidlertidigPostadresse midlertidig = tilMidlertidigPostadresse(a);

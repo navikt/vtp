@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.pdl.Foedsel;
 import no.nav.pdl.Folkeregisterpersonstatus;
 import no.nav.pdl.GeografiskTilknytning;
+import no.nav.pdl.GtType;
 import no.nav.pdl.Kjoenn;
 import no.nav.pdl.KjoennType;
 import no.nav.pdl.Navn;
@@ -58,13 +59,20 @@ public class PersonAdapter {
             return null;
         } else {
             GeografiskTilknytning geo = new GeografiskTilknytning();
-            // TODO: Legg til støtte for alle i switch
             switch (tilknytning.getGeografiskTilknytningType()) {
                 case Land:
+                    geo.setGtType(GtType.UTLAND);
                     geo.setGtLand(tilknytning.getKode());
                     break;
+                case Kommune:
+                    geo.setGtType(GtType.KOMMUNE);
+                    geo.setGtKommune(tilknytning.getKode());
+                    break;
+                case Bydel:
+                    geo.setGtType(GtType.BYDEL);
+                    geo.setGtBydel(tilknytning.getKode());
                 default:
-                    throw new UnsupportedOperationException();
+                    geo.setGtType(GtType.UDEFINERT);
             }
             return geo;
         }

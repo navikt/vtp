@@ -102,6 +102,7 @@ public class PdlMockTest {
                         .husbokstav()
                         .postnummer()))
                 .geografiskTilknytning(new GeografiskTilknytningResponseProjection()
+                        .gtType()
                         .gtLand())
                 .folkeregisterpersonstatus(new FolkeregisterpersonstatusResponseProjection()
                         .status())

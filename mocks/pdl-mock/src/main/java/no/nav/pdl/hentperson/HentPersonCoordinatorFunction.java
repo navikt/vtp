@@ -10,10 +10,10 @@ public class HentPersonCoordinatorFunction {
     public static HentPersonCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
         return ident -> {
             var personModell = (PersonModell) scenarioRepo.getPersonIndeks().finnByIdent(ident);
-            var aktørIdent = personModell.getAktørIdent();
-            var personopplysningerModell = scenarioRepo.getPersonIndeks().finnPersonopplysningerByIdent(ident);
-
             var personPdl    = PersonAdapter.oversettPerson(personModell);
+
+            var personopplysningerModell = scenarioRepo.getPersonIndeks().finnPersonopplysningerByIdent(ident);
+            var aktørIdent = personModell.getAktørIdent();
             personPdl = FamilieRelasjonBygger.byggFamilierelasjoner(aktørIdent, personopplysningerModell, personPdl);
 
             return personPdl;
