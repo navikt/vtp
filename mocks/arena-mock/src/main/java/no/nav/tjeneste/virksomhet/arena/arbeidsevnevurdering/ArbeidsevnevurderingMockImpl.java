@@ -10,14 +10,13 @@ import no.nav.tjeneste.virksomhet.arbeidsevnevurdering.v1.meldinger.FinnArbeidse
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jws.HandlerChain;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
+import javax.jws.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Holder;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 import javax.xml.ws.soap.Addressing;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -31,7 +30,10 @@ public class ArbeidsevnevurderingMockImpl implements ArbeidsevnevurderingV1 {
 
 
     @Override
+    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsevnevurdering/v1/BindingfinnArbeidsevnevurdering/")
     @WebResult(name = "response", targetNamespace = "")
+    @RequestWrapper(localName = "finnArbeidsevnevurdering", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsevnevurdering/v1", className = "no.nav.tjeneste.virksomhet.arbeidsevnevurdering.v1.FinnArbeidsevnevurdering")
+    @ResponseWrapper(localName = "finnArbeidsevnevurderingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsevnevurdering/v1", className = "no.nav.tjeneste.virksomhet.arbeidsevnevurdering.v1.FinnArbeidsevnevurderingResponse")
     public FinnArbeidsevnevurderingResponse finnArbeidsevnevurdering(@WebParam(name = "request", targetNamespace = "")FinnArbeidsevnevurderingRequest finnArbeidsevnevurderingRequest)
             throws FinnArbeidsevnevurderingPersonIkkeFunnet, FinnArbeidsevnevurderingSikkerhetsbegrensning, FinnArbeidsevnevurderingUgyldigInput {
         LOG.info("ArbeidsevnevurderingV1:finnArbeidsevnevurdering kalt");
@@ -49,8 +51,10 @@ public class ArbeidsevnevurderingMockImpl implements ArbeidsevnevurderingV1 {
         return response;
 
     }
-
     @Override
+    @WebMethod(action = "http://nav.no/tjeneste/virksomhet/arbeidsevnevurdering/v1/Bindingping/")
+    @RequestWrapper(localName = "ping", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsevnevurdering/v1", className = "no.nav.tjeneste.virksomhet.arbeidsevnevurdering.v1.Ping")
+    @ResponseWrapper(localName = "pingResponse", targetNamespace = "http://nav.no/tjeneste/virksomhet/arbeidsevnevurdering/v1", className = "no.nav.tjeneste.virksomhet.arbeidsevnevurdering.v1.PingResponse")
     public void ping(Holder<Object> holder) {
         LOG.info("ArbeidsevnevurderingV1:ping kalt");
 
