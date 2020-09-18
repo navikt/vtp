@@ -25,10 +25,6 @@
             <artifactId>aordningen-inntektsinformasjon-v1</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.tjenestespesifikasjoner</groupId>
-            <artifactId>nav-fim-inntekt-v3-tjenestespesifikasjon</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
         </dependency>

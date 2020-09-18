@@ -42,7 +42,6 @@ import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.sak.SakRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
@@ -50,10 +49,8 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.AzureAdNAVAnsattService;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
-import no.nav.infotrygdks.InfotrygdKontantstotteMock;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
-import no.nav.oppgave.OppgaveKontantstotteMockImpl;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
 import no.nav.saf.SafMock;
@@ -64,7 +61,6 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
-import no.nav.tps.proxy.api.v1.innsyn.InnsynMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
@@ -91,12 +87,10 @@ public class ApplicationConfig extends Application {
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
         classes.add(JournalpostMock.class);
-        classes.add(InfotrygdKontantstotteMock.class);
         classes.add(InfotrygdGrunnlagMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
-        classes.add(SakRestTjeneste.class);
         classes.add(SakRestMock.class);
         classes.add(SafMock.class);
         classes.add(PdlLeesahRestTjeneste.class);
@@ -105,14 +99,12 @@ public class ApplicationConfig extends Application {
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteBoolean.class);
         classes.add(MedlemskapsunntakMock.class);
-        classes.add(OppgaveKontantstotteMockImpl.class);
         classes.add(OppgaveMockImpl.class);
         classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AaregRSV1Mock.class);
         classes.add(AktoerIdentMock.class);
         classes.add(PdlMock.class);
         classes.add(PårørendeSykdomMock.class);
-        classes.add(InnsynMock.class);
         classes.add(DokdistfordelingMock.class);
 
         // tekniske ting

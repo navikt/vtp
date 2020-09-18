@@ -177,7 +177,7 @@ public class MockServer {
 
         // kjør soap oppsett etter jetty har startet
         if(!tjenesteDisabled(VTPTjeneste.SOAP)) {
-            addSoapServices(testScenarioRepository, journalRepository, gsakRepo);
+            addSoapServices(testScenarioRepository, journalRepository);
         }
     }
 
@@ -193,9 +193,8 @@ public class MockServer {
     }
 
     protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository,
-                                   JournalRepository journalRepository,
-                                   GsakRepo gsakRepo) {
-        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository, gsakRepo);
+                                   JournalRepository journalRepository) {
+        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository);
     }
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
