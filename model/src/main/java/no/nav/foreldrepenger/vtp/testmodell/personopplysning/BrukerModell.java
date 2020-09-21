@@ -92,7 +92,7 @@ public abstract class BrukerModell {
     }
 
     public void setVars(VariabelContainer vars) {
-        if (this.vars != null && vars != this.vars /* merk System.identy brukes her med vilje */) { // NOSONAR
+        if (this.vars != null && vars != this.vars) {
             throw new IllegalStateException("vars allerede satt");
         }
         this.vars = vars;

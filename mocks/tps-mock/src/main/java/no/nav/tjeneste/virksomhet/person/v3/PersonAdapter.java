@@ -55,10 +55,12 @@ public class PersonAdapter {
         bruker.setFoedselsdato(fodselsdato);
 
         // Dødsdato
-        Doedsdato doedsdato = new Doedsdato();
-        XMLGregorianCalendar doedsdatoXML = ConversionUtils.convertToXMLGregorianCalendar(person.getDødsdato());
-        doedsdato.setDoedsdato(doedsdatoXML);
-        bruker.setDoedsdato(doedsdato);
+        if (person.getDødsdato() != null) {
+            Doedsdato doedsdato = new Doedsdato();
+            XMLGregorianCalendar doedsdatoXML = ConversionUtils.convertToXMLGregorianCalendar(person.getDødsdato());
+            doedsdato.setDoedsdato(doedsdatoXML);
+            bruker.setDoedsdato(doedsdato);
+        }
 
         // Navn
         Personnavn personnavn = new Personnavn();

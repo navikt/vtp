@@ -27,6 +27,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
@@ -188,10 +189,20 @@ public class PdlLeesahRestTjeneste {
         BarnModell barnModell = new BarnModell("Tester Testersonsdotter", fødselshendelseDto.getFødselsdato());
         var barnIdent = personopplysninger.leggTilBarn(barnModell);
 
-        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
-        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjonerForAnnenPart());
-        personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
+        indekserFamilierelasjonerIPersonIndeksen(personIndeks, personopplysninger);
 
+        return barnIdent;
+    }
+
+    private String registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
+        var personIndeks = testscenarioRepository.getPersonIndeks();
+        Personopplysninger personopplysninger;
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødfødselhendelseDto.getFnr());
+
+        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.getDoedfoedselsdato());
+        var barnIdent= personopplysninger.leggTilDødfødsel(barnModell);
+
+        indekserFamilierelasjonerIPersonIndeksen(personIndeks, personopplysninger);
         return barnIdent;
     }
 
@@ -220,12 +231,9 @@ public class PdlLeesahRestTjeneste {
                 .forEach(personModell -> personModell.setDødsdato(dødshendelseDto.getDoedsdato()));
     }
 
-    private String registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
-        var personIndeks = testscenarioRepository.getPersonIndeks();
-        Personopplysninger personopplysninger;
-        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødfødselhendelseDto.getFnr());
-
-        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.getDoedfoedselsdato());
-        return personopplysninger.leggTilDødfødsel(barnModell);
+    private void indekserFamilierelasjonerIPersonIndeksen(PersonIndeks personIndeks, Personopplysninger personopplysninger) {
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjonerForAnnenPart());
+        personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
     }
 }

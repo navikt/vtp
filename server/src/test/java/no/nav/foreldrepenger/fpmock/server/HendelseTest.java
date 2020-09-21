@@ -1,15 +1,17 @@
 package no.nav.foreldrepenger.fpmock.server;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doNothing;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,12 +25,14 @@ import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 import no.nav.person.pdl.leesah.Endringstype;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,18 +66,26 @@ public class HendelseTest {
         var annenpartIdent = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
 
         var fødselshendelseDto = new FødselshendelseDto();
+        var fødselsdato = LocalDate.now().plusDays(14);
         fødselshendelseDto.setFnrMor(søkerIdent);
         fødselshendelseDto.setFnrFar(annenpartIdent);
-        fødselshendelseDto.setFødselsdato(LocalDate.now().plusDays(14));
+        fødselshendelseDto.setFødselsdato(fødselsdato);
         fødselshendelseDto.setEndringstype(Endringstype.OPPRETTET.name());
 
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
+        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
+        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
 
         pdlLeesahRestTjeneste.leggTilHendelse(fødselshendelseDto);
 
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 4);
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 4);
+        // Henter identen
+        var barnIdent = hentUtIdentPåDetSisteBarneSomErRegistert(testscenario.getVariabelContainer());
+
+        var personopplysninger = testScenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(barnIdent);
+        var brukerModell = (BarnModell) testScenarioRepository.getPersonIndeks().finnByIdent(barnIdent);
+        assertNotNull(personopplysninger);
+        assertEquals(brukerModell.getFødselsdato(), fødselsdato);
+        assertEquals(personopplysninger.getFamilierelasjoner().size(), 4);
+        assertEquals(personopplysninger.getFamilierelasjonerForAnnenPart().size(), 4);
     }
 
     @Test
@@ -110,25 +122,41 @@ public class HendelseTest {
         dødfødselshendelse.setEndringstype(Endringstype.OPPRETTET.name());
         dødfødselshendelse.setFnr(søkerIdent);
 
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
+        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
+        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
 
         pdlLeesahRestTjeneste.leggTilHendelse(dødfødselshendelse);
 
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 4);
-        Assert.assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 4);
+        // Verifiserer riktig format på identen til barn
+        var barnIdent = hentUtIdentPåDetSisteBarneSomErRegistert(testscenario.getVariabelContainer());
+        assertEquals(barnIdent, dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001");
+
+        var personopplysninger = testScenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(barnIdent);
+        var brukerModell = (BarnModell) testScenarioRepository.getPersonIndeks().finnByIdent(barnIdent);
+        assertNotNull(personopplysninger);
+        assertEquals(brukerModell.getFødselsdato(), dødsdato);
+        assertEquals(personopplysninger.getFamilierelasjoner().size(), 4);
+        assertEquals(personopplysninger.getFamilierelasjonerForAnnenPart().size(), 4);
     }
 
 
-        private void verifiserDødsdatoErSattForFamilierelasjonsmodell(Collection<FamilierelasjonModell> familierelasjonModell,
-                                                                  String fnr) {
+    private void verifiserDødsdatoErSattForFamilierelasjonsmodell(Collection<FamilierelasjonModell> familierelasjonModell,
+                                                              String fnr) {
         List<PersonModell> personmodeller = familierelasjonModell.stream()
                 .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(fnr))
                 .map(fr -> (PersonModell) fr.getTil())
                 .collect(Collectors.toList());
 
         for (PersonModell personModell: personmodeller) {
-            Assert.assertNotNull(personModell.getDødsdato());
+            assertNotNull(personModell.getDødsdato());
         }
+    }
+
+    private String hentUtIdentPåDetSisteBarneSomErRegistert(VariabelContainer variabelContainer) {
+        var i = 0;
+        while (variabelContainer.getVar("barn" + (i + 1)) != null) {
+            i++;
+        }
+        return variabelContainer.getVar("barn" + i);
     }
 }
