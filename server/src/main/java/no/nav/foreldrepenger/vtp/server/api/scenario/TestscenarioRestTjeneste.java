@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -151,12 +152,14 @@ public class TestscenarioRestTjeneste {
         }
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
+        List<String> fnrBarn = fødselsnummerBarn(testscenario);
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(
                 fnrSøker,
-                fnrAnnenPart,
                 aktørIdSøker,
+                fnrAnnenPart,
                 aktørIdAnnenPart,
-                fødselsdato.orElse(null));
+                fødselsdato.orElse(null),
+                fnrBarn);
 
         InntektYtelseModell søkerInntektYtelse = testscenario.getSøkerInntektYtelse();
         InntektYtelseModell annenpartInntektYtelse = testscenario.getAnnenpartInntektYtelse();
@@ -179,6 +182,14 @@ public class TestscenarioRestTjeneste {
                 .findFirst();
 
         return barnModell.map(PersonModell::getFødselsdato);
+    }
+
+    private List<String> fødselsnummerBarn(Testscenario testscenario) {
+        return testscenario.getPersonopplysninger().getFamilierelasjoner()
+                .stream()
+                .filter(modell -> modell.getTil() instanceof BarnModell)
+                .map(modell -> modell.getTil().getIdent())
+                .collect(Collectors.toList());
     }
 
     private Map<String, String> getUserSuppliedVariables(MultivaluedMap<String, String> queryParameters, String... skipKeys) {

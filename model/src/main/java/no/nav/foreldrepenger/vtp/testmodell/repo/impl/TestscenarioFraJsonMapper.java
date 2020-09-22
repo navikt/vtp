@@ -19,11 +19,11 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 
-public class TestscenarioFraTemplateMapper {
+public class TestscenarioFraJsonMapper {
 
     private final TestscenarioRepositoryImpl testScenarioRepository;
 
-    public TestscenarioFraTemplateMapper(TestscenarioRepositoryImpl testScenarioRepository) {
+    public TestscenarioFraJsonMapper(TestscenarioRepositoryImpl testScenarioRepository) {
         Objects.requireNonNull(testScenarioRepository, "testScenarioRepository");
         this.testScenarioRepository = testScenarioRepository;
     }

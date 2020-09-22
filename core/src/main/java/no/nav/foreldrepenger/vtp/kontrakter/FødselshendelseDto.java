@@ -52,10 +52,17 @@ public class FødselshendelseDto implements PersonhendelseDto {
         return endringstype;
     }
 
+    public void setEndringstype(String endringstype) {
+        this.endringstype = endringstype;
+    }
+
     public String getTidligereHendelseId() {
         return tidligereHendelseId;
     }
 
+    public void setTidligereHendelseId(String tidligereHendelseId) {
+        this.tidligereHendelseId = tidligereHendelseId;
+    }
     public String getFnrMor() {
         return fnrMor;
     }

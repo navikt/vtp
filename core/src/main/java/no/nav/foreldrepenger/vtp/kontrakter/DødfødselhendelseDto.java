@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonDeserialize(as = DødfødselhendelseDto.class)
 public class DødfødselhendelseDto implements PersonhendelseDto {
     @JsonProperty("type")
-    private static String TYPE = "dødfødselhendelse";
+    private String type = "dødfødselhendelse";
 
     @ApiModelProperty
     @JsonProperty("endringstype")
@@ -37,17 +37,24 @@ public class DødfødselhendelseDto implements PersonhendelseDto {
 
     @Override
     public String getType() {
-        return TYPE;
+        return type;
     }
 
     public String getEndringstype() {
         return endringstype;
     }
 
+    public void setEndringstype(String endringstype) {
+        this.endringstype = endringstype;
+    }
+
     public String getTidligereHendelseId() {
         return tidligereHendelseId;
     }
 
+    public void setTidligereHendelseId(String tidligereHendelseId) {
+        this.tidligereHendelseId = tidligereHendelseId;
+    }
     public String getFnr() {
         return fnr;
     }

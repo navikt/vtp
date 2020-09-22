@@ -72,6 +72,9 @@ public class PersonServiceMockImpl implements PersonV3 {
 
     private TestscenarioBuilderRepository repo;
 
+    public PersonServiceMockImpl() {
+    }
+
     public PersonServiceMockImpl(TestscenarioBuilderRepository repo) {
         this.repo = repo;
     }
@@ -87,10 +90,7 @@ public class PersonServiceMockImpl implements PersonV3 {
         LOG.info("hentPerson. Aktoer: {}", hentPersonRequest.getAktoer().toString());
         Aktoer aktoer = hentPersonRequest.getAktoer();
         PersonModell bruker = finnPerson(aktoer);
-
-        HentPersonResponse response = new HentPersonResponse();
         Bruker person = new PersonAdapter().fra(bruker);
-
 
         Personopplysninger pers = repo.getPersonIndeks().finnPersonopplysningerByIdent(bruker.getIdent());
 
@@ -120,6 +120,7 @@ public class PersonServiceMockImpl implements PersonV3 {
             System.out.println("    " + familierelasjon.getTilPerson().getAktoer().toString());
         }
 
+        HentPersonResponse response = new HentPersonResponse();
         response.setPerson(person);
         return response;
     }

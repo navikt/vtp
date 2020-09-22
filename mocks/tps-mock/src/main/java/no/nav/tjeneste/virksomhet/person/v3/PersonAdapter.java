@@ -4,11 +4,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bydel;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Diskresjonskoder;
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Doedsdato;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Foedselsdato;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.GeografiskTilknytning;
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Kjoenn;
@@ -52,6 +53,14 @@ public class PersonAdapter {
         XMLGregorianCalendar xcal = ConversionUtils.convertToXMLGregorianCalendar(person.getFødselsdato());
         fodselsdato.setFoedselsdato(xcal);
         bruker.setFoedselsdato(fodselsdato);
+
+        // Dødsdato
+        if (person.getDødsdato() != null) {
+            Doedsdato doedsdato = new Doedsdato();
+            XMLGregorianCalendar doedsdatoXML = ConversionUtils.convertToXMLGregorianCalendar(person.getDødsdato());
+            doedsdato.setDoedsdato(doedsdatoXML);
+            bruker.setDoedsdato(doedsdato);
+        }
 
         // Navn
         Personnavn personnavn = new Personnavn();

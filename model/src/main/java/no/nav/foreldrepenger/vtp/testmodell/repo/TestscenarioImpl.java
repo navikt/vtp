@@ -120,6 +120,10 @@ public class TestscenarioImpl implements Testscenario {
         this.annenpartInntektYtelse = inntektYtelse;
     }
 
+    public TestscenarioBuilderRepository getScenarioIndeks() {
+        return scenarioIndeks;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "<template, " + templateNavn + ", id=" + id + ">";
