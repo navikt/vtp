@@ -69,7 +69,8 @@ public abstract class BrukerModell {
         return identer;
     }
 
-    public VariabelContainer getVars() {
+    @JsonIgnore
+    protected VariabelContainer getVars() {
         return vars;
     }
 
@@ -91,6 +92,7 @@ public abstract class BrukerModell {
         this.identer = identer;
     }
 
+    @JsonIgnore
     public void setVars(VariabelContainer vars) {
         if (this.vars != null && vars != this.vars) {
             throw new IllegalStateException("vars allerede satt");

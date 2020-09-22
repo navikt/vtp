@@ -7,13 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      # Brukes ukenummer i cache_key da pomene endrer seg alt for ofte.
+      # Alternative key med cache fra forrige uke som blir lagret etterpå under CACHE_KEY.
       - name: Set cache key
         run: |
-          echo "::set-env name=CACHE_KEY::$(date +%U)"
-      - uses: actions/cache@v2
+          echo "::set-env name=CACHE_KEY::$(expr $(date +%V) - 1 + 1)"
+          echo "::set-env name=PREVIOUS_CACHE_KEY::$(expr $(date +%V) - 1)"
+      - name: Henter maven avhengigheter som er cachet
+        uses: actions/cache@v2
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ env.PREVIOUS_CACHE_KEY }}
+
       - uses: actions/setup-java@v1
         with:
           java-version: 1.11
