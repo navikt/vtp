@@ -39,7 +39,7 @@
         <cxf.version>3.3.7</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.2</swagger.version>
-        <graphql-java.version>2020-09-13T08-19-45-0d97d9d</graphql-java.version>
+        <graphql-java.version>2020-09-23T01-42-02-53999d6</graphql-java.version>
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
         <jupiter.version>5.7.0</jupiter.version>
         <mockito.version>3.5.11</mockito.version>
