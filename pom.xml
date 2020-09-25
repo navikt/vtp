@@ -42,7 +42,7 @@
         <graphql-java.version>2020-09-13T08-19-45-0d97d9d</graphql-java.version>
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
         <jupiter.version>5.7.0</jupiter.version>
-        <mockito.version>3.5.11</mockito.version>
+        <mockito.version>3.5.13</mockito.version>
 
     </properties>
 
