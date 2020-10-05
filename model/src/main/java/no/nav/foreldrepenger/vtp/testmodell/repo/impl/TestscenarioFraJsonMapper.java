@@ -21,6 +21,7 @@ import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 
 public class TestscenarioFraJsonMapper {
 
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final TestscenarioRepositoryImpl testScenarioRepository;
 
     public TestscenarioFraJsonMapper(TestscenarioRepositoryImpl testScenarioRepository) {
@@ -43,7 +44,7 @@ public class TestscenarioFraJsonMapper {
     private ObjectNode hentObjectNodeForTestscenario(String testscenarioJson) {
         ObjectNode node;
         try {
-            node = new ObjectMapper().readValue(testscenarioJson, ObjectNode.class);
+            node = mapper.readValue(testscenarioJson, ObjectNode.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Kunne ikke converte JSON streng til ObjectNode", e);
         }
@@ -53,7 +54,7 @@ public class TestscenarioFraJsonMapper {
     private String hentTemplateNavnFraJsonString(ObjectNode node) {
         if (node.has("scenario-navn")) {
             JsonNode scenarioNavn = node.get("scenario-navn");
-            return new ObjectMapper().convertValue(scenarioNavn, String.class);
+            return mapper.convertValue(scenarioNavn, String.class);
         } else {
             return null;
         }
@@ -64,7 +65,7 @@ public class TestscenarioFraJsonMapper {
         JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
         if (node.has("vars")) {
             JsonNode vars = node.get("vars");
-            Map<String,String> defaultVars = new ObjectMapper().convertValue(vars, new TypeReference<>() {});
+            Map<String,String> defaultVars = mapper.convertValue(vars, new TypeReference<>() {});
             jsonMapper.addVars(defaultVars);
         }
 
