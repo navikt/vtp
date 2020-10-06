@@ -71,6 +71,11 @@ public class PdlMockTest {
         assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
 
     }
+    @Test
+    public void hent_identer() throws JsonProcessingException {
+
+
+    }
 
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
     private <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response) throws JsonProcessingException {
