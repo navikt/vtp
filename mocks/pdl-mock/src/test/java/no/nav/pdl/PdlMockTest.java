@@ -71,9 +71,10 @@ public class PdlMockTest {
         assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
 
     }
+
     @Test
     public void hent_identer() throws JsonProcessingException {
-
+        // Skal implementeres etter hvert.
 
     }
 
