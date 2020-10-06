@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.tjeneste.virksomhet.journal.modell.JournalpostV3Bulider;
@@ -91,7 +92,12 @@ public class JournalV3ServiceMockImpl implements JournalV3 {
 
         if (dokumentModell.isPresent()) {
             String innhold = dokumentModell.get().getInnhold();
-            response.setDokument(innhold.getBytes());
+            List<DokumentVariantInnhold> dokumentVariantInnholdListe = dokumentModell.get().getDokumentVariantInnholdListe();
+            if (innhold != null) {
+                response.setDokument(innhold.getBytes());
+            } else if (dokumentVariantInnholdListe != null && dokumentVariantInnholdListe.size() > 0) {
+                response.setDokument(dokumentVariantInnholdListe.get(0).getDokumentInnhold());
+            }
             return response;
         } else {
             throw new HentDokumentDokumentIkkeFunnet("Kunne ikke finne dokument", new DokumentIkkeFunnet());
