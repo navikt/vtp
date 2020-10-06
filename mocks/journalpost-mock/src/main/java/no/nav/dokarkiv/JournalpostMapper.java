@@ -1,20 +1,32 @@
 package no.nav.dokarkiv;
 
-import no.nav.dokarkiv.generated.model.*;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import no.nav.dokarkiv.generated.model.Bruker;
+import no.nav.dokarkiv.generated.model.Dokument;
+import no.nav.dokarkiv.generated.model.DokumentVariant;
+import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
+import no.nav.dokarkiv.generated.model.Sak;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivfiltype;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Dokumentkategori;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
 public class JournalpostMapper {
     private static final Logger LOG = LoggerFactory.getLogger(JournalpostMapper.class);
@@ -93,13 +105,13 @@ public class JournalpostMapper {
     }
 
     private DokumentVariantInnhold mapDokumentVariant(DokumentVariant dokumentVariant){
+        byte[] fysiskDokument = List.of("JSON","XML").contains(dokumentVariant.getFiltype()) ?
+                dokumentVariant.getFysiskDokument() : "PDFA".equals(dokumentVariant.getFiltype()) ?
+                Base64.getDecoder().decode(dokumentVariant.getFysiskDokument()) : new byte[0];
         DokumentVariantInnhold dokumentVariantInnhold = new DokumentVariantInnhold(
                 new Arkivfiltype(dokumentVariant.getFiltype()),
                 new Variantformat(dokumentVariant.getVariantformat()),
-                List.of("JSON","XML")
-                        .contains(dokumentVariant.getFiltype()) ?
-                        dokumentVariant.getFysiskDokument() :
-                        new byte[0]
+                fysiskDokument
         );
         return dokumentVariantInnhold;
     }

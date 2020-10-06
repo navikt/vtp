@@ -40,11 +40,11 @@ public class JournalpostV3Bulider {
         if (modell.getJournaltilstand() != null) {
             journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
         }
-        //journalpost.setJournaltilstand(Journaltilstand.fromValue(modell.getJournaltilstand()));
 
         if(modell.getJournalposttype() != null) {
             Journalposttyper journalposttype = new Journalposttyper();
             journalposttype.setKodeverksRef(modell.getJournalposttype().getKode());
+            journalposttype.setValue(modell.getJournalposttype().getKode());
             journalpost.setJournalposttype(journalposttype);
         }
 
@@ -66,7 +66,7 @@ public class JournalpostV3Bulider {
     private static DetaljertDokumentinformasjon lagDetaljertDokumentinformasjon(DokumentModell dokumentModell) {
         DetaljertDokumentinformasjon detaljertDokumentinformasjon = new DetaljertDokumentinformasjon();
         detaljertDokumentinformasjon.setDokumentId(dokumentModell.getDokumentId());
-
+        detaljertDokumentinformasjon.setTittel(dokumentModell.getTittel());
 
         Dokumentkategorier dokumentkategorier = new Dokumentkategorier();
         if (dokumentModell.getDokumentkategori() != null) {
