@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonStreamContext;
@@ -34,18 +32,12 @@ public class FindTemplateVariables {
 
     static final Pattern TEMPLATE_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.+)\\}");
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = JsonMapper.lagCopyAvObjectMapper();
     private final FindTemplateVariableModule module = new FindTemplateVariableModule();
 
     public FindTemplateVariables() {
-        objectMapper.setVisibility(PropertyAccessor.GETTER, Visibility.NONE);
-        objectMapper.setVisibility(PropertyAccessor.SETTER, Visibility.NONE);
-        objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.NONE);
-        objectMapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
-
         objectMapper.registerModule(module);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
         objectMapper.setInjectableValues(new InjectableValues.Std() {
             @Override
             public Object findInjectableValue(Object valueId, DeserializationContext ctxt, BeanProperty forProperty, Object beanInstance)

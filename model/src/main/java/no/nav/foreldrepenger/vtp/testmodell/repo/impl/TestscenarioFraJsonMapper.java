@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -17,12 +18,13 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapperUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 
 public class TestscenarioFraJsonMapper {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
     private final TestscenarioRepositoryImpl testScenarioRepository;
+    private final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     public TestscenarioFraJsonMapper(TestscenarioRepositoryImpl testScenarioRepository) {
         Objects.requireNonNull(testScenarioRepository, "testScenarioRepository");
@@ -60,18 +62,8 @@ public class TestscenarioFraJsonMapper {
         }
     }
 
-
     private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars) {
-        JsonMapper jsonMapper = new JsonMapper(testscenario.getVariabelContainer());
-        if (node.has("vars")) {
-            JsonNode vars = node.get("vars");
-            Map<String,String> defaultVars = mapper.convertValue(vars, new TypeReference<>() {});
-            jsonMapper.addVars(defaultVars);
-        }
-
-        jsonMapper.addVars(overrideVars);
-        initJsonMapper(jsonMapper, testscenario);
-        ObjectMapper objectMapper = jsonMapper.lagObjectMapper();
+        ObjectMapper objectMapper = lagScenariospesifikkObjectMapper(testscenario, node, overrideVars);
 
         if(node.has("organisasjon")){
             JsonNode organisasjon = node.get("organisasjon");
@@ -102,16 +94,31 @@ public class TestscenarioFraJsonMapper {
         testScenarioRepository.indekser(testscenario);
     }
 
-    /** Setter opp indekser som kan injiseres i modellen. */
-    private void initJsonMapper(JsonMapper jsonMapper, TestscenarioImpl scenario) {
-        // adresse maler
+    private Map<String,String> hentScenariospesifikkeVariabler(ObjectNode node) {
+        if (!node.has("vars")) {
+            return Collections.emptyMap();
+        }
+        JsonNode vars = node.get("vars");
+        return mapper.convertValue(vars, new TypeReference<>(){});
+    }
+
+
+    private ObjectMapper lagScenariospesifikkObjectMapper(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars){
+        JsonMapperUtvider jsonMapper = new JsonMapperUtvider(testscenario.getVariabelContainer());
+
+        /* Legger til egendefinerte variabler */
+        Map<String, String> scenarioVars = hentScenariospesifikkeVariabler(node);
+        jsonMapper.addVars(scenarioVars);
+        jsonMapper.addVars(overrideVars);
+
+        /* Setter opp indekser som kan injiseres i modellen. */
         AdresseIndeks adresseIndeks = this.getTestscenarioRepository().getBasisdata().getAdresseIndeks();
-        scenario.setAdresseIndeks(adresseIndeks);
-
-        jsonMapper.addInjectable(LokalIdentIndeks.class, scenario.getIdenter());
+        testscenario.setAdresseIndeks(adresseIndeks);
         jsonMapper.addInjectable(AdresseIndeks.class, adresseIndeks);
-        jsonMapper.addInjectable(ScenarioVirksomheter.class, scenario.getVirksomheter());
+        jsonMapper.addInjectable(LokalIdentIndeks.class, testscenario.getIdenter());
+        jsonMapper.addInjectable(ScenarioVirksomheter.class, testscenario.getVirksomheter());
 
+        return jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 
 }
