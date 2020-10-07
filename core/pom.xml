@@ -33,10 +33,6 @@
         </dependency>
         <!-- 3dje parts biblioteker -->
         <dependency>
-        	<groupId>com.sun.xml.ws</groupId>
-        	<artifactId>jaxws-rt</artifactId>
-        </dependency>
-        <dependency>
 		    <groupId>org.junit.vintage</groupId>
 		    <artifactId>junit-vintage-engine</artifactId>
 		    <scope>test</scope>

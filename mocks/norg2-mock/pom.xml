@@ -21,7 +21,7 @@
 		<!-- 3dje parts biblioteker -->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
+			<artifactId>resteasy-core-spi</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.swagger</groupId>
