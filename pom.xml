@@ -39,10 +39,10 @@
         <cxf.version>3.3.7</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.2</swagger.version>
-        <graphql-java.version>2020-09-13T08-19-45-0d97d9d</graphql-java.version>
+        <graphql-java.version>2020-10-01T21-06-37-558aeaa</graphql-java.version>
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
         <jupiter.version>5.7.0</jupiter.version>
-        <mockito.version>3.5.11</mockito.version>
+        <mockito.version>3.5.13</mockito.version>
 
     </properties>
 
@@ -53,7 +53,7 @@
                 <!-- NB jetty avhengigher før resteasy -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-bom</artifactId>
-                <version>9.4.31.v20200723</version>
+                <version>9.4.32.v20200930</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -74,7 +74,7 @@
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcomponents-client</artifactId>
-                <version>4.5.12</version>
+                <version>4.5.13</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
