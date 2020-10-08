@@ -30,7 +30,7 @@ public class TestscenarioHenter {
     private static final String ORGANISASJON_JSON_FIL_NAVN = "organisasjon.json";
     private static final String VARS_JSON_FIL_NAVN = "vars.json";
 
-    private final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
     private final Map<String, Object> scenarioObjects = new TreeMap<>();
 
     private static TestscenarioHenter testscenarioHenter;

@@ -24,7 +24,7 @@ import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 public class TestscenarioFraJsonMapper {
 
     private final TestscenarioRepositoryImpl testScenarioRepository;
-    private final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     public TestscenarioFraJsonMapper(TestscenarioRepositoryImpl testScenarioRepository) {
         Objects.requireNonNull(testScenarioRepository, "testScenarioRepository");

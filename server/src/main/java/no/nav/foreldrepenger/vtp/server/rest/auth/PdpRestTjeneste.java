@@ -21,8 +21,8 @@ import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
 @Api(tags = { "ABAC-PDP-Mock" })
 @Path("/asm-pdp/authorize")
 public class PdpRestTjeneste {
-    private final static Logger LOG = LoggerFactory.getLogger(PdpRestTjeneste.class);
-    private final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private static final Logger LOG = LoggerFactory.getLogger(PdpRestTjeneste.class);
+    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     @POST
     @Produces("application/xacml+json")
