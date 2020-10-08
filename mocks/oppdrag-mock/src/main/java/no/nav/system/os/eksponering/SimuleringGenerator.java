@@ -1,5 +1,14 @@
 package no.nav.system.os.eksponering;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import no.nav.system.os.entiteter.beregningskjema.Beregning;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer;
@@ -9,15 +18,6 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.S
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdrag;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdragslinje;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SimuleringGenerator {
 
@@ -47,13 +47,19 @@ public class SimuleringGenerator {
     }
 
     private boolean erOpphør(SimulerBeregningRequest simulerBeregningRequest){
-        for (Oppdragslinje oppdragslinje : simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje()){
-            if (!oppdragslinje.getKodeStatusLinje().equals(KodeStatusLinje.OPPH)){
+        List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
+        if (oppdragslinjer.isEmpty()) {
+            return false;
+        }
+
+        for (Oppdragslinje oppdragslinje : oppdragslinjer){
+            if (oppdragslinje.getKodeEndringLinje() != null && !oppdragslinje.getKodeEndringLinje().equals(KodeStatusLinje.OPPH.value())){
                 return false;
             }
         }
         return true;
     }
+
     private Beregning lagBeregning(SimulerBeregningRequest simulerBeregningRequest) {
         Beregning beregning = new Beregning();
         leggTilBeregningsperioder(simulerBeregningRequest, beregning);
