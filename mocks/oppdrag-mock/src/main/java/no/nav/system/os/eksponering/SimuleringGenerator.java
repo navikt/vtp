@@ -53,7 +53,7 @@ public class SimuleringGenerator {
         }
 
         for (Oppdragslinje oppdragslinje : oppdragslinjer){
-            if (oppdragslinje.getKodeEndringLinje() != null && !oppdragslinje.getKodeEndringLinje().equals(KodeStatusLinje.OPPH.value())){
+            if (oppdragslinje.getKodeStatusLinje() == null || !oppdragslinje.getKodeStatusLinje().equals(KodeStatusLinje.OPPH)){
                 return false;
             }
         }
