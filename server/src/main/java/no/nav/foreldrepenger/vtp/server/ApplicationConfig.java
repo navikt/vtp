@@ -130,7 +130,7 @@ public class ApplicationConfig extends Application {
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
-        private final ObjectMapper objectMapper = new ObjectMapper();
+        private static final ObjectMapper objectMapper = new ObjectMapper();
 
         public JacksonConfigResolver() {
             objectMapper.registerModule(new Jdk8Module());
