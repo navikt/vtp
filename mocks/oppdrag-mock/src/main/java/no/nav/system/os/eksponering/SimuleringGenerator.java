@@ -127,15 +127,14 @@ public class SimuleringGenerator {
                 stoppnivaa.setKid("12345");
 
                 if (negativSimulering && kodeEndring.equals("ENDR")){
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,1));
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,2));
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,3));
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,4));
+                    for (int i = 1 ; i <= 4 ; i++){
+                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
+                    }
                 }
                 else if (erOpphør){
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode,oppdragslinje,1));
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode,oppdragslinje,2));
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode,oppdragslinje,3));
+                    for (int i = 1 ; i <= 3 ; i++){
+                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
+                    }
                 }
                 else {
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettBeregningStoppNivaaDetaljer(periode, oppdragslinje));
@@ -201,12 +200,7 @@ public class SimuleringGenerator {
         if (sequence == 2){stoppnivaaDetaljer.setBehandlingskode("0");}
         else {stoppnivaaDetaljer.setBehandlingskode("2");}
         //belop
-        BigDecimal belop = oppdragslinje.getSats().multiply(BigDecimal.valueOf(antallVirkedager));
-        if (sequence == 3 && periode.getFom().isBefore(LocalDate.now())){
-            if (erOpphør){ stoppnivaaDetaljer.setBelop(belop.negate()); }
-            else { stoppnivaaDetaljer.setBelop(belop.multiply(BigDecimal.valueOf(2)).negate()); }
-        }
-        else { stoppnivaaDetaljer.setBelop(belop); }
+        stoppnivaaDetaljer.setBelop(setBeløp(periode, oppdragslinje, sequence));
         //trekkVedtakId
         stoppnivaaDetaljer.setTrekkVedtakId(0L);
         //stonadId
@@ -311,5 +305,15 @@ public class SimuleringGenerator {
             }
             return antallVirkedager;
         }
+    }
+
+    private BigDecimal setBeløp(Periode periode, Oppdragslinje oppdragslinje, int sequence){
+        int antallVirkedager = periode.getAntallVirkedager();
+        BigDecimal belop = oppdragslinje.getSats().multiply(BigDecimal.valueOf(antallVirkedager));
+        if (sequence == 3 && periode.getFom().isBefore(LocalDate.now())){
+            if (erOpphør){ return belop.negate(); }
+            else { return belop.multiply(BigDecimal.valueOf(2)).negate(); }
+        }
+        else { return belop; }
     }
 }
