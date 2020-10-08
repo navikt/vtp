@@ -19,7 +19,7 @@
 			<plugin>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<version>2.4.15</version>
+				<version>2.4.16</version>
 				<executions>
 					<execution>
 						<goals>
@@ -83,7 +83,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jaxrs</artifactId>
+			<artifactId>resteasy-core-spi</artifactId>
 			<scope>provided</scope>
 		</dependency>
 

@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
+            <artifactId>resteasy-core-spi</artifactId>
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>io.github.kobylynskyi</groupId>
             <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>2.4.1</version>
+            <version>3.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -68,6 +68,10 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -75,7 +79,7 @@
             <plugin>
                 <groupId>io.github.kobylynskyi</groupId>
                 <artifactId>graphql-codegen-maven-plugin</artifactId>
-                <version>2.4.1</version>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -90,7 +94,9 @@
                                 <!-- <Price.amount>java.math.BigDecimal</Price.amount> -->
                             </customTypesMapping>
                             <customAnnotationsMapping>
-                                <EpochMillis>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class</EpochMillis>
+                                <EpochMillis>
+                                    <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
+                                </EpochMillis>
                             </customAnnotationsMapping>
                             <generateClient>true</generateClient>
                             <!--<generateClient>true</generateClient>
