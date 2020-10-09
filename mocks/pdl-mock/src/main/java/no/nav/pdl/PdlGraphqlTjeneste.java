@@ -16,6 +16,8 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.graphql.GraphQLRequest;
+import no.nav.pdl.hentIdenter.HentIdenterCoordinatorFunction;
+import no.nav.pdl.hentIdenter.HentIdenterWiring;
 import no.nav.pdl.hentperson.HentPersonCoordinatorFunction;
 import no.nav.pdl.hentperson.HentPersonWiring;
 
@@ -23,13 +25,11 @@ public class PdlGraphqlTjeneste {
 
     private static final String SCHEME_PATH = "schemas/pdl-api-sdl.graphqls";
 
-    private TypeDefinitionRegistry typeRegistry;
-    private SchemaGenerator schemaGenerator;
-
     private static PdlGraphqlTjeneste instance;
-    private TestscenarioBuilderRepository scenarioRepository;
+    private final TestscenarioBuilderRepository scenarioRepository;
 
     private GraphQLSchema hentPersonGraphqlSchema;
+    private GraphQLSchema hentIdenterGraphqlSchema;
 
     public static synchronized PdlGraphqlTjeneste getInstance(TestscenarioBuilderRepository scenarioRepository){
         if(instance == null){
@@ -46,19 +46,27 @@ public class PdlGraphqlTjeneste {
     public void init() {
         // GrapQL-skjema
         SchemaParser schemaParser = new SchemaParser();
-        schemaGenerator = new SchemaGenerator();
+        SchemaGenerator schemaGenerator = new SchemaGenerator();
 
-        InputStreamReader schema = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(SCHEME_PATH)));
-        typeRegistry = schemaParser.parse(schema);
+        InputStreamReader streamReader = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(SCHEME_PATH)));
+        TypeDefinitionRegistry typeDefinition = schemaParser.parse(streamReader);
 
         // Opprette koordinatere og binde til GraphQL-skjema
         var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(scenarioRepository);
         var hentPersonWiring = HentPersonWiring.lagRuntimeWiring(hentPersonCoordinator);
-        hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeRegistry, hentPersonWiring);
+        hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonWiring);
+
+        var hentIdenterCoordinator = HentIdenterCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentIdenterWiring = HentIdenterWiring.lagRuntimeWiring(hentIdenterCoordinator);
+        hentIdenterGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterWiring);
     }
 
     ExecutionResult hentPerson(GraphQLRequest request) {
         return byggExecutionResult(request, hentPersonGraphqlSchema);
+    }
+
+    ExecutionResult hentIdenter(GraphQLRequest request) {
+        return byggExecutionResult(request, hentIdenterGraphqlSchema);
     }
 
     static ExecutionResult byggExecutionResult(GraphQLRequest request, GraphQLSchema graphQLSchema) {
@@ -72,6 +80,7 @@ public class PdlGraphqlTjeneste {
                         .variables(request.getVariables() == null ? Collections.emptyMap() : request.getVariables())
                         .build());
     }
+
 }
 
 

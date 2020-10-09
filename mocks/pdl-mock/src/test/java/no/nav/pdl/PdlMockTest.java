@@ -35,7 +35,9 @@ public class PdlMockTest {
     private static PdlMock pdlMock;
 
     private final ObjectMapper objectMapper = createObjectMapper();
-    private final ObjectReader objectReaderHentPersonResponse = objectMapper.readerFor(HentPersonQueryResponse.class);
+
+    private final ObjectReader hentPersonReader = objectMapper.readerFor(HentPersonQueryResponse.class);
+    private final ObjectReader hentIdenterReader = objectMapper.readerFor(HentIdenterQueryResponse.class);
 
     @BeforeAll
     public static void setup() throws IOException {
@@ -65,7 +67,7 @@ public class PdlMockTest {
         var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
 
         // Assert
-        var response = (HentPersonQueryResponse) konverterTilGraphResponse(rawResponse);
+        var response = (HentPersonQueryResponse) konverterTilGraphResponse(rawResponse, hentPersonReader);
         var person = response.hentPerson();
         assertThat(person).isNotNull();
         assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
@@ -74,14 +76,40 @@ public class PdlMockTest {
 
     @Test
     public void hent_identer() throws JsonProcessingException {
-        // Skal implementeres etter hvert.
+        // Arrange
+        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
+        var søker = testscenario.getPersonopplysninger().getSøker();
+
+        var ident = søker.getIdent();
+        var projection = new IdentlisteResponseProjection()
+                .identer(new IdentInformasjonResponseProjection()
+                        .ident()
+                        .gruppe()
+                )
+                .toString();
+
+
+        var query = String.format("query { hentIdenter(ident: \"%s\") %s }", ident, projection);
+
+        var request = GraphQLRequest.builder().withQuery(query).build();
+
+        // Act
+        var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
+
+        // Assert
+        var response = (HentIdenterQueryResponse) konverterTilGraphResponse(rawResponse, hentIdenterReader);
+        var identliste = response.hentIdenter();
+        assertThat(identliste).isNotNull();
+        assertThat(identliste.getIdenter()).hasSize(2);
 
     }
 
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
-    private <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response) throws JsonProcessingException {
+    private <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response, ObjectReader objectReader) throws JsonProcessingException {
         var json = objectMapper.writeValueAsString(response);
-        var graphResponse = objectReaderHentPersonResponse.readValue(json);
+        var graphResponse = objectReader.readValue(json);
         return (T) graphResponse;
     }
 
