@@ -140,7 +140,7 @@ public class SimuleringGenerator {
                 stoppnivaa.setStoppNivaaId(BigInteger.ONE);
                 stoppnivaa.setFagsystemId(oppdrag.getFagsystemId());
                 stoppnivaa.setBilagsType("U");
-                stoppnivaa.setFeilkonto(erOpphør);
+                stoppnivaa.setFeilkonto(erOpphør|erOmpostering);
                 stoppnivaa.setKid("12345");
 
                 if (negativSimulering && kodeEndring.equals("ENDR")){
