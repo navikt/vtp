@@ -25,12 +25,14 @@ public class SimuleringGenerator {
     Boolean negativSimulering;
     String kodeEndring;
     Boolean erOpphør;
+    Boolean erOmpostering;
 
     public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest,
                                                                Boolean negativSimulering) {
         this.negativSimulering = negativSimulering;
         this.kodeEndring = simulerBeregningRequest.getRequest().getOppdrag().getKodeEndring();
         this.erOpphør = erOpphør(simulerBeregningRequest);
+        this.erOmpostering = erOmpostering(simulerBeregningRequest);
 
         SimulerBeregningResponse response = new SimulerBeregningResponse();
         Beregning beregning = lagBeregning(simulerBeregningRequest);
@@ -60,6 +62,13 @@ public class SimuleringGenerator {
         return true;
     }
 
+    private boolean erOmpostering(SimulerBeregningRequest simulerBeregningRequest){
+        if (simulerBeregningRequest.getRequest().getOppdrag().getOmpostering() != null){
+            return simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getOmPostering().equals("J");
+        }
+        return false;
+    }
+
     private Beregning lagBeregning(SimulerBeregningRequest simulerBeregningRequest) {
         Beregning beregning = new Beregning();
         leggTilBeregningsperioder(simulerBeregningRequest, beregning);
@@ -79,26 +88,34 @@ public class SimuleringGenerator {
     private void leggTilBeregningsperioder(SimulerBeregningRequest simulerBeregningRequest, Beregning beregning) {
         YearMonth nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));
         List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
-        List<BeregningsPeriode> beregningsPeriode = beregning.getBeregningsPeriode();
+        List<BeregningsPeriode> beregningsPerioder = beregning.getBeregningsPeriode();
+        if (erOmpostering){
+            String omposteringsdato = simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom();
+            if (!YearMonth.from(LocalDate.parse(omposteringsdato,dateTimeFormatter)).isAfter(nesteMåned)) {
+                Oppdragslinje omposteringsOppdragslinje = oppdragslinjer.get(0);
+                omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(omposteringsOppdragslinje.getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
+                omposteringsOppdragslinje.setDatoVedtakFom(omposteringsdato);
+                beregningsPerioder.add(opprettBeregningsperiode(omposteringsOppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
+                oppdragslinjer.get(0).setDatoStatusFom(null);
+            }
+        }
         for (Oppdragslinje oppdragslinje : oppdragslinjer) {
             LocalDate fom = LocalDate.parse(oppdragslinje.getDatoVedtakFom(), dateTimeFormatter);
             if (!YearMonth.from(fom).isAfter(nesteMåned)) {
-                beregningsPeriode.add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
+                beregningsPerioder.add(opprettBeregningsperiode(oppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
             }
         }
     }
 
     private BeregningsPeriode opprettBeregningsperiode(Oppdragslinje oppdragslinje, Oppdrag oppdrag) {
         BeregningsPeriode beregningsPeriode = new BeregningsPeriode();
-        String datoVedtakFom = oppdragslinje.getDatoVedtakFom();
-        beregningsPeriode.setPeriodeFom(datoVedtakFom);
-        String datoVedtakTom = oppdragslinje.getDatoVedtakTom();
-        beregningsPeriode.setPeriodeTom(datoVedtakTom);
-        beregningsPeriode.getBeregningStoppnivaa().addAll(OpprettBeregningStoppNivaa(oppdragslinje, oppdrag));
+        beregningsPeriode.setPeriodeFom(oppdragslinje.getDatoVedtakFom());
+        beregningsPeriode.setPeriodeTom(oppdragslinje.getDatoVedtakTom());
+        beregningsPeriode.getBeregningStoppnivaa().addAll(opprettBeregningStoppNivaa(oppdragslinje, oppdrag));
         return beregningsPeriode;
     }
 
-    private List<BeregningStoppnivaa> OpprettBeregningStoppNivaa(Oppdragslinje oppdragslinje, Oppdrag oppdrag) {
+    private List<BeregningStoppnivaa> opprettBeregningStoppNivaa(Oppdragslinje oppdragslinje, Oppdrag oppdrag) {
         List<Periode> perioder = splittOppIPeriodePerMnd(oppdragslinje.getDatoVedtakFom(), oppdragslinje.getDatoVedtakTom());
         List<BeregningStoppnivaa> beregningStoppnivaaer = new ArrayList<>();
 
@@ -128,16 +145,16 @@ public class SimuleringGenerator {
 
                 if (negativSimulering && kodeEndring.equals("ENDR")){
                     for (int i = 1 ; i <= 4 ; i++){
-                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
+                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
                     }
                 }
                 else if (erOpphør){
                     for (int i = 1 ; i <= 3 ; i++){
-                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
+                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
                     }
                 }
                 else {
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(OpprettBeregningStoppNivaaDetaljer(periode, oppdragslinje));
+                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettBeregningStoppNivaaDetaljer(periode, oppdragslinje));
                 }
                 beregningStoppnivaaer.add(stoppnivaa);
             }
@@ -146,7 +163,7 @@ public class SimuleringGenerator {
         return beregningStoppnivaaer;
     }
 
-    private BeregningStoppnivaaDetaljer OpprettBeregningStoppNivaaDetaljer(Periode periode, Oppdragslinje oppdragslinje) {
+    private BeregningStoppnivaaDetaljer opprettBeregningStoppNivaaDetaljer(Periode periode, Oppdragslinje oppdragslinje) {
         int antallVirkedager = periode.getAntallVirkedager();
 
         BeregningStoppnivaaDetaljer stoppnivaaDetaljer = new BeregningStoppnivaaDetaljer();
@@ -179,7 +196,7 @@ public class SimuleringGenerator {
         return stoppnivaaDetaljer;
     }
 
-    private BeregningStoppnivaaDetaljer OpprettNegativBeregningStoppNivaaDetaljer(Periode periode, Oppdragslinje oppdragslinje, int sequence) {
+    private BeregningStoppnivaaDetaljer opprettNegativBeregningStoppNivaaDetaljer(Periode periode, Oppdragslinje oppdragslinje, int sequence) {
         int antallVirkedager = periode.getAntallVirkedager();
 
         BeregningStoppnivaaDetaljer stoppnivaaDetaljer = new BeregningStoppnivaaDetaljer();
