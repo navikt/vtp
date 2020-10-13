@@ -3,7 +3,6 @@ package no.nav.dokarkiv;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -105,26 +104,15 @@ public class JournalpostMapper {
     }
 
     private DokumentVariantInnhold mapDokumentVariant(DokumentVariant dokumentVariant){
-        byte[] fysiskDokument = new byte[0];
-        if (List.of("JSON","XML").contains(dokumentVariant.getFiltype())) {
-            fysiskDokument = dokumentVariant.getFysiskDokument();
-        } else if ("PDFA".equals(dokumentVariant.getFiltype())) {
-            try {
-                fysiskDokument = Base64.getDecoder().decode(dokumentVariant.getFysiskDokument());
-            } catch (IllegalArgumentException e) {
-                // PDFen er ikke base64-enkodet - returnerer tom array for å bevare kompatibilitet med tidligere, men
-                // her kan man også vurdere å assigne dokumentVariant.getFysiskDokument() direkte hvis det blir riktig
-            }
-        }
-        DokumentVariantInnhold dokumentVariantInnhold = new DokumentVariantInnhold(
+        return new DokumentVariantInnhold(
                 new Arkivfiltype(dokumentVariant.getFiltype()),
                 new Variantformat(dokumentVariant.getVariantformat()),
-                fysiskDokument
+                List.of("JSON","XML","PDFA")
+                        .contains(dokumentVariant.getFiltype()) ?
+                        dokumentVariant.getFysiskDokument() :
+                        new byte[0]
         );
-        return dokumentVariantInnhold;
     }
-
-
 
     private Arkivtema mapArkivtema(String tema){
         return new Arkivtema(tema);
