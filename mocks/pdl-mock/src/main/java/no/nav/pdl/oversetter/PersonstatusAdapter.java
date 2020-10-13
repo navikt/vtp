@@ -24,8 +24,7 @@ public class PersonstatusAdapter {
     }
 
     public static List<String> hentPersonstatusPDL(String personstatusTPS) {
-        List<String> personstatusPDL = PERSONSTATUSER.get(personstatusTPS);
-        return personstatusPDL;
+        return PERSONSTATUSER.get(personstatusTPS);
     }
 
 }

@@ -78,15 +78,15 @@ public class PersonOversetter {
         return person;
     }
 
-    private static void leggTilPersonstatus(Person brukerPDL, PersonModell brukerVTP) {
-        List<String> personstatuserPDL = PersonstatusAdapter.hentPersonstatusPDL(brukerVTP.getPersonstatus().getStatus());
+    private static void leggTilPersonstatus(Person person, PersonModell personModell) {
+        List<String> personstatuserPDL = PersonstatusAdapter.hentPersonstatusPDL(personModell.getPersonstatus().getStatus());
         if (personstatuserPDL == null || personstatuserPDL.isEmpty()) {
             return;
         }
         Folkeregisterpersonstatus personstatus = new Folkeregisterpersonstatus();
         personstatus.setForenkletStatus(personstatuserPDL.get(0));
         personstatus.setStatus(personstatuserPDL.get(1));
-        brukerPDL.setFolkeregisterpersonstatus(List.of(personstatus));
+        person.setFolkeregisterpersonstatus(List.of(personstatus));
     }
 
     private static AdressebeskyttelseGradering tilAdressebeskyttelseGradering(PersonModell bruker) {
