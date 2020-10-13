@@ -6,6 +6,20 @@ import no.nav.pdl.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.pdl.Adressebeskyttelse;
+import no.nav.pdl.AdressebeskyttelseGradering;
+import no.nav.pdl.Foedsel;
+import no.nav.pdl.Folkeregisterpersonstatus;
+import no.nav.pdl.GeografiskTilknytning;
+import no.nav.pdl.GtType;
+import no.nav.pdl.Kjoenn;
+import no.nav.pdl.KjoennType;
+import no.nav.pdl.Navn;
+import no.nav.pdl.Person;
+import no.nav.pdl.Statsborgerskap;
 import static java.util.List.of;
 import static java.util.stream.Collectors.toList;
 
@@ -39,6 +53,7 @@ public class PersonOversetter {
         kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
         person.setKjoenn(of(kjoenn));
 
+        leggTilPersonstatus(person, personModell);
         person.setFolkeregisterpersonstatus(
                 historikk
                         ? personModell.getAllePersonstatus().stream()
@@ -49,12 +64,44 @@ public class PersonOversetter {
 
         person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
 
+        AdresseAdapter.setAdresser(person, personModell);
+
+        Adressebeskyttelse adressebeskyttelse = new Adressebeskyttelse();
+        adressebeskyttelse.setGradering(tilAdressebeskyttelseGradering(personModell));
+        person.setAdressebeskyttelse(List.of(adressebeskyttelse));
+
         List<AdresseModell> adresserUtenHistorikk = personModell.getAdresser();
         List<AdresseModell> adresserMedHistorikk = personModell.getAdresser(AdresseType.BOSTEDSADRESSE);
 
         AdresseAdapter.setAdresser(person, historikk ? adresserMedHistorikk: adresserUtenHistorikk);
 
         return person;
+    }
+
+    private static void leggTilPersonstatus(Person brukerPDL, PersonModell brukerVTP) {
+        List<String> personstatuserPDL = PersonstatusAdapter.hentPersonstatusPDL(brukerVTP.getPersonstatus().getStatus());
+        if (personstatuserPDL == null || personstatuserPDL.isEmpty()) {
+            return;
+        }
+        Folkeregisterpersonstatus personstatus = new Folkeregisterpersonstatus();
+        personstatus.setForenkletStatus(personstatuserPDL.get(0));
+        personstatus.setStatus(personstatuserPDL.get(1));
+        brukerPDL.setFolkeregisterpersonstatus(List.of(personstatus));
+    }
+
+    private static AdressebeskyttelseGradering tilAdressebeskyttelseGradering(PersonModell bruker) {
+        PersonModell.Diskresjonskoder diskresjonskodeType = bruker.getDiskresjonskodeType();
+        if (diskresjonskodeType == null) {
+            return AdressebeskyttelseGradering.UGRADERT;
+        }
+        switch (diskresjonskodeType) {
+            case SPSF:
+                return AdressebeskyttelseGradering.STRENGT_FORTROLIG;
+            case SPFO:
+                return AdressebeskyttelseGradering.FORTROLIG;
+            default:
+                return AdressebeskyttelseGradering.UGRADERT;
+        }
     }
 
     private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell status) {

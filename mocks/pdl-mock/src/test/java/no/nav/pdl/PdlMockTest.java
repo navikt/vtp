@@ -145,56 +145,46 @@ public class PdlMockTest {
 
     private String byggProjectionPersonResponse(boolean historikk) {
         var projeksjon = new PersonResponseProjection()
-                .foedsel(
-                        new FoedselResponseProjection()
-                                .foedselsdato()
-                )
-                .navn(
-                        new PersonNavnParametrizedInput(historikk),
-                        new NavnResponseProjection()
-                                .fornavn()
-                                .mellomnavn()
-                                .etternavn()
-                                .forkortetNavn()
-                )
+                .foedsel(new FoedselResponseProjection()
+                        .foedselsdato())
+                .navn(new PersonNavnParametrizedInput(historikk),
+                      new NavnResponseProjection()
+                        .fornavn()
+                        .mellomnavn()
+                        .etternavn()
+                        .forkortetNavn())
                 .statsborgerskap(
                         new PersonStatsborgerskapParametrizedInput(historikk),
                         new StatsborgerskapResponseProjection()
-                                .land()
-                )
-                .kjoenn(
-                        new PersonKjoennParametrizedInput(historikk),
+                            .land())
+                .kjoenn(new PersonKjoennParametrizedInput(historikk),
                         new KjoennResponseProjection()
-                                .kjoenn()
-                )
+                            .kjoenn())
                 .bostedsadresse(
                         new PersonBostedsadresseParametrizedInput(historikk),
                         new BostedsadresseResponseProjection()
-                                .angittFlyttedato()
-                                .gyldigFraOgMed()
-                                .gyldigTilOgMed()
-                                .vegadresse(
-                                        new VegadresseResponseProjection()
-                                                .adressenavn()
-                                                .husnummer()
-                                                .husbokstav()
-                                                .postnummer()
-                                )
-                )
-                .geografiskTilknytning(
-                        new GeografiskTilknytningResponseProjection()
-                                .gtType()
-                                .gtLand()
-                )
+                            .angittFlyttedato()
+                            .gyldigFraOgMed()
+                            .gyldigTilOgMed()
+                            .vegadresse(new VegadresseResponseProjection()
+                                    .adressenavn()
+                                    .husnummer()
+                                    .husbokstav()
+                                    .postnummer()))
+                .geografiskTilknytning(new GeografiskTilknytningResponseProjection()
+                        .gtType()
+                        .gtLand())
                 .folkeregisterpersonstatus(
                         new PersonFolkeregisterpersonstatusParametrizedInput(historikk),
-                        new FolkeregisterpersonstatusResponseProjection().status()
-                )
+                        new FolkeregisterpersonstatusResponseProjection()
+                        .status()
+                        .forenkletStatus())
                 .familierelasjoner(
                         new FamilierelasjonResponseProjection()
-                                .relatertPersonsIdent()
-                                .relatertPersonsRolle()
-                );
+                        .relatertPersonsIdent()
+                        .relatertPersonsRolle())
+                .adressebeskyttelse(new AdressebeskyttelseResponseProjection()
+                        .gradering());
         return projeksjon.toString();
     }
 
