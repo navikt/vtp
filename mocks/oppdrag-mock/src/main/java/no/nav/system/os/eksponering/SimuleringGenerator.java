@@ -211,15 +211,12 @@ public class SimuleringGenerator {
     }
 
     private BeregningStoppnivaaDetaljer opprettNegativBeregningStoppNivaaDetaljer(Periode periode, Oppdragslinje oppdragslinje, int sequence) {
-        int antallVirkedager = periode.getAntallVirkedager();
-
         BeregningStoppnivaaDetaljer stoppnivaaDetaljer = new BeregningStoppnivaaDetaljer();
 
         //Sequence explanation:
         //1.Ytelsen slik den stod original
         //2.Feilutbetalt beløp
         //3.Fjerning av ytelsen fra seqence 1
-        //4.Ny ytelse (hvis det er noen)
 
         //fom
         stoppnivaaDetaljer.setFaktiskFom(dateTimeFormatter.format(periode.getFom()));
