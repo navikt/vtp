@@ -1,6 +1,6 @@
 package no.nav.pdl.oversetter;
 
-import static no.nav.pdl.oversetter.PersonAdapter.DATO_FORMATTERER;
+import static no.nav.pdl.oversetter.PersonOversetter.DATO_FORMATTERER;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

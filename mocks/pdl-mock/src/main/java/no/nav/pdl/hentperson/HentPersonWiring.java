@@ -1,8 +1,5 @@
 package no.nav.pdl.hentperson;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
@@ -10,6 +7,8 @@ import no.nav.pdl.PdlFunctionalException;
 import no.nav.pdl.Person;
 import no.nav.pdl.graphql.DateScalar;
 import no.nav.pdl.graphql.DateTimeScalar;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class HentPersonWiring {
@@ -24,9 +23,16 @@ public class HentPersonWiring {
                 .type("Query", typeWiring -> typeWiring.dataFetcher("hentPerson", environment -> {
                     try {
                         var ident = (String) environment.getArgument("ident");
-                        LOG.info("query hentPerson for ident={}", ident);
+                        var historikk = environment.getField()
+                                .getSelectionSet()
+                                .getSelections()
+                                .stream()
+                                .anyMatch(felt -> felt.toString().contains("name='navn'")
+                                        && felt.toString().contains("Argument{name='historikk', value=BooleanValue{value=true}"));
 
-                        Person person = coordinator.hentPerson(ident);
+                        LOG.info("query hentPerson for ident={}, historikk", ident);
+
+                        Person person = coordinator.hentPerson(ident, historikk);
                         LOG.info("person hentet for ident={}", ident);
 
                         return person;

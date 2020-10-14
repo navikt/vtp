@@ -58,7 +58,7 @@ public class PdlMockTest {
         var søker = testscenario.getPersonopplysninger().getSøker();
 
         var ident = søker.getIdent();
-        var projection = byggProjectionPersonResponse();
+        var projection = byggProjectionPersonResponse(false);
         var query = String.format("query { hentPerson(ident: \"%s\") %s }", ident, projection);
 
         var request = GraphQLRequest.builder().withQuery(query).build();
@@ -71,6 +71,34 @@ public class PdlMockTest {
         var person = response.hentPerson();
         assertThat(person).isNotNull();
         assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
+        assertThat(person.getStatsborgerskap()).hasSize(1);
+
+    }
+
+    @Test
+    public void hent_person_med_historikk() throws JsonProcessingException {
+
+        // Arrange
+        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
+        var søker = testscenario.getPersonopplysninger().getSøker();
+
+        var ident = søker.getIdent();
+        var projection = byggProjectionPersonResponse(true);
+        var query = String.format("query { hentPerson(ident: \"%s\") %s }", ident, projection);
+
+        var request = GraphQLRequest.builder().withQuery(query).build();
+
+        // Act
+        var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
+
+        // Assert
+        var response = (HentPersonQueryResponse) konverterTilGraphResponse(rawResponse, hentPersonReader);
+        var person = response.hentPerson();
+        assertThat(person).isNotNull();
+        assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
+        assertThat(person.getStatsborgerskap()).hasSize(2);
 
     }
 
@@ -113,36 +141,58 @@ public class PdlMockTest {
         return (T) graphResponse;
     }
 
-    private String byggProjectionPersonResponse() {
+    private String byggProjectionPersonResponse(boolean historikk) {
         var projeksjon = new PersonResponseProjection()
-                .foedsel(new FoedselResponseProjection()
-                        .foedselsdato())
-                .navn(new NavnResponseProjection()
-                        .fornavn()
-                        .mellomnavn()
-                        .etternavn()
-                        .forkortetNavn())
-                .statsborgerskap(new StatsborgerskapResponseProjection()
-                        .land())
-                .kjoenn(new KjoennResponseProjection()
-                        .kjoenn())
-                .bostedsadresse(new BostedsadresseResponseProjection()
-                .angittFlyttedato()
-                .gyldigFraOgMed()
-                .gyldigTilOgMed()
-                .vegadresse(new VegadresseResponseProjection()
-                        .adressenavn()
-                        .husnummer()
-                        .husbokstav()
-                        .postnummer()))
-                .geografiskTilknytning(new GeografiskTilknytningResponseProjection()
-                        .gtType()
-                        .gtLand())
-                .folkeregisterpersonstatus(new FolkeregisterpersonstatusResponseProjection()
-                        .status())
-                .familierelasjoner(new FamilierelasjonResponseProjection()
-                        .relatertPersonsIdent()
-                        .relatertPersonsRolle());
+                .foedsel(
+                        new FoedselResponseProjection()
+                                .foedselsdato()
+                )
+                .navn(
+                        new PersonNavnParametrizedInput(historikk),
+                        new NavnResponseProjection()
+                                .fornavn()
+                                .mellomnavn()
+                                .etternavn()
+                                .forkortetNavn()
+                )
+                .statsborgerskap(
+                        new PersonStatsborgerskapParametrizedInput(historikk),
+                        new StatsborgerskapResponseProjection()
+                                .land()
+                )
+                .kjoenn(
+                        new PersonKjoennParametrizedInput(historikk),
+                        new KjoennResponseProjection()
+                                .kjoenn()
+                )
+                .bostedsadresse(
+                        new PersonBostedsadresseParametrizedInput(historikk),
+                        new BostedsadresseResponseProjection()
+                                .angittFlyttedato()
+                                .gyldigFraOgMed()
+                                .gyldigTilOgMed()
+                                .vegadresse(
+                                        new VegadresseResponseProjection()
+                                                .adressenavn()
+                                                .husnummer()
+                                                .husbokstav()
+                                                .postnummer()
+                                )
+                )
+                .geografiskTilknytning(
+                        new GeografiskTilknytningResponseProjection()
+                                .gtType()
+                                .gtLand()
+                )
+                .folkeregisterpersonstatus(
+                        new PersonFolkeregisterpersonstatusParametrizedInput(historikk),
+                        new FolkeregisterpersonstatusResponseProjection().status()
+                )
+                .familierelasjoner(
+                        new FamilierelasjonResponseProjection()
+                                .relatertPersonsIdent()
+                                .relatertPersonsRolle()
+                );
         return projeksjon.toString();
     }
 
