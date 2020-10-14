@@ -22,17 +22,14 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.
 public class SimuleringGenerator {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    Boolean negativSimulering;
     String kodeEndring;
     Boolean erOpphør;
     Boolean erOmpostering;
 
-    public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest,
-                                                               Boolean negativSimulering) {
-        this.negativSimulering = negativSimulering;
+    public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
         this.kodeEndring = simulerBeregningRequest.getRequest().getOppdrag().getKodeEndring();
-        this.erOpphør = erOpphør(simulerBeregningRequest);
-        this.erOmpostering = erOmpostering(simulerBeregningRequest);
+        this.erOpphør = erOpphør(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
+        this.erOmpostering = erOmpostering(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
 
         SimulerBeregningResponse response = new SimulerBeregningResponse();
         Beregning beregning = lagBeregning(simulerBeregningRequest);
@@ -48,8 +45,7 @@ public class SimuleringGenerator {
 
     }
 
-    private boolean erOpphør(SimulerBeregningRequest simulerBeregningRequest){
-        List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
+    private boolean erOpphør(List<Oppdragslinje> oppdragslinjer){
         if (oppdragslinjer.isEmpty()) {
             return false;
         }
@@ -62,10 +58,10 @@ public class SimuleringGenerator {
         return true;
     }
 
-    private boolean erOmpostering(SimulerBeregningRequest simulerBeregningRequest){
-        if (!simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().isEmpty()){
+    private boolean erOmpostering(List<Oppdragslinje> oppdragslinjer){
+        if (!oppdragslinjer.isEmpty()){
             //Utleder ompostering og omposteringsdato fra datoStatusFom i første oppdragslinje fordi ompostering alltid er null selvom den kommer i request.
-            return !simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom().isEmpty();
+            return oppdragslinjer.get(0).getDatoStatusFom() != null;
         }
         return false;
     }
@@ -139,8 +135,12 @@ public class SimuleringGenerator {
         List<BeregningStoppnivaa> beregningStoppnivaaer = new ArrayList<>();
 
         YearMonth nesteMåned;
-        if (erOpphør|oppdragslinje.getKodeStatusLinje().equals(KodeStatusLinje.OPPH)){nesteMåned = YearMonth.from(LocalDate.now());}
-        else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
+        boolean opphørsLinje;
+        if (oppdragslinje.getKodeStatusLinje() != null && oppdragslinje.getKodeStatusLinje().equals(KodeStatusLinje.OPPH))
+            {nesteMåned = YearMonth.from(LocalDate.now());
+            opphørsLinje = true;}
+        else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));
+            opphørsLinje = false;}
         for (Periode periode : perioder) {
             if (!YearMonth.from(periode.getFom()).isAfter(nesteMåned)) {
                 BeregningStoppnivaa stoppnivaa = new BeregningStoppnivaa();
@@ -162,12 +162,7 @@ public class SimuleringGenerator {
                 stoppnivaa.setFeilkonto(erOpphør|erOmpostering);
                 stoppnivaa.setKid("12345");
 
-                if (negativSimulering && kodeEndring.equals("ENDR")){
-                    for (int i = 1 ; i <= 4 ; i++){
-                        stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
-                    }
-                }
-                else if (erOpphør|oppdragslinje.getKodeStatusLinje().equals(KodeStatusLinje.OPPH)){
+                if (opphørsLinje){
                     for (int i = 1 ; i <= 3 ; i++){
                         stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
                     }
@@ -216,15 +211,12 @@ public class SimuleringGenerator {
     }
 
     private BeregningStoppnivaaDetaljer opprettNegativBeregningStoppNivaaDetaljer(Periode periode, Oppdragslinje oppdragslinje, int sequence) {
-        int antallVirkedager = periode.getAntallVirkedager();
-
         BeregningStoppnivaaDetaljer stoppnivaaDetaljer = new BeregningStoppnivaaDetaljer();
 
         //Sequence explanation:
         //1.Ytelsen slik den stod original
         //2.Feilutbetalt beløp
         //3.Fjerning av ytelsen fra seqence 1
-        //4.Ny ytelse (hvis det er noen)
 
         //fom
         stoppnivaaDetaljer.setFaktiskFom(dateTimeFormatter.format(periode.getFom()));
@@ -240,8 +232,7 @@ public class SimuleringGenerator {
         //trekkVedtakId
         stoppnivaaDetaljer.setTrekkVedtakId(0L);
         //stonadId
-        if (sequence == 4){ stoppnivaaDetaljer.setStonadId("1234"); }
-        else { stoppnivaaDetaljer.setStonadId(""); }
+        stoppnivaaDetaljer.setStonadId("");
         //korrigering
         if (sequence == 2){ stoppnivaaDetaljer.setKorrigering("J"); }
         else { stoppnivaaDetaljer.setKorrigering(""); }
@@ -250,25 +241,20 @@ public class SimuleringGenerator {
         //linjeId
         stoppnivaaDetaljer.setLinjeId(BigInteger.valueOf(21423L));
         //sats
-        if (sequence == 4){ stoppnivaaDetaljer.setSats(oppdragslinje.getSats()); }
-        else { stoppnivaaDetaljer.setSats(BigDecimal.ZERO); }
+        stoppnivaaDetaljer.setSats(BigDecimal.ZERO);
         //typeSats
-        if (sequence == 4){ stoppnivaaDetaljer.setTypeSats("DAG"); }
-        else { stoppnivaaDetaljer.setTypeSats(""); }
+        stoppnivaaDetaljer.setTypeSats("");
         //antallSats
-        if (sequence >= 1 && sequence <= 2 || erOpphør) { stoppnivaaDetaljer.setAntallSats(BigDecimal.valueOf(0)); }
-        else { stoppnivaaDetaljer.setAntallSats(BigDecimal.valueOf(antallVirkedager)); }
+        stoppnivaaDetaljer.setAntallSats(BigDecimal.valueOf(0));
         //saksbehId
         stoppnivaaDetaljer.setSaksbehId("5323");
         //uforeGrad
-        if (sequence == 3 && erOpphør){stoppnivaaDetaljer.setUforeGrad(BigInteger.valueOf(100L));}
-        else if (sequence != 4){ stoppnivaaDetaljer.setUforeGrad(BigInteger.ZERO); }
-        else { stoppnivaaDetaljer.setUforeGrad(BigInteger.valueOf(100L)); }
+        if (sequence == 3){stoppnivaaDetaljer.setUforeGrad(BigInteger.valueOf(100L));}
+        else { stoppnivaaDetaljer.setUforeGrad(BigInteger.ZERO); }
         //kravHaverId ?
         stoppnivaaDetaljer.setKravhaverId("");
         //delytelseId
-        if (sequence == 4){ stoppnivaaDetaljer.setDelytelseId("3523"); }
-        else { stoppnivaaDetaljer.setDelytelseId(""); }
+        stoppnivaaDetaljer.setDelytelseId("");
         //bostedsenhet
         stoppnivaaDetaljer.setBostedsenhet("4643");
         //skyldnerId ?
