@@ -37,6 +37,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
+import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
@@ -107,6 +108,7 @@ public class ApplicationConfig extends Application {
         classes.add(PdlMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
+        classes.add(DigitalKontaktinformasjonMock.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);

@@ -1,23 +1,29 @@
 package no.nav.foreldrepenger.vtp.server.rest.auth;
 
-import io.swagger.annotations.Api;
-import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
-import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
+import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.util.Base64;
+
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXB;
+
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.lang.JoseException;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXB;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.util.Base64;
+import io.swagger.annotations.Api;
+import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
 
 @Api(tags = {"Security Token Service"})
 @Path("/v1/sts")
 public class STSRestTjeneste {
+
     private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
     @POST
@@ -41,7 +47,7 @@ public class STSRestTjeneste {
         return response;
     }
 
-    @GET
+    @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
     public UserTokenResponse dummyToken(@QueryParam("grant_type") String grant_type,

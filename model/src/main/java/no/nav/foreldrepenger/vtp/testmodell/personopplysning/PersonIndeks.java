@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 public class PersonIndeks {
 
     private Map<String, BrukerModell> byIdent = new HashMap<>();
-    private Map<String, BrukerModell> byAktørIdent = new HashMap<>();
     private Map<String, Personopplysninger> byIdentPersonopplysninger = new HashMap<>();
+
 
     public PersonIndeks() {
     }
@@ -18,14 +18,17 @@ public class PersonIndeks {
     public synchronized void indekserPersonopplysningerByIdent(Personopplysninger pers) {
         if (pers.getSøker() != null) {
             byIdentPersonopplysninger.putIfAbsent(pers.getSøker().getIdent(), pers);
+            byIdentPersonopplysninger.putIfAbsent(pers.getSøker().getAktørIdent(), pers);
         }
 
         if (pers.getAnnenPart() != null) {
             byIdentPersonopplysninger.putIfAbsent(pers.getAnnenPart().getIdent(), pers);
+            byIdentPersonopplysninger.putIfAbsent(pers.getAnnenPart().getAktørIdent(), pers);
         }
 
         for (FamilierelasjonModell fr : pers.getFamilierelasjoner()) {
             byIdentPersonopplysninger.putIfAbsent(fr.getTil().getIdent(), pers);
+            byIdentPersonopplysninger.putIfAbsent(fr.getTil().getAktørIdent(), pers);
         }
     }
 
@@ -44,11 +47,11 @@ public class PersonIndeks {
         if (byIdent.get(ident) instanceof BrukerIdent) {
             // overskriv
             byIdent.put(ident, bruker);
-            byAktørIdent.put(aktørIdent, bruker);
+            byIdent.put(aktørIdent, bruker);
         }
 
         byIdent.putIfAbsent(ident, bruker);
-        byAktørIdent.putIfAbsent(aktørIdent, bruker);
+        byIdent.putIfAbsent(aktørIdent, bruker);
     }
 
     public synchronized void indekserFamilierelasjonBrukere(Collection<FamilierelasjonModell> familierelasjoner) {
@@ -66,10 +69,9 @@ public class PersonIndeks {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public synchronized  <V extends BrukerModell> V finnByAktørIdent(String ident) {
-        if(byAktørIdent.containsKey(ident)){
-            return (V) byAktørIdent.get(ident);
+        if(byIdent.containsKey(ident)){
+            return (V) byIdent.get(ident);
         } else {
             throw new RuntimeException("Finner ikke bruker med AktørId: "+ident);
         }
@@ -77,6 +79,10 @@ public class PersonIndeks {
     }
 
     public synchronized Personopplysninger finnPersonopplysningerByIdent(String ident) {
+        return byIdentPersonopplysninger.get(ident);
+    }
+
+    public synchronized Personopplysninger finnPersonopplysningerByAktørIdent(String ident) {
         return byIdentPersonopplysninger.get(ident);
     }
 

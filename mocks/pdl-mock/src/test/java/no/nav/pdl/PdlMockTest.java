@@ -148,7 +148,12 @@ public class PdlMockTest {
                 .foedsel(new FoedselResponseProjection()
                         .foedselsdato())
                 .navn(new PersonNavnParametrizedInput(historikk),
-                      new NavnResponseProjection()
+                      new NavnResponseProjection())
+                .doedsfall(new DoedsfallResponseProjection()
+                        .doedsdato())
+                .doedfoedtBarn(new DoedfoedtBarnResponseProjection()
+                        .dato())
+                .navn(new NavnResponseProjection()
                         .fornavn()
                         .mellomnavn()
                         .etternavn()

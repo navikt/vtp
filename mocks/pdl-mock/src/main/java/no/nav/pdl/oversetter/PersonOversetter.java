@@ -11,6 +11,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytni
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
+import no.nav.pdl.Doedsfall;
 import no.nav.pdl.Foedsel;
 import no.nav.pdl.Folkeregisterpersonstatus;
 import no.nav.pdl.GeografiskTilknytning;
@@ -33,6 +34,14 @@ public class PersonOversetter {
         Foedsel fødsel = new Foedsel();
         fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
         person.setFoedsel(of(fødsel));
+
+        Doedsfall doedsfall = new Doedsfall();
+        if (personModell.getDødsdato() != null) {
+            doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
+        }
+        person.setDoedsfall(List.of(doedsfall));
+
+
 
         Navn navn = new Navn();
         navn.setFornavn(personModell.getFornavn().toUpperCase());
