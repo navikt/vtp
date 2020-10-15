@@ -22,12 +22,10 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.
 public class SimuleringGenerator {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String kodeEndring;
     Boolean erOpphør;
     Boolean erOmpostering;
 
     public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
-        this.kodeEndring = simulerBeregningRequest.getRequest().getOppdrag().getKodeEndring();
         this.erOpphør = erOpphør(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
         this.erOmpostering = erOmpostering(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
 
