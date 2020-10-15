@@ -47,6 +47,7 @@ public class LokalIdentIndeks {
         if (lokalIdent.matches("^\\d+$")) {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
+        // TODO: Legg til iterator hvis det er tvillinger eller trillinger.
         return identer.computeIfAbsent(key(lokalIdent), i -> dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001");
     }
 

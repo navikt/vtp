@@ -24,12 +24,22 @@ public class DigitalKontaktinfoResponsDto {
 
     public void leggTilSpråk(String fnr, String spraak) {
         Kontaktinformasjon kontaktinformasjon = new Kontaktinformasjon();
-        kontaktinformasjon.setSpraak(Optional.ofNullable(spraak).orElse("NB"));
+        kontaktinformasjon.setSpraak(Optional.ofNullable(spraak).orElse("nb"));
         kontaktinfo.put(fnr, kontaktinformasjon);
     }
 
 
     private static class Kontaktinformasjon {
+        @JsonProperty("epostadresse")
+        private String epostadresse = "noreply@nav.no";
+        @JsonProperty("kanVarsles")
+        private boolean kanVarsles = true;
+        @JsonProperty("mobiltelefonnummer")
+        private String mobiltelefonnummer = "99999999";
+        @JsonProperty("personident")
+        private String personident;
+        @JsonProperty("reservert")
+        private boolean reservert = false;
         @JsonProperty("spraak")
         private String spraak;
 

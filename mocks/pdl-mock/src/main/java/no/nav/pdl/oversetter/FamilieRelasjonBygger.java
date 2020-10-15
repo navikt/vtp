@@ -14,7 +14,8 @@ import no.nav.pdl.Person;
 
 public class FamilieRelasjonBygger {
 
-    static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final int PERSONNR_LENGDE = 5;
 
     public static Person byggFamilierelasjoner(String aktørIdent, Personopplysninger personopplysningerModell, Person person) {
         person.setFamilierelasjoner(new ArrayList<>()); // init array
@@ -28,13 +29,13 @@ public class FamilieRelasjonBygger {
                 DoedfoedtBarn doedfoedtBarn = new DoedfoedtBarn();
                 BarnModell barnModell = (BarnModell) relasjon.getTil();
                 LocalDate fødselsdato = barnModell.getFødselsdato();
-                if (barnModell.getFødselsdato() != null && barnModell.getIdent().substring(6,10).equalsIgnoreCase("0000")) {
+                if (barnModell.getFødselsdato() != null && erFdatNummer(barnModell.getIdent())) {
                     doedfoedtBarn.setDato(fødselsdato.format(DATO_FORMATTERER));
                 }
                 doedfoedtBarnList.add(doedfoedtBarn);
             }
-            person.setDoedfoedtBarn(doedfoedtBarnList);
         }
+        person.setDoedfoedtBarn(doedfoedtBarnList);
 
         List<Familierelasjon> familierelasjoner;
         if(personopplysningerModell.getAnnenPart() != null && personopplysningerModell.getAnnenPart().getAktørIdent().equals(aktørIdent)) { //TODO HACK for annenpart (annenpart burde ha en egen personopplysning fil eller liknende)
@@ -55,4 +56,19 @@ public class FamilieRelasjonBygger {
         }
         return person;
     }
+
+    private static String getPersonnummer(String str) {
+        return (str == null || str.length() < PERSONNR_LENGDE)
+                ? null
+                : str.substring(str.length() - PERSONNR_LENGDE);
+    }
+
+    private static boolean isFdatNummer(String personnummer) {
+        return personnummer != null && personnummer.length() == PERSONNR_LENGDE && personnummer.startsWith("0000");
+    }
+
+    private static boolean erFdatNummer(String ident) {
+        return isFdatNummer(getPersonnummer(ident));
+    }
+
 }

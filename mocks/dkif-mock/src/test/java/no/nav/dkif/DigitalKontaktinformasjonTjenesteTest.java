@@ -38,7 +38,7 @@ public class DigitalKontaktinformasjonTjenesteTest {
         var response = digitalKontaktinformasjonMock.hentKontaktinformasjon(søker.getIdent(), null, null, null);
 
         assertThat(response).isNotNull();
-        assertThat(response.getSpraak(søker.getIdent()).get()).isEqualTo("NB");
+        assertThat(response.getSpraak(søker.getIdent()).get()).isEqualTo("nb");
     }
 
 }
