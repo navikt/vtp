@@ -3,7 +3,10 @@ package no.nav.okonomi.tilbakekrevingservice;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -13,6 +16,7 @@ import com.google.common.collect.Lists;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagBelopDto;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagDto;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagPeriodeDto;
+import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.HentKravgrunnlagDetaljDto;
 import no.nav.tilbakekreving.typer.v1.JaNeiDto;
 import no.nav.tilbakekreving.typer.v1.PeriodeDto;
 import no.nav.tilbakekreving.typer.v1.TypeGjelderDto;
@@ -20,29 +24,23 @@ import no.nav.tilbakekreving.typer.v1.TypeKlasseDto;
 
 class KravgrunnlagGenerator {
 
-    private static final String ENHET = "8020";
-
-    public static DetaljertKravgrunnlagDto hentGrunnlag() {
+    public static DetaljertKravgrunnlagDto hentGrunnlag(HentKravgrunnlagDetaljDto hentKravgrunnlagDetaljDto) {
         DetaljertKravgrunnlagDto detaljertKravgrunnlag = new DetaljertKravgrunnlagDto();
         detaljertKravgrunnlag.setVedtakId(BigInteger.valueOf(207406));
-        detaljertKravgrunnlag.setKravgrunnlagId(BigInteger.valueOf(152806));
-        detaljertKravgrunnlag.setDatoVedtakFagsystem(konvertDato(LocalDate.of(2019, 3, 14)));
-        detaljertKravgrunnlag.setEnhetAnsvarlig(ENHET);
-        detaljertKravgrunnlag.setFagsystemId("10000000000000000");
+        detaljertKravgrunnlag.setKravgrunnlagId(hentKravgrunnlagDetaljDto.getKravgrunnlagId());
+        detaljertKravgrunnlag.setEnhetAnsvarlig(hentKravgrunnlagDetaljDto.getEnhetAnsvarlig());
+        detaljertKravgrunnlag.setFagsystemId(generateSaksnummer()+"100");
         detaljertKravgrunnlag.setKodeFagomraade("FP");
-        detaljertKravgrunnlag.setKodeHjemmel("1234239042304");
-        detaljertKravgrunnlag.setKontrollfelt("42354353453454");
+        detaljertKravgrunnlag.setKontrollfelt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")));
         detaljertKravgrunnlag.setReferanse("1");
-        detaljertKravgrunnlag.setRenterBeregnes(JaNeiDto.N);
-        detaljertKravgrunnlag.setSaksbehId("Z991136");
+        detaljertKravgrunnlag.setSaksbehId(hentKravgrunnlagDetaljDto.getSaksbehId());
+        detaljertKravgrunnlag.setVedtakGjelderId("10127435540"); //mock verdi
         detaljertKravgrunnlag.setUtbetalesTilId("10127435540"); //mock verdi
-        detaljertKravgrunnlag.setEnhetBehandl(ENHET);
-        detaljertKravgrunnlag.setEnhetBosted(ENHET);
-        detaljertKravgrunnlag.setKodeStatusKrav("BEHA");
+        detaljertKravgrunnlag.setEnhetBehandl(hentKravgrunnlagDetaljDto.getEnhetAnsvarlig());
+        detaljertKravgrunnlag.setEnhetBosted(hentKravgrunnlagDetaljDto.getEnhetAnsvarlig());
+        detaljertKravgrunnlag.setKodeStatusKrav("NY");
         detaljertKravgrunnlag.setTypeGjelderId(TypeGjelderDto.PERSON);
         detaljertKravgrunnlag.setTypeUtbetId(TypeGjelderDto.PERSON);
-        detaljertKravgrunnlag.setVedtakGjelderId("10127435540"); //mock verdi
-        detaljertKravgrunnlag.setVedtakIdOmgjort(BigInteger.valueOf(207407));
         detaljertKravgrunnlag.getTilbakekrevingsPeriode().addAll(hentPerioder());
 
         return detaljertKravgrunnlag;
@@ -51,8 +49,8 @@ class KravgrunnlagGenerator {
     private static List<DetaljertKravgrunnlagPeriodeDto> hentPerioder() {
         DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode1 = new DetaljertKravgrunnlagPeriodeDto();
         PeriodeDto periode = new PeriodeDto();
-        periode.setFom(konvertDato(LocalDate.of(2016, 3, 16)));
-        periode.setTom(konvertDato(LocalDate.of(2016, 3, 25)));
+        periode.setFom(konvertDato(LocalDate.of(2020, 3, 1)));
+        periode.setTom(konvertDato(LocalDate.of(2020, 3, 31)));
         kravgrunnlagPeriode1.setPeriode(periode);
         kravgrunnlagPeriode1.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(6000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
         kravgrunnlagPeriode1.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(6000.00), BigDecimal.valueOf(6000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
@@ -60,33 +58,15 @@ class KravgrunnlagGenerator {
 
         DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode2 = new DetaljertKravgrunnlagPeriodeDto();
         periode = new PeriodeDto();
-        periode.setFom(konvertDato(LocalDate.of(2016, 3, 26)));
-        periode.setTom(konvertDato(LocalDate.of(2016, 3, 31)));
+        periode.setFom(konvertDato(LocalDate.of(2020, 4, 1)));
+        periode.setTom(konvertDato(LocalDate.of(2020, 4, 30)));
         kravgrunnlagPeriode2.setPeriode(periode);
-        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(3000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
-        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(3000.00), BigDecimal.valueOf(3000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
-        kravgrunnlagPeriode2.setBelopSkattMnd(new BigDecimal(2700));
-
-        DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode3 = new DetaljertKravgrunnlagPeriodeDto();
-        periode = new PeriodeDto();
-        periode.setFom(konvertDato(LocalDate.of(2016, 4, 1)));
-        periode.setTom(konvertDato(LocalDate.of(2016, 4, 30)));
-        kravgrunnlagPeriode3.setPeriode(periode);
-        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(21000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
-        kravgrunnlagPeriode3.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
-        kravgrunnlagPeriode3.setBelopSkattMnd(new BigDecimal(6300));
+        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(21000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
+        kravgrunnlagPeriode2.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
+        kravgrunnlagPeriode2.setBelopSkattMnd(new BigDecimal(6300));
 
 
-        DetaljertKravgrunnlagPeriodeDto kravgrunnlagPeriode4 = new DetaljertKravgrunnlagPeriodeDto();
-        periode = new PeriodeDto();
-        periode.setFom(konvertDato(LocalDate.of(2016, 5, 1)));
-        periode.setTom(konvertDato(LocalDate.of(2016, 5, 26)));
-        kravgrunnlagPeriode4.setPeriode(periode);
-        kravgrunnlagPeriode4.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.valueOf(9000.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, TypeKlasseDto.FEIL, 30));
-        kravgrunnlagPeriode4.getTilbakekrevingsBelop().add(hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(9000.00), BigDecimal.valueOf(9000.00), BigDecimal.ZERO, TypeKlasseDto.YTEL, 30));
-        kravgrunnlagPeriode4.setBelopSkattMnd(new BigDecimal(2700));
-
-        return Lists.newArrayList(kravgrunnlagPeriode1, kravgrunnlagPeriode2, kravgrunnlagPeriode3, kravgrunnlagPeriode4);
+        return Lists.newArrayList(kravgrunnlagPeriode1, kravgrunnlagPeriode2);
     }
 
     private static DetaljertKravgrunnlagBelopDto hentBeløp(BigDecimal nyBeløp,
@@ -109,5 +89,15 @@ class KravgrunnlagGenerator {
 
     private static XMLGregorianCalendar konvertDato(LocalDate localDate) {
         return DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar(localDate.toString());
+    }
+
+    public static int generateSaksnummer() {
+        int m = (int) Math.pow(10, 10 - 1);
+        return m + new Random().nextInt(9 * m);
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(generateSaksnummer()+"100");
     }
 }
