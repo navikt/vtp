@@ -145,19 +145,21 @@ public class PdlMockTest {
 
     private String byggProjectionPersonResponse(boolean historikk) {
         var projeksjon = new PersonResponseProjection()
-                .foedsel(new FoedselResponseProjection()
-                        .foedselsdato())
-                .navn(new PersonNavnParametrizedInput(historikk),
-                      new NavnResponseProjection())
-                .doedsfall(new DoedsfallResponseProjection()
-                        .doedsdato())
-                .doedfoedtBarn(new DoedfoedtBarnResponseProjection()
-                        .dato())
-                .navn(new NavnResponseProjection()
-                        .fornavn()
-                        .mellomnavn()
-                        .etternavn()
-                        .forkortetNavn())
+                .foedsel(
+                        new FoedselResponseProjection()
+                            .foedselsdato())
+                .doedsfall(
+                        new DoedsfallResponseProjection()
+                            .doedsdato())
+                .doedfoedtBarn(
+                        new DoedfoedtBarnResponseProjection()
+                            .dato())
+                .navn(  new PersonNavnParametrizedInput(historikk),
+                        new NavnResponseProjection()
+                            .fornavn()
+                            .mellomnavn()
+                            .etternavn()
+                            .forkortetNavn())
                 .statsborgerskap(
                         new PersonStatsborgerskapParametrizedInput(historikk),
                         new StatsborgerskapResponseProjection()
@@ -176,20 +178,22 @@ public class PdlMockTest {
                                     .husnummer()
                                     .husbokstav()
                                     .postnummer()))
-                .geografiskTilknytning(new GeografiskTilknytningResponseProjection()
-                        .gtType()
-                        .gtLand())
+                .geografiskTilknytning(
+                        new GeografiskTilknytningResponseProjection()
+                            .gtType()
+                            .gtLand())
                 .folkeregisterpersonstatus(
                         new PersonFolkeregisterpersonstatusParametrizedInput(historikk),
                         new FolkeregisterpersonstatusResponseProjection()
-                        .status()
-                        .forenkletStatus())
+                            .status()
+                            .forenkletStatus())
                 .familierelasjoner(
                         new FamilierelasjonResponseProjection()
-                        .relatertPersonsIdent()
-                        .relatertPersonsRolle())
-                .adressebeskyttelse(new AdressebeskyttelseResponseProjection()
-                        .gradering());
+                            .relatertPersonsIdent()
+                            .relatertPersonsRolle())
+                .adressebeskyttelse(
+                        new AdressebeskyttelseResponseProjection()
+                            .gradering());
         return projeksjon.toString();
     }
 

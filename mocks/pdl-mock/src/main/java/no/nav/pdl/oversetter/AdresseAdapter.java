@@ -1,6 +1,6 @@
 package no.nav.pdl.oversetter;
 
-import static no.nav.pdl.oversetter.PersonOversetter.DATO_FORMATTERER;
+import static no.nav.pdl.oversetter.PersonAdapter.DATO_FORMATTERER;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,7 +9,6 @@ import java.util.List;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PostboksadresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 import no.nav.pdl.Bostedsadresse;

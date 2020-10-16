@@ -1,14 +1,18 @@
 package no.nav.pdl.oversetter;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
-import no.nav.pdl.*;
+import static java.util.List.of;
+import static java.util.stream.Collectors.toList;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
 import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
 import no.nav.pdl.Doedsfall;
@@ -21,11 +25,9 @@ import no.nav.pdl.KjoennType;
 import no.nav.pdl.Navn;
 import no.nav.pdl.Person;
 import no.nav.pdl.Statsborgerskap;
-import static java.util.List.of;
-import static java.util.stream.Collectors.toList;
 
 
-public class PersonOversetter {
+public class PersonAdapter {
     static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static Person oversettPerson(PersonModell personModell, boolean historikk) {
@@ -41,8 +43,6 @@ public class PersonOversetter {
         }
         person.setDoedsfall(List.of(doedsfall));
 
-
-
         Navn navn = new Navn();
         navn.setFornavn(personModell.getFornavn().toUpperCase());
         navn.setEtternavn(personModell.getEtternavn().toUpperCase());
@@ -52,7 +52,7 @@ public class PersonOversetter {
         person.setStatsborgerskap(
                 historikk
                         ? personModell.getAlleStatsborgerskap().stream()
-                        .map(PersonOversetter::tilStatsborgerskap)
+                        .map(PersonAdapter::tilStatsborgerskap)
                         .collect(toList())
                         : of(tilStatsborgerskap(personModell.getStatsborgerskap()))
         );
@@ -62,18 +62,15 @@ public class PersonOversetter {
         kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
         person.setKjoenn(of(kjoenn));
 
-        leggTilPersonstatus(person, personModell);
         person.setFolkeregisterpersonstatus(
                 historikk
                         ? personModell.getAllePersonstatus().stream()
-                        .map(PersonOversetter::tilFolkeregisterpersonstatus)
+                        .map(PersonAdapter::tilFolkeregisterpersonstatus)
                         .collect(toList())
                         : of(tilFolkeregisterpersonstatus(personModell.getPersonstatus()))
         );
 
         person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
-
-        AdresseAdapter.setAdresser(person, personModell);
 
         Adressebeskyttelse adressebeskyttelse = new Adressebeskyttelse();
         adressebeskyttelse.setGradering(tilAdressebeskyttelseGradering(personModell));
@@ -87,15 +84,15 @@ public class PersonOversetter {
         return person;
     }
 
-    private static void leggTilPersonstatus(Person person, PersonModell personModell) {
-        List<String> personstatuserPDL = PersonstatusAdapter.hentPersonstatusPDL(personModell.getPersonstatus().getStatus());
+    private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell personstatusModell) {
+        List<String> personstatuserPDL = PersonstatusAdapter.hentPersonstatusPDL(personstatusModell.getStatus());
+        Folkeregisterpersonstatus folkeregisterpersonstatus = new Folkeregisterpersonstatus();
         if (personstatuserPDL == null || personstatuserPDL.isEmpty()) {
-            return;
+            return folkeregisterpersonstatus;
         }
-        Folkeregisterpersonstatus personstatus = new Folkeregisterpersonstatus();
-        personstatus.setForenkletStatus(personstatuserPDL.get(0));
-        personstatus.setStatus(personstatuserPDL.get(1));
-        person.setFolkeregisterpersonstatus(List.of(personstatus));
+        folkeregisterpersonstatus.setForenkletStatus(personstatuserPDL.get(0));
+        folkeregisterpersonstatus.setStatus(personstatuserPDL.get(1));
+        return folkeregisterpersonstatus;
     }
 
     private static AdressebeskyttelseGradering tilAdressebeskyttelseGradering(PersonModell bruker) {
@@ -111,12 +108,6 @@ public class PersonOversetter {
             default:
                 return AdressebeskyttelseGradering.UGRADERT;
         }
-    }
-
-    private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell status) {
-        Folkeregisterpersonstatus folkeregisterpersonstatus = new Folkeregisterpersonstatus();
-        folkeregisterpersonstatus.setStatus(status.getStatus());
-        return folkeregisterpersonstatus;
     }
 
     private static Statsborgerskap tilStatsborgerskap(StatsborgerskapModell sm) {
