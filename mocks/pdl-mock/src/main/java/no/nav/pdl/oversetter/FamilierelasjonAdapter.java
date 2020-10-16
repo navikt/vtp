@@ -20,7 +20,22 @@ public class FamilierelasjonAdapter {
             }
             Familierelasjon familierelasjon = new Familierelasjon();
             familierelasjon.setRelatertPersonsIdent(rel.getTil().getIdent());
-            familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.valueOf(rel.getRolleKode()));
+
+            FamilierelasjonModell.Rolle rolle = rel.getRolle();
+            switch (rolle) {
+                case FARA:
+                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.FAR);
+                    break;
+                case MORA:
+                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.MOR);
+                    break;
+                case MMOR:
+                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.MEDMOR);
+                    break;
+                case BARN:
+                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.BARN);
+            }
+
             // TODO: Vurdere om vi skal sette familierelasjon#setMinRolleForPerson
             // Testmodellen legger ikke dette riktig inn i dag. Usikkert om det brukes i k9.
 

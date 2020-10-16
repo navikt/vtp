@@ -34,7 +34,7 @@
         "fom": "now()-P6D"
       },
       {
-        "kode": "ABNR",
+        "kode": "UREG",
         "fom": "now()-P50Y",
         "tom": "now()-P7D"
       }

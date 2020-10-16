@@ -37,6 +37,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
+import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
@@ -47,6 +48,7 @@ import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
 import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.AzureAdNAVAnsattService;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
@@ -106,11 +108,13 @@ public class ApplicationConfig extends Application {
         classes.add(PdlMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
+        classes.add(DigitalKontaktinformasjonMock.class);
 
         // tekniske ting
         classes.add(Oauth2RestService.class);
         classes.add(AzureAdNAVAnsattService.class);
         classes.add(MicrosoftGraphApiMock.class);
+        classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
