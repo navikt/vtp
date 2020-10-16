@@ -72,7 +72,7 @@ public class PdlMockTest {
         assertThat(person).isNotNull();
         assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
         assertThat(person.getStatsborgerskap()).hasSize(1);
-
+        assertThat(person.getFolkeregisterpersonstatus()).hasSize(1);
     }
 
     @Test
@@ -98,8 +98,10 @@ public class PdlMockTest {
         var person = response.hentPerson();
         assertThat(person).isNotNull();
         assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
-        assertThat(person.getStatsborgerskap()).hasSize(2);
 
+        // Sjekk at vi har fått med historikk
+        assertThat(person.getStatsborgerskap()).hasSize(2);
+        assertThat(person.getFolkeregisterpersonstatus()).hasSize(2);
     }
 
     @Test

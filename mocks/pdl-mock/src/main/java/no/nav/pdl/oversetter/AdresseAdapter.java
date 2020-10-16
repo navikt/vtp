@@ -83,8 +83,7 @@ public class AdresseAdapter {
         return adresse;
     }
 
-    public static Person setAdresser(Person pers, PersonModell person) {
-        List<AdresseModell> adresser = person.getAdresser();
+    public static Person setAdresser(Person pers, List<AdresseModell> adresser) {
         // TODO: Hva med hemmelig adresse (adressebeskyttelse)? Ny i PDL
         for (AdresseModell a : adresser) {
             switch (a.getAdresseType()) {

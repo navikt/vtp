@@ -1,12 +1,10 @@
 package no.nav.pdl.oversetter;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
 import no.nav.pdl.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static java.util.List.of;
 import static java.util.stream.Collectors.toList;
@@ -41,15 +39,28 @@ public class PersonOversetter {
         kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
         person.setKjoenn(of(kjoenn));
 
-        Folkeregisterpersonstatus personstatus = new Folkeregisterpersonstatus();
-        personstatus.setStatus(personModell.getPersonstatus().getStatus());
-        person.setFolkeregisterpersonstatus(of(personstatus));
+        person.setFolkeregisterpersonstatus(
+                historikk
+                        ? personModell.getAllePersonstatus().stream()
+                        .map(PersonOversetter::tilFolkeregisterpersonstatus)
+                        .collect(toList())
+                        : of(tilFolkeregisterpersonstatus(personModell.getPersonstatus()))
+        );
 
         person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
 
-        AdresseAdapter.setAdresser(person, personModell);
+        List<AdresseModell> adresserUtenHistorikk = personModell.getAdresser();
+        List<AdresseModell> adresserMedHistorikk = personModell.getAdresser(AdresseType.BOSTEDSADRESSE);
+
+        AdresseAdapter.setAdresser(person, historikk ? adresserMedHistorikk: adresserUtenHistorikk);
 
         return person;
+    }
+
+    private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell status) {
+        Folkeregisterpersonstatus folkeregisterpersonstatus = new Folkeregisterpersonstatus();
+        folkeregisterpersonstatus.setStatus(status.getStatus());
+        return folkeregisterpersonstatus;
     }
 
     private static Statsborgerskap tilStatsborgerskap(StatsborgerskapModell sm) {
