@@ -2,9 +2,10 @@ package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,8 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 public class JournalRepositoryImpl implements JournalRepository {
 
-    private HashMap<String, JournalpostModell> journalposter;
-    private HashMap<String, DokumentModell> dokumenter;
+    private ConcurrentMap<String, JournalpostModell> journalposter;
+    private ConcurrentMap<String, DokumentModell> dokumenter;
 
     private AtomicInteger journalpostId;
     private AtomicInteger dokumentId;
@@ -36,19 +37,15 @@ public class JournalRepositoryImpl implements JournalRepository {
 
     private JournalRepositoryImpl() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
-        journalposter = new HashMap<>();
-        dokumenter = new HashMap<>();
+        journalposter = new ConcurrentHashMap<>();
+        dokumenter = new ConcurrentHashMap<>();
         journalpostId = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
         dokumentId = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
     }
 
     @Override
     public Optional<DokumentModell> finnDokumentMedDokumentId(String dokumentId) {
-        if(dokumenter.containsKey(dokumentId)){
-            return Optional.ofNullable(dokumenter.get(dokumentId));
-        } else {
-            return Optional.ofNullable(null);
-        }
+        return Optional.ofNullable(dokumenter.getOrDefault(dokumentId, null));
     }
 
     @Override
@@ -67,11 +64,7 @@ public class JournalRepositoryImpl implements JournalRepository {
 
     @Override
     public Optional<JournalpostModell> finnJournalpostMedJournalpostId(String journalpostId){
-        if(journalposter.containsKey(journalpostId)){
-            return Optional.ofNullable(journalposter.get(journalpostId));
-        } else {
-            return Optional.ofNullable(null);
-        }
+        return Optional.ofNullable(journalposter.getOrDefault(journalpostId, null));
     }
 
     @Override
