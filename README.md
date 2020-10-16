@@ -79,4 +79,3 @@ NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD
 ## Konfigurere nye tjenester
 Se SoapWebServerConfig for liste over url til genererte wsdl'er. Nye webtjenester registreres her. 
 Se ApplicationConfig for liste over registrerte REST-tjenester. Nye REST-tjenester registreres her.     
-
