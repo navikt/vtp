@@ -66,6 +66,10 @@ public class PdlMock {
             var executionResult = graphqlTjeneste.hentPerson(request);
             return executionResult.toSpecification();
         }
+        if ("hentIdenter".equals(operationName)) {
+            var executionResult = graphqlTjeneste.hentIdenter(request);
+            return executionResult.toSpecification();
+        }
         throw new NotImplementedException("Operasjon er ikke implementert:" + operationName);
     }
 

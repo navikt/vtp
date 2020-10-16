@@ -18,10 +18,25 @@
         "land": "NOR"
       }
     ],
+    "statsborgerskap": [
+      {
+        "land": "NOR",
+        "fom": "now()-P6D"
+      },
+      {
+        "land": "SWE",
+        "fom": "now()-P50Y",
+        "tom": "now()-P7D"
+      }    ],
     "personstatus": [
       {
         "kode": "BOSA",
-        "fom": "now()-P50Y"
+        "fom": "now()-P6D"
+      },
+      {
+        "kode": "ABNR",
+        "fom": "now()-P50Y",
+        "tom": "now()-P7D"
       }
     ],
     "sivilstand": [
@@ -86,7 +101,6 @@
       }
     }
   ],
-
   "familierelasjonerAnnenPart": [
     {
       "rolle": "BARN",
@@ -116,7 +130,6 @@
       }
     }
   ],
-
   "familierelasjonerBarn": [
     {
       "rolle": "MORA",
