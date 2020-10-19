@@ -1,6 +1,5 @@
 package no.nav.pdl.oversetter;
 
-import static java.util.List.of;
 import static java.util.stream.Collectors.toList;
 
 import java.time.format.DateTimeFormatter;
@@ -33,59 +32,84 @@ public class PersonAdapter {
     public static Person oversettPerson(PersonModell personModell, boolean historikk) {
         var person = new Person();
 
-        Foedsel fødsel = new Foedsel();
-        fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
-        person.setFoedsel(of(fødsel));
+        Foedsel fødsel = tilFoedsel(personModell);
+        person.setFoedsel(List.of(fødsel));
 
-        Doedsfall doedsfall = new Doedsfall();
-        if (personModell.getDødsdato() != null) {
-            doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
-        }
+        Doedsfall doedsfall = tilDoedsfall(personModell);
         person.setDoedsfall(List.of(doedsfall));
 
-        Navn navn = new Navn();
-        navn.setFornavn(personModell.getFornavn().toUpperCase());
-        navn.setEtternavn(personModell.getEtternavn().toUpperCase());
-        navn.setForkortetNavn(personModell.getEtternavn().toUpperCase() + " " + personModell.getFornavn().toUpperCase());
-        person.setNavn(of(navn));
+        Navn navn = tilNavn(personModell);
+        person.setNavn(List.of(navn));
 
-        person.setStatsborgerskap(
-                historikk
-                        ? personModell.getAlleStatsborgerskap().stream()
-                        .map(PersonAdapter::tilStatsborgerskap)
-                        .collect(toList())
-                        : of(tilStatsborgerskap(personModell.getStatsborgerskap()))
-        );
+        person.setStatsborgerskap(tilStatsborgerskaps(personModell, historikk));
 
-        Kjoenn kjoenn = new Kjoenn();
-        kjoenn.setKjoenn(KjoennType.KVINNE);
-        kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
-        person.setKjoenn(of(kjoenn));
+        Kjoenn kjoenn = tilKjoenn(personModell);
+        person.setKjoenn(List.of(kjoenn));
 
-        person.setFolkeregisterpersonstatus(
-                historikk
-                        ? personModell.getAllePersonstatus().stream()
-                        .map(PersonAdapter::tilFolkeregisterpersonstatus)
-                        .collect(toList())
-                        : of(tilFolkeregisterpersonstatus(personModell.getPersonstatus()))
-        );
+        person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
 
         person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
 
-        Adressebeskyttelse adressebeskyttelse = new Adressebeskyttelse();
-        adressebeskyttelse.setGradering(tilAdressebeskyttelseGradering(personModell));
+        Adressebeskyttelse adressebeskyttelse = tilAdressebeskyttelse(personModell);
         person.setAdressebeskyttelse(List.of(adressebeskyttelse));
 
-        List<AdresseModell> adresserUtenHistorikk = personModell.getAdresser();
-        List<AdresseModell> adresserMedHistorikk = personModell.getAdresser(AdresseType.BOSTEDSADRESSE);
-
-        AdresseAdapter.setAdresser(person, historikk ? adresserMedHistorikk: adresserUtenHistorikk);
+        List<AdresseModell> adresseModeller = tilAdresseModeller(personModell, historikk);
+        AdresseAdapter.setAdresser(person, adresseModeller);
 
         return person;
     }
 
+    private static List<AdresseModell> tilAdresseModeller(PersonModell personModell, boolean historikk) {
+        return historikk ? personModell.getAdresser(AdresseType.BOSTEDSADRESSE) : personModell.getAdresser();
+    }
+
+    private static Adressebeskyttelse tilAdressebeskyttelse(PersonModell personModell) {
+        Adressebeskyttelse adressebeskyttelse = new Adressebeskyttelse();
+        adressebeskyttelse.setGradering(tilAdressebeskyttelseGradering(personModell));
+        return adressebeskyttelse;
+    }
+
+
+    private static Kjoenn tilKjoenn(PersonModell personModell) {
+        Kjoenn kjoenn = new Kjoenn();
+        kjoenn.setKjoenn(KjoennType.KVINNE);
+        kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
+        return kjoenn;
+    }
+
+
+    private static Navn tilNavn(PersonModell personModell) {
+        Navn navn = new Navn();
+        navn.setFornavn(personModell.getFornavn().toUpperCase());
+        navn.setEtternavn(personModell.getEtternavn().toUpperCase());
+        navn.setForkortetNavn(personModell.getEtternavn().toUpperCase() + " " + personModell.getFornavn().toUpperCase());
+        return navn;
+    }
+
+    private static Foedsel tilFoedsel(PersonModell personModell) {
+        Foedsel fødsel = new Foedsel();
+        fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
+        return fødsel;
+    }
+
+    private static Doedsfall tilDoedsfall(PersonModell personModell) {
+        Doedsfall doedsfall = new Doedsfall();
+        if (personModell.getDødsdato() != null) {
+            doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
+        }
+        return doedsfall;
+    }
+
+    private static List<Folkeregisterpersonstatus> tilFolkeregisterpersonstatuse(PersonModell personModell, boolean historikk) {
+        return historikk
+                ? personModell.getAllePersonstatus().stream()
+                .map(PersonAdapter::tilFolkeregisterpersonstatus)
+                .collect(toList())
+                : List.of(tilFolkeregisterpersonstatus(personModell.getPersonstatus()));
+    }
+
     private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell personstatusModell) {
-        List<String> personstatuserPDL = PersonstatusAdapter.hentPersonstatusPDL(personstatusModell.getStatus());
+        List<String> personstatuserPDL = PersonstatusKoder.hentPersonstatusPDL(personstatusModell.getStatus());
         Folkeregisterpersonstatus folkeregisterpersonstatus = new Folkeregisterpersonstatus();
         if (personstatuserPDL == null || personstatuserPDL.isEmpty()) {
             return folkeregisterpersonstatus;
@@ -108,6 +132,14 @@ public class PersonAdapter {
             default:
                 return AdressebeskyttelseGradering.UGRADERT;
         }
+    }
+
+    private static List<Statsborgerskap> tilStatsborgerskaps(PersonModell personModell, boolean historikk) {
+        return historikk
+                ? personModell.getAlleStatsborgerskap().stream()
+                .map(PersonAdapter::tilStatsborgerskap)
+                .collect(toList())
+                : List.of(tilStatsborgerskap(personModell.getStatsborgerskap()));
     }
 
     private static Statsborgerskap tilStatsborgerskap(StatsborgerskapModell sm) {
