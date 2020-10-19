@@ -53,8 +53,7 @@ public class PersonAdapter {
         Adressebeskyttelse adressebeskyttelse = tilAdressebeskyttelse(personModell);
         person.setAdressebeskyttelse(List.of(adressebeskyttelse));
 
-        List<AdresseModell> adresseModeller = tilAdresseModeller(personModell, historikk);
-        AdresseAdapter.setAdresser(person, adresseModeller);
+        AdresseAdapter.setAdresser(person, tilAdresseModeller(personModell, historikk));
 
         return person;
     }
