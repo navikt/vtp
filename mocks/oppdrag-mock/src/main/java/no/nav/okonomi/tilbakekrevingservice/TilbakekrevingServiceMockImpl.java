@@ -38,7 +38,7 @@ public class TilbakekrevingServiceMockImpl implements TilbakekrevingPortType {
     @WebResult(name = "kravgrunnlagHentDetaljResponse", targetNamespace = "http://okonomi.nav.no/tilbakekrevingService/", partName = "parameters")
     public KravgrunnlagHentDetaljResponse kravgrunnlagHentDetalj(KravgrunnlagHentDetaljRequest kravgrunnlagHentDetaljRequest) {
         LOG.info("Hent grunnlag.");
-        return TilbakekrevingServiceMapper.opprettKravgrunnlagHentDetaljResponse();
+        return TilbakekrevingServiceMapper.opprettKravgrunnlagHentDetaljResponse(kravgrunnlagHentDetaljRequest);
     }
 
     @Override
