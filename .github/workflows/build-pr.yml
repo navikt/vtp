@@ -11,8 +11,8 @@ jobs:
       # Alternative key med cache fra forrige uke som blir lagret etterpå under CACHE_KEY.
       - name: Set cache key
         run: |
-          echo "::set-env name=CACHE_KEY::$(expr $(date +%V) - 1 + 1)"
-          echo "::set-env name=PREVIOUS_CACHE_KEY::$(expr $(date +%V) - 1)"
+          echo "CACHE_KEY=$(expr $(date +%V) - 1 + 1)" >> $GITHUB_ENV
+          echo "PREVIOUS_CACHE_KEY=$(expr $(date +%V) - 1)" >> $GITHUB_ENV
       - name: Henter maven avhengigheter som er cachet
         uses: actions/cache@v2
         with:
@@ -26,7 +26,7 @@ jobs:
           java-version: 1.11
       - name: Set build version
         run: |
-          echo "::set-env name=BUILD_VERSION::$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)"
+          echo "BUILD_VERSION=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
       - name: Build
         shell: bash
         run: |
