@@ -5,6 +5,7 @@ if [[ $MSYSTEM =~ MINGW* ]]; then
 	(cd server && exec java ${DEFAULT_JAVA_OPTS} ${JAVA_OPTS} -cp 'target/app.jar;target/lib/*' \
 		-Dlogback.configurationFile=logback.xml \
 		-XX:MaxRAMPercentage=75.0 \
+		-XX:+PrintFlagsFinal \
 		-Dfile.encoding=UTF8 \
 		-Duser.timezone=Europe/Oslo \
 		no.nav.foreldrepenger.vtp.server.MockServer)
@@ -12,6 +13,7 @@ else
 	exec java ${DEFAULT_JAVA_OPTS} ${JAVA_OPTS} -cp app.jar:lib/* \
 		-Dlogback.configurationFile=logback.xml \
 		-XX:MaxRAMPercentage=75.0 \
+		-XX:+PrintFlagsFinal \
 		-Dfile.encoding=UTF8 \
 		-Duser.timezone=Europe/Oslo \
 		no.nav.foreldrepenger.vtp.server.MockServer
