@@ -13,7 +13,7 @@ import no.nav.pdl.Familierelasjon;
 import no.nav.pdl.Familierelasjonsrolle;
 import no.nav.pdl.Person;
 
-public class FamilieRelasjonBygger {
+public class FamilierelasjonBygger {
 
     private static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int PERSONNR_LENGDE = 5;

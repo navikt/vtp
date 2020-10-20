@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PersonstatusAdapter {
+public class PersonstatusKoder {
     private static final Map<String, List<String>> PERSONSTATUSER;
 
     static {

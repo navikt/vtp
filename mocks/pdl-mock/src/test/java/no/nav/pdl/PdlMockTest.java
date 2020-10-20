@@ -84,9 +84,9 @@ public class PdlMockTest {
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søker = testscenario.getPersonopplysninger().getSøker();
 
-        var ident = søker.getIdent();
+        var aktørIdent = søker.getAktørIdent();
         var projection = byggProjectionPersonResponse(true);
-        var query = String.format("query { hentPerson(ident: \"%s\") %s }", ident, projection);
+        var query = String.format("query { hentPerson(ident: \"%s\") %s }", aktørIdent, projection);
 
         var request = GraphQLRequest.builder().withQuery(query).build();
 

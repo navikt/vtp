@@ -2,7 +2,7 @@ package no.nav.pdl.hentperson;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.pdl.oversetter.FamilieRelasjonBygger;
+import no.nav.pdl.oversetter.FamilierelasjonBygger;
 import no.nav.pdl.oversetter.PersonAdapter;
 
 public class HentPersonCoordinatorFunction {
@@ -15,7 +15,7 @@ public class HentPersonCoordinatorFunction {
             var personopplysningerModell = scenarioRepo.getPersonIndeks().finnPersonopplysningerByIdent(ident);
             var aktørIdent = personModell.getAktørIdent();
 
-            return FamilieRelasjonBygger.byggFamilierelasjoner(aktørIdent, personopplysningerModell, personPdl);
+            return FamilierelasjonBygger.byggFamilierelasjoner(aktørIdent, personopplysningerModell, personPdl);
         };
     }
 }
