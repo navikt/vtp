@@ -136,6 +136,37 @@ public class PdlMockTest {
 
     }
 
+    @Test
+    public void hent_aktørid_for_identliste() throws JsonProcessingException {
+        // Arrange
+        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
+        var søker = testscenario.getPersonopplysninger().getSøker();
+
+        var ident = søker.getIdent();
+        var projection = new IdentlisteResponseProjection()
+                .identer(new IdentInformasjonResponseProjection()
+                        .ident()
+                        .gruppe()
+                )
+                .toString();
+
+        var query = String.format("query { hentIdenter(ident: \"%s\") %s }", ident, projection);
+
+        var request = GraphQLRequest.builder().withQuery(query).build();
+
+        // Act
+        var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
+
+        // Assert
+        var response = (HentIdenterQueryResponse) konverterTilGraphResponse(rawResponse, hentIdenterReader);
+        var identliste = response.hentIdenter();
+        assertThat(identliste).isNotNull();
+        assertThat(identliste.getIdenter()).hasSize(2);
+
+    }
+
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
     private <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response, ObjectReader objectReader) throws JsonProcessingException {
         var json = objectMapper.writeValueAsString(response);
