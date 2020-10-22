@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -45,6 +46,7 @@ public class OppgaveMockImpl {
 
     private static final Logger LOG = LoggerFactory.getLogger(OppgaveMockImpl.class);
 
+    private static final AtomicLong NUM = new AtomicLong(1000);
     private static final Map<Long, ObjectNode> oppgaver = new ConcurrentHashMap<>();
 
     @POST
@@ -62,12 +64,12 @@ public class OppgaveMockImpl {
             return validert.get();
         }
 
-        Long id = (long) (oppgaver.size() + 1);
+        Long id = NUM.getAndIncrement();
         oppgave.put("id", id);
 
         oppgaver.put(id, oppgave);
 
-        LOG.info("Opprettet oppgave: {}", oppgave);
+        LOG.info("Opprettet oppgave [{}]: {}", id, oppgave);
 
         return Response.status(Response.Status.CREATED)
                 .entity(oppgave)
@@ -125,6 +127,7 @@ public class OppgaveMockImpl {
                 .build();
     }
 
+    @SuppressWarnings("resource")
     @GET
     @Path("/{id}")
     @ApiOperation(value = "Henter oppgave for en gitt id", response = OppgaveJson.class)
@@ -167,7 +170,7 @@ public class OppgaveMockImpl {
         if (validert.isPresent()) {
             return validert.get();
         }
-        LOG.info("Mottatt patch oppgave request {}", patch);
+        LOG.info("Mottatt patch oppgave id {}, request {}", id, patch);
 
         ObjectNode oppgave = oppgaver.get(id);
         if (oppgave == null)

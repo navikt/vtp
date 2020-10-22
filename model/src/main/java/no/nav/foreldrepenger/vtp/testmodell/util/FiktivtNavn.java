@@ -15,6 +15,7 @@ public class FiktivtNavn {
     private enum Navnelager {
         SINGLETON;
         
+        private static final Random RANDOM = new Random();
         private List<String> etternavn = loadNames("/basedata/etternavn.txt");
         private List<String> fornavnKvinner = loadNames("/basedata/fornavn-kvinner.txt");
         private List<String> fornavnMenn = loadNames("/basedata/fornavn-menn.txt");
@@ -31,8 +32,8 @@ public class FiktivtNavn {
             return getRandom(etternavn);
         }
         
-        private static String getRandom(List<String> liste) {
-            return liste.get(new Random().nextInt(liste.size()));
+        private static synchronized String getRandom(List<String> liste) {
+            return liste.get(RANDOM.nextInt(liste.size()));
         }
         
         private static List<String> loadNames(String resourceName) {
