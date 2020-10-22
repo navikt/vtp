@@ -9,13 +9,17 @@ public class HentPersonCoordinatorFunction {
 
     public static HentPersonCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
         return (ident, historikk) -> {
-            var personModell = (PersonModell) scenarioRepo.getPersonIndeks().finnByIdent(ident);
-            var personPdl    = PersonAdapter.oversettPerson(personModell, historikk);
+            try {
+                var personModell = (PersonModell) scenarioRepo.getPersonIndeks().finnByIdent(ident);
+                var personPdl = PersonAdapter.oversettPerson(personModell, historikk);
 
-            var personopplysningerModell = scenarioRepo.getPersonIndeks().finnPersonopplysningerByIdent(ident);
-            var aktørIdent = personModell.getAktørIdent();
+                var personopplysningerModell = scenarioRepo.getPersonIndeks().finnPersonopplysningerByIdent(ident);
+                var aktørIdent = personModell.getAktørIdent();
 
-            return FamilierelasjonBygger.byggFamilierelasjoner(aktørIdent, personopplysningerModell, personPdl);
+                return FamilierelasjonBygger.byggFamilierelasjoner(aktørIdent, personopplysningerModell, personPdl);
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
         };
     }
 }
