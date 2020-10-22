@@ -145,14 +145,27 @@ public class PdlMockTest {
         var søker = testscenario.getPersonopplysninger().getSøker();
 
         var ident = søker.getIdent();
-        var projection = new IdentlisteResponseProjection()
+
+        var projection = new HentIdenterBolkResultResponseProjection()
+                .ident()
                 .identer(new IdentInformasjonResponseProjection()
                         .ident()
                         .gruppe()
                 )
                 .toString();
+        /*
+        query($identer: [ID!]!, $grupper: [IdentGruppe!], $historikk:Boolean){
+            hentIdenterBolk(identer: $identer, grupper: $grupper, historikk: $historikk){
+                ident,
+                        identer {
+                    ident,
+                            gruppe
 
-        var query = String.format("query { hentIdenter(ident: \"%s\") %s }", ident, projection);
+                }
+            }
+        }*/
+
+        var query = String.format("query { hentIdenterBolk(identer: \"%s\") %s }", ident, projection);
 
         var request = GraphQLRequest.builder().withQuery(query).build();
 
