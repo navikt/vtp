@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
@@ -17,6 +18,10 @@ public abstract class AdresseModell extends Periodisert implements Cloneable {
 
     @JsonProperty("land")
     private Landkode land;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("matrikkelId")
+    private String matrikkelId;
 
     public AdresseType getAdresseType() {
         return adresseType;
@@ -39,4 +44,11 @@ public abstract class AdresseModell extends Periodisert implements Cloneable {
         this.land = landkode;
     }
 
+    public String getMatrikkelId() {
+        return matrikkelId;
+    }
+
+    public void setMatrikkelId(String matrikkelId) {
+        this.matrikkelId = matrikkelId;
+    }
 }

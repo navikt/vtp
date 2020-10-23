@@ -99,7 +99,7 @@ public class ScenarioTest {
         Optional<AdresseModell> bostedsAdresseOpt = søker.getAdresse(AdresseType.BOSTEDSADRESSE);
         assertThat(bostedsAdresseOpt).isPresent();
         GateadresseModell gateadresse = (GateadresseModell) bostedsAdresseOpt.get();
-        assertThat(gateadresse.getGatenavn()).isEqualTo("Fjordlandet");
+        assertThat(gateadresse.getGatenavn()).isEqualTo("Haugesund ally");
         assertThat(gateadresse.getFom()).isEqualTo(LocalDate.now().minusYears(1));
         return avsjekketEttScenario;
     }

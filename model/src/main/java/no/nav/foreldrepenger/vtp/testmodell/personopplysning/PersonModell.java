@@ -112,20 +112,22 @@ public abstract class PersonModell extends BrukerModell {
         return getAdresser().stream().filter(a -> a.getAdresseType().equals(adresseType)).findFirst();
     }
 
-    public List<AdresseModell> getAdresser() {
-
-        return adresser.stream().map((AdresseModell a) -> {
-            if (a instanceof AdresseRefModell) {
-                return adresseIndeks.finnFra((AdresseRefModell) a);
-            } else {
-                return a;
-            }
-        }).collect(Collectors.toUnmodifiableList());
-    }
-
     public List<AdresseModell> getAdresser(AdresseType type) {
         return getAdresser().stream().filter(a -> a.getAdresseType().equals(type)).collect(Collectors.toList());
     }
+
+    public List<AdresseModell> getAdresser() {
+        return adresser.stream()
+                .map((AdresseModell a) -> {
+                    if (a instanceof AdresseRefModell) {
+                        return adresseIndeks.finnFra((AdresseRefModell) a);
+                    } else {
+                        return a;
+                    }
+                })
+                .collect(Collectors.toUnmodifiableList());
+    }
+
 
     public List<PersonstatusModell> getAllePersonstatus() {
         return Collections.unmodifiableList(personstatus);

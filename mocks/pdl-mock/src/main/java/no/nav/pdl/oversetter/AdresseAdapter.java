@@ -65,11 +65,13 @@ public class AdresseAdapter {
                 .setHusbokstav(gateaddresse.getHusbokstav())
                 .setHusnummer(Integer.toString(gateaddresse.getHusnummer()))
                 .setPostnummer(gateaddresse.getPostnummer())
+                .setMatrikkelId(gateaddresse.getMatrikkelId())
                 //.setPoststed() - ikke i bruk lenger?
                 .build());
         adresse.setMatrikkeladresse(Matrikkeladresse.builder()
                 .setKommunenummer(gateaddresse.getKommunenummer())
                 .setPostnummer(gateaddresse.getPostnummer())
+                .setMatrikkelId(gateaddresse.getMatrikkelId())
                 .build());
         //adresse.setUtenlandskAdresse(bla);
         //adresse.setUkjentBosted(bla);
@@ -83,7 +85,6 @@ public class AdresseAdapter {
     }
 
     public static Person setAdresser(Person pers, List<AdresseModell> adresser) {
-        // TODO: Hva med hemmelig adresse (adressebeskyttelse)? Ny i PDL
         for (AdresseModell a : adresser) {
             switch (a.getAdresseType()) {
                 case BOSTEDSADRESSE:
