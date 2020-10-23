@@ -174,6 +174,7 @@ public class PdlMockTest {
                             .gyldigFraOgMed()
                             .gyldigTilOgMed()
                             .vegadresse(new VegadresseResponseProjection()
+                                    .matrikkelId()
                                     .adressenavn()
                                     .husnummer()
                                     .husbokstav()

@@ -6,8 +6,19 @@
   "gatenummer" : 15,
   "husbokstav" : "B",
   "husnummer" : 10,
-  "postnummer" : "2500"
+  "postnummer" : "2500",
+  "matrikkelId": "000000001"
 }, {
+  "@type" : "gateadresse",
+  "adresseType" : "BOSTEDSADRESSE",
+  "land" : "NOR",
+  "gatenavn" : "Haugesund ally",
+  "gatenummer" : 10,
+  "husbokstav" : "A",
+  "husnummer" : 1,
+  "postnummer" : "5511",
+  "matrikkelId": "000000002"
+},{
   "@type" : "ustrukturert",
   "adresseType" : "POSTADRESSE",
   "land" : "NOR",
