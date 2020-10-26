@@ -3,6 +3,7 @@ package no.nav.pdl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TimeZone;
@@ -38,6 +39,7 @@ public class PdlMockTest {
 
     private final ObjectReader hentPersonReader = objectMapper.readerFor(HentPersonQueryResponse.class);
     private final ObjectReader hentIdenterReader = objectMapper.readerFor(HentIdenterQueryResponse.class);
+    private final ObjectReader hentIdenterBolkReader = objectMapper.readerFor(HentIdenterBolkQueryResponse.class);
 
     @BeforeAll
     public static void setup() throws IOException {
@@ -165,7 +167,8 @@ public class PdlMockTest {
             }
         }*/
 
-        var query = String.format("query { hentIdenterBolk(identer: \"%s\") %s }", ident, projection);
+//        var query = String.format("query { hentIdenterBolk(identer: \"%s\") %s }", Arrays.asList(ident), projection);
+        var query = String.format("query { hentIdenterBolk(identer: [\"%s\"]) %s }", ident, projection);
 
         var request = GraphQLRequest.builder().withQuery(query).build();
 
@@ -173,11 +176,12 @@ public class PdlMockTest {
         var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
 
         // Assert
-        var response = (HentIdenterQueryResponse) konverterTilGraphResponse(rawResponse, hentIdenterReader);
-        var identliste = response.hentIdenter();
-        assertThat(identliste).isNotNull();
-        assertThat(identliste.getIdenter()).hasSize(2);
-
+        var response = (HentIdenterBolkQueryResponse) konverterTilGraphResponse(rawResponse, hentIdenterBolkReader);
+        var identerliste = response.hentIdenterBolk();
+        assertThat(identerliste).isNotNull();
+        assertThat(identerliste).hasSize(1);
+        assertThat(identerliste.get(0).getIdenter()).hasSize(2);
+        System.out.println("identerliste:" + identerliste.get(0));
     }
 
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
@@ -191,26 +195,26 @@ public class PdlMockTest {
         var projeksjon = new PersonResponseProjection()
                 .foedsel(
                         new FoedselResponseProjection()
-                            .foedselsdato())
+                                .foedselsdato())
                 .doedsfall(
                         new DoedsfallResponseProjection()
-                            .doedsdato())
+                                .doedsdato())
                 .doedfoedtBarn(
                         new DoedfoedtBarnResponseProjection()
-                            .dato())
-                .navn(  new PersonNavnParametrizedInput(historikk),
+                                .dato())
+                .navn(new PersonNavnParametrizedInput(historikk),
                         new NavnResponseProjection()
-                            .fornavn()
-                            .mellomnavn()
-                            .etternavn()
-                            .forkortetNavn())
+                                .fornavn()
+                                .mellomnavn()
+                                .etternavn()
+                                .forkortetNavn())
                 .statsborgerskap(
                         new PersonStatsborgerskapParametrizedInput(historikk),
                         new StatsborgerskapResponseProjection()
-                            .land())
+                                .land())
                 .kjoenn(new PersonKjoennParametrizedInput(historikk),
                         new KjoennResponseProjection()
-                            .kjoenn())
+                                .kjoenn())
                 .bostedsadresse(
                         new PersonBostedsadresseParametrizedInput(historikk),
                         new BostedsadresseResponseProjection()
@@ -225,20 +229,20 @@ public class PdlMockTest {
                                     .postnummer()))
                 .geografiskTilknytning(
                         new GeografiskTilknytningResponseProjection()
-                            .gtType()
-                            .gtLand())
+                                .gtType()
+                                .gtLand())
                 .folkeregisterpersonstatus(
                         new PersonFolkeregisterpersonstatusParametrizedInput(historikk),
                         new FolkeregisterpersonstatusResponseProjection()
-                            .status()
-                            .forenkletStatus())
+                                .status()
+                                .forenkletStatus())
                 .familierelasjoner(
                         new FamilierelasjonResponseProjection()
-                            .relatertPersonsIdent()
-                            .relatertPersonsRolle())
+                                .relatertPersonsIdent()
+                                .relatertPersonsRolle())
                 .adressebeskyttelse(
                         new AdressebeskyttelseResponseProjection()
-                            .gradering());
+                                .gradering());
         return projeksjon.toString();
     }
 

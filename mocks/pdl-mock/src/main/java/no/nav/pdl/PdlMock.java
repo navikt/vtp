@@ -38,7 +38,7 @@ public class PdlMock {
     }
 
     // Kun for test
-    public PdlMock(TestscenarioBuilderRepository scenarioBuilderRepository) {
+    PdlMock(TestscenarioBuilderRepository scenarioBuilderRepository) {
         this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(scenarioBuilderRepository);
     }
 

@@ -42,7 +42,7 @@ public class PdlGraphqlTjeneste {
         return instance;
     }
 
-    public PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
+    private PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
