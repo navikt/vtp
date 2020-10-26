@@ -18,6 +18,8 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.graphql.GraphQLRequest;
 import no.nav.pdl.hentIdenter.HentIdenterCoordinatorFunction;
 import no.nav.pdl.hentIdenter.HentIdenterWiring;
+import no.nav.pdl.hentIdenterBolk.HentIdenterBolkCoordinatorFunction;
+import no.nav.pdl.hentIdenterBolk.HentIdenterBolkWiring;
 import no.nav.pdl.hentperson.HentPersonCoordinatorFunction;
 import no.nav.pdl.hentperson.HentPersonWiring;
 
@@ -30,6 +32,7 @@ public class PdlGraphqlTjeneste {
 
     private GraphQLSchema hentPersonGraphqlSchema;
     private GraphQLSchema hentIdenterGraphqlSchema;
+    private GraphQLSchema hentIdenterBolkGraphqlSchema;
 
     public static synchronized PdlGraphqlTjeneste getInstance(TestscenarioBuilderRepository scenarioRepository){
         if(instance == null){
@@ -39,7 +42,7 @@ public class PdlGraphqlTjeneste {
         return instance;
     }
 
-    public PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
+    private PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
@@ -59,6 +62,10 @@ public class PdlGraphqlTjeneste {
         var hentIdenterCoordinator = HentIdenterCoordinatorFunction.opprettCoordinator(scenarioRepository);
         var hentIdenterWiring = HentIdenterWiring.lagRuntimeWiring(hentIdenterCoordinator);
         hentIdenterGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterWiring);
+
+        var hentIdenterBolkCoordinator = HentIdenterBolkCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentIdenterBolkWiring = HentIdenterBolkWiring.lagRuntimeWiring(hentIdenterBolkCoordinator);
+        hentIdenterBolkGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterBolkWiring);
     }
 
     ExecutionResult hentPerson(GraphQLRequest request) {
@@ -67,6 +74,10 @@ public class PdlGraphqlTjeneste {
 
     ExecutionResult hentIdenter(GraphQLRequest request) {
         return byggExecutionResult(request, hentIdenterGraphqlSchema);
+    }
+
+    ExecutionResult hentIdenterBolk(GraphQLRequest request) {
+        return byggExecutionResult(request, hentIdenterBolkGraphqlSchema);
     }
 
     static ExecutionResult byggExecutionResult(GraphQLRequest request, GraphQLSchema graphQLSchema) {
@@ -80,6 +91,7 @@ public class PdlGraphqlTjeneste {
                         .variables(request.getVariables() == null ? Collections.emptyMap() : request.getVariables())
                         .build());
     }
+
 
 }
 

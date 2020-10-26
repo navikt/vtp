@@ -38,6 +38,7 @@ public class PdlMockTest {
 
     private final ObjectReader hentPersonReader = objectMapper.readerFor(HentPersonQueryResponse.class);
     private final ObjectReader hentIdenterReader = objectMapper.readerFor(HentIdenterQueryResponse.class);
+    private final ObjectReader hentIdenterBolkReader = objectMapper.readerFor(HentIdenterBolkQueryResponse.class);
 
     @BeforeAll
     public static void setup() throws IOException {
@@ -136,6 +137,58 @@ public class PdlMockTest {
 
     }
 
+    @Test
+    public void hent_aktørid_for_identliste() throws JsonProcessingException {
+        // Arrange
+        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
+        var søker = testscenario.getPersonopplysninger().getSøker();
+
+        var folkeregisterId = søker.getIdent();
+        var aktørIdent = søker.getAktørIdent();
+
+        var projection = new HentIdenterBolkResultResponseProjection()
+                .ident()
+                .identer(new IdentInformasjonResponseProjection()
+                        .ident()
+                        .gruppe()
+                )
+                .toString();
+
+        var query = String.format("query { hentIdenterBolk(identer: [\"%s\"]) %s }", folkeregisterId, projection);
+
+        var request = GraphQLRequest.builder().withQuery(query).build();
+
+        // Act
+        var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
+
+        // Assert
+        var response = (HentIdenterBolkQueryResponse) konverterTilGraphResponse(rawResponse, hentIdenterBolkReader);
+        var identerliste = response.hentIdenterBolk();
+        assertThat(identerliste).isNotNull();
+        assertThat(identerliste).hasSize(1);
+        assertThat(identerliste.get(0).getIdenter()).hasSize(2);
+
+        assertThat(
+                identerliste.get(0).getIdenter().stream()
+                        .filter(i -> i.getGruppe().equals(IdentGruppe.FOLKEREGISTERIDENT))
+                        .map(IdentInformasjon::getIdent)
+                        .findFirst()
+                        .orElseThrow()
+        )
+                .isEqualTo(folkeregisterId);
+
+        assertThat(
+                identerliste.get(0).getIdenter().stream()
+                        .filter(i -> i.getGruppe().equals(IdentGruppe.AKTORID))
+                        .map(IdentInformasjon::getIdent)
+                        .findFirst()
+                        .orElseThrow()
+        )
+                .isEqualTo(aktørIdent);
+    }
+
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
     private <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response, ObjectReader objectReader) throws JsonProcessingException {
         var json = objectMapper.writeValueAsString(response);
@@ -147,26 +200,32 @@ public class PdlMockTest {
         var projeksjon = new PersonResponseProjection()
                 .foedsel(
                         new FoedselResponseProjection()
-                            .foedselsdato())
+                                .foedselsdato()
+                )
                 .doedsfall(
                         new DoedsfallResponseProjection()
-                            .doedsdato())
+                                .doedsdato()
+                )
                 .doedfoedtBarn(
                         new DoedfoedtBarnResponseProjection()
-                            .dato())
-                .navn(  new PersonNavnParametrizedInput(historikk),
+                                .dato()
+                )
+                .navn(new PersonNavnParametrizedInput(historikk),
                         new NavnResponseProjection()
-                            .fornavn()
-                            .mellomnavn()
-                            .etternavn()
-                            .forkortetNavn())
+                                .fornavn()
+                                .mellomnavn()
+                                .etternavn()
+                                .forkortetNavn()
+                )
                 .statsborgerskap(
                         new PersonStatsborgerskapParametrizedInput(historikk),
                         new StatsborgerskapResponseProjection()
-                            .land())
+                                .land()
+                )
                 .kjoenn(new PersonKjoennParametrizedInput(historikk),
                         new KjoennResponseProjection()
-                            .kjoenn())
+                                .kjoenn()
+                )
                 .bostedsadresse(
                         new PersonBostedsadresseParametrizedInput(historikk),
                         new BostedsadresseResponseProjection()
@@ -181,20 +240,24 @@ public class PdlMockTest {
                                     .postnummer()))
                 .geografiskTilknytning(
                         new GeografiskTilknytningResponseProjection()
-                            .gtType()
-                            .gtLand())
+                                .gtType()
+                                .gtLand()
+                )
                 .folkeregisterpersonstatus(
                         new PersonFolkeregisterpersonstatusParametrizedInput(historikk),
                         new FolkeregisterpersonstatusResponseProjection()
-                            .status()
-                            .forenkletStatus())
+                                .status()
+                                .forenkletStatus()
+                )
                 .familierelasjoner(
                         new FamilierelasjonResponseProjection()
-                            .relatertPersonsIdent()
-                            .relatertPersonsRolle())
+                                .relatertPersonsIdent()
+                                .relatertPersonsRolle()
+                )
                 .adressebeskyttelse(
                         new AdressebeskyttelseResponseProjection()
-                            .gradering());
+                                .gradering()
+                );
         return projeksjon.toString();
     }
 
