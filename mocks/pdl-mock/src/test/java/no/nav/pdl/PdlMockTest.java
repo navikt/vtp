@@ -155,19 +155,7 @@ public class PdlMockTest {
                         .gruppe()
                 )
                 .toString();
-        /*
-        query($identer: [ID!]!, $grupper: [IdentGruppe!], $historikk:Boolean){
-            hentIdenterBolk(identer: $identer, grupper: $grupper, historikk: $historikk){
-                ident,
-                        identer {
-                    ident,
-                            gruppe
 
-                }
-            }
-        }*/
-
-//        var query = String.format("query { hentIdenterBolk(identer: \"%s\") %s }", Arrays.asList(ident), projection);
         var query = String.format("query { hentIdenterBolk(identer: [\"%s\"]) %s }", ident, projection);
 
         var request = GraphQLRequest.builder().withQuery(query).build();
@@ -181,7 +169,6 @@ public class PdlMockTest {
         assertThat(identerliste).isNotNull();
         assertThat(identerliste).hasSize(1);
         assertThat(identerliste.get(0).getIdenter()).hasSize(2);
-        System.out.println("identerliste:" + identerliste.get(0));
     }
 
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
