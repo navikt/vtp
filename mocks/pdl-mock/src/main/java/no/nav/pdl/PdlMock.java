@@ -2,6 +2,20 @@ package no.nav.pdl;
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.apache.commons.lang3.NotImplementedException;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -9,29 +23,13 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.pdl.graphql.GraphQLRequest;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Api(tags = {"pdl"})
 @Path("/api/pdl")
 public class PdlMock {
-
-    private static final Logger LOG = LoggerFactory.getLogger(PdlMock.class);
-
     private static final String X_CORRELATION_ID = "X-Correlation-ID";
     private static final String NAV_CALLID = "Nav-Callid";
     private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
-
-    private PdlGraphqlTjeneste graphqlTjeneste;
+    private final PdlGraphqlTjeneste graphqlTjeneste;
 
     public PdlMock() {
         this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(buildTestscenarioRepository());

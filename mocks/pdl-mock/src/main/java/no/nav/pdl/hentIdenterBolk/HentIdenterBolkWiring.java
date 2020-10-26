@@ -9,11 +9,9 @@ import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
 import no.nav.pdl.HentIdenterBolkResult;
-import no.nav.pdl.Identliste;
 import no.nav.pdl.PdlFunctionalException;
 import no.nav.pdl.graphql.DateScalar;
 import no.nav.pdl.graphql.DateTimeScalar;
-import no.nav.pdl.hentIdenter.HentIdenterWiring;
 
 public class HentIdenterBolkWiring {
 
@@ -28,7 +26,7 @@ public class HentIdenterBolkWiring {
                         "Query",
                         typeWiring -> typeWiring.dataFetcher("hentIdenterBolk", environment -> {
                                     try {
-                                        List<String> identer = (List<String>) environment.getArgument("identer");
+                                        List<String> identer = environment.getArgument("identer");
 
 
                                         LOG.info("query hentIdenterBolk for ident={}", identer);
