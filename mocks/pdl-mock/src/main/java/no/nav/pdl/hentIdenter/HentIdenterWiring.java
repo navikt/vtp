@@ -1,16 +1,16 @@
 package no.nav.pdl.hentIdenter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
 import no.nav.pdl.Identliste;
 import no.nav.pdl.PdlFunctionalException;
-import no.nav.pdl.Person;
+import no.nav.pdl.exceptions.ErrorCode;
 import no.nav.pdl.graphql.DateScalar;
 import no.nav.pdl.graphql.DateTimeScalar;
-import no.nav.pdl.hentperson.HentPersonCoordinator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class HentIdenterWiring {
@@ -30,6 +30,11 @@ public class HentIdenterWiring {
                                         LOG.info("query hentPerson for ident={}", ident);
 
                                         Identliste identliste = coordinator.hentIdenter(ident);
+                                        if (identliste == null) {
+                                            return DataFetcherResult.newResult()
+                                                    .error(ErrorCode.NOT_FOUND.construct(environment, "Fant ikke person"))
+                                                    .build();
+                                        }
                                         LOG.info("blaba hentet for ident={}", ident);
 
                                         return identliste;

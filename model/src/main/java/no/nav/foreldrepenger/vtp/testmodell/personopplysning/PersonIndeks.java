@@ -65,7 +65,7 @@ public class PersonIndeks {
         if(byIdent.containsKey(ident)) {
             return (V) byIdent.get(ident);
         } else {
-            throw new RuntimeException("Finner ikke bruker med ident: "+ ident);
+            throw new IllegalArgumentException("Finner ikke bruker med ident: "+ ident);
         }
     }
 
@@ -73,7 +73,7 @@ public class PersonIndeks {
         if(byIdent.containsKey(ident)){
             return (V) byIdent.get(ident);
         } else {
-            throw new RuntimeException("Finner ikke bruker med AktørId: "+ident);
+            throw new IllegalArgumentException("Finner ikke bruker med AktørId: "+ident);
         }
 
     }
