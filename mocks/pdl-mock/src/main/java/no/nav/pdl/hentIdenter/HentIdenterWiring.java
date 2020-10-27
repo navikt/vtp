@@ -1,6 +1,6 @@
 package no.nav.pdl.hentIdenter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class HentIdenterWiring {
                         typeWiring -> typeWiring.dataFetcher("hentIdenter", environment -> {
                                     try {
                                         var ident = (String) environment.getArgument("ident");
-                                        var grupper = (ArrayList<String>) environment.getArgument("grupper");
+                                        var grupper = (List<String>) environment.getArgument("grupper");
                                         LOG.info("query hentPerson for ident={}", ident);
 
                                         Identliste identliste = coordinator.hentIdenter(ident, grupper);

@@ -1,9 +1,9 @@
 package no.nav.pdl.hentIdenter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import no.nav.pdl.Identliste;
 
 public interface HentIdenterCoordinator {
-    Identliste hentIdenter(String ident, ArrayList<String> grupper);
+    Identliste hentIdenter(String ident, List<String> grupper);
 }
