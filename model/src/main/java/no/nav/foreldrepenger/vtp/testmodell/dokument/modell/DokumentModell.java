@@ -3,10 +3,15 @@ package no.nav.foreldrepenger.vtp.testmodell.dokument.modell;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.ANY, setterVisibility = JsonAutoDetect.Visibility.ANY, fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class DokumentModell {
 
     private String dokumentId;

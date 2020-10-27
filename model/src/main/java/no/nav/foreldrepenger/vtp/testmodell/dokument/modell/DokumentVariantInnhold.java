@@ -1,8 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell.dokument.modell;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivfiltype;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonAutoDetect(getterVisibility= JsonAutoDetect.Visibility.ANY, setterVisibility = JsonAutoDetect.Visibility.ANY, fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class DokumentVariantInnhold {
 
     private Arkivfiltype filType;
