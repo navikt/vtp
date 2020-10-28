@@ -212,6 +212,7 @@ public class SimuleringGenerator {
         //1.Ytelsen slik den stod original
         //2.Feilutbetalt beløp
         //3.Fjerning av ytelsen fra seqence 1
+        //Signing test
 
         stoppnivaaDetaljer.setFaktiskFom(dateTimeFormatter.format(periode.getFom()));
         stoppnivaaDetaljer.setFaktiskTom(dateTimeFormatter.format(periode.getTom()));
