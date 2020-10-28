@@ -2,27 +2,35 @@ package no.nav.saf;
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
-import graphql.ExecutionResult;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
-import no.nav.saf.graphql.GraphQLRequest;
-import no.nav.saf.graphql.GraphQLTjeneste;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Optional;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import graphql.ExecutionResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.saf.graphql.GraphQLRequest;
+import no.nav.saf.graphql.GraphQLTjeneste;
 
 @Api(tags = {"saf"})
 @Path("/api/saf")
@@ -77,11 +85,14 @@ public class SafMock {
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
         if (dokumentModell.isPresent()) {
             LOG.info("Henter dokument på følgende dokumentId: " + dokumentModell.get().getDokumentId());
-            String innhold = dokumentModell.get().getInnhold();
+            DokumentVariantInnhold dokumentVariantInnhold = dokumentModell.get().getDokumentVariantInnholdListe().stream()
+                    .filter(innhold -> innhold.getVariantFormat().getKode().equalsIgnoreCase(variantFormat))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Fant ikke dokument som matchet variantformat: " + variantFormat));
             return Response
                     .status(Response.Status.OK)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat)
-                    .entity(innhold.getBytes())
+                    .entity(dokumentVariantInnhold.getDokumentInnhold())
                     .build();
         } else if (journalpostId != null) { // TODO: Fjern når SafMock ikke er WIP
             try (InputStream is = getClass().getResourceAsStream("/dokumenter/foreldrepenger_soknad.pdf")) {
