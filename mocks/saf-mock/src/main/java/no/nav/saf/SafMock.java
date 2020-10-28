@@ -85,14 +85,15 @@ public class SafMock {
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
         if (dokumentModell.isPresent()) {
             LOG.info("Henter dokument på følgende dokumentId: " + dokumentModell.get().getDokumentId());
-            DokumentVariantInnhold dokumentVariantInnhold = dokumentModell.get().getDokumentVariantInnholdListe().stream()
+            var dokumentinnhold = dokumentModell.get().getDokumentVariantInnholdListe().stream()
                     .filter(innhold -> innhold.getVariantFormat().getKode().equalsIgnoreCase(variantFormat))
+                    .map(DokumentVariantInnhold::getDokumentInnhold)
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Fant ikke dokument som matchet variantformat: " + variantFormat));
             return Response
                     .status(Response.Status.OK)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat)
-                    .entity(dokumentVariantInnhold.getDokumentInnhold())
+                    .entity(dokumentinnhold)
                     .build();
         } else if (journalpostId != null) { // TODO: Fjern når SafMock ikke er WIP
             try (InputStream is = getClass().getResourceAsStream("/dokumenter/foreldrepenger_soknad.pdf")) {
