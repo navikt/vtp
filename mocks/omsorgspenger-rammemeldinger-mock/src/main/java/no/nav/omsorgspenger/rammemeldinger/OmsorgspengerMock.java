@@ -18,7 +18,7 @@ public class OmsorgspengerMock {
     @Path("/hentAleneOmOmsorgen")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "foreldrepenger", notes = ("Returnerer foreldrepenger fra Infotrygd"))
+    @ApiOperation(value = "aleneOmOmsorgen", notes = ("Returnerer rammemeldinger / AleneOmOmsorgen"))
     public AleneOmOmsorgenResponse aleneOmOmsorgen(RammemeldingRequest request) {
         return new AleneOmOmsorgenResponse();
     }
@@ -28,7 +28,7 @@ public class OmsorgspengerMock {
     @Path("/hentOverfoeringer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "foreldrepenger", notes = ("Returnerer foreldrepenger fra Infotrygd"))
+    @ApiOperation(value = "overføringer", notes = ("Returnerer overføringer om omsorgspenger"))
     public OverføringerResponse overføringer(RammemeldingRequest request) {
         return new OverføringerResponse();
     }
