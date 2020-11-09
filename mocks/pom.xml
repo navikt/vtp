@@ -36,6 +36,7 @@
         <module>pdl-mock</module>
         <module>dkif-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
+        <module>omsorgspenger-rammemeldinger-mock</module>
     </modules>
 
     <dependencies>
