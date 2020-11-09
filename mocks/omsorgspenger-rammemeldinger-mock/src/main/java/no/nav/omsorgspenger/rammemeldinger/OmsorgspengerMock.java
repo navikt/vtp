@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Api(tags = {"Omsorgspenger/AleneOmOmsorgen"})
-@Path("/omsorgspenger")
+@Path("/omsorgspenger-rammemeldinger")
 public class OmsorgspengerMock {
 
     @SuppressWarnings("unused")
