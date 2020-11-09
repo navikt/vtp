@@ -204,6 +204,11 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>omsorgspenger-rammemeldinger-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>oppdrag-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
