@@ -122,6 +122,10 @@
             <artifactId>fp-topics-manifest</artifactId>
         </dependency>
         <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>mock-oauth2-server</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>compile</scope>

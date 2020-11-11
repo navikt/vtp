@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -47,7 +48,7 @@ public class STSRestTjeneste {
         return response;
     }
 
-    @POST
+    @GET
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
     public UserTokenResponse dummyToken(@QueryParam("grant_type") String grant_type,

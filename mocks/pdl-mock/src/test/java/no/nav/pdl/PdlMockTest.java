@@ -77,6 +77,46 @@ public class PdlMockTest {
     }
 
     @Test
+    public void test() {
+        var request =  "query($ident: ID!){ hentPerson(ident: $ident) { foedsel { foedselsdato } doedsfall { doedsdato } doedfoedtBarn { dato } navn (historikk: false) { fornavn mellomnavn etternavn forkortetNavn } statsborgerskap (historikk: false) { land } kjoenn (historikk: false) { kjoenn } bostedsadresse (historikk: false) { angittFlyttedato gyldigFraOgMed gyldigTilOgMed vegadresse { matrikkelId adressenavn husnummer husbokstav postnummer } } geografiskTilknytning { gtType gtLand } folkeregisterpersonstatus (historikk: false) { status forenkletStatus } familierelasjoner { relatertPersonsIdent relatertPersonsRolle } adressebeskyttelse { gradering } } }";
+        var request2 =  "query ( $ident: ID!) { hentPerson (ident: $ident) { foedsel { foedselsdato } doedsfall { doedsdato } doedfoedtBarn { dato } navn (historikk: false) { fornavn mellomnavn etternavn forkortetNavn } statsborgerskap (historikk: false) { land } kjoenn (historikk: false) { kjoenn } bostedsadresse (historikk: false) { angittFlyttedato gyldigFraOgMed gyldigTilOgMed vegadresse { matrikkelId adressenavn husnummer husbokstav postnummer } } geografiskTilknytning { gtType gtLand } folkeregisterpersonstatus (historikk: false) { status forenkletStatus } familierelasjoner { relatertPersonsIdent relatertPersonsRolle } adressebeskyttelse { gradering } } }";
+
+        StringUtils.substringBetween(s, "(", ")");
+
+        var array = request.split(" ");
+        request.
+
+
+
+    }
+
+    @Test
+    public void hent_person_test() throws JsonProcessingException {
+        // Arrange
+        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
+        var søker = testscenario.getPersonopplysninger().getSøker();
+
+        var ident = søker.getIdent();
+        var projection = byggProjectionPersonResponse(false);
+        var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projection);
+
+        var request = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", ident)).build();
+
+        // Act
+        var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
+
+        // Assert
+        var response = (HentPersonQueryResponse) konverterTilGraphResponse(rawResponse, hentPersonReader);
+        var person = response.hentPerson();
+        assertThat(person).isNotNull();
+        assertThat(person.getNavn().get(0).getFornavn()).isEqualTo(søker.getFornavn().toUpperCase());
+        assertThat(person.getStatsborgerskap()).hasSize(1);
+        assertThat(person.getFolkeregisterpersonstatus()).hasSize(1);
+    }
+
+    @Test
     public void hent_person_med_historikk() throws JsonProcessingException {
 
         // Arrange
