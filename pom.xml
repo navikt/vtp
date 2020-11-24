@@ -32,7 +32,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <java.version>11</java.version>
-        <mock-oauth2-server.version>0.2.0</mock-oauth2-server.version>
+        <mock-oauth2-server.version>0.2.1</mock-oauth2-server.version>
 
         <kafka.version>2.6.0</kafka.version>
         <avro.version>1.10.0</avro.version>

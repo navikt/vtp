@@ -3,9 +3,7 @@ package no.nav.pdl;
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.HeaderParam;
@@ -15,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -75,16 +74,9 @@ public class PdlMock {
         throw new NotImplementedException("Operasjon er ikke implementert:" + operationName);
     }
 
+    // TODO: Det er ikke støtte for å gjøre flere operasjoner på en query (f.eks. hentPerson og hentGeografiskTilknytning samtidig)
     private String hentOperationName(GraphQLRequest request) {
-        // Forventet format: 'query { operationName(key1: value1, ...) {...} }'
-        var wordArray = request.getQuery().split("\\W");
-        var words = List.of(wordArray).stream()
-                .filter(word -> !word.isEmpty())
-                .collect(Collectors.toList());
-        if (!"query".equals(words.get(0)) || words.size() <= 1) {
-            throw new IllegalArgumentException("GraphQLRequest-query kan ikke gjenkjennes. Er ikke på format 'query { operationName(key1: value1, ...) {...}'");
-        }
-        return words.get(1);
+        return StringUtils.substringBetween(request.getQuery(), "{", "(").trim();
     }
 
 }

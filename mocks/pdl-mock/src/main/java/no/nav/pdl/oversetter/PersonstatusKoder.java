@@ -23,7 +23,7 @@ public class PersonstatusKoder {
         PERSONSTATUSER = Collections.unmodifiableMap(personstatuser);
     }
 
-    public static List<String> hentPersonstatusPDL(String personstatusTPS) {
+    public static List<String> tilPersonstatusPDL(String personstatusTPS) {
         return PERSONSTATUSER.get(personstatusTPS);
     }
 

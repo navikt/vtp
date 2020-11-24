@@ -119,8 +119,7 @@ public class MockServer {
         var port = System.getenv("OAUTH2_SERVER_PORT");
         oAuth2Server.start(hostname != null ? InetAddress.getByName(hostname) : InetAddress.getByName("localhost"),
                 port != null ? Integer.parseInt(port) : 1337);
-        var issureId = "vtp";
-        var wellKnownUrl = oAuth2Server.wellKnownUrl(issureId).toString();
+        var wellKnownUrl = oAuth2Server.wellKnownUrl("valgfriIssuerId").toString();
         LOG.info("OAUTH2-server er tilgjengelig på føglende discovery url: {}", wellKnownUrl);
     }
 
@@ -293,8 +292,7 @@ public class MockServer {
         SOAP("VTP_SOAP"),
         REST("VTP_REST"),
         KAFKA("VTP_KAFKA"),
-        LDAP("VTP_LDAP"),
-        OAUTH2("VTP_OAUTH2");
+        LDAP("VTP_LDAP");
 
         private String navn;
 

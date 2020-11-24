@@ -108,7 +108,7 @@ public class PersonAdapter {
     }
 
     private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell personstatusModell) {
-        List<String> personstatuserPDL = PersonstatusKoder.hentPersonstatusPDL(personstatusModell.getStatus());
+        List<String> personstatuserPDL = PersonstatusKoder.tilPersonstatusPDL(personstatusModell.getStatus());
         Folkeregisterpersonstatus folkeregisterpersonstatus = new Folkeregisterpersonstatus();
         if (personstatuserPDL == null || personstatuserPDL.isEmpty()) {
             return folkeregisterpersonstatus;

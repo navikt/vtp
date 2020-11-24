@@ -1,7 +1,5 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,7 +15,7 @@ public class PermisjonPermitteringRS {
     @JsonProperty("periode")
     private PeriodeRS periode;
     @JsonProperty("prosent")
-    private BigDecimal prosent;
+    private Double prosent;
     @JsonProperty("type")
     private String type; // kodeverk: PermisjonsOgPermitteringsBeskrivelse
 
@@ -25,7 +23,7 @@ public class PermisjonPermitteringRS {
         return periode;
     }
 
-    public BigDecimal getProsent() {
+    public Double getProsent() {
         return prosent;
     }
 
@@ -34,7 +32,7 @@ public class PermisjonPermitteringRS {
     }
 
     public PermisjonPermitteringRS(Permisjon permisjon) {
-        this.prosent = permisjon.getStillingsprosent() != null ? new BigDecimal(permisjon.getStillingsprosent()) : null;
+        this.prosent = permisjon.getStillingsprosent() != null ? permisjon.getStillingsprosent().doubleValue() : null;
         this.type = permisjon.getPermisjonstype().getKode();
         this.periode = new PeriodeRS(permisjon.getFomGyldighetsperiode(), permisjon.getTomGyldighetsperiode());
     }

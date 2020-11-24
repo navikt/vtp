@@ -1,10 +1,10 @@
 package no.nav.dokarkiv;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class JournalpostMapper {
     //TODO: utvid med nødvendig mapping
     public JournalpostModell tilModell(OpprettJournalpostRequest journalpostRequest){
         JournalpostModell modell = new JournalpostModell();
-        modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalpostType()));
+        modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalposttype()));
         modell.setArkivtema(mapArkivtema(journalpostRequest.getTema()));
         modell.setBruker(mapAvsenderFraBruker(journalpostRequest.getBruker()));
         var sak = journalpostRequest.getSak();
@@ -44,7 +44,13 @@ public class JournalpostMapper {
         } else {
             modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
         }
-        modell.setMottattDato(Optional.ofNullable(journalpostRequest.getDatoMottatt()).map(OffsetDateTime::toLocalDateTime).orElse(LocalDateTime.now()));
+
+        var datoMottatt = journalpostRequest.getDatoMottatt();
+        if (datoMottatt == null) {
+            modell.setMottattDato(LocalDateTime.now());
+        } else {
+            modell.setMottattDato(convertToLocalDateTimeViaInstant(datoMottatt));
+        }
 
         List<DokumentModell> dokumentModeller = new ArrayList<>();
         if(!journalpostRequest.getDokumenter().isEmpty()) {
@@ -118,7 +124,7 @@ public class JournalpostMapper {
         return new Arkivtema(tema);
     }
 
-    private Journalposttyper mapJournalposttype(OpprettJournalpostRequest.JournalpostTypeEnum type){
+    private Journalposttyper mapJournalposttype(OpprettJournalpostRequest.JournalposttypeEnum type){
         if(type.value().equalsIgnoreCase("INNGAAENDE")){
             return Journalposttyper.INNGAAENDE_DOKUMENT;
         } else if (type.value().equalsIgnoreCase("UTGAAENDE")){
@@ -128,5 +134,11 @@ public class JournalpostMapper {
         } else {
             throw new IllegalArgumentException("Verdi journalposttype ikke støttet");
         }
+    }
+
+    private LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 }
