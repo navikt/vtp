@@ -1,4 +1,4 @@
-package no.nav.omsorgspenger.rammemeldinger;
+package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

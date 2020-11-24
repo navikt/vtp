@@ -1,11 +1,10 @@
-package no.nav.omsorgspenger.rammemeldinger;
+package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
-public class OverføringGitt {
+public class AleneOmOmsorgen {
     @JsonProperty("gjennomført")
     private LocalDate gjennomført;
 
@@ -15,11 +14,8 @@ public class OverføringGitt {
     @JsonProperty("gyldigTilOgMed")
     private LocalDate gyldigTilOgMed;
 
-    @JsonProperty("lengde")
-    private Duration lengde;
-
-    @JsonProperty("til")
-    private Person til;
+    @JsonProperty("barn")
+    private Person barn;
 
     public LocalDate getGjennomført() {
         return gjennomført;
@@ -45,19 +41,11 @@ public class OverføringGitt {
         this.gyldigTilOgMed = gyldigTilOgMed;
     }
 
-    public Duration getLengde() {
-        return lengde;
+    public Person getBarn() {
+        return barn;
     }
 
-    public void setLengde(Duration lengde) {
-        this.lengde = lengde;
-    }
-
-    public Person getTil() {
-        return til;
-    }
-
-    public void setTil(Person til) {
-        this.til = til;
+    public void setBarn(Person barn) {
+        this.barn = barn;
     }
 }

@@ -1,6 +1,7 @@
 package no.nav.omsorgspenger.rammemeldinger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.AleneOmOmsorgen;
 
 import java.util.ArrayList;
 import java.util.List;

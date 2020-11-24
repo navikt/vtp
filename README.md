@@ -27,6 +27,8 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 For utvikling på VTP benytt oppsett for å starte server gjennom IDE.
 I verdikjedetester benyttes oftest Docker-image av VTP. Dette bygges i VTP sin pipeline. 
 
+Når applikasjonen har startet blir Swagger tilgjengelig på http://localhost:8060/swagger/
+
 #### Starte backend-server via IDE
 * IntelliJ må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.
 * Start mock serveren ved å kjøre MockServer (lokalt).
