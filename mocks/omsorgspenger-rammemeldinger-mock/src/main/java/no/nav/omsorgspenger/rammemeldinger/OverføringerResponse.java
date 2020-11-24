@@ -1,6 +1,8 @@
 package no.nav.omsorgspenger.rammemeldinger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringFått;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringGitt;
 
 import java.util.ArrayList;
 import java.util.List;

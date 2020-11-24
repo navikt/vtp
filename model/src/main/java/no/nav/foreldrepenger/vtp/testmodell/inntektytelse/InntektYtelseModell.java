@@ -8,6 +8,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeids
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.oppdrag.OppdragModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
@@ -36,12 +37,15 @@ public class InntektYtelseModell {
     @JsonProperty("oppdrag")
     private OppdragModell oppdragModell;
 
+    @JsonProperty("omsorgspenger")
+    private OmsorgspengerModell omsorgspengerModell;
+
     public InntektYtelseModell() {
     }
 
     public InntektYtelseModell(ArenaModell arenaModell, InfotrygdModell infotrygdModell, TRexModell tRexModell,
                                InntektskomponentModell inntektskomponentModell, ArbeidsforholdModell arbeidsforholdModell,
-                               SigrunModell sigrunModell, OppdragModell oppdragModell) {
+                               SigrunModell sigrunModell, OppdragModell oppdragModell, OmsorgspengerModell omsorgspengerModell) {
         this.arenaModell = arenaModell;
         this.infotrygdModell = infotrygdModell;
         this.tRexModell = tRexModell;
@@ -49,6 +53,7 @@ public class InntektYtelseModell {
         this.arbeidsforholdModell = arbeidsforholdModell;
         this.sigrunModell = sigrunModell;
         this.oppdragModell = oppdragModell;
+        this.omsorgspengerModell = omsorgspengerModell;
     }
 
     public ArenaModell getArenaModell() {
@@ -122,5 +127,16 @@ public class InntektYtelseModell {
             this.oppdragModell = new OppdragModell();
         }
         return oppdragModell;
+    }
+
+    public OmsorgspengerModell getOmsorgspengerModell() {
+        if(omsorgspengerModell == null) {
+            this.omsorgspengerModell = new OmsorgspengerModell();
+        }
+        return omsorgspengerModell;
+    }
+
+    public void setOmsorgspengerModell(OmsorgspengerModell omsorgspengerModell) {
+        this.omsorgspengerModell = omsorgspengerModell;
     }
 }

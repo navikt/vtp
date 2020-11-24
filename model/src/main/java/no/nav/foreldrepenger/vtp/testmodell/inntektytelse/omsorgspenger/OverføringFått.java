@@ -1,10 +1,13 @@
-package no.nav.omsorgspenger.rammemeldinger;
+package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AleneOmOmsorgen {
+public class OverføringFått {
     @JsonProperty("gjennomført")
     private LocalDate gjennomført;
 
@@ -14,8 +17,14 @@ public class AleneOmOmsorgen {
     @JsonProperty("gyldigTilOgMed")
     private LocalDate gyldigTilOgMed;
 
-    @JsonProperty("barn")
-    private Person barn;
+    @JsonProperty("lengde")
+    private Duration lengde;
+
+    @JsonProperty("fra")
+    private Person fra;
+
+    @JsonProperty("kilder")
+    private List<Kilde> kilder;
 
     public LocalDate getGjennomført() {
         return gjennomført;
@@ -41,11 +50,30 @@ public class AleneOmOmsorgen {
         this.gyldigTilOgMed = gyldigTilOgMed;
     }
 
-    public Person getBarn() {
-        return barn;
+    public Duration getLengde() {
+        return lengde;
     }
 
-    public void setBarn(Person barn) {
-        this.barn = barn;
+    public void setLengde(Duration lengde) {
+        this.lengde = lengde;
+    }
+
+    public Person getFra() {
+        return fra;
+    }
+
+    public void setFra(Person fra) {
+        this.fra = fra;
+    }
+
+    public List<Kilde> getKilder() {
+        if(kilder == null) {
+            kilder = new ArrayList<>();
+        }
+        return kilder;
+    }
+
+    public void setKilder(List<Kilde> kilder) {
+        this.kilder = kilder;
     }
 }
