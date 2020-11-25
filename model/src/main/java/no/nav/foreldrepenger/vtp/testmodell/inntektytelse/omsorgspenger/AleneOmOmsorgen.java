@@ -8,6 +8,9 @@ public class AleneOmOmsorgen {
     @JsonProperty("gjennomført")
     private LocalDate gjennomført;
 
+    @JsonProperty("registrert")
+    private LocalDate registrert;
+
     @JsonProperty("gyldigFraOgMed")
     private LocalDate gyldigFraOgMed;
 
@@ -23,6 +26,14 @@ public class AleneOmOmsorgen {
 
     public void setGjennomført(LocalDate gjennomført) {
         this.gjennomført = gjennomført;
+    }
+
+    public LocalDate getRegistrert() {
+        return registrert;
+    }
+
+    public void setRegistrert(LocalDate registrert) {
+        this.registrert = registrert;
     }
 
     public LocalDate getGyldigFraOgMed() {
