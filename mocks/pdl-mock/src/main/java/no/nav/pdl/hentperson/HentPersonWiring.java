@@ -7,7 +7,6 @@ import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
 import no.nav.pdl.PdlFunctionalException;
-import no.nav.pdl.Person;
 import no.nav.pdl.exceptions.ErrorCode;
 import no.nav.pdl.graphql.DateScalar;
 import no.nav.pdl.graphql.DateTimeScalar;
@@ -34,7 +33,7 @@ public class HentPersonWiring {
 
                         LOG.info("query hentPerson for ident={}, historikk", ident);
 
-                        Person person = coordinator.hentPerson(ident, historikk);
+                        var person = coordinator.hentPerson(ident, historikk);
                         if (person == null) {
                             return DataFetcherResult.newResult()
                                     .error(ErrorCode.NOT_FOUND.construct(environment, "Fant ikke person"))

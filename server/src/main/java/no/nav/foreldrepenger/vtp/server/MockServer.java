@@ -101,10 +101,10 @@ public class MockServer {
 
     public void start() throws Exception {
 
-        if(!tjenesteDisabled(VTPTjeneste.LDAP)){
+        if(!tjenesteDisabled(VTPTjeneste.VTP_LDAP)){
             startLdapServer();
         }
-        if(!tjenesteDisabled(VTPTjeneste.KAFKA)){
+        if(!tjenesteDisabled(VTPTjeneste.VTP_KAFKA)){
             startKafkaServer();
         }
         if(System.getenv("VTP_OAUTH2_ENABLE") != null && System.getenv("VTP_OAUTH2_ENABLE").equalsIgnoreCase("true")){
@@ -193,7 +193,7 @@ public class MockServer {
         startServer();
 
         // kjør soap oppsett etter jetty har startet
-        if(!tjenesteDisabled(VTPTjeneste.SOAP)) {
+        if(!tjenesteDisabled(VTPTjeneste.VTP_SOAP)) {
             addSoapServices(testScenarioRepository, journalRepository);
         }
     }
@@ -280,29 +280,19 @@ public class MockServer {
     }
 
     private boolean tjenesteDisabled(VTPTjeneste tjeneste){
-        String miljøVariabel = tjeneste.getNavn().concat("_DISABLE");
+        String miljøVariabel = tjeneste.name().concat("_DISABLE");
         if(System.getenv(miljøVariabel) != null && System.getenv(miljøVariabel).equalsIgnoreCase("true")){
-            LOG.info("Tjeneste er disabled: {}", tjeneste.getNavn());
+            LOG.info("Tjeneste er disabled: {}", tjeneste.name());
             return true;
         }
         return false;
     }
 
     private enum VTPTjeneste {
-        SOAP("VTP_SOAP"),
-        REST("VTP_REST"),
-        KAFKA("VTP_KAFKA"),
-        LDAP("VTP_LDAP");
-
-        private String navn;
-
-        String getNavn(){
-            return navn;
-        }
-
-        VTPTjeneste(String navn){
-            this.navn = navn;
-        }
+        VTP_SOAP,
+        VTP_REST,
+        VTP_KAFKA,
+        VTP_LDAP
     }
 
     private Integer getSslPort() {
