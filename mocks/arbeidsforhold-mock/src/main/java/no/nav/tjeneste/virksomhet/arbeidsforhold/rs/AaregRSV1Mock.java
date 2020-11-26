@@ -55,12 +55,11 @@ public class AaregRSV1Mock {
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         String ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
         var qryparams = uriInfo.getQueryParameters();
-        String regelverk = qryparams.getFirst(QPRM_REGELVERK);
         LocalDate fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
         LocalDate tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
 
-        if (ident == null || regelverk == null || fom == null)
-            throw new IllegalArgumentException("Request uten ident eller regelverk");
+        if (ident == null || fom == null)
+            throw new IllegalArgumentException("Request uten ident eller fom");
         InntektYtelseModell inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
                 .orElseGet(() -> scenarioRepository.getInntektYtelseModell(ident).orElse(null));
         if (inntektYtelseModell == null || inntektYtelseModell.getArbeidsforholdModell() == null) {

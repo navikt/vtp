@@ -48,7 +48,7 @@
 
 							<apiPackage>no.nav.dokarkiv.generated.api</apiPackage>
 							<modelPackage>no.nav.dokarkiv.generated.model</modelPackage>
-							<invokerPackage>no.nav.dokarkiv.generated</invokerPackage>
+						 	<invokerPackage>no.nav.dokarkiv.generated</invokerPackage>
 
 							<!--kun modell ... -->
 							<generateApis>false</generateApis>
@@ -56,7 +56,7 @@
 
 							<!-- pass any necessary config options -->
 							<configOptions>
-								<dateLibrary>java8</dateLibrary>
+								<dateLibrary>java11</dateLibrary>
 								<interfaceOnly>true</interfaceOnly>
 								<java8>false</java8>
 								<implFolder>ignore-this-folder</implFolder>

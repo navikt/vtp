@@ -1,6 +1,5 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -16,11 +15,11 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeids
 public class ArbeidsavtaleRS {
 
     @JsonProperty("stillingsprosent")
-    private BigDecimal stillingsprosent;
+    private Double stillingsprosent;
     @JsonProperty("antallTimerPrUke")
-    private BigDecimal antallTimerPrUke;
+    private Double antallTimerPrUke;
     @JsonProperty("beregnetAntallTimerPrUke")
-    private BigDecimal beregnetAntallTimerPrUke;
+    private Double beregnetAntallTimerPrUke;
     @JsonProperty("sistLoennsendring")
     private LocalDate sistLoennsendring;
     @JsonProperty("gyldighetsperiode")
@@ -28,15 +27,15 @@ public class ArbeidsavtaleRS {
     @JsonProperty("yrke")
     private String yrke; // (kodeverk: Yrker)
 
-    public BigDecimal getStillingsprosent() {
+    public Double getStillingsprosent() {
         return stillingsprosent;
     }
 
-    public BigDecimal getAntallTimerPrUke() {
+    public Double getAntallTimerPrUke() {
         return antallTimerPrUke;
     }
 
-    public BigDecimal getBeregnetAntallTimerPrUke() {
+    public Double getBeregnetAntallTimerPrUke() {
         return beregnetAntallTimerPrUke;
     }
 
@@ -53,9 +52,9 @@ public class ArbeidsavtaleRS {
     }
 
     public ArbeidsavtaleRS(Arbeidsavtale avtale) {
-        this.stillingsprosent = avtale.getStillingsprosent() != null ? new BigDecimal(avtale.getStillingsprosent()) : null;
-        this.antallTimerPrUke = avtale.getAvtaltArbeidstimerPerUke() != null ? new BigDecimal(avtale.getAvtaltArbeidstimerPerUke()) : null;
-        this.beregnetAntallTimerPrUke = avtale.getBeregnetAntallTimerPerUke() != null ? new BigDecimal(avtale.getBeregnetAntallTimerPerUke()) : null;
+        this.stillingsprosent = avtale.getStillingsprosent() != null ? avtale.getStillingsprosent().doubleValue() : null;
+        this.antallTimerPrUke = avtale.getAvtaltArbeidstimerPerUke() != null ? avtale.getAvtaltArbeidstimerPerUke().doubleValue() : null;
+        this.beregnetAntallTimerPrUke = avtale.getBeregnetAntallTimerPerUke() != null ? avtale.getBeregnetAntallTimerPerUke().doubleValue() : null;
         this.sistLoennsendring = avtale.getSisteLønnnsendringsdato();
         this.yrke = avtale.getYrke() != null && avtale.getYrke().getYrke() != null ? avtale.getYrke().getYrke() : "8269102";
         this.gyldighetsperiode = new PeriodeRS(avtale.getFomGyldighetsperiode(), avtale.getTomGyldighetsperiode());

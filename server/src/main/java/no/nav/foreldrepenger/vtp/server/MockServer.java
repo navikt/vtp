@@ -1,8 +1,10 @@
 package no.nav.foreldrepenger.vtp.server;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -38,6 +40,7 @@ import no.nav.foreldrepenger.vtp.felles.PropertiesUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
+import no.nav.foreldrepenger.vtp.server.rest.oauth2.Oauth2Singleton;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
@@ -45,6 +48,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuil
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.security.mock.oauth2.MockOAuth2Server;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 
@@ -62,6 +66,7 @@ public class MockServer {
     private final int port;
     private final LdapServer ldapServer;
     private final LocalKafkaServer kafkaServer;
+    private final MockOAuth2Server oAuth2Server;
     private Server server;
     private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
@@ -79,6 +84,8 @@ public class MockServer {
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
 
+        oAuth2Server = Oauth2Singleton.getInstance();
+
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
         int kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
         int zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
@@ -94,15 +101,26 @@ public class MockServer {
 
     public void start() throws Exception {
 
-        if(!tjenesteDisabled(VTPTjeneste.LDAP)){
+        if(!tjenesteDisabled(VTPTjeneste.VTP_LDAP)){
             startLdapServer();
         }
-        if(!tjenesteDisabled(VTPTjeneste.KAFKA)){
+        if(!tjenesteDisabled(VTPTjeneste.VTP_KAFKA)){
             startKafkaServer();
         }
+        if(System.getenv("VTP_OAUTH2_ENABLE") != null && System.getenv("VTP_OAUTH2_ENABLE").equalsIgnoreCase("true")){
+            startOauth2Server();
+        }
+
         startWebServer();
+    }
 
-
+    private void startOauth2Server() throws IOException {
+        var hostname = System.getenv("OAUTH2_SERVER_HOST");
+        var port = System.getenv("OAUTH2_SERVER_PORT");
+        oAuth2Server.start(hostname != null ? InetAddress.getByName(hostname) : InetAddress.getByName("localhost"),
+                port != null ? Integer.parseInt(port) : 1337);
+        var wellKnownUrl = oAuth2Server.wellKnownUrl("valgfriIssuerId").toString();
+        LOG.info("OAUTH2-server er tilgjengelig på føglende discovery url: {}", wellKnownUrl);
     }
 
     private void startKafkaServer() {
@@ -140,9 +158,8 @@ public class MockServer {
     }
 
     private static List<String> getEnvValueList(String envName) {
-        return Arrays.asList((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
-                .stream()
-                .map(s -> s.trim())
+        return Arrays.stream((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
+                .map(String::trim)
                 .collect(Collectors.toList());
     }
 
@@ -176,7 +193,7 @@ public class MockServer {
         startServer();
 
         // kjør soap oppsett etter jetty har startet
-        if(!tjenesteDisabled(VTPTjeneste.SOAP)) {
+        if(!tjenesteDisabled(VTPTjeneste.VTP_SOAP)) {
             addSoapServices(testScenarioRepository, journalRepository);
         }
     }
@@ -263,29 +280,19 @@ public class MockServer {
     }
 
     private boolean tjenesteDisabled(VTPTjeneste tjeneste){
-        String miljøVariabel = tjeneste.getNavn().concat("_DISABLE");
+        String miljøVariabel = tjeneste.name().concat("_DISABLE");
         if(System.getenv(miljøVariabel) != null && System.getenv(miljøVariabel).equalsIgnoreCase("true")){
-            LOG.info("Tjeneste er disabled: {}", tjeneste.getNavn());
+            LOG.info("Tjeneste er disabled: {}", tjeneste.name());
             return true;
         }
         return false;
     }
 
     private enum VTPTjeneste {
-        SOAP("VTP_SOAP"),
-        REST("VTP_REST"),
-        KAFKA("VTP_KAFKA"),
-        LDAP("VTP_LDAP");
-
-        private String navn;
-
-        String getNavn(){
-            return navn;
-        }
-
-        VTPTjeneste(String navn){
-            this.navn = navn;
-        }
+        VTP_SOAP,
+        VTP_REST,
+        VTP_KAFKA,
+        VTP_LDAP
     }
 
     private Integer getSslPort() {

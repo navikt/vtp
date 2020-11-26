@@ -8,7 +8,6 @@ import java.util.List;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
@@ -32,25 +31,25 @@ public class PersonAdapter {
     public static Person oversettPerson(PersonModell personModell, boolean historikk) {
         var person = new Person();
 
-        Foedsel fødsel = tilFoedsel(personModell);
+        var fødsel = tilFoedsel(personModell);
         person.setFoedsel(List.of(fødsel));
 
-        Doedsfall doedsfall = tilDoedsfall(personModell);
+        var doedsfall = tilDoedsfall(personModell);
         person.setDoedsfall(List.of(doedsfall));
 
-        Navn navn = tilNavn(personModell);
+        var navn = tilNavn(personModell);
         person.setNavn(List.of(navn));
 
         person.setStatsborgerskap(tilStatsborgerskaps(personModell, historikk));
 
-        Kjoenn kjoenn = tilKjoenn(personModell);
+        var kjoenn = tilKjoenn(personModell);
         person.setKjoenn(List.of(kjoenn));
 
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
 
         person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
 
-        Adressebeskyttelse adressebeskyttelse = tilAdressebeskyttelse(personModell);
+        var adressebeskyttelse = tilAdressebeskyttelse(personModell);
         person.setAdressebeskyttelse(List.of(adressebeskyttelse));
 
         AdresseAdapter.setAdresser(person, tilAdresseModeller(personModell, historikk));
@@ -63,14 +62,14 @@ public class PersonAdapter {
     }
 
     private static Adressebeskyttelse tilAdressebeskyttelse(PersonModell personModell) {
-        Adressebeskyttelse adressebeskyttelse = new Adressebeskyttelse();
+        var adressebeskyttelse = new Adressebeskyttelse();
         adressebeskyttelse.setGradering(tilAdressebeskyttelseGradering(personModell));
         return adressebeskyttelse;
     }
 
 
     private static Kjoenn tilKjoenn(PersonModell personModell) {
-        Kjoenn kjoenn = new Kjoenn();
+        var kjoenn = new Kjoenn();
         kjoenn.setKjoenn(KjoennType.KVINNE);
         kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
         return kjoenn;
@@ -86,13 +85,13 @@ public class PersonAdapter {
     }
 
     private static Foedsel tilFoedsel(PersonModell personModell) {
-        Foedsel fødsel = new Foedsel();
+        var fødsel = new Foedsel();
         fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
         return fødsel;
     }
 
     private static Doedsfall tilDoedsfall(PersonModell personModell) {
-        Doedsfall doedsfall = new Doedsfall();
+        var doedsfall = new Doedsfall();
         if (personModell.getDødsdato() != null) {
             doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
         }
@@ -108,13 +107,13 @@ public class PersonAdapter {
     }
 
     private static Folkeregisterpersonstatus tilFolkeregisterpersonstatus(PersonstatusModell personstatusModell) {
-        List<String> personstatuserPDL = PersonstatusKoder.hentPersonstatusPDL(personstatusModell.getStatus());
-        Folkeregisterpersonstatus folkeregisterpersonstatus = new Folkeregisterpersonstatus();
-        if (personstatuserPDL == null || personstatuserPDL.isEmpty()) {
+        var folkeregisterpersonstatus = new Folkeregisterpersonstatus();
+        if (personstatusModell.getStatus() == null) {
             return folkeregisterpersonstatus;
         }
-        folkeregisterpersonstatus.setForenkletStatus(personstatuserPDL.get(0));
-        folkeregisterpersonstatus.setStatus(personstatuserPDL.get(1));
+        var personstatuserPDL = Personstatus.valueOf(personstatusModell.getStatus());
+        folkeregisterpersonstatus.setForenkletStatus(personstatuserPDL.getForenkletStatus());
+        folkeregisterpersonstatus.setStatus(personstatuserPDL.getStatus());
         return folkeregisterpersonstatus;
     }
 
@@ -142,13 +141,13 @@ public class PersonAdapter {
     }
 
     private static Statsborgerskap tilStatsborgerskap(StatsborgerskapModell sm) {
-        Statsborgerskap statsborgerskap = new Statsborgerskap();
+        var statsborgerskap = new Statsborgerskap();
         statsborgerskap.setLand(sm.getLandkode());
         return statsborgerskap;
     }
 
     private static GeografiskTilknytning tilGeografiskTilknytning(PersonModell bruker) {
-        GeografiskTilknytningModell tilknytning = bruker.getGeografiskTilknytning();
+        var tilknytning = bruker.getGeografiskTilknytning();
         if (tilknytning == null) {
             return null;
         } else {

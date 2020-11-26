@@ -60,9 +60,9 @@ public class PdlMockTest {
 
         var ident = søker.getIdent();
         var projection = byggProjectionPersonResponse(false);
-        var query = String.format("query { hentPerson(ident: \"%s\") %s }", ident, projection);
+        var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projection);
 
-        var request = GraphQLRequest.builder().withQuery(query).build();
+        var request = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", ident)).build();
 
         // Act
         var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
@@ -281,6 +281,11 @@ public class PdlMockTest {
                         new FolkeregisterpersonstatusResponseProjection()
                                 .status()
                                 .forenkletStatus()
+                )
+                .sivilstand(
+                        new SivilstandResponseProjection()
+                            .type()
+                            .relatertVedSivilstand()
                 )
                 .familierelasjoner(
                         new FamilierelasjonResponseProjection()

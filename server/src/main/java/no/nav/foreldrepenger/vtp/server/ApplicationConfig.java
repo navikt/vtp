@@ -26,11 +26,11 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
-import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -52,8 +52,10 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.AzureAdNAVAnsattService;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
+import no.nav.foreldrepenger.vtp.server.rest.oauth2.Oauth2RestTjeneste;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
+import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
 import no.nav.saf.SafMock;
@@ -118,6 +120,7 @@ public class ApplicationConfig extends Application {
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
+        classes.add(Oauth2RestTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
@@ -143,6 +146,7 @@ public class ApplicationConfig extends Application {
             objectMapper.registerModule(new JavaTimeModule());
             objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
         }
 
         @Override

@@ -4,6 +4,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.oversetter.FamilierelasjonBygger;
 import no.nav.pdl.oversetter.PersonAdapter;
+import no.nav.pdl.oversetter.SivilstandBygger;
 
 public class HentPersonCoordinatorFunction {
 
@@ -15,6 +16,8 @@ public class HentPersonCoordinatorFunction {
 
                 var personopplysningerModell = scenarioRepo.getPersonIndeks().finnPersonopplysningerByIdent(ident);
                 var aktørIdent = personModell.getAktørIdent();
+
+                SivilstandBygger.leggTilSivilstand(personPdl, personModell, personopplysningerModell);
 
                 return FamilierelasjonBygger.byggFamilierelasjoner(aktørIdent, personopplysningerModell, personPdl);
             } catch (IllegalArgumentException e) {
