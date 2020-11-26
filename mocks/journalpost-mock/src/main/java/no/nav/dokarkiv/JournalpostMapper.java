@@ -34,7 +34,7 @@ public class JournalpostMapper {
     //TODO: utvid med nødvendig mapping
     public JournalpostModell tilModell(OpprettJournalpostRequest journalpostRequest){
         JournalpostModell modell = new JournalpostModell();
-        modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalposttype()));
+        modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalpostType()));
         modell.setArkivtema(mapArkivtema(journalpostRequest.getTema()));
         modell.setBruker(mapAvsenderFraBruker(journalpostRequest.getBruker()));
         var sak = journalpostRequest.getSak();
@@ -124,7 +124,7 @@ public class JournalpostMapper {
         return new Arkivtema(tema);
     }
 
-    private Journalposttyper mapJournalposttype(OpprettJournalpostRequest.JournalposttypeEnum type){
+    private Journalposttyper mapJournalposttype(OpprettJournalpostRequest.JournalpostTypeEnum type){
         if(type.value().equalsIgnoreCase("INNGAAENDE")){
             return Journalposttyper.INNGAAENDE_DOKUMENT;
         } else if (type.value().equalsIgnoreCase("UTGAAENDE")){
