@@ -1,5 +1,6 @@
 package no.nav.pdl.oversetter;
 
+import static java.util.Collections.emptyList;
 import static no.nav.pdl.oversetter.PersonAdapter.DATO_FORMATTERER;
 
 import java.time.LocalDate;
@@ -115,10 +116,27 @@ public class AdresseAdapter {
                     System.out.println("Ukjent adressetype: " + a);
             }
         }
+        setNonnullableAdresserSomIkkeErSatt(pers);
         return pers;
     }
 
     private static Date toDate(LocalDate dateTime) {
         return Date.from(dateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    private static void setNonnullableAdresserSomIkkeErSatt(Person pers) {
+        if (pers.getBostedsadresse() == null) {
+            pers.setBostedsadresse(emptyList());
+        }
+        if (pers.getOppholdsadresse() == null) {
+            pers.setOppholdsadresse(emptyList());
+        }
+        if (pers.getKontaktadresse() == null) {
+            pers.setKontaktadresse(emptyList());
+        }
+        if (pers.getDeltBosted() == null) {
+            pers.setDeltBosted(emptyList());
+        }
+
     }
 }

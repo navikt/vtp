@@ -1,20 +1,29 @@
 package no.nav.pdl.oversetter;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static no.nav.pdl.oversetter.AdresseAdapter.setAdresser;
+import static no.nav.pdl.oversetter.FamilierelasjonBygger.byggFamilierelasjoner;
+import static no.nav.pdl.oversetter.SivilstandBygger.leggTilSivilstand;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
 import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
 import no.nav.pdl.Doedsfall;
 import no.nav.pdl.Foedsel;
+import no.nav.pdl.Folkeregistermetadata;
 import no.nav.pdl.Folkeregisterpersonstatus;
 import no.nav.pdl.GeografiskTilknytning;
 import no.nav.pdl.GtType;
@@ -27,75 +36,90 @@ import no.nav.pdl.Statsborgerskap;
 
 public class PersonAdapter {
     static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final ZoneId DEFAULT_ZONE_ID = ZoneId.systemDefault();
+    private static Date ettÅrSiden = Date.from(LocalDate.now().minusYears(1).atStartOfDay(DEFAULT_ZONE_ID).toInstant());
+    private static Date tiÅrFremITid = Date.from(LocalDate.now().plusYears(10).atStartOfDay(DEFAULT_ZONE_ID).toInstant());
 
-    public static Person oversettPerson(PersonModell personModell, boolean historikk) {
+    private static final Folkeregistermetadata folkeregistermetadata = Folkeregistermetadata.builder()
+            .setAjourholdstidspunkt(ettÅrSiden)
+            .setGyldighetstidspunkt(ettÅrSiden)
+            .setOpphoerstidspunkt(tiÅrFremITid)
+            .build();
+
+    public static Person tilPerson(PersonModell personModell, Personopplysninger personopplysninger, boolean historikk) {
         var person = new Person();
-
-        var fødsel = tilFoedsel(personModell);
-        person.setFoedsel(List.of(fødsel));
-
-        var doedsfall = tilDoedsfall(personModell);
-        person.setDoedsfall(List.of(doedsfall));
-
-        var navn = tilNavn(personModell);
-        person.setNavn(List.of(navn));
-
-        person.setStatsborgerskap(tilStatsborgerskaps(personModell, historikk));
-
-        var kjoenn = tilKjoenn(personModell);
-        person.setKjoenn(List.of(kjoenn));
-
+        person.setAdressebeskyttelse(tilAdressebeskyttelse(personModell));
+        // bostedsadresse, oppholdsadresse, kontaktadresse, deltBosted settes metode under.
+        setAdresser(person, hentAdresseModellTPS(personModell, historikk));
+        person.setDoedfoedtBarn(ikkeImplementert());
+        person.setDoedsfall(tilDoedsfall(personModell));
+        byggFamilierelasjoner(personModell.getAktørIdent(), personopplysninger, person);
+        person.setFoedsel(tilFoedsel(personModell));
+        person.setFolkeregisteridentifikator(ikkeImplementert());
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
-
+        person.setForeldreansvar(ikkeImplementert());
+        person.setFullmakt(ikkeImplementert());
+        person.setIdentitetsgrunnlag(ikkeImplementert());
+        person.setKjoenn(tilKjoenn(personModell));
+        person.setKontaktinformasjonForDoedsbo(ikkeImplementert());
+        person.setNavn(tilNavn(personModell));
+        person.setOpphold(ikkeImplementert());
+        person.setSikkerhetstiltak(ikkeImplementert());
+        leggTilSivilstand(person, personModell, personopplysninger);
+        person.setStatsborgerskap(tilStatsborgerskaps(personModell, historikk));
+        person.setTelefonnummer(ikkeImplementert());
+        person.setTilrettelagtKommunikasjon(ikkeImplementert());
+        person.setUtenlandskIdentifikasjonsnummer(ikkeImplementert());
+        person.setInnflyttingTilNorge(ikkeImplementert());
+        person.setUtflyttingFraNorge(ikkeImplementert());
+        person.setVergemaalEllerFremtidsfullmakt(ikkeImplementert());
         person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
-
-        var adressebeskyttelse = tilAdressebeskyttelse(personModell);
-        person.setAdressebeskyttelse(List.of(adressebeskyttelse));
-
-        AdresseAdapter.setAdresser(person, tilAdresseModeller(personModell, historikk));
-
         return person;
     }
 
-    private static List<AdresseModell> tilAdresseModeller(PersonModell personModell, boolean historikk) {
+    private static List<AdresseModell> hentAdresseModellTPS(PersonModell personModell, boolean historikk) {
         return historikk ? personModell.getAdresser(AdresseType.BOSTEDSADRESSE) : personModell.getAdresser();
     }
 
-    private static Adressebeskyttelse tilAdressebeskyttelse(PersonModell personModell) {
+    private static List<Adressebeskyttelse> tilAdressebeskyttelse(PersonModell personModell) {
         var adressebeskyttelse = new Adressebeskyttelse();
         adressebeskyttelse.setGradering(tilAdressebeskyttelseGradering(personModell));
-        return adressebeskyttelse;
+        return List.of(adressebeskyttelse);
     }
 
 
-    private static Kjoenn tilKjoenn(PersonModell personModell) {
+    private static List<Kjoenn> tilKjoenn(PersonModell personModell) {
         var kjoenn = new Kjoenn();
-        kjoenn.setKjoenn(KjoennType.KVINNE);
+        if (personModell.getKjønn() == null) {
+            kjoenn.setKjoenn(KjoennType.UKJENT);
+            return List.of(kjoenn);
+        }
         kjoenn.setKjoenn(personModell.getKjønn() == BrukerModell.Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
-        return kjoenn;
+        return List.of(kjoenn);
     }
 
 
-    private static Navn tilNavn(PersonModell personModell) {
+    private static List<Navn> tilNavn(PersonModell personModell) {
         Navn navn = new Navn();
         navn.setFornavn(personModell.getFornavn().toUpperCase());
         navn.setEtternavn(personModell.getEtternavn().toUpperCase());
         navn.setForkortetNavn(personModell.getEtternavn().toUpperCase() + " " + personModell.getFornavn().toUpperCase());
-        return navn;
+        return List.of(navn);
     }
 
-    private static Foedsel tilFoedsel(PersonModell personModell) {
+    private static List<Foedsel> tilFoedsel(PersonModell personModell) {
         var fødsel = new Foedsel();
         fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
-        return fødsel;
+        return List.of(fødsel);
     }
 
-    private static Doedsfall tilDoedsfall(PersonModell personModell) {
-        var doedsfall = new Doedsfall();
-        if (personModell.getDødsdato() != null) {
-            doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
+    private static List<Doedsfall> tilDoedsfall(PersonModell personModell) {
+        if (personModell.getDødsdato() == null) {
+            return emptyList();
         }
-        return doedsfall;
+        var doedsfall = new Doedsfall();
+        doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
+        return List.of(doedsfall);
     }
 
     private static List<Folkeregisterpersonstatus> tilFolkeregisterpersonstatuse(PersonModell personModell, boolean historikk) {
@@ -114,6 +138,7 @@ public class PersonAdapter {
         var personstatuserPDL = Personstatus.valueOf(personstatusModell.getStatus());
         folkeregisterpersonstatus.setForenkletStatus(personstatuserPDL.getForenkletStatus());
         folkeregisterpersonstatus.setStatus(personstatuserPDL.getStatus());
+        folkeregisterpersonstatus.setFolkeregistermetadata(folkeregistermetadata);
         return folkeregisterpersonstatus;
     }
 
@@ -169,6 +194,10 @@ public class PersonAdapter {
             }
             return geo;
         }
+    }
+
+    private static <T> List<T> ikkeImplementert() {
+        return emptyList();
     }
 
 }
