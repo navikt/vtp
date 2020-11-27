@@ -115,10 +115,27 @@ public class AdresseAdapter {
                     System.out.println("Ukjent adressetype: " + a);
             }
         }
+        setNonnullableAdresserSomIkkeErSatt(pers);
         return pers;
     }
 
     private static Date toDate(LocalDate dateTime) {
         return Date.from(dateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    private static void setNonnullableAdresserSomIkkeErSatt(Person pers) {
+        if (pers.getBostedsadresse() == null) {
+            pers.setBostedsadresse(List.of());
+        }
+        if (pers.getOppholdsadresse() == null) {
+            pers.setOppholdsadresse(List.of());
+        }
+        if (pers.getKontaktadresse() == null) {
+            pers.setKontaktadresse(List.of());
+        }
+        if (pers.getDeltBosted() == null) {
+            pers.setDeltBosted(List.of());
+        }
+
     }
 }

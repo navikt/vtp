@@ -271,6 +271,15 @@ public class PdlMockTest {
                                     .husnummer()
                                     .husbokstav()
                                     .postnummer()))
+                .oppholdsadresse(
+                        new OppholdsadresseResponseProjection()
+                                .vegadresse(new VegadresseResponseProjection()
+                                        .matrikkelId()
+                                        .adressenavn()
+                                        .husnummer()
+                                        .husbokstav()
+                                        .postnummer())
+                )
                 .geografiskTilknytning(
                         new GeografiskTilknytningResponseProjection()
                                 .gtType()
