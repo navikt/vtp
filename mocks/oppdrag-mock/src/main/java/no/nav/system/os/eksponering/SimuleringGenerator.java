@@ -25,11 +25,14 @@ public class SimuleringGenerator {
     String kodeEndring;
     Boolean erOpphør;
     Boolean erOmpostering;
+    Boolean erRefusjon;
+    String refunderesOrgNr;
 
     public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
         this.kodeEndring = simulerBeregningRequest.getRequest().getOppdrag().getKodeEndring();
         this.erOpphør = erOpphør(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
-        this.erOmpostering = erOmpostering(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
+        this.erOmpostering = erOmpostering(simulerBeregningRequest.getRequest().getOppdrag());
+        this.erRefusjon = erRefusjon(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
 
         SimulerBeregningResponse response = new SimulerBeregningResponse();
         Beregning beregning = lagBeregning(simulerBeregningRequest);
@@ -58,12 +61,24 @@ public class SimuleringGenerator {
         return true;
     }
 
-    private boolean erOmpostering(List<Oppdragslinje> oppdragslinjer){
-        if (!oppdragslinjer.isEmpty()){
-            //Utleder ompostering og omposteringsdato fra datoStatusFom i første oppdragslinje fordi ompostering alltid er null selvom den kommer i request.
-            return oppdragslinjer.get(0).getDatoStatusFom() != null;
+    private boolean erOmpostering(Oppdrag oppdrag){
+        if (!oppdrag.getOppdragslinje().isEmpty() || oppdrag.getOmpostering() == null){
+            return oppdrag.getOmpostering().getOmPostering().equals("J");
         }
         return false;
+    }
+
+    private boolean erRefusjon(List<Oppdragslinje> oppdragslinjer){
+        if (oppdragslinjer.isEmpty() || oppdragslinjer.get(0).getRefusjonsInfo() == null) {
+            return false;
+        }
+        this.refunderesOrgNr = oppdragslinjer.get(0).getRefusjonsInfo().getRefunderesId();
+        for (Oppdragslinje oppdragslinje : oppdragslinjer){
+            if (oppdragslinje.getRefusjonsInfo().getRefunderesId().isEmpty() || !oppdragslinje.getRefusjonsInfo().getRefunderesId().equals(refunderesOrgNr)){
+                throw new IllegalArgumentException("Ved refusjon må alle oppdragslinjer ha samme refusjonsInfo. Både orgnr " + refunderesOrgNr + " og " + oppdragslinje.getRefusjonsInfo().getRefunderesId() + "ble funnet i samme request.");
+            }
+        }
+        return true;
     }
 
     private Beregning lagBeregning(SimulerBeregningRequest simulerBeregningRequest) {
@@ -93,7 +108,7 @@ public class SimuleringGenerator {
             //Trenger ikke null-sjekk her ettersom det gjøres i erOmpostering() metoden
             Oppdragslinje mallinje = oppdragslinjer.get(0);
             String omposteringsdato = mallinje.getDatoStatusFom();
-            if (!YearMonth.from(LocalDate.parse(omposteringsdato,dateTimeFormatter)).isAfter(nesteMåned)) {
+            if (!YearMonth.from(LocalDate.parse(omposteringsdato,dateTimeFormatter)).isAfter(nesteMåned) && !LocalDate.parse(omposteringsdato,dateTimeFormatter).isAfter(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter).minusDays(1L))) {
                 Oppdragslinje omposteringsOppdragslinje = new Oppdragslinje();
                 omposteringsOppdragslinje.setDatoVedtakFom(omposteringsdato);
                 omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
@@ -145,8 +160,8 @@ public class SimuleringGenerator {
             if (!YearMonth.from(periode.getFom()).isAfter(nesteMåned)) {
                 BeregningStoppnivaa stoppnivaa = new BeregningStoppnivaa();
                 stoppnivaa.setKodeFagomraade(oppdrag.getKodeFagomraade());
-                if (oppdragslinje.getRefusjonsInfo() != null) {
-                    stoppnivaa.setUtbetalesTilId(oppdragslinje.getRefusjonsInfo().getRefunderesId());
+                if (erRefusjon) {
+                    stoppnivaa.setUtbetalesTilId(refunderesOrgNr);
                     stoppnivaa.setUtbetalesTilNavn("DUMMY FIRMA");
                 } else {
                     stoppnivaa.setUtbetalesTilId(oppdragslinje.getUtbetalesTilId());
@@ -205,7 +220,7 @@ public class SimuleringGenerator {
         stoppnivaaDetaljer.setKlasseKodeBeskrivelse("DUMMY");
         stoppnivaaDetaljer.setTypeKlasse("YTEL");
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
-        stoppnivaaDetaljer.setRefunderesOrgNr("");
+        stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
 
         return stoppnivaaDetaljer;
     }
@@ -270,7 +285,7 @@ public class SimuleringGenerator {
         //typeKlasseBeskrivelse
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
         //refunderesOrgNr ?
-        stoppnivaaDetaljer.setRefunderesOrgNr("");
+        stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
 
         return stoppnivaaDetaljer;
     }
