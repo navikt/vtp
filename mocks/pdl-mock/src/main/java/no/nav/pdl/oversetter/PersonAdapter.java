@@ -1,6 +1,5 @@
 package no.nav.pdl.oversetter;
 
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static no.nav.pdl.oversetter.AdresseAdapter.setAdresser;
 import static no.nav.pdl.oversetter.FamilierelasjonBygger.byggFamilierelasjoner;
@@ -115,7 +114,7 @@ public class PersonAdapter {
 
     private static List<Doedsfall> tilDoedsfall(PersonModell personModell) {
         if (personModell.getDødsdato() == null) {
-            return emptyList();
+            return List.of();
         }
         var doedsfall = new Doedsfall();
         doedsfall.setDoedsdato(personModell.getDødsdato().format(DATO_FORMATTERER));
@@ -197,7 +196,7 @@ public class PersonAdapter {
     }
 
     private static <T> List<T> ikkeImplementert() {
-        return emptyList();
+        return List.of();
     }
 
 }

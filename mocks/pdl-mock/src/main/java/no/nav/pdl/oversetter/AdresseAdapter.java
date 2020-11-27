@@ -1,6 +1,5 @@
 package no.nav.pdl.oversetter;
 
-import static java.util.Collections.emptyList;
 import static no.nav.pdl.oversetter.PersonAdapter.DATO_FORMATTERER;
 
 import java.time.LocalDate;
@@ -126,16 +125,16 @@ public class AdresseAdapter {
 
     private static void setNonnullableAdresserSomIkkeErSatt(Person pers) {
         if (pers.getBostedsadresse() == null) {
-            pers.setBostedsadresse(emptyList());
+            pers.setBostedsadresse(List.of());
         }
         if (pers.getOppholdsadresse() == null) {
-            pers.setOppholdsadresse(emptyList());
+            pers.setOppholdsadresse(List.of());
         }
         if (pers.getKontaktadresse() == null) {
-            pers.setKontaktadresse(emptyList());
+            pers.setKontaktadresse(List.of());
         }
         if (pers.getDeltBosted() == null) {
-            pers.setDeltBosted(emptyList());
+            pers.setDeltBosted(List.of());
         }
 
     }
