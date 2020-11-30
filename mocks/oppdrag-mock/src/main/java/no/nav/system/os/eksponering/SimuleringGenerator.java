@@ -220,9 +220,7 @@ public class SimuleringGenerator {
         stoppnivaaDetaljer.setKlasseKodeBeskrivelse("DUMMY");
         stoppnivaaDetaljer.setTypeKlasse("YTEL");
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
-        if (erRefusjon && refunderesOrgNr != null){
-        stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
-        }
+        if (erRefusjon && refunderesOrgNr != null){stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);}
         else stoppnivaaDetaljer.setRefunderesOrgNr("");
 
         return stoppnivaaDetaljer;
@@ -288,9 +286,7 @@ public class SimuleringGenerator {
         //typeKlasseBeskrivelse
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
         //refunderesOrgNr ?
-        if (erRefusjon && refunderesOrgNr != null){
-            stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
-        }
+        if (erRefusjon && refunderesOrgNr != null){stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);}
         else stoppnivaaDetaljer.setRefunderesOrgNr("");
 
         return stoppnivaaDetaljer;
