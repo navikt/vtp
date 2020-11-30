@@ -62,7 +62,7 @@ public class SimuleringGenerator {
     }
 
     private boolean erOmpostering(Oppdrag oppdrag){
-        if (!oppdrag.getOppdragslinje().isEmpty() || oppdrag.getOmpostering() == null){
+        if (oppdrag.getOmpostering() != null && oppdrag.getOmpostering().getOmPostering() != null){
             return oppdrag.getOmpostering().getOmPostering().equals("J");
         }
         return false;
@@ -108,7 +108,7 @@ public class SimuleringGenerator {
             //Trenger ikke null-sjekk her ettersom det gjøres i erOmpostering() metoden
             Oppdragslinje mallinje = oppdragslinjer.get(0);
             String omposteringsdato = mallinje.getDatoStatusFom();
-            if (!YearMonth.from(LocalDate.parse(omposteringsdato,dateTimeFormatter)).isAfter(nesteMåned) && !LocalDate.parse(omposteringsdato,dateTimeFormatter).isAfter(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter).minusDays(1L))) {
+            if (!YearMonth.from(LocalDate.parse(omposteringsdato,dateTimeFormatter)).isAfter(nesteMåned) && LocalDate.parse(omposteringsdato,dateTimeFormatter).isBefore(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter))) {
                 Oppdragslinje omposteringsOppdragslinje = new Oppdragslinje();
                 omposteringsOppdragslinje.setDatoVedtakFom(omposteringsdato);
                 omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
@@ -220,7 +220,10 @@ public class SimuleringGenerator {
         stoppnivaaDetaljer.setKlasseKodeBeskrivelse("DUMMY");
         stoppnivaaDetaljer.setTypeKlasse("YTEL");
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
+        if (erRefusjon && refunderesOrgNr != null){
         stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
+        }
+        else stoppnivaaDetaljer.setRefunderesOrgNr("");
 
         return stoppnivaaDetaljer;
     }
@@ -285,7 +288,10 @@ public class SimuleringGenerator {
         //typeKlasseBeskrivelse
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
         //refunderesOrgNr ?
-        stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
+        if (erRefusjon && refunderesOrgNr != null){
+            stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);
+        }
+        else stoppnivaaDetaljer.setRefunderesOrgNr("");
 
         return stoppnivaaDetaljer;
     }
