@@ -24,8 +24,8 @@ public class SimuleringGenerator {
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     Boolean erOpphør;
     Boolean erOmpostering;
-    LocalDate ompostFom;
-    LocalDate ompostTom;
+    LocalDate opphørFom;
+    LocalDate opphørTom;
     Boolean erRefusjon;
     String refunderesOrgNr;
 
@@ -36,8 +36,8 @@ public class SimuleringGenerator {
             if (!simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom().equals(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom())){
                 throw new IllegalArgumentException("datoOmposterFom (" + simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom() + ") og datoStatusFom i første periode(" + simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom() + ")må være like");
             }
-            this.ompostFom = LocalDate.parse(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom(), dateTimeFormatter);
-            this.ompostTom = LocalDate.parse(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoVedtakFom(), dateTimeFormatter);
+            this.opphørFom = LocalDate.parse(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom(), dateTimeFormatter);
+            this.opphørTom = LocalDate.parse(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(1).getDatoVedtakFom(), dateTimeFormatter);
         }
         this.erRefusjon = erRefusjon(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
 
@@ -75,9 +75,9 @@ public class SimuleringGenerator {
         return false;
     }
 
-    private boolean erOmposteringPeriode(LocalDate fom, LocalDate tom){
+    private boolean erOpphørPeriode(LocalDate fom, LocalDate tom){
         if (erOmpostering) {
-            return !fom.isBefore(ompostFom) && tom.isBefore(ompostTom);
+            return !fom.isBefore(opphørFom) && tom.isBefore(opphørTom);
         }
         return false;
     }
@@ -117,17 +117,37 @@ public class SimuleringGenerator {
         else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
         List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
         List<BeregningsPeriode> beregningsPerioder = beregning.getBeregningsPeriode();
-        //Hvis det er opphør av ytelse fra DatoStatusFom til DatoVedtakFom (erOmpostering=J) konstrueres en negativ periode her
+        //Hvis det er opphør av ytelse fra DatoStatusFom til DatoVedtakFom (erOmpostering=J) konstrueres negative periode her eventuelt med feilutbetaling
         if (erOmpostering){
             if (oppdragslinjer.size() <= 1){
                 throw new IllegalArgumentException("Simuleringer med omPostering=J må minimum ha oppdragslinje med kodeEndringLinje OPPH og en med kodeEndringLinje NY. Denne simulering-request hadde " + oppdragslinjer.size() + " oppdragslinjer");
             }
             //Trenger ikke null-sjekk her ettersom det gjøres i erOmpostering() metoden
             Oppdragslinje mallinje = oppdragslinjer.get(0);
-            if (!YearMonth.from(ompostFom).isAfter(nesteMåned) && ompostFom.isBefore(LocalDate.parse(oppdragslinjer.get(1).getDatoVedtakFom(), dateTimeFormatter))) {
+            if (opphørFom.isBefore(LocalDate.parse(oppdragslinjer.get(1).getDatoVedtakFom(), dateTimeFormatter))) {
                 Oppdragslinje omposteringsOppdragslinje = new Oppdragslinje();
                 omposteringsOppdragslinje.setDatoVedtakFom(mallinje.getDatoStatusFom());
                 omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(oppdragslinjer.get(1).getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
+                omposteringsOppdragslinje.setKodeEndringLinje("ENDR");
+                omposteringsOppdragslinje.setKodeStatusLinje(KodeStatusLinje.OPPH);
+                omposteringsOppdragslinje.setDatoStatusFom(mallinje.getDatoStatusFom());
+                omposteringsOppdragslinje.setVedtakId(mallinje.getVedtakId());
+                omposteringsOppdragslinje.setDelytelseId(mallinje.getDelytelseId());
+                omposteringsOppdragslinje.setKodeKlassifik(mallinje.getKodeKlassifik());
+                omposteringsOppdragslinje.setSats(mallinje.getSats());
+                omposteringsOppdragslinje.setFradragTillegg(mallinje.getFradragTillegg());
+                omposteringsOppdragslinje.setTypeSats(mallinje.getTypeSats());
+                omposteringsOppdragslinje.setBrukKjoreplan(mallinje.getBrukKjoreplan());
+                omposteringsOppdragslinje.setSaksbehId(mallinje.getSaksbehId());
+                omposteringsOppdragslinje.setUtbetalesTilId(mallinje.getUtbetalesTilId());
+                omposteringsOppdragslinje.setHenvisning(mallinje.getHenvisning());
+                beregningsPerioder.add(opprettBeregningsperiode(omposteringsOppdragslinje, simulerBeregningRequest.getRequest().getOppdrag()));
+                oppdragslinjer.get(0).setDatoStatusFom(oppdragslinjer.get(1).getDatoVedtakFom());
+            }
+            if (!YearMonth.from(opphørFom).isAfter(nesteMåned) && opphørFom.isBefore(LocalDate.parse(oppdragslinjer.get(0).getDatoVedtakFom(), dateTimeFormatter))) {
+                Oppdragslinje omposteringsOppdragslinje = new Oppdragslinje();
+                omposteringsOppdragslinje.setDatoVedtakFom(mallinje.getDatoStatusFom());
+                omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(oppdragslinjer.get(0).getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
                 omposteringsOppdragslinje.setKodeEndringLinje("ENDR");
                 omposteringsOppdragslinje.setKodeStatusLinje(KodeStatusLinje.OPPH);
                 omposteringsOppdragslinje.setDatoStatusFom(mallinje.getDatoStatusFom());
@@ -193,19 +213,20 @@ public class SimuleringGenerator {
                 stoppnivaa.setFeilkonto(erOpphør|erOmpostering);
                 stoppnivaa.setKid("12345");
 
-                if (opphørsLinje){
+                if (opphørsLinje && erOpphørPeriode(periode.getFom(), periode.getTom())){
                     for (int i = 1 ; i <= 3 ; i++){
                         stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
                     }
                 }
-                else if (erOmposteringPeriode(periode.getFom(),periode.getTom()) && periode.getFom().isBefore(LocalDate.from(nesteMåned))){
+                else if (opphørsLinje && YearMonth.from(periode.getFom()).isBefore(nesteMåned.plusMonths(1))){
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje, 1));
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje, 3));
                 }
-                else {
+                else if (!opphørsLinje){
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettBeregningStoppNivaaDetaljer(periode, oppdragslinje));
                 }
-                beregningStoppnivaaer.add(stoppnivaa);
+                if (!stoppnivaa.getBeregningStoppnivaaDetaljer().isEmpty()){
+                beregningStoppnivaaer.add(stoppnivaa);}
             }
         }
 
