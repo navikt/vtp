@@ -22,16 +22,23 @@ import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.
 public class SimuleringGenerator {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String kodeEndring;
     Boolean erOpphør;
     Boolean erOmpostering;
+    LocalDate ompostFom;
+    LocalDate ompostTom;
     Boolean erRefusjon;
     String refunderesOrgNr;
 
     public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
-        this.kodeEndring = simulerBeregningRequest.getRequest().getOppdrag().getKodeEndring();
         this.erOpphør = erOpphør(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
         this.erOmpostering = erOmpostering(simulerBeregningRequest.getRequest().getOppdrag());
+        if (erOmpostering){
+            if (!simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom().equals(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom())){
+                throw new IllegalArgumentException("datoOmposterFom (" + simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom() + ") og datoStatusFom i første periode(" + simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom() + ")må være like");
+            }
+            this.ompostFom = LocalDate.parse(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom(), dateTimeFormatter);
+            this.ompostTom = LocalDate.parse(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoVedtakFom(), dateTimeFormatter);
+        }
         this.erRefusjon = erRefusjon(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
 
         SimulerBeregningResponse response = new SimulerBeregningResponse();
@@ -64,6 +71,13 @@ public class SimuleringGenerator {
     private boolean erOmpostering(Oppdrag oppdrag){
         if (oppdrag.getOmpostering() != null && oppdrag.getOmpostering().getOmPostering() != null){
             return oppdrag.getOmpostering().getOmPostering().equals("J");
+        }
+        return false;
+    }
+
+    private boolean erOmposteringPeriode(LocalDate fom, LocalDate tom){
+        if (erOmpostering) {
+            return !fom.isBefore(ompostFom) && tom.isBefore(ompostTom);
         }
         return false;
     }
@@ -103,18 +117,20 @@ public class SimuleringGenerator {
         else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
         List<Oppdragslinje> oppdragslinjer = simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje();
         List<BeregningsPeriode> beregningsPerioder = beregning.getBeregningsPeriode();
-        //Hvis det er opphør av ytelse fra DatoStatusFom til DatoVedtakFom (erOmpostering=true) konstrueres en negativ periode her
+        //Hvis det er opphør av ytelse fra DatoStatusFom til DatoVedtakFom (erOmpostering=J) konstrueres en negativ periode her
         if (erOmpostering){
+            if (oppdragslinjer.size() <= 1){
+                throw new IllegalArgumentException("Simuleringer med omPostering=J må minimum ha oppdragslinje med kodeEndringLinje OPPH og en med kodeEndringLinje NY. Denne simulering-request hadde " + oppdragslinjer.size() + " oppdragslinjer");
+            }
             //Trenger ikke null-sjekk her ettersom det gjøres i erOmpostering() metoden
             Oppdragslinje mallinje = oppdragslinjer.get(0);
-            String omposteringsdato = mallinje.getDatoStatusFom();
-            if (!YearMonth.from(LocalDate.parse(omposteringsdato,dateTimeFormatter)).isAfter(nesteMåned) && LocalDate.parse(omposteringsdato,dateTimeFormatter).isBefore(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter))) {
+            if (!YearMonth.from(ompostFom).isAfter(nesteMåned) && ompostFom.isBefore(LocalDate.parse(oppdragslinjer.get(1).getDatoVedtakFom(), dateTimeFormatter))) {
                 Oppdragslinje omposteringsOppdragslinje = new Oppdragslinje();
-                omposteringsOppdragslinje.setDatoVedtakFom(omposteringsdato);
-                omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(mallinje.getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
+                omposteringsOppdragslinje.setDatoVedtakFom(mallinje.getDatoStatusFom());
+                omposteringsOppdragslinje.setDatoVedtakTom(LocalDate.parse(oppdragslinjer.get(1).getDatoVedtakFom(), dateTimeFormatter).minusDays(1L).toString());
                 omposteringsOppdragslinje.setKodeEndringLinje("ENDR");
                 omposteringsOppdragslinje.setKodeStatusLinje(KodeStatusLinje.OPPH);
-                omposteringsOppdragslinje.setDatoStatusFom(omposteringsdato);
+                omposteringsOppdragslinje.setDatoStatusFom(mallinje.getDatoStatusFom());
                 omposteringsOppdragslinje.setVedtakId(mallinje.getVedtakId());
                 omposteringsOppdragslinje.setDelytelseId(mallinje.getDelytelseId());
                 omposteringsOppdragslinje.setKodeKlassifik(mallinje.getKodeKlassifik());
@@ -181,6 +197,10 @@ public class SimuleringGenerator {
                     for (int i = 1 ; i <= 3 ; i++){
                         stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje,i));
                     }
+                }
+                else if (erOmposteringPeriode(periode.getFom(),periode.getTom()) && periode.getFom().isBefore(LocalDate.from(nesteMåned))){
+                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje, 1));
+                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragslinje, 3));
                 }
                 else {
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettBeregningStoppNivaaDetaljer(periode, oppdragslinje));
@@ -349,9 +369,8 @@ public class SimuleringGenerator {
     private BigDecimal setBeløp(Periode periode, Oppdragslinje oppdragslinje, int sequence){
         int antallVirkedager = periode.getAntallVirkedager();
         BigDecimal belop = oppdragslinje.getSats().multiply(BigDecimal.valueOf(antallVirkedager));
-        if (sequence == 3 && periode.getFom().isBefore(LocalDate.now())){
-            if (erOpphør){ return belop.negate(); }
-            else { return belop.multiply(BigDecimal.valueOf(2)).negate(); }
+        if (sequence == 3){
+            return belop.negate();
         }
         else { return belop; }
     }
