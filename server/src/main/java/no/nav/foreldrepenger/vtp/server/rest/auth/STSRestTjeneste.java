@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -50,8 +51,8 @@ public class STSRestTjeneste {
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    public UserTokenResponse dummyToken(@QueryParam("grant_type") String grant_type,
-                                        @QueryParam("scope") String scope) throws JoseException {
+    public UserTokenResponse dummyToken(@FormParam("grant_type") String grant_type,
+                                        @FormParam("scope") String scope) throws JoseException {
         JsonWebSignature jws = new JsonWebSignature();
         jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
