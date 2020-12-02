@@ -76,7 +76,11 @@ public class PdlMock {
 
     // TODO: Det er ikke støtte for å gjøre flere operasjoner på en query (f.eks. hentPerson og hentGeografiskTilknytning samtidig)
     private String hentOperationName(GraphQLRequest request) {
-        return StringUtils.substringBetween(request.getQuery(), "{", "(").trim();
+        var operasjon = StringUtils.substringBetween(request.getQuery(), "{", "(").trim();
+        if (operasjon.contains(":")) { // Alias
+            return StringUtils.substringAfter(operasjon, ":").trim();
+        }
+        return operasjon;
     }
 
 }
