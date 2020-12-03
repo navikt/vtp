@@ -4,12 +4,16 @@ import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXB;
 
@@ -19,6 +23,8 @@ import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.lang.JoseException;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
 
@@ -72,6 +78,18 @@ public class STSRestTjeneste {
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
         String token = jws.getCompactSerialization();
         return new UserTokenResponse(token, 600000L, "jwt");
+    }
+    
+    
+    @GET
+    @Path("/.well-known/openid-configuration")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
+    public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
+        LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
+        String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, getIssuer());
+        return Response.ok(wellKnownResponse).build();
     }
 
     public static class SAMLResponse {
