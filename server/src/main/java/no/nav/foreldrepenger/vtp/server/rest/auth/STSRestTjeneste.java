@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -46,6 +47,19 @@ public class STSRestTjeneste {
         response.setExpires_in(LocalDateTime.MAX);
 
         return response;
+    }
+
+    @Deprecated()
+    @GET
+    @Path("/token")
+    @Produces({MediaType.APPLICATION_JSON})
+    public UserTokenResponse getDummyToken(@QueryParam("grant_type") String grant_type,
+                                           @QueryParam("scope") String scope) throws JoseException {
+        JsonWebSignature jws = new JsonWebSignature();
+        jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
+        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
+        String token = jws.getCompactSerialization();
+        return new UserTokenResponse(token, 600000L, "jwt");
     }
 
     @POST
@@ -110,10 +124,10 @@ public class STSRestTjeneste {
     }
 
     public static class UserTokenResponse {
+        private final LocalDateTime issuedTime = LocalDateTime.now();
         private String access_token;
         private Long expires_in;
         private String token_type;
-        private final LocalDateTime issuedTime = LocalDateTime.now();
 
         @SuppressWarnings("unused")
         public UserTokenResponse() {
@@ -127,7 +141,6 @@ public class STSRestTjeneste {
         }
 
         /**
-         *
          * @param expirationLeeway the amount of seconds to be subtracted from the expirationTime to avoid returning false positives
          * @return <code>true</code> if "now" is after the expirationtime(minus leeway), else returns <code>false</code>
          */
