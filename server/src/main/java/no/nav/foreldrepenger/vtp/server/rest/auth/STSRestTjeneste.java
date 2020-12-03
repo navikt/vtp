@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.rest.auth;
 
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
@@ -17,29 +18,27 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXB;
 
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
-import org.jose4j.jws.AlgorithmIdentifiers;
-import org.jose4j.jws.JsonWebSignature;
-import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.felles.OidcTokenGenerator;
 import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
 
-@Api(tags = { "Security Token Service" })
+@Api(tags = {"Security Token Service"})
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
+    public static final String ISSUER = "https://vtp.local/issuer";
     private static final Logger log = LoggerFactory.getLogger(STSRestTjeneste.class);
-
     private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
     @SuppressWarnings("unused")
     @POST
     @Path("/token/exchange")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public SAMLResponse dummySaml(@QueryParam("grant_type") String grant_type,
                                   @QueryParam("subject_token_type") String issuedTokenType,
                                   @QueryParam("subject_token") String subject_token) {
@@ -62,29 +61,52 @@ public class STSRestTjeneste {
     @Deprecated()
     @GET
     @Path("/token")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public UserTokenResponse getDummyToken(@QueryParam("grant_type") String grant_type,
-                                           @QueryParam("scope") String scope)
-            throws JoseException {
-        JsonWebSignature jws = new JsonWebSignature();
-        jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
-        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
-        String token = jws.getCompactSerialization();
-        return new UserTokenResponse(token, 600000L, "jwt");
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getDummyToken(@QueryParam("grant_type") String grant_type,
+                                  @QueryParam("scope") String scope,
+                                  @Context HttpServletRequest req) {
+        var username = getUsername(req);
+        if (username != null) {
+            return createTokenForUser(username);
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 
     @SuppressWarnings("unused")
     @POST
     @Path("/token")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public UserTokenResponse dummyToken(@FormParam("grant_type") String grant_type,
-                                        @FormParam("scope") String scope)
-            throws JoseException {
-        JsonWebSignature jws = new JsonWebSignature();
-        jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
-        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
-        String token = jws.getCompactSerialization();
-        return new UserTokenResponse(token, 600000L, "jwt");
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response dummyToken(@FormParam("grant_type") String grant_type,
+                               @FormParam("scope") String scope,
+                               @Context HttpServletRequest req) {
+        var username = getUsername(req);
+        if (username != null) {
+            return createTokenForUser(username);
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+    }
+
+    private Response createTokenForUser(String username) {
+        OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, null)
+                .withIssuer(ISSUER);
+        return Response.ok(new UserTokenResponse(tokenGenerator.create(), 600000L, "Bearer"), MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    private String getUsername(HttpServletRequest req) {
+        final String authorization = req.getHeader("Authorization");
+        if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
+            // Authorization: Basic base64credentials
+            String base64Credentials = authorization.substring("Basic".length()).trim();
+            byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+            String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+            // credentials = username:password
+            final String[] values = credentials.split(":", 2);
+            return values[0];
+        }
+        return null;
     }
 
     @GET
@@ -105,8 +127,7 @@ public class STSRestTjeneste {
         log.info("kall på /rest/v1/sts/.well-known/openid-configuration");
         String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
 
-        String issuer = "https://vtp.local/issuer";
-        var wkr = new STSWellKnownResponse(issuer);
+        var wkr = new STSWellKnownResponse(ISSUER);
         String basePath = baseUrl + "/rest/v1/sts";
 
         wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
@@ -205,10 +226,10 @@ public class STSRestTjeneste {
         @Override
         public String toString() {
             return "UserTokenImpl{" +
-                "access_token='" + access_token + '\'' +
-                ", expires_in=" + expires_in +
-                ", token_type='" + token_type + '\'' +
-                '}';
+                    "access_token='" + access_token + '\'' +
+                    ", expires_in=" + expires_in +
+                    ", token_type='" + token_type + '\'' +
+                    '}';
         }
     }
 }
