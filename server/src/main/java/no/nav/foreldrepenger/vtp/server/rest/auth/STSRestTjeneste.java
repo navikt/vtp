@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -16,29 +14,32 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import javax.xml.bind.JAXB;
 
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.lang.JoseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
 
-@Api(tags = {"Security Token Service"})
+@Api(tags = { "Security Token Service" })
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
+    private static final Logger log = LoggerFactory.getLogger(STSRestTjeneste.class);
+
     private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
+    @SuppressWarnings("unused")
     @POST
     @Path("/token/exchange")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public SAMLResponse dummySaml(@QueryParam("grant_type") String grant_type,
                                   @QueryParam("subject_token_type") String issuedTokenType,
                                   @QueryParam("subject_token") String subject_token) {
@@ -57,12 +58,14 @@ public class STSRestTjeneste {
         return response;
     }
 
+    @SuppressWarnings("unused")
     @Deprecated()
     @GET
     @Path("/token")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public UserTokenResponse getDummyToken(@QueryParam("grant_type") String grant_type,
-                                           @QueryParam("scope") String scope) throws JoseException {
+                                           @QueryParam("scope") String scope)
+            throws JoseException {
         JsonWebSignature jws = new JsonWebSignature();
         jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
@@ -70,28 +73,47 @@ public class STSRestTjeneste {
         return new UserTokenResponse(token, 600000L, "jwt");
     }
 
+    @SuppressWarnings("unused")
     @POST
     @Path("/token")
-    @Produces({MediaType.APPLICATION_JSON})
+    @Produces({ MediaType.APPLICATION_JSON })
     public UserTokenResponse dummyToken(@FormParam("grant_type") String grant_type,
-                                        @FormParam("scope") String scope) throws JoseException {
+                                        @FormParam("scope") String scope)
+            throws JoseException {
         JsonWebSignature jws = new JsonWebSignature();
         jws.setKey(KeyStoreTool.getJsonWebKey().getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
         String token = jws.getCompactSerialization();
         return new UserTokenResponse(token, 600000L, "jwt");
     }
-    
-    
+
+    @GET
+    @Path("/jwks")
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av jwk_uri"))
+    public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
+        String jwks = KeyStoreTool.getJwks();
+        log.info("JWKS: " + jwks);
+        return Response.ok(jwks).build();
+    }
+
     @GET
     @Path("/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
-        LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
+        log.info("kall på /rest/v1/sts/.well-known/openid-configuration");
         String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
-        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, getIssuer());
-        return Response.ok(wellKnownResponse).build();
+
+        String issuer = "https://vtp.local/issuer";
+        var wkr = new STSWellKnownResponse(issuer);
+        String basePath = baseUrl + "/rest/v1/sts";
+
+        wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
+        wkr.setTokenEndpoint(basePath + "/token");
+        wkr.setJwksUri(basePath + "/jwks");
+
+        return Response.ok(wkr).build();
     }
 
     public static class SAMLResponse {
@@ -151,7 +173,7 @@ public class STSRestTjeneste {
 
         @SuppressWarnings("unused")
         public UserTokenResponse() {
-            //Required by Jackson when mapping json object
+            // Required by Jackson when mapping json object
         }
 
         public UserTokenResponse(String access_token, Long expires_in, String token_type) {
@@ -183,10 +205,10 @@ public class STSRestTjeneste {
         @Override
         public String toString() {
             return "UserTokenImpl{" +
-                    "access_token='" + access_token + '\'' +
-                    ", expires_in=" + expires_in +
-                    ", token_type='" + token_type + '\'' +
-                    '}';
+                "access_token='" + access_token + '\'' +
+                ", expires_in=" + expires_in +
+                ", token_type='" + token_type + '\'' +
+                '}';
         }
     }
 }
