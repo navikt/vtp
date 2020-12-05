@@ -2,10 +2,8 @@ package no.nav.foreldrepenger.vtp.server.rest.auth;
 
 import java.net.URISyntaxException;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,13 +11,9 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-import javax.naming.ldap.InitialLdapContext;
-import javax.naming.ldap.LdapName;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -47,9 +41,9 @@ import no.nav.foreldrepenger.vtp.felles.OidcTokenGenerator;
 
 @Api(tags = {"Openam"})
 @Path("/isso")
-public class Oauth2RestService {
+public class OpenAMRestService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Oauth2RestService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OpenAMRestService.class);
 
     private static final Map<String, String> nonceCache = new HashMap<>();
 
@@ -164,7 +158,7 @@ public class Oauth2RestService {
     }
 
 
-    // TODO (FC): Trengs denne fortsatt?
+    @Deprecated()
     @POST
     @Path("/oauth2/access_token")
     @Produces({MediaType.APPLICATION_JSON})
@@ -279,7 +273,7 @@ public class Oauth2RestService {
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/.well-known/openid-configuration");
         String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
-        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, getIssuer());
+        OpenAMWellKnownResponse wellKnownResponse = new OpenAMWellKnownResponse(baseUrl, getIssuer());
         return Response.ok(wellKnownResponse).build();
     }
 

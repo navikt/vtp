@@ -1,15 +1,14 @@
 package no.nav.foreldrepenger.vtp.server.rest.auth;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-class WellKnownResponse {
+class OpenAMWellKnownResponse {
 
 
     @JsonProperty("response_types_supported")
-    private List<String> responseTypesSupported = Arrays.asList(
+    private List<String> responseTypesSupported = List.of(
             "code token id_token",
             "code",
             "code id_token",
@@ -33,29 +32,29 @@ class WellKnownResponse {
 
 
     @JsonProperty("scopes_supported")
-    private List<String> scopesSupported = Arrays.asList("openid");
+    private List<String> scopesSupported = List.of("openid");
 
     @JsonProperty("issuer")
     private String issuer;
 
     @JsonProperty("id_token_encryption_enc_values_supported")
-    private List<String> idTokenEncryptionEncValuesSupported = Arrays.asList(
+    private List<String> idTokenEncryptionEncValuesSupported = List.of(
             "A128CBC-HS256",
             "A256CBC-HS512"
     );
 
     @JsonProperty("acr_values_supported")
-    private List<String> acrValuesSupported = Arrays.asList();
+    private List<String> acrValuesSupported = List.of();
 
     @JsonProperty("authorization_endpoint")
     private String authorizationEndpoint;
 
     @JsonProperty("claims_supported")
-    private List<String> claimsSupported = Arrays.asList();
+    private List<String> claimsSupported = List.of();
 
 
     @JsonProperty("id_token_encryption_alg_values_supported")
-    private List<String> idTokenEncryptionAlgValuesSupported = Arrays.asList(
+    private List<String> idTokenEncryptionAlgValuesSupported = List.of(
             "RSA1_5"
     );
 
@@ -63,12 +62,12 @@ class WellKnownResponse {
     private String jwksUri;
 
     @JsonProperty("subject_types_supported")
-    private List<String> subjectTypesSupported = Arrays.asList(
+    private List<String> subjectTypesSupported = List.of(
             "public"
     );
 
     @JsonProperty("id_token_signing_alg_values_supported")
-    private List<String> idTokenSigningAlgValuesSupported = Arrays.asList(
+    private List<String> idTokenSigningAlgValuesSupported = List.of(
             "ES384",
             "HS256",
             "HS512",
@@ -83,7 +82,7 @@ class WellKnownResponse {
 
 
     @JsonProperty("token_endpoint_auth_methods_supported")
-    private List<String> tokenEndpointAuthMethodsSupported = Arrays.asList(
+    private List<String> tokenEndpointAuthMethodsSupported = List.of(
             "private_key_jwt",
             "client_secret_basic"
     );
@@ -91,7 +90,7 @@ class WellKnownResponse {
     @JsonProperty("token_endpoint")
     private String tokenEndpoint;
 
-    public WellKnownResponse(String url, String issuer) {
+    public OpenAMWellKnownResponse(String url, String issuer) {
         this.issuer = issuer;
         this.endSessionEndpoint = url + "/rest/isso/oauth2/connect/endSession";
         this.checkSessionIframe = url + "/rest/isso/oauth2/connect/checkSession";
