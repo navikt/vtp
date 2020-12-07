@@ -1,11 +1,10 @@
-package no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt;
+package no.nav.foreldrepenger.vtp.server.rest.auth;
+
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Arrays;
-import java.util.List;
-
-class WellKnownResponse {
+class AADWellKnownResponse {
     private final String baseUrl;
     private final String tenant;
 
@@ -15,7 +14,7 @@ class WellKnownResponse {
     }
 
     @JsonProperty("claims_supported")
-    public final List<String> claimsSupported = Arrays.asList(
+    public final List<String> claimsSupported = List.of(
             "sub",
             "iss",
             "cloud_instance_name",
@@ -56,7 +55,7 @@ class WellKnownResponse {
 
 
     @JsonProperty("id_token_signing_alg_values_supported")
-    public final List<String> idTokenSigningAlgValuesSupported = Arrays.asList("RS256");
+    public final List<String> idTokenSigningAlgValuesSupported = List.of("RS256");
 
     @JsonProperty("issuer")
     public final String getIssuer() {
@@ -78,16 +77,16 @@ class WellKnownResponse {
     public final boolean request_uri_parameter_supported = false;
 
     @JsonProperty("response_modes_supported")
-    public final List<String> responseModesSupported = Arrays.asList("query", "fragment", "form_post");
+    public final List<String> responseModesSupported = List.of("query", "fragment", "form_post");
 
     @JsonProperty("response_types_supported")
-    public final List<String> responseTypesSupported = Arrays.asList("code", "id_token", "code id_token", "id_token token");
+    public final List<String> responseTypesSupported = List.of("code", "id_token", "code id_token", "id_token token");
 
     @JsonProperty("scopes_supported")
-    public final List<String> scopesSupported = Arrays.asList("openid", "profile", "email", "offline_access");
+    public final List<String> scopesSupported = List.of("openid", "profile", "email", "offline_access");
 
     @JsonProperty("subject_types_supported")
-    public final List<String> subjectTypesSupported = Arrays.asList("pairwise");
+    public final List<String> subjectTypesSupported = List.of("pairwise");
 
     @JsonProperty("tenant_region_scope")
     public final String tenantRegionScope = "EU";
@@ -98,14 +97,14 @@ class WellKnownResponse {
     }
 
     @JsonProperty("token_endpoint_auth_methods_supported")
-    public final List<String> tokenEndpointAuthMethodsSupported = Arrays.asList("client_secret_post", "private_key_jwt", "client_secret_basic");
+    public final List<String> tokenEndpointAuthMethodsSupported = List.of("client_secret_post", "private_key_jwt", "client_secret_basic");
 
     @JsonProperty("userinfo_endpoint")
     public String getUserinfoEndpoint() {
         return baseUrl + "/rest/AzureGraphAPI/oidc/userinfo";
     }
 
-    WellKnownResponse(String url, String tenant) {
+    AADWellKnownResponse(String url, String tenant) {
         this.baseUrl = url;
         this.tenant = tenant;
     }

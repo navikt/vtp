@@ -26,7 +26,6 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
-import no.nav.vtp.DummyRestTjenesteFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,12 +47,11 @@ import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
-import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2RestService;
+import no.nav.foreldrepenger.vtp.server.rest.auth.AADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.rest.auth.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.AzureAdNAVAnsattService;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
-import no.nav.foreldrepenger.vtp.server.rest.oauth2.Oauth2RestTjeneste;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
@@ -69,6 +67,7 @@ import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
+import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
 
 public class ApplicationConfig extends Application {
@@ -117,12 +116,11 @@ public class ApplicationConfig extends Application {
         classes.add(DigitalKontaktinformasjonMock.class);
 
         // tekniske ting
-        classes.add(Oauth2RestService.class);
-        classes.add(AzureAdNAVAnsattService.class);
+        classes.add(OpenAMRestService.class);
+        classes.add(AADRestTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
-        classes.add(Oauth2RestTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);

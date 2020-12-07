@@ -1,33 +1,44 @@
-package no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt;
+package no.nav.foreldrepenger.vtp.server.rest.auth;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.felles.AzureOidcTokenGenerator;
-import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
-import no.nav.foreldrepenger.vtp.server.rest.auth.Oauth2AccessTokenResponse;
-import no.nav.foreldrepenger.vtp.server.rest.auth.UserRepository;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.URIBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.net.URISyntaxException;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.felles.AzureOidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 
 @Api(tags = {"AzureAd"})
 @Path("/AzureAd")
-public class AzureAdNAVAnsattService {
-    private static final Logger LOG = LoggerFactory.getLogger(AzureAdNAVAnsattService.class);
+public class AADRestTjeneste {
+    private static final Logger LOG = LoggerFactory.getLogger(AADRestTjeneste.class);
     private static final Map<String, String> nonceCache = new HashMap<>();
     private static final Map<String, String> clientIdCache = new HashMap<>();
 
@@ -45,7 +56,7 @@ public class AzureAdNAVAnsattService {
     @ApiOperation(value = "Azure AD Discovery url", notes = ("Mock impl av Azure AD discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req, @PathParam("tenant") String tenant) {
         String baseUrl = getBaseUrl(req);
-        WellKnownResponse wellKnownResponse = new WellKnownResponse(baseUrl, tenant);
+        AADWellKnownResponse wellKnownResponse = new AADWellKnownResponse(baseUrl, tenant);
         return Response.ok(wellKnownResponse).build();
     }
 
