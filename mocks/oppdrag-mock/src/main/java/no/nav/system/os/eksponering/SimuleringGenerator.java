@@ -248,7 +248,7 @@ public class SimuleringGenerator {
         else { stoppnivaaDetaljer.setKlassekode(oppdragsperiode.getKodeKlassifik()); }
         stoppnivaaDetaljer.setKlasseKodeBeskrivelse("DUMMY");
         if (sequence == 2) { stoppnivaaDetaljer.setTypeKlasse("FEIL"); }
-        else if (sequence == 3) { stoppnivaaDetaljer.setTypeKlasse("MOTP"); }
+//        else if (sequence == 3) { stoppnivaaDetaljer.setTypeKlasse("MOTP"); }
         else { stoppnivaaDetaljer.setTypeKlasse("YTEL"); }
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
         if (erRefusjon && refunderesOrgNr != null){stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);}
