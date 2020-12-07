@@ -51,6 +51,10 @@ public class Periode implements Comparable<Periode>{
         return tom;
     }
 
+    public void setTom(LocalDate tom) {
+        this.tom = tom;
+    }
+
     public BigDecimal getSats(){
         return sats;
     }

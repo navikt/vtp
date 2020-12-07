@@ -114,6 +114,9 @@ public class SimuleringGenerator {
 
         for (Periode oppdragsperiode : oppdragsPeriodeList) {
             if (!YearMonth.from(oppdragsperiode.getFom()).isAfter(nesteMåned)) {
+                while (YearMonth.from(oppdragsperiode.getTom()).isAfter(nesteMåned)){
+                    oppdragsperiode.setTom(oppdragsperiode.getTom().minusMonths(1).withDayOfMonth(oppdragsperiode.getTom().minusMonths(1).lengthOfMonth()));
+                }
                 beregningsPerioder.add(opprettBeregningsperiode(oppdragsperiode, simulerBeregningRequest.getRequest().getOppdrag()));
             }
         }
