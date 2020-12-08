@@ -137,7 +137,7 @@ public class SimuleringGenerator {
         List<BeregningStoppnivaa> beregningStoppnivaaer = new ArrayList<>();
 
         YearMonth nesteMåned;
-        if (oppdragsperiode.getPeriodeType().equals(PeriodeType.OPPH) || oppdragsperiode.getPeriodeType().equals(PeriodeType.REDUKSJON))
+        if (oppdragsperiode.getPeriodeType().equals(PeriodeType.OPPH) || LocalDate.now().getDayOfMonth() <= 19)
         {nesteMåned = YearMonth.from(LocalDate.now());}
         else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
         for (Periode periode : perioder) {
@@ -152,7 +152,10 @@ public class SimuleringGenerator {
                     stoppnivaa.setUtbetalesTilNavn("DUMMY");
                 }
                 stoppnivaa.setBehandlendeEnhet("8052");
-                LocalDate forfallsdato = periode.getFom().isBefore(LocalDate.now()) ? LocalDate.now() : periode.getTom().plusDays(1);
+                LocalDate forfallsdato = LocalDate.now();
+                if (YearMonth.from(periode.getFom()).equals(nesteMåned)){
+                    forfallsdato = LocalDate.now().withDayOfMonth(20);
+                }
                 stoppnivaa.setForfall(dateTimeFormatter.format(forfallsdato));
                 stoppnivaa.setOppdragsId(1234L);
                 stoppnivaa.setStoppNivaaId(BigInteger.ONE);
@@ -167,12 +170,11 @@ public class SimuleringGenerator {
                     }
                 }
                 else if (oppdragsperiode.getPeriodeType().equals(PeriodeType.REDUKSJON) && YearMonth.from(periode.getFom()).isBefore(nesteMåned)){
-                    for (int i = 1 ; i <= 3 ; i++){
+                    for (int i = 2 ; i <= 3 ; i++){
                         stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragsperiode, i));
                     }
                 }
                 else if (oppdragsperiode.getPeriodeType().equals(PeriodeType.ØKNING) && YearMonth.from(periode.getFom()).isBefore(nesteMåned)){
-                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragsperiode, 1));
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragsperiode, 3));
                     stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettBeregningStoppNivaaDetaljer(periode, oppdragsperiode));
                 }
@@ -253,7 +255,6 @@ public class SimuleringGenerator {
         else { stoppnivaaDetaljer.setKlassekode(oppdragsperiode.getKodeKlassifik()); }
         stoppnivaaDetaljer.setKlasseKodeBeskrivelse("DUMMY");
         if (sequence == 2) { stoppnivaaDetaljer.setTypeKlasse("FEIL"); }
-//        else if (sequence == 3) { stoppnivaaDetaljer.setTypeKlasse("MOTP"); }
         else { stoppnivaaDetaljer.setTypeKlasse("YTEL"); }
         stoppnivaaDetaljer.setTypeKlasseBeskrivelse("DUMMY");
         if (erRefusjon && refunderesOrgNr != null){stoppnivaaDetaljer.setRefunderesOrgNr(refunderesOrgNr);}
