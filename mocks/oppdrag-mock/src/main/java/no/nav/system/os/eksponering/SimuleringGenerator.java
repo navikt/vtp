@@ -137,11 +137,13 @@ public class SimuleringGenerator {
         List<BeregningStoppnivaa> beregningStoppnivaaer = new ArrayList<>();
 
         YearMonth nesteMåned;
-        if (oppdragsperiode.getPeriodeType().equals(PeriodeType.OPPH) || LocalDate.now().getDayOfMonth() <= 19)
-        {nesteMåned = YearMonth.from(LocalDate.now());}
-        else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
+        YearMonth sisteMåned;
+        if (LocalDate.now().getDayOfMonth() <= 19){ nesteMåned = YearMonth.from(LocalDate.now());}
+        else { nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
+        if (oppdragsperiode.getPeriodeType().equals(PeriodeType.OPPH)){ sisteMåned = nesteMåned.minusMonths(1);}
+        else { sisteMåned = nesteMåned;}
         for (Periode periode : perioder) {
-            if (!YearMonth.from(periode.getFom()).isAfter(nesteMåned)) {
+            if (!YearMonth.from(periode.getFom()).isAfter(sisteMåned)) {
                 BeregningStoppnivaa stoppnivaa = new BeregningStoppnivaa();
                 stoppnivaa.setKodeFagomraade(oppdrag.getKodeFagomraade());
                 if (erRefusjon) {
