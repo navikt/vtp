@@ -108,16 +108,18 @@ public class SimuleringGenerator {
 
     private void leggTilBeregningsperioder(SimulerBeregningRequest simulerBeregningRequest, Beregning beregning) {
         YearMonth nesteMåned;
-        if (erOpphør){nesteMåned = YearMonth.from(LocalDate.now());}
+        if (erOpphør || LocalDate.now().getDayOfMonth() <= 19){nesteMåned = YearMonth.from(LocalDate.now());}
         else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
         List<BeregningsPeriode> beregningsPerioder = beregning.getBeregningsPeriode();
 
         for (Periode oppdragsperiode : oppdragsPeriodeList) {
-            if (!YearMonth.from(oppdragsperiode.getFom()).isAfter(nesteMåned)) {
+            if (!YearMonth.from(oppdragsperiode.getFom()).isAfter(nesteMåned) && oppdragsperiode.getAntallVirkedager() != 0) {
                 while (YearMonth.from(oppdragsperiode.getTom()).isAfter(nesteMåned)){
                     oppdragsperiode.setTom(oppdragsperiode.getTom().minusMonths(1).withDayOfMonth(oppdragsperiode.getTom().minusMonths(1).lengthOfMonth()));
                 }
-                beregningsPerioder.add(opprettBeregningsperiode(oppdragsperiode, simulerBeregningRequest.getRequest().getOppdrag()));
+                BeregningsPeriode beregningsPeriode = opprettBeregningsperiode(oppdragsperiode, simulerBeregningRequest.getRequest().getOppdrag());
+                if (!beregningsPeriode.getBeregningStoppnivaa().isEmpty()){
+                beregningsPerioder.add(opprettBeregningsperiode(oppdragsperiode, simulerBeregningRequest.getRequest().getOppdrag()));}
             }
         }
     }
