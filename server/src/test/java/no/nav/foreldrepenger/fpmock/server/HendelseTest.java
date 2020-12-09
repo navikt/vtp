@@ -66,13 +66,8 @@ public class HendelseTest {
         var annenpartIdent = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
         var fødselsdato = LocalDate.now().plusDays(14);
 
-        var fødselshendelseDto = new FødselshendelseDto(
-                Endringstype.OPPRETTET.name(),
-                null,
-                søkerIdent,
-                annenpartIdent,
-                null,
-                fødselsdato);
+        var fødselshendelseDto = new FødselshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent,
+                annenpartIdent, null, fødselsdato);
         assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
         assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
 
