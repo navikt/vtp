@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.fpmock.server;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doNothing;
 
 import java.io.IOException;
@@ -64,14 +64,15 @@ public class HendelseTest {
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søkerIdent = testscenario.getPersonopplysninger().getSøker().getIdent();
         var annenpartIdent = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
-
-        var fødselshendelseDto = new FødselshendelseDto();
         var fødselsdato = LocalDate.now().plusDays(14);
-        fødselshendelseDto.setFnrMor(søkerIdent);
-        fødselshendelseDto.setFnrFar(annenpartIdent);
-        fødselshendelseDto.setFødselsdato(fødselsdato);
-        fødselshendelseDto.setEndringstype(Endringstype.OPPRETTET.name());
 
+        var fødselshendelseDto = new FødselshendelseDto(
+                Endringstype.OPPRETTET.name(),
+                null,
+                søkerIdent,
+                annenpartIdent,
+                null,
+                fødselsdato);
         assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
         assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
 
@@ -96,10 +97,7 @@ public class HendelseTest {
         var søkerIdent = testscenario.getPersonopplysninger().getSøker().getIdent();
         var dødsdato = LocalDate.now().minusDays(1);
 
-        var dødshendelse = new DødshendelseDto();
-        dødshendelse.setDoedsdato(dødsdato);
-        dødshendelse.setEndringstype(Endringstype.OPPRETTET.name());
-        dødshendelse.setFnr(søkerIdent);
+        var dødshendelse = new DødshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent,dødsdato);
 
         pdlLeesahRestTjeneste.leggTilHendelse(dødshendelse);
 
@@ -117,10 +115,8 @@ public class HendelseTest {
         var søkerIdent = testscenario.getPersonopplysninger().getSøker().getIdent();
         var dødsdato = LocalDate.now().minusDays(3);
 
-        var dødfødselshendelse = new DødfødselhendelseDto();
-        dødfødselshendelse.setDoedfoedselsdato(dødsdato);
-        dødfødselshendelse.setEndringstype(Endringstype.OPPRETTET.name());
-        dødfødselshendelse.setFnr(søkerIdent);
+        var dødfødselshendelse =
+                new DødfødselhendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent, dødsdato);
 
         assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
         assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);

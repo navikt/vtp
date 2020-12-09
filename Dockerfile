@@ -1,5 +1,5 @@
 FROM navikt/java:15
-
+ENV JAVA_OPTS --enable-preview
 ENV DUMMYPROP=fraDockerfile
 
 ARG JAR_FILE

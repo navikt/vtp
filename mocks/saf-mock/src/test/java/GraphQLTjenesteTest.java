@@ -1,18 +1,17 @@
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import org.junit.Test;
-import org.mockito.Mockito;
 
 public class GraphQLTjenesteTest {
 

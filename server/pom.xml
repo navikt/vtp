@@ -125,11 +125,6 @@
             <groupId>no.nav.security</groupId>
             <artifactId>mock-oauth2-server</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- Eksterne avhengigheter -->
         <dependency>
@@ -191,11 +186,6 @@
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>testmodell</artifactId>
             <type>test-jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -10,73 +10,19 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "FamilierelasjonHendelseDto")
 @JsonDeserialize(as = FamilierelasjonHendelseDto.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FamilierelasjonHendelseDto implements PersonhendelseDto {
-    @JsonProperty("type")
-    private String type = "familierelasjonshendelse";
+public record FamilierelasjonHendelseDto(@JsonProperty("type") String type,
+                                         @ApiModelProperty @JsonProperty("endringstype") String endringstype,
+                                         @ApiModelProperty @JsonProperty("fnr") String fnr,
+                                         @ApiModelProperty  @JsonProperty("relatertPersonsFnr") String relatertPersonsFnr,
+                                         @ApiModelProperty @JsonProperty("relatertPersonsRolle") String relatertPersonsRolle,
+                                         @ApiModelProperty @JsonProperty("minRolleForPerson") String minRolleForPerson)
+        implements PersonhendelseDto {
 
-    @ApiModelProperty
-    @JsonProperty("endringstype")
-    private String endringstype;
-
-    @ApiModelProperty
-    @JsonProperty("fnr")
-    private String fnr;
-
-    @ApiModelProperty
-    @JsonProperty("relatertPersonsFnr")
-    private String relatertPersonsFnr;
-
-    @ApiModelProperty
-    @JsonProperty("relatertPersonsRolle")
-    private String relatertPersonsRolle;
-
-    @ApiModelProperty
-    @JsonProperty("minRolleForPerson")
-    private String minRolleForPerson;
-
-    public FamilierelasjonHendelseDto() {
+    public FamilierelasjonHendelseDto(String endringstype, String fnr, String relatertPersonsFnr, String relatertPersonsRolle,String minRolleForPerson) {
+        this("familierelasjonshendelse", endringstype, fnr, relatertPersonsFnr, relatertPersonsRolle, minRolleForPerson);
     }
 
     @Override
     public String getType(){return type;}
 
-    public String getEndringstype() {
-        return endringstype;
-    }
-
-    public void setEndringstype(String endringstype) {
-        this.endringstype = endringstype;
-    }
-
-    public String getFnr() {
-        return fnr;
-    }
-
-    public void setFnr(String fnr) {
-        this.fnr = fnr;
-    }
-
-    public String getRelatertPersonsFnr() {
-        return relatertPersonsFnr;
-    }
-
-    public void setRelatertPersonsFnr(String relatertPersonsFnr) {
-        this.relatertPersonsFnr = relatertPersonsFnr;
-    }
-
-    public String getRelatertPersonsRolle() {
-        return relatertPersonsRolle;
-    }
-
-    public void setRelatertPersonsRolle(String relatertPersonsRolle) {
-        this.relatertPersonsRolle = relatertPersonsRolle;
-    }
-
-    public String getMinRolleForPerson() {
-        return minRolleForPerson;
-    }
-
-    public void setMinRolleForPerson(String minRolleForPerson) {
-        this.minRolleForPerson = minRolleForPerson;
-    }
 }
