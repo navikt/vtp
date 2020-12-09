@@ -24,23 +24,13 @@ public class SimuleringGenerator {
 
     PeriodeGenerator periodeGenerator = new PeriodeGenerator();
 
-    Boolean erOpphør;
-    Boolean erOmpostering;
     Boolean erRefusjon;
     String refunderesOrgNr;
 
     List<Periode> oppdragsPeriodeList = new ArrayList<>();
 
     public SimulerBeregningResponse opprettSimuleringsResultat(SimulerBeregningRequest simulerBeregningRequest) {
-        this.erOpphør = erOpphør(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
-        this.erOmpostering = erOmpostering(simulerBeregningRequest.getRequest().getOppdrag());
-        if (erOmpostering){
-            if (!simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom().equals(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom())){
-                throw new IllegalArgumentException("datoOmposterFom (" + simulerBeregningRequest.getRequest().getOppdrag().getOmpostering().getDatoOmposterFom() + ") og datoStatusFom i første periode(" + simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje().get(0).getDatoStatusFom() + ")må være like");
-            }
-        }
         this.erRefusjon = erRefusjon(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
-
         this.oppdragsPeriodeList = periodeGenerator.genererPerioder(simulerBeregningRequest.getRequest().getOppdrag().getOppdragslinje());
 
         SimulerBeregningResponse response = new SimulerBeregningResponse();
@@ -55,26 +45,6 @@ public class SimuleringGenerator {
         }
         return response;
 
-    }
-
-    private boolean erOpphør(List<Oppdragslinje> oppdragslinjer){
-        if (oppdragslinjer.isEmpty()) {
-            return false;
-        }
-
-        for (Oppdragslinje oppdragslinje : oppdragslinjer){
-            if (oppdragslinje.getKodeStatusLinje() == null || !oppdragslinje.getKodeStatusLinje().equals(KodeStatusLinje.OPPH)){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean erOmpostering(Oppdrag oppdrag){
-        if (oppdrag.getOmpostering() != null && oppdrag.getOmpostering().getOmPostering() != null){
-            return oppdrag.getOmpostering().getOmPostering().equals("J");
-        }
-        return false;
     }
 
     private boolean erRefusjon(List<Oppdragslinje> oppdragslinjer){
@@ -108,7 +78,7 @@ public class SimuleringGenerator {
 
     private void leggTilBeregningsperioder(SimulerBeregningRequest simulerBeregningRequest, Beregning beregning) {
         YearMonth nesteMåned;
-        if (erOpphør || LocalDate.now().getDayOfMonth() <= 19){nesteMåned = YearMonth.from(LocalDate.now());}
+        if (LocalDate.now().getDayOfMonth() <= 19){nesteMåned = YearMonth.from(LocalDate.now());}
         else {nesteMåned = YearMonth.from(LocalDate.now().plusMonths(1));}
         List<BeregningsPeriode> beregningsPerioder = beregning.getBeregningsPeriode();
 
@@ -116,7 +86,7 @@ public class SimuleringGenerator {
             YearMonth sisteMåned;
             if (oppdragsperiode.getPeriodeType().equals(PeriodeType.OPPH)) {sisteMåned = nesteMåned.minusMonths(1);}
             else {sisteMåned = nesteMåned;}
-            if (!YearMonth.from(oppdragsperiode.getFom()).isAfter(nesteMåned) && oppdragsperiode.getAntallVirkedager() != 0) {
+            if (!YearMonth.from(oppdragsperiode.getFom()).isAfter(sisteMåned) && oppdragsperiode.getAntallVirkedager() != 0) {
                 while (YearMonth.from(oppdragsperiode.getTom()).isAfter(sisteMåned)){
                     oppdragsperiode.setTom(oppdragsperiode.getTom().minusMonths(1).withDayOfMonth(oppdragsperiode.getTom().minusMonths(1).lengthOfMonth()));
                 }
