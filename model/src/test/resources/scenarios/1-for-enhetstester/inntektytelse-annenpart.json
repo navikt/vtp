@@ -2,13 +2,21 @@
   "inntektskomponent": {
     "inntektsperioder": [
       {
-        "fom": "now() - P12M",
-        "tom": "now() - P1M",
-        "beløp": 40000,
-        "orgnr": "994884174",
+        "fom": "now() - P2Y",
+        "tom": "now()",
+        "beløp": 45000,
+        "orgnr": "973861778",
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
-        "beskrivelse": "testbeskrivelsesomfungererennsålenge"
+        "beskrivelse": "fastloenn"
+      }
+    ],
+    "frilansarbeidsforholdperioder": [
+      {
+        "frilansFom":"now() - P2Y",
+        "frilansTom":"now()",
+        "orgnr":"973861778",
+        "stillingsprosent":"100"
       }
     ]
   },
@@ -17,18 +25,21 @@
       {
         "arbeidsforholdId": "ARB001-001",
 
-        "ansettelsesperiodeFom": "now() - P12M",
+        "ansettelsesperiodeFom": "now() - P4Y",
         "arbeidsforholdstype": "ordinaertArbeidsforhold",
         "arbeidsgiverOrgnr": "994884174",
+
+
         "arbeidsavtaler" : [
           {
-            "fomGyldighetsperiode": "now() - P12M",
+            "fomGyldighetsperiode": "now() - P4Y",
             "avlønningstype": "fastlønn",
             "avtaltArbeidstimerPerUke": "40",
             "stillingsprosent" : 100,
             "beregnetAntallTimerPerUke": "40"
           }
         ]
+
       }
     ]
   },
@@ -71,5 +82,23 @@
         ]
       }
     ]
+  },
+  "omsorgspenger": {
+    "rammemeldinger": {
+      "overføringerFått": [{
+        "gjennomført": "now() - P9M",
+        "gyldigFraOgMed": "now() - P9M",
+        "gyldigTilOgMed": "now() + P1Y",
+        "fra": {
+          "id": "02099541043",
+          "type": "Identitetsnummer"
+        },
+        "lengde": "PT480H",
+        "kilder": [{
+          "id": "2",
+          "type": "OmsorgspengerRammemeldinger"
+        }]
+      }]
+    }
   }
 }

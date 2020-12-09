@@ -1,0 +1,142 @@
+{
+  "arena": {
+    "saker": [
+      {
+        "saksnummer": "${arenasak1}",
+        "tema": "AAP",
+        "status": "AKTIV",
+        "vedtak": [
+          {
+            "fom": "now() - P12M",
+            "tom": "now() + P2M",
+            "vedtakDato": "now() - P12M",
+            "kravMottattDato": "now() - P12M",
+            "status": "IVERK",
+            "dagsats": 1000,
+            "meldekort": [
+              {
+                "fom": "now() - P12M",
+                "tom": "now() + P12W",
+                "dagsats": 1000,
+                "beløp": 10000,
+                "utbetalingsgrad": 200
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "infotrygd": {
+    "grunnlag": [
+      {
+        "@type": "rammevedtak",
+        "startdato": "now() - P9M",
+        "fom": "now() - P9M",
+        "tom": "now() + P1Y",
+        "rammevedtakTekst": "@9-6 5 L OVER.FÅR/20D/%s",
+        "annenpart":"02099541043"
+      }
+    ]
+  },
+  "trex": {
+    "foreldrepenger": [
+      {
+        "status": {
+          "kode": "A",
+          "termnavn": "status"
+        },
+        "tema": {
+          "kode": "FA",
+          "termnavn": "tema"
+        },
+        "dekningsgrad": 100,
+        "foedselsdatoBarn": "now()",
+        "arbeidskategori": {
+          "kode": "01",
+          "termnavn": "ketegori"
+        },
+        "arbeidsforhold":  [
+          {
+            "orgnr": "1",
+            "inntekt": 10000,
+            "inntektsperiode": {
+              "kode": "M",
+              "termnavn": "inntektperiode"
+            },
+            "refusjon": true
+          }
+        ],
+        "periode": {
+          "fom": "now() - P9M",
+          "tom": "now()"
+        },
+        "behandlingstema": {
+          "kode": "FØ",
+          "termnavn": "behandlingstema"
+        },
+        "identdato": "now() - P9M",
+        "iverksatt": "now() - P9M",
+        "opphørFom": "now() + P1D",
+        "gradering": 100,
+        "opprinneligIdentdato": null,
+        "registrert": null,
+        "saksbehandlerId": "ABC",
+        "vedtak": [
+          {
+            "periode": {
+              "fom": "now() - P9M",
+              "tom": "now()"
+            },
+            "utbetalingsgrad": 100
+          }
+        ]
+      }
+    ],
+    "svangerskapspenger": [],
+    "sykepenger": [
+      {
+        "status": {
+          "kode": "L",
+          "termnavn": "status"
+        },
+        "tema": {
+          "kode": "SP",
+          "termnavn": "tema"
+        },
+        "dekningsgrad": 80,
+        "foedselsdatoBarn": "now()-P30D",
+        "arbeidskategori": {
+          "kode": "01",
+          "termnavn": "ketegori"
+        },
+        "arbeidsforhold":  [],
+        "periode": {
+          "fom": "now() - P9M",
+          "tom": "now() + P1D"
+        },
+        "behandlingstema": {
+          "kode": "SP",
+          "termnavn": "behandlingstema"
+        },
+        "identdato": "now() - P9M",
+        "iverksatt": "now() - P9M",
+        "opphørFom": "now() + P1D",
+        "gradering": 100,
+        "opprinneligIdentdato": null,
+        "registrert": null,
+        "saksbehandlerId": "ABC",
+        "vedtak": [
+          {
+            "periode": {
+              "fom": "now() - P9M",
+              "tom": "now()"
+            },
+            "utbetalingsgrad": 100
+          }
+        ]
+      }
+    ],
+    "barnsykdom": []
+  }
+}

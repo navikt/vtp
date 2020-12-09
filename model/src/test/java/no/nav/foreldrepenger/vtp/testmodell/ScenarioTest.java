@@ -2,6 +2,8 @@ package no.nav.foreldrepenger.vtp.testmodell;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -11,10 +13,8 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
@@ -44,12 +44,12 @@ public class ScenarioTest {
 
     @Test
     public void testerInstansieringAvScenario() {
-        Object testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        String testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        Testscenario testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
+        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
+        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
+        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         assertEquals(1, testScenarioRepository.getTestscenarios().size());
         assertThat(testscenario.getId()).isNotNull();
-        assertThat(testscenario.getTemplateNavn()).isEqualToIgnoringCase("1-fødsel-2-barn-mor-enkelAT-far-kombinert-AT-SN-brukes-for-enhetstester");
+        assertThat(testscenario.getTemplateNavn()).isEqualToIgnoringCase("1-for-enhetstester");
 
         var personopplysninger = testscenario.getPersonopplysninger();
         var søker = personopplysninger.getSøker();
@@ -59,7 +59,7 @@ public class ScenarioTest {
         assertThat(annenpart.getIdent()).isNotNull();
         assertThat(annenpart.getAktørIdent()).isNotNull();
         avsjekkSpesifiktScenario(personopplysninger, søker);
-        Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
+        var fødselsdato = fødselsdatoBarn(testscenario);
         assertThat(fødselsdato).isNotNull();
 
         // Sjekker om personen er lagt inn i PersonIndeksen
@@ -72,9 +72,37 @@ public class ScenarioTest {
 
         var søkerInntektYtelse = testscenario.getSøkerInntektYtelse();
         assertThat(søkerInntektYtelse).isNotNull();
+        assertFalse(søkerInntektYtelse.getArenaModell().getSaker().isEmpty());
+        assertTrue(søkerInntektYtelse.getInfotrygdModell().getYtelser().isEmpty());
+        assertFalse(søkerInntektYtelse.getInfotrygdModell().getGrunnlag().isEmpty());
+        assertFalse(søkerInntektYtelse.gettRexModell().getForeldrepenger().isEmpty());
+        assertTrue(søkerInntektYtelse.gettRexModell().getSvangerskapspenger().isEmpty());
+        assertFalse(søkerInntektYtelse.gettRexModell().getSykepenger().isEmpty());
+        assertTrue(søkerInntektYtelse.gettRexModell().getBarnsykdom().isEmpty());
+        assertTrue(søkerInntektYtelse.getInntektskomponentModell().getInntektsperioder().isEmpty());
+        assertTrue(søkerInntektYtelse.getInntektskomponentModell().getFrilansarbeidsforholdperioder().isEmpty());
+        assertTrue(søkerInntektYtelse.getArbeidsforholdModell().getArbeidsforhold().isEmpty());
+        assertTrue(søkerInntektYtelse.getSigrunModell().getInntektsår().isEmpty());
+        assertTrue(søkerInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getAleneOmOmsorgen().isEmpty());
+        assertTrue(søkerInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getOverføringerGitt().isEmpty());
+        assertTrue(søkerInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getOverføringerFått().isEmpty());
 
         var annenpartInntektYtelse = testscenario.getAnnenpartInntektYtelse();
         assertThat(annenpartInntektYtelse).isNotNull();
+        assertTrue(annenpartInntektYtelse.getArenaModell().getSaker().isEmpty());
+        assertTrue(annenpartInntektYtelse.getInfotrygdModell().getYtelser().isEmpty());
+        assertTrue(annenpartInntektYtelse.getInfotrygdModell().getGrunnlag().isEmpty());
+        assertTrue(annenpartInntektYtelse.gettRexModell().getForeldrepenger().isEmpty());
+        assertTrue(annenpartInntektYtelse.gettRexModell().getSvangerskapspenger().isEmpty());
+        assertTrue(annenpartInntektYtelse.gettRexModell().getSykepenger().isEmpty());
+        assertTrue(annenpartInntektYtelse.gettRexModell().getBarnsykdom().isEmpty());
+        assertFalse(annenpartInntektYtelse.getInntektskomponentModell().getInntektsperioder().isEmpty());
+        assertFalse(annenpartInntektYtelse.getInntektskomponentModell().getFrilansarbeidsforholdperioder().isEmpty());
+        assertFalse(annenpartInntektYtelse.getArbeidsforholdModell().getArbeidsforhold().isEmpty());
+        assertFalse(annenpartInntektYtelse.getSigrunModell().getInntektsår().isEmpty());
+        assertTrue(annenpartInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getAleneOmOmsorgen().isEmpty());
+        assertTrue(annenpartInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getOverføringerGitt().isEmpty());
+        assertFalse(annenpartInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getOverføringerFått().isEmpty());
 
         // Sjekker oppretting og sletting av scenario
         testScenarioRepository.slettScenario(testscenario.getId());
@@ -88,7 +116,7 @@ public class ScenarioTest {
 
         assertThat(søker.getIdent()).isNotNull();
 
-        FamilierelasjonModell familierelasjon = pers.getFamilierelasjoner(Rolle.BARN).findFirst().get();
+        var familierelasjon = pers.getFamilierelasjoner(Rolle.BARN).findFirst().get();
         assertThat(familierelasjon.getTil()).isNotNull();
         assertThat(familierelasjon.getTil()).isInstanceOf(BarnModell.class);
         // sjekk variable er satt inn
@@ -96,9 +124,9 @@ public class ScenarioTest {
 
         assertThat(søker.getAdresser()).hasSize(1);
         // hentet fra adressekatalog ikke fra personopplysninger.json
-        Optional<AdresseModell> bostedsAdresseOpt = søker.getAdresse(AdresseType.BOSTEDSADRESSE);
+        var bostedsAdresseOpt = søker.getAdresse(AdresseType.BOSTEDSADRESSE);
         assertThat(bostedsAdresseOpt).isPresent();
-        GateadresseModell gateadresse = (GateadresseModell) bostedsAdresseOpt.get();
+        var gateadresse = (GateadresseModell) bostedsAdresseOpt.get();
         assertThat(gateadresse.getGatenavn()).isEqualTo("Haugesund ally");
         assertThat(gateadresse.getFom()).isEqualTo(LocalDate.now().minusYears(1));
         return avsjekketEttScenario;
@@ -113,13 +141,11 @@ public class ScenarioTest {
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
-        Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
+        return testscenario.getPersonopplysninger().getFamilierelasjoner()
                 .stream()
                 .filter(modell -> modell.getTil() instanceof BarnModell)
                 .map(modell -> ((BarnModell) modell.getTil()))
+                .map(PersonModell::getFødselsdato)
                 .findFirst();
-
-        return barnModell.map(PersonModell::getFødselsdato);
     }
-
 }

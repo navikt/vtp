@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <java.version>11</java.version>
+        <java.version>15</java.version>
         <mock-oauth2-server.version>0.2.1</mock-oauth2-server.version>
 
         <kafka.version>2.6.0</kafka.version>
@@ -655,6 +655,7 @@
                         <release>${java.version}</release>
                         <compilerArgs>
                             <arg>-parameters</arg>
+                            <arg>--enable-preview</arg>
                         </compilerArgs>
                     </configuration>
                 </plugin>
@@ -674,6 +675,7 @@
                     <version>3.0.0-M5</version>
                     <configuration>
                         <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
+                        <argLine>--enable-preview</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
