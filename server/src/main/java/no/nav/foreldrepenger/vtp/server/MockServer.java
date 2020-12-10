@@ -26,7 +26,6 @@ import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,15 +79,15 @@ public class MockServer {
         server.setHandler(contextHandlerCollection);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
-        int kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
-        int zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
+        var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
+        var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
         kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
 
     }
 
     public static void main(String[] args) throws Exception {
         PropertiesUtils.initProperties();
-        MockServer mockServer = new MockServer();
+        var mockServer = new MockServer();
         mockServer.start();
     }
 
@@ -113,17 +112,17 @@ public class MockServer {
          * Listen under kan fjernes hvis alle som starter VTP og trenger topic-ene under kjører med:
          * CREATE_TOPICS=topicManTrenger1, topicManTrenger2
          */
-        final List<String> topicsOldMethod = List.of("privat-foreldrepenger-mottatBehandling-fpsak",
+        final var topicsOldMethod = List.of("privat-foreldrepenger-mottatBehandling-fpsak",
                 "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
                 "privat-foreldrepenger-fprisk-utfor-t4",
                 "privat-foreldrepenger-tilkjentytelse-v1-local",
                 "privat-foreldrepenger-dokumenthendelse-vtp",
                 "privat-foreldrepenger-historikkinnslag-vtp");
 
-        final List<String> topics = getEnvValueList("CREATE_TOPICS");
+        final var topics = getEnvValueList("CREATE_TOPICS");
 
-        final Field[] fields = TopicManifest.class.getFields();
-        final HashSet<String> topicSet = Stream.of(fields)
+        final var fields = TopicManifest.class.getFields();
+        final var topicSet = Stream.of(fields)
                 .filter(f -> Modifier.isStatic(f.getModifiers()))
                 .filter(f -> f.getType().equals(Topic.class))
                 .map(this::getTopic)
@@ -152,11 +151,11 @@ public class MockServer {
 
     @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
-        HandlerContainer handler = (HandlerContainer) server.getHandler();
+        var handler = (HandlerContainer) server.getHandler();
 
-        DelegatingTestscenarioRepository testScenarioRepository = new DelegatingTestscenarioRepository(
+        var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        GsakRepo gsakRepo = new GsakRepo();
+        var gsakRepo = new GsakRepo();
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         addRestServices(handler,
@@ -178,7 +177,7 @@ public class MockServer {
     }
 
     private void startLdapServer() {
-        Thread ldapThread = new Thread(ldapServer::start, "LdapServer");
+        var ldapThread = new Thread(ldapServer::start, "LdapServer");
         ldapThread.setDaemon(true);
         ldapThread.start();
     }
@@ -201,13 +200,13 @@ public class MockServer {
 
     protected void addWebResources(HandlerContainer handlerContainer) {
         @SuppressWarnings("resource")
-        WebAppContext ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
+        var ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
 
 
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
 
-        DefaultServlet defaultServlet = new DefaultServlet();
+        var defaultServlet = new DefaultServlet();
 
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
@@ -218,19 +217,20 @@ public class MockServer {
 
     protected void setConnectors(Server server) {
 
-        List<Connector> connectors = new ArrayList<>();
+        var connectors = new ArrayList<>();
 
         @SuppressWarnings("resource")
-        ServerConnector httpConnector = new ServerConnector(server);
+        var httpConnector = new ServerConnector(server);
         httpConnector.setPort(port);
         httpConnector.setHost(host);
         connectors.add(httpConnector);
 
-        HttpConfiguration https = new HttpConfiguration();
+        var https = new HttpConfiguration();
         https.setSendServerVersion(false);
         https.setSendXPoweredBy(false);
         https.addCustomizer(new SecureRequestCustomizer());
-        SslContextFactory sslContextFactory = new SslContextFactory.Server();
+        var sslConnectionFactory = new SslConnectionFactory("HTTP/1.1");
+        var sslContextFactory = sslConnectionFactory.getSslContextFactory();
 
         sslContextFactory.setCertAlias("localhost-ssl");
         sslContextFactory.setKeyStorePath(KeystoreUtils.getKeystoreFilePath());
@@ -250,8 +250,8 @@ public class MockServer {
         System.setProperty(keystorePasswProp, KeystoreUtils.getKeyStorePassword());
 
         @SuppressWarnings("resource")
-        ServerConnector sslConnector = new ServerConnector(server,
-                new SslConnectionFactory(sslContextFactory, "HTTP/1.1"),
+        var sslConnector = new ServerConnector(server,
+                sslConnectionFactory,
                 new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
@@ -259,7 +259,7 @@ public class MockServer {
     }
 
     private boolean tjenesteDisabled(VTPTjeneste tjeneste){
-        String miljøVariabel = tjeneste.name().concat("_DISABLE");
+        var miljøVariabel = tjeneste.name().concat("_DISABLE");
         if(System.getenv(miljøVariabel) != null && System.getenv(miljøVariabel).equalsIgnoreCase("true")){
             LOG.info("Tjeneste er disabled: {}", tjeneste.name());
             return true;
