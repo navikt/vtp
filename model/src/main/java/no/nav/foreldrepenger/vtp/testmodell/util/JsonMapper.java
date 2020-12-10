@@ -22,9 +22,11 @@ public class JsonMapper {
 
         objectMapper.setVisibility(PropertyAccessor.GETTER, Visibility.NONE);
         objectMapper.setVisibility(PropertyAccessor.SETTER, Visibility.NONE);
-        objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.NONE);
+        objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
         objectMapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
 
+        objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE, true);
+        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
