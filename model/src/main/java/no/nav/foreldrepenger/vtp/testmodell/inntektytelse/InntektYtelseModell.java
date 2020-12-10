@@ -9,7 +9,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.oppdrag.OppdragModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 
@@ -34,9 +33,6 @@ public class InntektYtelseModell {
     @JsonProperty("sigrun")
     private SigrunModell sigrunModell;
 
-    @JsonProperty("oppdrag")
-    private OppdragModell oppdragModell;
-
     @JsonProperty("omsorgspenger")
     private OmsorgspengerModell omsorgspengerModell;
 
@@ -45,14 +41,13 @@ public class InntektYtelseModell {
 
     public InntektYtelseModell(ArenaModell arenaModell, InfotrygdModell infotrygdModell, TRexModell tRexModell,
                                InntektskomponentModell inntektskomponentModell, ArbeidsforholdModell arbeidsforholdModell,
-                               SigrunModell sigrunModell, OppdragModell oppdragModell, OmsorgspengerModell omsorgspengerModell) {
+                               SigrunModell sigrunModell, OmsorgspengerModell omsorgspengerModell) {
         this.arenaModell = arenaModell;
         this.infotrygdModell = infotrygdModell;
         this.tRexModell = tRexModell;
         this.inntektskomponentModell = inntektskomponentModell;
         this.arbeidsforholdModell = arbeidsforholdModell;
         this.sigrunModell = sigrunModell;
-        this.oppdragModell = oppdragModell;
         this.omsorgspengerModell = omsorgspengerModell;
     }
 
@@ -120,13 +115,6 @@ public class InntektYtelseModell {
 
     public void setSigrunModell(SigrunModell sigrunModell) {
         this.sigrunModell = sigrunModell;
-    }
-
-    public OppdragModell getOppdragModell() {
-        if (oppdragModell == null) {
-            this.oppdragModell = new OppdragModell();
-        }
-        return oppdragModell;
     }
 
     public OmsorgspengerModell getOmsorgspengerModell() {

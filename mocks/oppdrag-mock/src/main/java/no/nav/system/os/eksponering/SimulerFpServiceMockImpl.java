@@ -1,9 +1,7 @@
 package no.nav.system.os.eksponering;
 
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SendInnOppdragFeilUnderBehandling;
-import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerBeregningFeilUnderBehandling;
 import no.nav.system.os.eksponering.simulerfpservicewsbinding.SimulerFpService;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SendInnOppdragRequest;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SendInnOppdragResponse;
@@ -18,7 +16,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.soap.Addressing;
-import java.util.Optional;
 
 
 @Addressing
@@ -47,23 +44,9 @@ public class SimulerFpServiceMockImpl implements SimulerFpService {
     @Override
     @WebMethod
     @WebResult(name = "simulerBeregningResponse", targetNamespace = "http://nav.no/system/os/tjenester/simulerFpService/simulerFpServiceGrensesnitt", partName = "parameters")
-    public SimulerBeregningResponse simulerBeregning(SimulerBeregningRequest simulerBeregningRequest) throws SimulerBeregningFeilUnderBehandling {
-
-        Boolean negativSimulering = false;
-        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(
-                simulerBeregningRequest.getRequest().getOppdrag().getOppdragGjelderId());
-
-        if (inntektYtelseModell.isPresent() && inntektYtelseModell.get().getOppdragModell().getNegativSimulering() != null) {
-            negativSimulering=inntektYtelseModell.get().getOppdragModell().getNegativSimulering();
-        }
-
-        if (negativSimulering) {
-            LOG.info("Simulerer beregning med NEGATIVT resultat.");
-        } else {
-            LOG.info("Simulerer beregning med POSITIVT resultat.");
-        }
+    public SimulerBeregningResponse simulerBeregning(SimulerBeregningRequest simulerBeregningRequest) {
 
         SimuleringGenerator simuleringGenerator = new SimuleringGenerator();
-        return simuleringGenerator.opprettSimuleringsResultat(simulerBeregningRequest, negativSimulering);
+        return simuleringGenerator.opprettSimuleringsResultat(simulerBeregningRequest);
     }
 }

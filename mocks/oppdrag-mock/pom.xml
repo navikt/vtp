@@ -13,16 +13,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>no.nav.foreldrepenger.oppdrag</groupId>
-            <artifactId>oppdrag-klient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.kontrakter</groupId>
-            <artifactId>fpoppdrag-v2</artifactId>
-        </dependency>
-        <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
             <artifactId>okonomistotte-v1</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.oppdrag.tjenester</groupId>
+            <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
+            <classifier>jaxws</classifier>
         </dependency>
         <dependency>
             <groupId>no.nav.tjenester</groupId>
@@ -36,6 +33,11 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>testmodell</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

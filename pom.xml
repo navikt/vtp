@@ -393,34 +393,16 @@
                 <version>${tjenestespesifikasjoner.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.foreldrepenger.oppdrag</groupId>
-                <artifactId>oppdrag-klient</artifactId>
-                <version>1.0_20190110115356_1239f94</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>no.nav.vedtak.felles.integrasjon</groupId>
-                        <artifactId>felles-integrasjon-webservice</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-impl</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>no.nav.tjenester</groupId>
                 <artifactId>tilbakekreving-v1-tjenestespesifikasjon</artifactId>
                 <version>1.0.4</version>
                 <classifier>jaxws</classifier>
             </dependency>
             <dependency>
-                <groupId>no.nav.foreldrepenger.kontrakter</groupId>
-                <artifactId>fpoppdrag-v2</artifactId>
-                <version>1.0_20190117140834_70d7fb3</version>
+                <groupId>no.nav.oppdrag.tjenester</groupId>
+                <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
+                <version>1.0.5</version>
+                <classifier>jaxws</classifier>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
