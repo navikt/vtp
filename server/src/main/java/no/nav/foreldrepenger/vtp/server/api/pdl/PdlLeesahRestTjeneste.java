@@ -88,14 +88,14 @@ public class PdlLeesahRestTjeneste {
         personhendelse.set("master", "Freg");
         personhendelse.set("opprettet", LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set("opplysningstype", "FOEDSEL_V1");
-        personhendelse.set("endringstype", Endringstype.valueOf(fødselshendelseDto.getEndringstype()));
-        if (fødselshendelseDto.getTidligereHendelseId() != null) {
-            personhendelse.set("tidligereHendelseId", fødselshendelseDto.getTidligereHendelseId());
+        personhendelse.set("endringstype", Endringstype.valueOf(fødselshendelseDto.endringstype()));
+        if (fødselshendelseDto.tidligereHendelseId() != null) {
+            personhendelse.set("tidligereHendelseId", fødselshendelseDto.tidligereHendelseId());
         }
 
-        if (!Endringstype.ANNULLERT.toString().equals(fødselshendelseDto.getEndringstype())) {
+        if (!Endringstype.ANNULLERT.toString().equals(fødselshendelseDto.endringstype())) {
             GenericRecordBuilder fødsel = new GenericRecordBuilder(Foedsel.SCHEMA$);
-            fødsel.set("foedselsdato", oversettLocalDateTilAvroFormat(fødselshendelseDto.getFødselsdato()));
+            fødsel.set("foedselsdato", oversettLocalDateTilAvroFormat(fødselshendelseDto.fødselsdato()));
             personhendelse.set("foedsel", fødsel.build());
         }
 
@@ -111,18 +111,18 @@ public class PdlLeesahRestTjeneste {
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set("hendelseId", UUID.randomUUID().toString());
-        personhendelse.set("personidenter", List.of(dødshendelseDto.getFnr(), testscenarioRepository.getPersonIndeks().finnByIdent(dødshendelseDto.getFnr()).getAktørIdent()));
+        personhendelse.set("personidenter", List.of(dødshendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(dødshendelseDto.fnr()).getAktørIdent()));
         personhendelse.set("master", "Freg");
         personhendelse.set("opprettet", LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set("opplysningstype", "DOEDSFALL_V1");
-        personhendelse.set("endringstype", Endringstype.valueOf(dødshendelseDto.getEndringstype()));
-        if (dødshendelseDto.getTidligereHendelseId() != null) {
-            personhendelse.set("tidligereHendelseId", dødshendelseDto.getTidligereHendelseId());
+        personhendelse.set("endringstype", Endringstype.valueOf(dødshendelseDto.endringstype()));
+        if (dødshendelseDto.tidligereHendelseId() != null) {
+            personhendelse.set("tidligereHendelseId", dødshendelseDto.tidligereHendelseId());
         }
 
-        if (!Endringstype.ANNULLERT.toString().equals(dødshendelseDto.getEndringstype())) {
+        if (!Endringstype.ANNULLERT.toString().equals(dødshendelseDto.endringstype())) {
             GenericRecordBuilder dødsfall = new GenericRecordBuilder(Doedsfall.SCHEMA$);
-            dødsfall.set("doedsdato", oversettLocalDateTilAvroFormat(dødshendelseDto.getDoedsdato()));
+            dødsfall.set("doedsdato", oversettLocalDateTilAvroFormat(dødshendelseDto.doedsdato()));
             personhendelse.set("doedsfall", dødsfall.build());
         }
 
@@ -134,18 +134,18 @@ public class PdlLeesahRestTjeneste {
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set("hendelseId", UUID.randomUUID().toString());
-        personhendelse.set("personidenter", List.of(dødfødselhendelseDto.getFnr(), testscenarioRepository.getPersonIndeks().finnByIdent(dødfødselhendelseDto.getFnr()).getAktørIdent()));
+        personhendelse.set("personidenter", List.of(dødfødselhendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(dødfødselhendelseDto.fnr()).getAktørIdent()));
         personhendelse.set("master", "Freg");
         personhendelse.set("opprettet", LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set("opplysningstype", "DOEDFOEDT_BARN_V1");
-        personhendelse.set("endringstype", Endringstype.valueOf(dødfødselhendelseDto.getEndringstype()));
-        if (dødfødselhendelseDto.getTidligereHendelseId() != null) {
-            personhendelse.set("tidligereHendelseId", dødfødselhendelseDto.getTidligereHendelseId());
+        personhendelse.set("endringstype", Endringstype.valueOf(dødfødselhendelseDto.endringstype()));
+        if (dødfødselhendelseDto.tidligereHendelseId() != null) {
+            personhendelse.set("tidligereHendelseId", dødfødselhendelseDto.tidligereHendelseId());
         }
 
-        if (!Endringstype.ANNULLERT.toString().equals(dødfødselhendelseDto.getEndringstype())) {
+        if (!Endringstype.ANNULLERT.toString().equals(dødfødselhendelseDto.endringstype())) {
             GenericRecordBuilder dødfødtBarn = new GenericRecordBuilder(DoedfoedtBarn.SCHEMA$);
-            dødfødtBarn.set("dato", oversettLocalDateTilAvroFormat(dødfødselhendelseDto.getDoedfoedselsdato()));
+            dødfødtBarn.set("dato", oversettLocalDateTilAvroFormat(dødfødselhendelseDto.doedfoedselsdato()));
             personhendelse.set("doedfoedtBarn", dødfødtBarn.build());
         }
 
@@ -156,17 +156,17 @@ public class PdlLeesahRestTjeneste {
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set("hendelseId", UUID.randomUUID().toString());
-        personhendelse.set("personidenter", List.of(familierelasjonHendelseDto.getFnr(), testscenarioRepository.getPersonIndeks().finnByIdent(familierelasjonHendelseDto.getFnr()).getAktørIdent()));
+        personhendelse.set("personidenter", List.of(familierelasjonHendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(familierelasjonHendelseDto.fnr()).getAktørIdent()));
         personhendelse.set("master", "Freg");
         personhendelse.set("opprettet", LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set("opplysningstype", "FAMILIERELASJON_V1");
-        personhendelse.set("endringstype", Endringstype.valueOf(familierelasjonHendelseDto.getEndringstype()));
+        personhendelse.set("endringstype", Endringstype.valueOf(familierelasjonHendelseDto.endringstype()));
 
-        if (!Endringstype.ANNULLERT.toString().equals(familierelasjonHendelseDto.getEndringstype())) {
+        if (!Endringstype.ANNULLERT.toString().equals(familierelasjonHendelseDto.endringstype())) {
             GenericRecordBuilder familierelasjon = new GenericRecordBuilder(Familierelasjon.SCHEMA$);
-            familierelasjon.set("relatertPersonsIdent", familierelasjonHendelseDto.getRelatertPersonsFnr());
-            familierelasjon.set("relatertPersonsRolle", familierelasjonHendelseDto.getRelatertPersonsRolle());
-            familierelasjon.set("minRolleForPerson", familierelasjonHendelseDto.getMinRolleForPerson());
+            familierelasjon.set("relatertPersonsIdent", familierelasjonHendelseDto.relatertPersonsFnr());
+            familierelasjon.set("relatertPersonsRolle", familierelasjonHendelseDto.relatertPersonsRolle());
+            familierelasjon.set("minRolleForPerson", familierelasjonHendelseDto.minRolleForPerson());
             personhendelse.set("familierelasjon", familierelasjon.build());
         }
 
@@ -181,12 +181,12 @@ public class PdlLeesahRestTjeneste {
     private String registererNyttBarnPåForeldre(FødselshendelseDto fødselshendelseDto) {
         var personIndeks = testscenarioRepository.getPersonIndeks();
         Personopplysninger personopplysninger;
-        personopplysninger = personIndeks.finnPersonopplysningerByIdent(fødselshendelseDto.getFnrMor());
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(fødselshendelseDto.fnrMor());
         if (personopplysninger == null) {
-            personopplysninger = personIndeks.finnPersonopplysningerByIdent(fødselshendelseDto.getFnrFar());
+            personopplysninger = personIndeks.finnPersonopplysningerByIdent(fødselshendelseDto.fnrFar());
         }
 
-        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", fødselshendelseDto.getFødselsdato());
+        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", fødselshendelseDto.fødselsdato());
         var barnIdent = personopplysninger.leggTilBarn(barnModell);
 
         indekserFamilierelasjonerIPersonIndeksen(personIndeks, personopplysninger);
@@ -197,9 +197,9 @@ public class PdlLeesahRestTjeneste {
     private String registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
         var personIndeks = testscenarioRepository.getPersonIndeks();
         Personopplysninger personopplysninger;
-        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødfødselhendelseDto.getFnr());
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødfødselhendelseDto.fnr());
 
-        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.getDoedfoedselsdato());
+        BarnModell barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.doedfoedselsdato());
         var barnIdent= personopplysninger.leggTilDødfødsel(barnModell);
 
         indekserFamilierelasjonerIPersonIndeksen(personIndeks, personopplysninger);
@@ -209,15 +209,15 @@ public class PdlLeesahRestTjeneste {
     private void registrerDødshendelse(DødshendelseDto dødshendelseDto) {
         var personIndeks = testscenarioRepository.getPersonIndeks();
         Personopplysninger personopplysninger;
-        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødshendelseDto.getFnr());
+        personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødshendelseDto.fnr());
         setDødsdatoerIIndeksene(personopplysninger, dødshendelseDto);
     }
 
     private void setDødsdatoerIIndeksene(Personopplysninger personopplysninger, DødshendelseDto dødshendelseDto){
-        if (dødshendelseDto.getFnr().equalsIgnoreCase(personopplysninger.getSøker().getIdent())) {
-            personopplysninger.getSøker().setDødsdato(dødshendelseDto.getDoedsdato());
-        } else if (dødshendelseDto.getFnr().equalsIgnoreCase(personopplysninger.getAnnenPart().getIdent())) {
-            personopplysninger.getAnnenPart().setDødsdato(dødshendelseDto.getDoedsdato());
+        if (dødshendelseDto.fnr().equalsIgnoreCase(personopplysninger.getSøker().getIdent())) {
+            personopplysninger.getSøker().setDødsdato(dødshendelseDto.doedsdato());
+        } else if (dødshendelseDto.fnr().equalsIgnoreCase(personopplysninger.getAnnenPart().getIdent())) {
+            personopplysninger.getAnnenPart().setDødsdato(dødshendelseDto.doedsdato());
         }
         setDødsdatoForFamilirelasjoner(personopplysninger.getFamilierelasjoner(), dødshendelseDto);
         setDødsdatoForFamilirelasjoner(personopplysninger.getFamilierelasjonerForAnnenPart(), dødshendelseDto);
@@ -226,9 +226,9 @@ public class PdlLeesahRestTjeneste {
 
     private void setDødsdatoForFamilirelasjoner(Collection<FamilierelasjonModell> familierelasjonModell, DødshendelseDto dødshendelseDto) {
         familierelasjonModell.stream()
-                .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(dødshendelseDto.getFnr()))
+                .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(dødshendelseDto.fnr()))
                 .map(fr -> (PersonModell) fr.getTil())
-                .forEach(personModell -> personModell.setDødsdato(dødshendelseDto.getDoedsdato()));
+                .forEach(personModell -> personModell.setDødsdato(dødshendelseDto.doedsdato()));
     }
 
     private void indekserFamilierelasjonerIPersonIndeksen(PersonIndeks personIndeks, Personopplysninger personopplysninger) {
