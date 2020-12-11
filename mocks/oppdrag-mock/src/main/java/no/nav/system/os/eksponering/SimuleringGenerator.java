@@ -12,7 +12,6 @@ import no.nav.system.os.entiteter.beregningskjema.Beregning;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer;
 import no.nav.system.os.entiteter.beregningskjema.BeregningsPeriode;
-import no.nav.system.os.entiteter.typer.simpletypes.KodeStatusLinje;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdrag;
@@ -145,6 +144,7 @@ public class SimuleringGenerator {
                     }
                 }
                 else if (oppdragsperiode.getPeriodeType().equals(PeriodeType.REDUKSJON) && YearMonth.from(periode.getFom()).isBefore(nesteMåned)){
+                    stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettBeregningStoppNivaaDetaljer(periode, oppdragsperiode));
                     for (int i = 2 ; i <= 3 ; i++){
                         stoppnivaa.getBeregningStoppnivaaDetaljer().add(opprettNegativBeregningStoppNivaaDetaljer(periode, oppdragsperiode, i));
                     }
@@ -269,10 +269,7 @@ public class SimuleringGenerator {
             else { return belop; }
         }
         else {
-            if (sequence == 1){
-                return oppdragsperiode.getOldSats().multiply(BigDecimal.valueOf(antallVirkedager));
-            }
-            else if (sequence == 2){
+            if (sequence == 2){
                 return belop.subtract(oppdragsperiode.getOldSats().multiply(BigDecimal.valueOf(antallVirkedager))).negate();
             }
             else if (sequence == 3){
