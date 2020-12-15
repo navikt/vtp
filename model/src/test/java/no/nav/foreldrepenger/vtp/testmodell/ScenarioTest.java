@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -75,10 +76,10 @@ public class ScenarioTest {
         assertFalse(søkerInntektYtelse.getArenaModell().getSaker().isEmpty());
         assertTrue(søkerInntektYtelse.getInfotrygdModell().getYtelser().isEmpty());
         assertFalse(søkerInntektYtelse.getInfotrygdModell().getGrunnlag().isEmpty());
-        assertFalse(søkerInntektYtelse.gettRexModell().getForeldrepenger().isEmpty());
-        assertTrue(søkerInntektYtelse.gettRexModell().getSvangerskapspenger().isEmpty());
-        assertFalse(søkerInntektYtelse.gettRexModell().getSykepenger().isEmpty());
-        assertTrue(søkerInntektYtelse.gettRexModell().getBarnsykdom().isEmpty());
+        assertFalse(søkerInntektYtelse.gettRexModell().foreldrepenger().isEmpty());
+        assertNull(søkerInntektYtelse.gettRexModell().svangerskapspenger());
+        assertFalse(søkerInntektYtelse.gettRexModell().sykepenger().isEmpty());
+        assertNull(søkerInntektYtelse.gettRexModell().barnsykdom());
         assertTrue(søkerInntektYtelse.getInntektskomponentModell().getInntektsperioder().isEmpty());
         assertTrue(søkerInntektYtelse.getInntektskomponentModell().getFrilansarbeidsforholdperioder().isEmpty());
         assertTrue(søkerInntektYtelse.getArbeidsforholdModell().getArbeidsforhold().isEmpty());
@@ -92,10 +93,7 @@ public class ScenarioTest {
         assertTrue(annenpartInntektYtelse.getArenaModell().getSaker().isEmpty());
         assertTrue(annenpartInntektYtelse.getInfotrygdModell().getYtelser().isEmpty());
         assertTrue(annenpartInntektYtelse.getInfotrygdModell().getGrunnlag().isEmpty());
-        assertTrue(annenpartInntektYtelse.gettRexModell().getForeldrepenger().isEmpty());
-        assertTrue(annenpartInntektYtelse.gettRexModell().getSvangerskapspenger().isEmpty());
-        assertTrue(annenpartInntektYtelse.gettRexModell().getSykepenger().isEmpty());
-        assertTrue(annenpartInntektYtelse.gettRexModell().getBarnsykdom().isEmpty());
+        assertNull(annenpartInntektYtelse.gettRexModell());
         assertFalse(annenpartInntektYtelse.getInntektskomponentModell().getInntektsperioder().isEmpty());
         assertFalse(annenpartInntektYtelse.getInntektskomponentModell().getFrilansarbeidsforholdperioder().isEmpty());
         assertFalse(annenpartInntektYtelse.getArbeidsforholdModell().getArbeidsforhold().isEmpty());

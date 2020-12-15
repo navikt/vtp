@@ -74,9 +74,6 @@ public class InntektYtelseModell {
     }
 
     public TRexModell gettRexModell() {
-        if (tRexModell == null) {
-            this.tRexModell = new TRexModell();
-        }
         return tRexModell;
     }
 
