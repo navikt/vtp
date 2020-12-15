@@ -22,6 +22,7 @@ import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
 import no.nav.pdl.Doedsfall;
 import no.nav.pdl.Foedsel;
+import no.nav.pdl.Folkeregisteridentifikator;
 import no.nav.pdl.Folkeregistermetadata;
 import no.nav.pdl.Folkeregisterpersonstatus;
 import no.nav.pdl.GeografiskTilknytning;
@@ -54,7 +55,7 @@ public class PersonAdapter {
         person.setDoedsfall(tilDoedsfall(personModell));
         byggFamilierelasjoner(personModell.getAktørIdent(), personopplysninger, person);
         person.setFoedsel(tilFoedsel(personModell));
-        person.setFolkeregisteridentifikator(ikkeImplementert());
+        person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
         person.setForeldreansvar(ikkeImplementert());
         person.setFullmakt(ikkeImplementert());
@@ -104,6 +105,14 @@ public class PersonAdapter {
         navn.setEtternavn(personModell.getEtternavn().toUpperCase());
         navn.setForkortetNavn(personModell.getEtternavn().toUpperCase() + " " + personModell.getFornavn().toUpperCase());
         return List.of(navn);
+    }
+
+    private static List<Folkeregisteridentifikator> tilFolkeregisteridentifkkator(PersonModell personmodell) {
+        Folkeregisteridentifikator ident = new Folkeregisteridentifikator();
+        ident.setIdentifikasjonsnummer(personmodell.getIdent());
+        ident.setStatus("I_BRUK");
+        ident.setType("FNR");
+        return List.of(ident);
     }
 
     private static List<Foedsel> tilFoedsel(PersonModell personModell) {
