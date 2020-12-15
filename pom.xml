@@ -32,7 +32,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <java.version>15</java.version>
-        <mock-oauth2-server.version>0.2.1</mock-oauth2-server.version>
 
         <kafka.version>2.6.0</kafka.version>
         <avro.version>1.10.1</avro.version>
@@ -223,7 +222,6 @@
                 <artifactId>saf-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>dummy-mock</artifactId>
@@ -289,12 +287,6 @@
                 <artifactId>cxf-services-sts-core</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-frontend-jaxws</artifactId>
-                <version>${cxf.version}</version>
-            </dependency>
-
 
             <!-- Kontraktsavhengigheter -->
             <dependency>
@@ -422,11 +414,6 @@
                 <version>2.1.8</version>
                 <classifier>jaxws</classifier>
             </dependency>
-            <dependency>
-                <groupId>no.nav.security</groupId>
-                <artifactId>mock-oauth2-server</artifactId>
-                <version>${mock-oauth2-server.version}</version>
-            </dependency>
 
 
             <!-- Eksterne bibliotek -->
@@ -434,12 +421,6 @@
                 <groupId>org.jboss</groupId>
                 <artifactId>jandex</artifactId>
                 <version>2.2.2.Final</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.modelmapper</groupId>
-                <artifactId>modelmapper</artifactId>
-                <version>2.3.9</version>
             </dependency>
 
             <dependency>
@@ -693,6 +674,25 @@
                             </goals>
                             <configuration>
                                 <!-- Nothing needed here for simple cases -->
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <executions>
+                        <execution>
+                            <id>add-source</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>add-source</goal>
+                            </goals>
+                            <configuration>
+                                <sources>
+                                    <source>${project.build.directory}/generated-sources/swagger/src/main/java</source>
+                                </sources>
                             </configuration>
                         </execution>
                     </executions>
