@@ -1,22 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class SigrunModell {
+public record SigrunModell(List<Inntektsår> inntektsår) {
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty("inntektsår")
-    private List<Inntektsår> inntektsår = new ArrayList<>();
-
-    public List<Inntektsår> getInntektsår() { return inntektsår; }
-
-    public void setInntektsår(List<Inntektsår> inntektsår) {
-        this.inntektsår.clear();
-        this.inntektsår.addAll(inntektsår);
+    public SigrunModell() {
+        this(null);
     }
 
+    @JsonCreator
+    public SigrunModell(List<Inntektsår> inntektsår) {
+        this.inntektsår = Optional.ofNullable(inntektsår).orElse(List.of());
+    }
 }

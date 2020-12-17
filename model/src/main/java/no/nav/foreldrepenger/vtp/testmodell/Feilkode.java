@@ -7,8 +7,6 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
-
 public class Feilkode {
     private static List<String> VALID_KODER;
     static {
@@ -54,7 +52,7 @@ public class Feilkode {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Landkode) obj).getKode());
+        return Objects.equals(getKode(), ((Feilkode) obj).getKode());
     }
 
     @Override

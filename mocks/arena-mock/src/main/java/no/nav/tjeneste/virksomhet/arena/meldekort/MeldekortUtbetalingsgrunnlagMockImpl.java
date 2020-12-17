@@ -81,7 +81,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         }
         InntektYtelseModell inntektYtelseModell = iyIndeksOpt.get();
         ArenaModell arenaModell = inntektYtelseModell.getArenaModell();
-        Feilkode feilkode = arenaModell.getFeilkode();
+        Feilkode feilkode = arenaModell.feilkode();
         if (feilkode != null) {
             try {
                 haandterExceptions(feilkode.getKode(), aktørId);
@@ -91,7 +91,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             }
         }
 
-        return arenaMapper.mapArenaSaker(finnMeldekortUtbetalingsgrunnlagListeRequest, response, arenaModell.getSaker());
+        return arenaMapper.mapArenaSaker(finnMeldekortUtbetalingsgrunnlagListeRequest, response, arenaModell.saker());
 
     }
 

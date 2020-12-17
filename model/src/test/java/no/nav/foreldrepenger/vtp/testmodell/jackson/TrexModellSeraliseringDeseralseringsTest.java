@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell;
+package no.nav.foreldrepenger.vtp.testmodell.jackson;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Tema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TemaKode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Vedtak;
 
-class SeraliseringDeseralseringsTest extends SerializationTestBase {
+class TrexModellSeraliseringDeseralseringsTest extends SerializationTestBase {
 
     @Test
     public void OrgnummerSeraliseringDeseraliseringTest() {

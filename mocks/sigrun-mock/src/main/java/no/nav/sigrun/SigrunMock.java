@@ -1,14 +1,8 @@
 package no.nav.sigrun;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Oppføring;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,9 +12,17 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Oppføring;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
 @Api(tags = {"Sigrun/beregnetskatt"})
 @Path("/api/beregnetskatt")
@@ -74,12 +76,12 @@ public class SigrunMock {
         String response;
 
         if (inntektYtelseModell.isPresent()) {
-            Optional<Inntektsår> aktuellInntektsår = inntektYtelseModell.get().getSigrunModell().getInntektsår().stream()
-                    .filter(inntektsår -> inntektsår.getÅr().equalsIgnoreCase(finalInntektsAar))
+            Optional<Inntektsår> aktuellInntektsår = inntektYtelseModell.get().getSigrunModell().inntektsår().stream()
+                    .filter(inntektsår -> inntektsår.år().equalsIgnoreCase(finalInntektsAar))
                     .findFirst();
             if (aktuellInntektsår.isPresent()) {
-                String test = aktuellInntektsår.get().getOppføring().stream()
-                        .map(Oppføring::toString)
+                String test = aktuellInntektsår.get().oppføring().stream()
+                        .map(Oppføring::tilSigrunMockResponseFormat)
                         .collect(Collectors.joining(",\n"));
                 response = String.format("[\n%s\n]", test);
             } else {

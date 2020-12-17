@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell;
+package no.nav.foreldrepenger.vtp.testmodell.jackson;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;

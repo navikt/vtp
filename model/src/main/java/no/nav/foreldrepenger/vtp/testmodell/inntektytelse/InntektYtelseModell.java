@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
@@ -12,7 +10,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.Omsorgsp
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 
-@JsonInclude(Include.NON_EMPTY)
 public class InntektYtelseModell {
 
     @JsonProperty("arena")
@@ -74,6 +71,9 @@ public class InntektYtelseModell {
     }
 
     public TRexModell gettRexModell() {
+        if (tRexModell == null) {
+            this.tRexModell = new TRexModell();
+        }
         return tRexModell;
     }
 
