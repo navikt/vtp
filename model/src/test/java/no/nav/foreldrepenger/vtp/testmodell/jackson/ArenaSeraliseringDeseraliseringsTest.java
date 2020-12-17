@@ -1,13 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell.jackson;
 
+import static no.nav.foreldrepenger.vtp.testmodell.Feilkode.PERSON_IKKE_FUNNET;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter;
-import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaMeldekort;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
@@ -45,7 +45,7 @@ class ArenaSeraliseringDeseraliseringsTest extends SerializationTestBase {
 
     @Test
     public void ArenaModellSeraliseringDeseraliseringTest() {
-        test(new ArenaModell(new Feilkode(FeilKodeKonstanter.PERSON_IKKE_FUNNET), List.of(lagArenaSak())));
+        test(new ArenaModell(PERSON_IKKE_FUNNET, List.of(lagArenaSak())));
     }
 
     private ArenaMeldekort lagArenaMeldekort() {
