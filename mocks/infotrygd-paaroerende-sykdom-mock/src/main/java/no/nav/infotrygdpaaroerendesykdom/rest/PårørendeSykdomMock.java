@@ -1,13 +1,10 @@
 package no.nav.infotrygdpaaroerendesykdom.rest;
 
-import io.swagger.annotations.*;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdRammevedtaksGrunnlag;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.validation.constraints.NotNull;
@@ -17,12 +14,28 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdRammevedtaksGrunnlag;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.Arbeidsforhold;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.Kodeverdi;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.PaaroerendeSykdom;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.Periode;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.RammevedtakDto;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.SakDto;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.SakResult;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.Vedtak;
+import no.nav.infotrygdpaaroerendesykdom.generated.model.VedtakPleietrengendeDto;
 
 @Path("/paaroerendeSykdom")
 @RequestScoped
@@ -113,20 +126,20 @@ public class PårørendeSykdomMock {
         if(inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
-        
-        
-        
+
+
+
         List<RammevedtakDto> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
                 .filter(it -> it instanceof InfotrygdRammevedtaksGrunnlag)
                 .map(it -> mapGrunnlagToRammevedtak((InfotrygdRammevedtaksGrunnlag) it))
                 .filter(it -> datoOverlapper(fom, tom, it.getFom(), it.getTom()))
                 //Legg til filter på fra og til (TODO)
                 .collect(Collectors.toList());
-        
+
         return Response.ok(result).build();
     }
 
-    
+
 
     private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
         if(fom1 == null) {
@@ -160,37 +173,37 @@ public class PårørendeSykdomMock {
         SakDto sak = new SakDto();
 
         Kodeverdi tema = new Kodeverdi();
-        tema.setKode(ytelse.getBehandlingtema().getTema());
+        tema.setKode(ytelse.behandlingstema().getTema());
         tema.setTermnavn("ukjent tema");
         sak.setTema(tema);
 
         Kodeverdi behandlingstema = new Kodeverdi();
-        behandlingstema.setKode(ytelse.getBehandlingtema().getKode());
+        behandlingstema.setKode(ytelse.behandlingstema().name());
         behandlingstema.setTermnavn("ukjent behandlingstema");
         sak.setBehandlingstema(behandlingstema);
 
-        sak.iverksatt(toLocalDate(ytelse.getIverksatt()));
-        sak.setOpphoerFom(toLocalDate(ytelse.getOpphørFom()));
-        sak.setRegistrert(toLocalDate(ytelse.getRegistrert()));
+        sak.iverksatt(toLocalDate(ytelse.iverksatt()));
+        sak.setOpphoerFom(toLocalDate(ytelse.opphør()));
+        sak.setRegistrert(toLocalDate(ytelse.registrert()));
 
-        if(ytelse.getResultat() != null) {
+        if(ytelse.resultat() != null) {
             Kodeverdi resultat = new Kodeverdi();
-            resultat.setKode(ytelse.getResultat().getKode());
+            resultat.setKode(ytelse.resultat().getKode());
             resultat.setTermnavn("ukjent resultat");
             sak.setResultat(resultat);
         }
 
-        sak.setSakId(ytelse.getSakId());
+        sak.setSakId(ytelse.sakId());
 
-        if(ytelse.getSakStatus() != null) {
-            sak.setStatus(kodeverdi(ytelse.getSakStatus().getKode()));
+        if(ytelse.sakStatus() != null) {
+            sak.setStatus(kodeverdi(ytelse.sakStatus().name()));
         }
 
-        if(ytelse.getSakType() != null) {
-            sak.setType(kodeverdi(ytelse.getSakType().getKode()));
+        if(ytelse.sakType() != null) {
+            sak.setType(kodeverdi(ytelse.sakType().getKode()));
         }
 
-        sak.setVedtatt(toLocalDate(ytelse.getVedtatt()));
+        sak.setVedtatt(toLocalDate(ytelse.vedtatt()));
 
         return sak;
     }
@@ -208,7 +221,7 @@ public class PårørendeSykdomMock {
             r.setArbeidskategori(kodeverdi(grunnlag.getArbeidskategori().getKode()));
         }
 
-        r.setBehandlingstema(kodeverdi(grunnlag.getBehandlingTema().getKode()));
+        r.setBehandlingstema(kodeverdi(grunnlag.getBehandlingTema().name()));
         r.setFoedselsdatoPleietrengende(grunnlag.getFødselsdatoPleietrengende());
 
         // Feltet finnes ikke i modellen. Legges til ved behov
@@ -238,16 +251,16 @@ public class PårørendeSykdomMock {
         r.setVedtak(grunnlag.getVedtak().stream().map( vedtak -> {
             Vedtak v = new Vedtak();
             Periode periode = new Periode();
-            periode.setFom(vedtak.getFom());
-            periode.setTom(vedtak.getTom());
+            periode.setFom(vedtak.fom());
+            periode.setTom(vedtak.tom());
             v.setPeriode(periode);
-            v.setUtbetalingsgrad(vedtak.getUtbetalingsgrad());
+            v.setUtbetalingsgrad(vedtak.utbetalingsgrad());
             return v;
         }).collect(Collectors.toList()));
 
         return r;
     }
-    
+
     private RammevedtakDto mapGrunnlagToRammevedtak(InfotrygdRammevedtaksGrunnlag it) {
         if(it == null) {
             return null;
@@ -258,7 +271,7 @@ public class PårørendeSykdomMock {
         rammevedtak.setTom(it.getTom());
         rammevedtak.setTekst(it.getRammevedtakTekst());
         return rammevedtak;
-        
+
     }
 
     private Arbeidsforhold mapArbeidsforhold(InfotrygdArbeidsforhold arbeidsforhold) {

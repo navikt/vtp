@@ -2,13 +2,11 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsg
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("pårørendesykdom")
 public class InfotrygdPårørendeSykdomBeregningsgrunnlag extends InfotrygdBeregningsgrunnlagPeriodeYtelse {
 
-    @JsonProperty("fødselsdatoPleietrengende")
     private LocalDate fødselsdatoPleietrengende;
 
     public LocalDate getFødselsdatoPleietrengende() {

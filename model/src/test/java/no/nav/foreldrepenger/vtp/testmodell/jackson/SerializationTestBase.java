@@ -26,7 +26,7 @@ public class SerializationTestBase {
         test(obj, true);
     }
 
-    private static String serialize(Object obj) throws JsonProcessingException {
+    public static String serialize(Object obj) throws JsonProcessingException {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }
 
@@ -48,5 +48,17 @@ public class SerializationTestBase {
             LOG.error("Oops", e);
             fail(obj.getClass().getSimpleName() + " failed");
         }
+    }
+
+    public static void deseralize(String serialized, Object obj) {
+        try {
+            Object deserialized = mapper.readValue(serialized, obj.getClass());
+            LOG.info("{}", deserialized);
+            assertEquals(obj, deserialized);
+        } catch (Exception e) {
+            LOG.error("Oops", e);
+            fail(obj.getClass().getSimpleName() + " failed");
+        }
+
     }
 }
