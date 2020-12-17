@@ -68,15 +68,15 @@ public class AaregRSV1Mock {
         }
 
         LOG.info("AAREG REST {}", ident);
-        return inntektYtelseModell.getArbeidsforholdModell().getArbeidsforhold().stream()
+        return inntektYtelseModell.getArbeidsforholdModell().arbeidsforhold().stream()
                 .filter(a -> erOverlapp(fom, tom, a))
                 .map(ArbeidsforholdRS::new)
                 .collect(Collectors.toList());
     }
 
     private boolean erOverlapp(LocalDate periodeFom, LocalDate periodeTom, Arbeidsforhold arbeidsforhold) {
-        LocalDate ansettelsesperiodeFom = arbeidsforhold.getAnsettelsesperiodeFom();
-        LocalDate ansettelsesperiodeTom = arbeidsforhold.getAnsettelsesperiodeTom();
+        LocalDate ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
+        LocalDate ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
         if (!periodeFom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeFom.isAfter(ansettelsesperiodeTom))) {
             return true;
         }

@@ -34,16 +34,16 @@ public class ArbeidsforholdRS {
     private String type; // (kodeverk: Arbeidsforholdtyper)
 
     public ArbeidsforholdRS(Arbeidsforhold arbeidsforhold) {
-        this.arbeidsforholdId = arbeidsforhold.getArbeidsforholdId();
-        this.navArbeidsforholdId = arbeidsforhold.getArbeidsforholdIdnav();
-        this.registrert = arbeidsforhold.getAnsettelsesperiodeFom();
-        this.type = arbeidsforhold.getArbeidsforholdstype().getKode();
-        this.ansettelsesperiode = new AnsettelsesperiodeRS(new PeriodeRS(arbeidsforhold.getAnsettelsesperiodeFom(), arbeidsforhold.getAnsettelsesperiodeTom()));
-        this.arbeidsgiver = new OpplysningspliktigArbeidsgiverRS(arbeidsforhold.getArbeidsgiverOrgnr(), arbeidsforhold.getArbeidsgiverAktorId());
-        this.permisjonPermitteringer = arbeidsforhold.getPermisjoner().stream()
+        this.arbeidsforholdId = arbeidsforhold.arbeidsforholdId();
+        this.navArbeidsforholdId = arbeidsforhold.arbeidsforholdIdnav();
+        this.registrert = arbeidsforhold.ansettelsesperiodeFom();
+        this.type = arbeidsforhold.arbeidsforholdstype().getKode();
+        this.ansettelsesperiode = new AnsettelsesperiodeRS(new PeriodeRS(arbeidsforhold.ansettelsesperiodeFom(), arbeidsforhold.ansettelsesperiodeTom()));
+        this.arbeidsgiver = new OpplysningspliktigArbeidsgiverRS(arbeidsforhold.arbeidsgiverOrgnr(), arbeidsforhold.arbeidsgiverAktorId());
+        this.permisjonPermitteringer = arbeidsforhold.permisjoner().stream()
                 .map(PermisjonPermitteringRS::new)
                 .collect(Collectors.toList());
-        this.arbeidsavtaler = arbeidsforhold.getArbeidsavtaler().stream()
+        this.arbeidsavtaler = arbeidsforhold.arbeidsavtaler().stream()
                 .map(ArbeidsavtaleRS::new)
                 .collect(Collectors.toList());
     }

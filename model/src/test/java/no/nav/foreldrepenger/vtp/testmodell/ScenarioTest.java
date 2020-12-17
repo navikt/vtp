@@ -81,7 +81,7 @@ public class ScenarioTest {
         assertTrue(søkerInntektYtelse.gettRexModell().barnsykdom().isEmpty());
         assertTrue(søkerInntektYtelse.getInntektskomponentModell().inntektsperioder().isEmpty());
         assertTrue(søkerInntektYtelse.getInntektskomponentModell().frilansarbeidsforholdperioder().isEmpty());
-        assertTrue(søkerInntektYtelse.getArbeidsforholdModell().getArbeidsforhold().isEmpty());
+        assertTrue(søkerInntektYtelse.getArbeidsforholdModell().arbeidsforhold().isEmpty());
         assertTrue(søkerInntektYtelse.getSigrunModell().inntektsår().isEmpty());
         assertTrue(søkerInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getAleneOmOmsorgen().isEmpty());
         assertTrue(søkerInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getOverføringerGitt().isEmpty());
@@ -98,7 +98,7 @@ public class ScenarioTest {
         assertTrue(annenpartInntektYtelse.gettRexModell().barnsykdom().isEmpty());
         assertFalse(annenpartInntektYtelse.getInntektskomponentModell().inntektsperioder().isEmpty());
         assertFalse(annenpartInntektYtelse.getInntektskomponentModell().frilansarbeidsforholdperioder().isEmpty());
-        assertFalse(annenpartInntektYtelse.getArbeidsforholdModell().getArbeidsforhold().isEmpty());
+        assertFalse(annenpartInntektYtelse.getArbeidsforholdModell().arbeidsforhold().isEmpty());
         assertFalse(annenpartInntektYtelse.getSigrunModell().inntektsår().isEmpty());
         assertTrue(annenpartInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getAleneOmOmsorgen().isEmpty());
         assertTrue(annenpartInntektYtelse.getOmsorgspengerModell().getRammemeldinger().getOverføringerGitt().isEmpty());
