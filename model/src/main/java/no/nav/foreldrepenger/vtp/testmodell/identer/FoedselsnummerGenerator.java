@@ -14,7 +14,7 @@ public class FoedselsnummerGenerator {
     private final static Logger LOG = LoggerFactory.getLogger(FoedselsnummerGenerator.class);
     private final static Integer NAV_SYNTETISK_IDENT_OFFSET_MND = 40;
     private final static Integer DNR_OFFSETT_DAYS = 40;
-    private fianl static Random random = new Random();
+    private final static Random random = new Random();
 
     private Kjonn kjonn;
     private IdentType identType;
