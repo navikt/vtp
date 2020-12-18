@@ -121,10 +121,6 @@
             <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
             <artifactId>fp-topics-manifest</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.security</groupId>
-            <artifactId>mock-oauth2-server</artifactId>
-        </dependency>
 
         <!-- Eksterne avhengigheter -->
         <dependency>
