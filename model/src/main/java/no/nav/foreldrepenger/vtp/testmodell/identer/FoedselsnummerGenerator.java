@@ -14,6 +14,7 @@ public class FoedselsnummerGenerator {
     private final static Logger LOG = LoggerFactory.getLogger(FoedselsnummerGenerator.class);
     private final static Integer NAV_SYNTETISK_IDENT_OFFSET_MND = 40;
     private final static Integer DNR_OFFSETT_DAYS = 40;
+    private fianl static Random random = new Random();
 
     private Kjonn kjonn;
     private IdentType identType;
@@ -48,8 +49,6 @@ public class FoedselsnummerGenerator {
 
     private String generate(){
         //LOG.info("Vil generere FNR for " + this.kjonn + " født: " + this.fodselsdato + " av type: " + this.identType);
-
-        var random = new Random();
 
         var day = String.format("%02d",this.fodselsdato.getDayOfMonth());
         var month = String.format("%02d",this.fodselsdato.getMonthValue() + NAV_SYNTETISK_IDENT_OFFSET_MND);
