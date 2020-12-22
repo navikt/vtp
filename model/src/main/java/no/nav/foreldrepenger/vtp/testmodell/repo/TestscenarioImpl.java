@@ -140,10 +140,10 @@ public class TestscenarioImpl implements Testscenario {
     }
 
     private List<PersonArbeidsgiver> getPersonArbeidsgivere(InntektYtelseModell iyModell) {
-        if (iyModell == null || iyModell.getInntektskomponentModell() == null || iyModell.getInntektskomponentModell().inntektsperioder() == null) {
+        if (iyModell == null || iyModell.inntektskomponentModell() == null || iyModell.inntektskomponentModell().inntektsperioder() == null) {
             return Collections.emptyList();
         }
-        return iyModell.getInntektskomponentModell().inntektsperioder().stream()
+        return iyModell.inntektskomponentModell().inntektsperioder().stream()
             .map(Inntektsperiode::arbeidsgiver)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());

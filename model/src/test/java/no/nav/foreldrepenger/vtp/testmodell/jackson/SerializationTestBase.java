@@ -49,16 +49,4 @@ public class SerializationTestBase {
             fail(obj.getClass().getSimpleName() + " failed");
         }
     }
-
-    public static void deseralize(String serialized, Object obj) {
-        try {
-            Object deserialized = mapper.readValue(serialized, obj.getClass());
-            LOG.info("{}", deserialized);
-            assertEquals(obj, deserialized);
-        } catch (Exception e) {
-            LOG.error("Oops", e);
-            fail(obj.getClass().getSimpleName() + " failed");
-        }
-
-    }
 }

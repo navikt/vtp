@@ -72,11 +72,11 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
         Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModellFraAktørId(aktørId);
-        if (!iyIndeksOpt.isPresent()) {
+        if (iyIndeksOpt.isEmpty()) {
             return response;
         }
         InntektYtelseModell inntektYtelseModell = iyIndeksOpt.get();
-        ArenaModell arenaModell = inntektYtelseModell.getArenaModell();
+        ArenaModell arenaModell = inntektYtelseModell.arenaModell();
         Feilkode feilkode = arenaModell.feilkode();
         if (feilkode != null) {
             try {

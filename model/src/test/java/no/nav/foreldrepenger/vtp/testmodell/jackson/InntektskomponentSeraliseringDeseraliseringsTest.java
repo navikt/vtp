@@ -50,10 +50,12 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends SerializationTest
 
     @Test
     public void InntektskomponentModellSeraliseringDeseraliseringTest() {
-        test(new InntektskomponentModell(List.of(lagInntektsperiode()), List.of(lagFrilansArbeidsforholdsperiode())));
+        test(lagInntektskomponentModell());
     }
 
-
+    protected InntektskomponentModell lagInntektskomponentModell() {
+        return new InntektskomponentModell(List.of(lagInntektsperiode()), List.of(lagFrilansArbeidsforholdsperiode()));
+    }
 
     private FrilansArbeidsforholdsperiode lagFrilansArbeidsforholdsperiode() {
         return new FrilansArbeidsforholdsperiode(LocalDate.now(), LocalDate.now(), "90807060", 100,

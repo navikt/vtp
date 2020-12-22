@@ -60,9 +60,12 @@ class ArbeidsforholdSeraliseringDeseraliseringsTest extends SerializationTestBas
 
     @Test
     public void ArbeidsforholdModellSeraliseringDeseraliseringTest() {
-        test(new ArbeidsforholdModell(List.of(lagArbeidsforhold())));
+        test(lagArbeidsforholdModell());
     }
 
+    protected ArbeidsforholdModell lagArbeidsforholdModell() {
+        return new ArbeidsforholdModell(List.of(lagArbeidsforhold()));
+    }
 
 
     private Arbeidsforhold lagArbeidsforhold() {

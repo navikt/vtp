@@ -83,12 +83,16 @@ class TrexModellSeraliseringDeseralseringsTest extends SerializationTestBase {
 
     @Test
     public void TRexModellSeraliseringDeseraliseringTest() {
-        test(new TRexModell(
+        test(lagTRexModell());
+    }
+
+    protected TRexModell lagTRexModell() {
+        return new TRexModell(
                 List.of(lagGrunnlag(), lagGrunnlag()),
                 List.of(lagGrunnlag(), lagGrunnlag()),
                 null,
                 null
-        ));
+        );
     }
 
 

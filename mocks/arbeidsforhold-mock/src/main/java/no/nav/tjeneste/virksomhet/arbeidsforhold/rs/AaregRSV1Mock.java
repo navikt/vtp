@@ -62,13 +62,13 @@ public class AaregRSV1Mock {
             throw new IllegalArgumentException("Request uten ident eller fom");
         InntektYtelseModell inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
                 .orElseGet(() -> scenarioRepository.getInntektYtelseModell(ident).orElse(null));
-        if (inntektYtelseModell == null || inntektYtelseModell.getArbeidsforholdModell() == null) {
+        if (inntektYtelseModell == null || inntektYtelseModell.arbeidsforholdModell() == null) {
             LOG.warn("AAREG REST finnArbeidsforholdPrArbeidstaker kunne ikke finne etterspurt bruker");
             return List.of();
         }
 
         LOG.info("AAREG REST {}", ident);
-        return inntektYtelseModell.getArbeidsforholdModell().arbeidsforhold().stream()
+        return inntektYtelseModell.arbeidsforholdModell().arbeidsforhold().stream()
                 .filter(a -> erOverlapp(fom, tom, a))
                 .map(ArbeidsforholdRS::new)
                 .collect(Collectors.toList());

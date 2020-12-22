@@ -1,79 +1,23 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class OverføringFått {
-    @JsonProperty("gjennomført")
-    private LocalDate gjennomført;
+public record OverføringFått(LocalDate gjennomført,
+                             LocalDate gyldigFraOgMed,
+                             LocalDate gyldigTilOgMed,
+                             Duration lengde,
+                             Person fra,
+                             List<Kilde> kilder) {
 
-    @JsonProperty("gyldigFraOgMed")
-    private LocalDate gyldigFraOgMed;
-
-    @JsonProperty("gyldigTilOgMed")
-    private LocalDate gyldigTilOgMed;
-
-    @JsonProperty("lengde")
-    private Duration lengde;
-
-    @JsonProperty("fra")
-    private Person fra;
-
-    @JsonProperty("kilder")
-    private List<Kilde> kilder;
-
-    public LocalDate getGjennomført() {
-        return gjennomført;
-    }
-
-    public void setGjennomført(LocalDate gjennomført) {
+    public OverføringFått(LocalDate gjennomført, LocalDate gyldigFraOgMed, LocalDate gyldigTilOgMed, Duration lengde, Person fra, List<Kilde> kilder) {
         this.gjennomført = gjennomført;
-    }
-
-    public LocalDate getGyldigFraOgMed() {
-        return gyldigFraOgMed;
-    }
-
-    public void setGyldigFraOgMed(LocalDate gyldigFraOgMed) {
         this.gyldigFraOgMed = gyldigFraOgMed;
-    }
-
-    public LocalDate getGyldigTilOgMed() {
-        return gyldigTilOgMed;
-    }
-
-    public void setGyldigTilOgMed(LocalDate gyldigTilOgMed) {
         this.gyldigTilOgMed = gyldigTilOgMed;
-    }
-
-    public Duration getLengde() {
-        return lengde;
-    }
-
-    public void setLengde(Duration lengde) {
         this.lengde = lengde;
-    }
-
-    public Person getFra() {
-        return fra;
-    }
-
-    public void setFra(Person fra) {
         this.fra = fra;
-    }
-
-    public List<Kilde> getKilder() {
-        if(kilder == null) {
-            kilder = new ArrayList<>();
-        }
-        return kilder;
-    }
-
-    public void setKilder(List<Kilde> kilder) {
-        this.kilder = kilder;
+        this.kilder = Optional.ofNullable(kilder).orElse(List.of());
     }
 }

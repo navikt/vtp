@@ -22,7 +22,11 @@ class SigrunSeraliseringDeseraliseringsTest extends SerializationTestBase {
 
     @Test
     public void SigrunModellSeraliseringDeseraliseringTest() {
-        test(new SigrunModell(List.of(lagInntektsår())));
+        test(lagSigrunModell());
+    }
+
+    protected SigrunModell lagSigrunModell() {
+        return new SigrunModell(List.of(lagInntektsår()));
     }
 
     private Inntektsår lagInntektsår() {

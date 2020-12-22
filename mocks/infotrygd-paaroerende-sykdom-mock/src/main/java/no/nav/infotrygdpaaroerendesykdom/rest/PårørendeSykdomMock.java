@@ -39,7 +39,8 @@ import no.nav.infotrygdpaaroerendesykdom.generated.model.VedtakPleietrengendeDto
 
 @Path("/paaroerendeSykdom")
 @RequestScoped
-@Api(description = "the paaroerendeSykdom API")
+@Api(
+        description = "the paaroerendeSykdom API")
 public class PårørendeSykdomMock {
     private final TestscenarioBuilderRepository scenarioRepository;
 
@@ -89,7 +90,7 @@ public class PårørendeSykdomMock {
             return Response.ok(List.of()).build();
         }
 
-        List<PaaroerendeSykdom> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
+        List<PaaroerendeSykdom> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
                 .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
                 .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it))
                 .filter(it -> it.getTema().getKode().equals("BS"))
@@ -129,7 +130,7 @@ public class PårørendeSykdomMock {
 
 
 
-        List<RammevedtakDto> result = inntektYtelseModell.get().getInfotrygdModell().getGrunnlag().stream()
+        List<RammevedtakDto> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
                 .filter(it -> it instanceof InfotrygdRammevedtaksGrunnlag)
                 .map(it -> mapGrunnlagToRammevedtak((InfotrygdRammevedtaksGrunnlag) it))
                 .filter(it -> datoOverlapper(fom, tom, it.getFom(), it.getTom()))
@@ -158,7 +159,7 @@ public class PårørendeSykdomMock {
     }
 
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
-        List<SakDto> sakerOgVedtak = inntektYtelseModell.getInfotrygdModell().getYtelser().stream()
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell().ytelser().stream()
                 .map(this::mapYtelseToSak)
                 .filter(it -> it.getTema().getKode().equals("BS"))
                 .collect(Collectors.toList());

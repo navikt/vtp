@@ -2,10 +2,13 @@ package no.nav.foreldrepenger.vtp.testmodell.jackson;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdBehandlingstema;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakResultat;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.InfotrygdSakType;
@@ -15,14 +18,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgr
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 
 class InfotrygdSeraliseringDeseraliseringsTest extends SerializationTestBase {
-
-//    @BeforeAll
-//    private static void utvidObjectmapperMedInjectables() {
-//        var jsonMapper = new JsonMapperUtvider(new VariabelContainer(Map.of("key", "value")));
-//        var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
-//        jsonMapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
-//        mapper = jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();
-//    }
 
     @Test
     public void InfotrygdTemaSeraliseringDeseraliseringTest() {
@@ -62,6 +57,21 @@ class InfotrygdSeraliseringDeseraliseringsTest extends SerializationTestBase {
     @Test
     public void InfotrygdVedtakSeraliseringDeseraliseringTest() {
         test(lagInfotrygdVedtak());
+    }
+
+
+    @Test
+    public void InfotrygdBeregningsgrunnlagSeraliseringDeseraliseringTest() {
+        // TODO: InfotrygdBeregningsgrunnlag m.m.
+    }
+
+    @Test
+    public void InfotrygdModellSeraliseringDeseraliseringTest() {
+        test(lagInfotrygdModell());
+    }
+
+    protected InfotrygdModell lagInfotrygdModell() {
+        return new InfotrygdModell(Feilkode.PERSON_IKKE_FUNNET, List.of(lagInfotrygdYtelse()), null);
     }
 
     private InfotrygdYtelse lagInfotrygdYtelse() {

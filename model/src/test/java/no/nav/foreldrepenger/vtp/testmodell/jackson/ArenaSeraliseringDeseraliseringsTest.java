@@ -45,7 +45,11 @@ class ArenaSeraliseringDeseraliseringsTest extends SerializationTestBase {
 
     @Test
     public void ArenaModellSeraliseringDeseraliseringTest() {
-        test(new ArenaModell(PERSON_IKKE_FUNNET, List.of(lagArenaSak())));
+        test(lagArenaModell());
+    }
+
+    protected ArenaModell lagArenaModell() {
+        return new ArenaModell(PERSON_IKKE_FUNNET, List.of(lagArenaSak()));
     }
 
     private ArenaMeldekort lagArenaMeldekort() {

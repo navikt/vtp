@@ -76,7 +76,7 @@ public class SigrunMock {
         String response;
 
         if (inntektYtelseModell.isPresent()) {
-            Optional<Inntektsår> aktuellInntektsår = inntektYtelseModell.get().getSigrunModell().inntektsår().stream()
+            Optional<Inntektsår> aktuellInntektsår = inntektYtelseModell.get().sigrunModell().inntektsår().stream()
                     .filter(inntektsår -> inntektsår.år().equalsIgnoreCase(finalInntektsAar))
                     .findFirst();
             if (aktuellInntektsår.isPresent()) {

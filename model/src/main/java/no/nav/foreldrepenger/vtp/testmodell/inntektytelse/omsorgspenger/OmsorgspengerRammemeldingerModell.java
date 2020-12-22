@@ -1,50 +1,22 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class OmsorgspengerRammemeldingerModell {
-    @JsonProperty("aleneOmOmsorgen")
-    private List<AleneOmOmsorgen> aleneOmOmsorgen;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-    @JsonProperty("overføringerGitt")
-    private List<OverføringGitt> overføringerGitt;
+public record OmsorgspengerRammemeldingerModell(List<AleneOmOmsorgen> aleneOmOmsorgen,
+                                                List<OverføringGitt> overføringerGitt,
+                                                List<OverføringFått> overføringerFått) {
 
-    @JsonProperty("overføringerFått")
-    private List<OverføringFått> overføringerFått;
-
-    public List<AleneOmOmsorgen> getAleneOmOmsorgen() {
-        if(aleneOmOmsorgen == null) {
-            aleneOmOmsorgen = new ArrayList<>();
-        }
-        return aleneOmOmsorgen;
+    public OmsorgspengerRammemeldingerModell() {
+        this(null, null, null);
     }
 
-    public void setAleneOmOmsorgen(List<AleneOmOmsorgen> aleneOmOmsorgen) {
-        this.aleneOmOmsorgen = aleneOmOmsorgen;
-    }
-
-    public List<OverføringGitt> getOverføringerGitt() {
-        if(overføringerGitt == null) {
-            overføringerGitt = new ArrayList<>();
-        }
-        return overføringerGitt;
-    }
-
-    public void setOverføringerGitt(List<OverføringGitt> overføringerGitt) {
-        this.overføringerGitt = overføringerGitt;
-    }
-
-    public List<OverføringFått> getOverføringerFått() {
-        if(overføringerFått == null) {
-            overføringerFått = new ArrayList<>();
-        }
-        return overføringerFått;
-    }
-
-    public void setOverføringerFått(List<OverføringFått> overføringerFått) {
-        this.overføringerFått = overføringerFått;
+    @JsonCreator
+    public OmsorgspengerRammemeldingerModell(List<AleneOmOmsorgen> aleneOmOmsorgen, List<OverføringGitt> overføringerGitt, List<OverføringFått> overføringerFått) {
+        this.aleneOmOmsorgen = Optional.ofNullable(aleneOmOmsorgen).orElse(List.of());
+        this.overføringerGitt = Optional.ofNullable(overføringerGitt).orElse(List.of());
+        this.overføringerFått = Optional.ofNullable(overføringerFått).orElse(List.of());
     }
 }

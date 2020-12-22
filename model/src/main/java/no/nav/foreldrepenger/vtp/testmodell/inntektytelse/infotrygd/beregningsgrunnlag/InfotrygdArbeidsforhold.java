@@ -14,7 +14,6 @@ public class InfotrygdArbeidsforhold {
     @JsonProperty("orgnr")
     private String lokalOrgnr;
 
-    @JsonProperty("beløp")
     private BigDecimal beløp;
 
     @JsonProperty("inntektsperiode")

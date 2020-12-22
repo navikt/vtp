@@ -1,11 +1,7 @@
 package no.nav.omsorgspenger.rammemeldinger;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.AleneOmOmsorgen;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerRammemeldingerModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import java.util.List;
+import java.util.Optional;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -13,8 +9,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Optional;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.AleneOmOmsorgen;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerRammemeldingerModell;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Api(tags = {"Omsorgspenger/AleneOmOmsorgen"})
 @Path("/omsorgspenger-rammemeldinger")
@@ -37,7 +38,7 @@ public class OmsorgspengerMock {
             return new AleneOmOmsorgenResponse();
         }
         InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
-        List<AleneOmOmsorgen> aleneOmOmsorgen = inntektYtelseModell.getOmsorgspengerModell().getRammemeldinger().getAleneOmOmsorgen();
+        List<AleneOmOmsorgen> aleneOmOmsorgen = inntektYtelseModell.omsorgspengerModell().rammemeldinger().aleneOmOmsorgen();
         AleneOmOmsorgenResponse response = new AleneOmOmsorgenResponse();
         response.setAleneOmOmsorgen(aleneOmOmsorgen);
         return response;
@@ -56,11 +57,11 @@ public class OmsorgspengerMock {
         }
         InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
 
-        OmsorgspengerRammemeldingerModell rammemeldinger = inntektYtelseModell.getOmsorgspengerModell().getRammemeldinger();
+        OmsorgspengerRammemeldingerModell rammemeldinger = inntektYtelseModell.omsorgspengerModell().rammemeldinger();
 
         OverføringerResponse response = new OverføringerResponse();
-        response.setGitt(rammemeldinger.getOverføringerGitt());
-        response.setFått(rammemeldinger.getOverføringerFått());
+        response.setGitt(rammemeldinger.overføringerGitt());
+        response.setFått(rammemeldinger.overføringerFått());
         return response;
     }
 }
