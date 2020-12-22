@@ -49,7 +49,7 @@ public class InfotrygdGrunnlagMock {
         LOG.info(LOG_PREFIX, "foreldrepenger");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
-                .map(InntektYtelseModell::tRexModell)
+                .map(InntektYtelseModell::trexModell)
                 .map(TRexModell::foreldrepenger).orElse(tomresponse)
                 .toArray(Grunnlag[]::new);
     }
@@ -68,7 +68,7 @@ public class InfotrygdGrunnlagMock {
         LOG.info(LOG_PREFIX, "svangerskapspenger");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
-                .map(InntektYtelseModell::tRexModell)
+                .map(InntektYtelseModell::trexModell)
                 .map(TRexModell::svangerskapspenger).orElse(tomresponse)
                 .toArray(Grunnlag[]::new);
     }
@@ -84,7 +84,7 @@ public class InfotrygdGrunnlagMock {
         LOG.info(LOG_PREFIX, "sykepenger");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
-                .map(InntektYtelseModell::tRexModell)
+                .map(InntektYtelseModell::trexModell)
                 .map(TRexModell::sykepenger).orElse(tomresponse)
                 .toArray(Grunnlag[]::new);
     }
@@ -100,7 +100,7 @@ public class InfotrygdGrunnlagMock {
         LOG.info(LOG_PREFIX, "pårørendesykdom");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
-                .map(InntektYtelseModell::tRexModell)
+                .map(InntektYtelseModell::trexModell)
                 .map(TRexModell::barnsykdom).orElse(tomresponse)
                 .toArray(Grunnlag[]::new);
     }

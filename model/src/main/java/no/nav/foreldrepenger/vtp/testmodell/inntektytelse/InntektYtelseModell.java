@@ -15,18 +15,18 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 
 public record InntektYtelseModell(@JsonProperty("arena") ArenaModell arenaModell,
                                   @JsonProperty("infotrygd") InfotrygdModell infotrygdModell,
-                                  @JsonProperty("trex") TRexModell tRexModell,
+                                  @JsonProperty("trex") TRexModell trexModell,
                                   @JsonProperty("inntektskomponent") InntektskomponentModell inntektskomponentModell,
                                   @JsonProperty("aareg") ArbeidsforholdModell arbeidsforholdModell,
                                   @JsonProperty("sigrun") SigrunModell sigrunModell,
                                   @JsonProperty("omsorgspenger") OmsorgspengerModell omsorgspengerModell) {
     @JsonCreator
-    public InntektYtelseModell(ArenaModell arenaModell, InfotrygdModell infotrygdModell, TRexModell tRexModell,
+    public InntektYtelseModell(ArenaModell arenaModell, InfotrygdModell infotrygdModell, TRexModell trexModell,
                                InntektskomponentModell inntektskomponentModell, ArbeidsforholdModell arbeidsforholdModell,
                                SigrunModell sigrunModell, OmsorgspengerModell omsorgspengerModell) {
         this.arenaModell = Optional.ofNullable(arenaModell).orElse(new ArenaModell());
         this.infotrygdModell = Optional.ofNullable(infotrygdModell).orElse(new InfotrygdModell());
-        this.tRexModell = Optional.ofNullable(tRexModell).orElse(new TRexModell());
+        this.trexModell = Optional.ofNullable(trexModell).orElse(new TRexModell());
         this.inntektskomponentModell = Optional.ofNullable(inntektskomponentModell).orElse(new InntektskomponentModell());
         this.arbeidsforholdModell = Optional.ofNullable(arbeidsforholdModell).orElse(new ArbeidsforholdModell());
         this.sigrunModell = Optional.ofNullable(sigrunModell).orElse(new SigrunModell());
