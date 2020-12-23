@@ -32,7 +32,7 @@ public class FindTemplateVariables {
 
     static final Pattern TEMPLATE_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.+)\\}");
 
-    private final ObjectMapper objectMapper = JsonMapper.lagCopyAvObjectMapper();
+    private final ObjectMapper objectMapper = JacksonWrapperTestscenario.lagCopyAvObjectMapper();
     private final FindTemplateVariableModule module = new FindTemplateVariableModule();
 
     public FindTemplateVariables() {

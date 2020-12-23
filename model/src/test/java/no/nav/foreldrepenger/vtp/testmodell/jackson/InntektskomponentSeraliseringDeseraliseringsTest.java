@@ -15,14 +15,14 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Innte
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
-import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapperUtvider;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
 class InntektskomponentSeraliseringDeseraliseringsTest extends SerializationTestBase {
 
     @BeforeAll
     private static void utvidObjectmapperMedInjectables() {
-        var jsonMapper = new JsonMapperUtvider(new VariabelContainer(Map.of("key", "value")));
+        var jsonMapper = new JacksonWrapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
         jsonMapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
         mapper = jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();

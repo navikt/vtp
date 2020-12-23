@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,7 +12,9 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-public class JsonMapper {
+public class JacksonWrapperTestscenario {
+
+    private static JacksonWrapperTestscenario instance;
 
     protected static final ObjectMapper OBJECT_MAPPER;
     static {
@@ -28,11 +31,18 @@ public class JsonMapper {
         objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE, true);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setSerializationInclusion(Include.NON_EMPTY);
 
         OBJECT_MAPPER = objectMapper;
+    }
+
+    public static synchronized JacksonWrapperTestscenario getInstance(){
+        if(instance == null){
+            instance = new JacksonWrapperTestscenario();
+        }
+        return instance;
     }
 
     public static ObjectMapper getObjectMapper() {
@@ -41,5 +51,14 @@ public class JsonMapper {
 
     public static ObjectMapper lagCopyAvObjectMapper() {
         return OBJECT_MAPPER.copy();
+    }
+
+    public String writeValueAsString(Object object) {
+        try {
+            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Kunne ikke serialisere fra " + e);
+
+        }
     }
 }

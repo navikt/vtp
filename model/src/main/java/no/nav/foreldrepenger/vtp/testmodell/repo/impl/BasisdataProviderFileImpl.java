@@ -16,7 +16,7 @@ import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
-import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapperTestscenario;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetModell;
 
@@ -28,7 +28,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private final OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
     private final IdentGenerator identGenerator = new FiktiveFnr();
 
-    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private static final ObjectMapper mapper = JacksonWrapperTestscenario.getObjectMapper();
     private static BasisdataProviderFileImpl instance;
 
     private BasisdataProviderFileImpl() throws IOException{
