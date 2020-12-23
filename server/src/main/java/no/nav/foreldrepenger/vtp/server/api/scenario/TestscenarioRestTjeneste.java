@@ -28,8 +28,6 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
@@ -56,7 +54,7 @@ public class TestscenarioRestTjeneste {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter alle testcaser som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
-    public Response hentInitialiserteCaser() throws JsonProcessingException {
+    public Response hentInitialiserteCaser() {
         Map<String, Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
         List<TestscenarioDto> testscenarioList = new ArrayList<>();
 

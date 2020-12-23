@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 import no.nav.foreldrepenger.vtp.testmodell.felles.Orgnummer;
 
-public record Arbeidsforhold(@JsonAlias("orgnr") Orgnummer orgnr,
+public record Arbeidsforhold(@JsonAlias("arbeidsgiverOrgnr") Orgnummer orgnr,
                              @JsonAlias("inntektForPerioden") Integer inntekt,
                              Inntektsperiode inntektsperiode,
                              Boolean refusjon) {

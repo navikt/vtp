@@ -2,11 +2,8 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public record FrilansArbeidsforholdsperiode(LocalDate frilansFom,
                                             LocalDate frilansTom,
                                             String orgnr,
