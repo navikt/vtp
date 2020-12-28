@@ -1,3 +1,4 @@
+
 # ISO-8601 representasjon for en kalenderdato. YYYY-MM-DD. Eksempel: 2018-01-01.
 scalar Date
 
@@ -16,6 +17,7 @@ type Query {
     hentPersonBolk(identer: [ID!]!): [HentPersonBolkResult!]!
     hentIdenter(ident: ID!, grupper: [IdentGruppe!], historikk: Boolean = false): Identliste
     hentIdenterBolk(identer: [ID!]!, grupper: [IdentGruppe!], historikk: Boolean = false): [HentIdenterBolkResult!]!
+    hentGeografiskTilknytning(ident: ID!): GeografiskTilknytning
     sokPerson(criteria:[Criterion], paging:Paging): SearchResult
 }
 
@@ -76,7 +78,6 @@ type Person {
     innflyttingTilNorge: [InnflyttingTilNorge!]!
     utflyttingFraNorge: [UtflyttingFraNorge!]!
     vergemaalEllerFremtidsfullmakt(historikk: Boolean = false): [VergemaalEllerFremtidsfullmakt!]!
-    geografiskTilknytning: GeografiskTilknytning
 }
 
 type DeltBosted {
@@ -351,7 +352,7 @@ type GeografiskTilknytning {
     gtKommune: String
     gtBydel: String
     gtLand: String
-    metadata: Metadata!
+    regel: String!
 }
 
 enum GtType {
@@ -644,14 +645,26 @@ enum Direction {
     DESC
 }
 type SearchResult {
-    hits : [searchHit!]!,
+    hits : [SearchHit!]!
     pageNumber:Int,
     totalPages:Int
     totalHits:Int
 
 }
-type searchHit {
+type SearchHit {
     person :Person,
     identer(historikk: Boolean = false): [IdentInformasjon!]!,
     score :Float
+    highlights:[SearchHighlight]
+}
+type SearchHighlight {
+    opplysning:String
+    opplysningsId: String
+    historisk: Boolean
+    matches:[SearchMatch]
+}
+type SearchMatch {
+    field:String!
+    type: String
+    fragments: [String]
 }
