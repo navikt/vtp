@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -12,11 +11,10 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-public class JacksonWrapperTestscenario {
+public class JacksonObjectMapperTestscenario {
 
-    private static JacksonWrapperTestscenario instance;
+    private static final ObjectMapper MAPPER;
 
-    protected static final ObjectMapper OBJECT_MAPPER;
     static {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
@@ -35,30 +33,14 @@ public class JacksonWrapperTestscenario {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setSerializationInclusion(Include.NON_EMPTY);
 
-        OBJECT_MAPPER = objectMapper;
-    }
-
-    public static synchronized JacksonWrapperTestscenario getInstance(){
-        if(instance == null){
-            instance = new JacksonWrapperTestscenario();
-        }
-        return instance;
+        MAPPER = objectMapper;
     }
 
     public static ObjectMapper getObjectMapper() {
-        return OBJECT_MAPPER;
+        return MAPPER;
     }
 
     public static ObjectMapper lagCopyAvObjectMapper() {
-        return OBJECT_MAPPER.copy();
-    }
-
-    public String writeValueAsString(Object object) {
-        try {
-            return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Kunne ikke serialisere fra " + e);
-
-        }
+        return MAPPER.copy();
     }
 }

@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /** NB - Single-use only. Variable lest/skrevet caches internt i modul. Variable som brukes vil deles på tvers av invokeringer.*/
-public class JacksonWrapperTestscenarioUtvider extends JacksonWrapperTestscenario {
+public class JacksonObjectMapperTestscenarioUtvider extends JacksonObjectMapperTestscenario {
 
     private final VariabelContainer vars;
     private final InjectableValues.Std injectableValues = new InjectableValues.Std();
 
-    public JacksonWrapperTestscenarioUtvider(VariabelContainer vars) {
+    public JacksonObjectMapperTestscenarioUtvider(VariabelContainer vars) {
         Objects.requireNonNull(vars, "vars");
         this.vars = vars;
     }

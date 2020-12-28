@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapperTestscenarioUtvider;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
 class InntektYtelseModellSeraliseringDeseraliseringsTest extends SerializationTestBase {
@@ -34,7 +34,7 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends SerializationTe
 
     @BeforeAll
     public static void utviderObjectmapperMedInjectables() {
-        var jacksonWrapper = new JacksonWrapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
+        var jacksonWrapper = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
         jacksonWrapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
         mapper = jacksonWrapper.lagCopyAvObjectMapperOgUtvideMedVars();

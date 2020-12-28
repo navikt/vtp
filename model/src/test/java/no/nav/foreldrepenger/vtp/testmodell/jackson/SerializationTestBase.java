@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapperTestscenario;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 
 public class SerializationTestBase {
 
@@ -19,14 +19,14 @@ public class SerializationTestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        mapper = JacksonWrapperTestscenario.getObjectMapper();
+        mapper = JacksonObjectMapperTestscenario.getObjectMapper();
     }
 
     protected static void test(Object obj) {
         test(obj, true);
     }
 
-    public static String serialize(Object obj) throws JsonProcessingException {
+    private static String serialize(Object obj) throws JsonProcessingException {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }
 

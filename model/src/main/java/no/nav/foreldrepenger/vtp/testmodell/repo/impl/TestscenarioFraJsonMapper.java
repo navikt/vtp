@@ -16,14 +16,14 @@ import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapperTestscenario;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapperTestscenarioUtvider;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 
 public class TestscenarioFraJsonMapper {
 
     private final TestscenarioRepositoryImpl testScenarioRepository;
-    private static final ObjectMapper mapper = JacksonWrapperTestscenario.getObjectMapper();
+    private static final ObjectMapper mapper = JacksonObjectMapperTestscenario.getObjectMapper();
 
     public TestscenarioFraJsonMapper(TestscenarioRepositoryImpl testScenarioRepository) {
         Objects.requireNonNull(testScenarioRepository, "testScenarioRepository");
@@ -103,7 +103,7 @@ public class TestscenarioFraJsonMapper {
 
 
     private ObjectMapper lagScenariospesifikkObjectMapper(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars){
-        var jacksonWrapper = new JacksonWrapperTestscenarioUtvider(testscenario.getVariabelContainer());
+        var jacksonWrapper = new JacksonObjectMapperTestscenarioUtvider(testscenario.getVariabelContainer());
 
         /* Legger til egendefinerte variabler */
         var scenarioVars = hentScenariospesifikkeVariabler(node);
