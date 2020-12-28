@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -36,9 +35,9 @@ public class TestscenarioFraJsonMapper {
     }
 
     public TestscenarioImpl lagTestscenarioFraJsonString(String testscenarioJson, String unikTestscenarioId, Map<String, String> vars) {
-        ObjectNode node = hentObjectNodeForTestscenario(testscenarioJson);
-        String templateNavn = hentTemplateNavnFraJsonString(node);
-        TestscenarioImpl testscenarioImpl = new TestscenarioImpl(templateNavn, unikTestscenarioId, testScenarioRepository);
+        var node = hentObjectNodeForTestscenario(testscenarioJson);
+        var templateNavn = hentTemplateNavnFraJsonString(node);
+        var testscenarioImpl = new TestscenarioImpl(templateNavn, unikTestscenarioId, testScenarioRepository);
         loadTestscenarioFraJsonString(testscenarioImpl, node, vars);
         return testscenarioImpl;
     }
@@ -55,7 +54,7 @@ public class TestscenarioFraJsonMapper {
 
     private String hentTemplateNavnFraJsonString(ObjectNode node) {
         if (node.has("scenario-navn")) {
-            JsonNode scenarioNavn = node.get("scenario-navn");
+            var scenarioNavn = node.get("scenario-navn");
             return mapper.convertValue(scenarioNavn, String.class);
         } else {
             return null;
@@ -63,31 +62,31 @@ public class TestscenarioFraJsonMapper {
     }
 
     private void loadTestscenarioFraJsonString(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars) {
-        ObjectMapper objectMapper = lagScenariospesifikkObjectMapper(testscenario, node, overrideVars);
+        var objectMapper = lagScenariospesifikkObjectMapper(testscenario, node, overrideVars);
 
         if(node.has("organisasjon")){
-            JsonNode organisasjon = node.get("organisasjon");
-            OrganisasjonModeller organisasjonModeller = objectMapper.convertValue(organisasjon, OrganisasjonModeller.class);
+            var organisasjon = node.get("organisasjon");
+            var organisasjonModeller = objectMapper.convertValue(organisasjon, OrganisasjonModeller.class);
             for (OrganisasjonModell organisasjonModell : organisasjonModeller.getModeller()) {
                 testscenario.leggTil(organisasjonModell);
             }
         }
 
         if(node.has("inntektytelse-søker")){
-            JsonNode inntektytelseSøker = node.get("inntektytelse-søker");
-            InntektYtelseModell søkerInntektYtelse = objectMapper.convertValue(inntektytelseSøker, InntektYtelseModell.class);
+            var inntektytelseSøker = node.get("inntektytelse-søker");
+            var søkerInntektYtelse = objectMapper.convertValue(inntektytelseSøker, InntektYtelseModell.class);
             testscenario.setSøkerInntektYtelse(søkerInntektYtelse);
         }
 
         if(node.has("inntektytelse-annenpart")){
-            JsonNode inntektytelseAnnenpart = node.get("inntektytelse-annenpart");
-            InntektYtelseModell annenpartInntektYtelse = objectMapper.convertValue(inntektytelseAnnenpart, InntektYtelseModell.class);
+            var inntektytelseAnnenpart = node.get("inntektytelse-annenpart");
+            var annenpartInntektYtelse = objectMapper.convertValue(inntektytelseAnnenpart, InntektYtelseModell.class);
             testscenario.setAnnenpartInntektYtelse(annenpartInntektYtelse);
         }
 
         if(node.has("personopplysninger")){
-            JsonNode personopplysningerResult = node.get("personopplysninger");
-            Personopplysninger personopplysninger = objectMapper.convertValue(personopplysningerResult, Personopplysninger.class);
+            var personopplysningerResult = node.get("personopplysninger");
+            var personopplysninger = objectMapper.convertValue(personopplysningerResult, Personopplysninger.class);
             testscenario.setPersonopplysninger(personopplysninger);
         }
 
@@ -98,27 +97,27 @@ public class TestscenarioFraJsonMapper {
         if (!node.has("vars")) {
             return Collections.emptyMap();
         }
-        JsonNode vars = node.get("vars");
+        var vars = node.get("vars");
         return mapper.convertValue(vars, new TypeReference<>(){});
     }
 
 
     private ObjectMapper lagScenariospesifikkObjectMapper(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars){
-        JacksonWrapperTestscenarioUtvider jsonMapper = new JacksonWrapperTestscenarioUtvider(testscenario.getVariabelContainer());
+        var jacksonWrapper = new JacksonWrapperTestscenarioUtvider(testscenario.getVariabelContainer());
 
         /* Legger til egendefinerte variabler */
-        Map<String, String> scenarioVars = hentScenariospesifikkeVariabler(node);
-        jsonMapper.addVars(scenarioVars);
-        jsonMapper.addVars(overrideVars);
+        var scenarioVars = hentScenariospesifikkeVariabler(node);
+        jacksonWrapper.addVars(scenarioVars);
+        jacksonWrapper.addVars(overrideVars);
 
         /* Setter opp indekser som kan injiseres i modellen. */
-        AdresseIndeks adresseIndeks = this.getTestscenarioRepository().getBasisdata().getAdresseIndeks();
+        var adresseIndeks = this.getTestscenarioRepository().getBasisdata().getAdresseIndeks();
         testscenario.setAdresseIndeks(adresseIndeks);
-        jsonMapper.addInjectable(AdresseIndeks.class, adresseIndeks);
-        jsonMapper.addInjectable(LokalIdentIndeks.class, testscenario.getIdenter());
-        jsonMapper.addInjectable(ScenarioVirksomheter.class, testscenario.getVirksomheter());
+        jacksonWrapper.addInjectable(AdresseIndeks.class, adresseIndeks);
+        jacksonWrapper.addInjectable(LokalIdentIndeks.class, testscenario.getIdenter());
+        jacksonWrapper.addInjectable(ScenarioVirksomheter.class, testscenario.getVirksomheter());
 
-        return jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();
+        return jacksonWrapper.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 
 }

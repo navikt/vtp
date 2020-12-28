@@ -34,10 +34,10 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends SerializationTe
 
     @BeforeAll
     public static void utviderObjectmapperMedInjectables() {
-        var jsonMapper = new JacksonWrapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
+        var jacksonWrapper = new JacksonWrapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
-        jsonMapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
-        mapper = jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();
+        jacksonWrapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
+        mapper = jacksonWrapper.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 
     @Test
