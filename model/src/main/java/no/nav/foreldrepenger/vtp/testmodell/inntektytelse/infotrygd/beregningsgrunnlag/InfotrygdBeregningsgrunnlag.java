@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -30,15 +27,12 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.Infot
 public abstract class InfotrygdBeregningsgrunnlag {
 
     /** NB: skal matche iverksatt dato i {@link InfotrygdYtelse}. */
-    @JsonProperty("startdato")
     private LocalDate startdato;
 
     /** Startdato for søkeperioden. */
-    @JsonProperty("fom")
     private LocalDate fom;
 
     /** Sluttdato for søkeperioden.  Hvis tom ikke har verdi settes maks dato 9999-12-31.*/
-    @JsonProperty("tom")
     private LocalDate tom;
 
     /**
@@ -52,11 +46,8 @@ public abstract class InfotrygdBeregningsgrunnlag {
      * <p>
      * For engangsstønad - FE, AE
      */
-    @JsonProperty("behandlingstema")
     private InfotrygdBehandlingstema behandlingstema;
 
-    @JsonInclude(Include.NON_EMPTY)
-    @JsonProperty("vedtak")
     private List<InfotrygdVedtak> vedtak= new ArrayList<>();
 
     public LocalDate getStartdato() {
@@ -99,7 +90,4 @@ public abstract class InfotrygdBeregningsgrunnlag {
         this.vedtak.clear();
         this.vedtak.addAll(vedtak);
     }
-
-
-
 }

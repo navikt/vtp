@@ -1,63 +1,20 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonValue;
-/*
-[
-{"navn":"kontantytelse","term":"Kontantytelse"},
-{"navn":"naturalytelse","term":"Naturalytelse"},
-{"navn":"utgiftsgodtgjoerelse","term":"Utgiftsgodtgjørelse"}]
- */
-public class InntektFordel {
 
-    private static List<String> VALID_KODER;
-    static {
-        List<String> koder = new ArrayList<>();
-        koder.add("kontantytelse");
-        koder.add("utgiftsgodtgjørelse");
-        koder.add("naturalytelse");
+public enum InntektFordel {
+    KONTANTYTELSE("kontantytelse"),
+    UTGIFTSGODTGJØRELSE("utgiftsgodtgjørelse"),
+    NATURALYTELSE("naturalytelse");
 
-        VALID_KODER = Collections.unmodifiableList(koder);
-    }
+    private final String kode;
 
-    public static InntektFordel KONTANTYTELSE = new InntektFordel("kontantytelse");
-    public static InntektFordel UTGIFTSGODTGJØRELSE = new InntektFordel("utgiftsgodtgjørelse");
-    public static InntektFordel NATURALYTELSE = new InntektFordel("naturalytelse");
-
-    private String kode;
-
-    public InntektFordel(String kode){
-        this.kode = kode == null ? this.kode : kode;
-        if(kode != null && !VALID_KODER.contains(kode)) {
-            throw new IllegalArgumentException("Kode er ikke implementert i Inntektskomponent inntektfordel: " + kode);
-        }
+    InntektFordel(String kode) {
+        this.kode = kode;
     }
 
     @JsonValue
-    public String getKode() {return kode;}
-
-    public void setKode(String kode){this.kode = kode;}
-
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        } else if (obj == null || !obj.getClass().equals(this.getClass())) {
-            return false;
-        }
-        return Objects.equals(getKode(), ((InntektFordel) obj).getKode());
+    public String getKode() {
+        return kode;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getKode());
-    }
-
-
-
 }

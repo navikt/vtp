@@ -49,38 +49,38 @@ public class HentInntektlisteBolkMapperRest {
     private static List<ArbeidsforholdFrilanser> arbeidsforholdFrilanserListeFraModellListeForMåned(List<FrilansArbeidsforholdsperiode> modellPeriode,
                                                                                                     YearMonth måned) {
         List<FrilansArbeidsforholdsperiode> frilansArbeidsforholdsperiodeList = modellPeriode.stream()
-            .filter(t -> localDateTimeInYearMonth(t.getFrilansFom(), måned)).collect(Collectors.toList());
+            .filter(t -> localDateTimeInYearMonth(t.frilansFom(), måned)).collect(Collectors.toList());
         return frilansArbeidsforholdsperiodeList.stream().map(temp -> {
             ArbeidsforholdFrilanser res = new ArbeidsforholdFrilanser();
-            res.setFrilansPeriodeFom(temp.getFrilansFom());
-            res.setFrilansPeriodeTom(temp.getFrilansTom());
+            res.setFrilansPeriodeFom(temp.frilansFom());
+            res.setFrilansPeriodeTom(temp.frilansTom());
             res.setArbeidsforholdstype(temp.getArbeidsforholdstype());
-            res.setStillingsprosent((double) temp.getStillingsprosent());
-            Aktoer arbeidsgiver = temp.getOrgnr() != null && !temp.getOrgnr().equals("") ? Aktoer.newOrganisasjon(temp.getOrgnr())
-                    : Aktoer.newAktoerId(temp.getPersonligArbeidsgiver().getAktørIdent());
+            res.setStillingsprosent((double) temp.stillingsprosent());
+            Aktoer arbeidsgiver = temp.orgnr() != null && !temp.orgnr().equals("") ? Aktoer.newOrganisasjon(temp.orgnr())
+                    : Aktoer.newAktoerId(temp.arbeidsgiver().getAktørIdent());
             res.setArbeidsgiver(arbeidsgiver);
             return res;
         }).collect(Collectors.toList());
     }
 
     private static List<Inntekt> inntektListeFraModell(List<Inntektsperiode> modellPeriode, YearMonth måned) {
-        List<Inntektsperiode> inntektsperiodeList = modellPeriode.stream().filter(t -> localDateTimeInYearMonth(t.getTom(), måned))
+        List<Inntektsperiode> inntektsperiodeList = modellPeriode.stream().filter(t -> localDateTimeInYearMonth(t.tom(), måned))
             .collect(Collectors.toList());
         return inntektsperiodeList.stream().map(temp -> {
             Inntekt inntekt = new Inntekt();
-            inntekt.setInntektType(fraModellInntektstype(temp.getType()));
-            inntekt.setBeloep(new BigDecimal(temp.getBeløp()));
-            inntekt.setBeskrivelse(temp.getBeskrivelse());
-            inntekt.setFordel(temp.getFordel().getKode());
-            Aktoer arbeidsgiver = temp.getOrgnr() != null && !temp.getOrgnr().equals("") ? Aktoer.newOrganisasjon(temp.getOrgnr())
-                : Aktoer.newAktoerId(temp.getPersonligArbeidsgiver().getAktørIdent());
+            inntekt.setInntektType(fraModellInntektstype(temp.inntektType()));
+            inntekt.setBeloep(new BigDecimal(temp.beløp()));
+            inntekt.setBeskrivelse(temp.beskrivelse());
+            inntekt.setFordel(temp.inntektFordel().getKode());
+            Aktoer arbeidsgiver = temp.orgnr() != null && !temp.orgnr().equals("") ? Aktoer.newOrganisasjon(temp.orgnr())
+                : Aktoer.newAktoerId(temp.arbeidsgiver().getAktørIdent());
             inntekt.setVirksomhet(arbeidsgiver);
-            inntekt.setOpptjeningsperiodeFom(temp.getFom());
-            inntekt.setOpptjeningsperiodeTom(temp.getTom());
+            inntekt.setOpptjeningsperiodeFom(temp.fom());
+            inntekt.setOpptjeningsperiodeTom(temp.tom());
             inntekt.setUtbetaltIMaaned(måned);
-            inntekt.setSkatteOgAvgiftsregel(temp.getSkatteOgAvgiftsregel());
-            inntekt.setInngaarIGrunnlagForTrekk(temp.getInngaarIGrunnlagForTrekk());
-            inntekt.setUtloeserArbeidsgiveravgift(temp.getUtloeserArbeidsgiveravgift());
+            inntekt.setSkatteOgAvgiftsregel(temp.skatteOgAvgiftsregel());
+            inntekt.setInngaarIGrunnlagForTrekk(temp.inngaarIGrunnlagForTrekk());
+            inntekt.setUtloeserArbeidsgiveravgift(temp.utloeserArbeidsgiveravgift());
             return inntekt;
         }).collect(Collectors.toList());
     }

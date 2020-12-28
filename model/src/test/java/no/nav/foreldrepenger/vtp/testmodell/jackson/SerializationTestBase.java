@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell;
+package no.nav.foreldrepenger.vtp.testmodell.jackson;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 
 public class SerializationTestBase {
 
@@ -19,7 +19,7 @@ public class SerializationTestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        mapper = JsonMapper.getObjectMapper();
+        mapper = JacksonObjectMapperTestscenario.getObjectMapper();
     }
 
     protected static void test(Object obj) {

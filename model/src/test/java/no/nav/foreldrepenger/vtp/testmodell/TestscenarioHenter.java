@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 
 public class TestscenarioHenter {
 
@@ -30,7 +30,7 @@ public class TestscenarioHenter {
     private static final String ORGANISASJON_JSON_FIL_NAVN = "organisasjon.json";
     private static final String VARS_JSON_FIL_NAVN = "vars.json";
 
-    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private static final ObjectMapper mapper = JacksonObjectMapperTestscenario.getObjectMapper();
     private final Map<String, Object> scenarioObjects = new TreeMap<>();
 
     private static TestscenarioHenter testscenarioHenter;

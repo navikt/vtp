@@ -37,11 +37,14 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapper;
 
 @Api(tags = {"Testscenario"})
 @Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
+    private static final JacksonWrapper mapper = new JacksonWrapper(JacksonObjectMapperTestscenario.getObjectMapper());
 
     private static final String TEMPLATE_KEY = "key";
     private static final String SCENARIO_ID = "id";
@@ -49,11 +52,10 @@ public class TestscenarioRestTjeneste {
     @Context
     private TestscenarioRepository testscenarioRepository;
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter alle testcaser som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
-    public List<TestscenarioDto> hentInitialiserteCaser() {
+    public Response hentInitialiserteCaser() {
         Map<String, Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
         List<TestscenarioDto> testscenarioList = new ArrayList<>();
 
@@ -65,19 +67,20 @@ public class TestscenarioRestTjeneste {
             }
         });
 
-        return testscenarioList;
+        return Response.status(Response.Status.OK)
+                .entity(mapper.writeValueAsString(testscenarioList))
+                .build();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Returnerer testscenario som matcher id", response = TestscenarioDto.class)
-    public Response hentScenario(@PathParam(SCENARIO_ID) String id){
+    public Response hentScenario(@PathParam(SCENARIO_ID) String id) {
         if (testscenarioRepository.getTestscenario(id) != null) {
             Testscenario testscenario = testscenarioRepository.getTestscenario(id);
-            return Response
-                    .status(Response.Status.OK)
-                    .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
+            return Response.status(Response.Status.OK)
+                    .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
                     .build();
         } else {
             return Response.status(Response.Status.NO_CONTENT).build();
@@ -110,9 +113,8 @@ public class TestscenarioRestTjeneste {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);
         logger.info("Initialiserer testscenario med ekstern testdatadefinisjon. Opprettet med id: [{}] ", testscenario.getId());
-        return Response
-                .status(Response.Status.CREATED)
-                .entity(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()))
+        return Response.status(Response.Status.CREATED)
+                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
                 .build();
     }
 
@@ -127,7 +129,6 @@ public class TestscenarioRestTjeneste {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
-
 
     private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario) {
         return konverterTilTestscenarioDto(testscenario, null, null);

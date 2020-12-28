@@ -3,11 +3,13 @@ package no.nav.foreldrepenger.vtp.testmodell.repo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -138,12 +140,12 @@ public class TestscenarioImpl implements Testscenario {
     }
 
     private List<PersonArbeidsgiver> getPersonArbeidsgivere(InntektYtelseModell iyModell) {
-        if (iyModell == null || iyModell.getInntektskomponentModell() == null || iyModell.getInntektskomponentModell().getInntektsperioder() == null) {
+        if (iyModell == null || iyModell.inntektskomponentModell() == null || iyModell.inntektskomponentModell().inntektsperioder() == null) {
             return Collections.emptyList();
         }
-        return iyModell.getInntektskomponentModell().getInntektsperioder().stream()
-            .map(ip -> ip.getPersonligArbeidsgiver())
-            .filter(pa -> pa != null)
+        return iyModell.inntektskomponentModell().inntektsperioder().stream()
+            .map(Inntektsperiode::arbeidsgiver)
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
     }
 }

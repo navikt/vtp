@@ -52,11 +52,11 @@ public class ArbeidsavtaleRS {
     }
 
     public ArbeidsavtaleRS(Arbeidsavtale avtale) {
-        this.stillingsprosent = avtale.getStillingsprosent() != null ? avtale.getStillingsprosent().doubleValue() : null;
-        this.antallTimerPrUke = avtale.getAvtaltArbeidstimerPerUke() != null ? avtale.getAvtaltArbeidstimerPerUke().doubleValue() : null;
-        this.beregnetAntallTimerPrUke = avtale.getBeregnetAntallTimerPerUke() != null ? avtale.getBeregnetAntallTimerPerUke().doubleValue() : null;
-        this.sistLoennsendring = avtale.getSisteLønnnsendringsdato();
-        this.yrke = avtale.getYrke() != null && avtale.getYrke().getYrke() != null ? avtale.getYrke().getYrke() : "8269102";
-        this.gyldighetsperiode = new PeriodeRS(avtale.getFomGyldighetsperiode(), avtale.getTomGyldighetsperiode());
+        this.stillingsprosent = avtale.stillingsprosent() != null ? avtale.stillingsprosent().doubleValue() : null;
+        this.antallTimerPrUke = avtale.avtaltArbeidstimerPerUke() != null ? avtale.avtaltArbeidstimerPerUke().doubleValue() : null;
+        this.beregnetAntallTimerPrUke = avtale.beregnetAntallTimerPerUke() != null ? avtale.beregnetAntallTimerPerUke().doubleValue() : null;
+        this.sistLoennsendring = avtale.sisteLønnnsendringsdato();
+        this.yrke = avtale.yrke() != null && avtale.yrke().yrke() != null ? avtale.yrke().yrke() : "8269102";
+        this.gyldighetsperiode = new PeriodeRS(avtale.fomGyldighetsperiode(), avtale.tomGyldighetsperiode());
     }
 }

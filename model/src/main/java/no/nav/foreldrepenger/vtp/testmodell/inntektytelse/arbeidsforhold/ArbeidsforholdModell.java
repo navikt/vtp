@@ -1,24 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class ArbeidsforholdModell {
+public record ArbeidsforholdModell(List<Arbeidsforhold> arbeidsforhold) {
 
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty("arbeidsforhold")
-    private List<Arbeidsforhold> arbeidsforhold = new ArrayList<>();
-
-    public List<Arbeidsforhold> getArbeidsforhold() {
-        return arbeidsforhold;
+    public ArbeidsforholdModell() {
+        this(null);
     }
 
-    public void setArbeidsforhold(List<Arbeidsforhold> arbeidsforhold) {
-        this.arbeidsforhold.clear();
-        this.arbeidsforhold.addAll(arbeidsforhold);
+    @JsonCreator
+    public ArbeidsforholdModell(List<Arbeidsforhold> arbeidsforhold) {
+        this.arbeidsforhold = Optional.ofNullable(arbeidsforhold).orElse(List.of());
     }
-
 }

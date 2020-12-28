@@ -1,81 +1,29 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+public enum InfotrygdSakStatus {
+    IP("Ikke påbegynt"),
+    UB("Under behandling"),
+    SG("Sendt til saksbehandler"),
+    UK("Underkjent av saksbehandler"),
+    RT("Returnert"),
+    FB("Ferdig behandlet"),
+    FI( "Ferdig iverksatt"),
+    RF("Returnert feilsendt"),
+    ST("Sendt"),
+    VD("Videresendt direktoratet"),
+    VI("Venter iverksetting"),
+    VT("Videresendt trygderetten"),
+    L("Løpende"),
+    A("Avsluttet"),
+    I("Ikke Startet");
 
-import com.fasterxml.jackson.annotation.JsonValue;
+    private final String termnavn;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
-
-public class InfotrygdSakStatus {
-    private static Map<String, String> VALID_KODER;
-    static {
-        Map<String, String> koder = new LinkedHashMap<>();
-        koder.put("IP", "Ikke påbegynt");
-        koder.put("UB", "Under behandling");
-        koder.put("SG", "Sendt til saksbehandler");
-        koder.put("UK", "Underkjent av saksbehandler");
-        koder.put("RT", "Returnert");
-        koder.put("FB", "Ferdig behandlet");
-        koder.put("FI",  "Ferdig iverksatt");
-        koder.put("RF", "Returnert feilsendt");
-        koder.put("ST", "Sendt");
-        koder.put("VD", "Videresendt direktoratet");
-        koder.put("VI", "Venter iverksetting");
-        koder.put("VT", "Videresendt trygderetten");
-        koder.put("L", "Løpende");
-        koder.put("A", "Avsluttet");
-        koder.put("I", "Ikke Startet");
-
-        VALID_KODER = Collections.unmodifiableMap(koder);
-    }
-
-    public static final InfotrygdSakStatus FERDIG_IVERKSATT=new InfotrygdSakStatus("FI");
-    public static final InfotrygdSakStatus FERDIG_BEHANDLET=new InfotrygdSakStatus("FB");
-
-
-    private String kode;
-
-    public InfotrygdSakStatus(String kode) {
-        this.kode = kode == null ? this.kode : kode;
-        if (kode != null && !VALID_KODER.containsKey(kode)) {
-            throw new IllegalArgumentException("Kode er ikke gyldig ArenaMeldekort Vedtakstatus: " + kode);
-        }
-    }
-
-    @JsonValue
-    public String getKode() {
-        return kode;
+    InfotrygdSakStatus(String termnavn) {
+        this.termnavn = termnavn;
     }
 
     public String getTermnavn() {
-        return VALID_KODER.get(getKode());
+        return termnavn;
     }
-
-    public void setKode(String kode) {
-        this.kode = kode;
-    }
-
-    @Override
-    public String toString() {
-        return getKode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        } else if (obj == null || !obj.getClass().equals(this.getClass())) {
-            return false;
-        }
-        return Objects.equals(getKode(), ((Landkode) obj).getKode());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getKode());
-    }
-
 }

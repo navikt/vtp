@@ -16,13 +16,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.util.JsonMapper;
 
 @Api(tags = { "ABAC-PDP-Mock" })
 @Path("/asm-pdp/authorize")
 public class PdpRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(PdpRestTjeneste.class);
-    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     @POST
     @Produces("application/xacml+json")
@@ -35,7 +34,6 @@ public class PdpRestTjeneste {
 
     private int getPermits(String entity) throws IOException {
         int permits = 0;
-
         JsonNode xacmlJson = mapper.reader().readTree(entity);
         // tell antall Request/Resource/Attribute for å bestemme antall responser
 

@@ -32,9 +32,9 @@ public class PermisjonPermitteringRS {
     }
 
     public PermisjonPermitteringRS(Permisjon permisjon) {
-        this.prosent = permisjon.getStillingsprosent() != null ? permisjon.getStillingsprosent().doubleValue() : null;
-        this.type = permisjon.getPermisjonstype().getKode();
-        this.periode = new PeriodeRS(permisjon.getFomGyldighetsperiode(), permisjon.getTomGyldighetsperiode());
+        this.prosent = permisjon.stillingsprosent() != null ? permisjon.stillingsprosent().doubleValue() : null;
+        this.type = permisjon.permisjonstype().getKode();
+        this.periode = new PeriodeRS(permisjon.fomGyldighetsperiode(), permisjon.tomGyldighetsperiode());
     }
 
 }

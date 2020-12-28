@@ -11,9 +11,10 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-public class JsonMapper {
+public class JacksonObjectMapperTestscenario {
 
-    protected static final ObjectMapper OBJECT_MAPPER;
+    private static final ObjectMapper MAPPER;
+
     static {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new Jdk8Module());
@@ -28,18 +29,18 @@ public class JsonMapper {
         objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE, true);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setSerializationInclusion(Include.NON_EMPTY);
 
-        OBJECT_MAPPER = objectMapper;
+        MAPPER = objectMapper;
     }
 
     public static ObjectMapper getObjectMapper() {
-        return OBJECT_MAPPER;
+        return MAPPER;
     }
 
     public static ObjectMapper lagCopyAvObjectMapper() {
-        return OBJECT_MAPPER.copy();
+        return MAPPER.copy();
     }
 }

@@ -51,7 +51,7 @@ public class HentInntektlisteBolkREST {
     public HentInntektListeBolkResponse hentInntektlisteBolk(HentInntektListeBolkRequest request){
 
         List<Aktoer> identListe = request.getIdentListe();
-        LOG.info("Henter inntekter for personer: {}", identListe.stream().map(t-> t.getIdentifikator()).collect(Collectors.joining(",")));
+        LOG.info("Henter inntekter for personer: {}", identListe.stream().map(Aktoer::getIdentifikator).collect(Collectors.joining(",")));
 
         YearMonth fom = request.getMaanedFom() != null ? request.getMaanedFom() : YearMonth.of(1990,1);
         YearMonth tom = request.getMaanedTom() != null ? request.getMaanedTom() : YearMonth.of(1990,1);
@@ -63,7 +63,7 @@ public class HentInntektlisteBolkREST {
         for(Aktoer aktoer : identListe){
             Optional<InntektYtelseModell> inntektYtelseModell = testscenarioRepository.getInntektYtelseModellFraAktørId(aktoer.getIdentifikator());
             if(inntektYtelseModell.isPresent()) {
-                InntektskomponentModell inntektskomponentModell = inntektYtelseModell.get().getInntektskomponentModell();
+                InntektskomponentModell inntektskomponentModell = inntektYtelseModell.get().inntektskomponentModell();
                 ArbeidsInntektIdent arbeidsInntektIdent = HentInntektlisteBolkMapperRest.makeArbeidsInntektIdent(
                         inntektskomponentModell
                         , aktoer

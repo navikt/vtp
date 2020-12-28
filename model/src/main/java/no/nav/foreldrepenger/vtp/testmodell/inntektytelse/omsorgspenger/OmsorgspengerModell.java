@@ -1,19 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger;
 
+import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class OmsorgspengerModell {
-    @JsonProperty("rammemeldinger")
-    private OmsorgspengerRammemeldingerModell rammemeldinger;
+public record OmsorgspengerModell(OmsorgspengerRammemeldingerModell rammemeldinger) {
 
-    public OmsorgspengerRammemeldingerModell getRammemeldinger() {
-        if(rammemeldinger == null) {
-            rammemeldinger = new OmsorgspengerRammemeldingerModell();
-        }
-        return rammemeldinger;
+    public OmsorgspengerModell() {
+        this(null);
     }
 
-    public void setRammemeldinger(OmsorgspengerRammemeldingerModell rammemeldinger) {
-        this.rammemeldinger = rammemeldinger;
+    @JsonCreator
+    public OmsorgspengerModell(@JsonProperty("rammemeldinger") OmsorgspengerRammemeldingerModell rammemeldinger) {
+        this.rammemeldinger = Optional.ofNullable(rammemeldinger).orElse(new OmsorgspengerRammemeldingerModell());
     }
 }

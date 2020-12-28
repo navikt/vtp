@@ -11,6 +11,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaVedtak;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.SakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Kodeverdi;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Meldekort;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.ObjectFactory;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Periode;
@@ -29,7 +30,8 @@ public class ArenaMUMapper {
     }
 
     public FinnMeldekortUtbetalingsgrunnlagListeResponse mapArenaSaker(FinnMeldekortUtbetalingsgrunnlagListeRequest request,
-                                                                       FinnMeldekortUtbetalingsgrunnlagListeResponse response, List<ArenaSak> arenaSaker) {
+                                                                       FinnMeldekortUtbetalingsgrunnlagListeResponse response,
+                                                                       List<ArenaSak> arenaSaker) {
 
         final LocalDate fom;
         final LocalDate tom;
@@ -41,7 +43,7 @@ public class ArenaMUMapper {
             tom = null;
         }
         List<Tema> temaListe = request.getTemaListe();
-        List<String> temaer = temaListe.stream().map(a -> a.getValue()).collect(Collectors.toList());
+        List<String> temaer = temaListe.stream().map(Kodeverdi::getValue).collect(Collectors.toList());
 
         for (ArenaSak arenaSak : arenaSaker) {
             if (filtrerVekkSak(arenaSak, temaer)) {
@@ -49,13 +51,15 @@ public class ArenaMUMapper {
             }
 
             Sak sak = objectFactory.createSak();
-            sak.setFagsystemSakId(arenaSak.getSaksnummer());
+            sak.setFagsystemSakId(arenaSak.saksnummer());
             Tema tema = objectFactory.createTema();
-            tema.setValue(arenaSak.getTema().getKode());
+            tema.setValue(arenaSak.tema().name());
             sak.setTema(tema);
-            sak.setSaksstatus(mapSakStatus(arenaSak.getStatus()));
+            sak.setSaksstatus(mapSakStatus(arenaSak.status()));
 
-            List<ArenaVedtak> vedtak = arenaSak.getVedtak().stream().filter(v -> filtrerVedtak(v, fom, tom)).collect(Collectors.toList());
+            List<ArenaVedtak> vedtak = arenaSak.vedtak().stream()
+                    .filter(v -> filtrerVedtak(v, fom, tom))
+                    .collect(Collectors.toList());
             sak.getVedtakListe().addAll(mapArenaVedtakListe(vedtak));
 
             response.getMeldekortUtbetalingsgrunnlagListe().add(sak);
@@ -68,20 +72,20 @@ public class ArenaMUMapper {
         if (fom == null && tom == null) {
             return true;
         } else {
-            return (fom == null || fom.isBefore(vedtak.getFom()) || fom.isEqual(vedtak.getFom()))
-                && (tom == null || tom.isAfter(vedtak.getTom()) || tom.isEqual(vedtak.getTom()));
+            return (fom == null || fom.isBefore(vedtak.fom()) || fom.isEqual(vedtak.fom()))
+                && (tom == null || tom.isAfter(vedtak.tom()) || tom.isEqual(vedtak.tom()));
         }
     }
 
     private boolean filtrerVekkSak(ArenaSak arenaSak, List<String> temaer) {
-        boolean filtrerVekkTema = !temaer.isEmpty() && !temaer.contains(arenaSak.getTema().getKode());
+        boolean filtrerVekkTema = !temaer.isEmpty() && !temaer.contains(arenaSak.tema().name());
         return filtrerVekkTema;
     }
 
     private Saksstatuser mapSakStatus(SakStatus status) {
         Saksstatuser sakStatus = objectFactory.createSaksstatuser();
         sakStatus.setTermnavn(status.getTermnavn());
-        sakStatus.setValue(status.getKode());
+        sakStatus.setValue(status.name());
         return sakStatus;
     }
 
@@ -93,15 +97,15 @@ public class ArenaMUMapper {
         }
         for (ArenaVedtak aVedtak : arenaVedtakList) {
             Vedtak v = objectFactory.createVedtak();
-            v.setVedtaksstatus(mapVedtakStatus(aVedtak.getStatus()));
+            v.setVedtaksstatus(mapVedtakStatus(aVedtak.status()));
             Periode periode = objectFactory.createPeriode();
-            periode.setFom(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.getFom()));
-            periode.setTom(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.getTom()));
+            periode.setFom(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.fom()));
+            periode.setTom(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.tom()));
             v.setVedtaksperiode(periode);
-            v.setDatoKravMottatt(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.getKravMottattDato()));
-            v.setVedtaksdato(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.getVedtakDato()));
-            v.getMeldekortListe().addAll(mapArenaMeldekortListe(aVedtak.getMeldekort()));
-            v.setDagsats(aVedtak.getDagsats().doubleValue());
+            v.setDatoKravMottatt(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.kravMottattDato()));
+            v.setVedtaksdato(ConversionUtils.convertToXMLGregorianCalendar(aVedtak.vedtakDato()));
+            v.getMeldekortListe().addAll(mapArenaMeldekortListe(aVedtak.meldekort()));
+            v.setDagsats(aVedtak.dagsats().doubleValue());
             resultat.add(v);
         }
         return resultat;
@@ -110,7 +114,7 @@ public class ArenaMUMapper {
     private Vedtaksstatuser mapVedtakStatus(VedtakStatus status) {
         Vedtaksstatuser vedtakStatus = objectFactory.createVedtaksstatuser();
         vedtakStatus.setTermnavn(status.getTermnavn());
-        vedtakStatus.setValue(status.getKode());
+        vedtakStatus.setValue(status.name());
         return vedtakStatus;
     }
 
@@ -121,12 +125,12 @@ public class ArenaMUMapper {
         }
         for (ArenaMeldekort aMeldekort : meldekortList) {
             Meldekort meldekort = objectFactory.createMeldekort();
-            meldekort.setDagsats(aMeldekort.getDagsats().doubleValue());
-            meldekort.setBeloep(aMeldekort.getBeløp().doubleValue());
-            meldekort.setUtbetalingsgrad(aMeldekort.getUtbetalingsgrad().doubleValue());
+            meldekort.setDagsats(aMeldekort.dagsats().doubleValue());
+            meldekort.setBeloep(aMeldekort.beløp().doubleValue());
+            meldekort.setUtbetalingsgrad(aMeldekort.utbetalingsgrad().doubleValue());
             Periode periode = objectFactory.createPeriode();
-            periode.setFom(ConversionUtils.convertToXMLGregorianCalendar(aMeldekort.getFom()));
-            periode.setTom(ConversionUtils.convertToXMLGregorianCalendar(aMeldekort.getTom()));
+            periode.setFom(ConversionUtils.convertToXMLGregorianCalendar(aMeldekort.fom()));
+            periode.setTom(ConversionUtils.convertToXMLGregorianCalendar(aMeldekort.tom()));
             meldekort.setMeldekortperiode(periode);
             resultat.add(meldekort);
         }

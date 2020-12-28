@@ -1,9 +1,5 @@
 package no.nav.tjeneste.virksomhet.arena.meldekort;
 
-import static no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter.PERSON_IKKE_FUNNET;
-import static no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter.SIKKERHET_BEGRENSNING;
-import static no.nav.foreldrepenger.vtp.testmodell.FeilKodeKonstanter.UGYLDIG_INPUT;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -76,22 +72,22 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
         Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModellFraAktørId(aktørId);
-        if (!iyIndeksOpt.isPresent()) {
+        if (iyIndeksOpt.isEmpty()) {
             return response;
         }
         InntektYtelseModell inntektYtelseModell = iyIndeksOpt.get();
-        ArenaModell arenaModell = inntektYtelseModell.getArenaModell();
-        Feilkode feilkode = arenaModell.getFeilkode();
+        ArenaModell arenaModell = inntektYtelseModell.arenaModell();
+        Feilkode feilkode = arenaModell.feilkode();
         if (feilkode != null) {
             try {
-                haandterExceptions(feilkode.getKode(), aktørId);
+                haandterExceptions(feilkode, aktørId);
             } catch (Exception e) {
                 LOG.error("Error ", e);
                 throw e;
             }
         }
 
-        return arenaMapper.mapArenaSaker(finnMeldekortUtbetalingsgrunnlagListeRequest, response, arenaModell.getSaker());
+        return arenaMapper.mapArenaSaker(finnMeldekortUtbetalingsgrunnlagListeRequest, response, arenaModell.saker());
 
     }
 
@@ -103,7 +99,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         LOG.info("Ping mottatt og besvart");
     }
 
-    private void haandterExceptions(String kode, String ident)
+    private void haandterExceptions(Feilkode kode, String ident)
             throws FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput, FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet,
             FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning {
 
