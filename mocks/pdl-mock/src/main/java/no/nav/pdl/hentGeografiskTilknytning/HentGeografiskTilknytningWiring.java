@@ -24,24 +24,16 @@ public class HentGeografiskTilknytningWiring {
                 .type("Query", typeWiring -> typeWiring.dataFetcher("hentGeografiskTilknytning", environment -> {
                     try {
                         var ident = (String) environment.getArgument("ident");
-                        var historikk = environment.getField()
-                                .getSelectionSet()
-                                .getSelections()
-                                .stream()
-                                .anyMatch(felt -> felt.toString().contains("name='navn'")
-                                        && felt.toString().contains("Argument{name='historikk', value=BooleanValue{value=true}"));
+                        var geografiskTilknytning = coordinator.hentGeografiskTilknytning(ident);
 
-                        LOG.info("query hentGeografiskTilknytning for ident={}, historikk", ident);
-
-                        var person = coordinator.hentGeografiskTilknytning(ident, historikk);
-                        if (person == null) {
+                        if (geografiskTilknytning == null) {
                             return DataFetcherResult.newResult()
                                     .error(ErrorCode.NOT_FOUND.construct(environment, "Fant ikke person"))
                                     .build();
                         }
-                        LOG.info("person hentet for ident={}", ident);
 
-                        return person;
+                        LOG.info("Geografisk Tilknytning hentet for ident={}", ident);
+                        return geografiskTilknytning;
                     } catch (PdlFunctionalException e) {
                         return DataFetcherResult.newResult()
                                 .data(null)

@@ -16,6 +16,8 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.graphql.GraphQLRequest;
+import no.nav.pdl.hentGeografiskTilknytning.HentGeografiskTilknytningCoordinatorFunction;
+import no.nav.pdl.hentGeografiskTilknytning.HentGeografiskTilknytningWiring;
 import no.nav.pdl.hentIdenter.HentIdenterCoordinatorFunction;
 import no.nav.pdl.hentIdenter.HentIdenterWiring;
 import no.nav.pdl.hentIdenterBolk.HentIdenterBolkCoordinatorFunction;
@@ -31,6 +33,7 @@ public class PdlGraphqlTjeneste {
     private final TestscenarioBuilderRepository scenarioRepository;
 
     private GraphQLSchema hentPersonGraphqlSchema;
+    private GraphQLSchema hentGeografiskTilknytningGraphqlSchema;
     private GraphQLSchema hentIdenterGraphqlSchema;
     private GraphQLSchema hentIdenterBolkGraphqlSchema;
 
@@ -59,6 +62,10 @@ public class PdlGraphqlTjeneste {
         var hentPersonWiring = HentPersonWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonWiring);
 
+        var hentGeografiskTilknytningCoordinator = HentGeografiskTilknytningCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentGeografiskTilknyningWiring = HentGeografiskTilknytningWiring.lagRuntimeWiring(hentGeografiskTilknytningCoordinator);
+        hentGeografiskTilknytningGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentGeografiskTilknyningWiring);
+
         var hentIdenterCoordinator = HentIdenterCoordinatorFunction.opprettCoordinator(scenarioRepository);
         var hentIdenterWiring = HentIdenterWiring.lagRuntimeWiring(hentIdenterCoordinator);
         hentIdenterGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterWiring);
@@ -70,6 +77,10 @@ public class PdlGraphqlTjeneste {
 
     ExecutionResult hentPerson(GraphQLRequest request) {
         return byggExecutionResult(request, hentPersonGraphqlSchema);
+    }
+
+    ExecutionResult hentGeografiskTilknytning(GraphQLRequest request) {
+        return byggExecutionResult(request, hentGeografiskTilknytningGraphqlSchema);
     }
 
     ExecutionResult hentIdenter(GraphQLRequest request) {

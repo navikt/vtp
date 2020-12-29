@@ -7,27 +7,28 @@ import no.nav.pdl.GtType;
 public class GeografiskTilknytningAdapter {
 
     public static GeografiskTilknytning tilGeografiskTilknytning(PersonModell bruker) {
+        var geografiskTilknytning = new GeografiskTilknytning();
         var tilknytning = bruker.getGeografiskTilknytning();
         if (tilknytning == null) {
-            return null;
+            return geografiskTilknytning;
         } else {
-            GeografiskTilknytning geo = new GeografiskTilknytning();
             switch (tilknytning.getGeografiskTilknytningType()) {
                 case Land:
-                    geo.setGtType(GtType.UTLAND);
-                    geo.setGtLand(tilknytning.getKode());
+                    geografiskTilknytning.setGtType(GtType.UTLAND);
+                    geografiskTilknytning.setGtLand(tilknytning.getKode());
                     break;
                 case Kommune:
-                    geo.setGtType(GtType.KOMMUNE);
-                    geo.setGtKommune(tilknytning.getKode());
+                    geografiskTilknytning.setGtType(GtType.KOMMUNE);
+                    geografiskTilknytning.setGtKommune(tilknytning.getKode());
                     break;
                 case Bydel:
-                    geo.setGtType(GtType.BYDEL);
-                    geo.setGtBydel(tilknytning.getKode());
+                    geografiskTilknytning.setGtType(GtType.BYDEL);
+                    geografiskTilknytning.setGtBydel(tilknytning.getKode());
                 default:
-                    geo.setGtType(GtType.UDEFINERT);
+                    geografiskTilknytning.setGtType(GtType.UDEFINERT);
             }
-            return geo;
+            geografiskTilknytning.setRegel("UVISST");
+            return geografiskTilknytning;
         }
     }
 }
