@@ -36,7 +36,7 @@
         <kafka.version>2.6.0</kafka.version>
         <avro.version>1.10.1</avro.version>
         <confluent.version>5.5.0</confluent.version>
-        <cxf.version>3.4.1</cxf.version>
+        <cxf.version>3.4.2</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.2</swagger.version>
         <graphql-java.version>2020-12-12T02-26-00-5e61bb3</graphql-java.version>
