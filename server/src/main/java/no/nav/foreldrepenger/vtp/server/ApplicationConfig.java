@@ -58,6 +58,7 @@ import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
 import no.nav.saf.SafMock;
+import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
@@ -114,6 +115,7 @@ public class ApplicationConfig extends Application {
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
         classes.add(DigitalKontaktinformasjonMock.class);
+        classes.add(AxsysEnhetstilgangMock.class);
 
         // tekniske ting
         classes.add(OpenAMRestService.class);
