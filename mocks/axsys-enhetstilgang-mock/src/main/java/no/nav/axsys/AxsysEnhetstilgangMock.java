@@ -12,6 +12,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,19 +34,23 @@ public class AxsysEnhetstilgangMock {
     @GET
     @Path("/{ident}")
     @ApiOperation(value = "Henter enhetstilgang for saksbehandlerident")
-    public Enhetstilgang hentOrganisasjonAdresse(@PathParam("ident") String ident,
-                                                 @Context HttpHeaders httpHeaders,
-                                                 @Context UriInfo uriInfo) {
+    public AxsysTilgangDto hentOrganisasjonAdresse(@PathParam("ident") String ident,
+                                                   @Context HttpHeaders httpHeaders,
+                                                   @Context UriInfo uriInfo) {
         LOG.info("Axsys/enhetstilgang for ident {}", ident);
-
-        // Vi henter en foreldrepengerenhet som mappes til axsysrespons.
-        // Brukes pt kun til visning i fplos.
+        // henter foreldrepengeenhet fra norg og mapper til axsysenhet
         var norgEnhet = scenarioRepository.getEnheterIndeks().finnByDiskresjonskode("NORMAL-FOR");
         if (norgEnhet == null) {
             return null;
         }
-        var axsysEnhet = new OrganisasjonsEnhet(norgEnhet.getEnhetId(), norgEnhet.getNavn(), Set.of("FOR"));
-        return new Enhetstilgang(List.of(axsysEnhet));
+        var axsysEnhet = new AxsysEnhetDto(norgEnhet.getEnhetId(), norgEnhet.getNavn(), Set.of("FOR"));
+        return new AxsysTilgangDto(List.of(axsysEnhet));
     }
+
+    record AxsysEnhetDto(String enhetId,
+                         @JsonProperty("navn") String enhetNavn,
+                         @JsonProperty("fagomrader") Set<String> fagområder) {}
+
+    record AxsysTilgangDto(List<AxsysEnhetDto> enheter) {}
 }
 
