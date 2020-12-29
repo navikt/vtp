@@ -9,6 +9,18 @@
         "type": "Lønnsinntekt",
         "fordel": "kontantytelse",
         "beskrivelse": "fastloenn"
+      },
+      {
+        "fom": "now() - P12M",
+        "tom": "now() - P11M",
+        "beløp": 30000,
+        "arbeidsgiver": {
+          "@type": "person",
+          "ident": "${ident1}"
+        },
+        "type": "Lønnsinntekt",
+        "fordel": "kontantytelse",
+        "beskrivelse": "fastloenn"
       }
     ],
     "frilansarbeidsforholdperioder": [
