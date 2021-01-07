@@ -17,7 +17,8 @@ public class SivilstandBygger {
         var sivilstandPDL = new Sivilstand();
         sivilstandPDL.setType(Sivilstandstype.valueOf(SivilstandKode.valueOf(sivilstandtypeTPS).getSivilstandPDL()));
 
-        if (sivilstandPDL.getType() != Sivilstandstype.UGIFT || sivilstandPDL.getType() != Sivilstandstype.UOPPGITT) {
+        if (personopplysningerModell.getAnnenPart() != null
+                && !List.of(Sivilstandstype.UGIFT, Sivilstandstype.UOPPGITT).contains(sivilstandPDL.getType())) {
             sivilstandPDL.setRelatertVedSivilstand(personopplysningerModell.getAnnenPart().getIdent());
         }
         personPdl.setSivilstand(List.of(sivilstandPDL));
