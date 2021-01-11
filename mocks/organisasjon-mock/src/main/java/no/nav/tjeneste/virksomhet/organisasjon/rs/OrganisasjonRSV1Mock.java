@@ -43,15 +43,40 @@ public class OrganisasjonRSV1Mock {
             @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
     })
-    public OrganisasjonAdresse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
-                                     @Context HttpHeaders httpHeaders,
-                                     @Context UriInfo uriInfo) {
+    public OrganisasjonResponse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
+                                                        @Context HttpHeaders httpHeaders,
+                                                        @Context UriInfo uriInfo) {
         if (orgnummer != null) {
             LOG.info("EREG REST {}", orgnummer);
             Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
             if (organisasjonModell.isPresent()) {
                 OrganisasjonModell modell = organisasjonModell.get();
-                return new OrganisasjonAdresse(modell);
+                return new OrganisasjonResponse(modell);
+            } else {
+                return null;
+            }
+        } else {
+            throw new IllegalArgumentException("Orgnummer ikke angitt");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @GET
+    @Path("/{orgnummer}/noekkelinfo")
+    @ApiOperation(value = "Henter noekkelinformasjon for et organisasjonsnummer")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
+    })
+    public OrganisasjonNoekkelinfo hentOrganisasjonNoekkelinfo(@PathParam("orgnummer") String orgnummer,
+                                                               @Context HttpHeaders httpHeaders,
+                                                               @Context UriInfo uriInfo) {
+        if (orgnummer != null) {
+            LOG.info("EREG REST noekkelinfo {}", orgnummer);
+            Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
+            if (organisasjonModell.isPresent()) {
+                OrganisasjonModell modell = organisasjonModell.get();
+                return new OrganisasjonNoekkelinfo(modell);
             } else {
                 return null;
             }

@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class OrganisasjonAdresse {
+public class OrganisasjonResponse {
     @JsonProperty("organisasjonsnummer")
     private String organisasjonsnummer;
     @JsonProperty("type")
@@ -29,7 +29,7 @@ public class OrganisasjonAdresse {
     @JsonProperty("organisasjonDetaljer")
     private OrganisasjonDetaljer organisasjonDetaljer;
 
-    public OrganisasjonAdresse(OrganisasjonModell modell) {
+    public OrganisasjonResponse(OrganisasjonModell modell) {
         this.organisasjonsnummer = modell.getOrgnummer();
         if (modell.getType() != null){
             this.type = modell.getType();
@@ -144,6 +144,22 @@ public class OrganisasjonAdresse {
             }).reduce("", (a, b) -> {
                 return a + " " + b;
             })).trim();
+        }
+
+        static Navn fra(OrganisasjonModell.Navn navn) {
+            var svar = new Navn();
+            var max = Arrays.stream(navn.getNavnelinje()).count();
+            if (max > 0)
+                svar.navnelinje1 = navn.getNavnelinje()[0];
+            if (max > 1)
+                svar.navnelinje2 = navn.getNavnelinje()[1];
+            if (max > 2)
+                svar.navnelinje3 = navn.getNavnelinje()[2];
+            if (max > 3)
+                svar.navnelinje4 = navn.getNavnelinje()[3];
+            if (max > 4)
+                svar.navnelinje5 = navn.getNavnelinje()[4];
+            return svar;
         }
     }
 }
