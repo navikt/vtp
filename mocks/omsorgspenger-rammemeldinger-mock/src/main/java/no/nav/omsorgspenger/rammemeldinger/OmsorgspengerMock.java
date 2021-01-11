@@ -64,4 +64,25 @@ public class OmsorgspengerMock {
         response.setFått(rammemeldinger.overføringerFått());
         return response;
     }
+
+    @SuppressWarnings("unused")
+    @POST
+    @Path("/hent-korona-overforinger")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "koronaoverføringer", notes = ("Returnerer koronaoverføringer om omsorgspenger"))
+    public KoronaOverføringerResponse koronaOverføringer(RammemeldingRequest request) {
+        Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
+        if(inntektYtelseModellOptional.isEmpty()) {
+            return new KoronaOverføringerResponse();
+        }
+        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
+
+        OmsorgspengerRammemeldingerModell rammemeldinger = inntektYtelseModell.omsorgspengerModell().rammemeldinger();
+
+        KoronaOverføringerResponse response = new KoronaOverføringerResponse();
+        response.setGitt(rammemeldinger.koronaOverføringerGitt());
+        response.setFått(rammemeldinger.koronaOverføringerFått());
+        return response;
+    }
 }
