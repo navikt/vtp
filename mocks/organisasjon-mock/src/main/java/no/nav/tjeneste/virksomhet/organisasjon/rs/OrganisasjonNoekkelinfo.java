@@ -52,8 +52,8 @@ public class OrganisasjonNoekkelinfo {
         return enhetstype;
     }
 
-    public OrganisasjonResponse.Navn getNavn() {
-        return navn;
+    public String getNavn() {
+        return this.navn != null ? this.navn.getNavn() : null;
     }
 
     public String getOpphoersdato() {
