@@ -12,6 +12,8 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.Omsorgsp
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerRammemeldingerModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringFått;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringGitt;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.KoronaOverføringFått;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.KoronaOverføringGitt;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.Person;
 
 class OmsorgpengerSeraliseringDeseraliseringsTest extends SerializationTestBase {
@@ -42,6 +44,16 @@ class OmsorgpengerSeraliseringDeseraliseringsTest extends SerializationTestBase 
     }
 
     @Test
+    public void KoronaOverføringFåttSeraliseringDeseraliseringTest() {
+        test(lagKoronaOverføringFått());
+    }
+
+    @Test
+    public void KoronaOverføringGittSeraliseringDeseraliseringTest() {
+        test(lagKoronaOverføringGitt());
+    }
+
+    @Test
     public void OmsorgspengerRammemeldingerModellSeraliseringDeseraliseringTest() {
         test(lagOmsorgspengerRammemeldingerModell());
     }
@@ -55,7 +67,13 @@ class OmsorgpengerSeraliseringDeseraliseringsTest extends SerializationTestBase 
     }
 
     private OmsorgspengerRammemeldingerModell lagOmsorgspengerRammemeldingerModell() {
-        return new OmsorgspengerRammemeldingerModell(List.of(lagAleneOmOmsorgen()), List.of(lagOverføringGitt()), List.of(lagOverføringFått()));
+        return new OmsorgspengerRammemeldingerModell(
+                List.of(lagAleneOmOmsorgen()),
+                List.of(lagOverføringGitt()),
+                List.of(lagOverføringFått()),
+                List.of(lagKoronaOverføringGitt()),
+                List.of(lagKoronaOverføringFått())
+        );
     }
 
     private OverføringGitt lagOverføringGitt() {
@@ -68,6 +86,14 @@ class OmsorgpengerSeraliseringDeseraliseringsTest extends SerializationTestBase 
 
     private AleneOmOmsorgen lagAleneOmOmsorgen() {
         return new AleneOmOmsorgen(LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now(), lagPerson(), List.of(lagKilde()));
+    }
+
+    private KoronaOverføringGitt lagKoronaOverføringGitt() {
+        return new KoronaOverføringGitt(LocalDate.now(), LocalDate.now(), LocalDate.now(), Duration.ofMillis(2000), lagPerson(), List.of(lagKilde()));
+    }
+
+    private KoronaOverføringFått lagKoronaOverføringFått() {
+        return new KoronaOverføringFått(LocalDate.now(), LocalDate.now(), LocalDate.now(), Duration.ofMillis(2000), lagPerson(), List.of(lagKilde()));
     }
 
     private Kilde lagKilde() {
