@@ -9,15 +9,15 @@ public record KoronaOverføringGitt(LocalDate gjennomført,
                              LocalDate gyldigFraOgMed,
                              LocalDate gyldigTilOgMed,
                              Duration lengde,
-                             Person mottaker,
+                             Person til,
                              List<Kilde> kilder) {
 
-    public KoronaOverføringGitt(LocalDate gjennomført, LocalDate gyldigFraOgMed, LocalDate gyldigTilOgMed, Duration lengde, Person mottaker, List<Kilde> kilder) {
+    public KoronaOverføringGitt(LocalDate gjennomført, LocalDate gyldigFraOgMed, LocalDate gyldigTilOgMed, Duration lengde, Person til, List<Kilde> kilder) {
         this.gjennomført = gjennomført;
         this.gyldigFraOgMed = gyldigFraOgMed;
         this.gyldigTilOgMed = gyldigTilOgMed;
         this.lengde = lengde;
-        this.mottaker = mottaker;
+        this.til = til;
         this.kilder = Optional.ofNullable(kilder).orElse(List.of());
     }
 }
