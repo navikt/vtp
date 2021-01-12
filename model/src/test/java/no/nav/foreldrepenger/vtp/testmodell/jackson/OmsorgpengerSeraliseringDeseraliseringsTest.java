@@ -67,7 +67,13 @@ class OmsorgpengerSeraliseringDeseraliseringsTest extends SerializationTestBase 
     }
 
     private OmsorgspengerRammemeldingerModell lagOmsorgspengerRammemeldingerModell() {
-        return new OmsorgspengerRammemeldingerModell(List.of(lagAleneOmOmsorgen()), List.of(lagOverføringGitt()), List.of(lagOverføringFått()), List.of(lagKoronaOverføringGitt(), List.of(lagKoronaOverføringFått())));
+        return new OmsorgspengerRammemeldingerModell(
+                List.of(lagAleneOmOmsorgen()),
+                List.of(lagOverføringGitt()),
+                List.of(lagOverføringFått()),
+                List.of(lagKoronaOverføringGitt()),
+                List.of(lagKoronaOverføringFått())
+        );
     }
 
     private OverføringGitt lagOverføringGitt() {
