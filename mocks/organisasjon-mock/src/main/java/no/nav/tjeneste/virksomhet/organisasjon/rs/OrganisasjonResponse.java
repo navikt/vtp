@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.AdresseEReg;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class OrganisasjonAdresse {
+public class OrganisasjonResponse {
     @JsonProperty("organisasjonsnummer")
     private String organisasjonsnummer;
     @JsonProperty("type")
@@ -29,33 +30,24 @@ public class OrganisasjonAdresse {
     @JsonProperty("organisasjonDetaljer")
     private OrganisasjonDetaljer organisasjonDetaljer;
 
-    public OrganisasjonAdresse(OrganisasjonModell modell) {
+    public OrganisasjonResponse(OrganisasjonModell modell) {
         this.organisasjonsnummer = modell.getOrgnummer();
-        if (modell.getType() != null){
+        if (modell.getType() != null) {
             this.type = modell.getType();
-        } else {this.type = OrganisasjonstypeEReg.VIRKSOMHET;}
-        this.navn = new Navn();
-        var max = Arrays.stream(modell.getNavn().getNavnelinje()).count();
-        if (max > 0)
-            this.navn.navnelinje1 = modell.getNavn().getNavnelinje()[0];
-        if (max > 1)
-            this.navn.navnelinje2 = modell.getNavn().getNavnelinje()[1];
-        if (max > 2)
-            this.navn.navnelinje3 = modell.getNavn().getNavnelinje()[2];
-        if (max > 3)
-            this.navn.navnelinje4 = modell.getNavn().getNavnelinje()[3];
-        if (max > 4)
-            this.navn.navnelinje5 = modell.getNavn().getNavnelinje()[4];
+        } else {
+            this.type = OrganisasjonstypeEReg.VIRKSOMHET;
+        }
+        this.navn = Navn.fra(modell.getNavn());
         this.organisasjonDetaljer = new OrganisasjonDetaljer();
         if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getRegistreringsDato() != null) {
             this.organisasjonDetaljer.registreringsdato = modell.getOrganisasjonDetaljer().getRegistreringsDato().atStartOfDay();
         } else {
             this.organisasjonDetaljer.registreringsdato = LocalDateTime.now().minusYears(1);
         }
-        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getForretningsadresser() != null){
+        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getForretningsadresser() != null) {
             this.organisasjonDetaljer.forretningsadresser = modell.getOrganisasjonDetaljer().getForretningsadresser();
         }
-        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getPostadresser() != null){
+        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getPostadresser() != null) {
             this.organisasjonDetaljer.postadresser = modell.getOrganisasjonDetaljer().getPostadresser();
         }
     }
@@ -73,7 +65,7 @@ public class OrganisasjonAdresse {
     }
 
     public AdresseEReg getKorrespondanseadresse() {
-        return !this.getPostadresser().isEmpty() ? (AdresseEReg)this.getPostadresser().get(0) : (AdresseEReg)this.getForretningsadresser().get(0);
+        return !this.getPostadresser().isEmpty() ? this.getPostadresser().get(0) : this.getForretningsadresser().get(0);
     }
 
     public List<AdresseEReg> getForretningsadresser() {
@@ -138,12 +130,29 @@ public class OrganisasjonAdresse {
         private Navn() {
         }
 
-        private String getNavn() {
-            return ((String) Stream.of(this.navnelinje1, this.navnelinje2, this.navnelinje3, this.navnelinje4, this.navnelinje5).filter(Objects::nonNull).map(String::trim).filter((n) -> {
-                return !n.isEmpty();
-            }).reduce("", (a, b) -> {
-                return a + " " + b;
-            })).trim();
+        String getNavn() {
+            return Stream.of(this.navnelinje1, this.navnelinje2, this.navnelinje3, this.navnelinje4, this.navnelinje5)
+                    .filter(Objects::nonNull)
+                    .map(String::trim)
+                    .filter((n) -> !n.isEmpty())
+                    .reduce("", (a, b) -> a + " " + b)
+                    .trim();
+        }
+
+        static Navn fra(OrganisasjonModell.Navn navn) {
+            var svar = new Navn();
+            var max = Arrays.stream(navn.getNavnelinje()).count();
+            if (max > 0)
+                svar.navnelinje1 = navn.getNavnelinje()[0];
+            if (max > 1)
+                svar.navnelinje2 = navn.getNavnelinje()[1];
+            if (max > 2)
+                svar.navnelinje3 = navn.getNavnelinje()[2];
+            if (max > 3)
+                svar.navnelinje4 = navn.getNavnelinje()[3];
+            if (max > 4)
+                svar.navnelinje5 = navn.getNavnelinje()[4];
+            return svar;
         }
     }
 }
