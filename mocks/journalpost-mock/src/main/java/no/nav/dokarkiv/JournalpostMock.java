@@ -1,19 +1,28 @@
 package no.nav.dokarkiv;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.dokarkiv.generated.model.*;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import java.util.stream.Collectors;
+
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.dokarkiv.generated.model.DokumentInfo;
+import no.nav.dokarkiv.generated.model.FerdigstillJournalpostRequest;
+import no.nav.dokarkiv.generated.model.OppdaterJournalpostRequest;
+import no.nav.dokarkiv.generated.model.OppdaterJournalpostResponse;
+import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
+import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 @Api(tags = {"Dokarkiv"})
 @Path("/dokarkiv/rest/journalpostapi/v1")
@@ -29,19 +38,19 @@ public class JournalpostMock {
     public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest, @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
         LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", forsoekFerdigstill);
 
-        JournalpostModell modell = new JournalpostMapper().tilModell(opprettJournalpostRequest);
-        String journalpostId = journalRepository.leggTilJournalpost(modell);
+        var modell = new JournalpostMapper().tilModell(opprettJournalpostRequest);
+        var journalpostId = journalRepository.leggTilJournalpost(modell);
 
-        Optional<JournalpostModell> journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
+        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
 
-        List<DokumentInfo> dokumentInfos = journalpostModell.get().getDokumentModellList().stream()
+        var dokumentInfos = journalpostModell.get().getDokumentModellList().stream()
                 .map(it -> {
                     DokumentInfo dokinfo = new DokumentInfo();
                     dokinfo.setDokumentInfoId(it.getDokumentId());
                     return dokinfo;
                 }).collect(Collectors.toList());
 
-        OpprettJournalpostResponse response = new OpprettJournalpostResponse();
+        var response = new OpprettJournalpostResponse();
         response.setDokumenter(dokumentInfos);
         response.setJournalpostId(journalpostId);
         response.setJournalpostferdigstilt(Boolean.TRUE);
@@ -55,12 +64,15 @@ public class JournalpostMock {
     public Response oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest, @PathParam("journalpostid") String journalpostId){
 
         LOG.info("Kall til oppdater journalpost: {}", journalpostId);
-        Optional<JournalpostModell> journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
+        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
         if(journalpostModell.isPresent()) {
-            journalpostModell.get().setSakId(oppdaterJournalpostRequest.getSak().getFagsakId());
+            LOG.info("SAK: {}", oppdaterJournalpostRequest.getSak());
+            if (oppdaterJournalpostRequest.getSak() != null) {
+                journalpostModell.get().setSakId(oppdaterJournalpostRequest.getSak().getFagsakId());
+            }
             journalpostModell.get().setBruker(new JournalpostMapper().mapAvsenderFraBruker(oppdaterJournalpostRequest.getBruker()));
         }
-        OppdaterJournalpostResponse oppdaterJournalpostResponse = new OppdaterJournalpostResponse();
+        var oppdaterJournalpostResponse = new OppdaterJournalpostResponse();
         oppdaterJournalpostResponse.setJournalpostId(journalpostId);
 
         return Response.accepted().entity(oppdaterJournalpostResponse).build();
@@ -71,7 +83,7 @@ public class JournalpostMock {
     @ApiOperation(value = "Ferdigstill journalpost")
     public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest){
 
-        String journalfoerendeEnhet = ferdigstillJournalpostRequest.getJournalfoerendeEnhet();
+        var journalfoerendeEnhet = ferdigstillJournalpostRequest.getJournalfoerendeEnhet();
         LOG.info("Kall til ferdigstill journalpost på enhet: {}", journalfoerendeEnhet);
 
         return Response.ok().entity("OK").build();

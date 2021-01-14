@@ -16,7 +16,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.KoronaOv
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.KoronaOverføringGitt;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.Person;
 
-class OmsorgpengerSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class OmsorgpengerSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
     public void PersonSeraliseringDeseraliseringTest() {

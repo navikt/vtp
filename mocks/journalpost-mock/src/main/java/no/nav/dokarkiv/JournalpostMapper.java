@@ -62,16 +62,14 @@ public class JournalpostMapper {
                             .collect(Collectors.toList()));
         }
         modell.setDokumentModellList(dokumentModeller);
-
-
+        modell.setTittel(journalpostRequest.getTittel());
+        modell.setEksternReferanseId(journalpostRequest.getEksternReferanseId());
+        modell.setMottakskanal(journalpostRequest.getKanal());
 
         //TODO: Hvordan håndteres denne (getAvsenderMottaker) sammenlignet med bruker? & Map felter videre
         journalpostRequest.getAvsenderMottaker();
         journalpostRequest.getBehandlingstema();
-        journalpostRequest.getTittel();
         journalpostRequest.getTilleggsopplysninger();
-        journalpostRequest.getEksternReferanseId();
-        journalpostRequest.getKanal();
 
         return modell;
 

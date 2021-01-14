@@ -38,6 +38,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
+import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -58,7 +59,6 @@ import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
 import no.nav.saf.SafMock;
-import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;

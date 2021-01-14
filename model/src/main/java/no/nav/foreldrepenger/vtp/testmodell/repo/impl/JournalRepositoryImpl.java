@@ -21,6 +21,7 @@ public class JournalRepositoryImpl implements JournalRepository {
 
     private AtomicInteger journalpostId;
     private AtomicInteger dokumentId;
+    private AtomicInteger eksternReferanseId;
 
     private static JournalRepositoryImpl instance;
 
@@ -41,6 +42,7 @@ public class JournalRepositoryImpl implements JournalRepository {
         dokumenter = new ConcurrentHashMap<>();
         journalpostId = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
         dokumentId = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
+        eksternReferanseId = new AtomicInteger(0);
     }
 
     @Override
@@ -77,6 +79,9 @@ public class JournalRepositoryImpl implements JournalRepository {
             journalpostModell.setJournalpostId(journalpostId);
         }
 
+        journalpostModell.setEksternReferanseId(journalpostModell.getEksternReferanseId() != null ?
+                journalpostModell.getEksternReferanseId() : genererEksternReferanseId());
+
         for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
             String dokumentId = "";
             if(dokumentModell.getDokumentId() != null && !journalpostModell.getJournalpostId().isEmpty()){
@@ -109,7 +114,8 @@ public class JournalRepositoryImpl implements JournalRepository {
         return Integer.toString(dokumentId.incrementAndGet());
     }
 
-
-
+    public String genererEksternReferanseId() {
+        return "AR" + String.format("%08d", eksternReferanseId.incrementAndGet());
+    }
 
 }

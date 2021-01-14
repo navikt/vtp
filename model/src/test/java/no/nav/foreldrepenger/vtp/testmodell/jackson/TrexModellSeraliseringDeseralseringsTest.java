@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Tema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TemaKode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Vedtak;
 
-class TrexModellSeraliseringDeseralseringsTest extends SerializationTestBase {
+class TrexModellSeraliseringDeseralseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
     public void OrgnummerSeraliseringDeseraliseringTest() {

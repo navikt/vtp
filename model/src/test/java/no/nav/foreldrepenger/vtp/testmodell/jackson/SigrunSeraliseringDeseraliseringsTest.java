@@ -8,7 +8,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Oppføring;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 
-class SigrunSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class SigrunSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
     public void InntektsårSeraliseringDeseraliseringTest() {

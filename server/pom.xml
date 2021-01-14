@@ -125,6 +125,10 @@
             <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
             <artifactId>fp-topics-manifest</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.dok</groupId>
+            <artifactId>dok-journalfoering-hendelse-v1</artifactId>
+        </dependency>
 
         <!-- Eksterne avhengigheter -->
         <dependency>

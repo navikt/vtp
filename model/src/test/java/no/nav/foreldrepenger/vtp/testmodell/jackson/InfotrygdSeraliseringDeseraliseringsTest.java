@@ -17,7 +17,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgr
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdVedtak;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 
-class InfotrygdSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class InfotrygdSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
     public void InfotrygdTemaSeraliseringDeseraliseringTest() {

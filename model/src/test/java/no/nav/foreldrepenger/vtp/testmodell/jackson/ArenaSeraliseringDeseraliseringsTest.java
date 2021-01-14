@@ -16,7 +16,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.RelatertYtelseTe
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.SakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
 
-class ArenaSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class ArenaSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
     public void ArenaMeldekortSeraliseringDeseraliseringTest() {

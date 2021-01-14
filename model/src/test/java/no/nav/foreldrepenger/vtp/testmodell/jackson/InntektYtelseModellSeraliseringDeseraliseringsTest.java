@@ -11,7 +11,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
-class InntektYtelseModellSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     private static ArbeidsforholdSeraliseringDeseraliseringsTest arbeidsforhold;
     private static ArenaSeraliseringDeseraliseringsTest arena;
