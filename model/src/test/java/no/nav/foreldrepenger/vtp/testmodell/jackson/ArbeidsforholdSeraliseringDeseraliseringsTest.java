@@ -16,7 +16,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Permisj
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Yrke;
 
 
-class ArbeidsforholdSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class ArbeidsforholdSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
     public void AntallTimerIPeriodenSeraliseringDeseraliseringTest() {

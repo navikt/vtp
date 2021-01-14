@@ -18,7 +18,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
-class InntektskomponentSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @BeforeAll
     private static void utvidObjectmapperMedInjectables() {

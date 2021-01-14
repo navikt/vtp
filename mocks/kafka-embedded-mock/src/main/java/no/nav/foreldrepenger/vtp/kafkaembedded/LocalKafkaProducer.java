@@ -62,15 +62,15 @@ public class LocalKafkaProducer {
         return props;
     }
 
-    public void sendMelding(String topic, String key, String value) {
-        stringProducer.send(new ProducerRecord<>(topic, key, value), (recordMetadata, e) -> {
+    public void sendMelding(String topic, String value) {
+        stringProducer.send(new ProducerRecord<>(topic, value), (recordMetadata, e) -> {
             LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
         });
         stringProducer.flush();
     }
 
-    public void sendMelding(String topic, String value) {
-        stringProducer.send(new ProducerRecord<>(topic, value), (recordMetadata, e) -> {
+    public void sendMelding(String topic, String key, String value) {
+        stringProducer.send(new ProducerRecord<>(topic, key, value), (recordMetadata, e) -> {
             LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
         });
         stringProducer.flush();

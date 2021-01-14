@@ -51,7 +51,7 @@ public class Variantformat {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Arkivtema) obj).getKode());
+        return Objects.equals(getKode(), ((Variantformat) obj).getKode());
     }
 
     @Override

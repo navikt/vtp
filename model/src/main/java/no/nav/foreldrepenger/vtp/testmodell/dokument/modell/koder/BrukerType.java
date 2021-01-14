@@ -1,11 +1,11 @@
 package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public class BrukerType {
 
@@ -46,7 +46,7 @@ public class BrukerType {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Journalposttyper) obj).getKode());
+        return Objects.equals(getKode(), ((BrukerType) obj).getKode());
     }
 
     @Override

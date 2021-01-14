@@ -10,7 +10,9 @@ import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 
 public class JournalpostBuilder {
@@ -20,8 +22,14 @@ public class JournalpostBuilder {
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getJournalpostId());
+        journalpost.setTittel(modell.getTittel());
+        journalpost.setTema(Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "UKJ"));
+        journalpost.setJournalstatus(tilJournalstatus(modell));
+        journalpost.setKanal(Kanal.valueOf(modell.getMottakskanal() != null ? modell.getMottakskanal() : "UKJENT"));
+        journalpost.setBruker(modell.getBruker() != null ? tilBruker(modell.getBruker()) : null);
         journalpost.setDatoOpprettet(new Date());
-        journalpost.setEksternReferanseId("ekstern-" + modell.getJournalpostId());
+        journalpost.setEksternReferanseId(modell.getEksternReferanseId() != null ?
+                modell.getEksternReferanseId() : "ekstern-" + modell.getJournalpostId());
         journalpost.setAvsenderMottaker(new AvsenderMottaker("12345678901", AvsenderMottakerIdType.FNR, "Navn", "Norge", Boolean.FALSE));
 
         journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), "fagsakId", modell.getFagsystemId()));
@@ -101,5 +109,25 @@ public class JournalpostBuilder {
         return dokumentType != null ? dokumentType.getKode() : null;
     }
 
+    private static Journalstatus tilJournalstatus(JournalpostModell modell) {
+        return switch (modell.getJournalStatus() != null ? modell.getJournalStatus().getKode() : "") {
+            case "J" -> Journalstatus.JOURNALFOERT;
+            case "MO" -> Journalstatus.MOTTATT;
+            case "M" -> Journalstatus.MOTTATT;
+            case "A" -> Journalstatus.AVBRUTT;
+            default -> Journalstatus.UKJENT;
+        };
+    }
+
+    private static Bruker tilBruker(JournalpostBruker bruker){
+        if (BrukerType.FNR.equals(bruker.getBrukerType())) {
+            return new Bruker(bruker.getIdent(), BrukerIdType.FNR);
+        } else if (BrukerType.AKTOERID.equals(bruker.getBrukerType())) {
+            return new Bruker(bruker.getIdent(), BrukerIdType.AKTOERID);
+        } else if (BrukerType.ORGNR.equals(bruker.getBrukerType())) {
+            return new Bruker(bruker.getIdent(), BrukerIdType.ORGNR);
+        }
+        throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
+    }
 
 }

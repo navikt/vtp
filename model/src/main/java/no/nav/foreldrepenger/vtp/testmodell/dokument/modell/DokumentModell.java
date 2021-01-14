@@ -2,11 +2,19 @@ package no.nav.foreldrepenger.vtp.testmodell.dokument.modell;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.ANY, fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class DokumentModell {
 
     private String dokumentId;
@@ -19,7 +27,29 @@ public class DokumentModell {
     private List<DokumentVariantInnhold> dokumentVariantInnholdListe = new ArrayList<>();
     private Dokumentkategori dokumentkategori;
 
+    public DokumentModell() {
+    }
 
+    @JsonCreator
+    public DokumentModell(@JsonProperty("dokumentId") String dokumentId,
+                          @JsonProperty("dokumenttypeId") DokumenttypeId dokumenttypeId,
+                          @JsonProperty("erSensitiv") Boolean erSensitiv,
+                          @JsonProperty("tittel") String tittel,
+                          @JsonProperty("brevkode") String brevkode,
+                          @JsonProperty("innhold") String innhold,
+                          @JsonProperty("dokumentTilknyttetJournalpost") DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost,
+                          @JsonProperty("dokumentVariantInnholdListe") List<DokumentVariantInnhold> dokumentVariantInnholdListe,
+                          @JsonProperty("dokumentkategori") Dokumentkategori dokumentkategori) {
+        this.dokumentId = dokumentId;
+        this.dokumenttypeId = dokumenttypeId;
+        this.erSensitiv = erSensitiv;
+        this.tittel = tittel;
+        this.brevkode = brevkode;
+        this.innhold = innhold;
+        this.dokumentTilknyttetJournalpost = dokumentTilknyttetJournalpost;
+        this.dokumentVariantInnholdListe = dokumentVariantInnholdListe;
+        this.dokumentkategori = dokumentkategori;
+    }
 
     public String getDokumentId() {
         return dokumentId;
@@ -87,5 +117,33 @@ public class DokumentModell {
 
     public void setBrevkode(String brevkode) {
         this.brevkode = brevkode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DokumentModell that = (DokumentModell) o;
+        return Objects.equals(dokumentId, that.dokumentId) && Objects.equals(dokumenttypeId, that.dokumenttypeId) && Objects.equals(erSensitiv, that.erSensitiv) && Objects.equals(tittel, that.tittel) && Objects.equals(brevkode, that.brevkode) && Objects.equals(innhold, that.innhold) && Objects.equals(dokumentTilknyttetJournalpost, that.dokumentTilknyttetJournalpost) && Objects.equals(dokumentVariantInnholdListe, that.dokumentVariantInnholdListe) && Objects.equals(dokumentkategori, that.dokumentkategori);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dokumentId, dokumenttypeId, erSensitiv, tittel, brevkode, innhold, dokumentTilknyttetJournalpost, dokumentVariantInnholdListe, dokumentkategori);
+    }
+
+    @Override
+    public String toString() {
+        return "DokumentModell{" +
+                "dokumentId='" + dokumentId + '\'' +
+                ", dokumenttypeId=" + dokumenttypeId +
+                ", erSensitiv=" + erSensitiv +
+                ", tittel='" + tittel + '\'' +
+                ", brevkode='" + brevkode + '\'' +
+                ", innhold='" + innhold + '\'' +
+                ", dokumentTilknyttetJournalpost=" + dokumentTilknyttetJournalpost +
+                ", dokumentVariantInnholdListe=" + dokumentVariantInnholdListe +
+                ", dokumentkategori=" + dokumentkategori +
+                '}';
     }
 }

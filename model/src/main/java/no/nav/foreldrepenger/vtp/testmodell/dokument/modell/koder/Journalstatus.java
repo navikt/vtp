@@ -28,10 +28,10 @@ public class Journalstatus {
 
     private String kode;
 
-    public static Journalstatus JOURNALFØRT = new Journalstatus("J");
-    public static Journalstatus MOTTATT = new Journalstatus("MO");
-    public static Journalstatus MIDLERTIDIG_JOURNALFØRT = new Journalstatus("M");
-    public static Journalstatus AVBRUTT = new Journalstatus("A");
+    public final static Journalstatus JOURNALFØRT = new Journalstatus("J");
+    public final static Journalstatus MOTTATT = new Journalstatus("MO");
+    public final static Journalstatus MIDLERTIDIG_JOURNALFØRT = new Journalstatus("M");
+    public final static Journalstatus AVBRUTT = new Journalstatus("A");
 
     public Journalstatus(String kode){
         this.kode = kode == null ? this.kode : kode;
