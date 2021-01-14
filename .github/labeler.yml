@@ -1,0 +1,13 @@
+kontrakt:
+  - model/src/main/java/**/*
+  - core/src/main/java/**/*
+  
+mocks:
+  - 'mocks/**/src/main/java/**/*'
+  
+web:
+  - server/src/main/java/**/*
+  
+pom:
+  - '**/*/pom.xml'
+  - pom.xml
