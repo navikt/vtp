@@ -5,7 +5,7 @@ on:
     branches:
       - master    # Push events on master branch
 env:
-  IMAGE_BASE: ghcr.io/navikt/vtp
+  IMAGE_BASE: docker.pkg.github.com/navikt/vtp/vtp
 
 jobs:
   build:
