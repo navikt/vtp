@@ -108,7 +108,7 @@ type Query {
 
         # Peker til resultat etter foerste, brukes til å paginere forover.
         etter: String
-     ): Dokumentoversikt!
+    ): Dokumentoversikt!
 
     # * dokumentoversiktJournalstatus returnerer en liste som matcher søkeparameterene.
     # * Det er kun metadata om journalposter med tilhørende dokumenter som returneres. Det fysiske dokumentet kan hentes i saf - REST hentdokument.
@@ -137,14 +137,14 @@ type Query {
 
         # Peker til resultat etter foerste, brukes til å paginere forover.
         etter: String
-     ): Dokumentoversikt!
+    ): Dokumentoversikt!
 
     # * Query returnerer metadata for en journalpost.
     # * Fysiske dokumentet tilknyttet journalposten kan hentes i saf - REST hentdokument
     journalpost(
-       # ID til Journalposten man ønsker å hente detaljer for.
-       # * Hvis argumentet ikke er angitt så returneres en feil.
-       journalpostId: String!
+        # ID til Journalposten man ønsker å hente detaljer for.
+        # * Hvis argumentet ikke er angitt så returneres en feil.
+        journalpostId: String!
     ): Journalpost
 
     # Henter metadata for en dokumentInfo (dokumentbeskrivelse) med tilknyttede journalposter.
@@ -152,12 +152,12 @@ type Query {
     # * Deler samme DokumentInfo (mange-til-mange relasjon via JPDokInfoRel). Dette vil typisk være resultat av et dokument som er journalført på flere saker/brukere.
     # * Er knyttet sammen via originalJournalpostId. Dette vil typisk være resultat av en splitting av et dokument, der det opprettes to nye DokumentInfo med hver sin del av originaldokumentet, og DokumentInfo.originalJournalpostId peker tilbake på journalposten (med status Utgått) som originaldokumentet lå på.
     tilknyttedeJournalposter(
-       # ID til dokumentet man ønsker å hente tilknyttede Journalpost for.
-       # * Hvis argumentet ikke er angitt så returneres en feil.
-       dokumentInfoId: String!
+        # ID til dokumentet man ønsker å hente tilknyttede Journalpost for.
+        # * Hvis argumentet ikke er angitt så returneres en feil.
+        dokumentInfoId: String!
 
-       # Typen tilknyttet Journalpost.
-       tilknytning: Tilknytning!
+        # Typen tilknyttet Journalpost.
+        tilknytning: Tilknytning!
     ): [Journalpost]!
 }
 
@@ -183,10 +183,10 @@ type SideInfo {
 # * Disse er representert som et skjemaløst nøkkel-verdi-sett og valideres ikke av Joark. Et eksempel på et slikt sett kan være (bucid, 21521).
 type Tilleggsopplysning {
     # Nøkkelen til det fagspesifikke attributtet.
-	nokkel: String
+    nokkel: String
 
-	# Verdien til det fagspesifikke attributtet.
-	verdi: String
+    # Verdien til det fagspesifikke attributtet.
+    verdi: String
 }
 
 # Et sett med metadata som er nødvendig for å gjenfinne et dokument i arkivet. En journalpost kan ha ett eller flere dokumenter.
@@ -433,29 +433,29 @@ enum Datotype {
     # * Returneres for alle journalposter
     DATO_OPPRETTET
 
-	# * Tidspunktet dokumentene på journalposten ble sendt til print.
+    # * Tidspunktet dokumentene på journalposten ble sendt til print.
     # * Returneres for utgående journalposter
-	DATO_SENDT_PRINT
+    DATO_SENDT_PRINT
 
-	# * Tidspunktet dokumentene på journalposten ble sendt til bruker.
+    # * Tidspunktet dokumentene på journalposten ble sendt til bruker.
     # * Returneres for utgående journalposter
-	DATO_EKSPEDERT
+    DATO_EKSPEDERT
 
-	# * Tidspunktet journalposten ble journalført (inngående) eller ferdigstilt (utgående).
+    # * Tidspunktet journalposten ble journalført (inngående) eller ferdigstilt (utgående).
     # * Returneres for alle journalposttyper
-	DATO_JOURNALFOERT
+    DATO_JOURNALFOERT
 
-	# * Tidspunkt dokumentene i journalposten ble registrert i NAV sine systemer.
+    # * Tidspunkt dokumentene i journalposten ble registrert i NAV sine systemer.
     # * Returneres for inngående journalposter
     DATO_REGISTRERT
 
-	# * Tidspunkt som dokumentene i journalposten ble sendt på nytt, grunnet retur av opprinnelig forsendelse.
+    # * Tidspunkt som dokumentene i journalposten ble sendt på nytt, grunnet retur av opprinnelig forsendelse.
     # * Returneres for utgående journalposter
-	DATO_AVS_RETUR
+    DATO_AVS_RETUR
 
     # * Dato på hoveddokumentet i forsendelsen. Registreres i noen tilfeller manuelt av saksbehandler.
     # * Returneres for alle journalposter
-	DATO_DOKUMENT
+    DATO_DOKUMENT
 
 }
 
@@ -472,13 +472,13 @@ enum Arkivsaksystem {
 # Sier hvorvidt journalposten er et inngående dokument, et utgående dokument eller et notat.
 enum Journalposttype {
     # **Inngående dokument** - Dokumentasjon som NAV har mottatt fra en ekstern part. De fleste inngående dokumenter er søknader, ettersendelser av dokumentasjon til sak, eller innsendinger fra arbeidsgivere. Meldinger brukere har sendt til "Skriv til NAV" arkiveres også som inngående dokumenter..
-	I
+    I
 
-	# **Unngående dokument** - Dokumentasjon som NAV har produsert og sendt ut til en ekstern part. De fleste utgående dokumenter er informasjons- eller vedtaksbrev til privatpersoner eller organisasjoner. "Skriv til NAV"-meldinger som saksbehandlere har sendt til brukere arkiveres også som utgående dokumenter.
-	U
+    # **Unngående dokument** - Dokumentasjon som NAV har produsert og sendt ut til en ekstern part. De fleste utgående dokumenter er informasjons- eller vedtaksbrev til privatpersoner eller organisasjoner. "Skriv til NAV"-meldinger som saksbehandlere har sendt til brukere arkiveres også som utgående dokumenter.
+    U
 
-	# **Notat** - Dokumentasjon som NAV har produsert selv, uten at formålet er å distribuere dette ut av NAV. Eksempler på notater er samtalereferater med veileder på kontaktsenter og interne forvaltningsnotater.
-	N
+    # **Notat** - Dokumentasjon som NAV har produsert selv, uten at formålet er å distribuere dette ut av NAV. Eksempler på notater er samtalereferater med veileder på kontaktsenter og interne forvaltningsnotater.
+    N
 }
 
 # * Status på journalposten i arkivet, f.eks. **MOTTATT** eller **JOURNALFOERT**. Journalstatusen gir et indikasjon på hvor i journalførings- eller dokumentproduksjonsprosessen journalposten befinner seg.
@@ -544,39 +544,43 @@ enum Kanal {
 
     # Forsendelsen er mottatt eller distribuert via applikasjoner som EU har levert og som benyttes for utveksling av informasjon med andre EU-land.
     # * Brukes for inngående og utgående journalposter.
-	EESSI
+    EESSI
 
-	# Forsendelsen er arkivert av applikasjonen EIA.
-	# * Brukes for inngående journalposter.
-	EIA
-
-	# Dokumentene i journalposten er hentet fra en ekstern kilde, for eksempel informasjon om oppholdstillatelse fra Utlendingsdirektoratet.
-	# * Brukes for inngående journalposter.
-	EKST_OPPS
-
-	# Brevet er skrevet ut lokalt og kan være sendt i posten på papir.
-	# * Brukes for utgående journalposter og notater.
-	LOKAL_UTSKRIFT
-
-	# Forsendelsen er sendt inn digitalt via selvbetjeningsløsninger på nav.no, eller distribuert digitalt til brukers meldingsboks på nav.no.
-	# * Brukes for inngående og utgående journalposter.
-	NAV_NO
-
-	# Brevet er overført til sentral distribusjon og sendt i posten på papir.
-	# * Brukes for utgående journalposter.
-	SENTRAL_UTSKRIFT
-
-	# Brevet er sendt via digital post til innbyggere.
-	# * Brukes for utgående journalposter.
-	SDP
-
-	# Forsendelsen er sendt inn på papir og skannet hos NETS.
-	# * Brukes for inngående, utgående journalposter og notater.
-	SKAN_NETS
-
-	# Forsendelsen er sendt inn på papir og skannet på NAVs skanningsenter for pensjon og bidrag.
+    # Forsendelsen er arkivert av applikasjonen EIA.
     # * Brukes for inngående journalposter.
-	SKAN_PEN
+    EIA
+
+    # Dokumentene i journalposten er hentet fra en ekstern kilde, for eksempel informasjon om oppholdstillatelse fra Utlendingsdirektoratet.
+    # * Brukes for inngående journalposter.
+    EKST_OPPS
+
+    # Brevet er skrevet ut lokalt og kan være sendt i posten på papir.
+    # * Brukes for utgående journalposter og notater.
+    LOKAL_UTSKRIFT
+
+    # Forsendelsen er sendt inn digitalt via selvbetjeningsløsninger på nav.no, eller distribuert digitalt til brukers meldingsboks på nav.no.
+    # * Brukes for inngående og utgående journalposter.
+    NAV_NO
+
+    # Brevet er overført til sentral distribusjon og sendt i posten på papir.
+    # * Brukes for utgående journalposter.
+    SENTRAL_UTSKRIFT
+
+    # Brevet er sendt via digital post til innbyggere.
+    # * Brukes for utgående journalposter.
+    SDP
+
+    # Forsendelsen er sendt inn på papir og skannet hos NETS.
+    # * Brukes for inngående, utgående journalposter og notater.
+    SKAN_NETS
+
+    # Forsendelsen er sendt inn på papir og skannet på NAVs skanningsenter for pensjon og bidrag.
+    # * Brukes for inngående journalposter.
+    SKAN_PEN
+
+    # Forsendelsen er sendt inn på papir og skannet hos Iron Moutain.
+    # * Brukes for inngående, utgående journalposter og notater.
+    SKAN_IM
 
     # Forsendelen er distribuert via integrasjonspunkt for eFormidling til Trygderetten.
     # * Brukes for utgående journalposter.
@@ -587,15 +591,18 @@ enum Kanal {
     HELSENETTET
 
     # Forsendelsen skal ikke distribueres ut av NAV.
-	# * Brukes for alle notater og noen utgående journalposter
-	INGEN_DISTRIBUSJON
+    # * Brukes for alle notater og noen utgående journalposter
+    INGEN_DISTRIBUSJON
 
     # Forsendelsen er sendt inn digitalt via selvbetjeningsløsninger på nav.no, uten at avsenderen ble digitalt autentisert
     # * Brukes for inngående journalposter
     NAV_NO_UINNLOGGET
 
-	# Forsendelsen har ingen kjent kanal.
-	UKJENT
+    # Bruker har fylt ut og sendt inn dokumentet sammen med en NAV-ansatt. Det er den NAV-ansatte som var pålogget innsendingsløsningen.
+    INNSENDT_NAV_ANSATT
+
+    # Forsendelsen har ingen kjent kanal.
+    UKJENT
 }
 
 # Temaet/Fagområdet som en journalpost og tilhørende sak tilhører, f.eks. **FOR** (foreldrepenger).
@@ -639,6 +646,9 @@ enum Tema {
 
     # Forsikring
     FOS
+
+    # Midlertidig kompensasjonsordning for selvstendig næringsdrivende og frilansere
+    FRI
 
     # Fullmakt
     FUL
@@ -822,14 +832,14 @@ enum AvsenderMottakerIdType {
     ORGNR
 
     # Helsepersonellregisterets identifikator for leger og annet helsepersonell.
-     HPRNR
+    HPRNR
 
     # Unik identifikator for utenlandske institusjoner / organisasjoner. Identifikatorene vedlikeholdes i EUs institusjonskatalog.
-     UTL_ORG
+    UTL_ORG
 
     # AvsenderMottakerId er tom
-     NULL
+    NULL
 
     # Ukjent IdType
-     UKJENT
+    UKJENT
 }
