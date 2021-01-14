@@ -5,7 +5,7 @@ on:
     branches:
       - master    # Push events on master branch
 env:
-  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/vtp
+  IMAGE_BASE: ghcr.io/navikt/vtp
 
 jobs:
   build:
@@ -48,7 +48,7 @@ jobs:
       - name: Bygg, tag og push Docker image
         run: |
           docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest .
-          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://ghcr.io
+          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin ghcr.io
           docker push ${IMAGE_BASE}:latest
           docker push ${IMAGE_BASE}:${TAG}
         env:
