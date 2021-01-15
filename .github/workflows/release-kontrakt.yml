@@ -29,6 +29,6 @@ jobs:
       - name: Publish artifacts
         shell: bash
         run: |
-           mvn deploy -e --batch-mode --file pom.xml -am -pl kontrakt,core -DtrimStackTrace=false -Dchangelist= -Dsha1= -Drevision=$NEW_VERSION -Dfile.encoding=UTF-8 -DdeployAtEnd=true
+           mvn deploy -e --batch-mode --file pom.xml -am -pl model,core -DtrimStackTrace=false -Dchangelist= -Dsha1= -Drevision=$NEW_VERSION -Dfile.encoding=UTF-8 -DdeployAtEnd=true
         env:
           NEW_VERSION: ${{ github.event.release.tag_name }}
