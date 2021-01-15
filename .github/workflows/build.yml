@@ -32,12 +32,11 @@ jobs:
       - name: Set build version
         run: |
           echo "BUILD_VERSION=$(date +%Y.%m.%d.%H%M%S)-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
-          echo "TIMESTAMP=$(expr $(date +%Y%m%d%H%M%S))" >> $GITHUB_ENV
       - name: Build artifacts & deploy
         shell: bash
         run: |
           echo "Building artifacts $BUILD_VERSION"
-          mvn deploy -e --batch-mode --settings ./.m2/settings.xml -Dmaven.wagon.http.pool=false --file pom.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false -DinstallAtEnd=true -DdeployAtEnd=true
+          mvn verify -e --batch-mode --settings ./.m2/settings.xml --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false -DinstallAtEnd=true -DdeployAtEnd=true
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
@@ -45,22 +44,20 @@ jobs:
           GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v5
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Bygg, tag og push Docker image
         run: |
           docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest .
           echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://docker.pkg.github.com
-          docker push ${IMAGE_BASE}:latest
           docker push ${IMAGE_BASE}:${TAG}
+          docker push ${IMAGE_BASE}:latest
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publiser Release Note
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG }}
-          release_name: Release ${{ env.TAG }}
