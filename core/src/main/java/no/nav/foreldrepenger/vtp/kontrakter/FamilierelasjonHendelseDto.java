@@ -23,6 +23,8 @@ public record FamilierelasjonHendelseDto(@JsonProperty("type") String type,
     }
 
     @Override
-    public String getType(){return type;}
+    public String getType(){
+        return type;
+    }
 
 }
