@@ -13,12 +13,6 @@
     <artifactId>server</artifactId>
     <packaging>jar</packaging>
     <name>VTP ::mock server</name>
-    <repositories>
-        <repository>
-            <id>confluent</id>
-            <url>https://packages.confluent.io/maven/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <!-- Prosjektavhengigheter -->
         <dependency>
