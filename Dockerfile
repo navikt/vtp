@@ -2,6 +2,8 @@ FROM navikt/java:15
 ENV JAVA_OPTS --enable-preview
 ENV DUMMYPROP=fraDockerfile
 
+LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
+
 ARG JAR_FILE
 
 # Curl brukes av healthcheck i docker-compose.
