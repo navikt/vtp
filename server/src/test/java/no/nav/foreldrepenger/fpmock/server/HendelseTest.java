@@ -68,8 +68,8 @@ public class HendelseTest {
 
         var fødselshendelseDto = new FødselshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent,
                 annenpartIdent, null, fødselsdato);
-        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
-        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
+        assertEquals(4, testscenario.getPersonopplysninger().getFamilierelasjoner().size());
+        assertEquals(3, testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size());
 
         pdlLeesahRestTjeneste.leggTilHendelse(fødselshendelseDto);
 
@@ -80,8 +80,8 @@ public class HendelseTest {
         var brukerModell = (BarnModell) testScenarioRepository.getPersonIndeks().finnByIdent(barnIdent);
         assertNotNull(personopplysninger);
         assertEquals(brukerModell.getFødselsdato(), fødselsdato);
-        assertEquals(personopplysninger.getFamilierelasjoner().size(), 4);
-        assertEquals(personopplysninger.getFamilierelasjonerForAnnenPart().size(), 4);
+        assertEquals(5, personopplysninger.getFamilierelasjoner().size());
+        assertEquals(4, personopplysninger.getFamilierelasjonerForAnnenPart().size());
     }
 
     @Test
@@ -113,8 +113,8 @@ public class HendelseTest {
         var dødfødselshendelse =
                 new DødfødselhendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent, dødsdato);
 
-        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjoner().size(), 3);
-        assertEquals(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size(), 3);
+        assertEquals(4, testscenario.getPersonopplysninger().getFamilierelasjoner().size());
+        assertEquals(3, testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size());
 
         pdlLeesahRestTjeneste.leggTilHendelse(dødfødselshendelse);
 
@@ -126,8 +126,8 @@ public class HendelseTest {
         var brukerModell = (BarnModell) testScenarioRepository.getPersonIndeks().finnByIdent(barnIdent);
         assertNotNull(personopplysninger);
         assertEquals(brukerModell.getFødselsdato(), dødsdato);
-        assertEquals(personopplysninger.getFamilierelasjoner().size(), 4);
-        assertEquals(personopplysninger.getFamilierelasjonerForAnnenPart().size(), 4);
+        assertEquals(5, personopplysninger.getFamilierelasjoner().size());
+        assertEquals(4, personopplysninger.getFamilierelasjonerForAnnenPart().size());
     }
 
 
