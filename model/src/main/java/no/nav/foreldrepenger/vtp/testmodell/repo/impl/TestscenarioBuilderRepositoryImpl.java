@@ -88,12 +88,10 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
                 PersonNavn annenPartNavn = TestdataUtil.getAnnenPartName(søker, annenPart);
                 annenPart.setFornavn(annenPartNavn.getFornavn());
                 annenPart.setEtternavn(annenPartNavn.getEtternavn());
-                leggTilAdresseHvisIkkeSatt(søker, annenPart);
-                personIndeks.leggTil(annenPart);
+                personIndeks.leggTil(søker, annenPart);
             }
 
-            leggTilAdresseHvisIkkeSatt(søker, personopplysninger.getFamilierelasjoner());
-            personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
+            personIndeks.indekserFamilierelasjonBrukere(søker, personopplysninger.getFamilierelasjoner());
 
             personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
             testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));

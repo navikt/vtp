@@ -32,6 +32,11 @@ public class PersonIndeks {
         }
     }
 
+    public synchronized void leggTil(SøkerModell kopierFra, BrukerModell leggTilBruker) {
+        leggTilAdressePåBrukerHvisIkkeSatt(kopierFra, leggTilBruker);
+        leggTil(leggTilBruker);
+    }
+
     public synchronized void leggTil(BrukerModell bruker) {
         if (bruker == null) {
             // quiet escape
@@ -54,9 +59,17 @@ public class PersonIndeks {
         byIdent.putIfAbsent(aktørIdent, bruker);
     }
 
-    public synchronized void indekserFamilierelasjonBrukere(Collection<FamilierelasjonModell> familierelasjoner) {
+    public synchronized void indekserFamilierelasjonBrukere(SøkerModell søkerModell, Collection<FamilierelasjonModell> familierelasjoner) {
         for (FamilierelasjonModell fr : familierelasjoner) {
+            leggTilAdressePåBrukerHvisIkkeSatt(søkerModell, fr.getTil());
             leggTil(fr.getTil());
+        }
+    }
+
+    private void leggTilAdressePåBrukerHvisIkkeSatt(SøkerModell fraSøker, BrukerModell tilBruker) {
+        var personModell = (PersonModell) tilBruker;
+        if (personModell.getAdresser().isEmpty()) {
+            personModell.setAdresser(fraSøker.getAdresser());
         }
     }
 

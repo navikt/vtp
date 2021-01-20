@@ -232,8 +232,8 @@ public class PdlLeesahRestTjeneste {
     }
 
     private void indekserFamilierelasjonerIPersonIndeksen(PersonIndeks personIndeks, Personopplysninger personopplysninger) {
-        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
-        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjonerForAnnenPart());
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getSøker(), personopplysninger.getFamilierelasjoner());
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getSøker(), personopplysninger.getFamilierelasjonerForAnnenPart());
         personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
     }
 }
