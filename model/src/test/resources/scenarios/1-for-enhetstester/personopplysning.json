@@ -92,6 +92,13 @@
         "@type": "annenPart",
         "ident": "${for2}"
       }
+    },
+    {
+      "rolle": "EKTE",
+      "til": {
+        "@type": "ident",
+        "ident": "${for2}"
+      }
     }
   ],
   "familierelasjonerAnnenPart": [

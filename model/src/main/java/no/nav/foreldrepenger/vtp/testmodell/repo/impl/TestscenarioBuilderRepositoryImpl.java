@@ -118,7 +118,9 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     private void leggTilAdresseHvisIkkeSatt(SøkerModell søker, Collection<FamilierelasjonModell> familierelasjonModeller) {
         for (FamilierelasjonModell familierelasjonModell : familierelasjonModeller) {
-            leggTilAdresseHvisIkkeSatt(søker, (PersonModell) familierelasjonModell.getTil());
+            if (familierelasjonModell.getTil() instanceof PersonModell) {
+                leggTilAdresseHvisIkkeSatt(søker, (PersonModell) familierelasjonModell.getTil());
+            }
         }
     }
 
