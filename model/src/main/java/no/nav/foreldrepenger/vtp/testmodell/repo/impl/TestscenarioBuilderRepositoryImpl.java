@@ -73,33 +73,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     public void indekser(TestscenarioImpl testScenario) {
         scenarios.put(testScenario.getId(), testScenario);
-        Personopplysninger personopplysninger = testScenario.getPersonopplysninger();
+        var personopplysninger = testScenario.getPersonopplysninger();
         if (personopplysninger == null) {
             log.warn("TestscenarioImpl mangler innhold:" + testScenario);
         } else {
-            SøkerModell søker = personopplysninger.getSøker();
-            PersonNavn sokerNavn = TestdataUtil.getSokerName(søker);
-            søker.setFornavn(sokerNavn.getFornavn());
-            søker.setEtternavn(sokerNavn.getEtternavn());
-            personIndeks.leggTil(søker);
-
-            AnnenPartModell annenPart = personopplysninger.getAnnenPart();
-            if(annenPart != null){
-                PersonNavn annenPartNavn = TestdataUtil.getAnnenPartName(søker, annenPart);
-                annenPart.setFornavn(annenPartNavn.getFornavn());
-                annenPart.setEtternavn(annenPartNavn.getEtternavn());
-                personIndeks.leggTil(søker, annenPart);
-            }
-
-            personIndeks.indekserFamilierelasjonBrukere(søker, personopplysninger.getFamilierelasjoner());
-
-            personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
-            testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));
-
-            inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
-            if (personopplysninger.getAnnenPart() != null) {
-                inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
-            }
+            indekserPersonopplysninger(testScenario.getPersonopplysninger());
         }
 
         OrganisasjonModeller organisasjonModeller = testScenario.getOrganisasjonModeller();
@@ -107,6 +85,35 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
             List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
             organisasjonIndeks.leggTil(modeller);
         }
+        testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));
+
+        inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
+        if (personopplysninger.getAnnenPart() != null) {
+            inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
+        }
+    }
+
+    @Override
+    public void indekserPersonopplysninger(Personopplysninger personopplysninger) {
+        SøkerModell søker = personopplysninger.getSøker();
+        PersonNavn sokerNavn = TestdataUtil.getSokerName(søker);
+        søker.setFornavn(sokerNavn.getFornavn());
+        søker.setEtternavn(sokerNavn.getEtternavn());
+        personIndeks.leggTil(søker);
+
+        AnnenPartModell annenPart = personopplysninger.getAnnenPart();
+        if(annenPart != null){
+            PersonNavn annenPartNavn = TestdataUtil.getAnnenPartName(søker, annenPart);
+            annenPart.setFornavn(annenPartNavn.getFornavn());
+            annenPart.setEtternavn(annenPartNavn.getEtternavn());
+            leggTilAdresseHvisIkkeSatt(søker, annenPart);
+            personIndeks.leggTil(annenPart);
+        }
+
+        leggTilAdresseHvisIkkeSatt(søker, personopplysninger.getFamilierelasjoner());
+        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
+
+        personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
     }
 
     private void leggTilAdresseHvisIkkeSatt(SøkerModell søker, Collection<FamilierelasjonModell> familierelasjonModeller) {

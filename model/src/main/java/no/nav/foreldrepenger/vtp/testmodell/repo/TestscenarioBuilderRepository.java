@@ -8,6 +8,7 @@ import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 
 public interface TestscenarioBuilderRepository {
 
@@ -32,5 +33,7 @@ public interface TestscenarioBuilderRepository {
     Boolean slettScenario(String id);
 
     Boolean endreTestscenario(String id, Testscenario testscenario);
+
+    void indekserPersonopplysninger(Personopplysninger personopplysninger);
 
 }

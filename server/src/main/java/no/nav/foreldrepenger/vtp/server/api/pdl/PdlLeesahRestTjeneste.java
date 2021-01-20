@@ -27,7 +27,6 @@ import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
@@ -189,7 +188,7 @@ public class PdlLeesahRestTjeneste {
         BarnModell barnModell = new BarnModell("Tester Testersonsdotter", fødselshendelseDto.fødselsdato());
         var barnIdent = personopplysninger.leggTilBarn(barnModell);
 
-        indekserFamilierelasjonerIPersonIndeksen(personIndeks, personopplysninger);
+        testscenarioRepository.indekserPersonopplysninger(personopplysninger);
 
         return barnIdent;
     }
@@ -202,7 +201,7 @@ public class PdlLeesahRestTjeneste {
         BarnModell barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.doedfoedselsdato());
         var barnIdent= personopplysninger.leggTilDødfødsel(barnModell);
 
-        indekserFamilierelasjonerIPersonIndeksen(personIndeks, personopplysninger);
+        testscenarioRepository.indekserPersonopplysninger(personopplysninger);
         return barnIdent;
     }
 
@@ -229,11 +228,5 @@ public class PdlLeesahRestTjeneste {
                 .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(dødshendelseDto.fnr()))
                 .map(fr -> (PersonModell) fr.getTil())
                 .forEach(personModell -> personModell.setDødsdato(dødshendelseDto.doedsdato()));
-    }
-
-    private void indekserFamilierelasjonerIPersonIndeksen(PersonIndeks personIndeks, Personopplysninger personopplysninger) {
-        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getSøker(), personopplysninger.getFamilierelasjoner());
-        personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getSøker(), personopplysninger.getFamilierelasjonerForAnnenPart());
-        personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
     }
 }

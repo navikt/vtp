@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -75,5 +76,10 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     @Override
     public Boolean endreTestscenario(String id, Testscenario testscenario) {
         return null;
+    }
+
+    @Override
+    public void indekserPersonopplysninger(Personopplysninger personopplysninger) {
+        delegate.indekserPersonopplysninger(personopplysninger);
     }
 }
