@@ -252,6 +252,11 @@ public abstract class PersonModell extends BrukerModell {
         this.adresser.add(adresse);
     }
 
+    public void setAdresser(List<AdresseModell> adresser) {
+        this.adresser.clear();
+        this.adresser.addAll(adresser);
+    }
+
     public void setDiskresjonskode(Diskresjonskoder diskresjonskode) {
         this.diskresjonskode = diskresjonskode;
     }
