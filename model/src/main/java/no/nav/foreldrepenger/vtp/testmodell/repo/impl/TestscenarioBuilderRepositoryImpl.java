@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +17,9 @@ import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonNavn;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
@@ -85,8 +88,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
                 PersonNavn annenPartNavn = TestdataUtil.getAnnenPartName(søker, annenPart);
                 annenPart.setFornavn(annenPartNavn.getFornavn());
                 annenPart.setEtternavn(annenPartNavn.getEtternavn());
+                leggTilAdresseHvisIkkeSatt(søker, annenPart);
                 personIndeks.leggTil(annenPart);
             }
+
+            leggTilAdresseHvisIkkeSatt(søker, personopplysninger.getFamilierelasjoner());
             personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
 
             personIndeks.indekserPersonopplysningerByIdent(personopplysninger);
@@ -104,6 +110,19 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
             organisasjonIndeks.leggTil(modeller);
         }
     }
+
+    private void leggTilAdresseHvisIkkeSatt(SøkerModell søker, Collection<FamilierelasjonModell> familierelasjonModeller) {
+        for (FamilierelasjonModell familierelasjonModell : familierelasjonModeller) {
+            leggTilAdresseHvisIkkeSatt(søker, (PersonModell) familierelasjonModell.getTil());
+        }
+    }
+
+    private void leggTilAdresseHvisIkkeSatt(SøkerModell søker, PersonModell modell) {
+        if (modell.getAdresser().isEmpty()) {
+            modell.setAdresser(søker.getAdresser());
+        }
+    }
+
 
     @Override
     public LokalIdentIndeks getIdenter(String unikScenarioId) {
