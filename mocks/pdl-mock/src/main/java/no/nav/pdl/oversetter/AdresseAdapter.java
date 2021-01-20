@@ -9,6 +9,7 @@ import java.util.List;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PostboksadresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 import no.nav.pdl.Bostedsadresse;
@@ -18,6 +19,7 @@ import no.nav.pdl.Metadata;
 import no.nav.pdl.Person;
 import no.nav.pdl.PostadresseIFrittFormat;
 import no.nav.pdl.Postboksadresse;
+import no.nav.pdl.UtenlandskAdresseIFrittFormat;
 import no.nav.pdl.Vegadresse;
 
 public class AdresseAdapter {
@@ -31,14 +33,25 @@ public class AdresseAdapter {
     }
 
     private static Kontaktadresse tilPostadresse(UstrukturertAdresseModell adr) {
-        return new Kontaktadresse.Builder()
-                .setPostadresseIFrittFormat(PostadresseIFrittFormat.builder()
-                        .setAdresselinje1(adr.getAdresseLinje1())
-                        .setAdresselinje2(adr.getAdresseLinje2())
-                        .setAdresselinje3(adr.getAdresseLinje3())
-                        .setPostnummer(adr.getPostNr())
-                        .build())
-                .build();
+        if (adr.getLand() != Landkode.NOR) {
+            return new Kontaktadresse.Builder()
+                    .setUtenlandskAdresseIFrittFormat(UtenlandskAdresseIFrittFormat.builder()
+                            .setAdresselinje1(adr.getAdresseLinje1())
+                            .setAdresselinje2(adr.getAdresseLinje2())
+                            .setAdresselinje3(adr.getAdresseLinje3())
+                            .setLandkode(adr.getLandkode())
+                            .build())
+                    .build();
+        } else {
+            return new Kontaktadresse.Builder()
+                    .setPostadresseIFrittFormat(PostadresseIFrittFormat.builder()
+                            .setAdresselinje1(adr.getAdresseLinje1())
+                            .setAdresselinje2(adr.getAdresseLinje2())
+                            .setAdresselinje3(adr.getAdresseLinje3())
+                            .setPostnummer(adr.getPostNr())
+                            .build())
+                    .build();
+        }
     }
 
     public static Postboksadresse fraPostbokadresse(PostboksadresseModell adr) {

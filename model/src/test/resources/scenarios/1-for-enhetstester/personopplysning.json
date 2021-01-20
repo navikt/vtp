@@ -17,6 +17,13 @@
         "adresseType": "BOSTEDSADRESSE",
         "land": "NOR",
         "matrikkelId": "000000002"
+      },
+      {
+        "@type": "ref",
+        "fom": "now() - P4Y",
+        "tom": "now() - P1Y",
+        "adresseType": "POSTADRESSE",
+        "land": "NLD"
       }
     ],
     "statsborgerskap": [

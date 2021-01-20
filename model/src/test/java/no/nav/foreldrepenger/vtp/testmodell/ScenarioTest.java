@@ -122,7 +122,7 @@ public class ScenarioTest {
         // sjekk variable er satt inn
         assertThat(((BarnModell) familierelasjon.getTil()).getFornavn()).isEqualTo("Dole");
 
-        assertThat(søker.getAdresser()).hasSize(1);
+        assertThat(søker.getAdresser()).hasSize(2);
         // hentet fra adressekatalog ikke fra personopplysninger.json
         var bostedsAdresseOpt = søker.getAdresse(AdresseType.BOSTEDSADRESSE);
         assertThat(bostedsAdresseOpt).isPresent();
