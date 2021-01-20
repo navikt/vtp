@@ -14,6 +14,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PostboksadresseMode
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
 import no.nav.pdl.Bostedsadresse;
 import no.nav.pdl.Kontaktadresse;
+import no.nav.pdl.KontaktadresseType;
 import no.nav.pdl.Matrikkeladresse;
 import no.nav.pdl.Metadata;
 import no.nav.pdl.Person;
@@ -41,6 +42,7 @@ public class AdresseAdapter {
                             .setAdresselinje3(adr.getAdresseLinje3())
                             .setLandkode(adr.getLandkode())
                             .build())
+                    .setType(KontaktadresseType.Utland)
                     .build();
         } else {
             return new Kontaktadresse.Builder()
@@ -50,6 +52,7 @@ public class AdresseAdapter {
                             .setAdresselinje3(adr.getAdresseLinje3())
                             .setPostnummer(adr.getPostNr())
                             .build())
+                    .setType(KontaktadresseType.Innland)
                     .build();
         }
     }
@@ -123,6 +126,7 @@ public class AdresseAdapter {
                     // TODO: Hvordan skal denne oversettes med PDL?
                     var kontaktadresse = tilPostadresse((UstrukturertAdresseModell) a);
                     pers.setKontaktadresse(List.of(kontaktadresse));
+
                     break;
                 default:
                     System.out.println("Ukjent adressetype: " + a);
