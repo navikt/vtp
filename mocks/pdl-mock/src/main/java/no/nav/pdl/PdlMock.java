@@ -63,6 +63,10 @@ public class PdlMock {
             var executionResult = graphqlTjeneste.hentPerson(request);
             return executionResult.toSpecification();
         }
+        if ("hentGeografiskTilknytning".equals(operationName)) {
+            var executionResult = graphqlTjeneste.hentGeografiskTilknytning(request);
+            return executionResult.toSpecification();
+        }
         if ("hentIdenter".equals(operationName)) {
             var executionResult = graphqlTjeneste.hentIdenter(request);
             return executionResult.toSpecification();

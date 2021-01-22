@@ -25,8 +25,6 @@ import no.nav.pdl.Foedsel;
 import no.nav.pdl.Folkeregisteridentifikator;
 import no.nav.pdl.Folkeregistermetadata;
 import no.nav.pdl.Folkeregisterpersonstatus;
-import no.nav.pdl.GeografiskTilknytning;
-import no.nav.pdl.GtType;
 import no.nav.pdl.Kjoenn;
 import no.nav.pdl.KjoennType;
 import no.nav.pdl.Navn;
@@ -73,7 +71,6 @@ public class PersonAdapter {
         person.setInnflyttingTilNorge(ikkeImplementert());
         person.setUtflyttingFraNorge(ikkeImplementert());
         person.setVergemaalEllerFremtidsfullmakt(ikkeImplementert());
-        person.setGeografiskTilknytning(tilGeografiskTilknytning(personModell));
         return person;
     }
 
@@ -177,31 +174,6 @@ public class PersonAdapter {
         var statsborgerskap = new Statsborgerskap();
         statsborgerskap.setLand(sm.getLandkode());
         return statsborgerskap;
-    }
-
-    private static GeografiskTilknytning tilGeografiskTilknytning(PersonModell bruker) {
-        var tilknytning = bruker.getGeografiskTilknytning();
-        if (tilknytning == null) {
-            return null;
-        } else {
-            GeografiskTilknytning geo = new GeografiskTilknytning();
-            switch (tilknytning.getGeografiskTilknytningType()) {
-                case Land:
-                    geo.setGtType(GtType.UTLAND);
-                    geo.setGtLand(tilknytning.getKode());
-                    break;
-                case Kommune:
-                    geo.setGtType(GtType.KOMMUNE);
-                    geo.setGtKommune(tilknytning.getKode());
-                    break;
-                case Bydel:
-                    geo.setGtType(GtType.BYDEL);
-                    geo.setGtBydel(tilknytning.getKode());
-                default:
-                    geo.setGtType(GtType.UDEFINERT);
-            }
-            return geo;
-        }
     }
 
     private static <T> List<T> ikkeImplementert() {

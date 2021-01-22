@@ -22,7 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
 
 import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -30,38 +30,35 @@ import no.nav.pdl.graphql.GraphQLRequest;
 
 public class PdlMockTest {
 
-    private static TestscenarioRepository testScenarioRepository;
-    private static TestscenarioHenter testscenarioHenter;
+    private static final String SCENARIOID = "1";
+
+    private static Testscenario testscenario;
     private static PdlMock pdlMock;
 
     private final ObjectMapper objectMapper = createObjectMapper();
-
     private final ObjectReader hentPersonReader = objectMapper.readerFor(HentPersonQueryResponse.class);
+    private final ObjectReader hentGeografiskTilknytningReader = objectMapper.readerFor(HentGeografiskTilknytningQueryResponse.class);
     private final ObjectReader hentIdenterReader = objectMapper.readerFor(HentIdenterQueryResponse.class);
     private final ObjectReader hentIdenterBolkReader = objectMapper.readerFor(HentIdenterBolkQueryResponse.class);
 
     @BeforeAll
     public static void setup() throws IOException {
-        testScenarioRepository = new DelegatingTestscenarioRepository(
+        var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        testscenarioHenter = TestscenarioHenter.getInstance();
-
-
+        var testscenarioHenter = TestscenarioHenter.getInstance();
+        var testscenarioObjekt = testscenarioHenter.hentScenario(SCENARIOID);
+        var testscenarioJson = testscenarioHenter.toJson(testscenarioObjekt);
+        testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         pdlMock = new PdlMock(testScenarioRepository);
     }
 
     @Test
     public void hent_person() throws JsonProcessingException {
         // Arrange
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søker = testscenario.getPersonopplysninger().getSøker();
-
         var ident = søker.getIdent();
         var projection = byggProjectionPersonResponse(false);
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projection);
-
         var request = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", ident)).build();
 
         // Act
@@ -78,17 +75,11 @@ public class PdlMockTest {
 
     @Test
     public void hent_person_med_historikk() throws JsonProcessingException {
-
         // Arrange
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søker = testscenario.getPersonopplysninger().getSøker();
-
         var aktørIdent = søker.getAktørIdent();
         var projection = byggProjectionPersonResponse(true);
         var query = String.format("query { hentPerson(ident: \"%s\") %s }", aktørIdent, projection);
-
         var request = GraphQLRequest.builder().withQuery(query).build();
 
         // Act
@@ -106,13 +97,34 @@ public class PdlMockTest {
     }
 
     @Test
+    public void hentGeografiskTilknytningTest() throws JsonProcessingException {
+
+        // Arrange
+        var søker = testscenario.getPersonopplysninger().getSøker();
+        var aktørIdent = søker.getAktørIdent();
+        var projection = new GeografiskTilknytningResponseProjection()
+                .gtType()
+                .gtLand()
+                .regel()
+                .toString();
+        var query = String.format("query { hentGeografiskTilknytning(ident: \"%s\") %s }", aktørIdent, projection);
+        var request = GraphQLRequest.builder().withQuery(query).build();
+
+        // Act
+        var rawResponse = pdlMock.graphQLRequest(null, null, null, null, request);
+
+        // Assert
+        var response = (HentGeografiskTilknytningQueryResponse) konverterTilGraphResponse(rawResponse, hentGeografiskTilknytningReader);
+        var geografiskTilknytning = response.hentGeografiskTilknytning();
+        assertThat(geografiskTilknytning).isNotNull();
+        assertThat(geografiskTilknytning.getGtType()).isNotNull();
+        assertThat(geografiskTilknytning.getRegel()).isNotNull();
+    }
+
+    @Test
     public void hent_identer() throws JsonProcessingException {
         // Arrange
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søker = testscenario.getPersonopplysninger().getSøker();
-
         var ident = søker.getIdent();
         var projection = new IdentlisteResponseProjection()
                 .identer(new IdentInformasjonResponseProjection()
@@ -120,10 +132,7 @@ public class PdlMockTest {
                         .gruppe()
                 )
                 .toString();
-
-
         var query = String.format("query { hentIdenter(ident: \"%s\") %s }", ident, projection);
-
         var request = GraphQLRequest.builder().withQuery(query).build();
 
         // Act
@@ -140,11 +149,7 @@ public class PdlMockTest {
     @Test
     public void hent_identer_gruppe() throws JsonProcessingException {
         // Arrange
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søker = testscenario.getPersonopplysninger().getSøker();
-
         var ident = søker.getIdent();
         var projection = new IdentlisteResponseProjection()
                 .identer(new IdentInformasjonResponseProjection()
@@ -152,9 +157,7 @@ public class PdlMockTest {
                         .gruppe()
                 )
                 .toString();
-
         var grupper = "FOLKEREGISTERIDENT";
-
         var query = String.format("query { hentIdenter(ident: \"%s\", grupper: [%s]) %s }", ident, grupper, projection);
 
         var request = GraphQLRequest.builder().withQuery(query).build();
@@ -173,9 +176,6 @@ public class PdlMockTest {
     @Test
     public void hent_aktørid_for_identliste() throws JsonProcessingException {
         // Arrange
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         var søker = testscenario.getPersonopplysninger().getSøker();
 
         var folkeregisterId = søker.getIdent();
@@ -279,11 +279,6 @@ public class PdlMockTest {
                                         .husnummer()
                                         .husbokstav()
                                         .postnummer())
-                )
-                .geografiskTilknytning(
-                        new GeografiskTilknytningResponseProjection()
-                                .gtType()
-                                .gtLand()
                 )
                 .folkeregisterpersonstatus(
                         new PersonFolkeregisterpersonstatusParametrizedInput(historikk),
