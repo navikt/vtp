@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -51,6 +52,12 @@ public class JournalpostMapper {
         } else {
             modell.setMottattDato(convertToLocalDateTimeViaInstant(datoMottatt));
         }
+
+        Optional.ofNullable(journalpostRequest.getAvsenderMottaker()).ifPresent(it -> {
+            var idType = new BrukerType(it.getIdType().toString());
+            modell.setAvsenderMottaker(new JournalpostBruker(it.getId(), idType));
+        });
+
 
         List<DokumentModell> dokumentModeller = new ArrayList<>();
         if(!journalpostRequest.getDokumenter().isEmpty()) {

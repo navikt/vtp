@@ -21,6 +21,8 @@ public class JournalpostBruker {
         this.brukerType = brukerType;
     }
 
+    public JournalpostBruker() {}
+
     public String getIdent() {
         return ident;
     }
