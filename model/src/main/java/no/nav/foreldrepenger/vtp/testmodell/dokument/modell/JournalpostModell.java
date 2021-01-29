@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 
@@ -22,7 +23,7 @@ public class JournalpostModell {
     private String eksternReferanseId;
     private String tittel;
     private List<DokumentModell> dokumentModellList = new ArrayList<>();
-    private String avsenderFnr;
+    private JournalpostBruker avsenderMottaker;
     private String sakId;
     private String fagsystemId;
     private Journalstatus journalStatus;
@@ -57,7 +58,7 @@ public class JournalpostModell {
         this.eksternReferanseId = eksternReferanseId;
         this.tittel = tittel;
         this.dokumentModellList = dokumentModellList;
-        this.avsenderFnr = avsenderFnr;
+        this.avsenderMottaker = avsenderFnr != null ? new JournalpostBruker(avsenderFnr, BrukerType.FNR) : null;
         this.sakId = sakId;
         this.fagsystemId = fagsystemId;
         this.journalStatus = journalStatus;
@@ -103,11 +104,13 @@ public class JournalpostModell {
     }
 
     public String getAvsenderFnr() {
-        return avsenderFnr;
+         if (avsenderMottaker != null && avsenderMottaker.getBrukerType() == BrukerType.FNR) {
+             return avsenderMottaker.getIdent();
+         } else return null;
     }
 
     public void setAvsenderFnr(String avsenderFnr) {
-        this.avsenderFnr = avsenderFnr;
+        this.avsenderMottaker = new JournalpostBruker(avsenderFnr, BrukerType.FNR);
     }
 
     public String getSakId() {
@@ -192,12 +195,12 @@ public class JournalpostModell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JournalpostModell that = (JournalpostModell) o;
-        return Objects.equals(journalpostId, that.journalpostId) && Objects.equals(eksternReferanseId, that.eksternReferanseId) && Objects.equals(tittel, that.tittel) && Objects.equals(dokumentModellList, that.dokumentModellList) && Objects.equals(avsenderFnr, that.avsenderFnr) && Objects.equals(sakId, that.sakId) && Objects.equals(fagsystemId, that.fagsystemId) && Objects.equals(journalStatus, that.journalStatus) && Objects.equals(kommunikasjonsretning, that.kommunikasjonsretning) && Objects.equals(mottattDato, that.mottattDato) && Objects.equals(mottakskanal, that.mottakskanal) && Objects.equals(arkivtema, that.arkivtema) && Objects.equals(journaltilstand, that.journaltilstand) && Objects.equals(journalposttype, that.journalposttype) && Objects.equals(bruker, that.bruker);
+        return Objects.equals(journalpostId, that.journalpostId) && Objects.equals(eksternReferanseId, that.eksternReferanseId) && Objects.equals(tittel, that.tittel) && Objects.equals(dokumentModellList, that.dokumentModellList) && Objects.equals(avsenderMottaker, that.avsenderMottaker) && Objects.equals(sakId, that.sakId) && Objects.equals(fagsystemId, that.fagsystemId) && Objects.equals(journalStatus, that.journalStatus) && Objects.equals(kommunikasjonsretning, that.kommunikasjonsretning) && Objects.equals(mottattDato, that.mottattDato) && Objects.equals(mottakskanal, that.mottakskanal) && Objects.equals(arkivtema, that.arkivtema) && Objects.equals(journaltilstand, that.journaltilstand) && Objects.equals(journalposttype, that.journalposttype) && Objects.equals(bruker, that.bruker);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(journalpostId, eksternReferanseId, tittel, dokumentModellList, avsenderFnr, sakId, fagsystemId, journalStatus, kommunikasjonsretning, mottattDato, mottakskanal, arkivtema, journaltilstand, journalposttype, bruker);
+        return Objects.hash(journalpostId, eksternReferanseId, tittel, dokumentModellList, avsenderMottaker, sakId, fagsystemId, journalStatus, kommunikasjonsretning, mottattDato, mottakskanal, arkivtema, journaltilstand, journalposttype, bruker);
     }
 
     @Override
@@ -205,7 +208,7 @@ public class JournalpostModell {
         return "JournalpostModell{" +
                 "journalpostId='" + journalpostId + '\'' +
                 ", dokumentModellList=" + dokumentModellList +
-                ", avsenderFnr='" + avsenderFnr + '\'' +
+                ", avsenderMottaker='" + avsenderMottaker.getIdent() + '\'' +
                 ", sakId='" + sakId + '\'' +
                 ", fagsystemId='" + fagsystemId + '\'' +
                 ", journalStatus=" + journalStatus +
@@ -216,5 +219,13 @@ public class JournalpostModell {
                 ", journaltilstand='" + journaltilstand + '\'' +
                 ", journalposttype=" + journalposttype +
                 '}';
+    }
+
+    public JournalpostBruker getAvsenderMottaker() {
+        return avsenderMottaker;
+    }
+
+    public void setAvsenderMottaker(JournalpostBruker avsenderMottaker) {
+        this.avsenderMottaker = avsenderMottaker;
     }
 }

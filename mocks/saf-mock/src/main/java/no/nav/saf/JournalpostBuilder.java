@@ -30,7 +30,13 @@ public class JournalpostBuilder {
         journalpost.setDatoOpprettet(new Date());
         journalpost.setEksternReferanseId(modell.getEksternReferanseId() != null ?
                 modell.getEksternReferanseId() : "ekstern-" + modell.getJournalpostId());
-        journalpost.setAvsenderMottaker(new AvsenderMottaker("12345678901", AvsenderMottakerIdType.FNR, "Navn", "Norge", Boolean.FALSE));
+
+        var avsenderMottaker = new AvsenderMottaker("12345678901", AvsenderMottakerIdType.FNR, "Navn", "Norge", Boolean.FALSE);
+        Optional.ofNullable(modell.getAvsenderMottaker()).ifPresent(am -> {
+            avsenderMottaker.setId(am.getIdent());
+            avsenderMottaker.setType(AvsenderMottakerIdType.valueOf(am.getBrukerType().getKode()));
+        });
+        journalpost.setAvsenderMottaker(avsenderMottaker);
 
         journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), "fagsakId", modell.getFagsystemId()));
 
