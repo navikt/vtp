@@ -1,6 +1,17 @@
 package no.nav.dokarkiv;
 
-import java.util.stream.Collectors;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import no.nav.dokarkiv.generated.model.DokumentInfo;
+import no.nav.dokarkiv.generated.model.FerdigstillJournalpostRequest;
+import no.nav.dokarkiv.generated.model.OppdaterJournalpostRequest;
+import no.nav.dokarkiv.generated.model.OppdaterJournalpostResponse;
+import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
+import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
+import no.nav.dokarkiv.generated.model.TilknyttVedleggRequest;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
@@ -10,19 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import no.nav.dokarkiv.generated.model.DokumentInfo;
-import no.nav.dokarkiv.generated.model.FerdigstillJournalpostRequest;
-import no.nav.dokarkiv.generated.model.OppdaterJournalpostRequest;
-import no.nav.dokarkiv.generated.model.OppdaterJournalpostResponse;
-import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
-import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import java.util.stream.Collectors;
 
 @Api(tags = {"Dokarkiv"})
 @Path("/dokarkiv/rest/journalpostapi/v1")
@@ -89,10 +88,14 @@ public class JournalpostMock {
         return Response.ok().entity("OK").build();
     }
 
+    @PUT
+    @Path("/journalpost/{journalpostid}/tilknyttVedlegg")
+    @ApiOperation(value = "Tilknytt vedlegg")
+    public Response tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest){
 
+       var dokumenter = tilknyttVedleggRequest.getDokument();
+       LOG.info("Kall til tilknyttet vedlegg med saksbehandlers navn: {}", dokumenter);
 
-
-
-
-
+       return Response.ok().entity("OK").build();
+    }
 }
