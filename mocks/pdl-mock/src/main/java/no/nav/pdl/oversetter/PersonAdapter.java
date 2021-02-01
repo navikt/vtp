@@ -2,6 +2,7 @@ package no.nav.pdl.oversetter;
 
 import static java.util.stream.Collectors.toList;
 import static no.nav.pdl.oversetter.AdresseAdapter.setAdresser;
+import static no.nav.pdl.oversetter.DoedfoedtBarnAdapter.tilDoedfoedtBarn;
 import static no.nav.pdl.oversetter.FamilierelasjonBygger.byggFamilierelasjoner;
 import static no.nav.pdl.oversetter.SivilstandBygger.leggTilSivilstand;
 
@@ -49,8 +50,8 @@ public class PersonAdapter {
         person.setAdressebeskyttelse(tilAdressebeskyttelse(personModell));
         // bostedsadresse, oppholdsadresse, kontaktadresse, deltBosted settes metode under.
         setAdresser(person, hentAdresseModellTPS(personModell, historikk));
-        person.setDoedfoedtBarn(ikkeImplementert());
         person.setDoedsfall(tilDoedsfall(personModell));
+        person.setDoedfoedtBarn(tilDoedfoedtBarn(personModell.getAktørIdent(), personopplysninger, person));
         byggFamilierelasjoner(personModell.getAktørIdent(), personopplysninger, person);
         person.setFoedsel(tilFoedsel(personModell));
         person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
@@ -152,14 +153,11 @@ public class PersonAdapter {
         if (diskresjonskodeType == null) {
             return AdressebeskyttelseGradering.UGRADERT;
         }
-        switch (diskresjonskodeType) {
-            case SPSF:
-                return AdressebeskyttelseGradering.STRENGT_FORTROLIG;
-            case SPFO:
-                return AdressebeskyttelseGradering.FORTROLIG;
-            default:
-                return AdressebeskyttelseGradering.UGRADERT;
-        }
+        return switch (diskresjonskodeType) {
+            case SPSF -> AdressebeskyttelseGradering.STRENGT_FORTROLIG;
+            case SPFO -> AdressebeskyttelseGradering.FORTROLIG;
+            default -> AdressebeskyttelseGradering.UGRADERT;
+        };
     }
 
     private static List<Statsborgerskap> tilStatsborgerskaps(PersonModell personModell, boolean historikk) {
