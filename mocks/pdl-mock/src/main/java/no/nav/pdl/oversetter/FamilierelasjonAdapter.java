@@ -10,36 +10,42 @@ import no.nav.pdl.Familierelasjonsrolle;
 
 public class FamilierelasjonAdapter {
 
-    static List<Familierelasjon> tilFamilerelasjon(Collection<FamilierelasjonModell> relasjoner){
+    static List<Familierelasjon> tilFamilerelasjon(Collection<FamilierelasjonModell> relasjoner, Familierelasjonsrolle minRolle){
 
         List<Familierelasjon> resultat = new ArrayList<>();
         for(FamilierelasjonModell rel: relasjoner) {
-            // TODO: Er Rolle.EKTE utfaset?
-            if (rel.getRolle().equals(FamilierelasjonModell.Rolle.EKTE)) {
-                continue;
+
+            var rolleTilRelasjon = rel.getRolle();
+            if (rolleTilRelasjon.equals(FamilierelasjonModell.Rolle.EKTE)) {
+                continue; // Familierelasjon til ektefelle skal ikke registreres.
             }
+
             Familierelasjon familierelasjon = new Familierelasjon();
-            familierelasjon.setRelatertPersonsIdent(rel.getTil().getIdent());
-
-            FamilierelasjonModell.Rolle rolle = rel.getRolle();
-            switch (rolle) {
-                case FARA:
-                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.FAR);
-                    break;
-                case MORA:
-                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.MOR);
-                    break;
-                case MMOR:
-                    familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.MEDMOR);
-                    break;
-                case BARN:
+            if (minRolle.equals(Familierelasjonsrolle.BARN)) {
+                switch (rolleTilRelasjon) {
+                    case FARA:
+                        familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.FAR);
+                        break;
+                    case MORA:
+                        familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.MOR);
+                        break;
+                    case MMOR:
+                        familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.MEDMOR);
+                        break;
+                    default:
+                        continue; // Skal ikke registrere relasjon til søsken (tvillinger, trillinger, ...)
+                }
+                familierelasjon.setRelatertPersonsIdent(rel.getTil().getIdent());
+                familierelasjon.setMinRolleForPerson(minRolle);
+                resultat.add(familierelasjon);
+            } else {
+                if (rolleTilRelasjon.equals(FamilierelasjonModell.Rolle.BARN)) {
+                    familierelasjon.setRelatertPersonsIdent(rel.getTil().getIdent());
                     familierelasjon.setRelatertPersonsRolle(Familierelasjonsrolle.BARN);
+                    familierelasjon.setMinRolleForPerson(minRolle);
+                    resultat.add(familierelasjon);
+                }
             }
-
-            // TODO: Vurdere om vi skal sette familierelasjon#setMinRolleForPerson
-            // Testmodellen legger ikke dette riktig inn i dag. Usikkert om det brukes i k9.
-
-            resultat.add(familierelasjon);
 
         }
         return resultat;

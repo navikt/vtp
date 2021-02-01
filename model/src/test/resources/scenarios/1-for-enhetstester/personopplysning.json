@@ -70,6 +70,15 @@
         "kode": "BOSA",
         "fom": "now()-P50Y"
       }
+    ],
+    "adresser": [
+      {
+        "@type": "ref",
+        "fom": "now() - P1Y",
+        "adresseType": "BOSTEDSADRESSE",
+        "land": "NOR",
+        "matrikkelId": "000000002"
+      }
     ]
   },
   "familierelasjoner": [
