@@ -1,6 +1,5 @@
 package no.nav.pdl.oversetter;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +36,10 @@ public class DoedfoedtBarnAdapter {
         if (!erBarnet) {
             for (FamilierelasjonModell relasjon : personopplysningerModell.getFamilierelasjoner()) {
                 if (relasjon.getRolle().equals(FamilierelasjonModell.Rolle.BARN)) {
-                    DoedfoedtBarn doedfoedtBarn = new DoedfoedtBarn();
-                    BarnModell barnModell = (BarnModell) relasjon.getTil();
-                    LocalDate fødselsdato = barnModell.getFødselsdato();
-                    if (barnModell.getFødselsdato() != null && erFdatNummer(barnModell.getIdent())) {
+                    var doedfoedtBarn = new DoedfoedtBarn();
+                    var barnModell = (BarnModell) relasjon.getTil();
+                    var fødselsdato = barnModell.getFødselsdato();
+                    if (fødselsdato != null && erFdatNummer(barnModell.getIdent())) {
                         doedfoedtBarn.setDato(fødselsdato.format(DATO_FORMATTERER));
                     }
                     doedfoedtBarnList.add(doedfoedtBarn);

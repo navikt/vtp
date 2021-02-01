@@ -126,7 +126,6 @@ public class AdresseAdapter {
                     // TODO: Hvordan skal denne oversettes med PDL?
                     var kontaktadresse = tilPostadresse((UstrukturertAdresseModell) a);
                     pers.setKontaktadresse(List.of(kontaktadresse));
-
                     break;
                 default:
                     System.out.println("Ukjent adressetype: " + a);

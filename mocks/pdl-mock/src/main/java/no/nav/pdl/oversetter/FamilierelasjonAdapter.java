@@ -20,7 +20,7 @@ public class FamilierelasjonAdapter {
                 continue; // Familierelasjon til ektefelle skal ikke registreres.
             }
 
-            Familierelasjon familierelasjon = new Familierelasjon();
+            var familierelasjon = new Familierelasjon();
             if (minRolle.equals(Familierelasjonsrolle.BARN)) {
                 switch (rolleTilRelasjon) {
                     case FARA:
