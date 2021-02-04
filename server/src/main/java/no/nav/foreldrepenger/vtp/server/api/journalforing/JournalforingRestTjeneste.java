@@ -49,9 +49,9 @@ public class JournalforingRestTjeneste {
     @Path("/foreldrepengesoknadxml/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body."), response = JournalforingResultatDto.class)
-    public JournalforingResultatDto foreldrepengesoknadErketype(String xml, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeId){
+    public JournalforingResultatDto foreldrepengesoknadErketype(String xml, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId){
 
-        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(xml, fnr, dokumenttypeId);
+        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(xml, fnr, DokumenttypeId.valueOfKode(dokumenttypeId));
         journalpostModell.setMottattDato(LocalDateTime.now());
         String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
 
@@ -82,8 +82,8 @@ public class JournalforingRestTjeneste {
     @Path("/journalfor/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body."), response = JournalforingResultatDto.class)
-    public JournalforingResultatDto journalførDokument(String content, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeId){
-        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(content, fnr, dokumenttypeId);
+    public JournalforingResultatDto journalførDokument(String content, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId){
+        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(content, fnr, DokumenttypeId.valueOfKode(dokumenttypeId));
         journalpostModell.setMottattDato(LocalDateTime.now());
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
 
@@ -94,8 +94,8 @@ public class JournalforingRestTjeneste {
 
     @POST
     @Path("/ustrukturertjournalpost/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
-    public JournalforingResultatDto lagUstrukturertJournalpost(@PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) DokumenttypeId dokumenttypeid, @QueryParam(JOURNALSTATUS) String journalstatus){
-        var journalpostModell = JournalpostModellGenerator.lagJournalpostUstrukturertDokument(fnr,dokumenttypeid);
+    public JournalforingResultatDto lagUstrukturertJournalpost(@PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeid, @QueryParam(JOURNALSTATUS) String journalstatus){
+        var journalpostModell = JournalpostModellGenerator.lagJournalpostUstrukturertDokument(fnr,DokumenttypeId.valueOfKode(dokumenttypeid));
         if(journalstatus != null && journalstatus.length() > 0){
             var status = new Journalstatus(journalstatus);
             journalpostModell.setJournalStatus(status);
