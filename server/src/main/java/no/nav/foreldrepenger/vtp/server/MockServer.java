@@ -66,7 +66,6 @@ public class MockServer {
     private String host = HTTP_HOST;
 
     public MockServer() throws Exception {
-        LOG.info("Dummyprop er satt til: " + System.getenv("DUMMYPROP"));
         this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", SERVER_PORT));
 
         // Bør denne settes fra ENV_VAR?

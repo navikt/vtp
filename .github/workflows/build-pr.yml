@@ -2,6 +2,10 @@ name: Bygg pull request
 
 on: [pull_request]
 
+env:
+  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/vtp
+  IMAGE_BASE_CR: ghcr.io/${{ github.repository }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,3 +39,13 @@ jobs:
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
+
+      - name: Bygg, tag og push Docker image
+        run: |
+          docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest --tag ${IMAGE_BASE_CR}:${TAG} --tag ${IMAGE_BASE_CR}:latest .
+          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://docker.pkg.github.com
+          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin ghcr.io
+        env:
+          GITHUB_USERNAME: x-access-token
+          GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
