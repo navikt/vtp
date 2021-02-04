@@ -1,5 +1,21 @@
 package no.nav.tjeneste.virksomhet.dokumentproduksjon.v2;
 
+import java.io.StringWriter;
+
+import javax.jws.HandlerChain;
+import javax.jws.WebService;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.ws.soap.Addressing;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
@@ -59,20 +75,6 @@ import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedige
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.ProduserRedigerbartDokumentResponse;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentRequest;
 import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.meldinger.RedigerDokumentResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import javax.jws.HandlerChain;
-import javax.jws.WebService;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.soap.Addressing;
-import java.io.StringWriter;
 
 
 @Addressing
@@ -133,8 +135,11 @@ public class DokumentproduksjonV2MockImpl implements DokumentproduksjonV2 {
         LOG.info("produsererIkkeredigerbartDokument med dokumenttypeId {} bestilt for bruker {}({})", dokumenttypeId, ((Person) bruker).getIdent(), ((Person) bruker).getNavn());
         ProduserIkkeredigerbartDokumentResponse response = new ProduserIkkeredigerbartDokumentResponse();
         String journalpostId = journalRepository.leggTilJournalpost(
-                JournalpostModellGenerator.lagJournalpostUstrukturertDokument(((Person) bruker).getIdent(), new DokumenttypeId(dokumenttypeId)));
-        String dokumentId = journalRepository.finnJournalpostMedJournalpostId(journalpostId).get().getDokumentModellList().get(0).getDokumentId();
+                JournalpostModellGenerator.lagJournalpostUstrukturertDokument(((Person) bruker).getIdent(), DokumenttypeId.valueOfKode(dokumenttypeId)));
+        String dokumentId = journalRepository.finnJournalpostMedJournalpostId(journalpostId)
+                .orElseThrow()
+                .getDokumentModellList().get(0)
+                .getDokumentId();
         LOG.info("produsererIkkeredigerbartDokument generer journalpost {} med dokument {})", journalpostId, dokumentId);
 
         response.setDokumentId(dokumentId);

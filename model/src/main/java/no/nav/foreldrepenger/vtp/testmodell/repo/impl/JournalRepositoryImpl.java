@@ -71,7 +71,7 @@ public class JournalRepositoryImpl implements JournalRepository {
 
     @Override
     public String leggTilJournalpost(JournalpostModell journalpostModell){
-        String journalpostId = "";
+        String journalpostId;
         if(journalpostModell.getJournalpostId() != null && !journalpostModell.getJournalpostId().isEmpty()){
             journalpostId = journalpostModell.getJournalpostId();
         } else {
@@ -83,7 +83,7 @@ public class JournalRepositoryImpl implements JournalRepository {
                 journalpostModell.getEksternReferanseId() : genererEksternReferanseId());
 
         for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
-            String dokumentId = "";
+            String dokumentId;
             if(dokumentModell.getDokumentId() != null && !journalpostModell.getJournalpostId().isEmpty()){
                 dokumentId = dokumentModell.getDokumentId();
             } else {

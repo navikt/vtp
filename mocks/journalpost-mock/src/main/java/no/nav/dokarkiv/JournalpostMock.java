@@ -1,5 +1,19 @@
 package no.nav.dokarkiv;
 
+import java.util.stream.Collectors;
+
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.dokarkiv.generated.model.DokumentInfo;
@@ -10,39 +24,29 @@ import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
 import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
 import no.nav.dokarkiv.generated.model.TilknyttVedleggRequest;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import java.util.stream.Collectors;
 
 @Api(tags = {"Dokarkiv"})
 @Path("/dokarkiv/rest/journalpostapi/v1")
 public class JournalpostMock {
     private static final Logger LOG = LoggerFactory.getLogger(JournalpostMock.class);
+    private static final JournalpostMapper journalpostMapper = JournalpostMapper.getInstance();
 
     @Context
     JournalRepository journalRepository;
 
     @POST
     @Path("/journalpost")
-    @ApiOperation(value = "lag journalpost", notes = (""))
+    @ApiOperation(value = "lag journalpost")
     public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest, @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
         LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", forsoekFerdigstill);
 
-        var modell = new JournalpostMapper().tilModell(opprettJournalpostRequest);
+        var modell = journalpostMapper.tilModell(opprettJournalpostRequest);
         var journalpostId = journalRepository.leggTilJournalpost(modell);
 
-        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
+        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId)
+                .orElseThrow();
 
-        var dokumentInfos = journalpostModell.get().getDokumentModellList().stream()
+        var dokumentInfos = journalpostModell.getDokumentModellList().stream()
                 .map(it -> {
                     DokumentInfo dokinfo = new DokumentInfo();
                     dokinfo.setDokumentInfoId(it.getDokumentId());
@@ -65,15 +69,12 @@ public class JournalpostMock {
         LOG.info("Kall til oppdater journalpost: {}", journalpostId);
         var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
         if(journalpostModell.isPresent()) {
-            LOG.info("SAK: {}", oppdaterJournalpostRequest.getSak());
-            if (oppdaterJournalpostRequest.getSak() != null) {
-                journalpostModell.get().setSakId(oppdaterJournalpostRequest.getSak().getFagsakId());
-            }
-            journalpostModell.get().setBruker(new JournalpostMapper().mapAvsenderFraBruker(oppdaterJournalpostRequest.getBruker()));
+            journalpostMapper.oppdaterJournalpost(oppdaterJournalpostRequest, journalpostModell.get());
+        } else {
+            LOG.info("Journalpost med journalpostId {} eksistere ikke!", journalpostId);
         }
         var oppdaterJournalpostResponse = new OppdaterJournalpostResponse();
         oppdaterJournalpostResponse.setJournalpostId(journalpostId);
-
         return Response.accepted().entity(oppdaterJournalpostResponse).build();
     }
 
