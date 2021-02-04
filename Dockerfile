@@ -1,11 +1,8 @@
 FROM navikt/java:15
-ENV JAVA_OPTS --enable-preview
 
 LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
 # Curl brukes av healthcheck i docker-compose.
-RUN apt-get -qq update
-RUN apt-get -qq -y install curl
 RUN mkdir /app/lib
 
 COPY server/target/lib/*.jar /app/lib/
