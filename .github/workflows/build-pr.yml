@@ -36,6 +36,7 @@ jobs:
         run: |
           echo "Building $BUILD_VERSION"
           mvn package --batch-mode --settings ./.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
+          echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
