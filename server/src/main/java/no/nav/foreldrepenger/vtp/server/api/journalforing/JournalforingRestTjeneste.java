@@ -64,7 +64,7 @@ public class JournalforingRestTjeneste {
     @Path("/journalfor")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Journalfører en allerede lagd journalpost"), response = JournalforingResultatDto.class)
+    @ApiOperation(value = "", notes = ("Journalfører journalpost og send en journalføringhendelse på topic"), response = JournalforingResultatDto.class)
     public JournalforingResultatDto journalførJournalpost(JournalpostModell journalpostModell){
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
         LOG.info("Oppretter journalpost for bruker: {}, JournalpostId: {}", journalpostModell.getAvsenderFnr(), journalpostId);
@@ -72,10 +72,8 @@ public class JournalforingRestTjeneste {
                 .finnJournalpostMedJournalpostId(journalpostId)
                 .orElseThrow();
 
-        if (instansiertJournalpostModell.getTittel().equalsIgnoreCase("Inntektsmelding")) {
-            var journalforingHendelseSender = new JournalforingHendelseSender(localKafkaProducer);
-            journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(instansiertJournalpostModell);
-        }
+        var journalforingHendelseSender = new JournalforingHendelseSender(localKafkaProducer);
+        journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(instansiertJournalpostModell);
 
         return new JournalforingResultatDto(journalpostId);
     }

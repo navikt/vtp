@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import no.nav.dokarkiv.generated.model.Bruker;
 import no.nav.dokarkiv.generated.model.Dokument;
 import no.nav.dokarkiv.generated.model.DokumentVariant;
+import no.nav.dokarkiv.generated.model.OppdaterJournalpostRequest;
 import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
 import no.nav.dokarkiv.generated.model.Sak;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
@@ -30,6 +31,18 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
 public class JournalpostMapper {
     private static final Logger LOG = LoggerFactory.getLogger(JournalpostMapper.class);
+
+    private static JournalpostMapper instance;
+
+    private JournalpostMapper() {}
+
+    public static JournalpostMapper getInstance() {
+        if (instance == null) {
+            instance = new JournalpostMapper();
+        }
+        return instance;
+    }
+
 
 
     //TODO: utvid med nødvendig mapping
@@ -82,8 +95,22 @@ public class JournalpostMapper {
 
     }
 
+    // Utvid etter behov (https://confluence.adeo.no/display/BOA/oppdaterJournalpost)
+    public void oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest, JournalpostModell modell) {
+        Optional.ofNullable(oppdaterJournalpostRequest.getAvsenderMottaker()).ifPresent(am -> {
+            var brukerType = new BrukerType(!am.getId().equals(" ") ? am.getIdType().toString() : null);
+            var journalpostBruker = new JournalpostBruker(!am.getId().equals(" ") ? am.getId() : null, brukerType);
+            modell.setAvsenderMottaker(journalpostBruker);
+        });
+        Optional.ofNullable(oppdaterJournalpostRequest.getBruker()).ifPresent(bruker -> modell.setBruker(mapAvsenderFraBruker(bruker)));
+        Optional.ofNullable(oppdaterJournalpostRequest.getSak()).ifPresent(sak ->modell.setSakId(sak.getFagsakId()));
+        Optional.ofNullable(oppdaterJournalpostRequest.getTema()).ifPresent(tema -> modell.setArkivtema(mapArkivtema(tema)));
+        Optional.ofNullable(oppdaterJournalpostRequest.getTittel()).ifPresent(modell::setTittel);
+    }
 
-    public JournalpostBruker mapAvsenderFraBruker(Bruker bruker){
+
+
+    private JournalpostBruker mapAvsenderFraBruker(Bruker bruker){
         switch (bruker.getIdType()){
             case FNR:
                 return new JournalpostBruker(bruker.getId(),BrukerType.FNR);
@@ -104,7 +131,7 @@ public class JournalpostMapper {
 
         List<DokumentVariantInnhold> dokumentVariantInnholds =
                 dokument.getDokumentvarianter().stream()
-                .map( it -> mapDokumentVariant(it))
+                .map(this::mapDokumentVariant)
                 .collect(Collectors.toList());
 
         dokumentModell.setDokumentVariantInnholdListe(dokumentVariantInnholds);

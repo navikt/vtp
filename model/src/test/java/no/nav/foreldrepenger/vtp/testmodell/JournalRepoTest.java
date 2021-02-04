@@ -27,7 +27,7 @@ public class JournalRepoTest {
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setDokumentId("1235");
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
-        dokumentModell.setDokumentType(DokumenttypeId.ADOPSJONSSOKNAD_ENGANGSSTONAD);
+        dokumentModell.setDokumentType(DokumenttypeId.SØKNAD_FORELDREPENGER_ADOPSJON);
         dokumentModell.setErSensitiv(Boolean.FALSE);
         dokumentModell.setInnhold("<xml/>");
         dokumentModell.setTittel("Tittel på dokumentet");
@@ -41,7 +41,7 @@ public class JournalRepoTest {
         journalRepository.leggTilJournalpost(journalpostModell);
         List<JournalpostModell> journalpostModells = journalRepository.finnJournalposterMedSakId(sakId);
         assertThat(journalpostModells).size().isEqualTo(1);
-        assertThat(journalpostModells.get(0)).isEqualToComparingFieldByField(journalpostModell);
+        assertThat(journalpostModells.get(0)).isEqualTo(journalpostModell);
     }
 
     @Test
