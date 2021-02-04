@@ -223,6 +223,8 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>no.nav.foreldrepenger.vtp.server.MockServer</mainClass>
                         </manifest>
                     </archive>
