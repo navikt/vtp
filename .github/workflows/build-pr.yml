@@ -14,7 +14,7 @@ jobs:
           echo "CACHE_KEY=$(expr $(date +%V) - 1 + 1)" >> $GITHUB_ENV
           echo "PREVIOUS_CACHE_KEY=$(expr $(date +%V) - 1)" >> $GITHUB_ENV
       - name: Henter maven avhengigheter som er cachet
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
