@@ -105,7 +105,7 @@ public class InfotrygdMock {
     }
 
     @GET
-    @Path("/saker")
+    @Path("/saker/foreldrepenger")
     @Produces({ "application/json" })
     @ApiOperation(value = "hentSak", notes = ("Returnerer dummy respons av saker fra Infotrygd"))
     public Response hentSakUsingGET(@NotNull @QueryParam("fnr") String fnr, @NotNull @QueryParam("fom") LocalDate fom,
