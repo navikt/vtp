@@ -63,7 +63,7 @@ import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
-import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdGrunnlagMock;
+import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -93,7 +93,7 @@ public class ApplicationConfig extends Application {
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
         classes.add(JournalpostMock.class);
-        classes.add(InfotrygdGrunnlagMock.class);
+        classes.add(InfotrygdMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
