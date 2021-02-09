@@ -1,19 +1,5 @@
 package no.nav.dokarkiv;
 
-import java.util.stream.Collectors;
-
-import javax.ws.rs.PATCH;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.dokarkiv.generated.model.DokumentInfo;
@@ -23,7 +9,21 @@ import no.nav.dokarkiv.generated.model.OppdaterJournalpostResponse;
 import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
 import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
 import no.nav.dokarkiv.generated.model.TilknyttVedleggRequest;
+import no.nav.dokarkiv.generated.model.TilknyttVedleggResponse;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.PATCH;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Api(tags = {"Dokarkiv"})
 @Path("/dokarkiv/rest/journalpostapi/v1")
@@ -92,11 +92,14 @@ public class JournalpostMock {
     @PUT
     @Path("/journalpost/{journalpostid}/tilknyttVedlegg")
     @ApiOperation(value = "Tilknytt vedlegg")
-    public Response tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest){
+    public TilknyttVedleggResponse tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest){
 
-       var dokumenter = tilknyttVedleggRequest.getDokument();
-       LOG.info("Kall til tilknyttet vedlegg med saksbehandlers navn: {}", dokumenter);
+        var response = new TilknyttVedleggResponse();
 
-       return Response.ok().entity("OK").build();
+        response.setFeiledeDokumenter(Collections.emptyList());
+
+        LOG.info("Kall til tilknyttet vedlegg for dokumenter {}", tilknyttVedleggRequest.getDokument());
+
+        return response;
     }
 }
