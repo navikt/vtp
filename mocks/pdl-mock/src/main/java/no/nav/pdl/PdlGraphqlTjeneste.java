@@ -40,13 +40,13 @@ public class PdlGraphqlTjeneste {
     public static synchronized PdlGraphqlTjeneste getInstance(TestscenarioBuilderRepository scenarioRepository){
         if(instance == null){
             instance = new PdlGraphqlTjeneste(scenarioRepository);
-            instance.init();
         }
         return instance;
     }
 
     private PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
+        init();
     }
 
     public void init() {

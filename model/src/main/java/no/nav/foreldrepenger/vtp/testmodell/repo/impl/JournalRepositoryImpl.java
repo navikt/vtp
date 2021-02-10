@@ -27,11 +27,9 @@ public class JournalRepositoryImpl implements JournalRepository {
 
 
     public static synchronized JournalRepositoryImpl getInstance(){
-
         if(instance == null){
             instance = new JournalRepositoryImpl();
         }
-
         return instance;
     }
 
@@ -71,37 +69,37 @@ public class JournalRepositoryImpl implements JournalRepository {
 
     @Override
     public String leggTilJournalpost(JournalpostModell journalpostModell){
-        String journalpostId;
+        String journalpostIdTemp;
         if(journalpostModell.getJournalpostId() != null && !journalpostModell.getJournalpostId().isEmpty()){
-            journalpostId = journalpostModell.getJournalpostId();
+            journalpostIdTemp = journalpostModell.getJournalpostId();
         } else {
-            journalpostId = genererJournalpostId();
-            journalpostModell.setJournalpostId(journalpostId);
+            journalpostIdTemp = genererJournalpostId();
+            journalpostModell.setJournalpostId(journalpostIdTemp);
         }
 
         journalpostModell.setEksternReferanseId(journalpostModell.getEksternReferanseId() != null ?
                 journalpostModell.getEksternReferanseId() : genererEksternReferanseId());
 
         for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
-            String dokumentId;
+            String dokumentIdTemp;
             if(dokumentModell.getDokumentId() != null && !journalpostModell.getJournalpostId().isEmpty()){
-                dokumentId = dokumentModell.getDokumentId();
+                dokumentIdTemp = dokumentModell.getDokumentId();
             } else {
-                dokumentId = genererDokumentId();
-                dokumentModell.setDokumentId(dokumentId);
+                dokumentIdTemp = genererDokumentId();
+                dokumentModell.setDokumentId(dokumentIdTemp);
             }
-            if(dokumenter.containsKey(dokumentId)){
+            if(dokumenter.containsKey(dokumentIdTemp)){
                 throw new IllegalStateException("Forsøker å opprette dokument allerede eksisterende dokumentId");
             } else {
-                dokumenter.put(dokumentId, dokumentModell);
+                dokumenter.put(dokumentIdTemp, dokumentModell);
             }
         }
 
-        if(journalposter.containsKey(journalpostId)){
+        if(journalposter.containsKey(journalpostIdTemp)){
             throw new IllegalStateException("Forsøker å opprette journalpost allerede eksisterende journalpostId");
         } else {
-            journalposter.put(journalpostId, journalpostModell);
-            return journalpostId;
+            journalposter.put(journalpostIdTemp, journalpostModell);
+            return journalpostIdTemp;
         }
     }
 

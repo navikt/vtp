@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -48,7 +48,7 @@ public enum DokumenttypeId {
     FPPROD_VEDTAK_MEDHOLD("000114", null),
     UDEFINERT("-", null);
 
-    private static final Map<String, DokumenttypeId> BY_OFFIFIELLKODE = new HashMap<>();
+    private static final Map<String, DokumenttypeId> BY_OFFIFIELLKODE = new ConcurrentHashMap<>();
 
     static {
         for (DokumenttypeId e: values()) {

@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,8 +12,7 @@ public class TestscenarioRepositoryImpl extends TestscenarioBuilderRepositoryImp
 
     private static TestscenarioRepositoryImpl instance;
 
-
-    public static synchronized TestscenarioRepositoryImpl getInstance(BasisdataProvider basisdata) throws IOException {
+    public static synchronized TestscenarioRepositoryImpl getInstance(BasisdataProvider basisdata) {
         if(instance == null){
             instance = new TestscenarioRepositoryImpl(basisdata);
         }

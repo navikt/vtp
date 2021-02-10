@@ -1,18 +1,16 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
 
 public class InfotrygdArbeidskategori {
     private static Map<String, String> VALID_KODER;
     static {
-        Map<String, String> koder = new LinkedHashMap<>();
+        Map<String, String> koder = new ConcurrentHashMap<>();
         koder.put("00", "Fisker");
         koder.put("01", "Arbeidstaker");
         koder.put("02", "Selvstendig næringsdrivende");
@@ -83,7 +81,7 @@ public class InfotrygdArbeidskategori {
         } else if (obj == null || !obj.getClass().equals(this.getClass())) {
             return false;
         }
-        return Objects.equals(getKode(), ((Landkode) obj).getKode());
+        return Objects.equals(getKode(), ((InfotrygdArbeidskategori) obj).getKode());
     }
 
     @Override

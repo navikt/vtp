@@ -34,16 +34,12 @@ public class JournalpostMapper {
 
     private static JournalpostMapper instance;
 
-    private JournalpostMapper() {}
-
-    public static JournalpostMapper getInstance() {
+    public static synchronized JournalpostMapper getInstance() {
         if (instance == null) {
             instance = new JournalpostMapper();
         }
         return instance;
     }
-
-
 
     //TODO: utvid med nødvendig mapping
     public JournalpostModell tilModell(OpprettJournalpostRequest journalpostRequest){

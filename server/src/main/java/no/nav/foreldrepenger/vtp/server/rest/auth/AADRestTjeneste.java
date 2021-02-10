@@ -2,10 +2,10 @@ package no.nav.foreldrepenger.vtp.server.rest.auth;
 
 import java.net.URISyntaxException;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import javax.naming.NamingException;
@@ -39,8 +39,8 @@ import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
 @Path("/AzureAd")
 public class AADRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AADRestTjeneste.class);
-    private static final Map<String, String> nonceCache = new HashMap<>();
-    private static final Map<String, String> clientIdCache = new HashMap<>();
+    private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
+    private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
 
     @GET
     @Path("/isAlive")
@@ -67,7 +67,7 @@ public class AADRestTjeneste {
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/connect/jwk_uri");
         String jwks = KeyStoreTool.getJwks();
-        LOG.info("JWKS: " + jwks);
+        LOG.info("JWKS: {}", jwks);
         return Response.ok(jwks).build();
     }
 
@@ -85,8 +85,8 @@ public class AADRestTjeneste {
             @FormParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
         String token = createIdToken(req, code, tenant);
-        LOG.info("Fikk parametere:" + req.getParameterMap().toString());
-        LOG.info("kall på /oauth2/access_token, opprettet token: " + token + " med redirect-url: " + redirectUri);
+        LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
+        LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token, redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
         return Response.ok(oauthResponse).build();
     }
@@ -94,9 +94,9 @@ public class AADRestTjeneste {
     private String createIdToken(HttpServletRequest req, String username, String tenant) {
         String issuer = getIssuer(tenant);
         String state = req.getParameter("state");
-        String nonce = nonceCache.get(state);
+        String nonce = state != null ? nonceCache.get(state) : null;
         AzureOidcTokenGenerator tokenGenerator = new AzureOidcTokenGenerator(username, nonce).withIssuer(issuer);
-        if (clientIdCache.containsKey(state)) {
+        if (state != null && clientIdCache.containsKey(state)) {
             String clientId = clientIdCache.get(state);
             tokenGenerator.addAud(clientId);
         }
@@ -119,7 +119,7 @@ public class AADRestTjeneste {
             @QueryParam("redirect_uri") String redirectUri
     )
             throws Exception {
-        LOG.info("kall mot AzureAD authorize med redirecturi " + redirectUri);
+        LOG.info("kall mot AzureAD authorize med redirecturi {}", redirectUri);
         Objects.requireNonNull(scope, "Missing the ?scope=xxx query parameter");
         if (!Objects.equals(scope, "openid")) {
             throw new IllegalArgumentException("Unsupported scope [" + scope + "], should be 'openid'");

@@ -9,7 +9,7 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -30,8 +30,9 @@ public class TestscenarioHenter {
     private static final String ORGANISASJON_JSON_FIL_NAVN = "organisasjon.json";
     private static final String VARS_JSON_FIL_NAVN = "vars.json";
 
-    private static final ObjectMapper mapper = JacksonObjectMapperTestscenario.getObjectMapper();
-    private final Map<String, Object> scenarioObjects = new TreeMap<>();
+    private static final ObjectMapper MAPPER = JacksonObjectMapperTestscenario.getObjectMapper();
+
+    private final Map<String, Object> scenarioObjects = new ConcurrentHashMap<>();
 
     private static TestscenarioHenter testscenarioHenter;
 
@@ -43,15 +44,12 @@ public class TestscenarioHenter {
     }
 
     public Object hentScenario(String scenarioId) {
-        if (scenarioObjects.containsKey(scenarioId)) {
-            return scenarioObjects.get(scenarioId);
-        }
-        return LesOgReturnerScenarioFraJsonfil(scenarioId);
+        return scenarioObjects.computeIfAbsent(scenarioId, s -> LesOgReturnerScenarioFraJsonfil(scenarioId));
     }
 
     public String toJson(Object object) {
         try {
-            return mapper.writeValueAsString(object);
+            return MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -62,24 +60,21 @@ public class TestscenarioHenter {
         String scenarioNavn = henterNavnPåScenarioMappe(scenarioId).orElseThrow(() ->
                 new RuntimeException("Fant ikke scenario med scenario nummer [" + scenarioId + "]"));
 
-        final ObjectNode root = mapper.createObjectNode();
-        root.set("scenario-navn", mapper.convertValue(scenarioNavn, new TypeReference<>() {}));
+        final ObjectNode root = MAPPER.createObjectNode();
+        root.set("scenario-navn", MAPPER.convertValue(scenarioNavn, new TypeReference<>() {}));
         lesFilOgLeggTilIObjectNode(scenarioNavn, root, PERSONOPPLYSNING_JSON_FIL_NAVN, "personopplysninger");
         lesFilOgLeggTilIObjectNode(scenarioNavn, root, INNTEKTYTELSE_SØKER_JSON_FIL_NAVN, "inntektytelse-søker");
         lesFilOgLeggTilIObjectNode(scenarioNavn, root, INNTEKTYTELSE_ANNENPART_JSON_FIL_NAVN,   "inntektytelse-annenpart");
         lesFilOgLeggTilIObjectNode(scenarioNavn, root, ORGANISASJON_JSON_FIL_NAVN, "organisasjon");
         lesFilOgLeggTilIObjectNode(scenarioNavn, root, VARS_JSON_FIL_NAVN, "vars");
-
-        Object obj = mapper.convertValue(root, new TypeReference<>() {});
-        scenarioObjects.put(scenarioId, obj);
-        return obj;
+        return MAPPER.convertValue(root, new TypeReference<>() {});
     }
 
 
     private void lesFilOgLeggTilIObjectNode(String navnPåMappen, ObjectNode root, String jsonFilNavn, String navnPåNøkkel) {
         try (InputStream is = TestscenarioHenter.class.getResourceAsStream("/" + PATH_TIL_SCENARIO + navnPåMappen + "/" + jsonFilNavn)) {
             if (is != null) {
-                JsonNode verdiAvNøkkel = mapper.readValue(is, JsonNode.class);
+                JsonNode verdiAvNøkkel = MAPPER.readValue(is, JsonNode.class);
                 root.set(navnPåNøkkel, verdiAvNøkkel);
             }
         } catch (IOException e) {
@@ -93,7 +88,7 @@ public class TestscenarioHenter {
             String navnPåMappe;
             while((navnPåMappe = r.readLine()) != null) {
                 if (navnPåMappe.startsWith(scenarioNummer + "-")) {
-                    return Optional.ofNullable(navnPåMappe);
+                    return Optional.of(navnPåMappe);
                 }
             }
             return Optional.ofNullable(henterNavnPåScenarioMappeFraJARressurs(scenarioNummer));
