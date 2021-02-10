@@ -110,6 +110,16 @@ public class SakRestMock {
             });
             if (matches.get() == queries.size()) matching.add(oppgave);
         });
+        if (matching.isEmpty()) {
+            var builder = SakJson.getBuilder();
+            queries.forEach((queryKey, queryValues) -> {
+               if ("fagsakNr".equals(queryKey) && !queryValues.isEmpty()) {
+                   builder.medId(Long.parseLong(queryValues.get(0)));
+                   builder.medFagsakNr(queryValues.get(0));
+               }
+            });
+            return Response.ok(List.of(builder.build())).build();
+        }
 
         return Response.ok().entity(matching).build();
     }
