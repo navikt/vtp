@@ -17,7 +17,10 @@ public class GsakRepo {
 
     public GsakRepo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Mdkm");
-        sakIder = new AtomicInteger(Integer.parseInt(LocalDateTime.now().format(formatter)) * 100);
+        int initvalue =  Integer.parseInt(LocalDateTime.now().format(formatter)) * 100;
+        while (initvalue > 150000000)
+            initvalue = initvalue -  50000000;
+        sakIder = new AtomicInteger(initvalue);
         jsonBySakId = new ConcurrentHashMap<>();
     }
 
