@@ -80,6 +80,11 @@ public class SakJson {
             sak = new SakJson();
         }
 
+        public SakJson.Builder medId(Long id) {
+            this.sak.id = id;
+            return this;
+        }
+
         public SakJson.Builder medTema(String tema) {
             this.sak.tema = tema;
             return this;
@@ -101,8 +106,6 @@ public class SakJson {
         }
 
         public SakJson build() {
-            Objects.requireNonNull(this.sak.aktoerId);
-            Objects.requireNonNull(this.sak.applikasjon);
             return this.sak;
         }
     }
