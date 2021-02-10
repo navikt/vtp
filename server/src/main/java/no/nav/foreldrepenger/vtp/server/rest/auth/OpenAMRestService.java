@@ -3,12 +3,12 @@ package no.nav.foreldrepenger.vtp.server.rest.auth;
 import java.net.URISyntaxException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import javax.naming.NamingException;
@@ -45,10 +45,10 @@ public class OpenAMRestService {
 
     private static final Logger LOG = LoggerFactory.getLogger(OpenAMRestService.class);
 
-    private static final Map<String, String> nonceCache = new HashMap<>();
-
-    private static final Map<String, String> clientIdCache = new HashMap<>();
+    private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
+    private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
     private static final String DEFAULT_ISSUER = "https://vtp.local/issuer";
+
     @GET
     @Path("/oauth2/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
@@ -66,7 +66,7 @@ public class OpenAMRestService {
             @QueryParam("state") String state,
             @QueryParam("redirect_uri") String redirectUri)
             throws Exception {
-        LOG.info("kall mot oauth2/authorize med redirecturi " + redirectUri);
+        LOG.info("kall mot oauth2/authorize med redirecturi {}", redirectUri);
         Objects.requireNonNull(scope, "scope");
         if (!Objects.equals(scope, "openid")) {
             throw new IllegalArgumentException("Unsupported scope [" + scope + "], should be 'openid'");
@@ -87,7 +87,7 @@ public class OpenAMRestService {
         uriBuilder.addParameter("iss", getIssuer());
         uriBuilder.addParameter("redirect_uri", redirectUri);
         clientIdCache.put(state, clientId);
-        if (req.getParameter("nonce") != "") {
+        if (req.getParameter("nonce") != null && !req.getParameter("nonce").isEmpty()) {
             nonceCache.put(state, req.getParameter("nonce"));
         }
 
@@ -172,8 +172,8 @@ public class OpenAMRestService {
             @FormParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
         String token = createIdToken(req, code);
-        LOG.info("Fikk parametere:" + req.getParameterMap().toString());
-        LOG.info("kall på /oauth2/access_token, opprettet token: " + token + " med redirect-url: " + redirectUri);
+        LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
+        LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token, redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
         return Response.ok(oauthResponse).build();
     }
@@ -189,9 +189,9 @@ public class OpenAMRestService {
     private String createIdToken(HttpServletRequest req, String username) {
         String issuer = getIssuer();
         String state = req.getParameter("state");
-        String nonce = nonceCache.get(state);
+        String nonce = state != null ? nonceCache.get(state) : null;
         OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, nonce).withIssuer(issuer);
-        if (clientIdCache.containsKey(state)) {
+        if (state != null && clientIdCache.containsKey(state)) {
             String clientId = clientIdCache.get(state);
             tokenGenerator.addAud(clientId);
         }

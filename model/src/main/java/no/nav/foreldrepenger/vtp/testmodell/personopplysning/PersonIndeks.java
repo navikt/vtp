@@ -1,21 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class PersonIndeks {
 
-    private Map<String, BrukerModell> byIdent = new HashMap<>();
-    private Map<String, Personopplysninger> byIdentPersonopplysninger = new HashMap<>();
+    private Map<String, BrukerModell> byIdent = new ConcurrentHashMap<>();
+    private Map<String, Personopplysninger> byIdentPersonopplysninger = new ConcurrentHashMap<>();
 
-
-    public PersonIndeks() {
-    }
-
-    public synchronized void indekserPersonopplysningerByIdent(Personopplysninger pers) {
+    public void indekserPersonopplysningerByIdent(Personopplysninger pers) {
         if (pers.getSøker() != null) {
             byIdentPersonopplysninger.putIfAbsent(pers.getSøker().getIdent(), pers);
             byIdentPersonopplysninger.putIfAbsent(pers.getSøker().getAktørIdent(), pers);
@@ -32,7 +29,7 @@ public class PersonIndeks {
         }
     }
 
-    public synchronized void leggTil(BrukerModell bruker) {
+    public void leggTil(BrukerModell bruker) {
         if (bruker == null) {
             // quiet escape
             return;
@@ -54,14 +51,15 @@ public class PersonIndeks {
         byIdent.putIfAbsent(aktørIdent, bruker);
     }
 
-    public synchronized void indekserFamilierelasjonBrukere(Collection<FamilierelasjonModell> familierelasjoner) {
+    public void indekserFamilierelasjonBrukere(Collection<FamilierelasjonModell> familierelasjoner) {
         for (FamilierelasjonModell fr : familierelasjoner) {
             leggTil(fr.getTil());
         }
     }
 
     @SuppressWarnings("unchecked")
-    public synchronized  <V extends BrukerModell> V finnByIdent(String ident) {
+    public <V extends BrukerModell> V finnByIdent(String ident) {
+        Objects.requireNonNull(ident,"ident");
         if(byIdent.containsKey(ident)) {
             return (V) byIdent.get(ident);
         } else {
@@ -69,28 +67,30 @@ public class PersonIndeks {
         }
     }
 
-    public synchronized  <V extends BrukerModell> V finnByAktørIdent(String ident) {
+    public <V extends BrukerModell> V finnByAktørIdent(String ident) {
+        Objects.requireNonNull(ident,"ident");
         if(byIdent.containsKey(ident)){
             return (V) byIdent.get(ident);
         } else {
             throw new IllegalArgumentException("Finner ikke bruker med AktørId: "+ident);
         }
-
     }
 
-    public synchronized Personopplysninger finnPersonopplysningerByIdent(String ident) {
+    public Personopplysninger finnPersonopplysningerByIdent(String ident) {
+        Objects.requireNonNull(ident,"ident");
         return byIdentPersonopplysninger.get(ident);
     }
 
-    public synchronized Personopplysninger finnPersonopplysningerByAktørIdent(String ident) {
+    public Personopplysninger finnPersonopplysningerByAktørIdent(String ident) {
+        Objects.requireNonNull(ident,"ident");
         return byIdentPersonopplysninger.get(ident);
     }
 
-    public synchronized Set<Personopplysninger> getAlleSøkere(){
+    public Set<Personopplysninger> getAlleSøkere(){
         return byIdentPersonopplysninger.values().stream().filter(p -> p.getSøker()!=null).collect(Collectors.toSet());
     }
 
-    public synchronized Set<Personopplysninger> getAlleAnnenPart(){
+    public Set<Personopplysninger> getAlleAnnenPart(){
         return byIdentPersonopplysninger.values().stream().filter(p -> p.getAnnenPart()!=null).collect(Collectors.toSet());
     }
 }

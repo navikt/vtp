@@ -1,18 +1,18 @@
 package no.nav.foreldrepenger.vtp.testmodell.organisasjon;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OrganisasjonIndeks {
-    private Map<String, OrganisasjonModell> organisasjoner = new HashMap<>();
+    private Map<String, OrganisasjonModell> organisasjoner = new ConcurrentHashMap<>();
 
-    public synchronized Optional<OrganisasjonModell> getModellForIdent(String orgnr) {
+    public Optional<OrganisasjonModell> getModellForIdent(String orgnr) {
         return Optional.ofNullable(organisasjoner.get(orgnr));
     }
 
-    public synchronized void leggTil(List<OrganisasjonModell> modeller) {
+    public void leggTil(List<OrganisasjonModell> modeller) {
         modeller.forEach(o -> organisasjoner.put(o.getOrgnummer(), o));
     }
 }

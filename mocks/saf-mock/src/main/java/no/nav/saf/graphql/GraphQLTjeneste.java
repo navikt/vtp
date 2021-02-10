@@ -2,6 +2,11 @@ package no.nav.saf.graphql;
 
 import static java.util.stream.Collectors.toList;
 
+import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
@@ -13,19 +18,13 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.saf.Dokumentoversikt;
-import no.nav.saf.JournalpostBuilder;
 import no.nav.saf.Journalpost;
+import no.nav.saf.JournalpostBuilder;
 import no.nav.saf.SideInfo;
 import no.nav.saf.exceptions.SafFunctionalException;
-
-import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 public class GraphQLTjeneste {
 
@@ -37,15 +36,15 @@ public class GraphQLTjeneste {
     private static GraphQLTjeneste instance;
 
     public static synchronized GraphQLTjeneste getInstance(){
-
         if(instance == null){
             instance = new GraphQLTjeneste();
-            instance.init();
         }
-
         return instance;
     }
 
+    public GraphQLTjeneste() {
+        init();
+    }
 
     public void init() {
         SchemaParser schemaParser = new SchemaParser();
@@ -99,7 +98,7 @@ public class GraphQLTjeneste {
             // Fagsaksystem sees foreløpig bort fra i oppslaget. Kan vurderes å filtrere på kun "K9"
             List<JournalpostModell> modeller = journalRepository.finnJournalposterMedSakId(fagsakId);
             List<Journalpost> journalposter = modeller.stream()
-                    .map(jpModell -> JournalpostBuilder.buildFrom(jpModell))
+                    .map(JournalpostBuilder::buildFrom)
                     .collect(toList());
 
             return new Dokumentoversikt(journalposter, new SideInfo("sluttpeker", false));
@@ -109,7 +108,7 @@ public class GraphQLTjeneste {
     private JournalpostCoordinator opprettJournalpostCoordinator(JournalRepository journalRepository) {
 
         return journalpostId -> journalRepository.finnJournalpostMedJournalpostId(journalpostId)
-                .map(jpModell -> JournalpostBuilder.buildFrom(jpModell))
+                .map(JournalpostBuilder::buildFrom)
                 .orElseThrow(() ->  new SafFunctionalException("Fant ingen journalpost for journalpostId=" + journalpostId));
     }
 

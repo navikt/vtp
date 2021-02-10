@@ -10,10 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class VirksomhetIndeks {
 
     private final Map<String, VirksomhetModell> virksomheter = new ConcurrentHashMap<>(); // NOSONAR
-    private final List<VirksomhetModell> modeller = new ArrayList<>();
-
-    public VirksomhetIndeks() {
-    }
+    private final List<VirksomhetModell> modeller = Collections.synchronizedList(new ArrayList<>());
 
     public Map<String, VirksomhetModell> getAlleVirksomheter() {
         return Collections.unmodifiableMap(virksomheter);
