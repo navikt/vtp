@@ -25,6 +25,7 @@ import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
 import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
 import no.nav.dokarkiv.generated.model.TilknyttVedleggRequest;
 import no.nav.dokarkiv.generated.model.TilknyttVedleggResponse;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 @Api(tags = {"Dokarkiv"})
@@ -48,17 +49,7 @@ public class JournalpostMock {
         var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId)
                 .orElseThrow();
 
-        var dokumentInfos = journalpostModell.getDokumentModellList().stream()
-                .map(it -> {
-                    DokumentInfo dokinfo = new DokumentInfo();
-                    dokinfo.setDokumentInfoId(it.getDokumentId());
-                    return dokinfo;
-                }).collect(Collectors.toList());
-
-        var response = new OpprettJournalpostResponse();
-        response.setDokumenter(dokumentInfos);
-        response.setJournalpostId(journalpostId);
-        response.setJournalpostferdigstilt(Boolean.TRUE);
+        OpprettJournalpostResponse response = tilOpprettJouralpostResponse(journalpostModell);
         return Response.accepted().entity(response).build();
     }
 
@@ -102,6 +93,24 @@ public class JournalpostMock {
 
         LOG.info("Kall til tilknyttet vedlegg for dokumenter {}", tilknyttVedleggRequest.getDokument());
 
+        return response;
+    }
+
+
+    private OpprettJournalpostResponse tilOpprettJouralpostResponse(JournalpostModell journalpostModell) {
+        var dokumentInfos = journalpostModell.getDokumentModellList().stream()
+                .map(it -> {
+                    DokumentInfo dokinfo = new DokumentInfo();
+                    dokinfo.setBrevkode(it.getBrevkode());
+                    dokinfo.setDokumentInfoId(it.getDokumentId());
+                    dokinfo.setTittel(it.getTittel());
+                    return dokinfo;
+                }).collect(Collectors.toList());
+
+        var response = new OpprettJournalpostResponse();
+        response.setDokumenter(dokumentInfos);
+        response.setJournalpostId(journalpostModell.getJournalpostId());
+        response.setJournalpostferdigstilt(Boolean.TRUE);
         return response;
     }
 }
