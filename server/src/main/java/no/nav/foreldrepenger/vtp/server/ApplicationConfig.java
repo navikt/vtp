@@ -37,7 +37,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import no.nav.aktoerregister.rest.api.v1.AktoerIdentMock;
 import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
@@ -110,7 +109,6 @@ public class ApplicationConfig extends Application {
         classes.add(OppgaveMockImpl.class);
         classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AaregRSV1Mock.class);
-        classes.add(AktoerIdentMock.class);
         classes.add(PdlMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);

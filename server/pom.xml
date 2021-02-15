@@ -21,10 +21,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>tps-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>pdl-mock</artifactId>
         </dependency>
         <dependency>
@@ -34,10 +30,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>gsak-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>joark-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>

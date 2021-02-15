@@ -113,11 +113,6 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>tps-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>pdl-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -129,11 +124,6 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>gsak-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>joark-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -364,26 +354,6 @@
                         <artifactId>*</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenestespesifikasjoner</groupId>
-                <artifactId>nav-fim-aktoer-v2-tjenestespesifikasjon</artifactId>
-                <version>${tjenestespesifikasjoner.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenestespesifikasjoner</groupId>
-                <artifactId>nav-behandleInngaaendeJournal-v1-tjenestespesifikasjon</artifactId>
-                <version>${tjenestespesifikasjoner.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenestespesifikasjoner</groupId>
-                <artifactId>person-v3-tjenestespesifikasjon</artifactId>
-                <version>${tjenestespesifikasjoner.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenestespesifikasjoner</groupId>
-                <artifactId>nav-journal-v3-tjenestespesifikasjon</artifactId>
-                <version>${tjenestespesifikasjoner.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>

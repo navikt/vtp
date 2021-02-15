@@ -22,7 +22,6 @@
         <module>gsak-mock</module>
         <module>infotrygd-mock</module>
         <module>inntekt-mock</module>
-        <module>joark-mock</module>
         <module>saf-mock</module>
         <module>kafka-embedded-mock</module>
         <module>kodeverk-mock</module>
@@ -33,7 +32,6 @@
         <module>oppgave-mock</module>
         <module>organisasjon-mock</module>
         <module>sigrun-mock</module>
-        <module>tps-mock</module>
         <module>pdl-mock</module>
         <module>dkif-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
