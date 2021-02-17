@@ -31,14 +31,16 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 public class AaregRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(AaregRSV1Mock.class);
-    private static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
-    private static final String QPRM_REGELVERK = "regelverk";
-    private static final String QPRM_FOM = "ansettelsesperiodeFom";
-    private static final String QPRM_TOM = "ansettelsesperiodeTom";
+    protected static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
+    protected static final String QPRM_REGELVERK = "regelverk";
+    protected static final String QPRM_FOM = "ansettelsesperiodeFom";
+    protected static final String QPRM_TOM = "ansettelsesperiodeTom";
 
-    @Context
-    private TestscenarioBuilderRepository scenarioRepository;
+    private final TestscenarioBuilderRepository scenarioRepository;
 
+    public AaregRSV1Mock(@Context TestscenarioBuilderRepository scenarioRepository) {
+        this.scenarioRepository = scenarioRepository;
+    }
 
     @SuppressWarnings("unused")
     @GET
@@ -53,10 +55,16 @@ public class AaregRSV1Mock {
             @ApiImplicitParam(name = "historikk", dataType = "string", paramType = "query")
     })
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
-        String ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
+        var ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
         var qryparams = uriInfo.getQueryParameters();
         LocalDate fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
-        LocalDate tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
+        final LocalDate tom;
+        if (qryparams.getFirst(QPRM_TOM) != null) {
+            tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
+        } else {
+            tom = null;
+        }
+
 
         if (ident == null || fom == null)
             throw new IllegalArgumentException("Request uten ident eller fom");
@@ -74,18 +82,14 @@ public class AaregRSV1Mock {
                 .collect(Collectors.toList());
     }
 
-    private boolean erOverlapp(LocalDate periodeFom, LocalDate periodeTom, Arbeidsforhold arbeidsforhold) {
+    private boolean erOverlapp(LocalDate requestFom, LocalDate requestTom, Arbeidsforhold arbeidsforhold) {
         LocalDate ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
         LocalDate ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
-        if (!periodeFom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeFom.isAfter(ansettelsesperiodeTom))) {
-            return true;
-        }
-        if (periodeTom != null && !periodeTom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeTom.isAfter(ansettelsesperiodeTom))) {
-            return true;
-        }
-        if (!periodeFom.isAfter(ansettelsesperiodeFom) &&  (periodeTom == null || !periodeTom.isBefore(ansettelsesperiodeFom))) {
-            return true;
-        }
+
+        if ((ansettelsesperiodeTom == null) || !requestFom.isAfter(ansettelsesperiodeTom))
+            if ((requestTom == null) || !requestTom.isBefore(ansettelsesperiodeFom)) {
+                return true;
+            }
         return false;
     }
 }
