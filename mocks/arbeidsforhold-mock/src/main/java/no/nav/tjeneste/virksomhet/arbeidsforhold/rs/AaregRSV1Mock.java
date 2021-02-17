@@ -20,7 +20,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
@@ -57,7 +56,7 @@ public class AaregRSV1Mock {
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         var ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
         var qryparams = uriInfo.getQueryParameters();
-        LocalDate fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
+        var fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
         final LocalDate tom;
         if (qryparams.getFirst(QPRM_TOM) != null) {
             tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
@@ -68,7 +67,7 @@ public class AaregRSV1Mock {
 
         if (ident == null || fom == null)
             throw new IllegalArgumentException("Request uten ident eller fom");
-        InntektYtelseModell inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
+        var inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
                 .orElseGet(() -> scenarioRepository.getInntektYtelseModell(ident).orElse(null));
         if (inntektYtelseModell == null || inntektYtelseModell.arbeidsforholdModell() == null) {
             LOG.warn("AAREG REST finnArbeidsforholdPrArbeidstaker kunne ikke finne etterspurt bruker");
@@ -83,8 +82,8 @@ public class AaregRSV1Mock {
     }
 
     private boolean erOverlapp(LocalDate requestFom, LocalDate requestTom, Arbeidsforhold arbeidsforhold) {
-        LocalDate ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
-        LocalDate ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
+        var ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
+        var ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
 
         if ((ansettelsesperiodeTom == null) || !requestFom.isAfter(ansettelsesperiodeTom))
             if ((requestTom == null) || !requestTom.isBefore(ansettelsesperiodeFom)) {
