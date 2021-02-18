@@ -85,11 +85,8 @@ public class AaregRSV1Mock {
         var ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
         var ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
 
-        if ((ansettelsesperiodeTom == null) || !requestFom.isAfter(ansettelsesperiodeTom))
-            if ((requestTom == null) || !requestTom.isBefore(ansettelsesperiodeFom)) {
-                return true;
-            }
-        return false;
+        return (ansettelsesperiodeTom == null || !requestFom.isAfter(ansettelsesperiodeTom)) &&
+                (requestTom == null || !requestTom.isBefore(ansettelsesperiodeFom));
     }
 }
 
