@@ -40,6 +40,25 @@
           }
         ]
 
+      },
+      {
+        "arbeidsforholdId": "ARB001-002",
+        "ansettelsesperiodeFom": "now() - P4Y",
+        "ansettelsesperiodeTom": "now() - P2Y",
+        "arbeidsforholdstype": "ordinaertArbeidsforhold",
+        "arbeidsgiverOrgnr": "994884174",
+
+
+        "arbeidsavtaler" : [
+          {
+            "fomGyldighetsperiode": "now() - P4Y",
+            "avlønningstype": "fastlønn",
+            "avtaltArbeidstimerPerUke": "40",
+            "stillingsprosent" : 100,
+            "beregnetAntallTimerPerUke": "40"
+          }
+        ]
+
       }
     ]
   },

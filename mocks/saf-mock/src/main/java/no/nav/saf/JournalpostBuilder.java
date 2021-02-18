@@ -17,6 +17,10 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId
 
 public class JournalpostBuilder {
 
+    private JournalpostBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static String BREVKODE_IM = "4036";
 
     public static Journalpost buildFrom(JournalpostModell modell) {
@@ -38,14 +42,12 @@ public class JournalpostBuilder {
         });
         journalpost.setAvsenderMottaker(avsenderMottaker);
 
-        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), "fagsakId", modell.getFagsystemId()));
+        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), modell.getSakId(), modell.getFagsystemId()));
 
         List<DokumentInfo> dokumentInfoer = new ArrayList<>();
-        if (finnHoveddokumentFraJournalpost(modell).isPresent()) {
-            // Dokumentinfo for hoveddokument skal alltid returneres først
-            DokumentModell hoveddokument = finnHoveddokumentFraJournalpost(modell).get();
-            dokumentInfoer.add(lagDetaljertDokumentinformasjon(hoveddokument));
-        }
+        finnHoveddokumentFraJournalpost(modell).ifPresent(
+                hoveddokument -> dokumentInfoer.add(lagDetaljertDokumentinformasjon(hoveddokument)));
+
         for (DokumentModell dokumentModell : finnVedleggFraJournalpost(modell)) {
             // Dokumentinfo for andre vedlegg returneres deretter
             dokumentInfoer.add(lagDetaljertDokumentinformasjon(dokumentModell));

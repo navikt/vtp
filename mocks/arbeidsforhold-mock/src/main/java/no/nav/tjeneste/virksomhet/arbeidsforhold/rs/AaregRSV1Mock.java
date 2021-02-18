@@ -20,7 +20,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
@@ -31,14 +30,16 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 public class AaregRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(AaregRSV1Mock.class);
-    private static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
-    private static final String QPRM_REGELVERK = "regelverk";
-    private static final String QPRM_FOM = "ansettelsesperiodeFom";
-    private static final String QPRM_TOM = "ansettelsesperiodeTom";
+    protected static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
+    protected static final String QPRM_REGELVERK = "regelverk";
+    protected static final String QPRM_FOM = "ansettelsesperiodeFom";
+    protected static final String QPRM_TOM = "ansettelsesperiodeTom";
 
-    @Context
-    private TestscenarioBuilderRepository scenarioRepository;
+    private final TestscenarioBuilderRepository scenarioRepository;
 
+    public AaregRSV1Mock(@Context TestscenarioBuilderRepository scenarioRepository) {
+        this.scenarioRepository = scenarioRepository;
+    }
 
     @SuppressWarnings("unused")
     @GET
@@ -53,14 +54,20 @@ public class AaregRSV1Mock {
             @ApiImplicitParam(name = "historikk", dataType = "string", paramType = "query")
     })
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
-        String ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
+        var ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
         var qryparams = uriInfo.getQueryParameters();
-        LocalDate fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
-        LocalDate tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
+        var fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
+        final LocalDate tom;
+        if (qryparams.getFirst(QPRM_TOM) != null) {
+            tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
+        } else {
+            tom = null;
+        }
+
 
         if (ident == null || fom == null)
             throw new IllegalArgumentException("Request uten ident eller fom");
-        InntektYtelseModell inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
+        var inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
                 .orElseGet(() -> scenarioRepository.getInntektYtelseModell(ident).orElse(null));
         if (inntektYtelseModell == null || inntektYtelseModell.arbeidsforholdModell() == null) {
             LOG.warn("AAREG REST finnArbeidsforholdPrArbeidstaker kunne ikke finne etterspurt bruker");
@@ -74,19 +81,12 @@ public class AaregRSV1Mock {
                 .collect(Collectors.toList());
     }
 
-    private boolean erOverlapp(LocalDate periodeFom, LocalDate periodeTom, Arbeidsforhold arbeidsforhold) {
-        LocalDate ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
-        LocalDate ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
-        if (!periodeFom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeFom.isAfter(ansettelsesperiodeTom))) {
-            return true;
-        }
-        if (periodeTom != null && !periodeTom.isBefore(ansettelsesperiodeFom) && (ansettelsesperiodeTom == null || !periodeTom.isAfter(ansettelsesperiodeTom))) {
-            return true;
-        }
-        if (!periodeFom.isAfter(ansettelsesperiodeFom) &&  (periodeTom == null || !periodeTom.isBefore(ansettelsesperiodeFom))) {
-            return true;
-        }
-        return false;
+    private boolean erOverlapp(LocalDate requestFom, LocalDate requestTom, Arbeidsforhold arbeidsforhold) {
+        var ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
+        var ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
+
+        return (ansettelsesperiodeTom == null || !requestFom.isAfter(ansettelsesperiodeTom)) &&
+                (requestTom == null || !requestTom.isBefore(ansettelsesperiodeFom));
     }
 }
 
