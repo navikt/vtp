@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Random;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -28,10 +27,10 @@ class KravgrunnlagGenerator {
         detaljertKravgrunnlag.setVedtakId(BigInteger.valueOf(207406));
         detaljertKravgrunnlag.setKravgrunnlagId(hentKravgrunnlagDetaljDto.getKravgrunnlagId());
         detaljertKravgrunnlag.setEnhetAnsvarlig(hentKravgrunnlagDetaljDto.getEnhetAnsvarlig());
-        detaljertKravgrunnlag.setFagsystemId(generateSaksnummer()+"100");
+        detaljertKravgrunnlag.setFagsystemId(TilbakekrevingKonsistensTjeneste.getSisteSaksnummer() + "100");
         detaljertKravgrunnlag.setKodeFagomraade("FP");
         detaljertKravgrunnlag.setKontrollfelt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")));
-        detaljertKravgrunnlag.setReferanse("1");
+        detaljertKravgrunnlag.setReferanse(TilbakekrevingKonsistensTjeneste.getSisteHenvisning());
         detaljertKravgrunnlag.setSaksbehId(hentKravgrunnlagDetaljDto.getSaksbehId());
         detaljertKravgrunnlag.setVedtakGjelderId("10127435540"); //mock verdi
         detaljertKravgrunnlag.setUtbetalesTilId("10127435540"); //mock verdi
@@ -88,15 +87,5 @@ class KravgrunnlagGenerator {
 
     private static XMLGregorianCalendar konvertDato(LocalDate localDate) {
         return DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar(localDate.toString());
-    }
-
-    public static int generateSaksnummer() {
-        int m = (int) Math.pow(10, 10 - 1);
-        return m + new Random().nextInt(9 * m);
-    }
-
-    public static void main(String[] args) {
-
-        System.out.println(generateSaksnummer()+"100");
     }
 }

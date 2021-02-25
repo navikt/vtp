@@ -54,6 +54,7 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
+import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
@@ -132,6 +133,7 @@ public class ApplicationConfig extends Application {
         classes.add(KafkaRestTjeneste.class);
 
         classes.add(LocalDateStringConverterProvider.class);
+        classes.add(TilbakekrevingKonsistensTjeneste.class);
 
         return classes;
     }
