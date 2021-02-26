@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Path("aareg-services/api/v1/arbeidstaker")
@@ -34,6 +35,8 @@ public class AaregRSV1Mock {
     protected static final String QPRM_REGELVERK = "regelverk";
     protected static final String QPRM_FOM = "ansettelsesperiodeFom";
     protected static final String QPRM_TOM = "ansettelsesperiodeTom";
+    protected static final String ARBEIDSFORHOLDTYPE = "arbeidsforholdtype";
+    protected static final String REGELVERK = "regelverk";
 
     private final TestscenarioBuilderRepository scenarioRepository;
 
@@ -49,6 +52,7 @@ public class AaregRSV1Mock {
             @ApiImplicitParam(name = HEADER_NAV_PERSONIDENT, required = true, dataType = "string", paramType = "header"),
             @ApiImplicitParam(name = QPRM_FOM, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = QPRM_TOM, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = ARBEIDSFORHOLDTYPE, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "sporingsinformasjon", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = QPRM_REGELVERK, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "historikk", dataType = "string", paramType = "query")
@@ -56,6 +60,7 @@ public class AaregRSV1Mock {
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         var ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
         var qryparams = uriInfo.getQueryParameters();
+        var arbeidsforholdtype = qryparams.getFirst(ARBEIDSFORHOLDTYPE);
         var fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
         final LocalDate tom;
         if (qryparams.getFirst(QPRM_TOM) != null) {
@@ -63,7 +68,6 @@ public class AaregRSV1Mock {
         } else {
             tom = null;
         }
-
 
         if (ident == null || fom == null)
             throw new IllegalArgumentException("Request uten ident eller fom");
@@ -76,6 +80,7 @@ public class AaregRSV1Mock {
 
         LOG.info("AAREG REST {}", ident);
         return inntektYtelseModell.arbeidsforholdModell().arbeidsforhold().stream()
+                .filter(a -> filterForArbeidsforholdType(arbeidsforholdtype, a))
                 .filter(a -> erOverlapp(fom, tom, a))
                 .map(ArbeidsforholdRS::new)
                 .collect(Collectors.toList());
@@ -87,6 +92,14 @@ public class AaregRSV1Mock {
 
         return (ansettelsesperiodeTom == null || !requestFom.isAfter(ansettelsesperiodeTom)) &&
                 (requestTom == null || !requestTom.isBefore(ansettelsesperiodeFom));
+    }
+
+    private boolean filterForArbeidsforholdType(String arbeidsforholdtype, Arbeidsforhold arbeidsforhold) {
+        if (arbeidsforholdtype == null) {
+            return !arbeidsforhold.arbeidsforholdstype().getKode().equalsIgnoreCase(Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.getKode());
+        } else {
+            return arbeidsforhold.arbeidsforholdstype().getKode().equalsIgnoreCase(arbeidsforholdtype);
+        }
     }
 }
 
