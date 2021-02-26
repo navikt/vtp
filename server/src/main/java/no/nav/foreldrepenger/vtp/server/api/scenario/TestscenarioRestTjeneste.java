@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.server.api.scenario;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,13 +35,14 @@ import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapper;
 
-@Api(tags = {"Testscenario"})
+@Api(tags = { "Testscenario" })
 @Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
@@ -68,8 +70,8 @@ public class TestscenarioRestTjeneste {
         });
 
         return Response.status(Response.Status.OK)
-                .entity(mapper.writeValueAsString(testscenarioList))
-                .build();
+            .entity(mapper.writeValueAsString(testscenarioList))
+            .build();
     }
 
     @GET
@@ -80,8 +82,8 @@ public class TestscenarioRestTjeneste {
         if (testscenarioRepository.getTestscenario(id) != null) {
             Testscenario testscenario = testscenarioRepository.getTestscenario(id);
             return Response.status(Response.Status.OK)
-                    .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
-                    .build();
+                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
+                .build();
         } else {
             return Response.status(Response.Status.NO_CONTENT).build();
         }
@@ -92,8 +94,8 @@ public class TestscenarioRestTjeneste {
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="", notes="Oppdaterer hele scenario som matcher id", response = TestscenarioDto.class)
-    public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, TestscenarioDto testscenarioDto){
+    @ApiOperation(value = "", notes = "Oppdaterer hele scenario som matcher id", response = TestscenarioDto.class)
+    public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, TestscenarioDto testscenarioDto) {
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
@@ -101,29 +103,29 @@ public class TestscenarioRestTjeneste {
     @PATCH
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="", notes="Oppdaterer deler av et scenario som matcher id", response = TestscenarioDto.class)
-    public Response endreScenario(@PathParam(SCENARIO_ID) String id, String patchArray){
+    @ApiOperation(value = "", notes = "Oppdaterer deler av et scenario som matcher id", response = TestscenarioDto.class)
+    public Response endreScenario(@PathParam(SCENARIO_ID) String id, String patchArray) {
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
-    public Response initialiserTestScenario(String testscenarioJson,  @Context UriInfo uriInfo) {
+    public Response initialiserTestScenario(String testscenarioJson, @Context UriInfo uriInfo) {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);
         logger.info("Initialiserer testscenario med ekstern testdatadefinisjon. Opprettet med id: [{}] ", testscenario.getId());
         return Response.status(Response.Status.CREATED)
-                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
-                .build();
+            .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
+            .build();
     }
 
     @DELETE
     @Path("/{id}")
-    @ApiOperation(value = "", notes= "Sletter et initialisert testscenario som matcher id")
+    @ApiOperation(value = "", notes = "Sletter et initialisert testscenario som matcher id")
     public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
         logger.info("Sletter testscenario med id: [{}]", id);
-        if(testscenarioRepository.slettScenario(id)){
+        if (testscenarioRepository.slettScenario(id)) {
             return Response.noContent().build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -146,51 +148,58 @@ public class TestscenarioRestTjeneste {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = null;
         String aktørIdAnnenPart = null;
-        if(testscenario.getPersonopplysninger().getAnnenPart() != null) {
+        if (testscenario.getPersonopplysninger().getAnnenPart() != null) {
             fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
             aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
 
         }
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
-        List<String> fnrBarn = fødselsnummerBarn(testscenario);
+        var barnIdentTilAktørId = barnidenter(testscenario);
+
+        // TODO: fjern fnrBarn, bruk bare barnIdentTilAktørId
+        List<String> fnrBarn = List.copyOf(barnIdentTilAktørId.keySet());
+
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(
-                fnrSøker,
-                aktørIdSøker,
-                fnrAnnenPart,
-                aktørIdAnnenPart,
-                fødselsdato.orElse(null),
-                fnrBarn);
+            fnrSøker,
+            aktørIdSøker,
+            fnrAnnenPart,
+            aktørIdAnnenPart,
+            fødselsdato.orElse(null),
+            fnrBarn,
+            barnIdentTilAktørId);
 
         InntektYtelseModell søkerInntektYtelse = testscenario.getSøkerInntektYtelse();
         InntektYtelseModell annenpartInntektYtelse = testscenario.getAnnenpartInntektYtelse();
 
         return new TestscenarioDto(
-                templateKey,
-                templateName,
-                testscenario.getId(),
-                testscenario.getVariabelContainer().getVars(),
-                scenarioPersonopplysninger,
-                søkerInntektYtelse,
-                annenpartInntektYtelse);
+            templateKey,
+            templateName,
+            testscenario.getId(),
+            testscenario.getVariabelContainer().getVars(),
+            scenarioPersonopplysninger,
+            søkerInntektYtelse,
+            annenpartInntektYtelse);
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
         Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
-                .stream()
-                .filter(modell -> modell.getTil() instanceof BarnModell)
-                .map(modell -> ((BarnModell) modell.getTil()))
-                .findFirst();
+            .stream()
+            .filter(modell -> modell.getTil() instanceof BarnModell)
+            .map(modell -> ((BarnModell) modell.getTil()))
+            .findFirst();
 
         return barnModell.map(PersonModell::getFødselsdato);
     }
 
-    private List<String> fødselsnummerBarn(Testscenario testscenario) {
+    private Map<String, String> barnidenter(Testscenario testscenario) {
         return testscenario.getPersonopplysninger().getFamilierelasjoner()
-                .stream()
-                .filter(modell -> modell.getTil() instanceof BarnModell)
-                .map(modell -> modell.getTil().getIdent())
-                .collect(Collectors.toList());
+            .stream()
+            .filter(modell -> modell.getTil() instanceof BarnModell)
+            .map(modell -> modell.getTil())
+            .sorted(Comparator.comparing(BrukerModell::getIdent))
+            .map(p -> Map.entry(p.getIdent(), p.getAktørIdent()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
     private Map<String, String> getUserSuppliedVariables(MultivaluedMap<String, String> queryParameters, String... skipKeys) {
