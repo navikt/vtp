@@ -1,6 +1,8 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,14 +62,12 @@ public class AaregRSV1Mock {
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         var ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);
         var qryparams = uriInfo.getQueryParameters();
-        var arbeidsforholdtype = qryparams.getFirst(ARBEIDSFORHOLDTYPE);
+        final List<String> filtrerArbeidsforholdtyper = qryparams.getFirst(ARBEIDSFORHOLDTYPE) != null ?
+                Arrays.asList(qryparams.getFirst(ARBEIDSFORHOLDTYPE).split(","))
+                : new ArrayList<>();
         var fom = LocalDate.parse(qryparams.getFirst(QPRM_FOM));
-        final LocalDate tom;
-        if (qryparams.getFirst(QPRM_TOM) != null) {
-            tom = LocalDate.parse(qryparams.getFirst(QPRM_TOM));
-        } else {
-            tom = null;
-        }
+        final LocalDate tom = qryparams.getFirst(QPRM_TOM) != null ?
+                LocalDate.parse(qryparams.getFirst(QPRM_TOM)) : null;
 
         if (ident == null || fom == null)
             throw new IllegalArgumentException("Request uten ident eller fom");
@@ -80,7 +80,7 @@ public class AaregRSV1Mock {
 
         LOG.info("AAREG REST {}", ident);
         return inntektYtelseModell.arbeidsforholdModell().arbeidsforhold().stream()
-                .filter(a -> filterForArbeidsforholdType(arbeidsforholdtype, a))
+                .filter(a -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, a))
                 .filter(a -> erOverlapp(fom, tom, a))
                 .map(ArbeidsforholdRS::new)
                 .collect(Collectors.toList());
@@ -94,11 +94,11 @@ public class AaregRSV1Mock {
                 (requestTom == null || !requestTom.isBefore(ansettelsesperiodeFom));
     }
 
-    private boolean filterForArbeidsforholdType(String arbeidsforholdtype, Arbeidsforhold arbeidsforhold) {
-        if (arbeidsforholdtype == null) {
+    private boolean filterForArbeidsforholdType(List<String> arbeidsforholdtyper, Arbeidsforhold arbeidsforhold) {
+        if (arbeidsforholdtyper.isEmpty()) {
             return !arbeidsforhold.arbeidsforholdstype().getKode().equalsIgnoreCase(Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.getKode());
         } else {
-            return arbeidsforhold.arbeidsforholdstype().getKode().equalsIgnoreCase(arbeidsforholdtype);
+            return arbeidsforholdtyper.contains(arbeidsforhold.arbeidsforholdstype().getKode());
         }
     }
 }
