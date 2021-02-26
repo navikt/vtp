@@ -148,10 +148,11 @@ public class TestscenarioRestTjeneste {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = null;
         String aktørIdAnnenPart = null;
+        BrukerModell.Kjønn kjønnAnnenpart = null;
         if (testscenario.getPersonopplysninger().getAnnenPart() != null) {
             fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
             aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
-
+            kjønnAnnenpart = testscenario.getPersonopplysninger().getAnnenPart().getKjønn();
         }
         String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
         Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
@@ -166,7 +167,7 @@ public class TestscenarioRestTjeneste {
             testscenario.getPersonopplysninger().getSøker().getKjønn(),
             fnrAnnenPart,
             aktørIdAnnenPart,
-            testscenario.getPersonopplysninger().getAnnenPart().getKjønn(),
+            kjønnAnnenpart,
             fødselsdato.orElse(null),
             fnrBarn,
             barnIdentTilAktørId);
