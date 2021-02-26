@@ -163,8 +163,10 @@ public class TestscenarioRestTjeneste {
         TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(
             fnrSøker,
             aktørIdSøker,
+            testscenario.getPersonopplysninger().getSøker().getKjønn(),
             fnrAnnenPart,
             aktørIdAnnenPart,
+            testscenario.getPersonopplysninger().getAnnenPart().getKjønn(),
             fødselsdato.orElse(null),
             fnrBarn,
             barnIdentTilAktørId);
