@@ -1,6 +1,7 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock.ARBEIDSFORHOLDTYPE;
 import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock.HEADER_NAV_PERSONIDENT;
 import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock.QPRM_FOM;
 import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock.QPRM_TOM;
@@ -100,6 +101,19 @@ class AaregRSV1MockTest {
                 QPRM_TOM, testscenario.getAnnenpartInntektYtelse().arbeidsforholdModell().arbeidsforhold().get(1).ansettelsesperiodeTom().format(ISO_LOCAL_DATE))));
         var arbeidsforhold = aaregRSV1Mock.hentArbeidsforholdFor(headers, uriInfo);
 
+        assertThat(arbeidsforhold).hasSize(1);
+    }
+
+    @Test
+    void hentArbeidsforholdMedArbeidsforholdtype() {
+        when(headers.getHeaderString(HEADER_NAV_PERSONIDENT))
+                .thenReturn(testscenario.getPersonopplysninger().getAnnenPart().getIdent());
+        when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>(Map.of(
+                QPRM_FOM, testscenario.getAnnenpartInntektYtelse().arbeidsforholdModell().arbeidsforhold().get(0)
+                        .ansettelsesperiodeFom().format(ISO_LOCAL_DATE),
+                ARBEIDSFORHOLDTYPE, "frilanserOppdragstakerHonorarPersonerMm")));
+
+        var arbeidsforhold = aaregRSV1Mock.hentArbeidsforholdFor(headers, uriInfo);
         assertThat(arbeidsforhold).hasSize(1);
     }
 }

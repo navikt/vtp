@@ -39,7 +39,6 @@
             "beregnetAntallTimerPerUke": "40"
           }
         ]
-
       },
       {
         "arbeidsforholdId": "ARB001-002",
@@ -58,7 +57,26 @@
             "beregnetAntallTimerPerUke": "40"
           }
         ]
+      },
+      {
+        "arbeidsforholdId": "ARB001-003",
 
+        "ansettelsesperiodeFom": "now() - P4Y",
+        "ansettelsesperiodeTom": "now() - P2Y",
+        "arbeidsforholdstype": "frilanserOppdragstakerHonorarPersonerMm",
+        "arbeidsgiverOrgnr": "973861778",
+
+
+        "arbeidsavtaler" : [
+          {
+            "fomGyldighetsperiode": "now() - P2Y",
+            "sisteLønnsendringsdato": "now()",
+            "avlønningstype": "fastlønn",
+            "avtaltArbeidstimerPerUke": "40",
+            "stillingsprosent" : 100,
+            "beregnetAntallTimerPerUke": "40"
+          }
+        ]
       }
     ]
   },
