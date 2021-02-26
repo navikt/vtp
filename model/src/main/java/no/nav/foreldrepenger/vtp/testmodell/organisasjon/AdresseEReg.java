@@ -63,6 +63,7 @@ public class AdresseEReg {
         return this.poststed;
     }
 
+    @Override
     public String toString() {
         return "Forretningsadresse{adresselinje1='" + this.adresselinje1 + "'}";
     }

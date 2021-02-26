@@ -1,7 +1,5 @@
 package no.nav.tjeneste.virksomhet.sak.rs;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;

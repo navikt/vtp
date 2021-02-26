@@ -12,7 +12,6 @@ import no.nav.system.os.entiteter.beregningskjema.Beregning;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaa;
 import no.nav.system.os.entiteter.beregningskjema.BeregningStoppnivaaDetaljer;
 import no.nav.system.os.entiteter.beregningskjema.BeregningsPeriode;
-import no.nav.system.os.entiteter.typer.simpletypes.KodeStatusLinje;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningRequest;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpservicegrensesnitt.SimulerBeregningResponse;
 import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdrag;
