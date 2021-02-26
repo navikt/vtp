@@ -3,8 +3,6 @@ package no.nav.tjeneste.virksomhet.arbeidsfordeling.rest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

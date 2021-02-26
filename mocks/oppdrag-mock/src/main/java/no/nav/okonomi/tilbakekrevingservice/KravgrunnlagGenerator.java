@@ -17,7 +17,6 @@ import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagBelopDt
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagDto;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.DetaljertKravgrunnlagPeriodeDto;
 import no.nav.tilbakekreving.kravgrunnlag.detalj.v1.HentKravgrunnlagDetaljDto;
-import no.nav.tilbakekreving.typer.v1.JaNeiDto;
 import no.nav.tilbakekreving.typer.v1.PeriodeDto;
 import no.nav.tilbakekreving.typer.v1.TypeGjelderDto;
 import no.nav.tilbakekreving.typer.v1.TypeKlasseDto;
