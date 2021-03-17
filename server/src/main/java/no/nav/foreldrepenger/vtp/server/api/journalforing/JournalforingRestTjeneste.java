@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.hendelse.JournalforingHendelseSender;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalforingResultatDto;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;

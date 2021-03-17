@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.api.journalforing;
+package no.nav.foreldrepenger.vtp.testmodell.dokument.modell;
 
 public record JournalforingResultatDto(String journalpostId) {
 
