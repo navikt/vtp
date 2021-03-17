@@ -5,7 +5,6 @@ on:
     branches:
       - master    # Push events on master branch
 env:
-  IMAGE_BASE: docker.pkg.github.com/${{ github.repository }}/vtp
   IMAGE_BASE_CR: ghcr.io/${{ github.repository }}
 
 jobs:
@@ -37,13 +36,11 @@ jobs:
         shell: bash
         run: |
           echo "Building artifacts $BUILD_VERSION"
-          mvn verify -e --batch-mode --settings ./.m2/settings.xml --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false -DinstallAtEnd=true -DdeployAtEnd=true
+          mvn verify -e --batch-mode --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
-          GITHUB_USERNAME: x-access-token
-          GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5
@@ -53,13 +50,10 @@ jobs:
 
       - name: Bygg, tag og push Docker image
         run: |
-          docker build --pull --tag ${IMAGE_BASE}:${TAG} --tag ${IMAGE_BASE}:latest --tag ${IMAGE_BASE_CR}:${TAG} --tag ${IMAGE_BASE_CR}:latest .
-          echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin https://docker.pkg.github.com
+          docker build --pull --tag ${IMAGE_BASE_CR}:${TAG} --tag ${IMAGE_BASE_CR}:latest .
           echo "$GITHUB_PASSWORD" | docker login --username "$GITHUB_USERNAME" --password-stdin ghcr.io
-          docker push ${IMAGE_BASE}:${TAG}
-          docker push ${IMAGE_BASE}:latest
-          docker push ${IMAGE_BASE_CR}:${TAG}
-          docker push ${IMAGE_BASE_CR}:latest
+          docker push ${IMAGE_BASE_CR} --all-tags
+        
         env:
           GITHUB_USERNAME: x-access-token
           GITHUB_PASSWORD: ${{ secrets.GH_ACCESS_TOKEN }}
