@@ -45,12 +45,19 @@
         <mockito.version>3.8.0</mockito.version>
 
     </properties>
+    
     <repositories>
+		<repository>
+			<id>github</id>
+			<name>GitHub Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/navikt/fp-felles/</url>
+		</repository>
         <repository>
             <id>confluent</id>
             <url>https://packages.confluent.io/maven/</url>
         </repository>
     </repositories>
+    
     <dependencyManagement>
         <dependencies>
             <!-- BOMs - vil overstyre alle senere avhengigheter -->
