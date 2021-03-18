@@ -39,7 +39,7 @@ Bygg prosjektet med `mvn clean install"`, bygg deretter docker-imaget med `docke
 Imaget blir da tilgjengelig som vtp:latest
 
 ##### Hente docker-image bygget i pipe: 
-docker pull docker.pkg.github.com/navikt/vtp/vtp
+docker pull ghcr.io/navikt/vtp (dette krever at en allerede logget inn med docker hos ghcr.io)
 
 ## Opprette testdata 
 Testscenarios opprettes ved hjelp av `TestscenarioRestTjeneste.java`. Her sende man inn en JSON-string av testpersonen(e),
