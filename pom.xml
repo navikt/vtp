@@ -33,7 +33,7 @@
 
         <java.version>15</java.version>
 
-        <kafka.version>2.6.1</kafka.version>
+        <kafka.version>6.1.1-ce</kafka.version>
         <avro.version>1.10.2</avro.version>
         <confluent.version>6.0.1</confluent.version>
         <cxf.version>3.4.1</cxf.version>
