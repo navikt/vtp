@@ -32,13 +32,13 @@ class KravgrunnlagGenerator {
         detaljertKravgrunnlag.setKontrollfelt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")));
         detaljertKravgrunnlag.setReferanse(TilbakekrevingKonsistensTjeneste.getSisteHenvisning());
         detaljertKravgrunnlag.setSaksbehId(hentKravgrunnlagDetaljDto.getSaksbehId());
-        detaljertKravgrunnlag.setVedtakGjelderId("10127435540"); //mock verdi
-        detaljertKravgrunnlag.setUtbetalesTilId("10127435540"); //mock verdi
+        detaljertKravgrunnlag.setVedtakGjelderId("910909088"); //mock verdi
+        detaljertKravgrunnlag.setUtbetalesTilId("910909088"); //mock verdi
         detaljertKravgrunnlag.setEnhetBehandl(hentKravgrunnlagDetaljDto.getEnhetAnsvarlig());
         detaljertKravgrunnlag.setEnhetBosted(hentKravgrunnlagDetaljDto.getEnhetAnsvarlig());
         detaljertKravgrunnlag.setKodeStatusKrav("NY");
-        detaljertKravgrunnlag.setTypeGjelderId(TypeGjelderDto.PERSON);
-        detaljertKravgrunnlag.setTypeUtbetId(TypeGjelderDto.PERSON);
+        detaljertKravgrunnlag.setTypeGjelderId(TypeGjelderDto.ORGANISASJON);
+        detaljertKravgrunnlag.setTypeUtbetId(TypeGjelderDto.ORGANISASJON);
         detaljertKravgrunnlag.getTilbakekrevingsPeriode().addAll(hentPerioder());
 
         return detaljertKravgrunnlag;
