@@ -1,4 +1,3 @@
-
 # ISO-8601 representasjon for en kalenderdato. YYYY-MM-DD. Eksempel: 2018-01-01.
 scalar Date
 
@@ -18,7 +17,9 @@ type Query {
     hentIdenter(ident: ID!, grupper: [IdentGruppe!], historikk: Boolean = false): Identliste
     hentIdenterBolk(identer: [ID!]!, grupper: [IdentGruppe!], historikk: Boolean = false): [HentIdenterBolkResult!]!
     hentGeografiskTilknytning(ident: ID!): GeografiskTilknytning
-    sokPerson(criteria:[Criterion], paging:Paging): SearchResult
+    sokPerson(criteria:[Criterion], paging:Paging): PersonSearchResult
+    sokAdresse(criteria:[Criterion], paging:Paging): AdresseSearchResult
+    forslagAdresse(parameters:CompletionParameters): AdresseCompletionResult
 }
 
 type Identliste {
@@ -60,6 +61,7 @@ type Person {
     foedsel: [Foedsel!]!
     folkeregisteridentifikator(historikk: Boolean = false): [Folkeregisteridentifikator!]!
     folkeregisterpersonstatus(historikk: Boolean = false): [Folkeregisterpersonstatus!]!
+    forelderBarnRelasjon: [ForelderBarnRelasjon!]!
     foreldreansvar(historikk: Boolean = false): [Foreldreansvar!]!
     fullmakt(historikk: Boolean = false): [Fullmakt!]!
     identitetsgrunnlag(historikk: Boolean = false): [Identitetsgrunnlag!]!
@@ -83,8 +85,6 @@ type Person {
 type DeltBosted {
     startdatoForKontrakt: Date!
     sluttdatoForKontrakt: Date
-    @deprecated(reason: "Flyttet til adresser rett under")
-    adresseNode: AdresseNode!
 
     coAdressenavn: String
     vegadresse: Vegadresse
@@ -114,7 +114,6 @@ type Bostedsadresse {
 type Oppholdsadresse {
     gyldigFraOgMed: DateTime
     gyldigTilOgMed: DateTime
-    oppholdsadressedato: Date @deprecated(reason: "Mappes til gyldigFraOgMed. Dette feltet er nå overflødig vil bli fjernet")
 
     coAdressenavn: String
     utenlandskAdresse: UtenlandskAdresse
@@ -210,11 +209,6 @@ type Koordinater {
     y: Float
     z: Float
     kvalitet: Int
-}
-
-type AdresseNode {
-    coAdressenavn: String
-    adressegradering: String
 }
 
 type FalskIdentitet {
@@ -319,6 +313,15 @@ type Doedsfall {
 }
 
 type Familierelasjon {
+    relatertPersonsIdent: String!
+    relatertPersonsRolle: Familierelasjonsrolle!
+    minRolleForPerson: Familierelasjonsrolle
+
+    folkeregistermetadata: Folkeregistermetadata
+    metadata: Metadata!
+}
+
+type ForelderBarnRelasjon {
     relatertPersonsIdent: String!
     relatertPersonsRolle: Familierelasjonsrolle!
     minRolleForPerson: Familierelasjonsrolle
@@ -466,6 +469,7 @@ type Sikkerhetstiltak {
 
 type Statsborgerskap {
     land: String!
+    bekreftelsesdato: Date
     gyldigFraOgMed: Date
     gyldigTilOgMed: Date
     folkeregistermetadata: Folkeregistermetadata
@@ -489,10 +493,10 @@ enum Oppholdstillatelse {
 type Sivilstand {
     type: Sivilstandstype!
     gyldigFraOgMed: Date
-    myndighet: String
-    kommune: String
-    sted: String
-    utland: String
+    myndighet: String @deprecated(reason: "Feltene myndighet, kommune, sted og utland fjernes i nær fremtid")
+    kommune: String @deprecated(reason: "Feltene myndighet, kommune, sted og utland fjernes i nær fremtid")
+    sted: String @deprecated(reason: "Feltene myndighet, kommune, sted og utland fjernes i nær fremtid")
+    utland: String @deprecated(reason: "Feltene myndighet, kommune, sted og utland fjernes i nær fremtid")
     relatertVedSivilstand: String
     bekreftelsesdato: String
 
@@ -523,6 +527,7 @@ type InnflyttingTilNorge {
 type UtflyttingFraNorge {
     tilflyttingsland: String
     tilflyttingsstedIUtlandet: String
+    utflyttingsdato: Date
     folkeregistermetadata: Folkeregistermetadata
     metadata: Metadata!
 }
@@ -601,42 +606,75 @@ enum Endringstype {
 }
 
 input Criterion {
+    # Feltnavn ikludert sti til ønsket felt (Eksempel: person.navn.fornavn)
     fieldName:String!
+
     searchRule:SearchRule!
+    # Søk i historiske data
+    # true = søker kun i historiske data.
+    # false = søker kun i gjeldende data.
+    # null = søke i både historiske og gjeldende data.
     searchHistorical:Boolean
 }
 
 input SearchRule {
-    exists:String,
-    notEquals:String,
-    equals:String,
-    contains:String,
-    fuzzy:String,
-    wildcard:String,
-    startsWith:String,
-    regex:String,
-    after:String,
-    before:String,
-    lessThan:String,
-    greaterThan:String,
-    from:String,
-    to:String,
+    # Sjekker om feltet finnes / at det ikke har en null verdi.
+    exists:String
+    # Filtrerer bort treff hvor felt inneholder input verdi
+    notEquals:String
+    # Begrenser treff til kun de hvor felt har input verdi
+    equals:String
+    # Gir treff når opgitt felt inneholder en eller flere ord fra input verdien.
+    contains:String
+    # Søk som gir treff også for små variasjoner i skrivemåte
+    fuzzy:String
+    # Bruk "?" som wildcard for enkelt tegn, og "*" som wildcard for 0 eller flere tegn.
+    wildcard:String
+    # Gir treff når opgitt feltstarter med opgitt verdi.
+    startsWith:String
+    # Regex søk for spesielle situasjoner (Dette er en treg opprasjon og bør ikke brukes)
+    regex:String
+    # Brukes til søke etter datoer som kommer etter opgitt dato.
+    after:String
+    # Brukes til søke etter datoer som kommer før opgitt dato.
+    before:String
+    # Brukes til å søke i tall og finner verdier som er mindre en input verdi.
+    lessThan:String
+    # Brukes til å søke i tall og finner verdier som er størren en input verdi.
+    greaterThan:String
+    # Søk fra og med (se fromExcluding for bare fra men ikke med)
+    # kan benyttes på tall og dato
+    from:String
+    # Søk til og med (se toExcluding for bare til men ikke med)
+    # kan benyttes på tall og dato
+    to:String
+    # Søk fra men ikke med oppgitt verdi
+    # kan benyttes på tall og dato
     fromExcluding:String,
-    toExcluding:String,
+    # Søk til men ikke med oppgitt verdi
+    # kan benyttes på tall og dato
+    toExcluding:String
 
-    #extra query parameters (can not be used as queries by them self)
-    caseSensitive:Boolean,
-    disablePhonetic:Boolean,
+    # [Flag] Kan brukes til å overstyre standard oppførsellen for søk i felter (standard er case insensitive)
+    caseSensitive:Boolean
+    # [Flag] Brukes til å deaktivere fonetisk søk feltene som har dette som standard (Navn)
+    disablePhonetic:Boolean
+    # Boost brukes til å gi ett søkekriterie høyere eller lavere vektlegging en de andre søke kriteriene.
     boost:Float
 }
 
 input Paging {
-    pageNumber:Int = 1,
-    resultsPerPage:Int = 10,
+    # Hvilken side i resultatsettet man ønsker vist.
+    pageNumber:Int = 1
+    # antall treff per side (maks 100)
+    resultsPerPage:Int = 10
+    # Liste over felter man ønsker resultatene sortert etter
+    # Standard er "score". Score er poengsummen Elasticsearch tildeler hvert resultat.
     sortBy:[SearchSorting]
 }
 
 input SearchSorting {
+    # Feltnavn ikludert sti til ønsket felt (eksepmel: person.navn.fornavn)
     fieldName:String!
     direction:Direction!
 }
@@ -644,27 +682,86 @@ enum Direction {
     ASC,
     DESC
 }
-type SearchResult {
-    hits : [SearchHit!]!
+type PersonSearchResult {
+    # treff liste
+    hits : [PersonSearchHit!]!
+    # Side nummer for siden som vises
+    pageNumber:Int
+    # Totalt antall sider
+    totalPages:Int
+    # Totalt antall treff (øvre grense er satt til 10 000)
+    totalHits:Int
+
+}
+type PersonSearchHit {
+    # forespurte data
+    person :Person
+    # forespurte data
+    identer(historikk: Boolean = false): [IdentInformasjon!]!
+    # Poengsummen elasticsearch  har gitt dette resultatet (brukt til feilsøking, og tuning av søk)
+    score :Float
+    # Infromasjon om hva som ga treff i søke resultatet.
+    highlights:[PersonSearchHighlight]
+}
+type PersonSearchHighlight {
+    # Navn/Sti til opplysningen som ga treff. Merk at dette ikke er feltet som ga treff men opplysningen.
+    # F.eks. hvis du søker på person.navn.fornavn så vil opplysingen være person.navn.
+    opplysning:String
+    # Gitt att opplysningen som ga treff har en opplysningsId så vil den returneres her.
+    # alle søk under person skal ha opplysningsId, men søk i identer vil kunne returnere treff uten opplysningsId.
+    opplysningsId: String
+    # Forteller hvorvidt opplysningen som ga treff er markert som historisk.
+    historisk: Boolean
+    # liste med feltene og verdiene som ga treff.
+    # Merk at for fritekst søk så vil disse kunne referere til hjelpe felter som ikke er synelig i resultatene.
+    matches:[SearchMatch]
+}
+type SearchMatch {
+    # feltnavn med sti til feltet so ga treff.
+    field:String!
+    type: String
+    # Verdien som ga treff
+    fragments: [String]
+}
+type AdresseSearchResult {
+    hits : [AdresseSearchHit!]!
     pageNumber:Int,
     totalPages:Int
     totalHits:Int
 
 }
-type SearchHit {
-    person :Person,
-    identer(historikk: Boolean = false): [IdentInformasjon!]!,
+type AdresseSearchHit {
+    vegadresse :Adresse
     score :Float
-    highlights:[SearchHighlight]
 }
-type SearchHighlight {
-    opplysning:String
-    opplysningsId: String
-    historisk: Boolean
-    matches:[SearchMatch]
+type Adresse {
+    matrikkelId:String
+    husnummer:Int
+    husbokstav:String
+    adressenavn:String
+    tilleggsnavn:String
+    fylkesnavn:String
+    fylkesnummer:String
+    kommunenavn:String
+    kommunenummer:String
+    postnummer:String
+    poststed:String
+    bydelsnavn:String
+    bydelsnummer:String
 }
-type SearchMatch {
-    field:String!
-    type: String
-    fragments: [String]
+
+type AdresseCompletionResult {
+    suggestions: [String!]!
+    addressFound : Adresse
+}
+
+input CompletionParameters {
+
+    completionField: String!
+    maxSuggestions: Int
+    fieldValues: [CompletionFieldValue]!
+}
+input CompletionFieldValue {
+    fieldName: String!
+    fieldValue: String
 }

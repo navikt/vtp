@@ -8,6 +8,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonMode
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.pdl.Familierelasjon;
 import no.nav.pdl.Familierelasjonsrolle;
+import no.nav.pdl.ForelderBarnRelasjon;
 import no.nav.pdl.Person;
 
 public class FamilierelasjonBygger {
@@ -16,6 +17,7 @@ public class FamilierelasjonBygger {
 
     public static Person byggFamilierelasjoner(String aktørIdent, Personopplysninger personopplysningerModell, Person person) {
         person.setFamilierelasjoner(new ArrayList<>()); // init array
+        person.setForelderBarnRelasjon(new ArrayList<>()); // init array
 
         var erBarnet = erIdentenBarnet(aktørIdent, personopplysningerModell);
 
@@ -37,11 +39,21 @@ public class FamilierelasjonBygger {
             leggTilFamilierelasjonHvisRelasjonenIkkeErDødfødtBarn(person, familierelasjoner);
         }
 
+        leggTilForelderBarnRelasjoner(person, familierelasjoner);
+
         for (Familierelasjon familierelasjon : familierelasjoner) {
             System.out.println("    " + familierelasjon.getRelatertPersonsIdent());
         }
         return person;
     }
+
+    private static void leggTilForelderBarnRelasjoner(Person person, List<Familierelasjon> familierelasjoner) {
+        familierelasjoner.stream()
+                .map(f -> new ForelderBarnRelasjon(f.getRelatertPersonsIdent(), f.getRelatertPersonsRolle(),
+                        f.getMinRolleForPerson(), f.getFolkeregistermetadata(), f.getMetadata()))
+                .forEach(forelderBarnRelasjon -> person.getForelderBarnRelasjon().add(forelderBarnRelasjon));
+    }
+
 
     private static Familierelasjonsrolle hentSøkersRolleTilEventuelleBarn(Personopplysninger personopplysningerModell) {
         return personopplysningerModell.getSøker().getKjønn().equals(BrukerModell.Kjønn.K) ?
