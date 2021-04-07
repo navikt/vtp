@@ -280,6 +280,12 @@ public class PdlMockTest extends PdlTestBase {
                                 .relatertPersonsRolle()
                                 .minRolleForPerson()
                 )
+                .forelderBarnRelasjon(
+                        new ForelderBarnRelasjonResponseProjection()
+                                .relatertPersonsIdent()
+                                .relatertPersonsRolle()
+                                .minRolleForPerson()
+                )
                 .adressebeskyttelse(
                         new AdressebeskyttelseResponseProjection()
                                 .gradering()
