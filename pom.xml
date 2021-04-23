@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <java.version>15</java.version>
+        <java.version>16</java.version>
 
         <kafka.version>2.6.1</kafka.version>
         <avro.version>1.10.2</avro.version>
@@ -39,13 +39,13 @@
         <cxf.version>3.4.1</cxf.version>
         <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
         <swagger.version>1.6.2</swagger.version>
-        <graphql-java.version>2021-03-25T21-09-07-5bc917f7</graphql-java.version>
+        <graphql-java.version>2021-04-19T03-51-46-d783ec7e</graphql-java.version>
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
         <jupiter.version>5.7.1</jupiter.version>
         <mockito.version>3.8.0</mockito.version>
 
     </properties>
-    
+
     <repositories>
 		<repository>
 			<id>github</id>
@@ -57,7 +57,7 @@
             <url>https://packages.confluent.io/maven/</url>
         </repository>
     </repositories>
-    
+
     <dependencyManagement>
         <dependencies>
             <!-- BOMs - vil overstyre alle senere avhengigheter -->
@@ -601,7 +601,6 @@
                         <release>${java.version}</release>
                         <compilerArgs>
                             <arg>-parameters</arg>
-                            <arg>--enable-preview</arg>
                         </compilerArgs>
                     </configuration>
                 </plugin>
@@ -621,7 +620,7 @@
                     <version>3.0.0-M5</version>
                     <configuration>
                         <argLine>-Xms256m -Dfile.encoding=UTF-8 -Dlog.level.no.nav=WARN</argLine>
-                        <argLine>--enable-preview</argLine>
+                        <argLine>--illegal-access=permit</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
