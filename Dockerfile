@@ -1,4 +1,4 @@
-FROM navikt/java:15
+FROM navikt/java:16
 
 LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
@@ -15,4 +15,4 @@ ENV JAVA_OPTS="-Dlogback.configurationFile=logback.xml \
                		-XX:+PrintFlagsFinal \
                		-Dfile.encoding=UTF8 \
                		-Duser.timezone=Europe/Oslo \
-               		--enable-preview"
+               		--illegal-access=permit"
