@@ -50,6 +50,17 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${kontrakt.java.version}</source>
+                    <target>${kontrakt.java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <release>${kontrakt.java.version}</release>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>

@@ -32,6 +32,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <java.version>16</java.version>
+        <kontrakt.java.version>15</kontrakt.java.version>
 
         <kafka.version>2.6.1</kafka.version>
         <avro.version>1.10.2</avro.version>
@@ -601,6 +602,7 @@
                         <release>${java.version}</release>
                         <compilerArgs>
                             <arg>-parameters</arg>
+                            <arg>--enable-preview</arg>
                         </compilerArgs>
                     </configuration>
                 </plugin>
