@@ -57,6 +57,9 @@
                     <encoding>UTF-8</encoding>
                     <release>${kontrakt.java.version}</release>
                     <parameters>true</parameters>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
