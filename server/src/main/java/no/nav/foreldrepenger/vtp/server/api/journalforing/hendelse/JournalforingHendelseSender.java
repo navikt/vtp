@@ -7,12 +7,13 @@ import org.apache.avro.generic.GenericRecordBuilder;
 
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BehandlingsTema;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord;
 
 public class JournalforingHendelseSender {
 
     private static final String JOURNALFØRING_TOPIC = "aapen-dok-journalfoering-v1-q1";
-    private static final String BEHANDLINGSTEMA_FORELDREPENGER_FØDSEL = "ab0047";
 
     private LocalKafkaProducer localKafkaProducer;
 
@@ -34,17 +35,28 @@ public class JournalforingHendelseSender {
                 .set("temaNytt", modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "FOR")
                 .set("mottaksKanal", modell.getMottakskanal() != null ? modell.getMottakskanal() : "ALTINN")
                 .set("kanalReferanseId", modell.getEksternReferanseId())
-                .set("behandlingstema", BEHANDLINGSTEMA_FORELDREPENGER_FØDSEL)
+                .set("behandlingstema", tilBehandlingsTema(modell).getOffisiellKode())
                 .build();
     }
 
-    private static String tilHendelsesType(JournalpostModell modell) {
+    private String tilHendelsesType(JournalpostModell modell) {
         return switch (modell.getJournalStatus() != null ? modell.getJournalStatus().getKode() : "") {
             case "J" -> "Journalført";
             case "MO" -> "Mottatt";
             case "M" -> "MidlertidigJournalført";
             case "A" -> "Avbrutt";
             default -> "MidlertidigJournalført";
+        };
+    }
+
+    private BehandlingsTema tilBehandlingsTema(JournalpostModell modell) {
+        return switch (modell.getDokumentModellList().isEmpty() ? DokumenttypeId.UDEFINERT : modell.getDokumentModellList().get(0).getDokumentType()) {
+            case SØKNAD_SVANGERSKAPSPENGER -> BehandlingsTema.SVANGERSKAPSPENGER;
+            case SØKNAD_FORELDREPENGER_ADOPSJON -> BehandlingsTema.FORELDREPENGER_ADOPSJON;
+            case SØKNAD_FORELDREPENGER_FØDSEL -> BehandlingsTema.FORELDREPENGER_FØDSEL;
+            case SØKNAD_ENGANGSSTØNAD_ADOPSJON -> BehandlingsTema.ENGANGSSTØNAD_ADOPSJON;
+            case SØKNAD_ENGANGSSTØNAD_FØDSEL -> BehandlingsTema.ENGANGSSTØNAD_FØDSEL;
+            default -> BehandlingsTema.FORELDREPENGER_FØDSEL;
         };
     }
 }
