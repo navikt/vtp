@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       # Brukes ukenummer i cache_key da pomene endrer seg alt for ofte.
       # Alternative key med cache fra forrige uke som blir lagret etterpå under CACHE_KEY.
       - name: Set cache key
