@@ -105,6 +105,11 @@ class PdlFamilierelasjonTest extends PdlTestBase {
                         .relatertPersonsIdent()
                         .relatertPersonsRolle()
                         .minRolleForPerson())
+                .forelderBarnRelasjon(new ForelderBarnRelasjonResponseProjection()
+                        .relatertPersonsIdent()
+                        .relatertPersonsRolle()
+                        .minRolleForPerson()
+                )
                 .bostedsadresse(
                         new PersonBostedsadresseParametrizedInput(false),
                         new BostedsadresseResponseProjection()
