@@ -12,16 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # Brukes ukenummer i cache_key da pomene endrer seg alt for ofte.
-      # Alternative key med cache fra forrige uke som blir lagret etterpå under CACHE_KEY.
       - name: Set cache key
         run: |
           echo "CACHE_KEY=$(expr $(date +%V) - 1 + 1)" >> $GITHUB_ENV
           echo "PREVIOUS_CACHE_KEY=$(expr $(date +%V) - 1)" >> $GITHUB_ENV
-      - name: Henter maven avhengigheter som er cachet
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: ~/.m2
+          path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
           restore-keys: |
             ${{ runner.os }}-maven-${{ env.PREVIOUS_CACHE_KEY }}
@@ -37,10 +34,11 @@ jobs:
         shell: bash
         run: |
           echo "Building artifacts $BUILD_VERSION"
-          mvn verify -e --batch-mode --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false
+          mvn verify -e --batch-mode --settings .github/.m2/settings.xml --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
+          GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
       - name: Release Drafter
