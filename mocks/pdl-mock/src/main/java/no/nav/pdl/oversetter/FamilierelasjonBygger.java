@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.pdl.Familierelasjon;
 import no.nav.pdl.Familierelasjonsrolle;
 import no.nav.pdl.ForelderBarnRelasjon;
+import no.nav.pdl.ForelderBarnRelasjonRolle;
 import no.nav.pdl.Person;
 
 public class FamilierelasjonBygger {
@@ -49,8 +50,8 @@ public class FamilierelasjonBygger {
 
     private static void leggTilForelderBarnRelasjoner(Person person, List<Familierelasjon> familierelasjoner) {
         familierelasjoner.stream()
-                .map(f -> new ForelderBarnRelasjon(f.getRelatertPersonsIdent(), f.getRelatertPersonsRolle(),
-                        f.getMinRolleForPerson(), f.getFolkeregistermetadata(), f.getMetadata()))
+                .map(f -> new ForelderBarnRelasjon(f.getRelatertPersonsIdent(), ForelderBarnRelasjonRolle.valueOf(f.getRelatertPersonsRolle().toString()),
+                        ForelderBarnRelasjonRolle.valueOf(f.getMinRolleForPerson().toString()), f.getFolkeregistermetadata(), f.getMetadata()))
                 .forEach(forelderBarnRelasjon -> person.getForelderBarnRelasjon().add(forelderBarnRelasjon));
     }
 
