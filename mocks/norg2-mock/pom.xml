@@ -15,10 +15,6 @@
 	<dependencies>
 		<!-- 3dje parts biblioteker -->
 		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-core-spi</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jaxrs</artifactId>
 		</dependency>
@@ -26,6 +22,10 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-http-spi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
 		</dependency>
 	</dependencies>
 
