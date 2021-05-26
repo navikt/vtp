@@ -11,12 +11,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,6 +26,9 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.kafka.clients.admin.AdminClient;
+import org.glassfish.jersey.internal.inject.AbstractBinder;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,11 +39,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
@@ -52,6 +55,10 @@ import no.nav.foreldrepenger.vtp.server.rest.auth.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
@@ -66,29 +73,45 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
 
-public class ApplicationConfig extends Application {
+@ApplicationPath(ApplicationConfigJersey.API_URI)
+public class ApplicationConfigJersey extends ResourceConfig {
 
     public static final String API_URI = "/rest";
 
-    public ApplicationConfig() {
-        BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0");
-        beanConfig.setSchemes(new String[] { "http", "https" });
-        beanConfig.setBasePath(API_URI);
-        beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
-        beanConfig.setResourcePackage("no.nav");
-        beanConfig.setDescription("REST grensesnitt for VTP.");
-        beanConfig.setScan(true);
+    public ApplicationConfigJersey() {
+        super(registerClasses());
+        setApplicationName("VTP");
+        packages("no.nav");
     }
 
-    @Override
-    public Set<Class<?>> getClasses() {
+    public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
+                                         GsakRepo gsakRepo,
+                                         LocalKafkaProducer localKafkaProducer,
+                                         AdminClient kafkaAdminClient,
+                                         JournalRepository journalRepository) {
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(testScenarioRepository).to(TestscenarioRepository.class);
+                bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
+                bind(journalRepository).to(JournalRepository.class);
+                bind(gsakRepo).to(GsakRepo.class);
+                bind(localKafkaProducer).to(LocalKafkaProducer.class);
+                bind(kafkaAdminClient).to(AdminClient.class);
+            }
+        });
+        return this;
+    }
 
+
+
+    public static Set<Class<?>> registerClasses() {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);

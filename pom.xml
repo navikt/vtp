@@ -44,6 +44,7 @@
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
         <mockito.version>3.10.0</mockito.version>
         <jupiter.version>5.7.2</jupiter.version>
+        <jersey.version>2.34</jersey.version>
 
     </properties>
 
@@ -77,13 +78,23 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
+<!--            <dependency>-->
+<!--                <groupId>org.jboss.resteasy</groupId>-->
+<!--                <artifactId>resteasy-bom</artifactId>-->
+<!--                <version>4.6.0.Final</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+
             <dependency>
-                <groupId>org.jboss.resteasy</groupId>
-                <artifactId>resteasy-bom</artifactId>
-                <version>4.6.0.Final</version>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcomponents-client</artifactId>
@@ -597,6 +608,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
         </dependency>
+
 
     </dependencies>
 

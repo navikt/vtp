@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
@@ -24,9 +23,12 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +42,6 @@ import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -150,20 +151,13 @@ public class MockServer {
 
     @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
+        var testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
+        var gsakRepo = new GsakRepo();
+        var journalRepository = JournalRepositoryImpl.getInstance();
+
         var handler = (HandlerContainer) server.getHandler();
 
-        var testScenarioRepository = new DelegatingTestscenarioRepository(
-                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        var gsakRepo = new GsakRepo();
-        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-
-        addRestServices(handler,
-                testScenarioRepository,
-                gsakRepo,
-                kafkaServer.getLocalProducer(),
-                kafkaServer.getKafkaAdminClient(),
-                journalRepository);
-
+        addRestServices(testScenarioRepository, gsakRepo, journalRepository, handler);
 
         addWebResources(handler);
 
@@ -173,6 +167,20 @@ public class MockServer {
         if(!tjenesteDisabled(VTPTjeneste.VTP_SOAP)) {
             addSoapServices(testScenarioRepository, journalRepository);
         }
+    }
+
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
+        ResourceConfig config = new ApplicationConfigJersey()
+                .setup(testScenarioRepository,
+                        gsakRepo,
+                        kafkaServer.getLocalProducer(),
+                        kafkaServer.getKafkaAdminClient(),
+                        journalRepository);
+
+        ServletContextHandler context = new ServletContextHandler(handler, "/rest");
+        ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(config));
+        jerseyServlet.setInitOrder(1);
+        context.addServlet(jerseyServlet, "/*");
     }
 
     private void startLdapServer() {
@@ -191,15 +199,10 @@ public class MockServer {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository);
     }
 
-    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
-                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient,
-                                   JournalRepository journalRepository) {
-        new RestConfig(handler).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository);
-    }
 
-    protected void addWebResources(HandlerContainer handlerContainer) {
+    protected void addWebResources(HandlerContainer handler) {
         @SuppressWarnings("resource")
-        var ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
+        var ctx = new WebAppContext(handler, Resource.newClassPathResource("/swagger"), "/swagger");
 
 
         ctx.setThrowUnavailableOnStartupException(true);
