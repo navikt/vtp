@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.Api;
@@ -42,28 +43,31 @@ import no.nav.infotrygdpaaroerendesykdom.generated.model.VedtakPleietrengendeDto
 @Api(
         description = "the paaroerendeSykdom API")
 public class PårørendeSykdomMock {
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
+
+    public PårørendeSykdomMock() {
+    }
 
     public PårørendeSykdomMock(@Context TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
-    // todo: sjekk Autorization-token
+// todo: sjekk Autorization-token
 
     @SuppressWarnings("unused")
     @GET
     @Path("/saker")
-    @Produces({ "application/json" })
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller",  })
+    }, tags = {"paaroerende-sykdom-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SakResult.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response hentSakUsingGET( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
+    public Response hentSakUsingGET(@NotNull @ApiParam(value = "fnr", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "fom", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "tom") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
 
-        if(inntektYtelseModellOptional.isEmpty()) {
+        if (inntektYtelseModellOptional.isEmpty()) {
             return Response.ok(new SakDto()).build();
         }
 
@@ -77,16 +81,16 @@ public class PårørendeSykdomMock {
     @SuppressWarnings("unused")
     @GET
     @Path("/grunnlag")
-    @Produces({ "application/json" })
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "paaroerendeSykdom", notes = "", response = PaaroerendeSykdom.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller" })
+    }, tags = {"paaroerende-sykdom-controller"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = PaaroerendeSykdom.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response paaroerendeSykdomUsingGET1( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
+    public Response paaroerendeSykdomUsingGET1(@NotNull @ApiParam(value = "fnr", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "fom", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "tom") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
-        if(inntektYtelseModell.isEmpty()) {
+        if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
 
@@ -102,32 +106,31 @@ public class PårørendeSykdomMock {
     @SuppressWarnings("unused")
     @GET
     @Path("/vedtakForPleietrengende")
-    @Produces({ "application/json" })
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller" })
+    }, tags = {"paaroerende-sykdom-controller"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = VedtakPleietrengendeDto.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response finnVedtakForPleietrengendeUsingGET( @NotNull @ApiParam(value = "Pleietrengendes fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.")  @QueryParam("tom") LocalDate tom) {
+    public Response finnVedtakForPleietrengendeUsingGET(@NotNull @ApiParam(value = "Pleietrengendes fødselsnummer", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.") @QueryParam("tom") LocalDate tom) {
         return Response.ok(List.of()).build();
     }
 
     @GET
     @Path("/rammevedtak/omsorgspenger")
-    @Produces({ "application/json" })
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "Finner rammevedtak basert på fødselsnummeret til søker.", notes = "", response = RammevedtakDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller" })
+    }, tags = {"paaroerende-sykdom-controller"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RammevedtakDto.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class) })
-    public Response finnRammevedtakForOmsorgspengerUsingGET( @NotNull @ApiParam(value = "Søkers fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.")  @QueryParam("tom") LocalDate tom) {
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    public Response finnRammevedtakForOmsorgspengerUsingGET(@NotNull @ApiParam(value = "Søkers fødselsnummer", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
-        if(inntektYtelseModell.isEmpty()) {
+        if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
-
 
 
         List<RammevedtakDto> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
@@ -141,18 +144,17 @@ public class PårørendeSykdomMock {
     }
 
 
-
     private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
-        if(fom1 == null) {
+        if (fom1 == null) {
             fom1 = LocalDate.MIN;
         }
-        if(tom1 == null) {
+        if (tom1 == null) {
             tom1 = LocalDate.MAX;
         }
-        if(fom2 == null) {
+        if (fom2 == null) {
             fom2 = LocalDate.MIN;
         }
-        if(tom2 == null) {
+        if (tom2 == null) {
             tom2 = LocalDate.MAX;
         }
         return (fom1.isBefore(tom2) && (tom1.isAfter(fom2)));
@@ -187,7 +189,7 @@ public class PårørendeSykdomMock {
         sak.setOpphoerFom(toLocalDate(ytelse.opphør()));
         sak.setRegistrert(toLocalDate(ytelse.registrert()));
 
-        if(ytelse.resultat() != null) {
+        if (ytelse.resultat() != null) {
             Kodeverdi resultat = new Kodeverdi();
             resultat.setKode(ytelse.resultat().getKode());
             resultat.setTermnavn("ukjent resultat");
@@ -196,11 +198,11 @@ public class PårørendeSykdomMock {
 
         sak.setSakId(ytelse.sakId());
 
-        if(ytelse.sakStatus() != null) {
+        if (ytelse.sakStatus() != null) {
             sak.setStatus(kodeverdi(ytelse.sakStatus().name()));
         }
 
-        if(ytelse.sakType() != null) {
+        if (ytelse.sakType() != null) {
             sak.setType(kodeverdi(ytelse.sakType().getKode()));
         }
 
@@ -218,7 +220,7 @@ public class PårørendeSykdomMock {
 
         r.setArbeidsforhold(arbeidsforholdListe);
 
-        if(grunnlag.getArbeidskategori() != null) {
+        if (grunnlag.getArbeidskategori() != null) {
             r.setArbeidskategori(kodeverdi(grunnlag.getArbeidskategori().getKode()));
         }
 
@@ -231,11 +233,11 @@ public class PårørendeSykdomMock {
         r.setIdentdato(grunnlag.getStartdato());
         r.setIverksatt(grunnlag.getStartdato());
 
-        if(grunnlag.getTom() != null) {
+        if (grunnlag.getTom() != null) {
             r.setOpphoerFom(grunnlag.getTom().plusDays(1));
         }
 
-        if(grunnlag.getFom() != null && grunnlag.getTom() != null) {
+        if (grunnlag.getFom() != null && grunnlag.getTom() != null) {
             Periode periode = new Periode();
             periode.setFom(grunnlag.getFom());
             periode.setTom(grunnlag.getTom());
@@ -249,7 +251,7 @@ public class PårørendeSykdomMock {
 
         r.setTema(kodeverdi(grunnlag.getBehandlingTema().getTema()));
 
-        r.setVedtak(grunnlag.getVedtak().stream().map( vedtak -> {
+        r.setVedtak(grunnlag.getVedtak().stream().map(vedtak -> {
             Vedtak v = new Vedtak();
             Periode periode = new Periode();
             periode.setFom(vedtak.fom());
@@ -263,7 +265,7 @@ public class PårørendeSykdomMock {
     }
 
     private RammevedtakDto mapGrunnlagToRammevedtak(InfotrygdRammevedtaksGrunnlag it) {
-        if(it == null) {
+        if (it == null) {
             return null;
         }
         RammevedtakDto rammevedtak = new RammevedtakDto();
@@ -280,7 +282,7 @@ public class PårørendeSykdomMock {
         af.setArbeidsgiverOrgnr(arbeidsforhold.getOrgnr());
         af.setInntektForPerioden(arbeidsforhold.getBeløp());
 
-        if(arbeidsforhold.getInntektsPeriodeType() != null) {
+        if (arbeidsforhold.getInntektsPeriodeType() != null) {
             af.setInntektsperiode(kodeverdi(arbeidsforhold.getInntektsPeriodeType().getKode()));
         }
 
@@ -290,7 +292,7 @@ public class PårørendeSykdomMock {
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {
-        if(localDateTime != null) {
+        if (localDateTime != null) {
             return localDateTime.toLocalDate();
         }
         return null;

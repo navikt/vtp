@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.io.BufferedReader;
+import static java.util.logging.Level.FINE;
+import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -11,12 +13,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,6 +28,10 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.kafka.clients.admin.AdminClient;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,11 +42,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
@@ -53,6 +59,10 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
@@ -67,29 +77,26 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
 
-public class ApplicationConfig extends Application {
+@ApplicationPath(ApplicationConfigJersey.API_URI)
+public class ApplicationConfigJersey extends ResourceConfig {
 
     public static final String API_URI = "/rest";
 
-    public ApplicationConfig() {
-        BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0");
-        beanConfig.setSchemes(new String[] { "http", "https" });
-        beanConfig.setBasePath(API_URI);
-        beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
-        beanConfig.setResourcePackage("no.nav");
-        beanConfig.setDescription("REST grensesnitt for VTP.");
-        beanConfig.setScan(true);
+    public ApplicationConfigJersey() {
+        setApplicationName("VTP");
+        packages("no.nav", "com.fasterxml.jackson.jaxrs.json");
+        register(new LoggingFeature(java.util.logging.Logger.getLogger(getClass().getName()),
+                FINE, PAYLOAD_ANY, 10000));
+        registerClasses(registerClasses());
     }
 
-    @Override
-    public Set<Class<?>> getClasses() {
-
+    public static Set<Class<?>> registerClasses() {
         Set<Class<?>> classes = new HashSet<>();
         // funksjonelle mocks for rest
         classes.add(SigrunMock.class);
@@ -140,6 +147,37 @@ public class ApplicationConfig extends Application {
         return classes;
     }
 
+    public static String getFullURL(HttpServletRequest request) {
+        var requestURL = new StringBuilder(request.getRequestURL().toString());
+        var queryString = request.getQueryString();
+
+        if (queryString == null) {
+            return requestURL.toString();
+        } else {
+            return requestURL.append('?').append(queryString).toString();
+        }
+    }
+
+    public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
+                                         TestscenarioRepository instance,
+                                         GsakRepo gsakRepo,
+                                         LocalKafkaProducer localKafkaProducer,
+                                         AdminClient kafkaAdminClient,
+                                         JournalRepository journalRepository) {
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
+                bind(instance).to(TestscenarioRepository.class);
+                bind(journalRepository).to(JournalRepository.class);
+                bind(gsakRepo).to(GsakRepo.class);
+                bind(localKafkaProducer).to(LocalKafkaProducer.class);
+                bind(kafkaAdminClient).to(AdminClient.class);
+            }
+        });
+        return this;
+    }
+
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
@@ -164,31 +202,24 @@ public class ApplicationConfig extends Application {
 
         private static final Logger log = LoggerFactory.getLogger(MyExceptionMapper.class);
 
-        @Context HttpServletRequest req;
+        @Context
+        HttpServletRequest req;
 
         @Override
         public Response toResponse(NotFoundException exception) {
 
-            String fullUrl = getFullURL(req);
+            var fullUrl = getFullURL(req);
 
-            Response response = exception.getResponse();
+            var response = exception.getResponse();
             if (fullUrl.contains("favicon.ico")) {
                 return response;
             }
 
-            StringBuilder logMsg = new StringBuilder("NOT_FOUND: ").append(req.getMethod()).append(" ").append(fullUrl);
-            for (String header : Collections.list(req.getHeaderNames())) {
+            var logMsg = new StringBuilder("NOT_FOUND: ").append(req.getMethod()).append(" ").append(fullUrl);
+            for (var header : Collections.list(req.getHeaderNames())) {
                 logMsg.append("\n\t").append(header).append("=").append(req.getHeader(header));
             }
-
-            try (BufferedReader br = req.getReader()) {
-                br.lines().forEach(line -> logMsg.append("\n\t").append(line));
-            } catch (IOException e) {
-               log.error("Kunne ikke lese request", e);
-               return response;
-            }
-
-            String logMessage = logMsg.toString();
+            var logMessage = logMsg.toString();
             log.warn(logMessage);
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
         }
@@ -200,7 +231,7 @@ public class ApplicationConfig extends Application {
         @SuppressWarnings("unchecked")
         @Override
         public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
-            if(rawType.isAssignableFrom(LocalDate.class)) {
+            if (rawType.isAssignableFrom(LocalDate.class)) {
                 return (ParamConverter<T>) new LocalDateStringConverter();
             }
             return null;
@@ -210,15 +241,16 @@ public class ApplicationConfig extends Application {
     public static class LocalDateStringConverter implements ParamConverter<LocalDate> {
         @Override
         public LocalDate fromString(String s) {
+            if (s == null) return null;
             return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
         }
 
         @Override
         public String toString(LocalDate localDate) {
+            if (localDate == null) return null;
             return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
     }
-
 
     @Provider
     public static class CorsFilter implements ContainerResponseFilter {
@@ -233,22 +265,10 @@ public class ApplicationConfig extends Application {
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Headers",
                     "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, " +
-                        "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
+                            "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Methods",
                     "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        }
-    }
-
-
-    public static String getFullURL(HttpServletRequest request) {
-        StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
-        String queryString = request.getQueryString();
-
-        if (queryString == null) {
-            return requestURL.toString();
-        } else {
-            return requestURL.append('?').append(queryString).toString();
         }
     }
 }

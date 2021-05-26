@@ -40,21 +40,21 @@ public class FpFormidlingMock {
     @SuppressWarnings("unused")
     @POST
     @Path("brev/maler")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public HentBrevmalerDto hentBrevmaler(BehandlingUuidDto uuidDto) {
         return new HentBrevmalerDto(Collections.emptyList());
     }
 
     @POST
     @Path("brev/dokument-sendt")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Boolean erDokumentSendt(DokumentProdusertDto request) {
         return dokumentProduksjon.getOrDefault(request.getBehandlingUuid(), List.of()).contains(request.getDokumentMal());
     }
 
     @POST
     @Path("brev/bestill")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public void bestillDokument(DokumentbestillingDto request) {
         dokumentProduksjon.putIfAbsent(request.getBehandlingUuid(), new ArrayList<>());
         dokumentProduksjon.get(request.getBehandlingUuid()).add(request.getDokumentMal());
@@ -62,14 +62,14 @@ public class FpFormidlingMock {
 
     @POST
     @Path("saksbehandlertekst/hent")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public TekstFraSaksbehandlerDto hentSaksbehandlersTekst(BehandlingUuidDto uuidDto) {
         return saksbehandlerTekst.getOrDefault(uuidDto.getBehandlingUuid(), null);
     }
 
     @POST
     @Path("saksbehandlertekst/lagre")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public void lagreSaksbehandlersTekst(TekstFraSaksbehandlerDto request) {
         saksbehandlerTekst.put(request.getBehandlingUuid(), request);
     }
