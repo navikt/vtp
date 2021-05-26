@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -27,7 +26,7 @@ import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
 import org.apache.kafka.clients.admin.AdminClient;
-import org.glassfish.jersey.internal.inject.AbstractBinder;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,10 +86,11 @@ public class ApplicationConfigJersey extends ResourceConfig {
     public ApplicationConfigJersey() {
         super(registerClasses());
         setApplicationName("VTP");
-        packages("no.nav");
+        packages("no.nav", "com.fasterxml.jackson.jaxrs.json");
     }
 
     public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
+                                         TestscenarioRepository instance,
                                          GsakRepo gsakRepo,
                                          LocalKafkaProducer localKafkaProducer,
                                          AdminClient kafkaAdminClient,
@@ -98,8 +98,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(testScenarioRepository).to(TestscenarioRepository.class);
                 bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
+                bind(instance).to(TestscenarioRepository.class);
                 bind(journalRepository).to(JournalRepository.class);
                 bind(gsakRepo).to(GsakRepo.class);
                 bind(localKafkaProducer).to(LocalKafkaProducer.class);
@@ -161,6 +161,17 @@ public class ApplicationConfigJersey extends ResourceConfig {
         return classes;
     }
 
+    public static String getFullURL(HttpServletRequest request) {
+        StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+        String queryString = request.getQueryString();
+
+        if (queryString == null) {
+            return requestURL.toString();
+        } else {
+            return requestURL.append('?').append(queryString).toString();
+        }
+    }
+
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
@@ -185,7 +196,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         private static final Logger log = LoggerFactory.getLogger(MyExceptionMapper.class);
 
-        @Context HttpServletRequest req;
+        @Context
+        HttpServletRequest req;
 
         @Override
         public Response toResponse(NotFoundException exception) {
@@ -202,12 +214,12 @@ public class ApplicationConfigJersey extends ResourceConfig {
                 logMsg.append("\n\t").append(header).append("=").append(req.getHeader(header));
             }
 
-            try (BufferedReader br = req.getReader()) {
+            /*try (BufferedReader br = req.getReader()) {
                 br.lines().forEach(line -> logMsg.append("\n\t").append(line));
             } catch (IOException e) {
-               log.error("Kunne ikke lese request", e);
-               return response;
-            }
+                log.error("Kunne ikke lese request", e);
+                return response;
+            }*/
 
             String logMessage = logMsg.toString();
             log.warn(logMessage);
@@ -221,7 +233,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         @SuppressWarnings("unchecked")
         @Override
         public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
-            if(rawType.isAssignableFrom(LocalDate.class)) {
+            if (rawType.isAssignableFrom(LocalDate.class)) {
                 return (ParamConverter<T>) new LocalDateStringConverter();
             }
             return null;
@@ -240,7 +252,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         }
     }
 
-
     @Provider
     public static class CorsFilter implements ContainerResponseFilter {
 
@@ -254,22 +265,10 @@ public class ApplicationConfigJersey extends ResourceConfig {
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Headers",
                     "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, " +
-                        "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
+                            "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Methods",
                     "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        }
-    }
-
-
-    public static String getFullURL(HttpServletRequest request) {
-        StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
-        String queryString = request.getQueryString();
-
-        if (queryString == null) {
-            return requestURL.toString();
-        } else {
-            return requestURL.append('?').append(queryString).toString();
         }
     }
 }

@@ -151,13 +151,14 @@ public class MockServer {
 
     @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
-        var testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
+        var instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+        var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
         var gsakRepo = new GsakRepo();
         var journalRepository = JournalRepositoryImpl.getInstance();
 
         var handler = (HandlerContainer) server.getHandler();
 
-        addRestServices(testScenarioRepository, gsakRepo, journalRepository, handler);
+        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, handler);
 
         addWebResources(handler);
 
@@ -169,9 +170,10 @@ public class MockServer {
         }
     }
 
-    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
         ResourceConfig config = new ApplicationConfigJersey()
                 .setup(testScenarioRepository,
+                        instance,
                         gsakRepo,
                         kafkaServer.getLocalProducer(),
                         kafkaServer.getKafkaAdminClient(),
