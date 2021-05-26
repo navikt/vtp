@@ -41,6 +41,18 @@
 
     <build>
         <plugins>
+		 <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.8.1</version>
+		    <configuration>
+			<source>${java.version}</source>
+			<target>${java.version}</target>
+			<encoding>UTF-8</encoding>
+			<release>${java.version}</release>
+			<!-- ikke kompiler denne modulen med --enable-preview. skaper trøbbel ved oppgradering av java versjoner der kontraker benyttes av andre -->
+		    </configuration>
+		</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
