@@ -60,7 +60,7 @@
 				<target>${java.version}</target>
 				<encoding>UTF-8</encoding>
 				<release>${java.version}</release>
-				<!-- ikke kompiler denne modulen med --enable-preview. skaper trøbbel ved oppgradering av java versjoner der kontraker benyttes av andre -->
+				<!-- ikke kompiler denne modulen med enable-preview. skaper trøbbel ved oppgradering av java versjoner der kontraker benyttes av andre -->
 			    </configuration>
 			</plugin>
 			<plugin>
