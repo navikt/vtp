@@ -40,7 +40,7 @@ public class FamilierelasjonBygger {
             leggTilFamilierelasjonHvisRelasjonenIkkeErDødfødtBarn(person, familierelasjoner);
         }
 
-        leggTilForelderBarnRelasjoner(person, familierelasjoner);
+        leggTilForelderBarnRelasjoner(person, person.getFamilierelasjoner());
 
         for (Familierelasjon familierelasjon : familierelasjoner) {
             System.out.println("    " + familierelasjon.getRelatertPersonsIdent());
@@ -50,7 +50,6 @@ public class FamilierelasjonBygger {
 
     private static void leggTilForelderBarnRelasjoner(Person person, List<Familierelasjon> familierelasjoner) {
         familierelasjoner.stream()
-                .filter(familierelasjon -> !(familierelasjon.getRelatertPersonsRolle().equals(Familierelasjonsrolle.BARN) && erFdatNummer(familierelasjon.getRelatertPersonsIdent())))
                 .map(f -> new ForelderBarnRelasjon(f.getRelatertPersonsIdent(), ForelderBarnRelasjonRolle.valueOf(f.getRelatertPersonsRolle().toString()),
                         ForelderBarnRelasjonRolle.valueOf(f.getMinRolleForPerson().toString()), f.getFolkeregistermetadata(), f.getMetadata()))
                 .forEach(forelderBarnRelasjon -> person.getForelderBarnRelasjon().add(forelderBarnRelasjon));
