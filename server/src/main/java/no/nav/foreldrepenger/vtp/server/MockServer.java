@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.server;
 
+import static no.nav.foreldrepenger.vtp.server.ApplicationConfigJersey.API_URI;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,6 +34,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.familie.topic.Topic;
 import no.nav.familie.topic.TopicManifest;
 import no.nav.foreldrepenger.util.KeystoreUtils;
@@ -203,15 +206,22 @@ public class MockServer {
 
 
     protected void addWebResources(HandlerContainer handler) {
+        // Swagger
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0");
+        beanConfig.setSchemes(new String[] { "http", "https" });
+        beanConfig.setBasePath(API_URI);
+        beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
+        beanConfig.setResourcePackage("no.nav");
+        beanConfig.setDescription("REST grensesnitt for VTP.");
+        beanConfig.setScan(true);
+
         @SuppressWarnings("resource")
         var ctx = new WebAppContext(handler, Resource.newClassPathResource("/swagger"), "/swagger");
-
-
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
 
         var defaultServlet = new DefaultServlet();
-
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
 
