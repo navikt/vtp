@@ -40,7 +40,7 @@ public class FamilierelasjonBygger {
             leggTilFamilierelasjonHvisRelasjonenIkkeErDødfødtBarn(person, familierelasjoner);
         }
 
-        leggTilForelderBarnRelasjoner(person, familierelasjoner);
+        leggTilForelderBarnRelasjoner(person, person.getFamilierelasjoner());
 
         for (Familierelasjon familierelasjon : familierelasjoner) {
             System.out.println("    " + familierelasjon.getRelatertPersonsIdent());
