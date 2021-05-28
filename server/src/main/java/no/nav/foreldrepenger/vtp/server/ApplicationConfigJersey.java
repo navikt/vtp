@@ -87,6 +87,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
         super(registerClasses());
         setApplicationName("VTP");
         packages("no.nav", "com.fasterxml.jackson.jaxrs.json");
+//        register(new LoggingFeature(java.util.logging.Logger.getLogger(LoggingFeature.LOGGING_FEATURE_LOGGER_NAME_SERVER),
+//                Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
     }
 
     public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
