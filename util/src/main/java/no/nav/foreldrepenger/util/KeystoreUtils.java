@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.felles;
+package no.nav.foreldrepenger.util;
 
 import static java.lang.System.getProperty;
 import static java.lang.System.getenv;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.felles;
+package no.nav.foreldrepenger.util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

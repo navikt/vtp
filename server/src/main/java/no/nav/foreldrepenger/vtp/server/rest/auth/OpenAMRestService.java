@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
-import no.nav.foreldrepenger.vtp.felles.OidcTokenGenerator;
+import no.nav.foreldrepenger.util.KeyStoreTool;
+import no.nav.foreldrepenger.util.OidcTokenGenerator;
 
 
 @Api(tags = {"Openam"})
