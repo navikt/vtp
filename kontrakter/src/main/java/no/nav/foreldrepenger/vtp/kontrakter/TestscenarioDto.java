@@ -12,12 +12,12 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public record TestscenarioDto(
-        @JsonProperty("templateKey") String templateKey,
-        @JsonProperty("templateNavn") String templateNavn,
+        String templateKey,
+        String templateNavn,
         @JsonProperty("id") String testscenarioId,
-        @JsonProperty("variabler") @JsonInclude(content = Include.NON_EMPTY)  Map<String, String> variabler,
-        @JsonProperty("personopplysninger") TestscenarioPersonopplysningDto personopplysninger,
+        @JsonInclude(content = Include.NON_EMPTY)  Map<String, String> variabler,
+        TestscenarioPersonopplysningDto personopplysninger,
         @JsonProperty("scenariodata") InntektYtelseModell scenariodataDto,
         @JsonProperty("scenariodataAnnenpart") @JsonInclude(content = Include.NON_EMPTY) InntektYtelseModell scenariodataAnnenpartDto) {
-        
+
 }

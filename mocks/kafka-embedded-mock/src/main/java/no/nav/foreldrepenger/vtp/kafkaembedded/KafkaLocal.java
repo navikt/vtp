@@ -6,13 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import kafka.server.KafkaConfig;
-import kafka.server.KafkaServerStartable;
+import kafka.server.KafkaServer;
 
 
 class KafkaLocal {
     private Logger LOG = LoggerFactory.getLogger(KafkaLocal.class);
 
-    private KafkaServerStartable kafka;
+    private KafkaServer kafka;
     private ZooKeeperLocal zookeeper;
 
     KafkaLocal(Properties kafkaProperties, Properties zkProperties) {
@@ -29,7 +29,10 @@ class KafkaLocal {
     }
 
     private void startKafka(KafkaConfig kafkaConfig) {
-        kafka = new KafkaServerStartable(kafkaConfig);
+        kafka = new KafkaServer(kafkaConfig,
+                KafkaServer.$lessinit$greater$default$2(),
+                KafkaServer.$lessinit$greater$default$3(),
+                true);
         LOG.info("starting local kafka broker...");
         kafka.startup();
 

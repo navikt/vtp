@@ -44,23 +44,6 @@ public class JournalforingRestTjeneste {
     @Context
     private JournalRepository journalRepository;
 
-    /** @deprecated Gammel innsending tjeneste - men tar ikke bare søknader men også inntektsmeldinger etc.  */
-    @Deprecated(forRemoval=true)
-    @POST
-    @Path("/foreldrepengesoknadxml/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body."), response = JournalforingResultatDto.class)
-    public JournalforingResultatDto foreldrepengesoknadErketype(String xml, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId){
-
-        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(xml, fnr, DokumenttypeId.valueOfKode(dokumenttypeId));
-        journalpostModell.setMottattDato(LocalDateTime.now());
-        String journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
-
-        LOG.info("Oppretter journalpost for bruke: {}. JournalpostId: {}", fnr, journalpostId);
-
-        return new JournalforingResultatDto(journalpostId);
-    }
-
     @POST
     @Path("/journalfor")
     @Produces(MediaType.APPLICATION_JSON)
