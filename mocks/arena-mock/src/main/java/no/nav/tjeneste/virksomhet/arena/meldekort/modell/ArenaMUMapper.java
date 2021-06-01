@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.util.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaMeldekort;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaVedtak;

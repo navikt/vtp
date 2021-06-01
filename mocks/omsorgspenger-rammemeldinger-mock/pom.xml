@@ -19,17 +19,12 @@
             <artifactId>jetty-http-spi</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>core</artifactId>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-core-spi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

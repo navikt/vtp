@@ -15,7 +15,8 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
+import no.nav.foreldrepenger.util.KeystoreUtils;
+
 
 public class LocalKafkaServer {
 

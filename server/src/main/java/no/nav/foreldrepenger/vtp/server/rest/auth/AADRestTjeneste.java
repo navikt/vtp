@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.felles.AzureOidcTokenGenerator;
-import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
+import no.nav.foreldrepenger.util.AzureOidcTokenGenerator;
+import no.nav.foreldrepenger.util.KeyStoreTool;
 
 @Api(tags = {"AzureAd"})
 @Path("/AzureAd")

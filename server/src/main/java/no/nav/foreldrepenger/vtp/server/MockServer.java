@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.familie.topic.Topic;
 import no.nav.familie.topic.TopicManifest;
-import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
-import no.nav.foreldrepenger.vtp.felles.PropertiesUtils;
+import no.nav.foreldrepenger.util.KeystoreUtils;
+import no.nav.foreldrepenger.util.PropertiesUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;

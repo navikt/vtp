@@ -16,7 +16,7 @@ import javax.xml.ws.soap.Addressing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.felles.ConversionUtils;
+import no.nav.foreldrepenger.util.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;

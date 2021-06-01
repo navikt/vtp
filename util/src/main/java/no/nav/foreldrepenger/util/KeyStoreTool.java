@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.felles;
+package no.nav.foreldrepenger.util;
 
 import java.io.File;
 import java.io.FileInputStream;

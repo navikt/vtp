@@ -10,15 +10,17 @@
         <version>${revision}${sha1}${changelist}</version>
     </parent>
 
-    <artifactId>core</artifactId>
+    <artifactId>kontrakter</artifactId>
     <packaging>jar</packaging>
-    <name>VTP ::Felles</name>
+    <name>VTP ::Kontrakter</name>
 
     <dependencies>
 		<dependency>
 			<groupId>no.nav.foreldrepenger.vtp</groupId>
 			<artifactId>testmodell</artifactId>
 		</dependency>
+
+        <!-- 3dje parts biblioteker -->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jaxrs</artifactId>
@@ -30,12 +32,6 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-ws-security</artifactId>
-        </dependency>
-        <!-- 3dje parts biblioteker -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

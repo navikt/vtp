@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.kafkaembedded;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Properties;
+
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.serialization.Serde;
@@ -15,11 +16,11 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
+import no.nav.foreldrepenger.util.KeystoreUtils;
 
 public class LocalKafkaConsumerStream {
     private static final Serde<String> STRING = Serdes.String();
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaConsumerStream.class);
     private KafkaStreams stream;
 

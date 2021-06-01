@@ -13,10 +13,9 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>no.nav.foreldrepenger.vtp</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>util</artifactId>
 		</dependency>
 
 		<!-- Eksterne avhengigheter -->

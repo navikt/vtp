@@ -18,10 +18,11 @@
     </scm>
 
     <modules>
-        <module>core</module>
+        <module>kontrakter</module>
         <module>model</module>
         <module>mocks</module>
         <module>server</module>
+        <module>util</module>
     </modules>
 
     <properties>
@@ -102,7 +103,12 @@
 
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>kontrakter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>util</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -497,6 +503,7 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${jupiter.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -570,10 +577,25 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
+
+        <!--    TEST    -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
         </dependency>
 
     </dependencies>

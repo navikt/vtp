@@ -13,11 +13,6 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>no.nav.foreldrepenger.vtp</groupId>
-			<artifactId>core</artifactId>
-		</dependency>
-
 		<!-- 3dje parts biblioteker -->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>

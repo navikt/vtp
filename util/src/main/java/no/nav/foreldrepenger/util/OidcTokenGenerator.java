@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.felles;
+package no.nav.foreldrepenger.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;

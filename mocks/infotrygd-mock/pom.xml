@@ -13,12 +13,7 @@
 
 	<dependencies>
 
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
-
-	       <!-- Eksterne avhengigheter -->
+        <!-- 3dje parts biblioteker -->
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-core-spi</artifactId>
@@ -27,8 +22,6 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jaxrs</artifactId>
         </dependency>
-
-        <!-- 3dje parts biblioteker -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http-spi</artifactId>

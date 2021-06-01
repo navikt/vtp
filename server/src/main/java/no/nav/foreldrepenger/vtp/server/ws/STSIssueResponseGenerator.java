@@ -12,7 +12,6 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
-import no.nav.foreldrepenger.vtp.felles.KeystoreUtils;
 import org.apache.cxf.security.SecurityContext;
 import org.apache.cxf.sts.StaticSTSProperties;
 import org.apache.cxf.sts.operation.TokenIssueOperation;
@@ -36,7 +35,9 @@ import org.apache.wss4j.common.ext.WSSecurityException;
 import org.apache.wss4j.common.principal.CustomTokenPrincipal;
 import org.apache.wss4j.dom.engine.WSSConfig;
 
-import no.nav.foreldrepenger.vtp.felles.KeyStoreTool;
+import no.nav.foreldrepenger.util.KeyStoreTool;
+import no.nav.foreldrepenger.util.KeystoreUtils;
+
 
 public class STSIssueResponseGenerator {
 
