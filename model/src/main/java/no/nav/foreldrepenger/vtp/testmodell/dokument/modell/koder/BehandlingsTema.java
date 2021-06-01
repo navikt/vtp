@@ -11,7 +11,7 @@ public enum BehandlingsTema {
     ENGANGSSTØNAD_ADOPSJON("ENGST_ADOP", "ab0027", "Engangsstønad ved adopsjon"),
 
     FORELDREPENGER("FORP", "ab0326", "Foreldrepenger"),
-    FORELDREPENGER_FØDSEL("FORP_FODS", "", "Foreldrepenger ved fødsel"),
+    FORELDREPENGER_FØDSEL("FORP_FODS", "ab0047", "Foreldrepenger ved fødsel"),
     FORELDREPENGER_ADOPSJON("FORP_ADOP", "ab0072", "Foreldrepenger ved adopsjon"),
 
     SVANGERSKAPSPENGER("SVP", "ab0126", "Svangerskapspenger"),
