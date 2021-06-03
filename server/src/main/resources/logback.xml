@@ -12,11 +12,11 @@
 
 	<!-- skru paa for aa logge all sql statements med parametere -->
 	<logger name="org.apache" level="${log.level.org.apache:-WARN}" />
-	<logger name="org.eclipse.jetty" level="${log.level.org.eclipse.jetty:-TRACE}" />
+	<logger name="org.eclipse.jetty" level="${log.level.org.eclipse.jetty:-INFO}" />
 
 	<!-- ESSV: genererer en del støy for webservice -->
 	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
-	<logger name="org.glassfish.jersey" level="${log.level.org.glassfish.Jersey:-TRACE}" />
+	<logger name="org.glassfish.jersey" level="${log.level.org.glassfish.Jersey:-INFO}" />
 
     <logger name="org.apache.kafka" level="${log.level.org.apache.kafka:-WARN}"/>
     <logger name="org.apache.kafka.clients.admin" level="${log.level.org.apache.kafka:-INFO}"/>

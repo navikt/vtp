@@ -84,34 +84,12 @@ public class ApplicationConfigJersey extends ResourceConfig {
     public static final String API_URI = "/rest";
 
     public ApplicationConfigJersey() {
-        super(registerClasses());
         setApplicationName("VTP");
         packages("no.nav", "com.fasterxml.jackson.jaxrs.json");
 //        register(new LoggingFeature(java.util.logging.Logger.getLogger(LoggingFeature.LOGGING_FEATURE_LOGGER_NAME_SERVER),
 //                Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 10000));
+        registerClasses(registerClasses());
     }
-
-    public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
-                                         TestscenarioRepository instance,
-                                         GsakRepo gsakRepo,
-                                         LocalKafkaProducer localKafkaProducer,
-                                         AdminClient kafkaAdminClient,
-                                         JournalRepository journalRepository) {
-        register(new AbstractBinder() {
-            @Override
-            protected void configure() {
-                bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
-                bind(instance).to(TestscenarioRepository.class);
-                bind(journalRepository).to(JournalRepository.class);
-                bind(gsakRepo).to(GsakRepo.class);
-                bind(localKafkaProducer).to(LocalKafkaProducer.class);
-                bind(kafkaAdminClient).to(AdminClient.class);
-            }
-        });
-        return this;
-    }
-
-
 
     public static Set<Class<?>> registerClasses() {
         Set<Class<?>> classes = new HashSet<>();
@@ -172,6 +150,26 @@ public class ApplicationConfigJersey extends ResourceConfig {
         } else {
             return requestURL.append('?').append(queryString).toString();
         }
+    }
+
+    public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
+                                         TestscenarioRepository instance,
+                                         GsakRepo gsakRepo,
+                                         LocalKafkaProducer localKafkaProducer,
+                                         AdminClient kafkaAdminClient,
+                                         JournalRepository journalRepository) {
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
+                bind(instance).to(TestscenarioRepository.class);
+                bind(journalRepository).to(JournalRepository.class);
+                bind(gsakRepo).to(GsakRepo.class);
+                bind(localKafkaProducer).to(LocalKafkaProducer.class);
+                bind(kafkaAdminClient).to(AdminClient.class);
+            }
+        });
+        return this;
     }
 
     @Provider
