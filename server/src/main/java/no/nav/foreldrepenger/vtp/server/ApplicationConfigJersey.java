@@ -243,11 +243,13 @@ public class ApplicationConfigJersey extends ResourceConfig {
     public static class LocalDateStringConverter implements ParamConverter<LocalDate> {
         @Override
         public LocalDate fromString(String s) {
+            if (s == null) return null;
             return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
         }
 
         @Override
         public String toString(LocalDate localDate) {
+            if (localDate == null) return null;
             return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
     }
