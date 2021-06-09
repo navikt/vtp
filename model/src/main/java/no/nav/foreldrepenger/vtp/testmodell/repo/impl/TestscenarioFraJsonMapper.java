@@ -84,8 +84,8 @@ public class TestscenarioFraJsonMapper {
             testscenario.setAnnenpartInntektYtelse(annenpartInntektYtelse);
         }
 
-        if(node.has("personopplysninger") || node.has("personopplysning")){
-            var personopplysningerResult = node.has("personopplysninger") ? node.get("personopplysninger") : node.has("personopplysning");
+        if(node.has("personopplysninger")){
+            var personopplysningerResult = node.get("personopplysninger");
             var personopplysninger = objectMapper.convertValue(personopplysningerResult, Personopplysninger.class);
             testscenario.setPersonopplysninger(personopplysninger);
         }
