@@ -39,14 +39,14 @@ jobs:
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
           GITHUB_USERNAME: x-access-token
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}  # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
 
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5
         if: success()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Login to GitHub Packages Docker Registry
         uses: docker/login-action@31f1bb4610792058145ecedb9770b0145e118a96 # Use commit-sha1 instead of tag for security concerns
         with:

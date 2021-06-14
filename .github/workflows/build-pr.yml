@@ -11,12 +11,12 @@ jobs:
         run: |
           echo "CACHE_KEY=$(expr $(date +%V) - 1 + 1)" >> $GITHUB_ENV
           echo "PREVIOUS_CACHE_KEY=$(expr $(date +%V) - 1)" >> $GITHUB_ENV
-#       - uses: actions/cache@v2
-#         with:
-#           path: ~/.m2/repository
-#           key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
-#           restore-keys: |
-#             ${{ runner.os }}-maven-${{ env.PREVIOUS_CACHE_KEY }}
+      - uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ env.PREVIOUS_CACHE_KEY }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -32,4 +32,4 @@ jobs:
           mvn package --batch-mode --settings .github/.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
         env:
           GITHUB_USERNAME: x-access-token
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }} # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
