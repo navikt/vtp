@@ -67,11 +67,6 @@
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jaxrs</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-core-spi</artifactId>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>javax</groupId>
@@ -86,6 +81,10 @@
 			<artifactId>cxf-bundle-jaxrs</artifactId>
 			<version>2.7.18</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->

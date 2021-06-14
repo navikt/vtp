@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.server;
 
+import static no.nav.foreldrepenger.vtp.server.ApplicationConfigJersey.API_URI;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -12,7 +14,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.kafka.clients.admin.AdminClient;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
@@ -24,12 +25,16 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.familie.topic.Topic;
 import no.nav.familie.topic.TopicManifest;
 import no.nav.foreldrepenger.util.KeystoreUtils;
@@ -40,7 +45,6 @@ import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
@@ -150,20 +154,14 @@ public class MockServer {
 
     @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
+        var instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+        var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
+        var gsakRepo = new GsakRepo();
+        var journalRepository = JournalRepositoryImpl.getInstance();
+
         var handler = (HandlerContainer) server.getHandler();
 
-        var testScenarioRepository = new DelegatingTestscenarioRepository(
-                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        var gsakRepo = new GsakRepo();
-        JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
-
-        addRestServices(handler,
-                testScenarioRepository,
-                gsakRepo,
-                kafkaServer.getLocalProducer(),
-                kafkaServer.getKafkaAdminClient(),
-                journalRepository);
-
+        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, handler);
 
         addWebResources(handler);
 
@@ -173,6 +171,21 @@ public class MockServer {
         if(!tjenesteDisabled(VTPTjeneste.VTP_SOAP)) {
             addSoapServices(testScenarioRepository, journalRepository);
         }
+    }
+
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
+        ResourceConfig config = new ApplicationConfigJersey()
+                .setup(testScenarioRepository,
+                        instance,
+                        gsakRepo,
+                        kafkaServer.getLocalProducer(),
+                        kafkaServer.getKafkaAdminClient(),
+                        journalRepository);
+
+        ServletContextHandler context = new ServletContextHandler(handler, "/rest");
+        ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(config));
+        jerseyServlet.setInitOrder(1);
+        context.addServlet(jerseyServlet, "/*");
     }
 
     private void startLdapServer() {
@@ -191,22 +204,24 @@ public class MockServer {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository);
     }
 
-    protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,
-                                   GsakRepo gsakRepo, LocalKafkaProducer localKafkaProducer, AdminClient kafkaAdminClient,
-                                   JournalRepository journalRepository) {
-        new RestConfig(handler).setup(testScenarioRepository, gsakRepo, localKafkaProducer, kafkaAdminClient,journalRepository);
-    }
 
-    protected void addWebResources(HandlerContainer handlerContainer) {
+    protected void addWebResources(HandlerContainer handler) {
+        // Swagger
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0");
+        beanConfig.setSchemes(new String[] { "http", "https" });
+        beanConfig.setBasePath(API_URI);
+        beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
+        beanConfig.setResourcePackage("no.nav");
+        beanConfig.setDescription("REST grensesnitt for VTP.");
+        beanConfig.setScan(true);
+
         @SuppressWarnings("resource")
-        var ctx = new WebAppContext(handlerContainer, Resource.newClassPathResource("/swagger"), "/swagger");
-
-
+        var ctx = new WebAppContext(handler, Resource.newClassPathResource("/swagger"), "/swagger");
         ctx.setThrowUnavailableOnStartupException(true);
         ctx.setLogUrlOnStart(true);
 
         var defaultServlet = new DefaultServlet();
-
         ServletHolder servletHolder = new ServletHolder(defaultServlet);
         servletHolder.setInitParameter("dirAllowed", "false");
 
