@@ -47,27 +47,23 @@ public class JournalpostMapper {
         modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalpostType()));
         modell.setArkivtema(mapArkivtema(journalpostRequest.getTema()));
         modell.setBruker(mapAvsenderFraBruker(journalpostRequest.getBruker()));
-        var sak = journalpostRequest.getSak();
-        if (sak.getSakstype() == Sak.SakstypeEnum.FAGSAK) {
-            modell.setSakId(journalpostRequest.getSak().getFagsakId());
-            modell.setFagsystemId(journalpostRequest.getSak().getFagsaksystem().value());
-        } else {
-            modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
-        }
+        tilSak(journalpostRequest, modell);
+        tilMottattDato(journalpostRequest, modell);
+        tilAvsenderMottaker(journalpostRequest, modell);
+        leggTilDokumentModeller(journalpostRequest, modell);
+        modell.setTittel(journalpostRequest.getTittel());
+        modell.setEksternReferanseId(journalpostRequest.getEksternReferanseId());
+        modell.setMottakskanal(journalpostRequest.getKanal());
 
-        var datoMottatt = journalpostRequest.getDatoMottatt();
-        if (datoMottatt == null) {
-            modell.setMottattDato(LocalDateTime.now());
-        } else {
-            modell.setMottattDato(convertToLocalDateTimeViaInstant(datoMottatt));
-        }
+        // Ikke implementert
+        journalpostRequest.getBehandlingstema();
+        journalpostRequest.getTilleggsopplysninger();
 
-        Optional.ofNullable(journalpostRequest.getAvsenderMottaker()).ifPresent(it -> {
-            var idType = new BrukerType(it.getIdType().toString());
-            modell.setAvsenderMottaker(new JournalpostBruker(it.getId(), idType));
-        });
+        return modell;
 
+    }
 
+    private void leggTilDokumentModeller(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
         List<DokumentModell> dokumentModeller = new ArrayList<>();
         if(!journalpostRequest.getDokumenter().isEmpty()) {
             dokumentModeller.add(mapDokument(journalpostRequest.getDokumenter().remove(0), DokumentTilknyttetJournalpost.HOVEDDOKUMENT));
@@ -78,17 +74,34 @@ public class JournalpostMapper {
                             .collect(Collectors.toList()));
         }
         modell.setDokumentModellList(dokumentModeller);
-        modell.setTittel(journalpostRequest.getTittel());
-        modell.setEksternReferanseId(journalpostRequest.getEksternReferanseId());
-        modell.setMottakskanal(journalpostRequest.getKanal());
+    }
 
-        //TODO: Hvordan håndteres denne (getAvsenderMottaker) sammenlignet med bruker? & Map felter videre
-        journalpostRequest.getAvsenderMottaker();
-        journalpostRequest.getBehandlingstema();
-        journalpostRequest.getTilleggsopplysninger();
+    private void tilAvsenderMottaker(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
+        Optional.ofNullable(journalpostRequest.getAvsenderMottaker()).ifPresent(it -> {
+            var idType = new BrukerType(it.getIdType().toString());
+            modell.setAvsenderMottaker(new JournalpostBruker(it.getId(), idType));
+        });
+    }
 
-        return modell;
+    private void tilMottattDato(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
+        var datoMottatt = journalpostRequest.getDatoMottatt();
+        if (datoMottatt == null) {
+            modell.setMottattDato(LocalDateTime.now());
+        } else {
+            modell.setMottattDato(convertToLocalDateTimeViaInstant(datoMottatt));
+        }
+    }
 
+    private void tilSak(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
+        var sak = journalpostRequest.getSak();
+        if (sak != null) {
+            if (sak.getSakstype() == Sak.SakstypeEnum.FAGSAK) {
+                modell.setSakId(journalpostRequest.getSak().getFagsakId());
+                modell.setFagsystemId(journalpostRequest.getSak().getFagsaksystem().value());
+            } else if (sak.getSakstype() == Sak.SakstypeEnum.ARKIVSAK) {
+                modell.setSakId(journalpostRequest.getSak().getArkivsaksnummer());
+            }
+        }
     }
 
     // Utvid etter behov (https://confluence.adeo.no/display/BOA/oppdaterJournalpost)
@@ -107,17 +120,12 @@ public class JournalpostMapper {
 
 
     private JournalpostBruker mapAvsenderFraBruker(Bruker bruker){
-        switch (bruker.getIdType()){
-            case FNR:
-                return new JournalpostBruker(bruker.getId(),BrukerType.FNR);
-            case AKTOERID:
-                return new JournalpostBruker(bruker.getId(),BrukerType.AKTOERID);
-            case ORGNR:
-                return new JournalpostBruker(bruker.getId(),BrukerType.ORGNR);
-            default:
-                LOG.warn("Ikke støtte for annen brukertype enn person i journalpostmodell");
-                throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
-        }
+        return switch (bruker.getIdType()){
+            case FNR -> new JournalpostBruker(bruker.getId(),BrukerType.FNR);
+            case AKTOERID -> new JournalpostBruker(bruker.getId(),BrukerType.AKTOERID);
+            case ORGNR -> new JournalpostBruker(bruker.getId(),BrukerType.ORGNR);
+            default -> throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
+        };
     }
 
     private DokumentModell mapDokument(Dokument dokument, DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost){
