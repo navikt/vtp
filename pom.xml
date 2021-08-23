@@ -313,7 +313,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
                 <artifactId>fp-topics-manifest</artifactId>
-                <version>5.1_20200117132228_47cdf2f</version>
+                <version>6.0.4</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.dok</groupId>
