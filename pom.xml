@@ -305,15 +305,15 @@
             <!-- Kontraktsavhengigheter -->
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
-                <artifactId>foreldrepenger-kontrakter-root</artifactId>
-                <version>5.0_20191210082234_0bd32f2</version>
+                <artifactId>fp-kontrakter-root</artifactId>
+                <version>6.0.4</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
                 <artifactId>fp-topics-manifest</artifactId>
-                <version>5.1_20200117132228_47cdf2f</version>
+                <version>6.0.4</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.dok</groupId>
@@ -398,7 +398,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>okonomistotte-v1</artifactId>
-                <version>2.0_20180730135256_2912e61</version>
+                <version>2.0_20190412163011_bb51d0e</version>
             </dependency>
 
             <dependency>
