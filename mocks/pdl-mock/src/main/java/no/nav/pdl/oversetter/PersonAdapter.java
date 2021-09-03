@@ -36,14 +36,10 @@ import no.nav.pdl.Statsborgerskap;
 public class PersonAdapter {
     static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ZoneId DEFAULT_ZONE_ID = ZoneId.systemDefault();
-    private static Date ettÅrSiden = Date.from(LocalDate.now().minusYears(1).atStartOfDay(DEFAULT_ZONE_ID).toInstant());
-    private static Date tiÅrFremITid = Date.from(LocalDate.now().plusYears(10).atStartOfDay(DEFAULT_ZONE_ID).toInstant());
 
-    private static final Folkeregistermetadata folkeregistermetadata = Folkeregistermetadata.builder()
-            .setAjourholdstidspunkt(ettÅrSiden)
-            .setGyldighetstidspunkt(ettÅrSiden)
-            .setOpphoerstidspunkt(tiÅrFremITid)
-            .build();
+    private PersonAdapter() {
+        // Ikke instansieres!
+    }
 
     public static Person tilPerson(PersonModell personModell, Personopplysninger personopplysninger, boolean historikk) {
         var person = new Person();
@@ -144,8 +140,21 @@ public class PersonAdapter {
         var personstatuserPDL = Personstatus.valueOf(personstatusModell.getStatus());
         folkeregisterpersonstatus.setForenkletStatus(personstatuserPDL.getForenkletStatus());
         folkeregisterpersonstatus.setStatus(personstatuserPDL.getStatus());
-        folkeregisterpersonstatus.setFolkeregistermetadata(folkeregistermetadata);
+
+        var builder = Folkeregistermetadata.builder();
+        if (personstatusModell.getFom() != null) {
+            builder.setAjourholdstidspunkt(toDate(personstatusModell.getFom()))
+                    .setGyldighetstidspunkt(toDate(personstatusModell.getFom()));
+        }
+        if (personstatusModell.getTom() != null) {
+            builder.setOpphoerstidspunkt(toDate(personstatusModell.getTom()));
+        }
+        folkeregisterpersonstatus.setFolkeregistermetadata(builder.build());
         return folkeregisterpersonstatus;
+    }
+
+    private static Date toDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(DEFAULT_ZONE_ID).toInstant());
     }
 
     private static AdressebeskyttelseGradering tilAdressebeskyttelseGradering(PersonModell bruker) {
