@@ -44,7 +44,7 @@
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
         <swagger.version>1.6.2</swagger.version>
         <graphql-java.version>0.0.0-2021-05-17T23-49-29-83942204</graphql-java.version>
-        <ch.qos.logback.version>1.2.5</ch.qos.logback.version>
+        <ch.qos.logback.version>1.2.6</ch.qos.logback.version>
         <mockito.version>3.12.4</mockito.version>
         <jupiter.version>5.7.2</jupiter.version>
 
