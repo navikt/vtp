@@ -30,7 +30,7 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 @Path("/tokenx")
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
-    private static final String ISSUER = "http://TokenDings";
+    public static final String ISSUER = "http://TokenDings";
 
     @GET
     @Path("/isAlive")
