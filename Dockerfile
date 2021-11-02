@@ -1,4 +1,4 @@
-FROM navikt/java:16
+FROM navikt/java:17
 
 LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
@@ -14,5 +14,4 @@ ENV JAVA_OPTS="-Dlogback.configurationFile=logback.xml \
                		-XX:MaxRAMPercentage=75.0 \
                		-XX:+PrintFlagsFinal \
                		-Dfile.encoding=UTF8 \
-               		-Duser.timezone=Europe/Oslo \
-               		--illegal-access=permit"
+               		-Duser.timezone=Europe/Oslo"
