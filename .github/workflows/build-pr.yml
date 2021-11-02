@@ -7,20 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set cache key
-        run: |
-          echo "CACHE_KEY=$(expr $(date +%V) - 1 + 1)" >> $GITHUB_ENV
-          echo "PREVIOUS_CACHE_KEY=$(expr $(date +%V) - 1)" >> $GITHUB_ENV
-      - uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ env.CACHE_KEY }}
-          restore-keys: |
-            ${{ runner.os }}-maven-${{ env.PREVIOUS_CACHE_KEY }}
       - uses: actions/setup-java@v2
         with:
+          java-version: 17
           distribution: 'adopt'
-          java-version: 16
+          check-latest: true
+          cache: 'maven'
 
       - name: Set build version
         run: |
@@ -31,5 +23,4 @@ jobs:
           echo "Building $BUILD_VERSION"
           mvn package --batch-mode --settings .github/.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
         env:
-          GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }} # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
