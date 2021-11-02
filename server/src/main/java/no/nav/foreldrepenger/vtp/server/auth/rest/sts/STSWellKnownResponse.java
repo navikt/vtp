@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
 import java.util.List;
 

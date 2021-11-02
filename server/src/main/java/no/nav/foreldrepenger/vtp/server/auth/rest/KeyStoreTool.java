@@ -1,6 +1,5 @@
-package no.nav.foreldrepenger.util;
+package no.nav.foreldrepenger.vtp.server.auth.rest;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.KeyStore;
@@ -22,6 +21,8 @@ import org.opensaml.security.x509.impl.KeyStoreX509CredentialAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import no.nav.foreldrepenger.util.KeystoreUtils;
+
 public class KeyStoreTool {
     private static final Logger log = LoggerFactory.getLogger(KeyStoreTool.class);
     private static RsaJsonWebKey jwk = null;
@@ -35,7 +36,7 @@ public class KeyStoreTool {
         String keystorePath = getDefaultKeyStorePath();
         String keyAndCertAlias = getKeyAndCertAlias();
 
-        try (FileInputStream keystoreFile = new FileInputStream(new File(keystorePath))) {
+        try (FileInputStream keystoreFile = new FileInputStream(keystorePath)) {
             KeyStore ks = KeyStore.getInstance("JKS");
             ks.load(keystoreFile, keystorePassword);
 

@@ -9,7 +9,7 @@ import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 
-import no.nav.foreldrepenger.vtp.server.ws.SecurityTokenServiceMockImpl;
+import no.nav.foreldrepenger.vtp.server.auth.soap.sts.SecurityTokenServiceMockImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;

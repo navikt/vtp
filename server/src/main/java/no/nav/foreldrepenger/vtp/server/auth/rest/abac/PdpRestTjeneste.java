@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest.abac;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,9 +65,9 @@ public class PdpRestTjeneste {
 
         if (antallPermits > 1) {
             int genPermits = antallPermits;
-            String permitResult = permit;
+            var permitResult = new StringBuilder(permit);
             while (genPermits-- > 1) {
-                permitResult += ", " + permit;
+                permitResult.append(", ").append(permit);
             }
 
             return " { \"Response\" : [" + permitResult + "] }";

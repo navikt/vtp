@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.ws;
+package no.nav.foreldrepenger.vtp.server.auth.soap.sts;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -35,8 +35,8 @@ import org.apache.wss4j.common.ext.WSSecurityException;
 import org.apache.wss4j.common.principal.CustomTokenPrincipal;
 import org.apache.wss4j.dom.engine.WSSConfig;
 
-import no.nav.foreldrepenger.util.KeyStoreTool;
 import no.nav.foreldrepenger.util.KeystoreUtils;
+import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 
 
 public class STSIssueResponseGenerator {
@@ -49,8 +49,7 @@ public class STSIssueResponseGenerator {
         public void handle(Callback[] callbacks) throws IOException,
                 UnsupportedCallbackException {
             for (int i = 0; i < callbacks.length; i++) {
-                if (callbacks[i] instanceof WSPasswordCallback) { // CXF
-                    WSPasswordCallback pc = (WSPasswordCallback) callbacks[i];
+                if (callbacks[i] instanceof WSPasswordCallback pc) { // CXF
                     if (KeyStoreTool.getKeyAndCertAlias().equals(pc.getIdentifier())) {
                         pc.setPassword(KeystoreUtils.getKeyStorePassword());
                         break;
@@ -148,7 +147,7 @@ public class STSIssueResponseGenerator {
         Properties properties = new Properties();
         properties.put(
             "org.apache.wss4j.crypto.provider", "org.apache.wss4j.common.crypto.Merlin");
-        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", new String(KeystoreUtils.getKeyStorePassword()));
+        properties.put("org.apache.wss4j.crypto.merlin.keystore.password", KeystoreUtils.getKeyStorePassword());
         properties.put("org.apache.wss4j.crypto.merlin.keystore.file", KeystoreUtils.getKeystoreFilePath());
 
         return properties;
@@ -156,8 +155,7 @@ public class STSIssueResponseGenerator {
 
     private static synchronized Crypto getCrypto() {
         try {
-            Crypto crypto = CryptoFactory.getInstance(getEncryptionProperties());
-            return crypto;
+            return CryptoFactory.getInstance(getEncryptionProperties());
         } catch (WSSecurityException e) {
             throw new IllegalStateException(e);
         }

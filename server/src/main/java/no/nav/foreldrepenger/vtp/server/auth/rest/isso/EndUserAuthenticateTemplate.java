@@ -1,7 +1,6 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest.isso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 class EndUserAuthenticateTemplate {
@@ -47,8 +46,8 @@ class EndUserAuthenticateTemplate {
 
         Callback(String type, Name output, Name input){
             this.type=type;
-            this.input = Arrays.asList(input);
-            this.output=Arrays.asList(output);
+            this.input = List.of(input);
+            this.output= List.of(output);
         }
 
         public String getType() {

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest;
 
 import java.util.UUID;
 
@@ -23,7 +23,7 @@ public class Oauth2AccessTokenResponse {
     public Oauth2AccessTokenResponse(String idToken) {
         this.idToken = idToken;
         this.refreshToken = UUID.randomUUID().toString();
-        this.accessToken = UUID.randomUUID().toString();
+        this.accessToken = idToken;
     }
 
     public String getIdToken() {

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.ws;
+package no.nav.foreldrepenger.vtp.server.auth.soap.sts;
 
 import javax.annotation.Resource;
 import javax.jws.HandlerChain;

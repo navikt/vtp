@@ -1,14 +1,15 @@
-package no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
-import io.swagger.annotations.Api;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.Map;
+
+import io.swagger.annotations.Api;
 
 @Api(tags = {"AzureAd"})
 @Path("/MicrosoftGraphApi")

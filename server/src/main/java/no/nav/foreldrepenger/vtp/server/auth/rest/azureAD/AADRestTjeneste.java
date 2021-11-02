@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
 import java.net.URISyntaxException;
 import java.util.AbstractMap;
@@ -32,8 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.util.AzureOidcTokenGenerator;
-import no.nav.foreldrepenger.util.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.AzureOidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
+import no.nav.foreldrepenger.vtp.server.auth.rest.UserRepository;
 
 @Api(tags = {"AzureAd"})
 @Path("/AzureAd")

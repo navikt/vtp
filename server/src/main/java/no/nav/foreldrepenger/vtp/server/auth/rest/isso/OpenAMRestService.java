@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest.isso;
 
 import java.net.URISyntaxException;
 import java.util.AbstractMap.SimpleEntry;
@@ -35,8 +35,10 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import no.nav.foreldrepenger.util.KeyStoreTool;
-import no.nav.foreldrepenger.util.OidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
+import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.rest.UserRepository;
 
 
 @Api(tags = {"Openam"})

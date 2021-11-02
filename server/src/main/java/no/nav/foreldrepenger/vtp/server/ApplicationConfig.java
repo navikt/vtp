@@ -45,13 +45,14 @@ import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjene
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.rest.IsAliveImpl;
-import no.nav.foreldrepenger.vtp.server.rest.IsReadyImpl;
-import no.nav.foreldrepenger.vtp.server.rest.auth.AADRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.rest.auth.OpenAMRestService;
-import no.nav.foreldrepenger.vtp.server.rest.auth.PdpRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.rest.auth.STSRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.rest.azuread.navansatt.MicrosoftGraphApiMock;
+import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.MicrosoftGraphApiMock;
+import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
+import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
+import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
@@ -122,6 +123,7 @@ public class ApplicationConfig extends Application {
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
+        classes.add(TokenxRestTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);

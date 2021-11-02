@@ -1,4 +1,8 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -6,9 +10,6 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapName;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
 
 public class UserRepository {
     public static List<SearchResult> getAllUsers() throws NamingException {

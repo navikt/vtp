@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.util;
+package no.nav.foreldrepenger.vtp.server.auth.rest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -13,15 +13,11 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 
-import com.google.common.base.Strings;
+
+public class AzureOidcTokenGenerator {
 
 
-public class OidcTokenGenerator {
-
-
-    private List<String> aud = Arrays.asList(
-            "OIDC"
-    );
+    private List<String> aud = List.of("OIDC");
     private NumericDate expiration = NumericDate.fromSeconds(NumericDate.now().getValue() + 3600*6);
     private String issuer;
     private NumericDate issuedAt = NumericDate.now();
@@ -30,7 +26,7 @@ public class OidcTokenGenerator {
     private String nonce;
     private Map<String, String> additionalClaims = new HashMap<>();
 
-    public OidcTokenGenerator(String brukerId, String nonce) {
+    public AzureOidcTokenGenerator(String brukerId, String nonce) {
         additionalClaims.put("azp", "OIDC");
         additionalClaims.put("acr", "Level4");
         this.subject = brukerId;
@@ -43,38 +39,38 @@ public class OidcTokenGenerator {
         this.aud.add(e);
     }
 
-    OidcTokenGenerator withoutAzp() {
+    AzureOidcTokenGenerator withoutAzp() {
         additionalClaims.remove("azp");
         return this;
     }
 
-    OidcTokenGenerator withExpiration(NumericDate expiration) {
+    AzureOidcTokenGenerator withExpiration(NumericDate expiration) {
         this.expiration = expiration;
         return this;
     }
 
-    public OidcTokenGenerator withIssuer(String issuer) {
+    public AzureOidcTokenGenerator withIssuer(String issuer) {
         this.issuer = issuer;
         return this;
     }
 
-    OidcTokenGenerator withIssuedAt(NumericDate issuedAt) {
+    AzureOidcTokenGenerator withIssuedAt(NumericDate issuedAt) {
         this.issuedAt = issuedAt;
         return this;
     }
 
-    OidcTokenGenerator withKid(String kid) {
+    AzureOidcTokenGenerator withKid(String kid) {
         this.kid = kid;
         return this;
 
     }
 
-    OidcTokenGenerator withClaim(String name, String value) {
+    AzureOidcTokenGenerator withClaim(String name, String value) {
         additionalClaims.put(name, value);
         return this;
     }
 
-    OidcTokenGenerator withAud(List<String> aud) {
+    AzureOidcTokenGenerator withAud(List<String> aud) {
         this.aud = aud;
         return this;
     }
@@ -86,7 +82,7 @@ public class OidcTokenGenerator {
         claims.setGeneratedJwtId();
         claims.setIssuedAt(issuedAt);
         claims.setSubject(subject);
-        if (!Strings.isNullOrEmpty(nonce)) {
+        if (Objects.nonNull(nonce) && !nonce.isBlank()) {
             claims.setClaim("nonce", nonce);
         }
         if (aud.size() == 1) {

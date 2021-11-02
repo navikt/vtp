@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.rest.auth;
+package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.util.KeyStoreTool;
-import no.nav.foreldrepenger.util.OidcTokenGenerator;
-import no.nav.foreldrepenger.vtp.server.ws.STSIssueResponseGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 
 @Api(tags = {"Security Token Service"})
 @Path("/v1/sts")
