@@ -39,7 +39,7 @@
         <confluent.version>6.1.1</confluent.version>
         <cxf.version>3.4.1</cxf.version>
         <apache.httpcomponents>4.5.13</apache.httpcomponents>
-        <tjenestespesifikasjoner.version>1.2020.01.20-15.44-063ae9f84815</tjenestespesifikasjoner.version>
+        <tjenestespesifikasjoner.version>1.2021.02.22-10.45-4201aaea72fb</tjenestespesifikasjoner.version>
         <fp-kontrakter.version>6.0.4</fp-kontrakter.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
         <swagger.version>1.6.3</swagger.version>
