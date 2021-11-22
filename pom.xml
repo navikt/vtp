@@ -37,7 +37,7 @@
         <kafka.version>2.8.0</kafka.version>
         <avro.version>1.11.0</avro.version>
         <confluent.version>6.1.1</confluent.version>
-        <cxf.version>3.4.1</cxf.version>
+        <cxf.version>3.4.5</cxf.version>
         <apache.httpcomponents>4.5.13</apache.httpcomponents>
         <tjenestespesifikasjoner.version>1.2021.02.22-10.45-4201aaea72fb</tjenestespesifikasjoner.version>
         <fp-kontrakter.version>6.0.4</fp-kontrakter.version>
@@ -48,7 +48,9 @@
         <ch.qos.logback.version>1.2.7</ch.qos.logback.version>
         <mockito.version>4.0.0</mockito.version>
         <jupiter.version>5.8.1</jupiter.version>
-        <jersey.version>2.35</jersey.version>
+        <jersey.version>3.0.3</jersey.version>
+        <jackson.version>2.13.0</jackson.version>
+        <servlet.api.version>5.0.0</servlet.api.version>
 
     </properties>
 
@@ -66,19 +68,25 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${servlet.api.version}</version>
+                <scope>provided</scope>
+            </dependency>
             <!-- BOMs - vil overstyre alle senere avhengigheter -->
             <dependency>
                 <!-- NB jetty avhengigher før resteasy -->
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-bom</artifactId>
-                <version>10.0.0</version>
+                <version>11.0.7</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.12.5</version>
+                <version>${jackson.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -108,13 +116,24 @@
             <dependency>
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-rt</artifactId>
-                <version>2.3.3</version>
+                <version>3.0.2</version>
             </dependency>
 
             <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>2.1.1</version>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.jws</groupId>
+                <artifactId>jakarta.jws-api</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>3.0.1</version>
             </dependency>
 
             <!-- CXF - for å kunne stubbe WS-trust -->
@@ -202,11 +221,11 @@
                 <version>2.4.1.Final</version>
             </dependency>
 
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>8.0.1</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>jakarta.platform</groupId>-->
+<!--                <artifactId>jakarta.jakartaee-api</artifactId>-->
+<!--                <version>8.0.0</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>com.graphql-java</groupId>
@@ -713,10 +732,15 @@
                         </execution>
                     </executions>
                 </plugin>
+                <!--
+                        TODO: Må vente på ny versjon hvor denne er merget inn:
+                        https://github.com/swagger-api/swagger-codegen/issues/10966
+                        https://github.com/swagger-api/swagger-codegen/pull/11254
+                -->
                 <plugin>
-                    <groupId>io.swagger</groupId>
+                    <groupId>io.swagger.codegen.v3</groupId>
                     <artifactId>swagger-codegen-maven-plugin</artifactId>
-                    <version>2.4.24</version>
+                    <version>3.0.30</version>
                 </plugin>
             </plugins>
         </pluginManagement>

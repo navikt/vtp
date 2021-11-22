@@ -1,8 +1,7 @@
 package no.nav.tjeneste.fpformidling.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import no.nav.tjeneste.virksomhet.kodeverk.v2.informasjon.Kodeverk;
 
 public class BrevmalDto {

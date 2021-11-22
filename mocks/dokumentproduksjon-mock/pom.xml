@@ -14,18 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jvnet.jaxb2_commons</groupId>
-            <artifactId>jaxb2-basics-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-http-spi</artifactId>
-        </dependency>
-        <dependency>
             <groupId>no.nav.tjenester.fim</groupId>
             <artifactId>nav-fim-dokumentproduksjon-v2-tjenestespesifikasjon</artifactId>
             <classifier>jaxws</classifier>
@@ -34,13 +22,24 @@
             <groupId>no.nav.tjenestespesifikasjoner</groupId>
             <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <!-- TODO: Trenger vi denne? Trekkes denne inn iva jetty kanskje? -->
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

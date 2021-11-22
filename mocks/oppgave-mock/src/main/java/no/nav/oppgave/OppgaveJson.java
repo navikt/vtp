@@ -1,20 +1,9 @@
 package no.nav.oppgave;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import static no.nav.oppgave.Oppgavestatus.FEILREGISTRERT;
+import static no.nav.oppgave.Oppgavestatus.FERDIGSTILT;
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
-import io.swagger.annotations.ApiModelProperty;
-import no.nav.oppgave.infrastruktur.validering.AtMostOneOf;
-import no.nav.oppgave.infrastruktur.validering.AtleastOneOf;
-import no.nav.oppgave.infrastruktur.validering.Organisasjonsnummer;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,9 +11,21 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-import static no.nav.oppgave.Oppgavestatus.FEILREGISTRERT;
-import static no.nav.oppgave.Oppgavestatus.FERDIGSTILT;
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+
+import io.swagger.annotations.ApiModelProperty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import no.nav.oppgave.infrastruktur.validering.AtMostOneOf;
+import no.nav.oppgave.infrastruktur.validering.AtleastOneOf;
+import no.nav.oppgave.infrastruktur.validering.Organisasjonsnummer;
 
 @SuppressWarnings("WeakerAccess")
 @AtleastOneOf(fields = {"temagruppe", "tema"})

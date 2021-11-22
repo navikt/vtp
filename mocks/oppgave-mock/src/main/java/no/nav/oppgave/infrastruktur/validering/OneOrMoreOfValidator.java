@@ -1,10 +1,11 @@
 package no.nav.oppgave.infrastruktur.validering;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import static java.util.Arrays.asList;
+
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @SuppressWarnings("WeakerAccess")
 public class OneOrMoreOfValidator implements ConstraintValidator<OneOrMoreOf, List<String>> {

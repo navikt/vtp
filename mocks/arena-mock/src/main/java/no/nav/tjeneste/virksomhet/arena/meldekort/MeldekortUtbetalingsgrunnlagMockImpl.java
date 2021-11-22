@@ -3,19 +3,19 @@ package no.nav.tjeneste.virksomhet.arena.meldekort;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.RequestWrapper;
-import javax.xml.ws.ResponseWrapper;
-import javax.xml.ws.soap.Addressing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.jws.HandlerChain;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebResult;
+import jakarta.jws.WebService;
+import jakarta.xml.ws.RequestWrapper;
+import jakarta.xml.ws.ResponseWrapper;
+import jakarta.xml.ws.soap.Addressing;
 import no.nav.foreldrepenger.util.ConversionUtils;
 import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;

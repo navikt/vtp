@@ -2,7 +2,8 @@ package no.nav.tjeneste.fpformidling.dto;
 
 
 import java.util.UUID;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 public class TekstFraSaksbehandlerDto {
     @NotNull

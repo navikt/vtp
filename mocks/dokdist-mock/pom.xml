@@ -15,8 +15,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
         </dependency>
         <dependency>
             <groupId>io.swagger</groupId>
@@ -28,7 +28,7 @@
         <plugins>
             <!-- activate the plugin -->
             <plugin>
-                <groupId>io.swagger</groupId>
+                <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
                 <executions>
                     <execution>
@@ -39,7 +39,7 @@
                             <!-- specify the swagger yaml -->
                             <inputSpec>${basedir}/src/main/swagger/swagger.json</inputSpec>
                             <!--<configHelp>true</configHelp> -->
-                            <language>jaxrs-cxf-cdi</language>
+                            <language>jaxrs-jersey</language>
 
                             <apiPackage>no.nav.dokdistfordeling.generated.api</apiPackage>
                             <modelPackage>no.nav.dokdistfordeling.generated.model</modelPackage>

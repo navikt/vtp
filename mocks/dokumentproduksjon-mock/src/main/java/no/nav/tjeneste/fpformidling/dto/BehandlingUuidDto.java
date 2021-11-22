@@ -2,8 +2,8 @@ package no.nav.tjeneste.fpformidling.dto;
 
 import java.util.UUID;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 public class BehandlingUuidDto {
 

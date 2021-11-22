@@ -1,10 +1,11 @@
 package no.nav.oppgave.infrastruktur.validering;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.Arrays;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @SuppressWarnings("WeakerAccess")
 public class OneOfValidator implements ConstraintValidator<OneOf, String> {

@@ -1,11 +1,12 @@
 package no.nav.oppgave.infrastruktur.validering;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @SuppressWarnings("WeakerAccess")
 public class IsoDateValidator implements ConstraintValidator<IsoDate, String> {

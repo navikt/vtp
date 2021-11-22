@@ -1,11 +1,11 @@
 package no.nav.oppgave.infrastruktur.validering;
 
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import static no.nav.oppgave.infrastruktur.validering.CountFieldsMatching.count;
 import static org.apache.commons.lang3.math.NumberUtils.LONG_ONE;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @SuppressWarnings("WeakerAccess")
 public class AtMostOneOfValidator implements ConstraintValidator<AtMostOneOf, Object> {

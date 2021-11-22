@@ -2,15 +2,14 @@ package no.nav.dokdistfordeling;
 
 import java.util.UUID;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 import no.nav.dokdistfordeling.generated.model.DistribuerJournalpostRequestToModel;
 import no.nav.dokdistfordeling.generated.model.DistribuerJournalpostResponseToModel;
 
