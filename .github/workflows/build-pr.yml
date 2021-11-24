@@ -25,6 +25,7 @@ jobs:
         shell: bash
         run: |
           echo "Building $BUILD_VERSION"
-          mvn package --batch-mode --settings .github/.m2/settings.xml --file pom.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
+          mvn install -e --batch-mode --settings .github/.m2/settings.xml --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=navikt_vtp
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }} # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}  # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
