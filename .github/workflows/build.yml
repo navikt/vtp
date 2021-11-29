@@ -28,7 +28,7 @@ jobs:
           echo "Building artifacts $BUILD_VERSION"
       - name: Build and analyze
         run: |
-          mvn install -e --batch-mode --settings .github/.m2/settings.xml --file pom.xml -Drevision= -Dchangelist= -Dsha1=${BUILD_VERSION} -Dfile.encoding=UTF-8 -DtrimStackTrace=false org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=navikt_vtp
+          mvn jacoco:prepare-agent install jacoco:report sonar:sonar -e --batch-mode --settings .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dsonar.login=${SONAR_TOKEN}
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
