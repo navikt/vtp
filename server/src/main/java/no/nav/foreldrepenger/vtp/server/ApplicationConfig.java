@@ -55,6 +55,7 @@ import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
+import no.nav.nom.SkjermetPersonMock;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
@@ -116,6 +117,7 @@ public class ApplicationConfig extends Application {
         classes.add(DokdistfordelingMock.class);
         classes.add(DigitalKontaktinformasjonMock.class);
         classes.add(AxsysEnhetstilgangMock.class);
+        classes.add(SkjermetPersonMock.class);
 
         // tekniske ting
         classes.add(OpenAMRestService.class);

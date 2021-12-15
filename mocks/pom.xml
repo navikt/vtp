@@ -36,6 +36,7 @@
         <module>dkif-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
         <module>omsorgspenger-rammemeldinger-mock</module>
+        <module>skjermet-person-mock</module>
     </modules>
 
     <dependencyManagement>
