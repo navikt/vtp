@@ -16,7 +16,6 @@
         <module>arena-mock</module>
         <module>axsys-enhetstilgang-mock</module>
         <module>journalpost-mock</module>
-        <module>dokumentproduksjon-mock</module>
         <module>dokdist-mock</module>
         <module>dummy-mock</module>
         <module>gsak-mock</module>
