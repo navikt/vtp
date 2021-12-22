@@ -441,11 +441,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>dokumentproduksjon-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>omsorgspenger-rammemeldinger-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -550,14 +545,6 @@
                 <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
                 <version>${tjenestespesifikasjoner.version}</version>
             </dependency>
-            <!-- 2.1.8 er ligger på fp-formidling på GPR -->
-            <dependency>
-                <groupId>no.nav.tjenester.fim</groupId>
-                <artifactId>nav-fim-dokumentproduksjon-v2-tjenestespesifikasjon</artifactId>
-                <version>2.1.8</version>
-                <classifier>jaxws</classifier>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 

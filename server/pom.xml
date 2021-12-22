@@ -89,10 +89,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>dokumentproduksjon-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>oppdrag-mock</artifactId>
         </dependency>
         <dependency>

@@ -15,9 +15,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;
 import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
-import no.nav.tjeneste.virksomhet.dokumentproduksjon.v2.DokumentproduksjonV2MockImpl;
 import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkServiceMockImpl;
-
 
 public class SoapWebServiceConfig {
 
@@ -31,12 +29,8 @@ public class SoapWebServiceConfig {
 
         System.setProperty("javax.xml.soap.SAAJMetaFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl");
 
-
         publishWebService(new SecurityTokenServiceMockImpl(), "/soap/SecurityTokenServiceProvider/");
-
         publishWebService(new KodeverkServiceMockImpl(repo), "/soap/kodeverk/ws/Kodeverk/v2");
-
-        publishWebService(new DokumentproduksjonV2MockImpl(journalRepository), "/soap/dokprod/ws/dokumentproduksjon/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/soap/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
         publishWebService(new SimulerFpServiceMockImpl(repo), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");

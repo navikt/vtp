@@ -62,7 +62,6 @@ import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
 import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
-import no.nav.tjeneste.fpformidling.FpFormidlingMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
@@ -103,7 +102,6 @@ public class ApplicationConfig extends Application {
         classes.add(SafMock.class);
         classes.add(PdlLeesahRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
-        classes.add(FpFormidlingMock.class);
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteFile.class);
         classes.add(DummyRestTjenesteBoolean.class);
