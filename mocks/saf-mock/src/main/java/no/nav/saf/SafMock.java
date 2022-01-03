@@ -84,7 +84,7 @@ public class SafMock {
 
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
         if (dokumentModell.isPresent()) {
-            LOG.info("Henter dokument på følgende dokumentId: " + dokumentModell.get().getDokumentId());
+            LOG.info("Henter dokument på følgende dokumentId: {}", dokumentModell.get().getDokumentId());
             var dokumentinnhold = dokumentModell.get().getDokumentVariantInnholdListe().stream()
                     .filter(innhold -> innhold.getVariantFormat().getKode().equalsIgnoreCase(variantFormat))
                     .map(DokumentVariantInnhold::getDokumentInnhold)

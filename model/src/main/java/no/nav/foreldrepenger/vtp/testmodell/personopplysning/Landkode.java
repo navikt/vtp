@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Landkode {
-    private static final Pattern LANDKODE = Pattern.compile("^[A-Z]{3}$");
+    private static final Pattern LANDKODE_MATCHER = Pattern.compile("^[A-Z]{3}$");
 
     public static final Landkode NOR = new Landkode("NOR");
     public static final Landkode USA = new Landkode("USA");
@@ -17,7 +17,7 @@ public class Landkode {
 
     public Landkode(String kode) {
         this.iso3bokstavLandkode=kode;
-        if(!LANDKODE.matcher(kode).matches()) {
+        if(!LANDKODE_MATCHER.matcher(kode).matches()) {
             throw new IllegalArgumentException("Landkode er ikke gyldig 3-bokstav ISO landkode: "+ kode);
         }
     }

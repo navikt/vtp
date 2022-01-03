@@ -137,7 +137,7 @@ public class MockServer {
     private static List<String> getEnvValueList(String envName) {
         return Arrays.stream((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
                 .map(String::trim)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Object getTopic(Field f) {
@@ -171,7 +171,7 @@ public class MockServer {
 
         // kjør soap oppsett etter jetty har startet
         if(!tjenesteDisabled(VTPTjeneste.VTP_SOAP)) {
-            addSoapServices(testScenarioRepository, journalRepository);
+            addSoapServices(testScenarioRepository);
         }
     }
 
@@ -186,9 +186,8 @@ public class MockServer {
         jettyHttpServer = new JettyHttpServer(server, true);
     }
 
-    protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository,
-                                   JournalRepository journalRepository) {
-        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository, journalRepository);
+    protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository) {
+        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository);
     }
 
     protected void addRestServices(HandlerContainer handler, DelegatingTestscenarioBuilderRepository testScenarioRepository,

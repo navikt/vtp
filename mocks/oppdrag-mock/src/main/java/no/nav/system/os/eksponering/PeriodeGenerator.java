@@ -1,13 +1,15 @@
 package no.nav.system.os.eksponering;
 
-import no.nav.system.os.entiteter.typer.simpletypes.KodeStatusLinje;
-import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdragslinje;
+import static java.util.Collections.emptyList;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import no.nav.system.os.entiteter.typer.simpletypes.KodeStatusLinje;
+import no.nav.system.os.tjenester.simulerfpservice.simulerfpserviceservicetypes.Oppdragslinje;
 
 public class PeriodeGenerator {
 
@@ -21,7 +23,9 @@ public class PeriodeGenerator {
         Collections.sort(ytelsesPerioder);
         Collections.sort(opphørsPerioder);
 
-        if (opphørsPerioder.isEmpty() && ytelsesPerioder.isEmpty()){return null;}
+        if (opphørsPerioder.isEmpty() && ytelsesPerioder.isEmpty()) {
+            return emptyList();
+        }
 
         if (opphørsPerioder.isEmpty()){
             for (Periode periode : ytelsesPerioder){

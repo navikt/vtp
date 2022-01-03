@@ -36,6 +36,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
@@ -125,7 +126,7 @@ public class TestscenarioRestTjeneste {
     @ApiOperation(value = "", notes = "Sletter et initialisert testscenario som matcher id")
     public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
         logger.info("Sletter testscenario med id: [{}]", id);
-        if (testscenarioRepository.slettScenario(id)) {
+        if (Boolean.TRUE.equals(testscenarioRepository.slettScenario(id))) {
             return Response.noContent().build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -199,7 +200,7 @@ public class TestscenarioRestTjeneste {
         return testscenario.getPersonopplysninger().getFamilierelasjoner()
             .stream()
             .filter(modell -> modell.getTil() instanceof BarnModell)
-            .map(modell -> modell.getTil())
+            .map(FamilierelasjonModell::getTil)
             .sorted(Comparator.comparing(BrukerModell::getIdent))
             .map(p -> Map.entry(p.getIdent(), p.getAktørIdent()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
@@ -209,10 +210,8 @@ public class TestscenarioRestTjeneste {
         Set<String> skipTheseKeys = new HashSet<>(Arrays.asList(skipKeys));
         Map<String, String> result = new LinkedHashMap<>();
         for (Map.Entry<String, List<String>> e : queryParameters.entrySet()) {
-            if (skipTheseKeys.contains(e.getKey())) {
-                continue; // tar inn som egen nøkkel, skipper her
-            } else if (e.getValue().size() > 1 || e.getValue().isEmpty()) {
-                continue; // støtter ikke multi-value eller tomme
+            if (skipTheseKeys.contains(e.getKey()) || e.getValue().size() != 1) {
+                continue; // tar inn som egen nøkkel, skipper her OG støtter ikke multi-value eller tomme
             }
             result.put(e.getKey(), e.getValue().get(0));
         }

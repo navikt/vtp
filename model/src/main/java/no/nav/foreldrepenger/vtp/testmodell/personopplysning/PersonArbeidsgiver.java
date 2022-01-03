@@ -20,11 +20,16 @@ public class PersonArbeidsgiver extends BrukerModell {
     @Override
     public String getIdent() {
         // trenger kjønn for å få FNR. Tar en spansk en
-        String lokalIdent = getLokalIdent();
+        var lokalIdent = getLokalIdent();
         if (lokalIdent != null && NUMERIC.matcher(lokalIdent).matches()) {
             return lokalIdent;
         }
-        Kjønn kjønn = lokalIdent.hashCode() % 2 == 0 ? Kjønn.K : Kjønn.M;
+        Kjønn kjønn;
+        if (lokalIdent == null) {
+            kjønn = Kjønn.K;
+        } else {
+            kjønn = lokalIdent.hashCode() % 2 == 0 ? Kjønn.K : Kjønn.M;
+        }
         return getIdenter() == null
             ? null
             : getIdenter().getVoksenIdentForLokalIdent(lokalIdent, kjønn);
