@@ -59,12 +59,6 @@ class InfotrygdSeraliseringDeseraliseringsTest extends TestscenarioSerialization
         test(lagInfotrygdVedtak());
     }
 
-
-    @Test
-    public void InfotrygdBeregningsgrunnlagSeraliseringDeseraliseringTest() {
-        // TODO: InfotrygdBeregningsgrunnlag m.m.
-    }
-
     @Test
     public void InfotrygdModellSeraliseringDeseraliseringTest() {
         test(lagInfotrygdModell());

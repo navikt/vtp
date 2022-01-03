@@ -11,6 +11,8 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 /** konverterer lokale identer brukt i testcase til utvalgte fødselsnummer hentet fra syntetisk liste. */
 public class LokalIdentIndeks {
 
+    private static final String REGEX_MATCH_PATTERN = "^\\d+$";
+
     private final IdentGenerator identGenerator;
     private final Map<String, String> identer = new ConcurrentHashMap<>(); // NOSONAR
     private String unikScenarioId;
@@ -25,7 +27,7 @@ public class LokalIdentIndeks {
     }
 
     public String getVoksenIdentForLokalIdent(String lokalIdent, BrukerModell.Kjønn kjønn) {
-        if (lokalIdent.matches("^\\d+$")) {
+        if (lokalIdent.matches(REGEX_MATCH_PATTERN)) {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
         return identer.computeIfAbsent(key(lokalIdent), i -> kjønn == BrukerModell.Kjønn.M ? identGenerator.tilfeldigMannFnr() : identGenerator.tilfeldigKvinneFnr());
@@ -36,7 +38,7 @@ public class LokalIdentIndeks {
     }
 
     public String getBarnIdentForLokalIdent(String lokalIdent) {
-        if (lokalIdent.matches("^\\d+$")) {
+        if (lokalIdent.matches(REGEX_MATCH_PATTERN)) {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
         // tilfeldig kjønn
@@ -44,7 +46,7 @@ public class LokalIdentIndeks {
     }
 
     public String getIdentForDødfødsel(String lokalIdent, LocalDate dødsdato) {
-        if (lokalIdent.matches("^\\d+$")) {
+        if (lokalIdent.matches(REGEX_MATCH_PATTERN)) {
             return identer.computeIfAbsent(key(lokalIdent), i -> lokalIdent);
         }
         // TODO: Legg til iterator hvis det er tvillinger eller trillinger.

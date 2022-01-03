@@ -49,13 +49,13 @@ public class SigrunMock {
         String inntektsAar = null;
         String aktørId = null;
 
-        if (httpHeaders.getRequestHeader("x-naturligident").size() > 0) {
+        if (!httpHeaders.getRequestHeader("x-naturligident").isEmpty()) {
             brukerFnr = httpHeaders.getRequestHeader("x-naturligident").get(0);
         }
-        if (httpHeaders.getRequestHeader("x-inntektsaar").size() > 0) {
+        if (!httpHeaders.getRequestHeader("x-inntektsaar").isEmpty()) {
             inntektsAar = httpHeaders.getRequestHeader("x-inntektsaar").get(0);
         }
-        if (httpHeaders.getRequestHeader("x-aktoerid").size() > 0) {
+        if (!httpHeaders.getRequestHeader("x-aktoerid").isEmpty()) {
             aktørId = httpHeaders.getRequestHeader("x-aktoerid").get(0);
         }
 
@@ -83,7 +83,7 @@ public class SigrunMock {
                 String test = aktuellInntektsår.get().oppføring().stream()
                         .map(Oppføring::tilSigrunMockResponseFormat)
                         .collect(Collectors.joining(",\n"));
-                response = String.format("[\n%s\n]", test);
+                response = String.format("[%n%s%n]", test);
             } else {
                 LOG.info("Kunne ikke finne inntektsår");
                 return Response.status(404, "Kunne ikke finne inntektsår").build();

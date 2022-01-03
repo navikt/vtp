@@ -1,6 +1,5 @@
 package no.nav.pdl.oversetter;
 
-import static java.util.stream.Collectors.toList;
 import static no.nav.pdl.oversetter.AdresseAdapter.setAdresser;
 import static no.nav.pdl.oversetter.DoedfoedtBarnAdapter.tilDoedfoedtBarn;
 import static no.nav.pdl.oversetter.FamilierelasjonBygger.byggFamilierelasjoner;
@@ -47,7 +46,7 @@ public class PersonAdapter {
         // bostedsadresse, oppholdsadresse, kontaktadresse, deltBosted settes metode under.
         setAdresser(person, hentAdresseModellTPS(personModell, historikk));
         person.setDoedsfall(tilDoedsfall(personModell));
-        person.setDoedfoedtBarn(tilDoedfoedtBarn(personModell.getAktørIdent(), personopplysninger, person));
+        person.setDoedfoedtBarn(tilDoedfoedtBarn(personModell.getAktørIdent(), personopplysninger));
         byggFamilierelasjoner(personModell.getAktørIdent(), personopplysninger, person);
         person.setFoedsel(tilFoedsel(personModell));
         person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
@@ -128,7 +127,7 @@ public class PersonAdapter {
         return historikk
                 ? personModell.getAllePersonstatus().stream()
                 .map(PersonAdapter::tilFolkeregisterpersonstatus)
-                .collect(toList())
+                .toList()
                 : List.of(tilFolkeregisterpersonstatus(personModell.getPersonstatus()));
     }
 
@@ -173,7 +172,7 @@ public class PersonAdapter {
         return historikk
                 ? personModell.getAlleStatsborgerskap().stream()
                 .map(PersonAdapter::tilStatsborgerskap)
-                .collect(toList())
+                .toList()
                 : List.of(tilStatsborgerskap(personModell.getStatsborgerskap()));
     }
 

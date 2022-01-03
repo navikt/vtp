@@ -13,19 +13,19 @@ public class GeografiskTilknytningAdapter {
             return geografiskTilknytning;
         } else {
             switch (tilknytning.getGeografiskTilknytningType()) {
-                case Land:
+                case Land -> {
                     geografiskTilknytning.setGtType(GtType.UTLAND);
                     geografiskTilknytning.setGtLand(tilknytning.getKode());
-                    break;
-                case Kommune:
+                }
+                case Kommune -> {
                     geografiskTilknytning.setGtType(GtType.KOMMUNE);
                     geografiskTilknytning.setGtKommune(tilknytning.getKode());
-                    break;
-                case Bydel:
+                }
+                case Bydel -> {
                     geografiskTilknytning.setGtType(GtType.BYDEL);
                     geografiskTilknytning.setGtBydel(tilknytning.getKode());
-                default:
-                    geografiskTilknytning.setGtType(GtType.UDEFINERT);
+                }
+                default -> geografiskTilknytning.setGtType(GtType.UDEFINERT);
             }
             geografiskTilknytning.setRegel("UVISST");
             return geografiskTilknytning;

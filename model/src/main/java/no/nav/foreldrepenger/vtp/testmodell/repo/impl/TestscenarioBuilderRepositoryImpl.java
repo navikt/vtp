@@ -15,7 +15,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AnnenPartModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
@@ -31,7 +30,7 @@ import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
 public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioBuilderRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestscenarioBuilderRepositoryImpl.class);
 
     private final BasisdataProvider basisdata;
     private final Map<String, Testscenario> scenarios = new ConcurrentHashMap<>();
@@ -74,23 +73,22 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     public void indekser(TestscenarioImpl testScenario) {
         scenarios.put(testScenario.getId(), testScenario);
         var personopplysninger = testScenario.getPersonopplysninger();
-        if (personopplysninger == null) {
-            log.warn("TestscenarioImpl mangler innhold:" + testScenario);
+        if (personopplysninger != null) {
+            indekserPersonopplysninger(personopplysninger);
+            inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
+            if (personopplysninger.getAnnenPart() != null) {
+                inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
+            }
         } else {
-            indekserPersonopplysninger(testScenario.getPersonopplysninger());
+            LOG.warn("Scenario har ikke personopplysninger om bruker! Scenario har følgende innhold: {}", testScenario);
         }
 
-        OrganisasjonModeller organisasjonModeller = testScenario.getOrganisasjonModeller();
+        var organisasjonModeller = testScenario.getOrganisasjonModeller();
         if (organisasjonModeller != null) {
             List<OrganisasjonModell> modeller = organisasjonModeller.getModeller();
             organisasjonIndeks.leggTil(modeller);
         }
         testScenario.getPersonligArbeidsgivere().forEach(p -> personIndeks.leggTil(p));
-
-        inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
-        if (personopplysninger.getAnnenPart() != null) {
-            inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
-        }
     }
 
     @Override
@@ -118,8 +116,8 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
 
     private void leggTilAdresseHvisIkkeSatt(SøkerModell søker, Collection<FamilierelasjonModell> familierelasjonModeller) {
         for (FamilierelasjonModell familierelasjonModell : familierelasjonModeller) {
-            if (familierelasjonModell.getTil() instanceof PersonModell) {
-                leggTilAdresseHvisIkkeSatt(søker, (PersonModell) familierelasjonModell.getTil());
+            if (familierelasjonModell.getTil() instanceof PersonModell personModell) {
+                leggTilAdresseHvisIkkeSatt(søker, personModell);
             }
         }
     }
@@ -159,7 +157,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     @Override
     public Boolean endreTestscenario(String id, Testscenario testscenario) {
         scenarios.replace(id, testscenario);
-        return null;
+        return true;
     }
 
 }

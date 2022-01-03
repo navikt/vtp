@@ -18,15 +18,17 @@ import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
 @Path("/api/tilbakekreving")
 public class TilbakekrevingKonsistensTjeneste {
 
+    private static final Random RANDOM =  new Random();
+
     private static int sisteSaksnummer = genererTilfeldigSaksnummer();
     private static String sisteHenvisning = "1";
 
     @POST
     @Path("/konsistens")
     @ApiOperation(value = "Sørger for at kravgrunnlag som returneres av mock har riktig saksnummer og henvisning")
-    public Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
-        TilbakekrevingKonsistensTjeneste.sisteSaksnummer = Integer.parseInt(request.saksnummer());
-        TilbakekrevingKonsistensTjeneste.sisteHenvisning = request.behandlingId();
+    public static Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
+        sisteSaksnummer = Integer.parseInt(request.saksnummer());
+        sisteHenvisning = request.behandlingId();
         return Response.status(200).build();
     }
 
@@ -39,7 +41,7 @@ public class TilbakekrevingKonsistensTjeneste {
     }
 
     private static int genererTilfeldigSaksnummer() {
-        int m = (int) Math.pow(10, 10 - 1);
-        return m + new Random().nextInt(9 * m);
+        var m = (int) Math.pow(10, 9);
+        return m + RANDOM.nextInt(9 * m);
     }
 }

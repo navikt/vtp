@@ -16,6 +16,9 @@ public class FamilierelasjonBygger {
 
     private static final int PERSONNR_LENGDE = 5;
 
+    private FamilierelasjonBygger() {
+    }
+
     public static Person byggFamilierelasjoner(String aktørIdent, Personopplysninger personopplysningerModell, Person person) {
         person.setFamilierelasjoner(new ArrayList<>()); // init array
         person.setForelderBarnRelasjon(new ArrayList<>()); // init array
@@ -41,10 +44,6 @@ public class FamilierelasjonBygger {
         }
 
         leggTilForelderBarnRelasjoner(person, person.getFamilierelasjoner());
-
-        for (Familierelasjon familierelasjon : familierelasjoner) {
-            System.out.println("    " + familierelasjon.getRelatertPersonsIdent());
-        }
         return person;
     }
 

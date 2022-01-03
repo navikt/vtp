@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class GsakRepo {
 
-    private static final String SAKSBEHANDLER_IDENT = "MinSaksbehandler";
-
     private Map<Long, ObjectNode> jsonBySakId;
     private AtomicInteger sakIder;
 

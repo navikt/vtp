@@ -8,16 +8,18 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.pdl.DoedfoedtBarn;
-import no.nav.pdl.Person;
 
 public class DoedfoedtBarnAdapter {
 
     private static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int PERSONNR_LENGDE = 5;
 
-    public static List<DoedfoedtBarn> tilDoedfoedtBarn(String aktørIdent, Personopplysninger personopplysningerModell, Person person) {
+    private DoedfoedtBarnAdapter() {
+    }
+
+    public static List<DoedfoedtBarn> tilDoedfoedtBarn(String aktørIdent, Personopplysninger personopplysningerModell) {
         var erBarnet = erIdentenBarnet(aktørIdent, personopplysningerModell);
-        return leggTilDoedfoedtBarnForRelasjonerMedFDATIdent(personopplysningerModell, person, erBarnet);
+        return leggTilDoedfoedtBarnForRelasjonerMedFDATIdent(personopplysningerModell, erBarnet);
     }
 
     private static boolean erIdentenBarnet(String aktørIdent, Personopplysninger personopplysningerModell) {
@@ -30,7 +32,6 @@ public class DoedfoedtBarnAdapter {
     }
 
     private static List<DoedfoedtBarn> leggTilDoedfoedtBarnForRelasjonerMedFDATIdent(Personopplysninger personopplysningerModell,
-                                                                                     Person person,
                                                                                      boolean erBarnet) {
         List<DoedfoedtBarn> doedfoedtBarnList = new ArrayList<>();
         if (!erBarnet) {

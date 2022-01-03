@@ -75,7 +75,7 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
 
     @Override
     public Boolean endreTestscenario(String id, Testscenario testscenario) {
-        return null;
+        return delegate.endreTestscenario(id, testscenario);
     }
 
     @Override

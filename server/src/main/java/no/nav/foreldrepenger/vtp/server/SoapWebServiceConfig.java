@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.lang.reflect.Method;
-
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.WebServiceFeature;
 
@@ -10,12 +8,10 @@ import org.eclipse.jetty.http.spi.JettyHttpContext;
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 
 import no.nav.foreldrepenger.vtp.server.auth.soap.sts.SecurityTokenServiceMockImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingServiceMockImpl;
 import no.nav.system.os.eksponering.SimulerFpServiceMockImpl;
 import no.nav.tjeneste.virksomhet.arena.meldekort.MeldekortUtbetalingsgrunnlagMockImpl;
-import no.nav.tjeneste.virksomhet.kodeverk.v2.KodeverkServiceMockImpl;
 
 public class SoapWebServiceConfig {
 
@@ -25,12 +21,11 @@ public class SoapWebServiceConfig {
         this.jettyHttpServer = jettyHttpServer;
     }
 
-    public void setup(TestscenarioBuilderRepository repo, JournalRepository journalRepository) {
+    public void setup(TestscenarioBuilderRepository repo) {
 
         System.setProperty("javax.xml.soap.SAAJMetaFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl");
 
         publishWebService(new SecurityTokenServiceMockImpl(), "/soap/SecurityTokenServiceProvider/");
-        publishWebService(new KodeverkServiceMockImpl(repo), "/soap/kodeverk/ws/Kodeverk/v2");
         publishWebService(new MeldekortUtbetalingsgrunnlagMockImpl(repo), "/soap/ail_ws/MeldekortUtbetalingsgrunnlag_v1");
         publishWebService(new SimulerFpServiceMockImpl(repo), "/soap/cics/services/oppdragService");
         publishWebService(new TilbakekrevingServiceMockImpl(), "/soap/tilbakekreving/services/tilbakekrevingService");
@@ -44,9 +39,9 @@ public class SoapWebServiceConfig {
     }
 
     private JettyHttpContext buildHttpContext(String contextString) {
-        JettyHttpContext ctx = (JettyHttpContext) jettyHttpServer.createContext(contextString);
+        var ctx = (JettyHttpContext) jettyHttpServer.createContext(contextString);
         try {
-            Method method = JettyHttpContext.class.getDeclaredMethod("getJettyContextHandler");
+            var method = JettyHttpContext.class.getDeclaredMethod("getJettyContextHandler");
             method.setAccessible(true);
             HttpSpiContextHandler contextHandler = (HttpSpiContextHandler) method.invoke(ctx);
             contextHandler.start();

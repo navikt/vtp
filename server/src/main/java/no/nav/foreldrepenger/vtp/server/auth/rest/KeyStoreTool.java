@@ -24,9 +24,12 @@ import org.slf4j.LoggerFactory;
 import no.nav.foreldrepenger.util.KeystoreUtils;
 
 public class KeyStoreTool {
-    private static final Logger log = LoggerFactory.getLogger(KeyStoreTool.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KeyStoreTool.class);
     private static RsaJsonWebKey jwk = null;
     private static KeyStore keystore = null;
+
+    private KeyStoreTool() {
+    }
 
     static synchronized void init() {
 
@@ -48,7 +51,7 @@ public class KeyStoreTool {
 
             KeyStoreTool.keystore = ks;
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableEntryException e) {
-            log.error("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
+            LOG.error("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
             throw new RuntimeException(e);
         }
 
@@ -57,7 +60,7 @@ public class KeyStoreTool {
             jwk.setPrivateKey(myPrivateKey);
             jwk.setKeyId("1");
         } catch (JoseException e) {
-            log.error("Error during init of JWK: " + e);
+            LOG.error("Error during init of JWK: {}", e);
             throw new RuntimeException(e);
         }
 
@@ -81,8 +84,7 @@ public class KeyStoreTool {
             init();
             org.apache.xml.security.Init.init();
         }
-        KeyStoreX509CredentialAdapter credentialAdapter = new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(), getKeyStorePassword());
-        return credentialAdapter;
+        return new KeyStoreX509CredentialAdapter(keystore, getKeyAndCertAlias(), getKeyStorePassword());
     }
 
     public static synchronized RsaJsonWebKey getJsonWebKey() {

@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class PersonIndeks {
+    private static final String IDENT_IKKE_SENDT_VED = "ident";
 
     private Map<String, BrukerModell> byIdent = new ConcurrentHashMap<>();
     private Map<String, Personopplysninger> byIdentPersonopplysninger = new ConcurrentHashMap<>();
@@ -59,7 +60,7 @@ public class PersonIndeks {
 
     @SuppressWarnings("unchecked")
     public <V extends BrukerModell> V finnByIdent(String ident) {
-        Objects.requireNonNull(ident,"ident");
+        Objects.requireNonNull(ident, IDENT_IKKE_SENDT_VED);
         if(byIdent.containsKey(ident)) {
             return (V) byIdent.get(ident);
         } else {
@@ -68,7 +69,7 @@ public class PersonIndeks {
     }
 
     public <V extends BrukerModell> V finnByAktørIdent(String ident) {
-        Objects.requireNonNull(ident,"ident");
+        Objects.requireNonNull(ident, IDENT_IKKE_SENDT_VED);
         if(byIdent.containsKey(ident)){
             return (V) byIdent.get(ident);
         } else {
@@ -77,12 +78,12 @@ public class PersonIndeks {
     }
 
     public Personopplysninger finnPersonopplysningerByIdent(String ident) {
-        Objects.requireNonNull(ident,"ident");
+        Objects.requireNonNull(ident, IDENT_IKKE_SENDT_VED);
         return byIdentPersonopplysninger.get(ident);
     }
 
     public Personopplysninger finnPersonopplysningerByAktørIdent(String ident) {
-        Objects.requireNonNull(ident,"ident");
+        Objects.requireNonNull(ident, IDENT_IKKE_SENDT_VED);
         return byIdentPersonopplysninger.get(ident);
     }
 

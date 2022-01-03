@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -89,10 +88,10 @@ public abstract class PersonModell extends BrukerModell {
     @JacksonInject
     private AdresseIndeks adresseIndeks;
 
-    public PersonModell() {
+    protected PersonModell() {
     }
 
-    public PersonModell(String lokalIdent, String navn, LocalDate fødselsdato) {
+    protected PersonModell(String lokalIdent, String navn, LocalDate fødselsdato) {
         super(lokalIdent);
 
         this.etternavn = navn.contains(" ") ? navn.substring(navn.lastIndexOf(' ')) : navn;
@@ -113,19 +112,19 @@ public abstract class PersonModell extends BrukerModell {
     }
 
     public List<AdresseModell> getAdresser(AdresseType type) {
-        return getAdresser().stream().filter(a -> a.getAdresseType().equals(type)).collect(Collectors.toList());
+        return getAdresser().stream().filter(a -> a.getAdresseType().equals(type)).toList();
     }
 
     public List<AdresseModell> getAdresser() {
         return adresser.stream()
-                .map((AdresseModell a) -> {
-                    if (a instanceof AdresseRefModell) {
-                        return adresseIndeks.finnFra((AdresseRefModell) a);
+                .map((AdresseModell adresseModell) -> {
+                    if (adresseModell instanceof AdresseRefModell a) {
+                        return adresseIndeks.finnFra(a);
                     } else {
-                        return a;
+                        return adresseModell;
                     }
                 })
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
     }
 
 
@@ -168,7 +167,7 @@ public abstract class PersonModell extends BrukerModell {
     public String getGjeldendeadresseType() {
         if (gjeldendeAdresseType != null && getAdresse(gjeldendeAdresseType).isPresent()) {
             // hvis satt bruk det
-            return gjeldendeAdresseType.getTpsKode(getAdresse(gjeldendeAdresseType).get().getLand());
+            return gjeldendeAdresseType.getTpsKode(getAdresse(gjeldendeAdresseType).get().getLand()); // NOSONAR
         } else if (!getAdresser().isEmpty()) {
             // plukk første hvis finnes
             AdresseModell adresseModell = getAdresser().get(0);

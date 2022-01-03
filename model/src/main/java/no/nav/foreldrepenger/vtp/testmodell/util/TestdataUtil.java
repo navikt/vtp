@@ -1,65 +1,61 @@
 package no.nav.foreldrepenger.vtp.testmodell.util;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AnnenPartModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonNavn;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SivilstandModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
+
 public class TestdataUtil {
-    static public LocalDate generateRandomPlausibleBirtdayParent() {
-        LocalDate startRange = LocalDate.of(1960, 1, 1);
-        LocalDate endRange = LocalDate.of(2000, 1, 1);
 
-        long startEpoch = startRange.toEpochDay();
-        long endEpoch = endRange.toEpochDay();
-
-        Random random = new Random();
-
-        long randomEpochDay = startEpoch + (long) (random.nextDouble() * endEpoch - startEpoch);
-
-        LocalDate randomLocalDate = LocalDate.ofEpochDay(randomEpochDay);
-
-        return randomLocalDate;
-
+    private TestdataUtil() {
     }
 
-    static public LocalDate generateBirthdateNowMinusThreeYears() {
+    private static Random RANDOM = new Random();
 
-        LocalDate endRange = LocalDateTime.now().toLocalDate();
-        LocalDate startRange = endRange.minus(3, ChronoUnit.YEARS);
+    public static LocalDate generateRandomPlausibleBirtdayParent() {
+        var startRange = LocalDate.of(1960, 1, 1);
+        var endRange = LocalDate.of(2000, 1, 1);
 
-        long startEpoch = startRange.toEpochDay();
-        long endEpoch = endRange.toEpochDay();
+        var startEpoch = startRange.toEpochDay();
+        var endEpoch = endRange.toEpochDay();
 
-        Random random = new Random();
+        var randomEpochDay = startEpoch + (long) (RANDOM.nextDouble() * endEpoch - startEpoch);
 
-        long randomEpochDay = startEpoch + (long) (random.nextDouble() * (endEpoch - startEpoch));
-
-        LocalDate randomLocalDate = LocalDate.ofEpochDay(randomEpochDay);
-
-        return randomLocalDate;
+        return LocalDate.ofEpochDay(randomEpochDay);
     }
 
-    static public LocalDate generateBirthdayYoungerThanSixMonths() {
+    public static LocalDate generateBirthdateNowMinusThreeYears() {
+        var endRange = LocalDateTime.now().toLocalDate();
+        var startRange = endRange.minus(3, ChronoUnit.YEARS);
+
+        var startEpoch = startRange.toEpochDay();
+        var endEpoch = endRange.toEpochDay();
+
+        var randomEpochDay = startEpoch + (long) (RANDOM.nextDouble() * (endEpoch - startEpoch));
+
+        return LocalDate.ofEpochDay(randomEpochDay);
+    }
+
+    public static LocalDate generateBirthdayYoungerThanSixMonths() {
         //Note: this actually returns younger than five months, but ok since it's also younger than six months...
-        LocalDate endRange = LocalDateTime.now().toLocalDate();
-        LocalDate startRange = endRange.minus(5, ChronoUnit.MONTHS);
+        var endRange = LocalDateTime.now().toLocalDate();
+        var startRange = endRange.minus(5, ChronoUnit.MONTHS);
 
-        long startEpoch = startRange.toEpochDay();
-        long endEpoch = endRange.toEpochDay();
+        var startEpoch = startRange.toEpochDay();
+        var endEpoch = endRange.toEpochDay();
 
-        Random random = new Random();
+        var randomEpochDay = startEpoch + (long) (RANDOM.nextDouble() * (endEpoch - startEpoch));
 
-        long randomEpochDay = startEpoch + (long) (random.nextDouble() * (endEpoch - startEpoch));
-
-        LocalDate randomLocalDate = LocalDate.ofEpochDay(randomEpochDay);
-
-        return randomLocalDate;
+        return LocalDate.ofEpochDay(randomEpochDay);
     }
 
-    static public PersonNavn getSokerName(SøkerModell søker) {
+    public static PersonNavn getSokerName(SøkerModell søker) {
         PersonNavn personNavn;
         if (søker.getKjønn().equals(BrukerModell.Kjønn.K)) {
             personNavn = FiktivtNavn.getRandomFemaleName();
@@ -72,9 +68,9 @@ public class TestdataUtil {
     /**
      *  Tar høyde for at gifte folk deler etternavn.
      */
-    static public PersonNavn getAnnenPartName(SøkerModell søker, AnnenPartModell annenPart) {
+    public static PersonNavn getAnnenPartName(SøkerModell søker, AnnenPartModell annenPart) {
         PersonNavn personNavn;
-        if (søker.getSivilstand().getKode().equals(SivilstandModell.Sivilstander.GIFT)) {
+        if (søker.getSivilstand().getSivilstandType().equals(SivilstandModell.Sivilstander.GIFT)) {
             if (annenPart.getKjønn().equals(BrukerModell.Kjønn.K)) {
                 personNavn = FiktivtNavn.getRandomFemaleName(søker.getEtternavn());
             } else {

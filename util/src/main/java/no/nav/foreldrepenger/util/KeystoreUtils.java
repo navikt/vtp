@@ -6,10 +6,10 @@ import static java.lang.System.getenv;
 public class KeystoreUtils {
     public static Boolean sslDisabled() {
         if (null != getenv("DISABLE_SSL")) {
-            return getenv("DISABLE_SSL") == "true";
+            return getenv("DISABLE_SSL").equalsIgnoreCase("true");
         }
         if (null != getProperty("disable.ssl")) {
-            return getProperty("disable.ssl") == "true";
+            return getProperty("disable.ssl").equalsIgnoreCase("true");
         }
         return false;
     }

@@ -7,6 +7,9 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
@@ -24,6 +27,11 @@ import no.nav.pdl.UtenlandskAdresseIFrittFormat;
 import no.nav.pdl.Vegadresse;
 
 public class AdresseAdapter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AdresseAdapter.class);
+
+    private AdresseAdapter() {
+    }
 
     private static Date getTom(GateadresseModell adr) {
         return adr.getTom() == null ? toDate(LocalDate.of(2050, 1, 1)) : toDate(adr.getTom());
@@ -104,18 +112,18 @@ public class AdresseAdapter {
         for (AdresseModell a : adresser) {
             switch (a.getAdresseType()) {
                 case BOSTEDSADRESSE:
-                    if ((a instanceof GateadresseModell)) {
-                        Bostedsadresse bostedsadresse = fraGateadresse((GateadresseModell)a);
+                    if (a instanceof GateadresseModell gateadresseModell) {
+                        var bostedsadresse = fraGateadresse(gateadresseModell);
                         pers.setBostedsadresse(List.of(bostedsadresse));
                         break;
                     }
-                    if ((a instanceof PostboksadresseModell)) {
-                        var postboksadresse = fraPostbokadresse((PostboksadresseModell) a);
+                    if (a instanceof PostboksadresseModell postboksadresseModell) {
+                        var postboksadresse = fraPostbokadresse(postboksadresseModell);
                         var kontaktadresse = new Kontaktadresse.Builder().setPostboksadresse(postboksadresse).build();
                         pers.setKontaktadresse(List.of(kontaktadresse));
                         break;
                     }
-                    System.out.println("Ukjent adressetype: " + a);
+                    LOG.info("Ukjent adressetype: {}", a);
                     break;
                 case MIDLERTIDIG_POSTADRESSE:
                     // TODO: Hvordan skal denne oversettes med PDL?
@@ -128,7 +136,7 @@ public class AdresseAdapter {
                     pers.setKontaktadresse(List.of(kontaktadresse));
                     break;
                 default:
-                    System.out.println("Ukjent adressetype: " + a);
+                    LOG.info("Ukjent adressetype: {}", a);
             }
         }
         setNonnullableAdresserSomIkkeErSatt(pers);
