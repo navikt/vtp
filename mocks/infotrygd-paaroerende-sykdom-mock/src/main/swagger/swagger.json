@@ -538,6 +538,9 @@
         "vedtak"
       ],
       "properties": {
+        "foedselsnummerSoeker": {
+          "type": "string"
+        },
         "arbeidsforhold": {
           "type": "array",
           "items": {
