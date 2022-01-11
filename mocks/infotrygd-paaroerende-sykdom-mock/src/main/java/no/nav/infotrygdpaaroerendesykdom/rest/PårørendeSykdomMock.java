@@ -184,17 +184,21 @@ public class PårørendeSykdomMock {
                     var personOpplysninger = scenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(fnr);
                     var søker = personOpplysninger.getSøker();
                     var annenPart = personOpplysninger.getAnnenPart();
-                    finnVedtak(søker).ifPresent(vedtakList::add);
-                    finnVedtak(annenPart).ifPresent(vedtakList::add);
+                    if (søker != null) {
+                        finnVedtak(søker).ifPresent(vedtakList::add);
+                    }
+                    if (annenPart != null) {
+                        finnVedtak(annenPart).ifPresent(vedtakList::add);
+                    }
                     return vedtakList.stream();
                 }
         ).collect(Collectors.toList());
         return Response.ok(alleVedtak).build();
     }
 
-    private Optional<VedtakPleietrengendeDto> finnVedtak(PersonModell søker) {
-        var inntektYtelseModellSøker = scenarioRepository.getInntektYtelseModell(søker.getIdent());
-        return inntektYtelseModellSøker.map(inntektYtelseModell -> getVedtak(inntektYtelseModell, søker.getIdent()));
+    private Optional<VedtakPleietrengendeDto> finnVedtak(PersonModell person) {
+        var inntektYtelseModell = scenarioRepository.getInntektYtelseModell(person.getIdent());
+        return inntektYtelseModell.map(modell -> getVedtak(modell, person.getIdent()));
     }
 
 
