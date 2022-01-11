@@ -2,13 +2,16 @@ package no.nav.infotrygdpaaroerendesykdom.rest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.enterprise.context.RequestScoped;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -26,6 +29,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgr
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdRammevedtaksGrunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.infotrygdpaaroerendesykdom.generated.model.Arbeidsforhold;
 import no.nav.infotrygdpaaroerendesykdom.generated.model.Kodeverdi;
@@ -53,17 +57,17 @@ public class PårørendeSykdomMock {
     @SuppressWarnings("unused")
     @GET
     @Path("/saker")
-    @Produces({ "application/json" })
+    @Produces({"application/json"})
     @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller",  })
+    }, tags = {"paaroerende-sykdom-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SakResult.class),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response hentSakUsingGET( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
+    public Response hentSakUsingGET(@NotNull @ApiParam(value = "fnr", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "fom", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "tom") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
 
-        if(inntektYtelseModellOptional.isEmpty()) {
+        if (inntektYtelseModellOptional.isEmpty()) {
             return Response.ok(new SakDto()).build();
         }
 
@@ -75,18 +79,41 @@ public class PårørendeSykdomMock {
     }
 
     @SuppressWarnings("unused")
+    @POST
+    @Path("/saker")
+    @Produces({"application/json"})
+    @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"paaroerende-sykdom-controller",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SakResult.class, responseContainer = "List"),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    public Response hentSakUsingPost(PersonRequest personRequest) {
+        var result = personRequest.fnr().stream().flatMap(fnr -> {
+            Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
+            if (inntektYtelseModellOptional.isEmpty()) {
+                return Stream.empty();
+            }
+            InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
+            return Stream.of(getSakResult(inntektYtelseModell));
+        }).collect(Collectors.toList());
+
+        return Response.ok(result).build();
+    }
+
+    @SuppressWarnings("unused")
     @GET
     @Path("/grunnlag")
-    @Produces({ "application/json" })
+    @Produces({"application/json"})
     @ApiOperation(value = "paaroerendeSykdom", notes = "", response = PaaroerendeSykdom.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller" })
+    }, tags = {"paaroerende-sykdom-controller"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = PaaroerendeSykdom.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response paaroerendeSykdomUsingGET1( @NotNull @ApiParam(value = "fnr",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "fom",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "tom")  @QueryParam("tom") LocalDate tom) {
+    public Response paaroerendeSykdomUsingGET1(@NotNull @ApiParam(value = "fnr", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "fom", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "tom") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
-        if(inntektYtelseModell.isEmpty()) {
+        if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
 
@@ -100,34 +127,91 @@ public class PårørendeSykdomMock {
     }
 
     @SuppressWarnings("unused")
+    @POST
+    @Path("/grunnlag")
+    @Produces({"application/json"})
+    @ApiOperation(value = "paaroerendeSykdom", notes = "", response = PaaroerendeSykdom.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"paaroerende-sykdom-controller"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = PaaroerendeSykdom.class, responseContainer = "List"),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    public Response paaroerendeSykdomUsingPost(PersonRequest personRequest) {
+        var result = personRequest.fnr().stream().flatMap(fnr -> {
+            Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+            if (inntektYtelseModell.isEmpty()) {
+                return Stream.empty();
+            }
+
+            return inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
+                    .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
+                    .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it))
+                    .filter(it -> it.getTema().getKode().equals("BS"));
+        }).collect(Collectors.toList());
+
+        return Response.ok(result).build();
+    }
+
+
+    @SuppressWarnings("unused")
     @GET
     @Path("/vedtakForPleietrengende")
-    @Produces({ "application/json" })
+    @Produces({"application/json"})
     @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller" })
+    }, tags = {"paaroerende-sykdom-controller"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = VedtakPleietrengendeDto.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response finnVedtakForPleietrengendeUsingGET( @NotNull @ApiParam(value = "Pleietrengendes fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.")  @QueryParam("tom") LocalDate tom) {
+    public Response finnVedtakForPleietrengendeUsingGET(@NotNull @ApiParam(value = "Pleietrengendes fødselsnummer", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.") @QueryParam("tom") LocalDate tom) {
         return Response.ok(List.of()).build();
     }
 
+
+    @SuppressWarnings("unused")
+    @POST
+    @Path("/vedtakForPleietrengende")
+    @Produces({"application/json"})
+    @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"paaroerende-sykdom-controller"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = VedtakPleietrengendeDto.class, responseContainer = "List"),
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    public Response finnVedtakForPleietrengendeUsingPost(PersonRequest personRequest) {
+        var alleVedtak = personRequest.fnr().stream().flatMap(fnr -> {
+                    var vedtakList = new ArrayList<VedtakPleietrengendeDto>();
+                    var personOpplysninger = scenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(fnr);
+                    var søker = personOpplysninger.getSøker();
+                    var annenPart = personOpplysninger.getAnnenPart();
+                    finnVedtak(søker).ifPresent(vedtakList::add);
+                    finnVedtak(annenPart).ifPresent(vedtakList::add);
+                    return vedtakList.stream();
+                }
+        ).collect(Collectors.toList());
+        return Response.ok(alleVedtak).build();
+    }
+
+    private Optional<VedtakPleietrengendeDto> finnVedtak(PersonModell søker) {
+        var inntektYtelseModellSøker = scenarioRepository.getInntektYtelseModell(søker.getIdent());
+        return inntektYtelseModellSøker.map(inntektYtelseModell -> getVedtak(inntektYtelseModell, søker.getIdent()));
+    }
+
+
     @GET
     @Path("/rammevedtak/omsorgspenger")
-    @Produces({ "application/json" })
+    @Produces({"application/json"})
     @ApiOperation(value = "Finner rammevedtak basert på fødselsnummeret til søker.", notes = "", response = RammevedtakDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
-    }, tags={ "paaroerende-sykdom-controller" })
+    }, tags = {"paaroerende-sykdom-controller"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RammevedtakDto.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class) })
-    public Response finnRammevedtakForOmsorgspengerUsingGET( @NotNull @ApiParam(value = "Søkers fødselsnummer",required=true)  @QueryParam("fnr") String fnr,  @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.",required=true)  @QueryParam("fom") LocalDate fom,  @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.")  @QueryParam("tom") LocalDate tom) {
+            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    public Response finnRammevedtakForOmsorgspengerUsingGET(@NotNull @ApiParam(value = "Søkers fødselsnummer", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
-        if(inntektYtelseModell.isEmpty()) {
+        if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
-
 
 
         List<RammevedtakDto> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
@@ -141,22 +225,34 @@ public class PårørendeSykdomMock {
     }
 
 
-
     private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
-        if(fom1 == null) {
+        if (fom1 == null) {
             fom1 = LocalDate.MIN;
         }
-        if(tom1 == null) {
+        if (tom1 == null) {
             tom1 = LocalDate.MAX;
         }
-        if(fom2 == null) {
+        if (fom2 == null) {
             fom2 = LocalDate.MIN;
         }
-        if(tom2 == null) {
+        if (tom2 == null) {
             tom2 = LocalDate.MAX;
         }
         return (fom1.isBefore(tom2) && (tom1.isAfter(fom2)));
     }
+
+    private VedtakPleietrengendeDto getVedtak(InntektYtelseModell inntektYtelseModell, String søkerFnr) {
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell().ytelser().stream()
+                .map(this::mapYtelseToSak)
+                .filter(it -> it.getTema().getKode().equals("BS"))
+                .collect(Collectors.toList());
+
+        VedtakPleietrengendeDto result = new VedtakPleietrengendeDto();
+        result.setSoekerFnr(søkerFnr);
+        result.setVedtak(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
+        return result;
+    }
+
 
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
         List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell().ytelser().stream()
@@ -187,7 +283,7 @@ public class PårørendeSykdomMock {
         sak.setOpphoerFom(toLocalDate(ytelse.opphør()));
         sak.setRegistrert(toLocalDate(ytelse.registrert()));
 
-        if(ytelse.resultat() != null) {
+        if (ytelse.resultat() != null) {
             Kodeverdi resultat = new Kodeverdi();
             resultat.setKode(ytelse.resultat().getKode());
             resultat.setTermnavn("ukjent resultat");
@@ -196,11 +292,11 @@ public class PårørendeSykdomMock {
 
         sak.setSakId(ytelse.sakId());
 
-        if(ytelse.sakStatus() != null) {
+        if (ytelse.sakStatus() != null) {
             sak.setStatus(kodeverdi(ytelse.sakStatus().name()));
         }
 
-        if(ytelse.sakType() != null) {
+        if (ytelse.sakType() != null) {
             sak.setType(kodeverdi(ytelse.sakType().getKode()));
         }
 
@@ -218,7 +314,7 @@ public class PårørendeSykdomMock {
 
         r.setArbeidsforhold(arbeidsforholdListe);
 
-        if(grunnlag.getArbeidskategori() != null) {
+        if (grunnlag.getArbeidskategori() != null) {
             r.setArbeidskategori(kodeverdi(grunnlag.getArbeidskategori().getKode()));
         }
 
@@ -231,11 +327,11 @@ public class PårørendeSykdomMock {
         r.setIdentdato(grunnlag.getStartdato());
         r.setIverksatt(grunnlag.getStartdato());
 
-        if(grunnlag.getTom() != null) {
+        if (grunnlag.getTom() != null) {
             r.setOpphoerFom(grunnlag.getTom().plusDays(1));
         }
 
-        if(grunnlag.getFom() != null && grunnlag.getTom() != null) {
+        if (grunnlag.getFom() != null && grunnlag.getTom() != null) {
             Periode periode = new Periode();
             periode.setFom(grunnlag.getFom());
             periode.setTom(grunnlag.getTom());
@@ -249,7 +345,7 @@ public class PårørendeSykdomMock {
 
         r.setTema(kodeverdi(grunnlag.getBehandlingTema().getTema()));
 
-        r.setVedtak(grunnlag.getVedtak().stream().map( vedtak -> {
+        r.setVedtak(grunnlag.getVedtak().stream().map(vedtak -> {
             Vedtak v = new Vedtak();
             Periode periode = new Periode();
             periode.setFom(vedtak.fom());
@@ -263,7 +359,7 @@ public class PårørendeSykdomMock {
     }
 
     private RammevedtakDto mapGrunnlagToRammevedtak(InfotrygdRammevedtaksGrunnlag it) {
-        if(it == null) {
+        if (it == null) {
             return null;
         }
         RammevedtakDto rammevedtak = new RammevedtakDto();
@@ -280,7 +376,7 @@ public class PårørendeSykdomMock {
         af.setArbeidsgiverOrgnr(arbeidsforhold.getOrgnr());
         af.setInntektForPerioden(arbeidsforhold.getBeløp());
 
-        if(arbeidsforhold.getInntektsPeriodeType() != null) {
+        if (arbeidsforhold.getInntektsPeriodeType() != null) {
             af.setInntektsperiode(kodeverdi(arbeidsforhold.getInntektsPeriodeType().getKode()));
         }
 
@@ -290,7 +386,7 @@ public class PårørendeSykdomMock {
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {
-        if(localDateTime != null) {
+        if (localDateTime != null) {
             return localDateTime.toLocalDate();
         }
         return null;
