@@ -119,7 +119,7 @@ public class PårørendeSykdomMock {
 
         List<PaaroerendeSykdom> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
                 .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
-                .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it))
+                .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it, fnr))
                 .filter(it -> it.getTema().getKode().equals("BS"))
                 .collect(Collectors.toList());
 
@@ -145,7 +145,7 @@ public class PårørendeSykdomMock {
 
             return inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
                     .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
-                    .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it))
+                    .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it, fnr))
                     .filter(it -> it.getTema().getKode().equals("BS"));
         }).collect(Collectors.toList());
 
@@ -305,8 +305,10 @@ public class PårørendeSykdomMock {
         return sak;
     }
 
-    private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdPårørendeSykdomBeregningsgrunnlag grunnlag) {
+    private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdPårørendeSykdomBeregningsgrunnlag grunnlag, String fnrSøker) {
         PaaroerendeSykdom r = new PaaroerendeSykdom();
+
+        r.foedselsnummerSoeker(fnrSøker);
 
         List<Arbeidsforhold> arbeidsforholdListe = grunnlag.getArbeidsforhold().stream()
                 .map(this::mapArbeidsforhold)
