@@ -33,7 +33,7 @@ public class JournalforingHendelseSender {
                 .set("journalpostStatus", modell.getJournalStatus() != null ? modell.getJournalStatus().getKode() : "M")
                 .set("temaGammelt", "")
                 .set("temaNytt", modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "FOR")
-                .set("mottaksKanal", modell.getMottakskanal() != null ? modell.getMottakskanal() : "ALTINN")
+                .set("mottaksKanal", modell.getMottakskanal() != null ? modell.getMottakskanal().getKode() : "ALTINN")
                 .set("kanalReferanseId", modell.getEksternReferanseId())
                 .set("behandlingstema", tilBehandlingsTema(modell).getOffisiellKode())
                 .build();
