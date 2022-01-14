@@ -19,6 +19,7 @@ public class Arkivfiltype {
         koder.add("TIFF");
         koder.add("XLSX");
         koder.add("XML");
+        koder.add("JSON");
         koder.add("AXML");
         koder.add("PDF");
         koder.add("PDFA");
@@ -30,6 +31,7 @@ public class Arkivfiltype {
     public static final Arkivfiltype TIFF = new Arkivfiltype("TIFF");
     public static final Arkivfiltype XLSX = new Arkivfiltype("XLSX");
     public static final Arkivfiltype XML = new Arkivfiltype("XML");
+    public static final Arkivfiltype JSON = new Arkivfiltype("JSON");
     public static final Arkivfiltype AXML = new Arkivfiltype("AXML");
     public static final Arkivfiltype PDF = new Arkivfiltype("PDF");
     public static final Arkivfiltype PDFA = new Arkivfiltype("PDFA");

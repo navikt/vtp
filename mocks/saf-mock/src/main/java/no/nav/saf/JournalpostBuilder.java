@@ -29,7 +29,7 @@ public class JournalpostBuilder {
         journalpost.setTittel(modell.getTittel());
         journalpost.setTema(Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "UKJ"));
         journalpost.setJournalstatus(tilJournalstatus(modell));
-        journalpost.setKanal(Kanal.valueOf(modell.getMottakskanal() != null ? modell.getMottakskanal() : "UKJENT"));
+        journalpost.setKanal(Kanal.valueOf(modell.getMottakskanal() != null ? modell.getMottakskanal().getKode() : "UKJENT"));
         journalpost.setBruker(modell.getBruker() != null ? tilBruker(modell.getBruker()) : null);
         journalpost.setDatoOpprettet(new Date());
         journalpost.setEksternReferanseId(modell.getEksternReferanseId() != null ?

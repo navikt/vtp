@@ -14,6 +14,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.ANY, fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -29,7 +30,7 @@ public class JournalpostModell {
     private Journalstatus journalStatus;
     private String kommunikasjonsretning;
     private LocalDateTime mottattDato;
-    private String mottakskanal;
+    private Mottakskanal mottakskanal;
     private Arkivtema arkivtema;
     private String journaltilstand;
     private Journalposttyper journalposttype;
@@ -49,7 +50,7 @@ public class JournalpostModell {
                              @JsonProperty("journalStatus") Journalstatus journalStatus,
                              @JsonProperty("kommunikasjonsretning") String kommunikasjonsretning,
                              @JsonProperty("mottattDato") LocalDateTime mottattDato,
-                             @JsonProperty("mottakskanal") String mottakskanal,
+                             @JsonProperty("mottakskanal") Mottakskanal mottakskanal,
                              @JsonProperty("arkivtema") Arkivtema arkivtema,
                              @JsonProperty("journaltilstand") String journaltilstand,
                              @JsonProperty("journalposttype") Journalposttyper journalposttype,
@@ -104,9 +105,9 @@ public class JournalpostModell {
     }
 
     public String getAvsenderFnr() {
-         if (avsenderMottaker != null && avsenderMottaker.getBrukerType() == BrukerType.FNR) {
-             return avsenderMottaker.getIdent();
-         } else return null;
+        if (avsenderMottaker != null && avsenderMottaker.getBrukerType() == BrukerType.FNR) {
+            return avsenderMottaker.getIdent();
+        } else return null;
     }
 
     public void setAvsenderFnr(String avsenderFnr) {
@@ -153,11 +154,11 @@ public class JournalpostModell {
         this.mottattDato = mottattDato;
     }
 
-    public String getMottakskanal() {
+    public Mottakskanal getMottakskanal() {
         return mottakskanal;
     }
 
-    public void setMottakskanal(String mottakskanal) {
+    public void setMottakskanal(Mottakskanal mottakskanal) {
         this.mottakskanal = mottakskanal;
     }
 
@@ -177,9 +178,13 @@ public class JournalpostModell {
         this.journaltilstand = journaltilstand;
     }
 
-    public Journalposttyper getJournalposttype() { return journalposttype; }
+    public Journalposttyper getJournalposttype() {
+        return journalposttype;
+    }
 
-    public void setJournalposttype(Journalposttyper journalposttype) { this.journalposttype = journalposttype;}
+    public void setJournalposttype(Journalposttyper journalposttype) {
+        this.journalposttype = journalposttype;
+    }
 
     public JournalpostBruker getBruker() {
         return bruker;
