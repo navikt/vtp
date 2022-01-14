@@ -32,6 +32,7 @@ public class Mottakskanal {
         koder.add("INGEN_DISTRIBUSJON");
         koder.add("NAV_NO_UINNLOGGET");
         koder.add("INNSENDT_NAV_ANSATT");
+        koder.add("UKJENT");
         VALID_KODE = Collections.unmodifiableList(koder);
     }
 
