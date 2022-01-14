@@ -14,14 +14,14 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 public class JournalpostModellGenerator {
 
     public static JournalpostModell lagJournalpostJsonDokument(String innhold, String fnr, DokumenttypeId dokumenttypeId, Mottakskanal mottakskanal) {
-        return lagJournalpostStrukturertDokument(innhold, fnr, dokumenttypeId, mottakskanal, Arkivfiltype.JSON);
+        return lagJournalpostStrukturertDokument(innhold, fnr, dokumenttypeId, mottakskanal, Arkivfiltype.JSON, null);
     }
 
     public static JournalpostModell lagJournalpostStrukturertDokument(String innhold, String fnr, DokumenttypeId dokumenttypeId) {
-        return lagJournalpostStrukturertDokument(innhold, fnr, dokumenttypeId, Mottakskanal.UKJENT, Arkivfiltype.XML);
+        return lagJournalpostStrukturertDokument(innhold, fnr, dokumenttypeId, Mottakskanal.UKJENT, Arkivfiltype.XML, null);
     }
 
-    public static JournalpostModell lagJournalpostStrukturertDokument(String innhold, String fnr, DokumenttypeId dokumenttypeId, Mottakskanal mottakskanal, Arkivfiltype arkivfiltype) {
+    public static JournalpostModell lagJournalpostStrukturertDokument(String innhold, String fnr, DokumenttypeId dokumenttypeId, Mottakskanal mottakskanal, Arkivfiltype arkivfiltype, String brevkode) {
         JournalpostModell journalpostModell = new JournalpostModell();
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
@@ -30,6 +30,7 @@ public class JournalpostModellGenerator {
 
         DokumentModell dokumentModell = new DokumentModell();
         dokumentModell.setInnhold(innhold);
+        dokumentModell.setBrevkode(brevkode);
         dokumentModell.setDokumentType(dokumenttypeId);
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
