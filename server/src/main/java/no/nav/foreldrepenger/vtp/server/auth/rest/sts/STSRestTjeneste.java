@@ -31,7 +31,7 @@ import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
-    public static final String ISSUER = "https://vtp.local/stsissuer";
+    public static final String ISSUER = "https://vtp.local/issuer";
     private static final Logger log = LoggerFactory.getLogger(STSRestTjeneste.class);
     private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
