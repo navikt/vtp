@@ -50,7 +50,7 @@
         <graphql-java.version>0.0.0-2021-05-17T23-49-29-83942204</graphql-java.version>
         <graphql-codegen-maven-plugin.version>5.3.0</graphql-codegen-maven-plugin.version>
         <ch.qos.logback.version>1.2.10</ch.qos.logback.version>
-        <mockito.version>4.2.0</mockito.version>
+        <mockito.version>4.3.0</mockito.version>
         <jupiter.version>5.8.2</jupiter.version>
 
     </properties>
