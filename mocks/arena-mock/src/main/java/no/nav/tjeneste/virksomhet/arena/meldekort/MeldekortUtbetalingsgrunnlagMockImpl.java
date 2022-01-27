@@ -76,7 +76,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         }
         LOG.info("finnMeldekortUtbetalingsgrunnlagListe. Ident: {}", ident);
 
-        if (ident == null) {
+        if (ident == null || ident.isEmpty()) {
             UgyldigInput faultInfo = lagUgyldigInput(ident);
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
