@@ -31,6 +31,7 @@ import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.Forretnin
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.Sikkerhetsbegrensning;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.feil.UgyldigInput;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.AktoerId;
+import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.informasjon.Bruker;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeRequest;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeResponse;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.ObjectFactory;
@@ -63,15 +64,22 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput {
 
         FinnMeldekortUtbetalingsgrunnlagListeResponse response = of.createFinnMeldekortUtbetalingsgrunnlagListeResponse();
-        AktoerId aktoerId = (AktoerId) finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent();
-        String aktørId = aktoerId.getAktoerId();
-        LOG.info("finnMeldekortUtbetalingsgrunnlagListe. AktoerIdent: " + aktørId);
 
-        if (aktørId == null) {
-            UgyldigInput faultInfo = lagUgyldigInput(aktørId);
+        Optional<InntektYtelseModell> iyIndeksOpt = Optional.empty();
+        String ident = "";
+        if (finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent() instanceof AktoerId aktoerId) {
+            ident = aktoerId.getAktoerId();
+            iyIndeksOpt = scenarioRepository.getInntektYtelseModellFraAktørId(ident);
+        } else if (finnMeldekortUtbetalingsgrunnlagListeRequest.getIdent() instanceof Bruker bruker) {
+            ident = bruker.getIdent();
+            iyIndeksOpt = scenarioRepository.getInntektYtelseModell(ident);
+        }
+        LOG.info("finnMeldekortUtbetalingsgrunnlagListe. Ident: {}", ident);
+
+        if (ident == null || ident.isEmpty()) {
+            UgyldigInput faultInfo = lagUgyldigInput(ident);
             throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
         }
-        Optional<InntektYtelseModell> iyIndeksOpt = scenarioRepository.getInntektYtelseModellFraAktørId(aktørId);
         if (iyIndeksOpt.isEmpty()) {
             return response;
         }
@@ -80,7 +88,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         Feilkode feilkode = arenaModell.feilkode();
         if (feilkode != null) {
             try {
-                haandterExceptions(feilkode, aktørId);
+                haandterExceptions(feilkode, ident);
             } catch (Exception e) {
                 LOG.error("Error ", e);
                 throw e;
