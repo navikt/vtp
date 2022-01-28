@@ -16,8 +16,8 @@ public class AnnenPartModell extends VoksenModell {
     public AnnenPartModell() {
     }
 
-    public AnnenPartModell(String lokalIdent, String navn, LocalDate fødselsdato, Kjønn kjønn) {
-        super(lokalIdent, navn, fødselsdato, kjønn);
+    public AnnenPartModell(String lokalIdent, String navn, LocalDate fødselsdato, boolean harUføretrygd, Kjønn kjønn) {
+        super(lokalIdent, navn, fødselsdato, harUføretrygd, kjønn);
     }
 
 }
