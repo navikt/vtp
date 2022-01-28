@@ -1,6 +1,8 @@
 package no.nav.mock.pesys;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -23,6 +25,7 @@ import no.nav.mock.pesys.dto.UføreTypeCode;
 public class PesysMock {
 
     private static final String HEADER_FNR = "fnr";
+    private static final Date FEM_ÅR_SIDEN = convertToDateViaInstant(LocalDate.now().minusYears(5));
 
     @Context
     private TestscenarioRepository testscenarioRepository;
@@ -45,21 +48,20 @@ public class PesysMock {
         } else {
             return new HentUforehistorikkResponseDto(new UforehistorikkDto(List.of()));
         }
-
-
-
     }
 
     protected HentUforehistorikkResponseDto lagUføreResponseMedEffektFom5ÅrSiden() {
         return new HentUforehistorikkResponseDto(
                 new UforehistorikkDto(List.of(
-                        new UforeperiodeDto(100,
-                                LocalDate.now().minusYears(5),
-                                LocalDate.now().minusYears(5),
-                                new UforeTypeCtiDto(UføreTypeCode.UFORE),
-                                LocalDate.now().minusYears(5),
-                                LocalDate.now().minusYears(5))
+                        new UforeperiodeDto(100, FEM_ÅR_SIDEN, FEM_ÅR_SIDEN,
+                                new UforeTypeCtiDto(UføreTypeCode.UFORE), FEM_ÅR_SIDEN, FEM_ÅR_SIDEN)
                 ))
         );
+    }
+
+    private static Date convertToDateViaInstant(LocalDate dateToConvert) {
+        return java.util.Date.from(dateToConvert.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 }

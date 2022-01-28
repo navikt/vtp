@@ -1,11 +1,11 @@
 package no.nav.mock.pesys.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public record UforeperiodeDto(Integer uforegrad,
-                              LocalDate uforetidspunkt,
-                              LocalDate virk,
+                              Date uforetidspunkt,
+                              Date virk,
                               UforeTypeCtiDto uforetype,
-                              LocalDate ufgFom,
-                              LocalDate ufgTom) {
+                              Date ufgFom,
+                              Date ufgTom) {
 }
