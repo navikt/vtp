@@ -11,8 +11,8 @@ public class SøkerModell extends VoksenModell {
     public SøkerModell() {
     }
 
-    public SøkerModell(String lokalIdent, String navn, LocalDate fødselsdato, Kjønn kjønn) {
-        super(lokalIdent, navn, fødselsdato, kjønn);
+    public SøkerModell(String lokalIdent, String navn, LocalDate fødselsdato, boolean harUføretrygd, Kjønn kjønn) {
+        super(lokalIdent, navn, fødselsdato, harUføretrygd, kjønn);
     }
 
 }

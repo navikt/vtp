@@ -35,6 +35,7 @@
         <module>infotrygd-paaroerende-sykdom-mock</module>
         <module>omsorgspenger-rammemeldinger-mock</module>
         <module>skjermet-person-mock</module>
+        <module>pesys-mock</module>
     </modules>
 
     <dependencyManagement>
