@@ -1,6 +1,7 @@
 package no.nav.mock.pesys;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -40,13 +41,13 @@ class HentUforeHistorikkResponseSeraliseringTest {
     void sjekkEnPeriodeNårHarUføretrygTrue() {
         var søkerModell = new SøkerModell(FNR, "Tester", LocalDate.now().minusYears(25), true, BrukerModell.Kjønn.M);
         when(personIndeks.finnByIdent(any())).thenReturn(søkerModell);
-        assertThat(pesysMock.hentUføreHistorikk(FNR).uforehistorikk().uføreperiodeListe().size()).isEqualTo(1);
+        assertThat(pesysMock.hentUføreHistorikk(FNR).uforehistorikk().uforeperiodeListe()).hasSize(1);
     }
 
     @Test
     void sjekkTomPeriodeNårHarUføretrygFalse() {
         var annenPartModell = new AnnenPartModell(FNR, "Tester", LocalDate.now().minusYears(25), false, BrukerModell.Kjønn.M);
         when(personIndeks.finnByIdent(any())).thenReturn(annenPartModell);
-        assertThat(pesysMock.hentUføreHistorikk(FNR).uforehistorikk().uføreperiodeListe().size()).isEqualTo(0);
+        assertThat(pesysMock.hentUføreHistorikk(FNR).uforehistorikk().uforeperiodeListe()).hasSize(0);
     }
 }
