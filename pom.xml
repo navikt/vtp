@@ -27,7 +27,7 @@
 
     <properties>
         <revision>1.0</revision>
-        <sha1 />
+        <sha1/>
         <changelist>-SNAPSHOT</changelist>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -38,7 +38,7 @@
 
         <java.version>17</java.version>
 
-        <kafka.version>2.8.0</kafka.version>
+        <kafka.version>2.8.1</kafka.version>
         <avro.version>1.11.0</avro.version>
         <confluent.version>6.2.2</confluent.version>
         <cxf.version>3.5.0</cxf.version>
@@ -763,7 +763,7 @@
                         <id>enforce</id>
                         <configuration>
                             <rules>
-                                <DependencyConvergence />
+                                <DependencyConvergence/>
                             </rules>
                         </configuration>
                     </execution>
