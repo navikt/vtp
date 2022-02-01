@@ -54,7 +54,7 @@ public class PesysMock {
         return new HentUforehistorikkResponseDto(
                 new UforehistorikkDto(List.of(
                         new UforeperiodeDto(100, FEM_ÅR_SIDEN, FEM_ÅR_SIDEN,
-                                new UforeTypeCtiDto(UføreTypeCode.UFORE), FEM_ÅR_SIDEN, FEM_ÅR_SIDEN)
+                                new UforeTypeCtiDto(UføreTypeCode.UFORE), FEM_ÅR_SIDEN, null)
                 ))
         );
     }
