@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -77,8 +78,8 @@ public class InfotrygdMock {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "foreldrepenger", notes = ("Returnerer sykepenger fra Infotrygd"))
     public Grunnlag[] getSykepenger(@QueryParam("fnr") String fnr,
-                                    @QueryParam("fom") String fom,
-                                    @QueryParam("tom") String tom) {
+                                            @QueryParam("fom") String fom,
+                                            @QueryParam("tom") String tom) {
         LOG.info(LOG_PREFIX, "sykepenger");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
@@ -93,8 +94,8 @@ public class InfotrygdMock {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "foreldrepenger", notes = ("Returnerer barns sykdom fra Infotrygd"))
     public Grunnlag[] getPaaroerendeSykdom(@QueryParam("fnr") String fnr,
-                                           @QueryParam("fom") String fom,
-                                           @QueryParam("tom") String tom) {
+                                    @QueryParam("fom") String fom,
+                                    @QueryParam("tom") String tom) {
         LOG.info(LOG_PREFIX, "pårørendesykdom");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
@@ -105,10 +106,9 @@ public class InfotrygdMock {
 
     @GET
     @Path("/saker/foreldrepenger")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({ "application/json" })
     @ApiOperation(value = "hentSak", notes = ("Returnerer dummy respons av saker fra Infotrygd"))
-    public Response hentSakUsingGET(@QueryParam("fnr") String fnr,
-                                    @QueryParam("fom") LocalDate fom,
+    public Response hentSakUsingGET(@NotNull @QueryParam("fnr") String fnr, @NotNull @QueryParam("fom") LocalDate fom,
                                     @QueryParam("tom") LocalDate tom) {
         LOG.info(LOG_PREFIX, "saker");
         return Response.ok(new Saker()).build();

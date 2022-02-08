@@ -12,16 +12,15 @@
     <packaging>jar</packaging>
 
 	<dependencies>
-	       <!-- Eksterne avhengigheter -->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
-        </dependency>
 
         <!-- 3dje parts biblioteker -->
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-core-spi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>

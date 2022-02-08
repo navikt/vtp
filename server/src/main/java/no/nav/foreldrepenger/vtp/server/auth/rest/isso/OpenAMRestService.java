@@ -49,16 +49,7 @@ public class OpenAMRestService {
 
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
     private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
-
-    private static final String DEFAULT_ISSUER = "https://vtp.openam/issuer";
-
-    public static final String STATE = "state";
-    public static final String CODE = "code";
-    public static final String REDIRECT_URI = "redirect_uri";
-    public static final String SCOPE = "scope";
-    public static final String CLIENT_ID = "client_id";
-    public static final String ISSUER_PARAM = "iss";
-    public static final String NONCE = "nonce";
+    private static final String DEFAULT_ISSUER = "https://vtp.local/issuer";
 
     @GET
     @Path("/oauth2/authorize")
@@ -71,35 +62,35 @@ public class OpenAMRestService {
             @QueryParam("session") @DefaultValue("winssochain") String session,
             @QueryParam("authIndexType") @DefaultValue("service") String authIndexType,
             @QueryParam("authIndexValue") @DefaultValue("winssochain") String authIndexValue,
-            @QueryParam("response_type") @DefaultValue(CODE) String responseType,
-            @QueryParam(SCOPE) @DefaultValue("openid") String scope,
-            @QueryParam(CLIENT_ID) String clientId,
-            @QueryParam(STATE) String state,
-            @QueryParam(REDIRECT_URI) String redirectUri)
+            @QueryParam("response_type") @DefaultValue("code") String responseType,
+            @QueryParam("scope") @DefaultValue("openid") String scope,
+            @QueryParam("client_id") String clientId,
+            @QueryParam("state") String state,
+            @QueryParam("redirect_uri") String redirectUri)
             throws Exception {
         LOG.info("kall mot oauth2/authorize med redirecturi {}", redirectUri);
-        Objects.requireNonNull(scope, SCOPE);
+        Objects.requireNonNull(scope, "scope");
         if (!Objects.equals(scope, "openid")) {
             throw new IllegalArgumentException("Unsupported scope [" + scope + "], should be 'openid'");
         }
         Objects.requireNonNull(responseType, "responseType");
-        if (!Objects.equals(responseType, CODE)) {
+        if (!Objects.equals(responseType, "code")) {
             throw new IllegalArgumentException("Unsupported responseType [" + responseType + "], should be 'code'");
         }
 
-        Objects.requireNonNull(clientId, CLIENT_ID);
-        Objects.requireNonNull(state, STATE);
+        Objects.requireNonNull(clientId, "client_id");
+        Objects.requireNonNull(state, "state");
         Objects.requireNonNull(redirectUri, "redirectUri");
 
         URIBuilder uriBuilder = new URIBuilder(redirectUri);
-        uriBuilder.addParameter(SCOPE, scope);
-        uriBuilder.addParameter(STATE, state);
-        uriBuilder.addParameter(CLIENT_ID, clientId);
-        uriBuilder.addParameter(ISSUER_PARAM, getIssuer());
-        uriBuilder.addParameter(REDIRECT_URI, redirectUri);
+        uriBuilder.addParameter("scope", scope);
+        uriBuilder.addParameter("state", state);
+        uriBuilder.addParameter("client_id", clientId);
+        uriBuilder.addParameter("iss", getIssuer());
+        uriBuilder.addParameter("redirect_uri", redirectUri);
         clientIdCache.put(state, clientId);
-        if (req.getParameter(NONCE) != null && !req.getParameter(NONCE).isEmpty()) {
-            nonceCache.put(state, req.getParameter(NONCE));
+        if (req.getParameter("nonce") != null && !req.getParameter("nonce").isEmpty()) {
+            nonceCache.put(state, req.getParameter("nonce"));
         }
 
         String acceptHeader = req.getHeader("Accept-Header");
@@ -112,7 +103,7 @@ public class OpenAMRestService {
 
     private Response authorizeRedirect(URIBuilder location) throws URISyntaxException {
         // SEND JSON RESPONSE TIL OPENAM HELPER
-        location.addParameter(CODE, "im-just-a-fake-code");
+        location.addParameter("code", "im-just-a-fake-code");
         return Response.status(HttpServletResponse.SC_FOUND).location(location.build()).build();
     }
 
@@ -169,7 +160,7 @@ public class OpenAMRestService {
     }
 
 
-    // TODO: Brukes av FP til å logge inn som saksbehandler i saksbehandlerløsningen
+    @Deprecated()
     @POST
     @Path("/oauth2/access_token")
     @Produces({MediaType.APPLICATION_JSON})
@@ -179,11 +170,10 @@ public class OpenAMRestService {
             @Context HttpServletRequest req,
             @FormParam("grant_type") String grantType,
             @FormParam("realm") String realm,
-            @FormParam(CODE) String code,
-            @FormParam(REDIRECT_URI) String redirectUri,
-            @FormParam(STATE) String state) {
+            @FormParam("code") String code,
+            @FormParam("redirect_uri") String redirectUri) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
-        String token = createIdToken(req, code, state);
+        String token = createIdToken(req, code);
         LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
         LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token, redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
@@ -198,16 +188,10 @@ public class OpenAMRestService {
         }
     }
 
-    private String createIdToken(HttpServletRequest req, String username, String state) {
+    private String createIdToken(HttpServletRequest req, String username) {
         String issuer = getIssuer();
-        if (state == null) {
-            LOG.warn("State ikke funnet i form post!");
-            state = req.getParameter(STATE);
-        }
-        String nonce = null;
-        if (state != null) {
-            nonce = nonceCache.get(state);
-        }
+        String state = req.getParameter("state");
+        String nonce = state != null ? nonceCache.get(state) : null;
         OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, nonce).withIssuer(issuer);
         if (state != null && clientIdCache.containsKey(state)) {
             String clientId = clientIdCache.get(state);
