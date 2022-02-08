@@ -20,8 +20,7 @@ public class DokdistfordelingMock {
     private static final Logger LOG = LoggerFactory.getLogger(DokdistfordelingMock.class);
 
     @POST
-    @Path("/")
-    @ApiOperation(value = "distribuer journalpost", notes = (""))
+    @ApiOperation(value = "distribuer journalpost")
     public Response distribuerjournalpost(DistribuerJournalpostRequestToModel request) {
         LOG.info("Distribuer journalpost request: [{}]", request);
 

@@ -29,6 +29,10 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl
 public class SigrunMock {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
 
+    public static final String X_NATURLIGIDENT_HEADER = "x-naturligident";
+    public static final String X_INNTEKTSAAR_HEADER = "x-inntektsaar";
+    public static final String X_AKTOERID_HEADER = "x-aktoerid";
+
     TestscenarioRepositoryImpl testscenarioRepository;
 
     public SigrunMock() {
@@ -49,14 +53,14 @@ public class SigrunMock {
         String inntektsAar = null;
         String aktørId = null;
 
-        if (!httpHeaders.getRequestHeader("x-naturligident").isEmpty()) {
-            brukerFnr = httpHeaders.getRequestHeader("x-naturligident").get(0);
+        if (httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER) != null && !httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER).isEmpty()) {
+            brukerFnr = httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER).get(0);
         }
-        if (!httpHeaders.getRequestHeader("x-inntektsaar").isEmpty()) {
-            inntektsAar = httpHeaders.getRequestHeader("x-inntektsaar").get(0);
+        if (httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER) != null && !httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER).isEmpty()) {
+            inntektsAar = httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER).get(0);
         }
-        if (!httpHeaders.getRequestHeader("x-aktoerid").isEmpty()) {
-            aktørId = httpHeaders.getRequestHeader("x-aktoerid").get(0);
+        if (httpHeaders.getRequestHeader(X_AKTOERID_HEADER) != null && !httpHeaders.getRequestHeader(X_AKTOERID_HEADER).isEmpty()) {
+            aktørId = httpHeaders.getRequestHeader(X_AKTOERID_HEADER).get(0);
         }
 
         LOG.info("Sigrun for aktørId: {} ", aktørId);
