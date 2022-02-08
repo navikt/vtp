@@ -16,7 +16,7 @@
 
 	<!-- ESSV: genererer en del støy for webservice -->
 	<logger name="org.jboss.weld" level="${log.level.org.jboss.weld:-WARN}" />
-	<logger name="org.jboss.resteasy" level="${log.level.org.jboss.resteasy:-WARN}" />
+	<logger name="org.glassfish.jersey" level="${log.level.org.glassfish.jersey:-WARN}" />
 
     <logger name="org.apache.kafka" level="${log.level.org.apache.kafka:-WARN}"/>
     <logger name="org.apache.kafka.clients.admin" level="${log.level.org.apache.kafka:-INFO}"/>
@@ -26,6 +26,7 @@
     <logger name="org.apache.kafka.clients.producer" level="${log.level.org.apache.kafka:-INFO}"/>
     <logger name="org.apache.kafka.clients.producer.ProducerConfig" level="${log.level.org.apache.kafka:-WARN}"/>
 	<logger name="org.apache.zookeeper" level="${log.level.org.apache.zookeeper:-INFO}"/>
+
 
 	<root level="${log.level.root:-WARN}">
 		<appender-ref ref="STDOUT" />
