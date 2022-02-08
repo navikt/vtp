@@ -53,13 +53,13 @@ public class SigrunMock {
         String inntektsAar = null;
         String aktørId = null;
 
-        if (!httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER).isEmpty()) {
+        if (httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER) != null && !httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER).isEmpty()) {
             brukerFnr = httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER).get(0);
         }
-        if (!httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER).isEmpty()) {
+        if (httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER) != null && !httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER).isEmpty()) {
             inntektsAar = httpHeaders.getRequestHeader(X_INNTEKTSAAR_HEADER).get(0);
         }
-        if (!httpHeaders.getRequestHeader(X_AKTOERID_HEADER).isEmpty()) {
+        if (httpHeaders.getRequestHeader(X_AKTOERID_HEADER) != null && !httpHeaders.getRequestHeader(X_AKTOERID_HEADER).isEmpty()) {
             aktørId = httpHeaders.getRequestHeader(X_AKTOERID_HEADER).get(0);
         }
 
