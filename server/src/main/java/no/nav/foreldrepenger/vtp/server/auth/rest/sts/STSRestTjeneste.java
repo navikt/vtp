@@ -31,7 +31,6 @@ import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
-    public static final String ISSUER = "https://vtp.local/issuer";
     private static final Logger log = LoggerFactory.getLogger(STSRestTjeneste.class);
     private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
@@ -67,7 +66,7 @@ public class STSRestTjeneste {
                                   @Context HttpServletRequest req) {
         var username = getUsername(req);
         if (username != null) {
-            return createTokenForUser(username);
+            return createTokenForUser(username, req);
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -82,15 +81,15 @@ public class STSRestTjeneste {
                                @Context HttpServletRequest req) {
         var username = getUsername(req);
         if (username != null) {
-            return createTokenForUser(username);
+            return createTokenForUser(username, req);
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
-    private Response createTokenForUser(String username) {
+    private Response createTokenForUser(String username, HttpServletRequest request) {
         OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, null)
-                .withIssuer(ISSUER);
+                .withIssuer(getIssuer(request));
         return Response.ok(new UserTokenResponse(tokenGenerator.create(), 600000L, "Bearer"), MediaType.APPLICATION_JSON)
                 .build();
     }
@@ -125,10 +124,9 @@ public class STSRestTjeneste {
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         log.info("kall på /rest/v1/sts/.well-known/openid-configuration");
-        String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
 
-        var wkr = new STSWellKnownResponse(ISSUER);
-        String basePath = baseUrl + "/rest/v1/sts";
+        String basePath = getIssuer(req);
+        var wkr = new STSWellKnownResponse(basePath);
 
         wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
         wkr.setTokenEndpoint(basePath + "/token");
@@ -231,5 +229,13 @@ public class STSRestTjeneste {
                     ", token_type='" + token_type + '\'' +
                     '}';
         }
+    }
+
+    private String getBaseUrl(HttpServletRequest req) {
+        return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+    }
+
+    private String getIssuer(HttpServletRequest req) {
+        return getBaseUrl(req) + "/rest/v1/sts";
     }
 }

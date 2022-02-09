@@ -45,13 +45,6 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.UserRepository;
 @Path("/isso")
 public class OpenAMRestService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OpenAMRestService.class);
-
-    private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
-    private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
-
-    private static final String DEFAULT_ISSUER = "https://vtp.openam/issuer";
-
     public static final String STATE = "state";
     public static final String CODE = "code";
     public static final String REDIRECT_URI = "redirect_uri";
@@ -59,6 +52,9 @@ public class OpenAMRestService {
     public static final String CLIENT_ID = "client_id";
     public static final String ISSUER_PARAM = "iss";
     public static final String NONCE = "nonce";
+    private static final Logger LOG = LoggerFactory.getLogger(OpenAMRestService.class);
+    private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
+    private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
 
     @GET
     @Path("/oauth2/authorize")
@@ -95,7 +91,7 @@ public class OpenAMRestService {
         uriBuilder.addParameter(SCOPE, scope);
         uriBuilder.addParameter(STATE, state);
         uriBuilder.addParameter(CLIENT_ID, clientId);
-        uriBuilder.addParameter(ISSUER_PARAM, getIssuer());
+        uriBuilder.addParameter(ISSUER_PARAM, getIssuer(req));
         uriBuilder.addParameter(REDIRECT_URI, redirectUri);
         clientIdCache.put(state, clientId);
         if (req.getParameter(NONCE) != null && !req.getParameter(NONCE).isEmpty()) {
@@ -132,7 +128,7 @@ public class OpenAMRestService {
                 "        <table>\r\n" +
                 "            <tbody>\r\n" +
                 usernames.stream().map(
-                        username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
+                                username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
                         .collect(Collectors.joining("\n"))
                 +
                 "            </tbody>\n" +
@@ -190,16 +186,8 @@ public class OpenAMRestService {
         return Response.ok(oauthResponse).build();
     }
 
-    private String getIssuer() {
-        if (null != System.getenv("ISSO_OAUTH2_ISSUER")) {
-            return System.getenv("ISSO_OAUTH2_ISSUER");
-        } else {
-            return DEFAULT_ISSUER;
-        }
-    }
-
     private String createIdToken(HttpServletRequest req, String username, String state) {
-        String issuer = getIssuer();
+        String issuer = getIssuer(req);
         if (state == null) {
             LOG.warn("State ikke funnet i form post!");
             state = req.getParameter(STATE);
@@ -290,9 +278,17 @@ public class OpenAMRestService {
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/.well-known/openid-configuration");
-        String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
-        OpenAMWellKnownResponse wellKnownResponse = new OpenAMWellKnownResponse(baseUrl, getIssuer());
+        String baseUrl = getBaseUrl(req);
+        OpenAMWellKnownResponse wellKnownResponse = new OpenAMWellKnownResponse(baseUrl);
         return Response.ok(wellKnownResponse).build();
+    }
+
+    private String getBaseUrl(HttpServletRequest req) {
+        return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+    }
+
+    private String getIssuer(HttpServletRequest req) {
+        return getBaseUrl(req) + "/rest/isso";
     }
 
 }
