@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.fpmock.server.auth.rest.tokenx;
 
-import static no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste.ISSUER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -39,14 +38,14 @@ class TokenXTjenesteTest {
 
     @Test
     public void verifiserRiktigWellKnownEndepunkt() {
-        var baseurl = "http://localhost:8060/rest/";
+        var baseurl = "http://localhost:8060/rest";
         when(uriInfo.getBaseUri()).thenReturn(URI.create(baseurl));
         var response = tokenxRestTjeneste.wellKnown(uriInfo);
         assertThat(response.getEntity()).isInstanceOf(TokenXWellKnownResponse.class);
         var tokenXWellKnownResponse = (TokenXWellKnownResponse) response.getEntity();
-        assertThat(tokenXWellKnownResponse.issuer()).isEqualTo(ISSUER);
-        assertThat(tokenXWellKnownResponse.token_endpoint()).isEqualTo(baseurl + "tokenx/token");
-        assertThat(tokenXWellKnownResponse.jwks_uri()).isEqualTo(baseurl + "tokenx/jwks");
+        assertThat(tokenXWellKnownResponse.issuer()).isEqualTo(baseurl + "/tokenx");
+        assertThat(tokenXWellKnownResponse.token_endpoint()).isEqualTo(baseurl + "/tokenx/token");
+        assertThat(tokenXWellKnownResponse.jwks_uri()).isEqualTo(baseurl + "/tokenx/jwks");
 
     }
 

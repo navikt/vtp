@@ -2,7 +2,6 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -30,7 +29,6 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 @Path("/tokenx")
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
-    public static final String ISSUER = "http://TokenDings";
 
     @GET
     @Path("/isAlive")
@@ -45,10 +43,11 @@ public class TokenxRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX Discovery url", notes = ("Mock impl av TokenX discovery urlen"))
     public Response wellKnown(@Context UriInfo uriInfo) {
-        var baseUrl = uriInfo.getBaseUri().toString();
+        var baseUrl = getBaseUrl(uriInfo);
+        var issuer = getIssuer(uriInfo);
         var token_endpoint = baseUrl + "tokenx/token";
         var jwks_endpoint = baseUrl + "tokenx/jwks";
-        var wellKnownResponse = new TokenXWellKnownResponse(ISSUER, token_endpoint, jwks_endpoint);
+        var wellKnownResponse = new TokenXWellKnownResponse(issuer, token_endpoint, jwks_endpoint);
         return Response.ok(wellKnownResponse).build();
     }
 
@@ -56,7 +55,7 @@ public class TokenxRestTjeneste {
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX public key set")
-    public Response jwks(@Context HttpServletRequest req) {
+    public Response jwks(@Context UriInfo uriInfo) {
         LOG.info("Kall på /tokenx/jwks");
         var jwks = KeyStoreTool.getJwks();
         LOG.trace("Jwks er {}", jwks);
@@ -67,7 +66,7 @@ public class TokenxRestTjeneste {
     @Path("/token")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX public key set")
-    public Response token(@Context HttpServletRequest req,
+    public Response token(@Context UriInfo uriInfo,
                           @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grant_type,
                           @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String client_assertion_type,
                           @FormParam("client_assertion") String client_assertion,
@@ -75,16 +74,16 @@ public class TokenxRestTjeneste {
                           @FormParam("subject_token") String subject_token,
                           @FormParam("audience") String audience) throws JoseException {
         var subject = hentSubjectFraJWT(subject_token);
-        var token = accessTokenForAudienceOgSubject(audience, subject);
+        var token = accessTokenForAudienceOgSubject(uriInfo, audience, subject);
         LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, audience);
         LOG.trace("Token: {}", token);
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
 
-    private String accessTokenForAudienceOgSubject(String audience, String subject) throws JoseException {
+    private String accessTokenForAudienceOgSubject(UriInfo uriInfo, String audience, String subject) throws JoseException {
         var jwtClaims = new JwtClaims();
-        jwtClaims.setIssuer(ISSUER);
+        jwtClaims.setIssuer(getIssuer(uriInfo));
         jwtClaims.setAudience(audience);
         jwtClaims.setSubject(subject);
         jwtClaims.setExpirationTimeMinutesInTheFuture(60F);
@@ -110,6 +109,14 @@ public class TokenxRestTjeneste {
         } catch (java.text.ParseException e) {
             throw new RuntimeException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
         }
+    }
+
+    private String getBaseUrl(UriInfo uriInfo) {
+        return uriInfo.getBaseUri().toString();
+    }
+
+    private String getIssuer(UriInfo uriInfo) {
+        return getBaseUrl(uriInfo) + "tokenx";
     }
 
 }

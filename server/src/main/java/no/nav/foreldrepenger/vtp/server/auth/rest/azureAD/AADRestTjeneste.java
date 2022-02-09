@@ -94,7 +94,7 @@ public class AADRestTjeneste {
     }
 
     private String createIdToken(HttpServletRequest req, String username, String tenant) {
-        String issuer = getIssuer(tenant);
+        String issuer = getIssuer(req, tenant);
         String state = req.getParameter("state");
         String nonce = state != null ? nonceCache.get(state) : null;
         AzureOidcTokenGenerator tokenGenerator = new AzureOidcTokenGenerator(username, nonce).withIssuer(issuer);
@@ -139,7 +139,7 @@ public class AADRestTjeneste {
         uriBuilder.addParameter("scope", scope);
         uriBuilder.addParameter("state", state);
         uriBuilder.addParameter("client_id", clientId);
-        final String issuer = getIssuer(tenant);
+        final String issuer = getIssuer(req, tenant);
         uriBuilder.addParameter("iss", issuer);
         uriBuilder.addParameter("redirect_uri", redirectUri);
 
@@ -199,11 +199,11 @@ public class AADRestTjeneste {
         }
     }
 
-    private String getBaseUrl(@Context HttpServletRequest req) {
+    private String getBaseUrl(HttpServletRequest req) {
         return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/rest/AzureAd";
     }
 
-    private String getIssuer(String tenant) {
-        return "https://login.microsoftonline.com/" + tenant + "/v2.0";
+    private String getIssuer(HttpServletRequest req, String tenant) {
+        return getBaseUrl(req) + "/" + tenant  + "/v2.0";
     }
 }

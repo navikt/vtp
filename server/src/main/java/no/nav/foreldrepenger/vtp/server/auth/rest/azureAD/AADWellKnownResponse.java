@@ -59,7 +59,7 @@ class AADWellKnownResponse {
 
     @JsonProperty("issuer")
     public final String getIssuer() {
-        return "https://login.microsoftonline.com/" + tenant + "/v2.0";
+        return baseUrl + "/" + tenant  + "/v2.0";
     }
 
     @JsonProperty("jwks_uri")
