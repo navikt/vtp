@@ -288,7 +288,7 @@ public class OpenAMRestService {
     }
 
     private String getIssuer(HttpServletRequest req) {
-        return getBaseUrl(req) + "/rest/isso";
+        return getBaseUrl(req) + "/rest/isso/oauth2";
     }
 
 }
