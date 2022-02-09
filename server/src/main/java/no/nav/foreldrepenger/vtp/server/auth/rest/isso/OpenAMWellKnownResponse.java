@@ -94,7 +94,7 @@ class OpenAMWellKnownResponse {
         if (null != System.getenv("AUTHORIZE_BASE_URL")) {
             this.issuer = System.getenv("AUTHORIZE_BASE_URL") + "/rest/isso";
         } else {
-            this.issuer = url + "/rest/isso";
+            this.issuer = url + "/rest/isso/oauth2";
         }
 
         this.endSessionEndpoint = url + "/rest/isso/oauth2/connect/endSession";
