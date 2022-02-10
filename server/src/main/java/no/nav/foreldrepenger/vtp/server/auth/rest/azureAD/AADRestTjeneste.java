@@ -57,6 +57,7 @@ public class AADRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Azure AD Discovery url", notes = ("Mock impl av Azure AD discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req, @PathParam("tenant") String tenant) {
+        LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
         AADWellKnownResponse wellKnownResponse = new AADWellKnownResponse(baseUrl, tenant);
         return Response.ok(wellKnownResponse).build();
@@ -200,7 +201,7 @@ public class AADRestTjeneste {
     }
 
     private String getBaseUrl(HttpServletRequest req) {
-        return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/rest/AzureAd";
+        return req.getScheme() + "://vtp:" + req.getServerPort() + "/rest/AzureAd";
     }
 
     private String getIssuer(HttpServletRequest req, String tenant) {

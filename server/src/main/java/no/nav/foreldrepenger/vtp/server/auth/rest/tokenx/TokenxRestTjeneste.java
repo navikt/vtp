@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -11,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -42,11 +42,11 @@ public class TokenxRestTjeneste {
     @Path("/.well-known/oauth-authorization-server")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX Discovery url", notes = ("Mock impl av TokenX discovery urlen"))
-    public Response wellKnown(@Context UriInfo uriInfo) {
-        var baseUrl = getBaseUrl(uriInfo);
-        var issuer = getIssuer(uriInfo);
-        var token_endpoint = baseUrl + "/tokenx/token";
-        var jwks_endpoint = baseUrl + "/tokenx/jwks";
+    public Response wellKnown(@Context HttpServletRequest req) {
+        LOG.info("Kall på well-known endepunkt");
+        var issuer = getIssuer(req);
+        var token_endpoint = issuer + "/token";
+        var jwks_endpoint = issuer + "/jwks";
         var wellKnownResponse = new TokenXWellKnownResponse(issuer, token_endpoint, jwks_endpoint);
         return Response.ok(wellKnownResponse).build();
     }
@@ -55,7 +55,7 @@ public class TokenxRestTjeneste {
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX public key set")
-    public Response jwks(@Context UriInfo uriInfo) {
+    public Response jwks(@Context HttpServletRequest req) {
         LOG.info("Kall på /tokenx/jwks");
         var jwks = KeyStoreTool.getJwks();
         LOG.trace("Jwks er {}", jwks);
@@ -66,7 +66,7 @@ public class TokenxRestTjeneste {
     @Path("/token")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX public key set")
-    public Response token(@Context UriInfo uriInfo,
+    public Response token(@Context HttpServletRequest req,
                           @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grant_type,
                           @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String client_assertion_type,
                           @FormParam("client_assertion") String client_assertion,
@@ -74,16 +74,16 @@ public class TokenxRestTjeneste {
                           @FormParam("subject_token") String subject_token,
                           @FormParam("audience") String audience) throws JoseException {
         var subject = hentSubjectFraJWT(subject_token);
-        var token = accessTokenForAudienceOgSubject(uriInfo, audience, subject);
+        var token = accessTokenForAudienceOgSubject(req, audience, subject);
         LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, audience);
-        LOG.trace("Token: {}", token);
+        LOG.info("TokenX token: {}", token);
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
 
-    private String accessTokenForAudienceOgSubject(UriInfo uriInfo, String audience, String subject) throws JoseException {
+    private String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
         var jwtClaims = new JwtClaims();
-        jwtClaims.setIssuer(getIssuer(uriInfo));
+        jwtClaims.setIssuer(getIssuer(req));
         jwtClaims.setAudience(audience);
         jwtClaims.setSubject(subject);
         jwtClaims.setExpirationTimeMinutesInTheFuture(60F);
@@ -111,12 +111,12 @@ public class TokenxRestTjeneste {
         }
     }
 
-    private String getBaseUrl(UriInfo uriInfo) {
-        return uriInfo.getBaseUri().toString();
+    private String getBaseUrl(HttpServletRequest req) {
+        return req.getScheme() + "://vtp:" + req.getServerPort();
     }
 
-    private String getIssuer(UriInfo uriInfo) {
-        return getBaseUrl(uriInfo) + "/" + "tokenx";
+    private String getIssuer(HttpServletRequest req) {
+        return getBaseUrl(req) + "/rest/tokenx";
     }
 
 }

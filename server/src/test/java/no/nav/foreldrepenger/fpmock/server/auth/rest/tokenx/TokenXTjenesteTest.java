@@ -3,14 +3,12 @@ package no.nav.foreldrepenger.fpmock.server.auth.rest.tokenx;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.net.URI;
 import java.text.ParseException;
 
-import javax.ws.rs.core.UriInfo;
+import javax.servlet.http.HttpServletRequest;
 
 import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -29,7 +27,7 @@ class TokenXTjenesteTest {
     private static TokenxRestTjeneste tokenxRestTjeneste;
 
     @Mock
-    private UriInfo uriInfo;
+    private HttpServletRequest req;
 
     @BeforeAll
     public static void setup() {
@@ -38,28 +36,29 @@ class TokenXTjenesteTest {
 
     @Test
     public void verifiserRiktigWellKnownEndepunkt() {
-        var baseurl = "http://localhost:8060/rest";
-        when(uriInfo.getBaseUri()).thenReturn(URI.create(baseurl));
-        var response = tokenxRestTjeneste.wellKnown(uriInfo);
+        var issuer = "http://vtp:8060/rest/tokenx";
+        when(req.getScheme()).thenReturn("http");
+        when(req.getServerPort()).thenReturn(8060);
+        var response = tokenxRestTjeneste.wellKnown(req);
         assertThat(response.getEntity()).isInstanceOf(TokenXWellKnownResponse.class);
         var tokenXWellKnownResponse = (TokenXWellKnownResponse) response.getEntity();
-        assertThat(tokenXWellKnownResponse.issuer()).isEqualTo(baseurl + "/tokenx");
-        assertThat(tokenXWellKnownResponse.token_endpoint()).isEqualTo(baseurl + "/tokenx/token");
-        assertThat(tokenXWellKnownResponse.jwks_uri()).isEqualTo(baseurl + "/tokenx/jwks");
+        assertThat(tokenXWellKnownResponse.issuer()).isEqualTo(issuer);
+        assertThat(tokenXWellKnownResponse.token_endpoint()).isEqualTo(issuer + "/token");
+        assertThat(tokenXWellKnownResponse.jwks_uri()).isEqualTo(issuer + "/jwks");
 
     }
 
 
     @Test
-    @Disabled // Mangler keystore i pipe... Legge denne til eller fjerne test? TODO
-    public void verifisererTokenSomGenereresHarRiktigAudience() throws JoseException, ParseException {
-
+    public void verifisererTokenSomGenereresHarRiktigAudienceOgSubject() throws JoseException, ParseException {
+        when(req.getScheme()).thenReturn("http");
+        when(req.getServerPort()).thenReturn(8060);
         var subject_token = """
                 eyJraWQiOiIxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vYWFkYjJjL3YyLjAiLCJleHAiOjE2MzU1MTIxNDMsImp0aSI6IllZNmh1T19reWJPTDFsWmxnZFp3T3ciLCJpYXQiOjE2MzU0OTA1NDMsInN1YiI6IjE3NDk4ODMyODU3IiwiYXVkIjoiT0lEQyIsImFjciI6IkxldmVsNCIsImF6cCI6Ik9JREMifQ.vM6sjTD5uRX25yqtNrUiue3DwWaXA-xkVW52ied3n2MHqfXB-pd76r9LyqDJ-sDZen-AhxihL6GkNLUrXlRm8Ij-FZaJsIQaOnj2CRRHlJfL4Zj-s0i2B81ov0qJclJKtZFhFELwWkqykqu1IB7W2s7_5d2k0C1jAQCs9gnzCoKv6H8EPgrRriWRvMv691DuqzluPLLsqMK7cwQmODkc3fN4gtoW4Wf6FqG2XDdR6Mr-OT-w_exn8i0uB8jPieSOfyby5CG7rXLW_BQT9KovIrDuwYCyEkU7hSCEYksu5CBSoBpupKs-07cUXIksLWouCZcLjGoMWfnG-rHeTq0w-g
                 """;
         var audience = "fpfordel";
         var response = tokenxRestTjeneste.token(
-                null,
+                req,
                 null,
                 null,
                 null,
