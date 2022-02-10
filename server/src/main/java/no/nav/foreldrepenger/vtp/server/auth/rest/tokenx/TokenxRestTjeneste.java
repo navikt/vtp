@@ -45,8 +45,8 @@ public class TokenxRestTjeneste {
     public Response wellKnown(@Context UriInfo uriInfo) {
         var baseUrl = getBaseUrl(uriInfo);
         var issuer = getIssuer(uriInfo);
-        var token_endpoint = baseUrl + "tokenx/token";
-        var jwks_endpoint = baseUrl + "tokenx/jwks";
+        var token_endpoint = baseUrl + "/tokenx/token";
+        var jwks_endpoint = baseUrl + "/tokenx/jwks";
         var wellKnownResponse = new TokenXWellKnownResponse(issuer, token_endpoint, jwks_endpoint);
         return Response.ok(wellKnownResponse).build();
     }
@@ -116,7 +116,7 @@ public class TokenxRestTjeneste {
     }
 
     private String getIssuer(UriInfo uriInfo) {
-        return getBaseUrl(uriInfo) + "tokenx";
+        return getBaseUrl(uriInfo) + "/" + "tokenx";
     }
 
 }
