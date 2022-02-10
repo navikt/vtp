@@ -232,7 +232,7 @@ public class STSRestTjeneste {
     }
 
     private String getBaseUrl(HttpServletRequest req) {
-        return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+        return req.getScheme() + "://vtp:" + req.getServerPort();
     }
 
     private String getIssuer(HttpServletRequest req) {
