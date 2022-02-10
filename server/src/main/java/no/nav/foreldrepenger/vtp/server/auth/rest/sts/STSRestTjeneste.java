@@ -31,8 +31,7 @@ import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
-    public static final String ISSUER = "https://vtp.local/issuer";
-    private static final Logger log = LoggerFactory.getLogger(STSRestTjeneste.class);
+    private static final Logger LOG = LoggerFactory.getLogger(STSRestTjeneste.class);
     private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
     @SuppressWarnings("unused")
@@ -65,9 +64,11 @@ public class STSRestTjeneste {
     public Response getDummyToken(@QueryParam("grant_type") String grant_type,
                                   @QueryParam("scope") String scope,
                                   @Context HttpServletRequest req) {
+        LOG.warn("Kall på deprecated GET /token endepunkt!");
         var username = getUsername(req);
         if (username != null) {
-            return createTokenForUser(username);
+            var userToken = createTokenForUser(username, req);
+            return Response.ok(userToken, MediaType.APPLICATION_JSON).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
@@ -82,17 +83,19 @@ public class STSRestTjeneste {
                                @Context HttpServletRequest req) {
         var username = getUsername(req);
         if (username != null) {
-            return createTokenForUser(username);
+            var userToken = createTokenForUser(username, req);
+            LOG.info("STS token er utsedt {}", userToken);
+            return Response.ok(userToken, MediaType.APPLICATION_JSON).build();
         } else {
+            LOG.warn("Request inneholder ikke Autorization basic header!");
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
-    private Response createTokenForUser(String username) {
+    private UserTokenResponse createTokenForUser(String username, HttpServletRequest request) {
         OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, null)
-                .withIssuer(ISSUER);
-        return Response.ok(new UserTokenResponse(tokenGenerator.create(), 600000L, "Bearer"), MediaType.APPLICATION_JSON)
-                .build();
+                .withIssuer(getIssuer(request));
+        return new UserTokenResponse(tokenGenerator.create(), 600000L, "Bearer");
     }
 
     private String getUsername(HttpServletRequest req) {
@@ -115,7 +118,7 @@ public class STSRestTjeneste {
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         String jwks = KeyStoreTool.getJwks();
-        log.info("JWKS: " + jwks);
+        LOG.info("JWKS: " + jwks);
         return Response.ok(jwks).build();
     }
 
@@ -124,11 +127,10 @@ public class STSRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
-        log.info("kall på /rest/v1/sts/.well-known/openid-configuration");
-        String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
+        LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
 
-        var wkr = new STSWellKnownResponse(ISSUER);
-        String basePath = baseUrl + "/rest/v1/sts";
+        String basePath = getIssuer(req);
+        var wkr = new STSWellKnownResponse(basePath);
 
         wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
         wkr.setTokenEndpoint(basePath + "/token");
@@ -231,5 +233,13 @@ public class STSRestTjeneste {
                     ", token_type='" + token_type + '\'' +
                     '}';
         }
+    }
+
+    private String getBaseUrl(HttpServletRequest req) {
+        return req.getScheme() + "://vtp:" + req.getServerPort();
+    }
+
+    private String getIssuer(HttpServletRequest req) {
+        return getBaseUrl(req) + "/rest/v1/sts";
     }
 }

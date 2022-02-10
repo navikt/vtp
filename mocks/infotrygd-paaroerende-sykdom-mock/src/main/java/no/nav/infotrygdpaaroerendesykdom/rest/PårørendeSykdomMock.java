@@ -16,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.Api;
@@ -46,18 +47,21 @@ import no.nav.infotrygdpaaroerendesykdom.generated.model.VedtakPleietrengendeDto
 @Api(
         description = "the paaroerendeSykdom API")
 public class PårørendeSykdomMock {
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
+
+    public PårørendeSykdomMock() {
+    }
 
     public PårørendeSykdomMock(@Context TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
-    // todo: sjekk Autorization-token
+// todo: sjekk Autorization-token
 
     @SuppressWarnings("unused")
     @GET
     @Path("/saker")
-    @Produces({"application/json"})
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
             @Authorization(value = "JWT")
     }, tags = {"paaroerende-sykdom-controller",})
@@ -104,7 +108,7 @@ public class PårørendeSykdomMock {
     @SuppressWarnings("unused")
     @GET
     @Path("/grunnlag")
-    @Produces({"application/json"})
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "paaroerendeSykdom", notes = "", response = PaaroerendeSykdom.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
     }, tags = {"paaroerende-sykdom-controller"})
@@ -156,7 +160,7 @@ public class PårørendeSykdomMock {
     @SuppressWarnings("unused")
     @GET
     @Path("/vedtakForPleietrengende")
-    @Produces({"application/json"})
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
     }, tags = {"paaroerende-sykdom-controller"})
@@ -171,7 +175,7 @@ public class PårørendeSykdomMock {
     @SuppressWarnings("unused")
     @POST
     @Path("/vedtakForPleietrengende")
-    @Produces({"application/json"})
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
     }, tags = {"paaroerende-sykdom-controller"})
@@ -204,7 +208,7 @@ public class PårørendeSykdomMock {
 
     @GET
     @Path("/rammevedtak/omsorgspenger")
-    @Produces({"application/json"})
+    @Produces({(MediaType.APPLICATION_JSON)})
     @ApiOperation(value = "Finner rammevedtak basert på fødselsnummeret til søker.", notes = "", response = RammevedtakDto.class, responseContainer = "List", authorizations = {
             @Authorization(value = "JWT")
     }, tags = {"paaroerende-sykdom-controller"})

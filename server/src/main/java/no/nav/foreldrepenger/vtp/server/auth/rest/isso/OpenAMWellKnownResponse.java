@@ -90,8 +90,13 @@ class OpenAMWellKnownResponse {
     @JsonProperty("token_endpoint")
     private String tokenEndpoint;
 
-    public OpenAMWellKnownResponse(String url, String issuer) {
-        this.issuer = issuer;
+    public OpenAMWellKnownResponse(String url) {
+        if (null != System.getenv("AUTHORIZE_BASE_URL")) {
+            this.issuer = System.getenv("AUTHORIZE_BASE_URL") + "/rest/isso";
+        } else {
+            this.issuer = url + "/rest/isso/oauth2";
+        }
+
         this.endSessionEndpoint = url + "/rest/isso/oauth2/connect/endSession";
         this.checkSessionIframe = url + "/rest/isso/oauth2/connect/checkSession";
         /**

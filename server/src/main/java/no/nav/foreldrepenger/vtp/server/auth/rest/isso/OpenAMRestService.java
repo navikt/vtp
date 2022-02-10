@@ -45,11 +45,16 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.UserRepository;
 @Path("/isso")
 public class OpenAMRestService {
 
+    public static final String STATE = "state";
+    public static final String CODE = "code";
+    public static final String REDIRECT_URI = "redirect_uri";
+    public static final String SCOPE = "scope";
+    public static final String CLIENT_ID = "client_id";
+    public static final String ISSUER_PARAM = "iss";
+    public static final String NONCE = "nonce";
     private static final Logger LOG = LoggerFactory.getLogger(OpenAMRestService.class);
-
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
     private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
-    private static final String DEFAULT_ISSUER = "https://vtp.local/issuer";
 
     @GET
     @Path("/oauth2/authorize")
@@ -62,35 +67,35 @@ public class OpenAMRestService {
             @QueryParam("session") @DefaultValue("winssochain") String session,
             @QueryParam("authIndexType") @DefaultValue("service") String authIndexType,
             @QueryParam("authIndexValue") @DefaultValue("winssochain") String authIndexValue,
-            @QueryParam("response_type") @DefaultValue("code") String responseType,
-            @QueryParam("scope") @DefaultValue("openid") String scope,
-            @QueryParam("client_id") String clientId,
-            @QueryParam("state") String state,
-            @QueryParam("redirect_uri") String redirectUri)
+            @QueryParam("response_type") @DefaultValue(CODE) String responseType,
+            @QueryParam(SCOPE) @DefaultValue("openid") String scope,
+            @QueryParam(CLIENT_ID) String clientId,
+            @QueryParam(STATE) String state,
+            @QueryParam(REDIRECT_URI) String redirectUri)
             throws Exception {
         LOG.info("kall mot oauth2/authorize med redirecturi {}", redirectUri);
-        Objects.requireNonNull(scope, "scope");
+        Objects.requireNonNull(scope, SCOPE);
         if (!Objects.equals(scope, "openid")) {
             throw new IllegalArgumentException("Unsupported scope [" + scope + "], should be 'openid'");
         }
         Objects.requireNonNull(responseType, "responseType");
-        if (!Objects.equals(responseType, "code")) {
+        if (!Objects.equals(responseType, CODE)) {
             throw new IllegalArgumentException("Unsupported responseType [" + responseType + "], should be 'code'");
         }
 
-        Objects.requireNonNull(clientId, "client_id");
-        Objects.requireNonNull(state, "state");
+        Objects.requireNonNull(clientId, CLIENT_ID);
+        Objects.requireNonNull(state, STATE);
         Objects.requireNonNull(redirectUri, "redirectUri");
 
         URIBuilder uriBuilder = new URIBuilder(redirectUri);
-        uriBuilder.addParameter("scope", scope);
-        uriBuilder.addParameter("state", state);
-        uriBuilder.addParameter("client_id", clientId);
-        uriBuilder.addParameter("iss", getIssuer());
-        uriBuilder.addParameter("redirect_uri", redirectUri);
+        uriBuilder.addParameter(SCOPE, scope);
+        uriBuilder.addParameter(STATE, state);
+        uriBuilder.addParameter(CLIENT_ID, clientId);
+        uriBuilder.addParameter(ISSUER_PARAM, getIssuer(req));
+        uriBuilder.addParameter(REDIRECT_URI, redirectUri);
         clientIdCache.put(state, clientId);
-        if (req.getParameter("nonce") != null && !req.getParameter("nonce").isEmpty()) {
-            nonceCache.put(state, req.getParameter("nonce"));
+        if (req.getParameter(NONCE) != null && !req.getParameter(NONCE).isEmpty()) {
+            nonceCache.put(state, req.getParameter(NONCE));
         }
 
         String acceptHeader = req.getHeader("Accept-Header");
@@ -103,7 +108,7 @@ public class OpenAMRestService {
 
     private Response authorizeRedirect(URIBuilder location) throws URISyntaxException {
         // SEND JSON RESPONSE TIL OPENAM HELPER
-        location.addParameter("code", "im-just-a-fake-code");
+        location.addParameter(CODE, "im-just-a-fake-code");
         return Response.status(HttpServletResponse.SC_FOUND).location(location.build()).build();
     }
 
@@ -123,7 +128,7 @@ public class OpenAMRestService {
                 "        <table>\r\n" +
                 "            <tbody>\r\n" +
                 usernames.stream().map(
-                        username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
+                                username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
                         .collect(Collectors.joining("\n"))
                 +
                 "            </tbody>\n" +
@@ -160,7 +165,7 @@ public class OpenAMRestService {
     }
 
 
-    @Deprecated()
+    // TODO: Brukes av FP til å logge inn som saksbehandler i saksbehandlerløsningen
     @POST
     @Path("/oauth2/access_token")
     @Produces({MediaType.APPLICATION_JSON})
@@ -170,28 +175,27 @@ public class OpenAMRestService {
             @Context HttpServletRequest req,
             @FormParam("grant_type") String grantType,
             @FormParam("realm") String realm,
-            @FormParam("code") String code,
-            @FormParam("redirect_uri") String redirectUri) {
+            @FormParam(CODE) String code,
+            @FormParam(REDIRECT_URI) String redirectUri,
+            @FormParam(STATE) String state) {
         // dummy sikkerhet, returnerer alltid en idToken/refresh_token
-        String token = createIdToken(req, code);
+        String token = createIdToken(req, code, state);
         LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
         LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token, redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
         return Response.ok(oauthResponse).build();
     }
 
-    private String getIssuer() {
-        if (null != System.getenv("ISSO_OAUTH2_ISSUER")) {
-            return System.getenv("ISSO_OAUTH2_ISSUER");
-        } else {
-            return DEFAULT_ISSUER;
+    private String createIdToken(HttpServletRequest req, String username, String state) {
+        String issuer = getIssuer(req);
+        if (state == null) {
+            LOG.warn("State ikke funnet i form post!");
+            state = req.getParameter(STATE);
         }
-    }
-
-    private String createIdToken(HttpServletRequest req, String username) {
-        String issuer = getIssuer();
-        String state = req.getParameter("state");
-        String nonce = state != null ? nonceCache.get(state) : null;
+        String nonce = null;
+        if (state != null) {
+            nonce = nonceCache.get(state);
+        }
         OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, nonce).withIssuer(issuer);
         if (state != null && clientIdCache.containsKey(state)) {
             String clientId = clientIdCache.get(state);
@@ -274,9 +278,17 @@ public class OpenAMRestService {
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/.well-known/openid-configuration");
-        String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
-        OpenAMWellKnownResponse wellKnownResponse = new OpenAMWellKnownResponse(baseUrl, getIssuer());
+        String baseUrl = getBaseUrl(req);
+        OpenAMWellKnownResponse wellKnownResponse = new OpenAMWellKnownResponse(baseUrl);
         return Response.ok(wellKnownResponse).build();
+    }
+
+    private String getBaseUrl(HttpServletRequest req) {
+        return req.getScheme() + "://vtp:" + req.getServerPort();
+    }
+
+    private String getIssuer(HttpServletRequest req) {
+        return getBaseUrl(req) + "/rest/isso/oauth2";
     }
 
 }

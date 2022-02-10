@@ -12,7 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -30,7 +29,6 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 @Path("/tokenx")
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
-    public static final String ISSUER = "http://TokenDings";
 
     @GET
     @Path("/isAlive")
@@ -44,11 +42,12 @@ public class TokenxRestTjeneste {
     @Path("/.well-known/oauth-authorization-server")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "TokenX Discovery url", notes = ("Mock impl av TokenX discovery urlen"))
-    public Response wellKnown(@Context UriInfo uriInfo) {
-        var baseUrl = uriInfo.getBaseUri().toString();
-        var token_endpoint = baseUrl + "tokenx/token";
-        var jwks_endpoint = baseUrl + "tokenx/jwks";
-        var wellKnownResponse = new TokenXWellKnownResponse(ISSUER, token_endpoint, jwks_endpoint);
+    public Response wellKnown(@Context HttpServletRequest req) {
+        LOG.info("Kall på well-known endepunkt");
+        var issuer = getIssuer(req);
+        var token_endpoint = issuer + "/token";
+        var jwks_endpoint = issuer + "/jwks";
+        var wellKnownResponse = new TokenXWellKnownResponse(issuer, token_endpoint, jwks_endpoint);
         return Response.ok(wellKnownResponse).build();
     }
 
@@ -75,16 +74,16 @@ public class TokenxRestTjeneste {
                           @FormParam("subject_token") String subject_token,
                           @FormParam("audience") String audience) throws JoseException {
         var subject = hentSubjectFraJWT(subject_token);
-        var token = accessTokenForAudienceOgSubject(audience, subject);
+        var token = accessTokenForAudienceOgSubject(req, audience, subject);
         LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, audience);
-        LOG.trace("Token: {}", token);
+        LOG.info("TokenX token: {}", token);
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
 
-    private String accessTokenForAudienceOgSubject(String audience, String subject) throws JoseException {
+    private String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
         var jwtClaims = new JwtClaims();
-        jwtClaims.setIssuer(ISSUER);
+        jwtClaims.setIssuer(getIssuer(req));
         jwtClaims.setAudience(audience);
         jwtClaims.setSubject(subject);
         jwtClaims.setExpirationTimeMinutesInTheFuture(60F);
@@ -110,6 +109,14 @@ public class TokenxRestTjeneste {
         } catch (java.text.ParseException e) {
             throw new RuntimeException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
         }
+    }
+
+    private String getBaseUrl(HttpServletRequest req) {
+        return req.getScheme() + "://vtp:" + req.getServerPort();
+    }
+
+    private String getIssuer(HttpServletRequest req) {
+        return getBaseUrl(req) + "/rest/tokenx";
     }
 
 }
