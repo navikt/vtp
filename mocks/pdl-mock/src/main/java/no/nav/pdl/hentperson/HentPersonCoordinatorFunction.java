@@ -6,6 +6,9 @@ import no.nav.pdl.oversetter.PersonAdapter;
 
 public class HentPersonCoordinatorFunction {
 
+    private HentPersonCoordinatorFunction() {
+    }
+
     public static HentPersonCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
         return (ident, historikk) -> {
             PersonModell person;

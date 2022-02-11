@@ -6,8 +6,11 @@ import no.nav.pdl.oversetter.GeografiskTilknytningAdapter;
 
 public class HentGeografiskTilknytningCoordinatorFunction {
 
+    private HentGeografiskTilknytningCoordinatorFunction() {
+    }
+
     public static HentGeografiskTilknytningCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
-        return (ident) -> {
+        return ident -> {
             PersonModell person;
             try {
                 person = scenarioRepo.getPersonIndeks().finnByIdent(ident);

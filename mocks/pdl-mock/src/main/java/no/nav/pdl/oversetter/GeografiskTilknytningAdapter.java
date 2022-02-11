@@ -6,6 +6,9 @@ import no.nav.pdl.GtType;
 
 public class GeografiskTilknytningAdapter {
 
+    private GeografiskTilknytningAdapter() {
+    }
+
     public static GeografiskTilknytning tilGeografiskTilknytning(PersonModell bruker) {
         var geografiskTilknytning = new GeografiskTilknytning();
         var tilknytning = bruker.getGeografiskTilknytning();

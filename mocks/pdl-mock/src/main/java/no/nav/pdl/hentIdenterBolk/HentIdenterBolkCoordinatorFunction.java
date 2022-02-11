@@ -1,7 +1,6 @@
 package no.nav.pdl.hentIdenterBolk;
 
 import static java.util.List.of;
-import static java.util.stream.Collectors.toList;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -10,6 +9,10 @@ import no.nav.pdl.IdentGruppe;
 import no.nav.pdl.IdentInformasjon;
 
 public class HentIdenterBolkCoordinatorFunction {
+
+    private HentIdenterBolkCoordinatorFunction() {
+    }
+
     public static HentIdenterBolkCoordinator opprettCoordinator(TestscenarioBuilderRepository testRepo) {
         // Skal oversette fra til List<HentIdenterBolkResult>
         return identer -> identer.stream()
@@ -29,7 +32,7 @@ public class HentIdenterBolkCoordinatorFunction {
                                     .build();
                         }
                 )
-                .collect(toList());
+                .toList();
 
 
     }

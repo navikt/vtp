@@ -9,6 +9,10 @@ import no.nav.pdl.IdentInformasjon;
 import no.nav.pdl.Identliste;
 
 public class HentIdenterCoordinatorFunction {
+
+    private HentIdenterCoordinatorFunction() {
+    }
+
     public static HentIdenterCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
         // Skal oversette fra ident til Identliste?
         return (ident, grupper)  -> {
