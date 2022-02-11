@@ -10,6 +10,9 @@ import no.nav.pdl.Sivilstandstype;
 
 public class SivilstandBygger {
 
+    private SivilstandBygger() {
+    }
+
     public static void leggTilSivilstand(Person personPdl, PersonModell personModell, Personopplysninger personopplysningerModell) {
         var sivilstandTPS = personModell.getSivilstand();
         var sivilstandtypeTPS = sivilstandTPS.getSivilstandType().name();

@@ -1,11 +1,12 @@
 package no.nav.pdl.hentIdenter;
 
+import static graphql.scalars.java.JavaPrimitives.GraphQLLong;
+
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
 import no.nav.pdl.Identliste;
@@ -19,11 +20,14 @@ public class HentIdenterWiring {
 
     private static final Logger LOG = LoggerFactory.getLogger(HentIdenterWiring.class);
 
+    private HentIdenterWiring() {
+    }
+
     public static RuntimeWiring lagRuntimeWiring(HentIdenterCoordinator coordinator) {
         return RuntimeWiring.newRuntimeWiring()
                 .scalar(DateScalar.DATE)
                 .scalar(DateTimeScalar.DATE_TIME)
-                .scalar(Scalars.GraphQLLong)
+                .scalar(GraphQLLong)
                 .type(
                         "Query",
                         typeWiring -> typeWiring.dataFetcher("hentIdenter", environment -> {

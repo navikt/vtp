@@ -1,9 +1,10 @@
 package no.nav.pdl.hentperson;
 
+import static graphql.scalars.java.JavaPrimitives.GraphQLLong;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
 import no.nav.pdl.PdlFunctionalException;
@@ -16,11 +17,14 @@ public class HentPersonWiring {
 
     private static final Logger LOG = LoggerFactory.getLogger(HentPersonWiring.class);
 
+    private HentPersonWiring() {
+    }
+
     public static RuntimeWiring lagRuntimeWiring(HentPersonCoordinator coordinator) {
         return RuntimeWiring.newRuntimeWiring()
                 .scalar(DateScalar.DATE)
                 .scalar(DateTimeScalar.DATE_TIME)
-                .scalar(Scalars.GraphQLLong)
+                .scalar(GraphQLLong)
                 .type("Query", typeWiring -> typeWiring.dataFetcher("hentPerson", environment -> {
                     try {
                         var ident = (String) environment.getArgument("ident");

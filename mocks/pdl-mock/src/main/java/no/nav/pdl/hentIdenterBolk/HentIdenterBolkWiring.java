@@ -1,11 +1,12 @@
 package no.nav.pdl.hentIdenterBolk;
 
+import static graphql.scalars.java.JavaPrimitives.GraphQLLong;
+
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import graphql.Scalars;
 import graphql.execution.DataFetcherResult;
 import graphql.schema.idl.RuntimeWiring;
 import no.nav.pdl.HentIdenterBolkResult;
@@ -15,13 +16,16 @@ import no.nav.pdl.graphql.DateTimeScalar;
 
 public class HentIdenterBolkWiring {
 
+    private HentIdenterBolkWiring() {
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger(HentIdenterBolkWiring.class);
 
     public static RuntimeWiring  lagRuntimeWiring(HentIdenterBolkCoordinator coordinator) {
         return RuntimeWiring.newRuntimeWiring()
                 .scalar(DateScalar.DATE)
                 .scalar(DateTimeScalar.DATE_TIME)
-                .scalar(Scalars.GraphQLLong)
+                .scalar(GraphQLLong)
                 .type(
                         "Query",
                         typeWiring -> typeWiring.dataFetcher("hentIdenterBolk", environment -> {
