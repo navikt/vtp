@@ -72,8 +72,8 @@ public class ArenaMUMapper {
         if (fom == null && tom == null) {
             return true;
         } else {
-            return (fom == null || fom.isBefore(vedtak.fom()) || fom.isEqual(vedtak.fom()))
-                && (tom == null || tom.isAfter(vedtak.tom()) || tom.isEqual(vedtak.tom()));
+            return (fom == null || fom.isBefore(vedtak.tom()) || fom.isEqual(vedtak.tom()))
+                && (tom == null || tom.isAfter(vedtak.fom()) || tom.isEqual(vedtak.fom()));
         }
     }
 
