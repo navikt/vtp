@@ -36,7 +36,7 @@ public class DigdirKrrProxyMock {
     }
 
     @GET
-    @Path("/v1/person")
+    @Path("/rest/v1/person")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Henter kontaktinformasjon for person")
