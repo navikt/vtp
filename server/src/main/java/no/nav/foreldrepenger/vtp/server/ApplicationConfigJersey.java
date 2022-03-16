@@ -43,6 +43,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import no.nav.axsys.AxsysEnhetstilgangMock;
+import no.nav.dkif.DigdirKrrProxyMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -122,6 +123,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
         classes.add(DigitalKontaktinformasjonMock.class);
+        classes.add(DigdirKrrProxyMock.class);
         classes.add(AxsysEnhetstilgangMock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(PesysMock.class);
