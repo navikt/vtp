@@ -72,7 +72,7 @@ class TrexModellSeraliseringDeseralseringsTest extends TestscenarioSerialization
 
     @Test
     public void VedtakSeraliseringDeseraliseringTest() {
-        test(new Vedtak(new Periode(LocalDate.now(), LocalDate.now().plusDays(5)), 100));
+        test(new Vedtak(new Periode(LocalDate.now(), LocalDate.now().plusDays(5)), 100, new Orgnummer("90802020"), false, 1000));
     }
 
     @Test
@@ -113,6 +113,6 @@ class TrexModellSeraliseringDeseralseringsTest extends TestscenarioSerialization
                 LocalDate.now(),
                 LocalDate.now(),
                 "S123567",
-                List.of(new Vedtak(new Periode(LocalDate.now(), LocalDate.now().plusDays(5)), 100)));
+                List.of(new Vedtak(new Periode(LocalDate.now(), LocalDate.now().plusDays(5)), 100, new Orgnummer("90802020"), false, 1000)));
     }
 }
