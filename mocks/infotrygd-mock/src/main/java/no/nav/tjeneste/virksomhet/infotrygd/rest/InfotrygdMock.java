@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -17,6 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Grunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
@@ -61,8 +65,8 @@ public class InfotrygdMock {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "foreldrepenger", notes = ("Returnerer svangerskapspenger fra Infotrygd"))
     public Grunnlag[] getSvangerskapspenger(@QueryParam("fnr") String fnr,
-                                        @QueryParam("fom") String fom,
-                                        @QueryParam("tom") String tom) {
+                                            @QueryParam("fom") String fom,
+                                            @QueryParam("tom") String tom) {
         LOG.info(LOG_PREFIX, "svangerskapspenger");
         List<Grunnlag> tomresponse = new ArrayList<>();
         return scenarioRepository.getInntektYtelseModell(fnr)
@@ -101,6 +105,26 @@ public class InfotrygdMock {
                 .map(InntektYtelseModell::trexModell)
                 .map(TRexModell::barnsykdom).orElse(tomresponse)
                 .toArray(Grunnlag[]::new);
+    }
+
+    @SuppressWarnings("unused")
+    @POST
+    @Path("/grunnlag/paaroerende-sykdom")
+    @Produces({"application/json"})
+    @ApiOperation(value = "foreldrepenger", notes = "", response = Grunnlag.class, responseContainer = "List", authorizations = {
+            @Authorization(value = "JWT")
+    }, tags = {"paaroerende-sykdom-controller"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Grunnlag.class, responseContainer = "List"),
+            @ApiResponse(code = 401, message = "Unauthorized")})
+    public Grunnlag[] paaroerendeSykdomUsingPost(PersonRequest personRequest) {
+        return personRequest.fnr().stream().flatMap(fnr -> {
+            LOG.info(LOG_PREFIX, "pårørendesykdom");
+            List<Grunnlag> tomresponse = new ArrayList<>();
+            return scenarioRepository.getInntektYtelseModell(fnr)
+                    .map(InntektYtelseModell::trexModell)
+                    .map(TRexModell::barnsykdom).orElse(tomresponse).stream();
+        }).toArray(Grunnlag[]::new);
     }
 
     @GET
