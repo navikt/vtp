@@ -66,6 +66,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuil
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.mock.pesys.PesysMock;
+import no.nav.mock.pesys.UføreMock;
 import no.nav.nom.SkjermetPersonMock;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
@@ -125,6 +126,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(AxsysEnhetstilgangMock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(PesysMock.class);
+        classes.add(UføreMock.class);
 
         // tekniske ting
         classes.add(OpenAMRestService.class);
