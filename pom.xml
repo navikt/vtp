@@ -47,7 +47,7 @@
         <fp-kontrakter.version>6.1.6</fp-kontrakter.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
         <swagger.version>1.6.6</swagger.version>
-        <graphql-java.version>17.3</graphql-java.version>
+        <graphql-java.version>18.0</graphql-java.version>
         <graphql-scalar-java.version>18.0</graphql-scalar-java.version>
         <graphql-codegen-maven-plugin.version>5.4.0</graphql-codegen-maven-plugin.version>
         <ch.qos.logback.version>1.2.10</ch.qos.logback.version>
