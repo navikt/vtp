@@ -11,6 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
@@ -19,10 +22,11 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
+@Deprecated(forRemoval = true)
 @Api(tags = {"dkif"})
 @Path("/api/v1/personer")
 public class DigitalKontaktinformasjonMock {
-
+    private static final Logger LOG = LoggerFactory.getLogger(DigitalKontaktinformasjonMock.class);
     public static final String HEADER_NAV_PERSONIDENT = "Nav-Personidenter";
     private static final String NAV_CALLID = "Nav-Callid";
     private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
@@ -47,6 +51,7 @@ public class DigitalKontaktinformasjonMock {
                                            @HeaderParam(AUTHORIZATION) String authorizationHeader,
                                            @HeaderParam(NAV_CALLID) String navCallid,
                                            @HeaderParam(NAV_CONSUMER_ID) String navConsumerId) {
+        LOG.warn("Kall på deprekert DKIF endepunkt. Bytt til digdir-krr-proxy");
         DigitalKontaktinfoResponsDto digitalKontaktinfoResponsDto = new DigitalKontaktinfoResponsDto();
         String spraak = hentUtForetrukketSpråkFraBruker(fnr);
         digitalKontaktinfoResponsDto.leggTilSpråk(fnr, spraak);
@@ -57,9 +62,9 @@ public class DigitalKontaktinformasjonMock {
         PersonIndeks personIndeks = scenarioRepository.getPersonIndeks();
         Personopplysninger personopplysninger = personIndeks.finnPersonopplysningerByIdent(fnr);
         if ((personopplysninger.getSøker() != null && personopplysninger.getSøker().getIdent().equals(fnr))) {
-            return personopplysninger.getSøker().getSpråk();
+            return personopplysninger.getSøker().getSpråk2Bokstaver();
         } else if ((personopplysninger.getAnnenPart() != null && personopplysninger.getAnnenPart().getIdent().equals(fnr))) {
-            return personopplysninger.getAnnenPart().getSpråk();
+            return personopplysninger.getAnnenPart().getSpråk2Bokstaver();
         } else {
             return null;
         }
