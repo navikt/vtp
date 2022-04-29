@@ -268,7 +268,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
                     "Access-Control-Allow-Credentials", "true");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Headers",
-                    "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, " +
+                    "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, x-requested-with, " +
                             "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Methods",
