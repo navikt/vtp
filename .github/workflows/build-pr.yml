@@ -25,7 +25,8 @@ jobs:
         shell: bash
         run: |
           echo "Building $BUILD_VERSION"
-          mvn jacoco:prepare-agent install jacoco:report sonar:sonar -e --batch-mode --settings .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dsonar.login=${SONAR_TOKEN}
+          ##mvn jacoco:prepare-agent install jacoco:report sonar:sonar -e --batch-mode --settings .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dsonar.login=${SONAR_TOKEN}
+          mvn install -e -B -s .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}  # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          ##SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

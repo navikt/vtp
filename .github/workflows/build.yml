@@ -28,12 +28,14 @@ jobs:
           echo "Building artifacts $BUILD_VERSION"
       - name: Build and analyze
         run: |
-          mvn jacoco:prepare-agent install jacoco:report sonar:sonar -e --batch-mode --settings .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dsonar.login=${SONAR_TOKEN}
+          ##mvn jacoco:prepare-agent install jacoco:report sonar:sonar -e --batch-mode --settings .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dsonar.login=${SONAR_TOKEN}
+          mvn install -e -B -s .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
+          
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}  # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          ##SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5
