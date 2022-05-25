@@ -4,19 +4,29 @@ on:
   push:
     branches:
       - master    # Push events on master branch
+    paths-ignore:
+      - '**.md'
+      - '**.MD'
+      - '.gitignore'
+      - '.github/workflows/build-pr.yml'
+      - '.github/workflows/dispatch.yml'
+      - '.github/workflows/codeql-analysis.yml'
+      - '.github/dependabot.yml'
 env:
   IMAGE_BASE_CR: ghcr.io/${{ github.repository }}
+  GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}  # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: 'temurin'
-          check-latest: true
           cache: 'maven'
 
       - name: Set build version
@@ -26,16 +36,11 @@ jobs:
         shell: bash
         run: |
           echo "Building artifacts $BUILD_VERSION"
-      - name: Build and analyze
+      - name: Build and test
         run: |
-          ##mvn jacoco:prepare-agent install jacoco:report sonar:sonar -e --batch-mode --settings .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION} -Dsonar.login=${SONAR_TOKEN}
-          mvn install -e -B -s .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
-          
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}  # Må ha PAT pga avhengighet til private repo: navikt/legacy-avhengigheter
-          ##SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          mvn install -e -B -s .github/.m2/settings.xml -Dchangelist= -Dsha1=-${BUILD_VERSION}
 
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5
@@ -44,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@dd4fa0671be5250ee6f50aedf4cb05514abda2c7 # Use commit-sha1 instead of tag for security concerns
+        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # Use commit-sha1 instead of tag for security concerns
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -55,3 +60,8 @@ jobs:
           docker build --pull --tag ${IMAGE_BASE_CR}:${TAG} --tag ${IMAGE_BASE_CR}:latest .
           docker push ${IMAGE_BASE_CR} --all-tags
 
+      - name: Sonar analyse
+        run: |
+          mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar --settings .github/.m2/settings.xml
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

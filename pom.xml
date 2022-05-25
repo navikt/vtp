@@ -33,7 +33,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
-        <sonar.organization>navit</sonar.organization>
+        <sonar.organization>navikt</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <java.version>17</java.version>
@@ -804,7 +804,6 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>verify</phase>
                         <goals>
                             <goal>report-aggregate</goal>
                         </goals>
