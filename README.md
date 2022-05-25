@@ -1,3 +1,8 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=navikt_vtp&metric=alert_status)](https://sonarcloud.io/dashboard?id=navikt_vtp)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=navikt_vtp&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=navikt_vtp)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=navikt_vtp&metric=code_smells)](https://sonarcloud.io/dashboard?id=navikt_vtp)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=navikt_vtp&metric=security_rating)](https://sonarcloud.io/dashboard?id=navikt_vtp)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_vtp&metric=coverage)](https://sonarcloud.io/dashboard?id=navikt_vtp)
 Virtuell Tjeneste Plattform (VTP)
 =================================
 ![alt text](vtp.png "Logo Title Text 1")
