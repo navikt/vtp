@@ -1,0 +1,40 @@
+name: Snyk vulnerabilities scanning of dependencies
+on:
+  schedule:
+    - cron:  '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: maven
+
+      - uses: snyk/actions/setup@master
+
+      - name: Setup maven
+        uses: whelk-io/maven-settings-xml-action@v20
+        with:
+          repositories: '[{ "id": "github", "name": "github", "url": "https://maven.pkg.github.com/${{ github.repository }}", "releases": { "enabled": "true" }, "snapshots": { "enabled": "false" } }]'
+          servers: '[{ "id": "github", "username": "${{ github.actor }}", "password": "${{ secrets.READER_TOKEN }}" }]'
+          output_file: settings.xml
+
+      - name: Run install
+        run: mvn clean install -B -s settings.xml -DskipTests
+
+      - name: Run Snyk monitor
+        run: >
+          snyk monitor
+          --org=teamforeldrepenger
+          --all-projects
+          --configuration-attributes=usage:java-runtime
+          --remote-repo-url=https://github.com/${{ github.repository }}.git
+          -- -s settings.xml
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

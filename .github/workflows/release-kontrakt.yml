@@ -20,7 +20,8 @@ jobs:
       - name: Publish artifacts
         shell: bash
         run: |
-           mvn deploy -e -B --file pom.xml -am -pl model,kontrakter -DtrimStackTrace=false -Dchangelist= -Dsha1= -Drevision=$NEW_VERSION -Dfile.encoding=UTF-8 -DdeployAtEnd=true
+          mvn versions:set -B -DnewVersion=${NEW_VERSION}
+          mvn deploy -e -B -am -pl model,kontrakter -DtrimStackTrace=false -Dfile.encoding=UTF-8 -DdeployAtEnd=true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           NEW_VERSION: ${{ github.event.release.tag_name }}
