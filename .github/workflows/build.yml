@@ -65,3 +65,8 @@ jobs:
           mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -s .github/.m2/settings.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Rydd genererte artefakter fra cache før den lagres
+        shell: bash
+        run: |
+          rm ~/.m2/repository/no/nav/foreldrepenger/vtp -r

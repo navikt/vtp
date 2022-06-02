@@ -38,3 +38,8 @@ jobs:
           -- -s settings.xml
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Rydd genererte artefakter fra cache før den lagres
+        shell: bash
+        run: |
+          rm ~/.m2/repository/no/nav/foreldrepenger/vtp -r
