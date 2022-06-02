@@ -22,11 +22,11 @@ jobs:
         uses: whelk-io/maven-settings-xml-action@v20
         with:
           repositories: '[{ "id": "github", "name": "github", "url": "https://maven.pkg.github.com/${{ github.repository }}", "releases": { "enabled": "true" }, "snapshots": { "enabled": "false" } }]'
-          servers: '[{ "id": "github", "username": "${{ github.actor }}", "password": "${{ secrets.READER_TOKEN }}" }]'
+          servers: '[{ "id": "github", "username": "${{ github.actor }}", "password": "${{ secrets.GITHUB_TOKEN }}" }]'
           output_file: settings.xml
 
       - name: Run install
-        run: mvn clean install -B -s settings.xml -DskipTests
+        run: mvn clean install -B -s settings.xml -DskipTests -Drevision=snyk-scan
 
       - name: Run Snyk monitor
         run: >
