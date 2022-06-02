@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.vtp</groupId>
         <artifactId>vtp</artifactId>
-        <version>${revision}${sha1}${changelist}</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>kontrakter</artifactId>
@@ -36,28 +36,7 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
-		 <plugin>
-		    <groupId>org.apache.maven.plugins</groupId>
-		    <artifactId>maven-compiler-plugin</artifactId>
-		    <version>3.10.1</version>
-		    <configuration>
-			<source>${java.version}</source>
-			<target>${java.version}</target>
-			<encoding>UTF-8</encoding>
-			<release>${java.version}</release>
-			<!-- ikke kompiler denne modulen med enable-preview. skaper trøbbel ved oppgradering av java versjoner der kontraker benyttes av andre -->
-		    </configuration>
-		</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -65,18 +44,7 @@
                     <skip>false</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
     </build>
 </project>
