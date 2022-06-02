@@ -105,6 +105,12 @@
             </dependency>
 
             <dependency>
+                <groupId>net.shibboleth.utilities</groupId>
+                <artifactId>java-support</artifactId>
+                <version>8.0.0</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro</artifactId>
                 <version>${avro.version}</version>
