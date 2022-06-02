@@ -26,7 +26,7 @@ jobs:
           output_file: settings.xml
 
       - name: Run install
-        run: mvn clean install -B -s settings.xml -DskipTests -Drevision=snyk-scan
+        run: mvn clean install -B -s settings.xml -DskipTests
 
       - name: Run Snyk monitor
         run: >

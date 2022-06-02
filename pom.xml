@@ -14,7 +14,7 @@
     <artifactId>vtp</artifactId>
     <packaging>pom</packaging>
     <name>VTP :: Root</name>
-    <version>${revision}</version>
+    <version>1.0-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git:https://github.com/navikt/vtp.git</connection>
@@ -32,12 +32,10 @@
     </modules>
 
     <properties>
-        <revision>1.0-SNAPSHOT</revision>
+        <java.version>17</java.version>
 
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
-
-        <java.version>17</java.version>
 
         <avro.version>1.11.0</avro.version>
         <confluent.version>7.0.1</confluent.version>

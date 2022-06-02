@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>no.nav.foreldrepenger.vtp</groupId>
 		<artifactId>vtp</artifactId>
-		<version>${revision}</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>testmodell</artifactId>

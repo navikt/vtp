@@ -40,7 +40,7 @@ jobs:
         run: |
           echo "Deployed artifacts"
           echo "TAG=${BUILD_VERSION}" >> $GITHUB_ENV
-          mvn install -e -B -s .github/.m2/settings.xml -Drevision=${BUILD_VERSION}
+          mvn install -e -B -s .github/.m2/settings.xml
 
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5
@@ -62,6 +62,6 @@ jobs:
 
       - name: Sonar analyse
         run: |
-          mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -s .github/.m2/settings.xml -Drevision=${BUILD_VERSION}
+          mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -s .github/.m2/settings.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
