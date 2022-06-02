@@ -48,7 +48,7 @@
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
         <swagger.version>1.6.6</swagger.version>
         <graphql-java.version>18.1</graphql-java.version>
-        <graphql-scalar-java.version>18.0</graphql-scalar-java.version>
+        <graphql-scalar-java.version>18.1</graphql-scalar-java.version>
         <graphql-codegen-maven-plugin.version>5.4.1</graphql-codegen-maven-plugin.version>
     </properties>
 
