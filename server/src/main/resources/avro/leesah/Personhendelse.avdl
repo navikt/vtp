@@ -3,7 +3,6 @@ protocol PersonhendelseProto {
   import idl "doedfoedtbarn/DoedfoedtBarn.avdl";
   import idl "doedsfall/Doedsfall.avdl";
   import idl "foedsel/Foedsel.avdl";
-  import idl "familierelasjon/Familierelasjon.avdl";
 
   enum Endringstype {
     OPPRETTET,
@@ -26,6 +25,5 @@ protocol PersonhendelseProto {
     union { null, no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn } doedfoedtBarn = null;
     union { null, no.nav.person.pdl.leesah.doedsfall.Doedsfall } doedsfall = null;
     union { null, no.nav.person.pdl.leesah.foedsel.Foedsel } foedsel = null;
-    union { null, no.nav.person.pdl.leesah.familierelasjon.Familierelasjon } familierelasjon = null;
   }
 }

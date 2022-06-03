@@ -13,7 +13,6 @@ public class PersonhendelseDeserializer extends JsonDeserializer<PersonhendelseD
     private String FØDSELS_TYPE = "fødselshendelse";
     private String DØDS_TYPE = "dødshendelse";
     private String DØDFØDSEL_TYPE = "dødfødselhendelse";
-    private String FAMILIERELASJON_TYPE = "familierelasjonshendelse";
 
     @Override
     public PersonhendelseDto deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -29,9 +28,6 @@ public class PersonhendelseDeserializer extends JsonDeserializer<PersonhendelseD
         }
         if (root.has("type") && root.get("type").textValue().equals(DØDFØDSEL_TYPE)) {
             dto =  mapper.readValue(root.toString(), DødfødselhendelseDto.class);
-        }
-        if (root.has("type") && root.get("type").textValue().equals(FAMILIERELASJON_TYPE)) {
-            dto =  mapper.readValue(root.toString(), FamilierelasjonHendelseDto.class);
         }
         return dto;
     }

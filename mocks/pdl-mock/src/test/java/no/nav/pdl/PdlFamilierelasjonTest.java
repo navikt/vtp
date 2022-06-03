@@ -53,11 +53,11 @@ class PdlFamilierelasjonTest extends PdlTestBase {
             var personSøker = responseSøker.hentPerson();
 
             // Assert
-            assertThat(personSøker.getFamilierelasjoner()).hasSize(2);
-            assertThat(personSøker.getFamilierelasjoner().get(0).getMinRolleForPerson()).isEqualTo(Familierelasjonsrolle.MOR);
-            assertThat(personSøker.getFamilierelasjoner().get(0).getRelatertPersonsRolle()).isEqualTo(Familierelasjonsrolle.BARN);
-            assertThat(personSøker.getFamilierelasjoner().get(1).getMinRolleForPerson()).isEqualTo(Familierelasjonsrolle.MOR);
-            assertThat(personSøker.getFamilierelasjoner().get(1).getRelatertPersonsRolle()).isEqualTo(Familierelasjonsrolle.BARN);
+            assertThat(personSøker.getForelderBarnRelasjon()).hasSize(2);
+            assertThat(personSøker.getForelderBarnRelasjon().get(0).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.MOR);
+            assertThat(personSøker.getForelderBarnRelasjon().get(0).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
+            assertThat(personSøker.getForelderBarnRelasjon().get(1).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.MOR);
+            assertThat(personSøker.getForelderBarnRelasjon().get(1).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
         }
 
     @Test
@@ -72,11 +72,11 @@ class PdlFamilierelasjonTest extends PdlTestBase {
         var personAnnenpart = responseAnnenpart.hentPerson();
 
         // Assert
-        assertThat(personAnnenpart.getFamilierelasjoner()).hasSize(2);
-        assertThat(personAnnenpart.getFamilierelasjoner().get(0).getMinRolleForPerson()).isEqualTo(Familierelasjonsrolle.FAR);
-        assertThat(personAnnenpart.getFamilierelasjoner().get(0).getRelatertPersonsRolle()).isEqualTo(Familierelasjonsrolle.BARN);
-        assertThat(personAnnenpart.getFamilierelasjoner().get(1).getMinRolleForPerson()).isEqualTo(Familierelasjonsrolle.FAR);
-        assertThat(personAnnenpart.getFamilierelasjoner().get(1).getRelatertPersonsRolle()).isEqualTo(Familierelasjonsrolle.BARN);
+        assertThat(personAnnenpart.getForelderBarnRelasjon()).hasSize(2);
+        assertThat(personAnnenpart.getForelderBarnRelasjon().get(0).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.FAR);
+        assertThat(personAnnenpart.getForelderBarnRelasjon().get(0).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
+        assertThat(personAnnenpart.getForelderBarnRelasjon().get(1).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.FAR);
+        assertThat(personAnnenpart.getForelderBarnRelasjon().get(1).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
     }
 
     @Test
@@ -91,20 +91,16 @@ class PdlFamilierelasjonTest extends PdlTestBase {
         var personBarn = responseBarn.hentPerson();
 
         // Assert
-        assertThat(personBarn.getFamilierelasjoner()).hasSize(2);
-        assertThat(personBarn.getFamilierelasjoner().get(0).getMinRolleForPerson()).isEqualTo(Familierelasjonsrolle.BARN);
-        assertThat(personBarn.getFamilierelasjoner().get(0).getRelatertPersonsRolle()).isEqualTo(Familierelasjonsrolle.MOR);
-        assertThat(personBarn.getFamilierelasjoner().get(1).getMinRolleForPerson()).isEqualTo(Familierelasjonsrolle.BARN);
-        assertThat(personBarn.getFamilierelasjoner().get(1).getRelatertPersonsRolle()).isEqualTo(Familierelasjonsrolle.FAR);
+        assertThat(personBarn.getForelderBarnRelasjon()).hasSize(2);
+        assertThat(personBarn.getForelderBarnRelasjon().get(0).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
+        assertThat(personBarn.getForelderBarnRelasjon().get(0).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.MOR);
+        assertThat(personBarn.getForelderBarnRelasjon().get(1).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
+        assertThat(personBarn.getForelderBarnRelasjon().get(1).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.FAR);
     }
 
 
     private static PersonResponseProjection getPersonFamilierelasjonResponseProjection() {
         return new PersonResponseProjection()
-                .familierelasjoner(new FamilierelasjonResponseProjection()
-                        .relatertPersonsIdent()
-                        .relatertPersonsRolle()
-                        .minRolleForPerson())
                 .forelderBarnRelasjon(new ForelderBarnRelasjonResponseProjection()
                         .relatertPersonsIdent()
                         .relatertPersonsRolle()
