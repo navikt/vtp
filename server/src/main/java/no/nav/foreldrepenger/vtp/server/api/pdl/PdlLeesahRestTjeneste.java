@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.FamilierelasjonHendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
@@ -33,6 +34,7 @@ import no.nav.person.pdl.leesah.Endringstype;
 import no.nav.person.pdl.leesah.Personhendelse;
 import no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn;
 import no.nav.person.pdl.leesah.doedsfall.Doedsfall;
+import no.nav.person.pdl.leesah.familierelasjon.Familierelasjon;
 import no.nav.person.pdl.leesah.foedsel.Foedsel;
 
 @Api(tags = "Legge hendelser på PDL topic")
@@ -71,6 +73,8 @@ public class PdlLeesahRestTjeneste {
                 produserDødshendelse(dødshendelseDto);
             } else if (personhendelseDto instanceof DødfødselhendelseDto dødfødselhendelseDto) {
                 produserDødfødselshendelse(dødfødselhendelseDto);
+            } else if (personhendelseDto instanceof FamilierelasjonHendelseDto familierelasjonHendelseDto) {
+                produserFamilierelasjonHendelse(familierelasjonHendelseDto);
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\": \"Ukjent hendelsestype\"}").build();
             }
@@ -150,6 +154,27 @@ public class PdlLeesahRestTjeneste {
             GenericRecordBuilder dødfødtBarn = new GenericRecordBuilder(DoedfoedtBarn.SCHEMA$);
             dødfødtBarn.set("dato", oversettLocalDateTilAvroFormat(dødfødselhendelseDto.doedfoedselsdato()));
             personhendelse.set("doedfoedtBarn", dødfødtBarn.build());
+        }
+
+        sendHendelsePåKafka(personhendelse.build());
+    }
+
+    private void produserFamilierelasjonHendelse(FamilierelasjonHendelseDto familierelasjonHendelseDto) {
+        var personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
+
+        personhendelse.set(HENDELSE_ID, UUID.randomUUID().toString());
+        personhendelse.set(PERSONIDENTER, List.of(familierelasjonHendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(familierelasjonHendelseDto.fnr()).getAktørIdent()));
+        personhendelse.set(MASTER_FIELD, "Freg");
+        personhendelse.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
+        personhendelse.set(OPPLYSNINGSTYPE, "FAMILIERELASJON_V1");
+        personhendelse.set(ENDRINGSTYPE, Endringstype.valueOf(familierelasjonHendelseDto.endringstype()));
+
+        if (!Endringstype.ANNULLERT.toString().equals(familierelasjonHendelseDto.endringstype())) {
+            GenericRecordBuilder familierelasjon = new GenericRecordBuilder(Familierelasjon.SCHEMA$);
+            familierelasjon.set("relatertPersonsIdent", familierelasjonHendelseDto.relatertPersonsFnr());
+            familierelasjon.set("relatertPersonsRolle", familierelasjonHendelseDto.relatertPersonsRolle());
+            familierelasjon.set("minRolleForPerson", familierelasjonHendelseDto.minRolleForPerson());
+            personhendelse.set("familierelasjon", familierelasjon.build());
         }
 
         sendHendelsePåKafka(personhendelse.build());
