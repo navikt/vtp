@@ -274,12 +274,6 @@ public class PdlMockTest extends PdlTestBase {
                             .type()
                             .relatertVedSivilstand()
                 )
-                .familierelasjoner(
-                        new FamilierelasjonResponseProjection()
-                                .relatertPersonsIdent()
-                                .relatertPersonsRolle()
-                                .minRolleForPerson()
-                )
                 .forelderBarnRelasjon(
                         new ForelderBarnRelasjonResponseProjection()
                                 .relatertPersonsIdent()
