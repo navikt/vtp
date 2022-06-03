@@ -2,7 +2,7 @@ package no.nav.pdl.oversetter;
 
 import static no.nav.pdl.oversetter.AdresseAdapter.setAdresser;
 import static no.nav.pdl.oversetter.DoedfoedtBarnAdapter.tilDoedfoedtBarn;
-import static no.nav.pdl.oversetter.ForelderBarnRelasjonBygger.byggForelderBarnRelasjoner;
+import static no.nav.pdl.oversetter.FamilierelasjonBygger.byggFamilierelasjoner;
 import static no.nav.pdl.oversetter.SivilstandBygger.leggTilSivilstand;
 
 import java.time.LocalDate;
@@ -47,7 +47,7 @@ public class PersonAdapter {
         setAdresser(person, hentAdresseModellTPS(personModell, historikk));
         person.setDoedsfall(tilDoedsfall(personModell));
         person.setDoedfoedtBarn(tilDoedfoedtBarn(personModell.getAktørIdent(), personopplysninger));
-        byggForelderBarnRelasjoner(personModell.getAktørIdent(), personopplysninger, person);
+        byggFamilierelasjoner(personModell.getAktørIdent(), personopplysninger, person);
         person.setFoedsel(tilFoedsel(personModell));
         person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
