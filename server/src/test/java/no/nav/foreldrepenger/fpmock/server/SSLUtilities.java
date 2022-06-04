@@ -77,7 +77,7 @@ public final class SSLUtilities {
         } // if
         // Install the all-trusting trust manager
         try {
-            context = SSLContext.getInstance("SSL");
+            context = SSLContext.getInstance("TLSv1.2");
             context.init(null, __trustManagers, new SecureRandom());
         } catch (GeneralSecurityException gse) {
             throw new IllegalStateException(gse.getMessage());
@@ -125,7 +125,7 @@ public final class SSLUtilities {
         } // if
         // Install the all-trusting trust manager:
         try {
-            context = SSLContext.getInstance("SSL");
+            context = SSLContext.getInstance("TLSv1.2");
             context.init(null, _trustManagers, new SecureRandom());
         } catch (GeneralSecurityException gse) {
             throw new IllegalStateException(gse.getMessage());
