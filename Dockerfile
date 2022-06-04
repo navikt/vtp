@@ -12,5 +12,5 @@ COPY server/target/app.jar app.jar
 
 ENV JAVA_OPTS="-Dlogback.configurationFile=logback.xml \
                		-XX:MaxRAMPercentage=75.0 \
-               		-Dfile.encoding=UTF8 \
+               		-Dfile.encoding=UTF-8 \
                		-Duser.timezone=Europe/Oslo"

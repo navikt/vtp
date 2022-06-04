@@ -43,7 +43,7 @@ public class LdapServer {
         cfg.setEnforceSingleStructuralObjectClass(false);
         cfg.setSchema(null); // dropper valider schema slik at vi slipper å definere alle object classes
 
-        SSLContext TLScontext = SSLContext.getInstance("TLS");
+        SSLContext TLScontext = SSLContext.getInstance("TLSv1.2");
 
         KeyManager[] km = loadKeyManagers();
         TLScontext.init(km, null, null);

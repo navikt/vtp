@@ -12,10 +12,12 @@ import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapName;
 
 public class UserRepository {
+    enum AuthenticationLevel { NONE }
+
     public static List<SearchResult> getAllUsers() throws NamingException {
         Hashtable<String, String> props = new Hashtable<>();
         props.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        props.put(javax.naming.Context.SECURITY_AUTHENTICATION, "none");
+        props.put(javax.naming.Context.SECURITY_AUTHENTICATION, AuthenticationLevel.NONE.toString());
         if (null != System.getenv("LDAP_PROVIDER_URL")) {
             props.put(javax.naming.Context.PROVIDER_URL, System.getenv("LDAP_PROVIDER_URL"));
         } else {
