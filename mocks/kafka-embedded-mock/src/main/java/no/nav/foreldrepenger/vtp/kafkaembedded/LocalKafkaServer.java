@@ -138,10 +138,8 @@ public class LocalKafkaServer {
 
         try {
             kafka = new KafkaLocal(kafkaProperties, zkProperties);
-
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("Kunne ikke starte Kafka producer og/eller consumer");
+            log.error("Kunne ikke starte Kafka producer og/eller consumer", e);
         }
 
 

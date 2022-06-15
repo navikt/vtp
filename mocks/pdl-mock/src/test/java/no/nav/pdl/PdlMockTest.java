@@ -2,7 +2,6 @@ package no.nav.pdl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -32,7 +31,7 @@ public class PdlMockTest extends PdlTestBase {
     private final ObjectReader hentIdenterBolkReader = objectMapper.readerFor(HentIdenterBolkQueryResponse.class);
 
     @BeforeAll
-    public static void setup() throws IOException {
+    public static void setup() {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();

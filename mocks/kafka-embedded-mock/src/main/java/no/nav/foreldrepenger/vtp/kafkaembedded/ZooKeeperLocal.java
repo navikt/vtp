@@ -13,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class ZooKeeperLocal {
-    private Thread t;
-    private Logger LOG = LoggerFactory.getLogger(ZooKeeperLocal.class);
-    private ZooKeeperServerMain zooKeeperServer;
+    private static final Logger LOG = LoggerFactory.getLogger(ZooKeeperLocal.class);
+    private final Thread t;
+    private final ZooKeeperServerMain zooKeeperServer;
 
     ZooKeeperLocal(Properties zkProperties) {
         QuorumPeerConfig quorumConfiguration = new QuorumPeerConfig();
@@ -34,11 +34,8 @@ class ZooKeeperLocal {
             try {
                 started.countDown(); // here we go
                 zooKeeperServer.runFromConfig(configuration);
-            } catch (IOException e) {
-                LOG.error("Zookeeper failed: {}", e.getMessage());
-            } catch (AdminServer.AdminServerException e) {
-                LOG.error("Zookeeper failed: {}", e.getMessage());
-                e.printStackTrace();
+            } catch (IOException | AdminServer.AdminServerException e) {
+                LOG.error("Zookeeper failed: ", e);
             }
         });
         t.start();
@@ -47,7 +44,8 @@ class ZooKeeperLocal {
             if (!started.await(5, TimeUnit.SECONDS)) {
                 throw new IllegalStateException("Could not start Zookeeper in time (5 secs)");
             }
-            Thread.sleep(1 * 1000L); // vent littegrann til på zookeeper
+            int sekunder = 1;
+            Thread.sleep(sekunder * 1000L); // vent littegrann til på zookeeper
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

@@ -1,9 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,6 +19,11 @@ import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.virksomhet.VirksomhetModell;
 
 public class BasisdataProviderFileImpl implements BasisdataProvider {
+    private static final String BASEDATA_RESOURCE_FOLDER_PATH = "/basedata/";
+    private static final String ADRESSE_MALER = BASEDATA_RESOURCE_FOLDER_PATH + "adresse-maler.json";
+    private static final String ENHETER = BASEDATA_RESOURCE_FOLDER_PATH + "enheter.json";
+    private static final String VIRKSOMHETER = BASEDATA_RESOURCE_FOLDER_PATH + "virksomheter.json";
+    private static final String ORGANISASJON = BASEDATA_RESOURCE_FOLDER_PATH + "organisasjon.json";
 
     private final VirksomhetIndeks virksomhetIndeks = new VirksomhetIndeks();
     private final EnheterIndeks enheterIndeks = new EnheterIndeks();
@@ -31,14 +34,14 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private static final ObjectMapper mapper = JacksonObjectMapperTestscenario.getObjectMapper();
     private static BasisdataProviderFileImpl instance;
 
-    private BasisdataProviderFileImpl() throws IOException{
+    private BasisdataProviderFileImpl() {
         loadAdresser();
         loadEnheter();
         loadVirksomheter();
         loadOrganisasjoner();
     }
 
-    public static synchronized BasisdataProviderFileImpl getInstance() throws IOException{
+    public static synchronized BasisdataProviderFileImpl getInstance() {
         if(instance == null){
             instance = new BasisdataProviderFileImpl();
         }
@@ -66,32 +69,44 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         return identGenerator;
     }
 
-    private void loadAdresser() throws IOException {
-        try (InputStream is = getClass().getResourceAsStream("/basedata/adresse-maler.json")) {
-            List<AdresseModell> adresser = Arrays.asList(mapper.readValue(is, AdresseModell[].class));
+    private void loadAdresser() {
+        try (var is = getClass().getResourceAsStream(ADRESSE_MALER)) {
+            var adresser = Arrays.asList(mapper.readValue(is, AdresseModell[].class));
             adresser.forEach(adresseIndeks::leggTil);
+        } catch (IOException e) {
+            throwIllegaleStateExecption(ADRESSE_MALER, e);
         }
     }
 
-    private void loadEnheter() throws IOException {
-        try (InputStream is = getClass().getResourceAsStream("/basedata/enheter.json")) {
-            List<Norg2Modell> adresser =Arrays.asList(mapper.readValue(is, Norg2Modell[].class));
+    private void loadEnheter() {
+        try (var is = getClass().getResourceAsStream(ENHETER)) {
+            var adresser = Arrays.asList(mapper.readValue(is, Norg2Modell[].class));
             enheterIndeks.leggTil(adresser);
+        } catch (IOException e) {
+            throwIllegaleStateExecption(ENHETER, e);
         }
     }
 
-    private void loadVirksomheter() throws IOException {
-        try (InputStream is = getClass().getResourceAsStream("/basedata/virksomheter.json")) {
-            List<VirksomhetModell> virksomheter = Arrays.asList(mapper.readValue(is, VirksomhetModell[].class));
+    private void loadVirksomheter() {
+        try (var is = getClass().getResourceAsStream(VIRKSOMHETER)) {
+            var virksomheter = Arrays.asList(mapper.readValue(is, VirksomhetModell[].class));
             virksomhetIndeks.leggTil(virksomheter);
+        } catch (IOException e) {
+            throwIllegaleStateExecption(VIRKSOMHETER, e);
         }
     }
 
-    private void loadOrganisasjoner() throws IOException {
-        try (InputStream is = getClass().getResourceAsStream("/basedata/organisasjon.json")) {
-            List<OrganisasjonModell> organisasjoner = Arrays.asList(mapper.readValue(is, OrganisasjonModell[].class));
+    private void loadOrganisasjoner() {
+        try (var is = getClass().getResourceAsStream(ORGANISASJON)) {
+            var organisasjoner = Arrays.asList(mapper.readValue(is, OrganisasjonModell[].class));
             organisasjonIndeks.leggTil(organisasjoner);
+        } catch (IOException e) {
+            throwIllegaleStateExecption(ORGANISASJON, e);
         }
+    }
+
+    private void throwIllegaleStateExecption(String filnavn, IOException e) {
+        throw new IllegalStateException("Noe gikk galt ved lesing av " + filnavn, e);
     }
 
 }

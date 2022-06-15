@@ -51,8 +51,7 @@ public class KeyStoreTool {
 
             KeyStoreTool.keystore = ks;
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableEntryException e) {
-            LOG.error("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
         }
 
         try {
@@ -60,8 +59,7 @@ public class KeyStoreTool {
             jwk.setPrivateKey(myPrivateKey);
             jwk.setKeyId("1");
         } catch (JoseException e) {
-            LOG.error("Error during init of JWK: {}", e);
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error during init of JWK: ", e);
         }
 
     }

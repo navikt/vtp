@@ -80,7 +80,7 @@ public final class SSLUtilities {
             context = SSLContext.getInstance("TLSv1.2");
             context.init(null, __trustManagers, new SecureRandom());
         } catch (GeneralSecurityException gse) {
-            throw new IllegalStateException(gse.getMessage());
+            throw new IllegalStateException(gse);
         } // catch
         HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
     } // __trustAllHttpsCertificates
@@ -128,7 +128,7 @@ public final class SSLUtilities {
             context = SSLContext.getInstance("TLSv1.2");
             context.init(null, _trustManagers, new SecureRandom());
         } catch (GeneralSecurityException gse) {
-            throw new IllegalStateException(gse.getMessage());
+            throw new IllegalStateException(gse);
         } // catch
         HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
     } // _trustAllHttpsCertificates

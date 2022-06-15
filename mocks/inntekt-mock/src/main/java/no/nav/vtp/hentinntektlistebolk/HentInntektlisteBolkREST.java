@@ -1,6 +1,5 @@
 package no.nav.vtp.hentinntektlistebolk;
 
-import java.io.IOException;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +32,10 @@ import no.nav.vtp.hentinntektlistebolk.modell.HentInntektlisteBolkMapperRest;
 public class HentInntektlisteBolkREST {
     private static final Logger LOG = LoggerFactory.getLogger(HentInntektlisteBolkREST.class);
 
-
-    TestscenarioRepositoryImpl testscenarioRepository;
+    private final TestscenarioRepositoryImpl testscenarioRepository;
 
     public HentInntektlisteBolkREST() {
-        try {
-            testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
 

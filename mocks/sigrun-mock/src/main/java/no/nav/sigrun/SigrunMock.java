@@ -1,6 +1,5 @@
 package no.nav.sigrun;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,19 +27,13 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl
 @Path("/api/beregnetskatt")
 public class SigrunMock {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
-
-    public static final String X_NATURLIGIDENT_HEADER = "x-naturligident";
-    public static final String X_INNTEKTSAAR_HEADER = "x-inntektsaar";
-    public static final String X_AKTOERID_HEADER = "x-aktoerid";
-
-    TestscenarioRepositoryImpl testscenarioRepository;
+    private static final String X_NATURLIGIDENT_HEADER = "x-naturligident";
+    private static final String X_INNTEKTSAAR_HEADER = "x-inntektsaar";
+    private static final String X_AKTOERID_HEADER = "x-aktoerid";
+    private final TestscenarioRepositoryImpl testscenarioRepository;
 
     public SigrunMock() {
-        try {
-            testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
     @SuppressWarnings("unused")

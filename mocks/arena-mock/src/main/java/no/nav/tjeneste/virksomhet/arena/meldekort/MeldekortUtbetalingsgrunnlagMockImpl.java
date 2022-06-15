@@ -46,9 +46,9 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
     private static final String FAULTINFO_FEILAARSAK = "Feilaarsak";
     private static final String FAULTINFO_FEILKILDE = "Mock MeldekortUtbetalingsgrunnlag";
 
-    private static ObjectFactory of = new ObjectFactory();
-    private static ArenaMUMapper arenaMapper = new ArenaMUMapper();
-    private TestscenarioBuilderRepository scenarioRepository;
+    private static final  ObjectFactory of = new ObjectFactory();
+    private static final ArenaMUMapper arenaMapper = new ArenaMUMapper();
+    private final TestscenarioBuilderRepository scenarioRepository;
 
     public MeldekortUtbetalingsgrunnlagMockImpl(TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
@@ -87,12 +87,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         ArenaModell arenaModell = inntektYtelseModell.arenaModell();
         Feilkode feilkode = arenaModell.feilkode();
         if (feilkode != null) {
-            try {
-                haandterExceptions(feilkode, ident);
-            } catch (Exception e) {
-                LOG.error("Error ", e);
-                throw e;
-            }
+            haandterExceptions(feilkode, ident);
         }
 
         return arenaMapper.mapArenaSaker(finnMeldekortUtbetalingsgrunnlagListeRequest, response, arenaModell.saker());
@@ -112,21 +107,21 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
             FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning {
 
         switch (kode) {
-            case UGYLDIG_INPUT: {
-                UgyldigInput faultInfo = lagUgyldigInput(ident);
+            case UGYLDIG_INPUT -> {
+                var faultInfo = lagUgyldigInput(ident);
                 throw new FinnMeldekortUtbetalingsgrunnlagListeUgyldigInput(faultInfo.getFeilmelding(), faultInfo);
             }
-            case PERSON_IKKE_FUNNET: {
-                AktoerIkkeFunnet faultInfo = lagAktoerIkkeFunnet();
+            case PERSON_IKKE_FUNNET -> {
+                var faultInfo = lagAktoerIkkeFunnet();
                 throw new FinnMeldekortUtbetalingsgrunnlagListeAktoerIkkeFunnet(faultInfo.getFeilmelding(), faultInfo);
             }
-            case SIKKERHET_BEGRENSNING: {
-                Sikkerhetsbegrensning faultInfo = lagSikkerhetsbegrensning(ident);
+            case SIKKERHET_BEGRENSNING -> {
+                var faultInfo = lagSikkerhetsbegrensning(ident);
                 throw new FinnMeldekortUtbetalingsgrunnlagListeSikkerhetsbegrensning(faultInfo.getFeilmelding(), faultInfo);
             }
-            default:
+            default -> {
                 // ikke noe
-                break;
+            }
         }
     }
 

@@ -2,8 +2,6 @@ package no.nav.dkif;
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
-import java.io.IOException;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -31,15 +29,10 @@ public class DigitalKontaktinformasjonMock {
     private static final String NAV_CALLID = "Nav-Callid";
     private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
 
-
-    private TestscenarioBuilderRepository scenarioRepository;
+    private final TestscenarioBuilderRepository scenarioRepository;
 
     public DigitalKontaktinformasjonMock() {
-        try {
-            scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
     @GET
