@@ -2,7 +2,6 @@ package no.nav.dkif;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +20,7 @@ public class DKIFOgDigdirKrrProxyTjenesteTest {
     private static SøkerModell søker;
 
     @BeforeAll
-    public static void setup() throws IOException {
+    public static void setup() {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();

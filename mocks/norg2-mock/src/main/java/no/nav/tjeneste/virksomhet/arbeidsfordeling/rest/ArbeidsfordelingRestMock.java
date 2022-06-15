@@ -1,8 +1,8 @@
 package no.nav.tjeneste.virksomhet.arbeidsfordeling.rest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,14 +25,10 @@ public class ArbeidsfordelingRestMock {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArbeidsfordelingRestMock.class);
     private static final String LOG_PREFIX = "Arbeidsfordeling Rest kall til {}";
-    private TestscenarioBuilderRepository scenarioRepository;
+    private final TestscenarioBuilderRepository scenarioRepository;
 
     public ArbeidsfordelingRestMock() {
-        try {
-            this.scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        this.scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
     @POST

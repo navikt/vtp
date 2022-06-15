@@ -8,7 +8,6 @@ import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock.QPRM_TO
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -44,7 +43,7 @@ class AaregRSV1MockTest {
 
 
     @BeforeAll
-    public static void setup() throws IOException {
+    public static void setup() {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();

@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doNothing;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -45,7 +44,7 @@ public class HendelseTest {
     static PdlLeesahRestTjeneste pdlLeesahRestTjeneste;
 
     @BeforeAll
-    public static void setup() throws IOException {
+    public static void setup() {
         testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         testscenarioHenter = TestscenarioHenter.getInstance();

@@ -119,7 +119,6 @@ public class JournalpostMapper {
             case FNR -> new JournalpostBruker(bruker.getId(), BrukerType.FNR);
             case AKTOERID -> new JournalpostBruker(bruker.getId(), BrukerType.AKTOERID);
             case ORGNR -> new JournalpostBruker(bruker.getId(), BrukerType.ORGNR);
-            default -> throw new UnsupportedOperationException("Kan ikke opprette journalpost for brukertype");
         };
     }
 

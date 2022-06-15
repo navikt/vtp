@@ -6,10 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY)
+@JsonTypeInfo(use = Id.NAME)
 @JsonSubTypes({ @Type(UstrukturertAdresseModell.class), @Type(GateadresseModell.class), @Type(AdresseRefModell.class), @Type(PostboksadresseModell.class) })
 public abstract class AdresseModell extends Periodisert implements Cloneable {
 

@@ -2,7 +2,6 @@ package no.nav.pdl;
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
@@ -40,11 +39,7 @@ public class PdlMock {
     }
 
     private TestscenarioBuilderRepository buildTestscenarioRepository() {
-        try {
-            return TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
     @POST

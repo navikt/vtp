@@ -2,8 +2,6 @@ package no.nav.dkif;
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
-import java.io.IOException;
-
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -25,14 +23,10 @@ public class DigdirKrrProxyMock {
 
     public static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
 
-    private TestscenarioBuilderRepository scenarioRepository;
+    private final TestscenarioBuilderRepository scenarioRepository;
 
     public DigdirKrrProxyMock() {
-        try {
-            scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+        scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
     @GET
