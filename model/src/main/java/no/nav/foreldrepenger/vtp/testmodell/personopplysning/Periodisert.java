@@ -2,28 +2,24 @@ package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public abstract class Periodisert {
-
-    @JsonProperty("fom")
     private LocalDate fom;
-
-    @JsonProperty("tom")
     private LocalDate tom;
-
-    @JsonProperty("endringstype")
     private Endringstype endringstype;
-
-    @JsonProperty("endringstidspunkt")
     private LocalDate endringstidspunkt;
 
     protected Periodisert() {
     }
 
     protected Periodisert(LocalDate fom, LocalDate tom) {
+        this(fom, tom, null, null);
+    }
+
+    protected Periodisert(LocalDate fom, LocalDate tom, Endringstype endringstype, LocalDate endringstidspunkt) {
         this.fom = fom;
         this.tom = tom;
+        this.endringstype = endringstype;
+        this.endringstidspunkt = endringstidspunkt;
     }
 
     public LocalDate getFom() {
@@ -42,27 +38,17 @@ public abstract class Periodisert {
         this.tom = tom;
     }
 
-    public String getEndringstype() {
-        return endringstype == null ? null : endringstype.name();
+    public Endringstype getEndringstype() {
+        return endringstype;
     }
 
     public LocalDate getEndringstidspunkt() {
         return endringstidspunkt;
     }
 
-    @Override
-    public Periodisert clone() {
-        try {
-            return (Periodisert) super.clone();
-        } catch (CloneNotSupportedException e) {
-            // skal ikke kunne skje
-            throw new UnsupportedOperationException(e);
-        }
-    }
-
     public enum Endringstype {
         /** matcher verdier i TPS Endringstype, derav lower-case */
-        ny, endret, utgaatt, slettet;
+        ny, endret, utgaatt, slettet
     }
 
 }

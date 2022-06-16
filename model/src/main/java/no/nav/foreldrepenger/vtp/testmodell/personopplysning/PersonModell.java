@@ -18,22 +18,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell.
 
 public abstract class PersonModell extends BrukerModell {
 
-    /** NAV kodeverk: http://nav.no/kodeverk/Kodeverk/Diskresjonskoder. */
-    public enum Diskresjonskoder {
-    KLIE, MILI, PEND, SPFO(7), SPSF(6), SVAL, UFB, URIK, UDEF;
-        int kode;
-
-        Diskresjonskoder() {
-        }
-
-        Diskresjonskoder(int kode) {
-            this.kode = kode;
-        }
-
-    }
-
-    private static final String NB = "NB";
-
     @JsonProperty("fornavn")
     private String fornavn;
 
@@ -54,9 +38,6 @@ public abstract class PersonModell extends BrukerModell {
 
     @JsonProperty("kjønn")
     private Kjønn kjønn;
-
-    @JsonProperty("gjeldendeAdresseType")
-    private AdresseType gjeldendeAdresseType;
 
     @JsonProperty("geografiskTilknytning")
     private GeografiskTilknytningModell geografiskTilknytning = GeografiskTilknytningModell.defaultValue();
@@ -93,7 +74,6 @@ public abstract class PersonModell extends BrukerModell {
 
     protected PersonModell(String lokalIdent, String navn, LocalDate fødselsdato) {
         super(lokalIdent);
-
         this.etternavn = navn.contains(" ") ? navn.substring(navn.lastIndexOf(' ')) : navn;
         this.fornavn = navn.contains(" ") ? navn.substring(0, navn.lastIndexOf(' ')) : navn;
         this.fødselsdato = fødselsdato;
@@ -164,25 +144,6 @@ public abstract class PersonModell extends BrukerModell {
         return geografiskTilknytning;
     }
 
-    public String getGjeldendeadresseType() {
-        if (gjeldendeAdresseType != null && getAdresse(gjeldendeAdresseType).isPresent()) {
-            // hvis satt bruk det
-            return gjeldendeAdresseType.getTpsKode(getAdresse(gjeldendeAdresseType).get().getLand()); // NOSONAR
-        } else if (!getAdresser().isEmpty()) {
-            // plukk første hvis finnes
-            AdresseModell adresseModell = getAdresser().get(0);
-            return adresseModell.getAdresseType().getTpsKode(adresseModell.getLand());
-        } else {
-            // ellers ukjent
-            return AdresseType.UKJENT_ADRESSE.getTpsKode(null);
-        }
-
-    }
-
-    public AdresseType getGjeldendeAdresseType() {
-        return gjeldendeAdresseType;
-    }
-
     public Kjønn getKjønn() {
         return kjønn;
     }
@@ -209,7 +170,7 @@ public abstract class PersonModell extends BrukerModell {
 
     public String getSpråk2Bokstaver() {
         if (språk == null) {
-            return NB;
+            return "NB";
         } else {
             return språk.substring(0, 2).toUpperCase(Locale.getDefault());
         }
@@ -266,10 +227,6 @@ public abstract class PersonModell extends BrukerModell {
 
     public void setGeografiskTilknytning(GeografiskTilknytningModell geografiskTilknytning) {
         this.geografiskTilknytning = geografiskTilknytning;
-    }
-
-    public void setGjeldendeAdresseType(AdresseType gjeldendeAdresseType) {
-        this.gjeldendeAdresseType = gjeldendeAdresseType;
     }
 
     public void setPersonstatus(List<PersonstatusModell> personstatus) {

@@ -1,19 +1,27 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.LocalDate;
 
-@JsonTypeName("postboksadresse")
-public class PostboksadresseModell extends AdresseModell{
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-    @JsonProperty("postboksnummer")
+public class PostboksadresseModell extends AdresseModell {
     private String postboksnummer;
-
-    @JsonProperty("poststed")
     private String poststed;
-
-    @JsonProperty("postboksanlegg")
     private String postboksanlegg;
+
+    public PostboksadresseModell(PostboksadresseModell p) {
+        this(p.getFom(), p.getTom(), p.getEndringstype(), p.getEndringstidspunkt(), p.getAdresseType(), p.getLand(), p.getMatrikkelId(),
+                p.getPostboksnummer(), p.getPoststed(), p.getPostboksanlegg());
+    }
+
+    @JsonCreator
+    public PostboksadresseModell(LocalDate fom, LocalDate tom, Endringstype endringstype, LocalDate endringstidspunkt, AdresseType adresseType, Landkode land, String matrikkelId,
+                                 String postboksnummer, String poststed, String postboksanlegg) {
+        super(fom, tom, endringstype, endringstidspunkt, adresseType, land, matrikkelId);
+        this.postboksnummer = postboksnummer;
+        this.poststed = poststed;
+        this.postboksanlegg = postboksanlegg;
+    }
 
     public String getPostboksanlegg() {
         return postboksanlegg;
