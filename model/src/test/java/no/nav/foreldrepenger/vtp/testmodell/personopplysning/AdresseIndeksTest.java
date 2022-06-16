@@ -88,7 +88,6 @@ class AdresseIndeksTest {
         assertThat(adresseHentet.getFom()).isEqualTo(ref.getFom());
         assertThat(adresseHentet.getTom()).isEqualTo(ref.getTom());
 
-        // Verifiser at clone operasjonen i finnFra kloner felter fra submodels også
         if (adresseHentet instanceof GateadresseModell gateadresseModell) {
             assertThat(gateadresseModell.getGatenavn()).isNotNull();
             assertThat(gateadresseModell.getGatenummer()).isNotNull();
