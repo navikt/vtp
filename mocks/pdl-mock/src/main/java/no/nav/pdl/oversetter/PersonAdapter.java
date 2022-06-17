@@ -157,7 +157,7 @@ public class PersonAdapter {
     }
 
     private static AdressebeskyttelseGradering tilAdressebeskyttelseGradering(PersonModell bruker) {
-        PersonModell.Diskresjonskoder diskresjonskodeType = bruker.getDiskresjonskodeType();
+        var diskresjonskodeType = bruker.getDiskresjonskodeType();
         if (diskresjonskodeType == null) {
             return AdressebeskyttelseGradering.UGRADERT;
         }

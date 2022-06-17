@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response;
 
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +42,7 @@ import no.nav.person.pdl.leesah.foedsel.Foedsel;
 @Api(tags = "Legge hendelser på PDL topic")
 @Path("/api/pdl/leesah")
 public class PdlLeesahRestTjeneste {
-
+    private static final Logger LOG = LoggerFactory.getLogger(PdlLeesahRestTjeneste.class);
     private static final String HENDELSE_ID = "hendelseId";
     private static final String PERSONIDENTER = "personidenter";
     private static final String MASTER_FIELD = "master";
@@ -79,9 +81,9 @@ public class PdlLeesahRestTjeneste {
                 return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\": \"Ukjent hendelsestype\"}").build();
             }
 
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).entity(String.format("{\"error\": \"%s\"}",re.getMessage())).build();
+        } catch (RuntimeException e) {
+            LOG.warn("Noe gikk galt når vi prøvde å legge til hendels på PDL topic", e);
+            return Response.status(Response.Status.BAD_REQUEST).entity(String.format("{\"error\": \"%s\"}", e.getMessage())).build();
         }
         return Response.status(201).entity("{\"success\": \"Personhendelse opprettet\"}").build();
     }
@@ -201,16 +203,15 @@ public class PdlLeesahRestTjeneste {
         return barnIdent;
     }
 
-    private String registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
+    private void registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
         var personIndeks = testscenarioRepository.getPersonIndeks();
         Personopplysninger personopplysninger;
         personopplysninger = personIndeks.finnPersonopplysningerByIdent(dødfødselhendelseDto.fnr());
 
         var barnModell = new BarnModell("Tester Testersonsdotter", dødfødselhendelseDto.doedfoedselsdato());
-        var barnIdent= personopplysninger.leggTilDødfødsel(barnModell);
+        personopplysninger.leggTilDødfødsel(barnModell);
 
         testscenarioRepository.indekserPersonopplysninger(personopplysninger);
-        return barnIdent;
     }
 
     private void registrerDødshendelse(DødshendelseDto dødshendelseDto) {

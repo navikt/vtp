@@ -1,26 +1,36 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
+import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
+
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-@JsonTypeInfo(use = Id.NAME)
-@JsonSubTypes({ @Type(UstrukturertAdresseModell.class), @Type(GateadresseModell.class), @Type(AdresseRefModell.class), @Type(PostboksadresseModell.class) })
-public abstract class AdresseModell extends Periodisert implements Cloneable {
-
-    @JsonProperty("adresseType")
+@JsonTypeInfo(use = NAME)
+@JsonSubTypes({
+        @Type(value = UstrukturertAdresseModell.class, name = "ustrukturert"),
+        @Type(value = GateadresseModell.class, name = "gateadresse"),
+        @Type(value = AdresseRefModell.class, name = "ref"),
+        @Type(value = PostboksadresseModell.class, name = "postboksadresse")
+})
+public abstract class AdresseModell extends Periodisert {
     private AdresseType adresseType;
-
-    @JsonProperty("land")
     private Landkode land;
-
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @JsonProperty("matrikkelId")
     private String matrikkelId;
+
+    protected AdresseModell() {
+    }
+
+    protected AdresseModell(LocalDate fom, LocalDate tom, Endringstype endringstype, LocalDate endringstidspunkt,
+                            AdresseType adresseType, Landkode land, String matrikkelId) {
+        super(fom, tom, endringstype, endringstidspunkt);
+        this.adresseType = adresseType;
+        this.land = land;
+        this.matrikkelId = matrikkelId;
+    }
 
     public AdresseType getAdresseType() {
         return adresseType;
@@ -28,11 +38,15 @@ public abstract class AdresseModell extends Periodisert implements Cloneable {
 
     @JsonIgnore
     public String getLandkode() {
-        return land!=null?land.getKode():null;
+        return land !=null ? land.getKode() : null;
     }
 
     public Landkode getLand() {
         return land;
+    }
+
+    public String getMatrikkelId() {
+        return matrikkelId;
     }
 
     public void setAdresseType(AdresseType adresseType) {
@@ -41,10 +55,6 @@ public abstract class AdresseModell extends Periodisert implements Cloneable {
 
     public void setLand(Landkode landkode) {
         this.land = landkode;
-    }
-
-    public String getMatrikkelId() {
-        return matrikkelId;
     }
 
     public void setMatrikkelId(String matrikkelId) {

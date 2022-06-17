@@ -13,12 +13,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseRefModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell.Rolle;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Landkode;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
@@ -30,6 +31,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl
 
 public class ScenarioTest {
 
+    public static final LocalDate NOW = LocalDate.now();
     private static TestscenarioRepository testScenarioRepository;
     private static TestscenarioHenter testscenarioHenter;
 
@@ -39,7 +41,6 @@ public class ScenarioTest {
         testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         testscenarioHenter = TestscenarioHenter.getInstance();
-
     }
 
     @Test
@@ -47,7 +48,7 @@ public class ScenarioTest {
         var testscenarioObjekt = testscenarioHenter.hentScenario("1");
         var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-        assertEquals(1, testScenarioRepository.getTestscenarios().size());
+        assertThat(testScenarioRepository.getTestscenarios()).hasSize(1);
         assertThat(testscenario.getId()).isNotNull();
         assertThat(testscenario.getTemplateNavn()).isEqualToIgnoringCase("1-for-enhetstester");
 
@@ -110,10 +111,7 @@ public class ScenarioTest {
 
     }
 
-    private boolean avsjekkSpesifiktScenario(Personopplysninger pers, SøkerModell søker) {
-        boolean avsjekketEttScenario;
-        avsjekketEttScenario = true;
-
+    private void avsjekkSpesifiktScenario(Personopplysninger pers, SøkerModell søker) {
         assertThat(søker.getIdent()).isNotNull();
 
         var familierelasjon = pers.getFamilierelasjoner(Rolle.BARN).findFirst().get();
@@ -128,24 +126,31 @@ public class ScenarioTest {
         assertThat(bostedsAdresseOpt).isPresent();
         var gateadresse = (GateadresseModell) bostedsAdresseOpt.get();
         assertThat(gateadresse.getGatenavn()).isEqualTo("Haugesund ally");
-        assertThat(gateadresse.getFom()).isEqualTo(LocalDate.now().minusYears(1));
-        return avsjekketEttScenario;
+        assertThat(gateadresse.getFom()).isEqualTo(NOW.minusYears(1));
     }
 
     private void sjekkAdresseIndeks(TestscenarioImpl sc) {
         assertThat(sc.getAdresseIndeks()).isNotNull();
-        assertThat(sc.getAdresseIndeks().finn(AdresseType.BOSTEDSADRESSE, Landkode.NOR)).isNotNull();
-        assertThat(sc.getAdresseIndeks().finn(AdresseType.MIDLERTIDIG_POSTADRESSE, Landkode.NOR)).isNotNull();
-        assertThat(sc.getAdresseIndeks().finn(AdresseType.MIDLERTIDIG_POSTADRESSE, Landkode.USA)).isNotNull();
-        assertThat(sc.getAdresseIndeks().finn(AdresseType.POSTADRESSE, Landkode.NOR)).isNotNull();
+        assertThat(sc.getAdresseIndeks().finnFra(adresseRefModell(AdresseType.BOSTEDSADRESSE, Landkode.NOR))).isNotNull();
+        assertThat(sc.getAdresseIndeks().finnFra(adresseRefModell(AdresseType.MIDLERTIDIG_POSTADRESSE, Landkode.NOR))).isNotNull();
+        assertThat(sc.getAdresseIndeks().finnFra(adresseRefModell(AdresseType.MIDLERTIDIG_POSTADRESSE, Landkode.USA))).isNotNull();
+        assertThat(sc.getAdresseIndeks().finnFra(adresseRefModell(AdresseType.POSTADRESSE, Landkode.NOR))).isNotNull();
+    }
+
+    private AdresseRefModell adresseRefModell(AdresseType adresseType, Landkode landkode) {
+        var adresseRefModell = new AdresseRefModell();
+        adresseRefModell.setAdresseType(adresseType);
+        adresseRefModell.setLand(landkode);
+        adresseRefModell.setFom(NOW.minusYears(3));
+        return adresseRefModell;
     }
 
     private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
-        return testscenario.getPersonopplysninger().getFamilierelasjoner()
-                .stream()
-                .filter(modell -> modell.getTil() instanceof BarnModell)
-                .map(modell -> ((BarnModell) modell.getTil()))
-                .map(PersonModell::getFødselsdato)
+        return testscenario.getPersonopplysninger().getFamilierelasjoner().stream()
+                .map(FamilierelasjonModell::getTil)
+                .filter(BarnModell.class::isInstance)
+                .map(BarnModell.class::cast)
+                .map(BarnModell::getFødselsdato)
                 .findFirst();
     }
 }
