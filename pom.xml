@@ -38,7 +38,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <avro.version>1.11.0</avro.version>
-        <confluent.version>7.0.1</confluent.version>
+        <confluent.version>7.2.1</confluent.version>
         <cxf.version>3.5.2</cxf.version>
         <apache.httpcomponents>4.5.13</apache.httpcomponents>
         <tjenestespesifikasjoner.version>1.2021.02.22-10.45-4201aaea72fb</tjenestespesifikasjoner.version>
