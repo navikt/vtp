@@ -82,7 +82,11 @@ public abstract class BrukerModell {
     public abstract String getIdent();
 
     public enum Kjønn {
-        M, K
+        M, K;
+
+        public boolean erKvinne() {
+            return K.equals(this);
+        }
     }
 
     public void setIdenter(LokalIdentIndeks identer) {

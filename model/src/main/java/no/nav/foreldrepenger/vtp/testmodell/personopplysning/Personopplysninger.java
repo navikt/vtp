@@ -132,24 +132,15 @@ public class Personopplysninger {
         barn.setIdenter(identer);
         barn.setLokalIdent(lokalIdent);
         barn.setAdresseIndeks(søker.getAdresseIndeks());
-        this.familierelasjoner.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
-        this.familierelasjonerAnnenPart.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
+        familierelasjoner.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
+        familierelasjonerAnnenPart.add(new FamilierelasjonModell(FamilierelasjonModell.Rolle.BARN, barn));
 
         if (familierelasjonerBarn.isEmpty()) {
-            if (søker.getKjønn().equals(BrukerModell.Kjønn.K)) {
-                this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.MORA, getSøker()));
-                if (annenPart != null && annenPart.getKjønn().equals(BrukerModell.Kjønn.K)) {
-                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.MMOR, getAnnenPart()));
-                } else {
-                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.FARA, getSøker()));
-                }
-            } else {
-                this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.FARA, getSøker()));
-                if (annenPart != null && annenPart.getKjønn().equals(BrukerModell.Kjønn.M)) {
-                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.FARA, getAnnenPart()));
-                } else {
-                    this.familierelasjonerBarn.add(new FamilierelasjonModell(Rolle.MORA, getSøker()));
-                }
+            var søkerRolle = søker.getKjønn().erKvinne() ? Rolle.MORA : Rolle.FARA;
+            familierelasjonerBarn.add(new FamilierelasjonModell(søkerRolle, søker));
+            if (annenPart != null) {
+                var annenpartRolle = annenPart.getKjønn().erKvinne() ? Rolle.MMOR : Rolle.FARA;
+                familierelasjonerBarn.add(new FamilierelasjonModell(annenpartRolle, annenPart));
             }
         }
     }
