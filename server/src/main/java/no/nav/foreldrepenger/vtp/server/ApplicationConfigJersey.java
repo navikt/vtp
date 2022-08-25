@@ -54,6 +54,7 @@ import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.LoginserviceLoginTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
@@ -131,6 +132,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         // tekniske ting
         classes.add(OpenAMRestService.class);
         classes.add(AADRestTjeneste.class);
+        classes.add(LoginserviceLoginTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
