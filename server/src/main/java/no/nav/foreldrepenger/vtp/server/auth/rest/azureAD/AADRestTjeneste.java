@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.AbstractMap;
 import java.util.List;
@@ -51,52 +50,6 @@ public class AADRestTjeneste {
     public Response isAliveMock() {
         String isAlive = "Azure AD is OK";
         return Response.ok(isAlive).build();
-    }
-
-    @GET
-    @Path("/{tenant}/hent-token")
-    @Produces(MediaType.TEXT_HTML)
-    public Response hent(@Context HttpServletRequest req, @PathParam("tenant") String tenant, @QueryParam("redirect") URI redirectUri) {
-        String tmpl = """
-            <!DOCTYPE html>
-            <html>
-            <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>Velg bruker</title>
-            </head>
-                <body>
-                <div style="text-align:center;width:100%%;">
-                   <caption><h3>Fødselsnummer:</h3></caption>
-                    <form action="%s" method="post">
-                      <input type="hidden" name="redirect" value="%s" />
-                      <input type="text" name="fnr" />
-                      <input type="submit" value="Token, takk!" />
-                    </form>
-                </div>
-            </body>
-            </html>
-        """;
-
-        var baseUrl = getBaseUrl(req).replace("vtp", "localhost");
-        var url = baseUrl + "/" + tenant + "/token/setcookie";
-        return Response.ok(String.format(tmpl, url, redirectUri), MediaType.TEXT_HTML).build();
-    }
-
-    @POST
-    @Path("/{tenant}/token/setcookie")
-    @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "azureAd/access_token", notes = ("Mock impl av Azure AD access_token"))
-    @SuppressWarnings("unused")
-    public Response accessToken(@Context HttpServletRequest req,
-                                @PathParam("tenant") String tenant,
-                                @FormParam("fnr") String fnr,
-                                @FormParam("redirect") URI redirectUri) {
-
-        var token = createIdToken(req, fnr, tenant);
-        var cookieTemplate = "selvbetjening-idtoken=%s;Path=/;Domain=%s";
-        return Response.seeOther(redirectUri)
-                .header("Set-Cookie", String.format(cookieTemplate, token, redirectUri.getHost()))
-                .build();
     }
 
     @GET
