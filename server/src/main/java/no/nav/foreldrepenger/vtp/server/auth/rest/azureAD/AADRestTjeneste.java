@@ -94,7 +94,7 @@ public class AADRestTjeneste {
         return Response.ok(oauthResponse).build();
     }
 
-    private String createIdToken(HttpServletRequest req, String username, String tenant) {
+    static String createIdToken(HttpServletRequest req, String username, String tenant) {
         String issuer = getIssuer(req, tenant);
         String state = req.getParameter("state");
         String nonce = state != null ? nonceCache.get(state) : null;
@@ -200,11 +200,11 @@ public class AADRestTjeneste {
         }
     }
 
-    private String getBaseUrl(HttpServletRequest req) {
+    private static String getBaseUrl(HttpServletRequest req) {
         return req.getScheme() + "://vtp:" + req.getServerPort() + "/rest/AzureAd";
     }
 
-    private String getIssuer(HttpServletRequest req, String tenant) {
+    private static String getIssuer(HttpServletRequest req, String tenant) {
         return getBaseUrl(req) + "/" + tenant  + "/v2.0";
     }
 }
