@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 
+import static no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse.EXPIRE_IN_SECONDS;
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,7 +87,7 @@ public class TokenxRestTjeneste {
         jwtClaims.setIssuer(getIssuer(req));
         jwtClaims.setAudience(audience);
         jwtClaims.setSubject(subject);
-        jwtClaims.setExpirationTimeMinutesInTheFuture(60F);
+        jwtClaims.setExpirationTimeMinutesInTheFuture(EXPIRE_IN_SECONDS / 60f);
         jwtClaims.setGeneratedJwtId();
         jwtClaims.setIssuedAtToNow();
         jwtClaims.setClaim("acr", "Level4");
