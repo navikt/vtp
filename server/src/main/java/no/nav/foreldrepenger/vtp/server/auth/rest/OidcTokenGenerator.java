@@ -17,15 +17,16 @@ import com.google.common.base.Strings;
 
 public class OidcTokenGenerator {
 
+    public static final int EXPIRE_IN_SECONDS = 3600 * 6;
 
     private List<String> aud = List.of("OIDC");
-    private NumericDate expiration = NumericDate.fromSeconds(NumericDate.now().getValue() + 3600*6);
+    private NumericDate expiration = NumericDate.fromSeconds(NumericDate.now().getValue() + EXPIRE_IN_SECONDS);
     private String issuer;
     private NumericDate issuedAt = NumericDate.now();
     private final String subject;
     private String kid = KeyStoreTool.getJsonWebKey().getKeyId();
-    private String nonce;
-    private Map<String, String> additionalClaims = new HashMap<>();
+    private final String nonce;
+    private final Map<String, String> additionalClaims = new HashMap<>();
 
     public OidcTokenGenerator(String brukerId, String nonce) {
         additionalClaims.put("azp", "OIDC");

@@ -5,7 +5,9 @@ public record TokenExchangeResponse(String access_token,
                                     String token_type,
                                     int expires_in) {
 
+    public static final int EXPIRE_IN_SECONDS = 3600;
+
     public TokenExchangeResponse(String access_token) {
-        this(access_token, "urn:ietf:params:oauth:token-type:access_token", "Bearer", 299);
+        this(access_token, "urn:ietf:params:oauth:token-type:access_token", "Bearer", EXPIRE_IN_SECONDS);
     }
 }

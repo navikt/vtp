@@ -93,9 +93,9 @@ public class STSRestTjeneste {
     }
 
     private UserTokenResponse createTokenForUser(String username, HttpServletRequest request) {
-        OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, null)
+        var tokenGenerator = new OidcTokenGenerator(username, null)
                 .withIssuer(getIssuer(request));
-        return new UserTokenResponse(tokenGenerator.create(), 600000L, "Bearer");
+        return new UserTokenResponse(tokenGenerator.create(), OidcTokenGenerator.EXPIRE_IN_SECONDS, "Bearer");
     }
 
     private String getUsername(HttpServletRequest req) {
@@ -118,7 +118,7 @@ public class STSRestTjeneste {
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         String jwks = KeyStoreTool.getJwks();
-        LOG.info("JWKS: " + jwks);
+        LOG.info("JWKS: {}", jwks);
         return Response.ok(jwks).build();
     }
 
@@ -191,7 +191,7 @@ public class STSRestTjeneste {
     public static class UserTokenResponse {
         private final LocalDateTime issuedTime = LocalDateTime.now();
         private String access_token;
-        private Long expires_in;
+        private int expires_in;
         private String token_type;
 
         @SuppressWarnings("unused")
@@ -199,7 +199,7 @@ public class STSRestTjeneste {
             // Required by Jackson when mapping json object
         }
 
-        public UserTokenResponse(String access_token, Long expires_in, String token_type) {
+        public UserTokenResponse(String access_token, int expires_in, String token_type) {
             this.access_token = access_token;
             this.expires_in = expires_in;
             this.token_type = token_type;
@@ -217,7 +217,7 @@ public class STSRestTjeneste {
             return access_token;
         }
 
-        public Long getExpires_in() {
+        public int getExpires_in() {
             return expires_in;
         }
 
