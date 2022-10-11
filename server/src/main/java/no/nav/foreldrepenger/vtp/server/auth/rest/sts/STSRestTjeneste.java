@@ -1,11 +1,20 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.GRANT_TYPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SUBJECT_TOKEN;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SUBJECT_TOKEN_TYPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.stsTokenClaims;
+
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,10 +32,12 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
-import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Token;
 import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 
+@ApplicationScoped
 @Api(tags = {"Security Token Service"})
 @Path("/v1/sts")
 public class STSRestTjeneste {
@@ -38,9 +49,9 @@ public class STSRestTjeneste {
     @POST
     @Path("/token/exchange")
     @Produces({MediaType.APPLICATION_JSON})
-    public SAMLResponse dummySaml(@QueryParam("grant_type") String grant_type,
-                                  @QueryParam("subject_token_type") String issuedTokenType,
-                                  @QueryParam("subject_token") String subject_token) {
+    public SAMLResponse dummySaml(@QueryParam(GRANT_TYPE) String grant_type,
+                                  @QueryParam(SUBJECT_TOKEN_TYPE) String issuedTokenType,
+                                  @QueryParam(SUBJECT_TOKEN) String subject_token) {
         RequestSecurityTokenResponseType token = generator.buildRequestSecurityTokenResponseType("urn:oasis:names:tc:SAML:2.0:assertion");
         StringWriter sw = new StringWriter();
         JAXB.marshal(token, sw);
@@ -61,30 +72,29 @@ public class STSRestTjeneste {
     @GET
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getDummyToken(@QueryParam("grant_type") String grant_type,
-                                  @QueryParam("scope") String scope,
+    public Response getDummyToken(@QueryParam(GRANT_TYPE) String grant_type,
+                                  @QueryParam(SCOPE) String scope,
                                   @Context HttpServletRequest req) {
         LOG.warn("Kall på deprecated GET /token endepunkt!");
         var username = getUsername(req);
         if (username != null) {
-            var userToken = createTokenForUser(username, req);
+            var userToken = createTokenForUser(username, scope, req);
             return Response.ok(userToken, MediaType.APPLICATION_JSON).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
-    @SuppressWarnings("unused")
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response dummyToken(@FormParam("grant_type") String grant_type,
-                               @FormParam("scope") String scope,
-                               @Context HttpServletRequest req) {
+    public Response dummyToken(@Context HttpServletRequest req,
+                               @FormParam(GRANT_TYPE) String grant_type,
+                               @FormParam(SCOPE) @DefaultValue("openid") String scope) {
         var username = getUsername(req);
         if (username != null) {
-            var userToken = createTokenForUser(username, req);
-            LOG.info("STS token er utsedt {}", userToken);
+            var userToken = createTokenForUser(username, scope, req);
+            LOG.info("STS token er utsedt {}", userToken.accessToken());
             return Response.ok(userToken, MediaType.APPLICATION_JSON).build();
         } else {
             LOG.warn("Request inneholder ikke Autorization basic header!");
@@ -92,14 +102,13 @@ public class STSRestTjeneste {
         }
     }
 
-    private UserTokenResponse createTokenForUser(String username, HttpServletRequest request) {
-        var tokenGenerator = new OidcTokenGenerator(username, null)
-                .withIssuer(getIssuer(request));
-        return new UserTokenResponse(tokenGenerator.create(), OidcTokenGenerator.EXPIRE_IN_SECONDS, "Bearer");
+    private Oauth2AccessTokenResponse createTokenForUser(String username, String scope, HttpServletRequest request) {
+        var claims = stsTokenClaims(username, getIssuer(request), scope);
+        return new Oauth2AccessTokenResponse(Token.fra(claims.build()));
     }
 
     private String getUsername(HttpServletRequest req) {
-        final String authorization = req.getHeader("Authorization");
+        final String authorization = req.getHeader(AUTHORIZATION);
         if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
             // Authorization: Basic base64credentials
             String base64Credentials = authorization.substring("Basic".length()).trim();
@@ -117,7 +126,7 @@ public class STSRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
-        String jwks = KeyStoreTool.getJwks();
+        var jwks = JsonWebKeyHelper.getJwks();
         LOG.info("JWKS: {}", jwks);
         return Response.ok(jwks).build();
     }
@@ -128,15 +137,9 @@ public class STSRestTjeneste {
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
-
-        String basePath = getIssuer(req);
-        var wkr = new STSWellKnownResponse(basePath);
-
-        wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
-        wkr.setTokenEndpoint(basePath + "/token");
-        wkr.setJwksUri(basePath + "/jwks");
-
-        return Response.ok(wkr).build();
+        return Response
+                .ok(new STSWellKnownResponse(getIssuer(req)))
+                .build();
     }
 
     public static class SAMLResponse {
@@ -185,53 +188,6 @@ public class STSRestTjeneste {
 
         public void setExpires_in(LocalDateTime expires_in) {
             this.expires_in = expires_in;
-        }
-    }
-
-    public static class UserTokenResponse {
-        private final LocalDateTime issuedTime = LocalDateTime.now();
-        private String access_token;
-        private int expires_in;
-        private String token_type;
-
-        @SuppressWarnings("unused")
-        public UserTokenResponse() {
-            // Required by Jackson when mapping json object
-        }
-
-        public UserTokenResponse(String access_token, int expires_in, String token_type) {
-            this.access_token = access_token;
-            this.expires_in = expires_in;
-            this.token_type = token_type;
-        }
-
-        /**
-         * @param expirationLeeway the amount of seconds to be subtracted from the expirationTime to avoid returning false positives
-         * @return <code>true</code> if "now" is after the expirationtime(minus leeway), else returns <code>false</code>
-         */
-        public boolean isExpired(long expirationLeeway) {
-            return LocalDateTime.now().isAfter(issuedTime.plusSeconds(expires_in).minusSeconds(expirationLeeway));
-        }
-
-        public String getAccess_token() {
-            return access_token;
-        }
-
-        public int getExpires_in() {
-            return expires_in;
-        }
-
-        public String getToken_type() {
-            return token_type;
-        }
-
-        @Override
-        public String toString() {
-            return "UserTokenImpl{" +
-                    "access_token='" + access_token + '\'' +
-                    ", expires_in=" + expires_in +
-                    ", token_type='" + token_type + '\'' +
-                    '}';
         }
     }
 

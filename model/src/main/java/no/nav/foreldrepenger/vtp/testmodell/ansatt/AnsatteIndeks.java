@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 public class AnsatteIndeks {
 
     private final Map<String, NAVAnsatt> ansatte = new ConcurrentHashMap<>();

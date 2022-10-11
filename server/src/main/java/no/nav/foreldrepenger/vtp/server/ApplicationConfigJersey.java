@@ -55,9 +55,9 @@ import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjene
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.TokenProviderTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.LoginserviceLoginTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
@@ -137,12 +137,12 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         // tekniske ting
         classes.add(OpenAMRestService.class);
-        classes.add(AADRestTjeneste.class);
-        classes.add(LoginserviceLoginTjeneste.class);
+        classes.add(AzureADRestTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
         classes.add(TokenxRestTjeneste.class);
+        classes.add(TokenProviderTjeneste.class);
 
         classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
@@ -277,7 +277,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Headers",
                     "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, x-requested-with, " +
-                            "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
+                            "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, x_nav-callid, authorization");
             responseContext.getHeaders().add(
                     "Access-Control-Allow-Methods",
                     "GET, POST, PUT, DELETE, OPTIONS, HEAD");

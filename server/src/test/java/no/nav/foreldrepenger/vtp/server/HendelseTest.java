@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server;
+package no.nav.foreldrepenger.vtp.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

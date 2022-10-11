@@ -1,7 +1,15 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.isso;
 
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.addQueryParamToRequestIfNotNullOrEmpty;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.authorizeHtmlPage;
+import static com.nimbusds.jwt.JWTClaimNames.ISSUER;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CLIENT_ID;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CODE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.GRANT_TYPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.REDIRECT_URI;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.STATE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.NONCE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste.ansattIDFra;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste.authorizeHtmlPage;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -9,6 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
@@ -31,22 +40,16 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Token;
+import no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims;
 
-
+@Deprecated
+@ApplicationScoped
 @Api(tags = {"Openam"})
 @Path("/isso")
 public class OpenAMRestService {
-
-    public static final String STATE = "state";
-    public static final String CODE = "code";
-    public static final String REDIRECT_URI = "redirect_uri";
-    public static final String SCOPE = "scope";
-    public static final String CLIENT_ID = "client_id";
-    public static final String ISSUER_PARAM = "iss";
-    public static final String NONCE = "nonce";
     private static final Logger LOG = LoggerFactory.getLogger(OpenAMRestService.class);
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
     private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
@@ -79,20 +82,20 @@ public class OpenAMRestService {
         var redirectTo = UriBuilder.fromUri(redirectUri)
                 .queryParam(STATE, state)
                 .queryParam(CLIENT_ID, clientId)
-                .queryParam(ISSUER_PARAM, getIssuer(req))
+                .queryParam(ISSUER, getIssuer(req))
                 .queryParam(REDIRECT_URI, redirectUri);
-        addQueryParamToRequestIfNotNullOrEmpty(redirectTo, "scope", scope);
         clientIdCache.put(state, clientId);
         if (req.getParameter(NONCE) != null && !req.getParameter(NONCE).isEmpty()) {
             nonceCache.put(state, req.getParameter(NONCE));
         }
 
         if (erAuthorizationEndepunktKaltFraBrowser(req)) {
-            return authorizeHtmlPage(redirectTo);
+            return authorizeHtmlPage(redirectTo, scope);
         } else {
             return authorizeRedirect(redirectTo);
         }
     }
+
 
     private boolean erAuthorizationEndepunktKaltFraBrowser(HttpServletRequest req) {
         var acceptHeader = req.getHeader("Accept-Header");
@@ -106,30 +109,24 @@ public class OpenAMRestService {
         return Response.status(HttpServletResponse.SC_FOUND).location(location.build()).build();
     }
 
-
-    // TODO: Brukes av FP til å logge inn som saksbehandler i saksbehandlerløsningen
     @POST
     @Path("/oauth2/access_token")
     @Produces({MediaType.APPLICATION_JSON})
     @ApiOperation(value = "oauth2/access_token", notes = ("Mock impl av Oauth2 access_token"))
-    @SuppressWarnings("unused")
-    public Response accessToken(
-            @Context HttpServletRequest req,
-            @FormParam("grant_type") String grantType,
+    public Response accessToken(@Context HttpServletRequest req,
+            @FormParam(GRANT_TYPE) String grantType,
             @FormParam("realm") String realm,
             @FormParam(CODE) String code,
-            @FormParam(REDIRECT_URI) String redirectUri,
-            @FormParam(STATE) String state) {
-        // dummy sikkerhet, returnerer alltid en idToken/refresh_token
-        String token = createIdToken(req, code, state);
-        LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
-        LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token, redirectUri);
+            @FormParam(STATE) String state,
+            @FormParam(REDIRECT_URI) String redirectUri) {
+        var token = createIdToken(req, ansattIDFra(code), state);
+        LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token.value(), redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
         return Response.ok(oauthResponse).build();
     }
 
-    private String createIdToken(HttpServletRequest req, String username, String state) {
-        String issuer = getIssuer(req);
+    private Token createIdToken(HttpServletRequest req, String username, String state) {
+        var issuer = getIssuer(req);
         if (state == null) {
             LOG.warn("State ikke funnet i form post!");
             state = req.getParameter(STATE);
@@ -138,12 +135,12 @@ public class OpenAMRestService {
         if (state != null) {
             nonce = nonceCache.get(state);
         }
-        OidcTokenGenerator tokenGenerator = new OidcTokenGenerator(username, nonce).withIssuer(issuer);
+        var claims = TokenClaims.openAmTokenClaims(username, issuer, nonce);
         if (state != null && clientIdCache.containsKey(state)) {
-            String clientId = clientIdCache.get(state);
-            tokenGenerator.addAud(clientId);
+            var clientId = clientIdCache.get(state);
+            claims.audience(clientId);
         }
-        return tokenGenerator.create();
+        return Token.fra(claims.build());
     }
 
     @GET
@@ -167,9 +164,8 @@ public class OpenAMRestService {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av Oauth2 jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
-        LOG.info("kall på /oauth2/connect/jwk_uri");
-        String jwks = KeyStoreTool.getJwks();
-        LOG.info("JWKS: " + jwks);
+        var jwks = JsonWebKeyHelper.getJwks();
+        LOG.info("kall på /oauth2/connect/jwk_uri. JWKS returnert: {}", jwks);
         return Response.ok(jwks).build();
     }
 
@@ -185,19 +181,19 @@ public class OpenAMRestService {
                                               @ApiParam("Liste over aksjonspunkt som skal bekreftes, inklusiv data som trengs for å løse de.") EndUserAuthenticateTemplate enduserTemplate) {
         LOG.info("kall på /json/authenticate");
         if (enduserTemplate == null) {
-            EndUserAuthenticateTemplate template = new EndUserAuthenticateTemplate();
+            var template = new EndUserAuthenticateTemplate();
             template.setAuthId(UUID.randomUUID().toString());
             template.setHeader("Sign in to VTP");
             template.setStage("DataStore1");
             template.setTemplate("");
 
-            EndUserAuthenticateTemplate.Name namePrompt = new EndUserAuthenticateTemplate.Name("prompt", "User Name:");
-            EndUserAuthenticateTemplate.Name usernameInput = new EndUserAuthenticateTemplate.Name("IDToken1", "");
-            EndUserAuthenticateTemplate.Callback nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt, usernameInput);
+            var namePrompt = new EndUserAuthenticateTemplate.Name("prompt", "User Name:");
+            var usernameInput = new EndUserAuthenticateTemplate.Name("IDToken1", "");
+            var nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt, usernameInput);
 
-            EndUserAuthenticateTemplate.Name passwordPrompt = new EndUserAuthenticateTemplate.Name("prompt", "Password:");
-            EndUserAuthenticateTemplate.Name passwordInput = new EndUserAuthenticateTemplate.Name("IDToken2", "");
-            EndUserAuthenticateTemplate.Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
+            var passwordPrompt = new EndUserAuthenticateTemplate.Name("prompt", "Password:");
+            var passwordInput = new EndUserAuthenticateTemplate.Name("IDToken2", "");
+            var passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
 
             template.setCallbacks(Arrays.asList(nameCallback, passwordCallback));
 

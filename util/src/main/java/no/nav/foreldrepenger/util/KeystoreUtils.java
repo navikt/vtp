@@ -9,13 +9,14 @@ public class KeystoreUtils {
         // Skal ikke instansieres
     }
 
+    public static String getKeyAndCertAlias() {
+        return getProperty("no.nav.modig.security.appkey", "localhost-ssl");
+    }
+
     public static String getKeystoreFilePath() {
-        if (null != getenv("JAVAX_NET_SSL_KEYSTORE")) {
-            return getenv("JAVAX_NET_SSL_KEYSTORE");
-        }
-        if (null != getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE")) {
-            return getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
-        }
+        if (null != getenv("JAVAX_NET_SSL_KEYSTORE")) return getenv("JAVAX_NET_SSL_KEYSTORE");
+        if (null != getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE")) return getenv("NO_NAV_MODIG_SECURITY_APPCERT_KEYSTORE");
+        if (null != getProperty("javax.net.ssl.keystore.test")) return getProperty("javax.net.ssl.keystore.test"); // Midlertidig bypass av keystore under mvn test
         return getProperty("user.home", ".") + "/.modig/keystore.jks";
     }
 

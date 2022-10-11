@@ -1,9 +1,8 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.createIdToken;
-
 import java.net.URI;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -20,11 +19,20 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import no.nav.foreldrepenger.vtp.server.auth.rest.TokenProviderTjeneste;
 
 @Api(tags = {"loginservice"})
 @Path("/loginservice")
+@Deprecated // Fjern denne!
 public class LoginserviceLoginTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(LoginserviceLoginTjeneste.class);
+
+    TokenProviderTjeneste tokenProviderTjeneste;
+
+    @Inject
+    public LoginserviceLoginTjeneste(TokenProviderTjeneste tokenProviderTjeneste) {
+        this.tokenProviderTjeneste = tokenProviderTjeneste;
+    }
 
     @GET
     @Path("/login")
@@ -61,7 +69,7 @@ public class LoginserviceLoginTjeneste {
                                 @FormParam("fnr") String fnr,
                                 @FormParam("redirect") URI redirectUri) {
 
-        var token = createIdToken(req, fnr,"loginservice");
+        var token = tokenProviderTjeneste.henterLoginserviceTokenSelvbetjening(req, "loginservice", fnr);
         var cookieTemplate = "selvbetjening-idtoken=%s;Path=/";
         return Response.seeOther(redirectUri)
                 .header("Set-Cookie", String.format(cookieTemplate, token, redirectUri.getHost()))

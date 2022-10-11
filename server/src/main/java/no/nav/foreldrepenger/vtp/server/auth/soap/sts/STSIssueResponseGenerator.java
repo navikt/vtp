@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.auth.soap.sts;
 
+import static no.nav.foreldrepenger.util.KeystoreUtils.getKeyAndCertAlias;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -36,7 +38,6 @@ import org.apache.wss4j.common.principal.CustomTokenPrincipal;
 import org.apache.wss4j.dom.engine.WSSConfig;
 
 import no.nav.foreldrepenger.util.KeystoreUtils;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 
 
 public class STSIssueResponseGenerator {
@@ -50,7 +51,7 @@ public class STSIssueResponseGenerator {
                 UnsupportedCallbackException {
             for (int i = 0; i < callbacks.length; i++) {
                 if (callbacks[i] instanceof WSPasswordCallback pc) { // CXF
-                    if (KeyStoreTool.getKeyAndCertAlias().equals(pc.getIdentifier())) {
+                    if (getKeyAndCertAlias().equals(pc.getIdentifier())) {
                         pc.setPassword(KeystoreUtils.getKeyStorePassword());
                         break;
                     }
@@ -163,7 +164,7 @@ public class STSIssueResponseGenerator {
 
     private static StaticSTSProperties initSTSProperties(Crypto CRYPTO) {
         // Add STSProperties object
-        String alias = KeyStoreTool.getKeyAndCertAlias();
+        String alias = getKeyAndCertAlias();
         StaticSTSProperties stsProperties = new StaticSTSProperties();
         stsProperties.setEncryptionCrypto(CRYPTO);
         stsProperties.setSignatureCrypto(CRYPTO);
