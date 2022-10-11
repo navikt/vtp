@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server;
+package no.nav.foreldrepenger.vtp.server;
 
 /**
  * @author schrepfler

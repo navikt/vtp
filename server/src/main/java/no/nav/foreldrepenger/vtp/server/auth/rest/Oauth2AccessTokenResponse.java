@@ -1,37 +1,27 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest;
 
-import java.util.UUID;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Oauth2AccessTokenResponse {
-    @JsonProperty("id_token")
-    private String idToken;
-
-    @JsonProperty("refresh_token")
-    private String refreshToken;
-
-    @JsonProperty("access_token")
-    private String accessToken;
-
-    @JsonProperty("expires_in")
-    private int expiresIn = 3600;
-
-    @JsonProperty("token_type")
-    private String tokenType = "Bearer";
-
-    public Oauth2AccessTokenResponse(String idToken) {
-        this.idToken = idToken;
-        this.refreshToken = UUID.randomUUID().toString();
-        this.accessToken = idToken;
+public record Oauth2AccessTokenResponse(@JsonProperty("id_token") @Valid Token idToken,
+                                        @JsonProperty("refresh_token") @Valid Token refreshToken,
+                                        @JsonProperty("access_token") @Valid Token accessToken,
+                                        @JsonProperty("expires_in") Integer expiresIn,
+                                        @JsonProperty("token_type")  String tokenType) {
+    public Oauth2AccessTokenResponse {
+        expiresIn = Optional.ofNullable(expiresIn).orElse(accessToken.expiresIn());
+        tokenType = Optional.ofNullable(tokenType).orElse("Bearer");
     }
 
-    public String getIdToken() {
-        return idToken;
+    public Oauth2AccessTokenResponse(Token token) {
+        this(token, token, token, token.expiresIn(), null);
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
+    public Oauth2AccessTokenResponse(Token idToken, Token accessToken) {
+        this(idToken, idToken, accessToken, accessToken.expiresIn(), null);
     }
 
 }
