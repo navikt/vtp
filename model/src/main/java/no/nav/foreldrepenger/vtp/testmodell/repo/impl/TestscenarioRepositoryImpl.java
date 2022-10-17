@@ -29,4 +29,11 @@ public class TestscenarioRepositoryImpl extends TestscenarioBuilderRepositoryImp
         TestscenarioFraJsonMapper mapper = new TestscenarioFraJsonMapper(this);
         return mapper.lagTestscenarioFraJsonString(testscenarioJson, unikTestscenarioId, variables);
     }
+
+    @Override
+    public TestscenarioImpl oppdaterTestscenario(String id, String testscenarioJson, Map<String, String> variables) {
+        TestscenarioFraJsonMapper mapper = new TestscenarioFraJsonMapper(this);
+        return mapper.lagTestscenarioFraJsonString(testscenarioJson, id, variables);
+    }
+
 }
