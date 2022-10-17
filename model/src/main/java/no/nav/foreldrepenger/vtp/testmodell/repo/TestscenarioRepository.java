@@ -12,4 +12,5 @@ public interface TestscenarioRepository extends TestscenarioBuilderRepository {
 
     Testscenario opprettTestscenario(String testscenarioJson, Map<String, String> userSuppliedVariables);
 
+    TestscenarioImpl oppdaterTestscenario(String id, String testscenarioJson, Map<String, String> variables);
 }

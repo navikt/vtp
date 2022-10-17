@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 import java.util.Map;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 
 /** Delegerer alle kall til en 'reell' implementasjon. Denne kan således endres under kjøring. */
@@ -28,6 +29,12 @@ public class DelegatingTestscenarioRepository extends DelegatingTestscenarioBuil
     @Override
     public Testscenario opprettTestscenario(String testscenarioJson, Map<String, String> userSuppliedVariables) {
         return delegate.opprettTestscenario(testscenarioJson, userSuppliedVariables);
+    }
+
+    @Override
+    public TestscenarioImpl oppdaterTestscenario(String id, String testscenarioJson, Map<String, String> variables) {
+        return delegate.oppdaterTestscenario(id, testscenarioJson, variables);
+
     }
 
     @Override

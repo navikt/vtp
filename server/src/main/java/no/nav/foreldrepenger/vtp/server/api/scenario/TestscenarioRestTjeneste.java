@@ -96,8 +96,13 @@ public class TestscenarioRestTjeneste {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Oppdaterer hele scenario som matcher id", response = TestscenarioDto.class)
-    public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, TestscenarioDto testscenarioDto) {
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, String testscenarioJson, @Context UriInfo uriInfo) {
+        Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
+        Testscenario testscenario = testscenarioRepository.oppdaterTestscenario(id, testscenarioJson, userSuppliedVariables);
+        logger.info("Oppdaterer testscenario med id {} med ekstern testdatadefinisjon.", testscenario.getId());
+        return Response.status(Response.Status.OK)
+                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
+                .build();
     }
 
     @SuppressWarnings("unused")
