@@ -48,17 +48,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Rydd genererte artefakter fra cache før den lagres
-        shell: bash
-        run: |
-          rm ~/.m2/repository/no/nav/foreldrepenger/vtp -r
-
-  dockerize:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v3
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -83,12 +72,14 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  analyze:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
       - name: Sonar analyse
         run: |
           mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -s .github/.m2/settings.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Rydd genererte artefakter fra cache før den lagres
+        shell: bash
+        run: |
+          rm ~/.m2/repository/no/nav/foreldrepenger/vtp -r
+
