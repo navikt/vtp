@@ -13,8 +13,8 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           java-version: 17
-          distribution: temurin
-          cache: maven
+          distribution: 'temurin'
+          cache: 'maven'
 
       - uses: snyk/actions/setup@master
 
