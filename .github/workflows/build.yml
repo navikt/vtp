@@ -48,17 +48,29 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Login to GitHub Packages Docker Registry
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # Use commit-sha1 instead of tag for security concerns
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bygg, tag og push Docker image
-        run: |
-          docker build --pull --tag ${IMAGE_BASE_CR}:${TAG} --tag ${IMAGE_BASE_CR}:latest .
-          docker push ${IMAGE_BASE_CR} --all-tags
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64, linux/arm64
+          pull: true
+          push: true
+          tags: ${env.IMAGE_BASE_CR}:${env.TAG}, ${env.IMAGE_BASE_CR}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Sonar analyse
         run: |
