@@ -68,7 +68,7 @@ jobs:
           platforms: linux/amd64, linux/arm64
           pull: true
           push: true
-          tags: ${env.IMAGE_BASE_CR}:${env.TAG}, ${env.IMAGE_BASE_CR}:latest
+          tags: ${{env.IMAGE_BASE_CR}}:${{env.TAG}}, ${{env.IMAGE_BASE_CR}}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
