@@ -36,6 +36,7 @@
         <module>omsorgspenger-rammemeldinger-mock</module>
         <module>skjermet-person-mock</module>
         <module>pesys-mock</module>
+        <module>fpwsproxy-mock</module>
     </modules>
 
     <dependencyManagement>

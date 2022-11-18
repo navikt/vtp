@@ -41,8 +41,8 @@
         <confluent.version>7.0.1</confluent.version>
         <cxf.version>3.5.4</cxf.version>
         <apache.httpcomponents>4.5.13</apache.httpcomponents>
+        <fp-kontrakter.version>6.1.30</fp-kontrakter.version>
         <tjenestespesifikasjoner.version>1.2021.02.22-10.45-4201aaea72fb</tjenestespesifikasjoner.version>
-        <fp-kontrakter.version>6.1.21</fp-kontrakter.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
         <swagger.version>1.6.8</swagger.version>
         <graphql-java.version>18.1</graphql-java.version>
@@ -335,6 +335,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>fpwsproxy-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>saf-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -373,6 +378,11 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter.topics</groupId>
                 <artifactId>fp-topics-manifest</artifactId>
+                <version>${fp-kontrakter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.kontrakter</groupId>
+                <artifactId>fp-ws-proxy-v1</artifactId>
                 <version>${fp-kontrakter.version}</version>
             </dependency>
             <dependency>
