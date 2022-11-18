@@ -7,7 +7,10 @@ public enum VedtakStatus {
     REGIS("Registrert"),
     MOTAT("Mottatt"),
     GODKJ("Godkjent"),
-    AVSLU("Avsluttet");
+    AVSLU("Avsluttet"),
+    INAKT("INAKT"),
+    AKTIV("AKTIV"),
+    ;
 
     private final String termnavn;
 
