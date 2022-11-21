@@ -24,7 +24,6 @@ import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningsPeriodeDto;
 class OppdragskontrollTilBeregingMapper {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    static final YearMonth NESTE_MÅNED = LocalDate.now().getDayOfMonth() <= 19 ? YearMonth.from(LocalDate.now()) : YearMonth.from(LocalDate.now().plusMonths(1));
 
     private OppdragskontrollTilBeregingMapper() {
     }
@@ -94,7 +93,11 @@ class OppdragskontrollTilBeregingMapper {
     }
 
     private static YearMonth sisteMånedForPerioder(Periode periode) {
-        return PeriodeType.OPPH.equals(periode.getPeriodeType()) ? NESTE_MÅNED.minusMonths(1) : NESTE_MÅNED;
+        return PeriodeType.OPPH.equals(periode.getPeriodeType()) ? nesteMåned().minusMonths(1) : nesteMåned();
+    }
+
+    static YearMonth nesteMåned() {
+        return LocalDate.now().getDayOfMonth() <= 19 ? YearMonth.from(LocalDate.now()) : YearMonth.from(LocalDate.now().plusMonths(1));
     }
 
     private static BeregningStoppnivåDto tilBeregningStoppnivåDto(Periode periodeMND, Oppdrag110Dto oppdrag) {
@@ -104,7 +107,7 @@ class OppdragskontrollTilBeregingMapper {
                 .utbetalesTilId(refunderesOrgNr.orElseGet(oppdrag::oppdragGjelderId))
                 .utbetalesTilNavn("DUMMY")
                 .behandlendeEnhet("8052")
-                .forfall(dateTimeFormatter.format(YearMonth.from(periodeMND.getFom()).equals(NESTE_MÅNED) ? LocalDate.now().withDayOfMonth(20) : LocalDate.now()))
+                .forfall(dateTimeFormatter.format(YearMonth.from(periodeMND.getFom()).equals(nesteMåned()) ? LocalDate.now().withDayOfMonth(20) : LocalDate.now()))
                 .oppdragsId(1234L)
                 .stoppNivaaId(BigInteger.ONE)
                 .fagsystemId(oppdrag.fagsystemId().toString())
@@ -118,9 +121,9 @@ class OppdragskontrollTilBeregingMapper {
     private static List<BeregningStoppnivåDetaljerDto> tilBeregningStoppNivåDetaljerDto(Periode periodeMND, Optional<String> refunderesOrgNr) {
         if (periodeMND.getPeriodeType().equals(PeriodeType.OPPH)) {
             return tilBeregningStoppNivåDetaljerOpphør(periodeMND, refunderesOrgNr);
-        } else if (periodeMND.getPeriodeType().equals(PeriodeType.REDUKSJON) && YearMonth.from(periodeMND.getFom()).isBefore(NESTE_MÅNED)) {
+        } else if (periodeMND.getPeriodeType().equals(PeriodeType.REDUKSJON) && YearMonth.from(periodeMND.getFom()).isBefore(nesteMåned())) {
             return tilBeregningStoppNivåDetaljerReduksjon(periodeMND, refunderesOrgNr);
-        } else if (periodeMND.getPeriodeType().equals(PeriodeType.ØKNING) && YearMonth.from(periodeMND.getFom()).isBefore(NESTE_MÅNED)) {
+        } else if (periodeMND.getPeriodeType().equals(PeriodeType.ØKNING) && YearMonth.from(periodeMND.getFom()).isBefore(nesteMåned())) {
             return tilBeregningStoppNivåDetaljerØkning(periodeMND, refunderesOrgNr);
         }
         return tilBeregningStoppNivåDetaljerYtelse(periodeMND, refunderesOrgNr);

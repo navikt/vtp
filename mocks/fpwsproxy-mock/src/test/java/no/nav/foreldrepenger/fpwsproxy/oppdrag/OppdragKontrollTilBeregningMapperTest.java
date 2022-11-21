@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.fpwsproxy.oppdrag;
 
-import static no.nav.foreldrepenger.fpwsproxy.oppdrag.OppdragskontrollTilBeregingMapper.NESTE_MÅNED;
 import static no.nav.foreldrepenger.fpwsproxy.oppdrag.OppdragskontrollTilBeregingMapper.dateTimeFormatter;
+import static no.nav.foreldrepenger.fpwsproxy.oppdrag.OppdragskontrollTilBeregingMapper.nesteMåned;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ class OppdragKontrollTilBeregningMapperTest {
 
     private static final String FAKE_FNR = "12499845829";
     private static final LocalDate NOW = LocalDate.now();
-    private static final YearMonth SISTE_MÅNED = NESTE_MÅNED;
+    private static final YearMonth SISTE_MÅNED = nesteMåned();
 
 
     @Test
