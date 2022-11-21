@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.fpwsproxy.arena;
 
+import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
+
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import no.nav.foreldrepenger.kontrakter.arena.request.ArenaRequestDto;
 import no.nav.foreldrepenger.kontrakter.arena.respons.BeløpDto;
@@ -19,14 +19,14 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
 
 class ArenaSakerTilMeldekortMapper {
 
-    private static final List<String> DEFAULT_TEMA = List.of("AAP", "DAG");
+    private static final List<String> GYLDIG_TEMA = List.of("AAP", "DAG");
 
     private ArenaSakerTilMeldekortMapper() {
     }
 
     static List<MeldekortUtbetalingsgrunnlagSakDto> tilMeldekortUtbetalingsgrunnlagSakDto(ArenaRequestDto request, List<ArenaSak> saker) {
         return safeStream(saker)
-                .filter(arenasak -> DEFAULT_TEMA.contains(arenasak.tema().name()))
+                .filter(arenasak -> GYLDIG_TEMA.contains(arenasak.tema().name()))
                 .map(arenasak -> tilMeldekortUtbetalingsgrunnlagSakDto(request, arenasak))
                 .flatMap(Collection::stream)
                 .toList();
@@ -102,9 +102,5 @@ class ArenaSakerTilMeldekortMapper {
             return (fom == null || fom.isBefore(vedtak.tom()) || fom.isEqual(vedtak.tom()))
                     && (tom == null || tom.isAfter(vedtak.fom()) || tom.isEqual(vedtak.fom()));
         }
-    }
-
-    public static <T> Stream<T> safeStream(List<T> list) {
-        return ((List) Optional.ofNullable(list).orElseGet(List::of)).stream();
     }
 }

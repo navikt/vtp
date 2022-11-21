@@ -18,20 +18,20 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-@Path("/api/arena")
-public class ArenaMock {
-    private static final Logger LOG = LoggerFactory.getLogger(ArenaMock.class);
+@Path("/api/fpwsproxy/arena")
+public class FpWsProxyArenaMock {
+    private static final Logger LOG = LoggerFactory.getLogger(FpWsProxyArenaMock.class);
 
     private final TestscenarioBuilderRepository scenarioRepository;
 
-    public ArenaMock() {
+    public FpWsProxyArenaMock() {
         scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter kontaktinformasjon for person")
+    @ApiOperation(value = "", notes = "Henter meldekort for dagpenger og AAP for oppgitt periode")
     public Response henterDagpengerOgAAP(@Valid ArenaRequestDto arenaRequestDto) {
         var ident = arenaRequestDto.ident();
         LOG.info("Henter meldekort for {} for perioden {} til {}", ident, arenaRequestDto.fom(), arenaRequestDto.tom());

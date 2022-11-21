@@ -47,7 +47,8 @@ import no.nav.dkif.DigdirKrrProxyMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
-import no.nav.foreldrepenger.fpwsproxy.arena.ArenaMock;
+import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
+import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
@@ -129,7 +130,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(AxsysEnhetstilgangMock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(UføreMock.class);
-        classes.add(ArenaMock.class);
+        classes.add(FpWsProxyArenaMock.class);
+        classes.add(FpWsProxySimuleringOppdragMock.class);
 
         // tekniske ting
         classes.add(OpenAMRestService.class);
