@@ -36,6 +36,7 @@ import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.Finn
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.FinnMeldekortUtbetalingsgrunnlagListeResponse;
 import no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.meldinger.ObjectFactory;
 
+@Deprecated
 @Addressing
 @WebService(endpointInterface = "no.nav.tjeneste.virksomhet.meldekortutbetalingsgrunnlag.v1.binding.MeldekortUtbetalingsgrunnlagV1")
 @HandlerChain(file = "Handler-chain.xml")
@@ -54,6 +55,7 @@ public class MeldekortUtbetalingsgrunnlagMockImpl implements MeldekortUtbetaling
         this.scenarioRepository = scenarioRepository;
     }
 
+    @Deprecated
     @WebMethod(action = "http://nav.no/tjeneste/virksomhet/meldekortutbetalingsgrunnlag/v1/meldekortutbetalingsgrunnlag_v1/FinnMeldekortUtbetalingsgrunnlagListeRequest")
     @WebResult(name = "response", targetNamespace = "")
     @RequestWrapper(localName = "finnMeldekortUtbetalingsgrunnlagListe", targetNamespace = "http://nav.no/tjeneste/virksomhet/meldekortutbetalingsgrunnlag/v1", className = "no.nav.tjeneste.virksomhet.arena.meldekort.finnMeldekortUtbetalingsgrunnlagListe")
