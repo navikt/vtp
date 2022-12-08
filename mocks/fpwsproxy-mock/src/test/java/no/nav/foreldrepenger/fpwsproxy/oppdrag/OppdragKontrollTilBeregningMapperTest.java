@@ -24,6 +24,7 @@ import no.nav.foreldrepenger.kontrakter.simulering.request.TypeSats;
 import no.nav.foreldrepenger.kontrakter.simulering.request.UtbetalingsgradDto;
 import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningDto;
 
+// TODO: Rydd opp i test
 class OppdragKontrollTilBeregningMapperTest {
 
     private static final String FAKE_FNR = "12499845829";
@@ -44,7 +45,7 @@ class OppdragKontrollTilBeregningMapperTest {
         var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
-        verifiserKorrektMapping(beregninger, 1, 2, 2, 1);
+        verifiserKorrektMapping(beregninger, 1, 2, null, 1);
     }
 
     @Test
@@ -59,7 +60,7 @@ class OppdragKontrollTilBeregningMapperTest {
         var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
-        verifiserKorrektMapping(beregninger, 1, 4, null, 1);
+        verifiserKorrektMapping(beregninger, 1, null, null, 1);
     }
 
 
@@ -166,7 +167,6 @@ class OppdragKontrollTilBeregningMapperTest {
                 121100L,
                 "12499845829",
                 "saksbeh",
-                "2022-11-19-23.35.30.610",
                 ompostering116Dto,
                 List.of(oppdragslinje150Dtos)
         );
