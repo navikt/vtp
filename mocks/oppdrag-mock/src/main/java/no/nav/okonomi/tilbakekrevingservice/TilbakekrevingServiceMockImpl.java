@@ -26,6 +26,7 @@ public class TilbakekrevingServiceMockImpl implements TilbakekrevingPortType {
         return TilbakekrevingServiceMapper.opprettTilbakekrevingVedtakResponse(tilbakekrevingsvedtakRequest);
     }
 
+    @Deprecated
     @Override
     @WebMethod
     @WebResult(name = "kravgrunnlagHentListeResponse", targetNamespace = "http://okonomi.nav.no/tilbakekrevingService/", partName = "parameters")
@@ -33,6 +34,7 @@ public class TilbakekrevingServiceMockImpl implements TilbakekrevingPortType {
         throw new UnsupportedOperationException();
     }
 
+    @Deprecated
     @Override
     @WebMethod
     @WebResult(name = "kravgrunnlagHentDetaljResponse", targetNamespace = "http://okonomi.nav.no/tilbakekrevingService/", partName = "parameters")

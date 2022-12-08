@@ -20,6 +20,7 @@ import no.nav.tilbakekreving.typer.v1.PeriodeDto;
 import no.nav.tilbakekreving.typer.v1.TypeGjelderDto;
 import no.nav.tilbakekreving.typer.v1.TypeKlasseDto;
 
+@Deprecated
 class KravgrunnlagGenerator {
 
     public static DetaljertKravgrunnlagDto hentGrunnlag(HentKravgrunnlagDetaljDto hentKravgrunnlagDetaljDto) {
