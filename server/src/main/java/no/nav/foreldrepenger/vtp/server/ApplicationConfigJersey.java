@@ -49,6 +49,8 @@ import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
 import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
+import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.FpWsProxyTilbakekrevingMock;
+import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.NYTilbakekrevingKonsistensTjeneste;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
@@ -132,6 +134,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(UføreMock.class);
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
+        classes.add(FpWsProxyTilbakekrevingMock.class);
 
         // tekniske ting
         classes.add(OpenAMRestService.class);
@@ -153,6 +156,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         classes.add(LocalDateStringConverterProvider.class);
         classes.add(TilbakekrevingKonsistensTjeneste.class);
+        classes.add(NYTilbakekrevingKonsistensTjeneste.class);
 
         return classes;
     }
