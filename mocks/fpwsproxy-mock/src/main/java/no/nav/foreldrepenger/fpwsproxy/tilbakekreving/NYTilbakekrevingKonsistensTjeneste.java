@@ -16,7 +16,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
  */
 @Api(tags = {"Tilbakekreving"})
 @Path("/api/tilbakekreving/v2")
-public class TilbakekrevingKonsistensTjeneste {
+public class NYTilbakekrevingKonsistensTjeneste {
 
     private static final Random RANDOM =  new Random();
 
