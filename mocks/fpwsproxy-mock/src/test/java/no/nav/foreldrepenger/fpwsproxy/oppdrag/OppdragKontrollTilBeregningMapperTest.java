@@ -166,7 +166,6 @@ class OppdragKontrollTilBeregningMapperTest {
                 121100L,
                 "12499845829",
                 "saksbeh",
-                "2022-11-19-23.35.30.610",
                 ompostering116Dto,
                 List.of(oppdragslinje150Dtos)
         );
