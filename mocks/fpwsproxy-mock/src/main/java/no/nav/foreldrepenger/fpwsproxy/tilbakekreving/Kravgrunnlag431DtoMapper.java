@@ -30,6 +30,7 @@ class Kravgrunnlag431DtoMapper {
                 .fagOmrådeKode(FagOmrådeKode.FP)
                 .kontrollFelt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")))
                 .referanse(NYTilbakekrevingKonsistensTjeneste.getSisteHenvisning())
+                .saksBehId(hentKravgrunnlagDetaljDto.saksbehId())
                 .gjelderVedtakId("910909088")
                 .utbetalesTilId("910909088")
                 .behandlendeEnhet(hentKravgrunnlagDetaljDto.enhetAnsvarlig())
