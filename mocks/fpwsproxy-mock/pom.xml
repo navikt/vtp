@@ -34,5 +34,9 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jaxrs</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>oppdrag-mock</artifactId> <!-- TODO: Fjern denne avhengigheten etter flytt og sanering-->
+        </dependency>
     </dependencies>
 </project>

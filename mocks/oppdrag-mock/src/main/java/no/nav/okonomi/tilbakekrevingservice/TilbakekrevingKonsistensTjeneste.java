@@ -14,7 +14,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
  * Tjenesten tar vare på siste saksnummer og henvisning (behandlingId) fra Autotest,
  * slik at de kan sendes tilbake i genererte kravgrunnlag som da vil være konsistente med siste kjente sak.
  */
-@Deprecated // Bruk implementering i fpwsproxy-mock
+// TODO: Flytt over til fpwsproxy-mock/tilbakekreving etter sannering
 @Api(tags = {"Tilbakekreving"})
 @Path("/api/tilbakekreving")
 public class TilbakekrevingKonsistensTjeneste {
