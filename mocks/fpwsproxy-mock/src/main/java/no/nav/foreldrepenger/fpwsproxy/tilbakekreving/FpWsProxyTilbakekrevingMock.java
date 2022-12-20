@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningDto;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.request.HentKravgrunnlagDetaljDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.request.HentKravgrunnlagDetaljDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.Kravgrunnlag431Dto;
 
 @Path("/api/fpwsproxy/tilbakekreving")
 public class FpWsProxyTilbakekrevingMock {
@@ -27,9 +27,9 @@ public class FpWsProxyTilbakekrevingMock {
     @Path("/kravgrunnlag")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Hent kravgrunnlag", response = BeregningDto[].class)
+    @ApiOperation(value = "", notes = "Hent kravgrunnlag", response = Kravgrunnlag431Dto[].class)
     public Response hentKravgrunnlag(@Valid HentKravgrunnlagDetaljDto hentKravgrunnlagDetaljDto) {
-        LOG.info("Henter kravgrunnlag for behandling {}", hentKravgrunnlagDetaljDto.behandlingsId());
+        LOG.info("Henter kravgrunnlag for behandling med kravgrunnlagid {}", hentKravgrunnlagDetaljDto.kravgrunnlagId());
         return Response.ok(lagGeneriskKravgrunnlag(hentKravgrunnlagDetaljDto))
                 .build();
     }

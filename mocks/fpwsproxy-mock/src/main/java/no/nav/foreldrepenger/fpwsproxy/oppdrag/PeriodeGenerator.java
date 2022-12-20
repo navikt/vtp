@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import no.nav.foreldrepenger.kontrakter.simulering.request.KodeEndringLinje;
-import no.nav.foreldrepenger.kontrakter.simulering.request.Oppdragslinje150Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.KodeEndringLinje;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.Oppdragslinje150Dto;
 
 // TODO: Denne er en kopi av tidligere. Rent kaos. Må ryddes opp i...
 public class PeriodeGenerator {

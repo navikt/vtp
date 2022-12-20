@@ -8,15 +8,15 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.request.HentKravgrunnlagDetaljDto;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.FagOmrådeKode;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.GjelderType;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.KlasseType;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.KravStatusKode;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.Kravgrunnlag431Dto;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.KravgrunnlagBelop433Dto;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.KravgrunnlagPeriode432Dto;
-import no.nav.foreldrepenger.kontrakter.tilbakekreving.kravgrunnlag.respons.Periode;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.request.HentKravgrunnlagDetaljDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.FagOmrådeKode;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.GjelderType;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KlasseType;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravStatusKode;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.Kravgrunnlag431Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravgrunnlagBelop433Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravgrunnlagPeriode432Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.Periode;
 import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
 
 class Kravgrunnlag431DtoMapper {

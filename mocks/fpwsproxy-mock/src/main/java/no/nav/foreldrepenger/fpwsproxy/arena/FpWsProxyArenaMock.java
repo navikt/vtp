@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.kontrakter.arena.request.ArenaRequestDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
 import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;

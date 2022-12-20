@@ -3,8 +3,8 @@ package no.nav.foreldrepenger.fpwsproxy.oppdrag;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
-import no.nav.foreldrepenger.kontrakter.simulering.request.KodeKlassifik;
-import no.nav.foreldrepenger.kontrakter.simulering.request.SatsDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.KodeKlassifik;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.SatsDto;
 
 public class Periode implements Comparable<Periode>{
 

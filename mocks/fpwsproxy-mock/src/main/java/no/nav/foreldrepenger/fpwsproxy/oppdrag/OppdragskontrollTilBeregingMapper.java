@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import no.nav.foreldrepenger.kontrakter.simulering.request.Oppdrag110Dto;
-import no.nav.foreldrepenger.kontrakter.simulering.request.OppdragskontrollDto;
-import no.nav.foreldrepenger.kontrakter.simulering.request.Oppdragslinje150Dto;
-import no.nav.foreldrepenger.kontrakter.simulering.request.Refusjonsinfo156Dto;
-import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningDto;
-import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningStoppnivåDetaljerDto;
-import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningStoppnivåDto;
-import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningsPeriodeDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.Oppdrag110Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.OppdragskontrollDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.Oppdragslinje150Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.Refusjonsinfo156Dto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningStoppnivåDetaljerDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningStoppnivåDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningsPeriodeDto;
 
 class OppdragskontrollTilBeregingMapper {
 

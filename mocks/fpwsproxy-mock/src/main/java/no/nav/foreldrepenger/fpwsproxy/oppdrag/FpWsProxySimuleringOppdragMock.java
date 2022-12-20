@@ -16,8 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.kontrakter.simulering.request.OppdragskontrollDto;
-import no.nav.foreldrepenger.kontrakter.simulering.respons.BeregningDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.OppdragskontrollDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningDto;
 
 @Path("/api/fpwsproxy/simulering")
 public class FpWsProxySimuleringOppdragMock {

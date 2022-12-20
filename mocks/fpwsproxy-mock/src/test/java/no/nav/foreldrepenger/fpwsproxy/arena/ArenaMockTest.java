@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.kontrakter.arena.request.ArenaRequestDto;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
 import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaMeldekort;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
