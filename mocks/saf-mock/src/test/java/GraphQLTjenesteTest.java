@@ -1,10 +1,18 @@
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.LinkedHashMap;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -15,13 +23,14 @@ import no.nav.saf.graphql.GraphQLTjeneste;
 
 public class GraphQLTjenesteTest {
 
-    @Test
-    public void test() {
-        // Arrange
-        String jpId = "12345678";
-        String sakId = "sakId";
+    private final static String jpId = "12345678";
+    private final static String sakId = "sakId";
+    private final static String fnr = "12345678901";
 
-        GraphQLTjeneste graphQLTjeneste = new GraphQLTjeneste();
+    @Test
+    public void testSaf() {
+        // Arrange
+        GraphQLTjeneste graphQLTjeneste = GraphQLTjeneste.getInstance();
         graphQLTjeneste.init();
 
         GraphQLRequest request = GraphQLRequest.builder()
@@ -30,12 +39,8 @@ public class GraphQLTjenesteTest {
                 .build();
 
         // Mock repo
-        JournalpostModell journalpostModell = new JournalpostModell();
-        journalpostModell.setSakId(sakId);
-        journalpostModell.setJournalpostId(jpId);
-
         JournalRepository journalRepo = Mockito.mock(JournalRepository.class);
-        when(journalRepo.finnJournalpostMedJournalpostId(jpId)).thenReturn(Optional.of(journalpostModell));
+        when(journalRepo.finnJournalpostMedJournalpostId(jpId)).thenReturn(Optional.of(journalpostModell()));
 
         // Act
         Map<String, Object> result = graphQLTjeneste.executeStatement(request, journalRepo)
@@ -44,7 +49,49 @@ public class GraphQLTjenesteTest {
         // Assert
         assertThat(result.get("data"))
                 .extracting("journalpost")
-                .satisfies(journalpostdata -> ((LinkedHashMap) journalpostdata).containsKey(sakId));
+                .extracting("sak")
+                .extracting("arkivsaksnummer")
+                .matches(sakId::equals);
+    }
+
+    @Test
+    public void testSafSelvbetjening() {
+
+        GraphQLTjeneste graphQLTjeneste = GraphQLTjeneste.getInstance();
+        graphQLTjeneste.init();
+
+        var alternativQuery = "query Dokumentoversikt($ident: String!) {dokumentoversiktSelvbetjening(ident: $ident, tema: [FOR]) {journalposter{journalpostId}}}";
+
+        GraphQLRequest request = GraphQLRequest.builder()
+                .withQuery(alternativQuery)
+                .withVariables(Map.of("ident", fnr))
+                .build();
+
+        JournalRepository journalRepo = Mockito.mock(JournalRepository.class);
+        when(journalRepo.finnJournalposterMedFnr(any())).thenReturn(List.of(journalpostModell()));
+
+        var resultat = graphQLTjeneste.executeStatement(request, journalRepo).toSpecification();
+
+        assertThat(resultat.get("data"))
+                .extracting("dokumentoversiktSelvbetjening")
+                .extracting("journalposter")
+                .extracting(jp -> ((ArrayList<?>) jp).get(0))
+                .extracting("journalpostId")
+                .matches(jpId::equals);
+    }
+
+    private JournalpostModell journalpostModell() {
+        JournalpostModell modell = new JournalpostModell();
+        modell.setSakId(sakId);
+        modell.setJournalpostId(jpId);
+        var bruker = new JournalpostBruker(fnr, BrukerType.FNR);
+        modell.setBruker(bruker);
+        modell.setAvsenderMottaker(bruker);
+        modell.setJournalposttype(Journalposttyper.INNGAAENDE_DOKUMENT);
+        modell.setArkivtema(Arkivtema.FOR);
+        modell.setMottakskanal(Mottakskanal.NAV_NO);
+        modell.setMottattDato(LocalDateTime.now());
+        return modell;
     }
 
 }

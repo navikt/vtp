@@ -49,28 +49,28 @@ public class JournalRepositoryImpl implements JournalRepository {
     }
 
     @Override
-    public List<JournalpostModell> finnJournalposterMedFnr(String fnr){
+    public List<JournalpostModell> finnJournalposterMedFnr(String fnr) {
         return journalposter.values().stream()
-                .filter(e -> (e.getAvsenderFnr() != null && e.getAvsenderFnr().equalsIgnoreCase(fnr)))
+                .filter(e -> e.getAvsenderMottaker() != null && e.getAvsenderMottaker().getIdent().equals(fnr))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<JournalpostModell> finnJournalposterMedSakId(String sakId){
+    public List<JournalpostModell> finnJournalposterMedSakId(String sakId) {
         return journalposter.values().stream()
                 .filter(e -> (e.getSakId() != null && e.getSakId().equalsIgnoreCase(sakId)))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<JournalpostModell> finnJournalpostMedJournalpostId(String journalpostId){
+    public Optional<JournalpostModell> finnJournalpostMedJournalpostId(String journalpostId) {
         return Optional.ofNullable(journalposter.getOrDefault(journalpostId, null));
     }
 
     @Override
-    public String leggTilJournalpost(JournalpostModell journalpostModell){
+    public String leggTilJournalpost(JournalpostModell journalpostModell) {
         String journalpostIdTemp;
-        if(journalpostModell.getJournalpostId() != null && !journalpostModell.getJournalpostId().isEmpty()){
+        if (journalpostModell.getJournalpostId() != null && !journalpostModell.getJournalpostId().isEmpty()) {
             journalpostIdTemp = journalpostModell.getJournalpostId();
         } else {
             journalpostIdTemp = genererJournalpostId();
@@ -80,15 +80,15 @@ public class JournalRepositoryImpl implements JournalRepository {
         journalpostModell.setEksternReferanseId(journalpostModell.getEksternReferanseId() != null ?
                 journalpostModell.getEksternReferanseId() : genererEksternReferanseId());
 
-        for(DokumentModell dokumentModell : journalpostModell.getDokumentModellList()){
+        for (DokumentModell dokumentModell : journalpostModell.getDokumentModellList()) {
             String dokumentIdTemp;
-            if(dokumentModell.getDokumentId() != null && !journalpostModell.getJournalpostId().isEmpty()){
+            if (dokumentModell.getDokumentId() != null && !journalpostModell.getJournalpostId().isEmpty()) {
                 dokumentIdTemp = dokumentModell.getDokumentId();
             } else {
                 dokumentIdTemp = genererDokumentId();
                 dokumentModell.setDokumentId(dokumentIdTemp);
             }
-            if(dokumenter.containsKey(dokumentIdTemp)){
+            if (dokumenter.containsKey(dokumentIdTemp)) {
                 throw new IllegalStateException("Forsøker å opprette dokument allerede eksisterende dokumentId");
             } else {
                 dokumenter.put(dokumentIdTemp, dokumentModell);
