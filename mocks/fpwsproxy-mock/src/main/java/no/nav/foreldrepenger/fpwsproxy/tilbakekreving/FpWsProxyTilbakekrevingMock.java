@@ -6,8 +6,8 @@ import static no.nav.foreldrepenger.fpwsproxy.tilbakekreving.Kravgrunnlag431DtoM
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -27,6 +27,7 @@ public class FpWsProxyTilbakekrevingMock {
     private static final Logger LOG = LoggerFactory.getLogger(FpWsProxyTilbakekrevingMock.class);
 
     private static final String KRAVGRUNNLAG_PATH = "/kravgrunnlag";
+    private static final String KRAVGRUNNLAG_ANNULLER_PATH = "/kravgrunnlag/annuller";
     private static final String TILBAKEKREVINGVEDTAK_PATH = "/tilbakekrevingsvedtak";
 
     @POST
@@ -40,11 +41,11 @@ public class FpWsProxyTilbakekrevingMock {
                 .build();
     }
 
-    @DELETE
-    @Path(KRAVGRUNNLAG_PATH)
+    @PUT
+    @Path(KRAVGRUNNLAG_ANNULLER_PATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Annuler kravgrunnlag", response = Kravgrunnlag431Dto[].class)
+    @ApiOperation(value = "", notes = "Annuler kravgrunnlag")
     public Response annulerKravgrunnlag(@Valid AnnullerKravGrunnlagDto annullerKravGrunnlagDto) {
         LOG.info("Annuler grunnlag med vedtaksId {}", annullerKravGrunnlagDto.vedtakId());
         return Response.ok().build();
