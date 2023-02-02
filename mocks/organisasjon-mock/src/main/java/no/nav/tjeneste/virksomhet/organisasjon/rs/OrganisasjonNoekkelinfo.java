@@ -25,18 +25,18 @@ public class OrganisasjonNoekkelinfo {
     private String opphoersdato;
 
     public OrganisasjonNoekkelinfo(OrganisasjonModell modell) {
-        this.organisasjonsnummer = modell.getOrgnummer();
-        if (modell.getType() != null) {
-            this.enhetstype = modell.getType().getKode();
+        this.organisasjonsnummer = modell.orgnummer();
+        if (modell.type() != null) {
+            this.enhetstype = modell.type().getKode();
         } else {
             this.enhetstype = OrganisasjonstypeEReg.VIRKSOMHET.getKode();
         }
-        this.navn = OrganisasjonResponse.Navn.fra(modell.getNavn());
+        this.navn = OrganisasjonResponse.Navn.fra(modell.navn());
 
-        if (modell.getOrganisasjonDetaljer() != null
-                && modell.getOrganisasjonDetaljer().getForretningsadresser() != null
-                && !modell.getOrganisasjonDetaljer().getForretningsadresser().isEmpty()) {
-            this.adresse = modell.getOrganisasjonDetaljer().getForretningsadresser().get(0);
+        if (modell.organisasjonDetaljer() != null
+                && modell.organisasjonDetaljer().forretningsadresser() != null
+                && !modell.organisasjonDetaljer().forretningsadresser().isEmpty()) {
+            this.adresse = modell.organisasjonDetaljer().forretningsadresser().get(0);
         }
     }
 

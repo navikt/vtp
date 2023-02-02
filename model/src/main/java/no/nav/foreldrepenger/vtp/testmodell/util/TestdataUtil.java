@@ -16,7 +16,7 @@ public class TestdataUtil {
     private TestdataUtil() {
     }
 
-    private static Random RANDOM = new Random();
+    private static final Random RANDOM = new Random();
 
     public static LocalDate generateRandomPlausibleBirtdayParent() {
         var startRange = LocalDate.of(1960, 1, 1);

@@ -33,12 +33,12 @@ public class InfotrygdArbeidsforhold {
     }
 
     public String getOrgnr() {
-        return getVirksomhet().getOrgnr();
+        return getVirksomhet().orgnr();
     }
 
     public VirksomhetModell getVirksomhet() {
         VirksomhetModell virksomhet = virksomheter.getVirksomhet(lokalOrgnr);
-        vars.computeIfAbsent(lokalOrgnr, (n) -> virksomhet.getOrgnr());
+        vars.computeIfAbsent(lokalOrgnr, (n) -> virksomhet.orgnr());
         return virksomhet;
     }
 

@@ -17,10 +17,6 @@
         <!-- Prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>arena-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>ldap-mock</artifactId>
         </dependency>
         <dependency>
@@ -143,6 +139,10 @@
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>

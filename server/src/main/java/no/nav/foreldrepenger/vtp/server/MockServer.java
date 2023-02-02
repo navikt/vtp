@@ -39,7 +39,6 @@ import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.familie.topic.Topic;
 import no.nav.familie.topic.TopicManifest;
 import no.nav.foreldrepenger.util.KeystoreUtils;
-import no.nav.foreldrepenger.util.PropertiesUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;

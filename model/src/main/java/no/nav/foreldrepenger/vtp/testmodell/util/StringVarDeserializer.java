@@ -25,8 +25,8 @@ public class StringVarDeserializer extends JsonDeserializer<String> implements C
 
     @Override
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-        if (delegate instanceof ResolvableDeserializer) {
-            ((ResolvableDeserializer) delegate).resolve(ctxt);
+        if (delegate instanceof ResolvableDeserializer resolvableDeserializer) {
+            resolvableDeserializer.resolve(ctxt);
         }
     }
 

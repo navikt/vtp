@@ -1,5 +1,13 @@
 package no.nav.tjeneste.virksomhet.organisasjon.rs;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,14 +16,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.AdresseEReg;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -31,24 +31,24 @@ public class OrganisasjonResponse {
     private OrganisasjonDetaljer organisasjonDetaljer;
 
     public OrganisasjonResponse(OrganisasjonModell modell) {
-        this.organisasjonsnummer = modell.getOrgnummer();
-        if (modell.getType() != null) {
-            this.type = modell.getType();
+        this.organisasjonsnummer = modell.orgnummer();
+        if (modell.type() != null) {
+            this.type = modell.type();
         } else {
             this.type = OrganisasjonstypeEReg.VIRKSOMHET;
         }
-        this.navn = Navn.fra(modell.getNavn());
+        this.navn = Navn.fra(modell.navn());
         this.organisasjonDetaljer = new OrganisasjonDetaljer();
-        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getRegistreringsDato() != null) {
-            this.organisasjonDetaljer.registreringsdato = modell.getOrganisasjonDetaljer().getRegistreringsDato().atStartOfDay();
+        if (modell.organisasjonDetaljer() != null && modell.organisasjonDetaljer().registreringsDato() != null) {
+            this.organisasjonDetaljer.registreringsdato = modell.organisasjonDetaljer().registreringsDato().atStartOfDay();
         } else {
             this.organisasjonDetaljer.registreringsdato = LocalDateTime.now().minusYears(1);
         }
-        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getForretningsadresser() != null) {
-            this.organisasjonDetaljer.forretningsadresser = modell.getOrganisasjonDetaljer().getForretningsadresser();
+        if (modell.organisasjonDetaljer() != null && modell.organisasjonDetaljer().forretningsadresser() != null) {
+            this.organisasjonDetaljer.forretningsadresser = modell.organisasjonDetaljer().forretningsadresser();
         }
-        if (modell.getOrganisasjonDetaljer() != null && modell.getOrganisasjonDetaljer().getPostadresser() != null) {
-            this.organisasjonDetaljer.postadresser = modell.getOrganisasjonDetaljer().getPostadresser();
+        if (modell.organisasjonDetaljer() != null && modell.organisasjonDetaljer().postadresser() != null) {
+            this.organisasjonDetaljer.postadresser = modell.organisasjonDetaljer().postadresser();
         }
     }
 
@@ -141,17 +141,17 @@ public class OrganisasjonResponse {
 
         static Navn fra(OrganisasjonModell.Navn navn) {
             var svar = new Navn();
-            var max = Arrays.stream(navn.getNavnelinje()).count();
+            var max = Arrays.stream(navn.navnelinje()).count();
             if (max > 0)
-                svar.navnelinje1 = navn.getNavnelinje()[0];
+                svar.navnelinje1 = navn.navnelinje()[0];
             if (max > 1)
-                svar.navnelinje2 = navn.getNavnelinje()[1];
+                svar.navnelinje2 = navn.navnelinje()[1];
             if (max > 2)
-                svar.navnelinje3 = navn.getNavnelinje()[2];
+                svar.navnelinje3 = navn.navnelinje()[2];
             if (max > 3)
-                svar.navnelinje4 = navn.getNavnelinje()[3];
+                svar.navnelinje4 = navn.navnelinje()[3];
             if (max > 4)
-                svar.navnelinje5 = navn.getNavnelinje()[4];
+                svar.navnelinje5 = navn.navnelinje()[4];
             return svar;
         }
     }

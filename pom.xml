@@ -281,11 +281,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>arena-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>medl-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -411,11 +406,6 @@
                 <groupId>no.nav.tjenester</groupId>
                 <artifactId>medlemskapsunntak-api-v1</artifactId>
                 <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenestespesifikasjoner</groupId>
-                <artifactId>nav-meldekortUtbetalingsgrunnlag-v1-tjenestespesifikasjon</artifactId>
-                <version>${tjenestespesifikasjoner.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>

@@ -1,14 +1,15 @@
 package no.nav.foreldrepenger.vtp.testmodell.felles;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.OrgnummerDeserializer;
+public record Orgnummer(@JsonValue String orgnummer) {
 
-@JsonDeserialize(using = OrgnummerDeserializer.class)
-public record Orgnummer(String orgnummer) {
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public Orgnummer {
+    }
 
-    @JsonValue
+    @Override
     public String orgnummer() {
         return orgnummer;
     }

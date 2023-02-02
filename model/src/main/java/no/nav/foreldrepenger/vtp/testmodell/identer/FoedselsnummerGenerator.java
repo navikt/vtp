@@ -1,41 +1,30 @@
 package no.nav.foreldrepenger.vtp.testmodell.identer;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.vtp.testmodell.enums.IdentType;
-import no.nav.foreldrepenger.vtp.testmodell.enums.Kjonn;
+import no.nav.foreldrepenger.vtp.testmodell.enums.Kjønn;
 import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
 public class FoedselsnummerGenerator {
-    private final static Logger LOG = LoggerFactory.getLogger(FoedselsnummerGenerator.class);
-    private final static Integer NAV_SYNTETISK_IDENT_OFFSET_MND = 40;
-    private final static Integer DNR_OFFSETT_DAYS = 40;
-    private final static Random random = new Random();
+    private static final Logger LOG = LoggerFactory.getLogger(FoedselsnummerGenerator.class);
+    private static final Integer NAV_SYNTETISK_IDENT_OFFSET_MND = 40;
+    private static final Integer DNR_OFFSETT_DAYS = 40;
+    private static final Random random = new Random();
 
-    private Kjonn kjonn;
-    private IdentType identType;
-    private LocalDate fodselsdato;
+    private final Kjønn kjonn;
+    private final IdentType identType;
+    private final LocalDate fodselsdato;
 
-    private FoedselsnummerGenerator(FodselsnummerGeneratorBuilder fgb){
-        if(fgb.kjonn != null) {
-            this.kjonn = fgb.kjonn;
-        } else {
-            this.kjonn = Kjonn.randomKjonn();
-        }
-        if(fgb.identType != null) {
-            this.identType = fgb.identType;
-        } else {
-            this.identType = IdentType.FNR;
-        }
-        if(fgb.fodselsdato != null){
-            this.fodselsdato = fgb.fodselsdato;
-        } else {
-            this.fodselsdato = TestdataUtil.generateRandomPlausibleBirtdayParent();
-        }
+    private FoedselsnummerGenerator(Builder fgb){
+        this.kjonn = Objects.requireNonNullElseGet(fgb.kjonn, Kjønn::randomKjonn);
+        this.identType = Objects.requireNonNullElse(fgb.identType, IdentType.FNR);
+        this.fodselsdato = Objects.requireNonNullElseGet(fgb.fodselsdato, TestdataUtil::generateRandomPlausibleBirtdayParent);
     }
 
     private static int getDigit(String text, int index) {
@@ -48,33 +37,31 @@ public class FoedselsnummerGenerator {
 
 
     private String generate(){
-        //LOG.info("Vil generere FNR for " + this.kjonn + " født: " + this.fodselsdato + " av type: " + this.identType);
-
         var day = String.format("%02d",this.fodselsdato.getDayOfMonth());
         var month = String.format("%02d",this.fodselsdato.getMonthValue() + NAV_SYNTETISK_IDENT_OFFSET_MND);
         var year = Integer.toString(this.fodselsdato.getYear()).substring(2);
 
         int birthNumber;
-        if(this.kjonn == Kjonn.KVINNE) {
+        if (this.kjonn == Kjønn.KVINNE) {
             birthNumber = 100+ random.nextInt(900/2) *2;
-        } else if(this.kjonn == Kjonn.MANN) {
+        } else if(this.kjonn == Kjønn.MANN) {
             birthNumber = 100+ random.nextInt(900/2) *2 + 1;
         } else {
             birthNumber = 999;
         }
 
-        if(this.identType == IdentType.DNR){
+        if (this.identType == IdentType.DNR){
             day = String.valueOf(Integer.parseInt(day) + DNR_OFFSETT_DAYS);
         }
 
         int fullYear = this.fodselsdato.getYear();
-        if(betweenExclusive(fullYear,1854,1899)){
+        if (betweenExclusive(fullYear,1854,1899)){
             if (!betweenExclusive(birthNumber,500,749)) return generate();
-        } else if(betweenExclusive(fullYear,1900,1999)){
+        } else if (betweenExclusive(fullYear,1900,1999)){
             if (!betweenExclusive(birthNumber,0,499)) return generate();
-        } else if(betweenExclusive(fullYear,1940,1999)){
+        } else if (betweenExclusive(fullYear,1940,1999)){
             if (!betweenExclusive(birthNumber,900,999)) return generate();
-        } else if(betweenExclusive(fullYear,2000, 2039)){
+        } else if (betweenExclusive(fullYear,2000, 2039)){
             if (!betweenExclusive(birthNumber,500,999)) return generate();
         } else {
             LOG.info("Kunne ikke identifisere fødselsnummerserie");
@@ -109,25 +96,24 @@ public class FoedselsnummerGenerator {
 
 
 
-    public static class FodselsnummerGeneratorBuilder {
-
-        private Kjonn kjonn;
+    public static class Builder {
+        private Kjønn kjonn;
         private IdentType identType;
         private LocalDate fodselsdato;
 
-        public void FodselsnummerGenerator(){}
+        public void Builder(){}
 
-        public FodselsnummerGeneratorBuilder kjonn(Kjonn k){
+        public Builder kjonn(Kjønn k){
             this.kjonn = k;
             return this;
         }
 
-        public FodselsnummerGeneratorBuilder identType(IdentType i){
+        public Builder identType(IdentType i){
             this.identType = i;
             return this;
         }
 
-        public FodselsnummerGeneratorBuilder fodselsdato(LocalDate lt){
+        public Builder fodselsdato(LocalDate lt){
             this.fodselsdato = lt;
             return this;
         }

@@ -17,7 +17,7 @@ public record TestscenarioDto(
         @JsonProperty("id") String testscenarioId,
         @JsonInclude(content = Include.NON_EMPTY)  Map<String, String> variabler,
         TestscenarioPersonopplysningDto personopplysninger,
-        @JsonProperty("scenariodata") InntektYtelseModell scenariodataDto,
-        @JsonProperty("scenariodataAnnenpart") @JsonInclude(content = Include.NON_EMPTY) InntektYtelseModell scenariodataAnnenpartDto) {
+        InntektYtelseModell scenariodata,
+        @JsonInclude(content = Include.NON_EMPTY) InntektYtelseModell scenariodataAnnenpart) {
 
 }

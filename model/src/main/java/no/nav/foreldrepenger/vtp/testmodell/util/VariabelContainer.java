@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 
 public class VariabelContainer {
 
-    private NavigableMap<String, String> vars = new TreeMap<>();
+    private final NavigableMap<String, String> vars = new TreeMap<>();
 
     public VariabelContainer() {
     }

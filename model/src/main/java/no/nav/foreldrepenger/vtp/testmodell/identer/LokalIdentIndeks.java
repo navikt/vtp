@@ -15,7 +15,7 @@ public class LokalIdentIndeks {
 
     private final IdentGenerator identGenerator;
     private final Map<String, String> identer = new ConcurrentHashMap<>(); // NOSONAR
-    private String unikScenarioId;
+    private final String unikScenarioId;
 
     public LokalIdentIndeks(String unikScenarioId, IdentGenerator identGenerator) {
         this.unikScenarioId = unikScenarioId;

@@ -7,10 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EnheterIndeks {
 
-    private Map<String, Norg2Modell> byDiskresjonskode = new ConcurrentHashMap<>();
+    private final Map<String, Norg2Modell> byDiskresjonskode = new ConcurrentHashMap<>();
 
     public void leggTil(Collection<Norg2Modell> enheter) {
-        enheter.forEach(m -> byDiskresjonskode.putIfAbsent(m.getDiskresjonskode(), m));
+        enheter.forEach(m -> byDiskresjonskode.putIfAbsent(m.diskresjonskode(), m));
     }
 
     public Norg2Modell finnByDiskresjonskode(String diskresjonskode) {

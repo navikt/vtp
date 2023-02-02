@@ -12,9 +12,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +44,7 @@ public class AxsysEnhetstilgangMock {
         if (norgEnhet == null) {
             return null;
         }
-        var axsysEnhet = new AxsysEnhetDto(norgEnhet.getEnhetId(), norgEnhet.getNavn(), Set.of("FOR"));
+        var axsysEnhet = new AxsysEnhetDto(norgEnhet.enhetId(), norgEnhet.navn(), Set.of("FOR"));
         return new AxsysTilgangDto(List.of(axsysEnhet));
     }
 

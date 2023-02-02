@@ -6,13 +6,13 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class OrganisasjonIndeks {
-    private Map<String, OrganisasjonModell> organisasjoner = new ConcurrentHashMap<>();
+    private final Map<String, OrganisasjonModell> organisasjoner = new ConcurrentHashMap<>();
 
     public Optional<OrganisasjonModell> getModellForIdent(String orgnr) {
         return Optional.ofNullable(organisasjoner.get(orgnr));
     }
 
     public void leggTil(List<OrganisasjonModell> modeller) {
-        modeller.forEach(o -> organisasjoner.put(o.getOrgnummer(), o));
+        modeller.forEach(o -> organisasjoner.put(o.orgnummer(), o));
     }
 }
