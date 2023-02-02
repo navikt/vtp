@@ -29,13 +29,13 @@ jobs:
   release-drafter:
     name: Update
     if: github.ref_name == 'master'
-    needs: build-feature
+    needs: build-app-no-db
     uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main
     secrets: inherit
 
   snyk:
     name: Snyk
-    needs: build-feature
+    needs: build-app-no-db
     uses: navikt/fp-gha-workflows/.github/workflows/snyk.yml@main
     with:
       build-version: ${{ needs.build-feature.outputs.build-version }}
