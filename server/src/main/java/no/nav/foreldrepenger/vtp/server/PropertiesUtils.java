@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.util;
+package no.nav.foreldrepenger.vtp.server;
 
 import java.io.File;
 import java.io.FileInputStream;

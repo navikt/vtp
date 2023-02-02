@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.identer;
 
 import no.nav.foreldrepenger.vtp.testmodell.enums.IdentType;
-import no.nav.foreldrepenger.vtp.testmodell.enums.Kjonn;
+import no.nav.foreldrepenger.vtp.testmodell.enums.Kjønn;
 import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
 /**
@@ -16,8 +16,7 @@ public class FiktiveFnr implements IdentGenerator {
      */
     @Override
     public String tilfeldigFnr() {
-        return new FoedselsnummerGenerator
-                .FodselsnummerGeneratorBuilder()
+        return new FoedselsnummerGenerator.Builder()
                 .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
                 .buildAndGenerate();
     }
@@ -25,9 +24,8 @@ public class FiktiveFnr implements IdentGenerator {
     /** Returnerer FNR for mann > 18 år */
     @Override
     public String tilfeldigMannFnr() {
-        return new FoedselsnummerGenerator
-                .FodselsnummerGeneratorBuilder()
-                .kjonn(Kjonn.MANN)
+        return new FoedselsnummerGenerator.Builder()
+                .kjonn(Kjønn.MANN)
                 .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
                 .buildAndGenerate();
     }
@@ -35,9 +33,8 @@ public class FiktiveFnr implements IdentGenerator {
     /** Returnerer FNR for kvinne > 18 år */
     @Override
     public String tilfeldigKvinneFnr() {
-        return new FoedselsnummerGenerator
-                .FodselsnummerGeneratorBuilder()
-                .kjonn(Kjonn.KVINNE)
+        return new FoedselsnummerGenerator.Builder()
+                .kjonn(Kjønn.KVINNE)
                 .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
                 .buildAndGenerate();
     }
@@ -45,8 +42,7 @@ public class FiktiveFnr implements IdentGenerator {
     /** Returnerer FNR for barn (tilfeldig kjønn) < 3 år */
     @Override
     public String tilfeldigBarnUnderTreAarFnr() {
-        return new FoedselsnummerGenerator
-                .FodselsnummerGeneratorBuilder()
+        return new FoedselsnummerGenerator.Builder()
                 .fodselsdato(TestdataUtil.generateBirthdateNowMinusThreeYears())
                 .buildAndGenerate();
     }
@@ -54,8 +50,7 @@ public class FiktiveFnr implements IdentGenerator {
     /** Returnerer DNR for kvinne > 18 år */
     @Override
     public String tilfeldigKvinneDnr() {
-        return new FoedselsnummerGenerator
-                .FodselsnummerGeneratorBuilder()
+        return new FoedselsnummerGenerator.Builder()
                 .fodselsdato(TestdataUtil.generateRandomPlausibleBirtdayParent())
                 .identType(IdentType.DNR)
                 .buildAndGenerate();

@@ -22,7 +22,7 @@ public class VirksomhetIndeks {
 
     public void leggTil(List<VirksomhetModell> modeller) {
         this.modeller.addAll(modeller);
-        modeller.forEach(v -> virksomheter.put(v.getOrgnr(), v));
+        modeller.forEach(v -> virksomheter.put(v.orgnr(), v));
     }
 
     public VirksomhetModell roundRobin(int round) {

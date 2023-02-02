@@ -4,14 +4,9 @@ import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 
 public class KeystoreUtils {
-    public static Boolean sslDisabled() {
-        if (null != getenv("DISABLE_SSL")) {
-            return getenv("DISABLE_SSL").equalsIgnoreCase("true");
-        }
-        if (null != getProperty("disable.ssl")) {
-            return getProperty("disable.ssl").equalsIgnoreCase("true");
-        }
-        return false;
+
+    private KeystoreUtils() {
+        // Skal ikke instansieres
     }
 
     public static String getKeystoreFilePath() {

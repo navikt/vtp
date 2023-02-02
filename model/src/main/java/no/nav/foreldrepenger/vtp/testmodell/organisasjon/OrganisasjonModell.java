@@ -1,66 +1,37 @@
 package no.nav.foreldrepenger.vtp.testmodell.organisasjon;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrganisasjonModell {
-    @JsonProperty("orgnummer")
-    private String orgnummer;
-    @JsonProperty("type")
-    private OrganisasjonstypeEReg type;
-    @JsonProperty("navn")
-    private Navn navn;
-    @JsonProperty("organisasjonDetaljer")
-    private OrganisasjonDetaljerModell organisasjonDetaljer;
+public record OrganisasjonModell(String orgnummer,
+                                 OrganisasjonstypeEReg type,
+                                 Navn navn,
+                                 OrganisasjonDetaljerModell organisasjonDetaljer) {
 
-    public OrganisasjonModell() {
-    }
-
-    public String getOrgnummer() {
-        return orgnummer;
-    }
-
-    public void setOrgnummer(String orgnummer) {
-        this.orgnummer = orgnummer;
-    }
-
-    public Navn getNavn() {
-        return navn;
-    }
-
-    public void setNavn(Navn navn) {
-        this.navn = navn;
-    }
-
-    public OrganisasjonDetaljerModell getOrganisasjonDetaljer() {
-        return organisasjonDetaljer;
-    }
-
-    public void setOrganisasjonDetaljer(OrganisasjonDetaljerModell organisasjonDetaljer) {
-        this.organisasjonDetaljer = organisasjonDetaljer;
-    }
-
-    public OrganisasjonstypeEReg getType() {
-        return type;
-    }
-
-    public class Navn {
-
-        public Navn() {
+    public record Navn(@JsonProperty("navnelinje") String[] navnelinje) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Navn navn = (Navn) o;
+            return Arrays.equals(navnelinje, navn.navnelinje);
         }
 
-        @JsonProperty("navnelinje")
-        private String[] navnelinje;
-
-        public String[] getNavnelinje() {
-            return navnelinje;
+        @Override
+        public int hashCode() {
+            return Arrays.hashCode(navnelinje);
         }
 
-        public void setNavnelinje(String[] navnelinje) {
-            this.navnelinje = navnelinje;
+        @Override
+        public String toString() {
+            return "Navn{" +
+                    "navnelinje=" + Arrays.toString(navnelinje) +
+                    '}';
         }
     }
 }

@@ -40,13 +40,13 @@ public class ArbeidsfordelingRestMock {
         LOG.info(LOG_PREFIX, "allenheter");
         return scenarioRepository.getEnheterIndeks().getAlleEnheter().stream()
                 .filter(e -> skalEnhetMed(e, request.getTema()))
-                .map(e -> new ArbeidsfordelingResponse(e.getEnhetId(), e.getNavn(), e.getStatus(), e.getType()))
+                .map(e -> new ArbeidsfordelingResponse(e.enhetId(), e.navn(), e.status(), e.type()))
                 .toArray(ArbeidsfordelingResponse[]::new);
     }
 
     private boolean skalEnhetMed(Norg2Modell enhet, String tema) {
-        if (tema == null || enhet.getTema() == null) return true;
-        return tema.equalsIgnoreCase(enhet.getTema());
+        if (tema == null || enhet.tema() == null) return true;
+        return tema.equalsIgnoreCase(enhet.tema());
     }
 
     @POST
@@ -64,7 +64,7 @@ public class ArbeidsfordelingRestMock {
             resultat.add(scenarioRepository.getEnheterIndeks().finnByDiskresjonskode("NORMAL-"+request.getTema()));
         }
         return resultat.stream()
-                .map(e -> new ArbeidsfordelingResponse(e.getEnhetId(), e.getNavn(), e.getStatus(), e.getType()))
+                .map(e -> new ArbeidsfordelingResponse(e.enhetId(), e.navn(), e.status(), e.type()))
                 .toArray(ArbeidsfordelingResponse[]::new);
     }
 

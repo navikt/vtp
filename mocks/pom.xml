@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>arbeidsforhold-mock</module>
-        <module>arena-mock</module>
         <module>axsys-enhetstilgang-mock</module>
         <module>journalpost-mock</module>
         <module>dokdist-mock</module>

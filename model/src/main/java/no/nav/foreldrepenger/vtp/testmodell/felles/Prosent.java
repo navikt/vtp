@@ -1,14 +1,16 @@
 package no.nav.foreldrepenger.vtp.testmodell.felles;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.ProsentDeserializer;
 
-@JsonDeserialize(using = ProsentDeserializer.class)
-public record Prosent(Integer prosent) {
+public record Prosent(@JsonValue Integer prosent) {
 
-    @JsonValue
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+    public Prosent {
+    }
+
+    @Override
     public Integer prosent() {
         return prosent;
     }
