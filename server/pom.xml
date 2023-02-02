@@ -17,10 +17,6 @@
         <!-- Prosjektavhengigheter -->
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>arena-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>ldap-mock</artifactId>
         </dependency>
         <dependency>
