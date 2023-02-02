@@ -39,17 +39,17 @@ public class MedlemskapsunntakAdapter {
 
     private Medlemskapsunntak tilMedlemsperiode(MedlemskapperiodeModell medlemsskapsperiode) {
         return Medlemskapsunntak.builder()
-                .medlem(Set.of(PeriodeStatus.INNV, PeriodeStatus.GYLD).contains(medlemsskapsperiode.getStatus()))
-                .fraOgMed(medlemsskapsperiode.getFom())
-                .tilOgMed(medlemsskapsperiode.getTom())
-                .dekning(medlemsskapsperiode.getDekningType().getKode())
-                .lovvalg(medlemsskapsperiode.getLovvalgType().getKode())
-                .lovvalgsland(medlemsskapsperiode.getLandkode().getKode())
-                .status(medlemsskapsperiode.getStatus().getKode())
-                .unntakId(medlemsskapsperiode.getId())
+                .medlem(Set.of(PeriodeStatus.INNV, PeriodeStatus.GYLD).contains(medlemsskapsperiode.status()))
+                .fraOgMed(medlemsskapsperiode.fom())
+                .tilOgMed(medlemsskapsperiode.tom())
+                .dekning(medlemsskapsperiode.trygdedekning().kode())
+                .lovvalg(medlemsskapsperiode.lovvalgType().name())
+                .lovvalgsland(medlemsskapsperiode.land().getKode())
+                .status(medlemsskapsperiode.status().name())
+                .unntakId(medlemsskapsperiode.id())
                 .sporingsinformasjon(Sporingsinformasjon.builder()
-                        .kilde(medlemsskapsperiode.getKilde().getKode())
-                        .besluttet(medlemsskapsperiode.getBesluttetDato())
+                        .kilde(medlemsskapsperiode.kilde().name())
+                        .besluttet(medlemsskapsperiode.besluttetDato())
                         .build())
                 .build();
     }

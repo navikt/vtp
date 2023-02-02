@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell.enums;
+package no.nav.foreldrepenger.vtp.testmodell.identer;
 
 import java.util.Arrays;
 import java.util.Collections;

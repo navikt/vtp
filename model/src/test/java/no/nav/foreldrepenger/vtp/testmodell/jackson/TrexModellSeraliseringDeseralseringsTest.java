@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.vtp.testmodell.felles.Orgnummer;
-import no.nav.foreldrepenger.vtp.testmodell.felles.Prosent;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Arbeidskategori;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.ArbeidskategoriKode;
@@ -15,7 +13,9 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.BehandlingstemaKo
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Grunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.InntektsperiodeKode;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Orgnummer;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Periode;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Prosent;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Status;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.StatusKode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;

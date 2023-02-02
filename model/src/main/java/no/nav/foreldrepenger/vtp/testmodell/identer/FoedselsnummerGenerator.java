@@ -7,8 +7,6 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.testmodell.enums.IdentType;
-import no.nav.foreldrepenger.vtp.testmodell.enums.Kjønn;
 import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
 public class FoedselsnummerGenerator {

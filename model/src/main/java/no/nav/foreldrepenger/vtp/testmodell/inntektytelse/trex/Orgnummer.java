@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.testmodell.felles;
+package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

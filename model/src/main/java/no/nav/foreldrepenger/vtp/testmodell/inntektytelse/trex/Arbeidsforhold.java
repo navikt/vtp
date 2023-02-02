@@ -2,8 +2,6 @@ package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
-import no.nav.foreldrepenger.vtp.testmodell.felles.Orgnummer;
-
 public record Arbeidsforhold(@JsonAlias("arbeidsgiverOrgnr") Orgnummer orgnr,
                              @JsonAlias("inntektForPerioden") Integer inntekt,
                              Inntektsperiode inntektsperiode,

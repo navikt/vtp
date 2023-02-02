@@ -24,6 +24,7 @@ import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningsP
 class OppdragskontrollTilBeregingMapper {
 
     static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final String DUMMY_VALUE = "DUMMY";
 
     private OppdragskontrollTilBeregingMapper() {
     }
@@ -43,7 +44,7 @@ class OppdragskontrollTilBeregingMapper {
         return new BeregningDto.Builder()
                 .beregningsPeriode(beregningsPeriode)
                 .gjelderId(oppdrag110Dto.oppdragGjelderId())
-                .gjelderNavn("DUMMY")
+                .gjelderNavn(DUMMY_VALUE)
                 .datoBeregnet(dateTimeFormatter.format(LocalDate.now()))
                 .kodeFaggruppe("KORTTID")
                 .belop(BigDecimal.valueOf(1234))
@@ -105,7 +106,7 @@ class OppdragskontrollTilBeregingMapper {
         return new BeregningStoppnivåDto.Builder()
                 .kodeFagomraade(oppdrag.kodeFagomrade().name())
                 .utbetalesTilId(refunderesOrgNr.orElseGet(oppdrag::oppdragGjelderId))
-                .utbetalesTilNavn("DUMMY")
+                .utbetalesTilNavn(DUMMY_VALUE)
                 .behandlendeEnhet("8052")
                 .forfall(dateTimeFormatter.format(YearMonth.from(periodeMND.getFom()).equals(nesteMåned()) ? LocalDate.now().withDayOfMonth(20) : LocalDate.now()))
                 .oppdragsId(1234L)
@@ -178,9 +179,9 @@ class OppdragskontrollTilBeregingMapper {
                 .bostedsenhet("4643")
                 .skykldnerId("")
                 .klassekode(periodeMND.getKodeKlassifik().getKode())
-                .klasseKodeBeskrivelse("DUMMY")
+                .klasseKodeBeskrivelse(DUMMY_VALUE)
                 .typeKlasse("YTEL")
-                .typeKlasseBeskrivelse("DUMMY")
+                .typeKlasseBeskrivelse(DUMMY_VALUE)
                 .refunderesOrgNr(refunderesOrgNr.orElse(""))
                 .build();
     }
@@ -214,9 +215,9 @@ class OppdragskontrollTilBeregingMapper {
                 .bostedsenhet("4643")
                 .skykldnerId("")
                 .klassekode(erSequence2 ? "KL_KODE_FEIL_KORTTID" : periodeMND.getKodeKlassifik().getKode())
-                .klasseKodeBeskrivelse("DUMMY")
+                .klasseKodeBeskrivelse(DUMMY_VALUE)
                 .typeKlasse(erSequence2 ? "FEIL" : "YTEL")
-                .typeKlasseBeskrivelse("DUMMY")
+                .typeKlasseBeskrivelse(DUMMY_VALUE)
                 .refunderesOrgNr(refunderesOrgNr.orElse(""))
                 .build();
     }

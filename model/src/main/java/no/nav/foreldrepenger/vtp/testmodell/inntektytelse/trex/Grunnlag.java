@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
-import no.nav.foreldrepenger.vtp.testmodell.felles.Prosent;
-
 public record Grunnlag(Status status,
                        Tema tema,
                        Prosent dekningsgrad,

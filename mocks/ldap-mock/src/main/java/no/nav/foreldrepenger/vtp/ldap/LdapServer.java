@@ -33,8 +33,8 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 public class LdapServer {
     private static final Logger LOG = LoggerFactory.getLogger(LdapServer.class);
     private static final String SETUP_LDIF = "ldap_setup.ldif";
-    private static final int listenerPortLdaps = 8636; // 636 er default port for LDAPS
-    private static final int listenerPortLdap = 8389;  // 389 er default port for LDAP
+    private static final int LDAPS_PORT = 8636; // 636 er default port for LDAPS
+    private static final int LDAP_PORT = 8389;  // 389 er default port for LDAP
 
     private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     private final InMemoryDirectoryServer directoryServer;
@@ -49,8 +49,8 @@ public class LdapServer {
         var km = loadKeyManagers(keystoreFile, password);
         sslContext.init(km, null, null);
 
-        var ldapsConfig = createLDAPSConfig("LDAPS", listenerPortLdaps, sslContext.getServerSocketFactory());
-        var ldapConfig = createLDAPConfig("LDAP",listenerPortLdap );
+        var ldapsConfig = createLDAPSConfig("LDAPS", LDAPS_PORT, sslContext.getServerSocketFactory());
+        var ldapConfig = createLDAPConfig("LDAP", LDAP_PORT);
 
         cfg.setListenerConfigs(ldapsConfig,ldapConfig);
 

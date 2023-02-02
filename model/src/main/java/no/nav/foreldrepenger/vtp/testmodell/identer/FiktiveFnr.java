@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.vtp.testmodell.identer;
 
-import no.nav.foreldrepenger.vtp.testmodell.enums.IdentType;
-import no.nav.foreldrepenger.vtp.testmodell.enums.Kjønn;
 import no.nav.foreldrepenger.vtp.testmodell.util.TestdataUtil;
 
 /**
