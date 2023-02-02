@@ -21,7 +21,7 @@ import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @BeforeAll
-    private static void utvidObjectmapperMedInjectables() {
+    static void utvidObjectmapperMedInjectables() {
         var jsonMapper = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
         jsonMapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
