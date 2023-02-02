@@ -16,11 +16,13 @@ on:
     - cron: '0 4 * * 1'
 
 jobs:
-  build-feature:
+  build-app:
     name: Build
-    uses: navikt/fp-gha-workflows/.github/workflows/build-feature.yml@main
+    uses: navikt/fp-gha-workflows/.github/workflows/build-app-no-db.yml@main
     with:
-      sonar-scan: true # default: false
+      build-image: ${{ github.ref_name == 'master' }} # default: true
+      push-image: ${{ github.ref_name == 'master' }} # default: false
+      sonar-scan: true
       use-reader: true
     secrets: inherit
 
