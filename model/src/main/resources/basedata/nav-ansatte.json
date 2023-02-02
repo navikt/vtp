@@ -1,0 +1,133 @@
+[
+  {
+    "cn": "saksbeh",
+    "displayName": "Sara Saksbehandler",
+    "email":"sara.saksbehandler@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler"
+    ]
+  },
+  {
+    "cn": "saksbeh6",
+    "displayName": "Sa6a Saksbehandler6",
+    "email":"sa6a.saksbehandler6@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-GOSYS_KODE6",
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler"
+    ]
+  },
+  {
+    "cn": "saksbeh7",
+    "displayName": "Sa7a Saksbehandler7",
+    "email":"sa7a.saksbehandler7@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-GOSYS_KODE7",
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler"
+    ]
+  },
+  {
+    "cn": "beslut",
+    "displayName": "Birger Beslutter",
+    "email":"birger.beslutter@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-beslutter",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler",
+      "0000-GA-k9-beslutter"
+    ]
+  },
+  {
+    "cn": "oversty",
+    "displayName": "Ove Overstyrer",
+    "email":"ove.overstyrer@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-manuelt-overstyrer",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler",
+      "0000-GA-k9-overstyrer"
+    ]
+  },
+  {
+    "cn": "klageb",
+    "displayName": "Klara Klagebehandler",
+    "email":"klara.klagebehandler@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-PENSJON_KLAGEBEH",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler"
+    ]
+  },
+  {
+    "cn": "veil",
+    "displayName": "Vegard Veileder",
+    "email":"vegard.veileder@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-veileder",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler"
+    ]
+  },
+  {
+    "cn": "oppgs",
+    "displayName": "Oline Oppgavestyrer",
+    "email":"oline.oppgavestyrer@example.com",
+    "enheter": [],
+    "groups": [
+      "0000-GA-INNTK_8-30",
+      "0000-GA-INNTK_8-28",
+      "0000-GA-fpsak-saksbehandler",
+      "0000-GA-fpsak-veileder",
+      "0000-GA-fpsak-Oppgavestyrer",
+      "0000-GA-INNTK_FORELDRE",
+      "0000-GA-INNTK_PENSJONSGIVENDE",
+      "0000-GA-INNTK",
+      "0000-GA-k9-saksbehandler",
+      "0000-GA-k9-oppgavestyrer"
+    ]
+  }
+]
