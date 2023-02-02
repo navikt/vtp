@@ -1,0 +1,12 @@
+name: Publish release
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Feature
+    uses: navikt/fp-gha-workflows/.github/workflows/release-feature.yml@main
+    with:
+      release-version: ${{ github.event.release.tag_name }}
+    secrets: inherit
