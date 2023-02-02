@@ -1,0 +1,31 @@
+dn: dc=local
+changetype: add
+objectClass: top
+objectClass: dcObject
+dc: local
+
+dn: DC=test,DC=local
+changetype: add
+dc: test
+o: test
+objectClass: top
+objectclass: dcObject
+objectclass: organization
+
+dn: OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: BusinessUnits
+objectClass: organizationalUnit
+objectClass: top
+
+dn: OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: NAV
+objectClass: organizationalUnit
+objectClass: top
+
+dn: OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local
+changetype: add
+dc: Users
+objectClass: organizationalUnit
+objectClass: top

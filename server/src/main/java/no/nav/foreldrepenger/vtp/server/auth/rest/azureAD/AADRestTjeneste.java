@@ -1,16 +1,15 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
-import java.net.URISyntaxException;
-import java.util.AbstractMap;
-import java.util.List;
+import static javax.ws.rs.core.UriBuilder.fromUri;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService.CODE;
+
+import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.SearchResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DefaultValue;
@@ -24,9 +23,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +34,15 @@ import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.server.auth.rest.AzureOidcTokenGenerator;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.UserRepository;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 @Api(tags = {"AzureAd"})
 @Path("/AzureAd")
 public class AADRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AADRestTjeneste.class);
+    private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
     private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
 
@@ -136,13 +138,13 @@ public class AADRestTjeneste {
         Objects.requireNonNull(state, "Missing the ?state=xxx query parameter");
         Objects.requireNonNull(redirectUri, "Missing the ?redirect_uri=xxx query parameter");
 
-        URIBuilder uriBuilder = new URIBuilder(redirectUri);
-        uriBuilder.addParameter("scope", scope);
-        uriBuilder.addParameter("state", state);
-        uriBuilder.addParameter("client_id", clientId);
+        var uriBuilder = fromUri(redirectUri);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "scope", scope);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "state", state);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "client_id", clientId);
         final String issuer = getIssuer(req, tenant);
-        uriBuilder.addParameter("iss", issuer);
-        uriBuilder.addParameter("redirect_uri", redirectUri);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "iss", issuer);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "redirect_uri", redirectUri);
 
         clientIdCache.put(state, clientId);
         if (!StringUtils.isEmpty(req.getParameter("nonce"))) {
@@ -152,52 +154,47 @@ public class AADRestTjeneste {
         return authorizeHtmlPage(uriBuilder);
     }
 
-    private Response authorizeHtmlPage(URIBuilder location) throws URISyntaxException, NamingException {
-        // LAG HTML SIDE
-        List<Map.Entry<String, String>> usernames = getUsernames();
-
-        String html = "<!DOCTYPE html>\n"
-                + "<html>\n" +
-                "<head>\n" +
-                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
-                "<title>Velg bruker</title>\n" +
-                "</head>\n" +
-                "    <body>\n" +
-                "    <div style=\"text-align:center;width:100%;\">\n" +
-                "       <caption><h3>Velg bruker:</h3></caption>\n" +
-                "        <table>\r\n" +
-                "            <tbody>\r\n" +
-                usernames.stream().map(
-                        username -> "<tr><a href=\"" + location.toString() + "&code=" + username.getKey() + "\"><h1>" + username.getValue() + "</h1></a></tr>\n")
-                        .collect(Collectors.joining("\n"))
-                +
-                "            </tbody>\n" +
-                "        </table>\n" +
-                "    </div>\n" +
-                "</body>\n" +
-                "</html>";
-
-        return Response.ok(html, MediaType.TEXT_HTML).build();
-    }
-
-    private List<Map.Entry<String, String>> getUsernames() throws NamingException {
-        List<SearchResult> allUsers = UserRepository.getAllUsers();
-        List<Map.Entry<String, String>> usernames = allUsers.stream()
-                .map(u -> {
-                    String cn = getAttribute(u, "cn");
-                    String displayName = getAttribute(u, "displayName");
-                    return new AbstractMap.SimpleEntry<String, String>(cn, displayName);
-                }).collect(Collectors.toList());
-        return usernames;
-    }
-
-    private String getAttribute(SearchResult u, String attribName) {
-        Attribute attribute = u.getAttributes().get(attribName);
-        try {
-            return (String) attribute.get();
-        } catch (NamingException e) {
-            throw new IllegalStateException(e);
+    public static void addQueryParamToRequestIfNotNullOrEmpty(UriBuilder uriBuilder, String name, String value) {
+        if (value != null && !value.isBlank()) {
+            uriBuilder.queryParam(name, value);
         }
+    }
+
+    public static Response authorizeHtmlPage(UriBuilder location) {
+        var ansatte = ansattIndeks.alleAnsatte();
+        var htmlSideForInnlogging = String.format("""
+                     <!DOCTYPE html>
+                     <html>
+                     <head>
+                     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                     <title>Velg bruker</title>
+                     </head>
+                         <body>
+                         <div style="text-align:center;width:100%%;">
+                             <caption><h3>Velg bruker:</h3></caption>
+                             <table>
+                                 <tbody>
+                                     %s
+                                 </tbody>
+                             </table>
+                         </div>
+                     </body>
+                     </html>
+                 """, leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(ansatte, location));
+        return Response.ok(htmlSideForInnlogging, MediaType.TEXT_HTML).build();
+    }
+
+    private static String leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(Collection<NAVAnsatt> ansatte, UriBuilder location) {
+        return ansatte.stream()
+                .map(ansatt -> leggTilRadITabell(location.build(), ansatt))
+                .collect(Collectors.joining("\n"));
+    }
+
+    private static String leggTilRadITabell(URI location, NAVAnsatt ansatt) {
+        var redirectForInnloggingAvAnsatt = fromUri(location)
+                .queryParam(CODE, ansatt.cn())
+                .build();
+        return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.displayName());
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
