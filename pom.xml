@@ -39,7 +39,7 @@
 
         <!--    Interne avhengigheter    -->
         <fp-kontrakter.version>6.2.9</fp-kontrakter.version>
-        <tjenestespesifikasjoner.version>2610.9b6de22</tjenestespesifikasjoner.version>
+        <tjenestespesifikasjoner.version>2612.db4dc68</tjenestespesifikasjoner.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
 
         <!--    Eksterne avhengigheter    -->
