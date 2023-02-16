@@ -56,9 +56,9 @@ public class FpWsProxyTilbakekrevingMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "", notes = "Iverksett tilbakekrevingsvedtak", response = TilbakekrevingVedtakDTO[].class)
-    public Response hentKravgrunnlag(@Valid @NotNull TilbakekrevingVedtakDTO tilbakekrevingVedtakDTO) {
+    public Response iverksettTilbakekrevingsvedtak(@Valid @NotNull TilbakekrevingVedtakDTO tilbakekrevingVedtakDTO) {
         LOG.info("Iverksetter tilbakekrevingsvedtak for {}", tilbakekrevingVedtakDTO.vedtakId());
-        return Response.ok(tilbakekrevingVedtakDTO)
+        return Response.ok()
                 .build();
     }
 }
