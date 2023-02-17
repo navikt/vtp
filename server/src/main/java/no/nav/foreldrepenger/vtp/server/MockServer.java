@@ -108,17 +108,6 @@ public class MockServer {
     }
 
     private Set<String> getBootstrapTopics() {
-        /*
-         * Unngå å legge til flere topics i denne listen: Benytt heller miljøvariablen "CREATE_TOPICS".
-         *
-         * Listen under kan fjernes hvis alle som starter VTP og trenger topic-ene under kjører med:
-         * CREATE_TOPICS=topicManTrenger1, topicManTrenger2
-         */
-        final var topicsOldMethod = List.of("privat-foreldrepenger-mottatBehandling-fpsak",
-                "privat-foreldrepenger-aksjonspunkthendelse-fpsak",
-                "privat-foreldrepenger-dokumenthendelse-vtp",
-                "privat-foreldrepenger-historikkinnslag-vtp");
-
         final var topics = getEnvValueList("CREATE_TOPICS");
 
         final var fields = TopicManifest.class.getFields();
@@ -130,7 +119,6 @@ public class MockServer {
                 .map(Topic.class::cast)
                 .map(Topic::getTopic)
                 .collect(Collectors.toCollection(HashSet::new));
-        topicSet.addAll(topicsOldMethod);
         topicSet.addAll(topics);
         return topicSet;
     }
