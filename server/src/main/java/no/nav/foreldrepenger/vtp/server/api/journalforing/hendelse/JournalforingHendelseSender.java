@@ -13,7 +13,7 @@ import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord;
 
 public class JournalforingHendelseSender {
 
-    private static final String JOURNALFØRING_TOPIC = "aapen-dok-journalfoering-v1-q1";
+    private static final String JOURNALFØRING_TOPIC = "teamdokumenthandtering.aapen-dok-journalfoering-vtp";
 
     private LocalKafkaProducer localKafkaProducer;
 
