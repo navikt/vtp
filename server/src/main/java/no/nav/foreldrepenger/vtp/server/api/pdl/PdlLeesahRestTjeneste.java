@@ -3,8 +3,10 @@ package no.nav.foreldrepenger.vtp.server.api.pdl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.ws.rs.POST;
@@ -50,6 +52,10 @@ public class PdlLeesahRestTjeneste {
     private static final String OPPLYSNINGSTYPE = "opplysningstype";
     private static final String ENDRINGSTYPE = "endringstype";
     private static final String TIDLIGERE_HENDELSE_ID = "tidligereHendelseId";
+    private static final String TOPICS = Optional.ofNullable(System.getenv("CREATE_TOPICS")).orElse("");
+    private static final String LEESAH_TOPIC =  Arrays.stream((TOPICS).split(","))
+            .map(String::trim).filter(s -> s.toLowerCase().contains("leesah"))
+            .findFirst().orElse("aapen-person-pdl-leesah-v1-vtp");
 
     @Context
     private LocalKafkaProducer localKafkaProducer;
@@ -112,7 +118,7 @@ public class PdlLeesahRestTjeneste {
     }
 
     public void sendHendelsePåKafka(GenericData.Record rekord) {
-        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", rekord);
+        localKafkaProducer.sendMelding(LEESAH_TOPIC, rekord);
     }
 
     private void produserDødshendelse(DødshendelseDto dødshendelseDto) {
