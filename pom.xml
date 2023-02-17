@@ -48,7 +48,7 @@
         <cxf.version>3.5.4</cxf.version>
         <apache.httpcomponents>4.5.14</apache.httpcomponents>
         <swagger.version>1.6.9</swagger.version>
-        <swagger-codegen-maven-plugin.version>2.4.29</swagger-codegen-maven-plugin.version>
+        <swagger-codegen-maven-plugin.version>2.4.30</swagger-codegen-maven-plugin.version>
         <graphql-java.version>20.0</graphql-java.version>
         <graphql-scalar-java.version>20.0</graphql-scalar-java.version>
         <graphql-codegen-maven-plugin.version>5.5.0</graphql-codegen-maven-plugin.version>
