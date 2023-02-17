@@ -112,7 +112,7 @@ public class PdlLeesahRestTjeneste {
     }
 
     public void sendHendelsePåKafka(GenericData.Record rekord) {
-        localKafkaProducer.sendMelding("pdl.leesah-v1", rekord);
+        localKafkaProducer.sendMelding("aapen-person-pdl-leesah-v1-vtp", rekord);
     }
 
     private void produserDødshendelse(DødshendelseDto dødshendelseDto) {
