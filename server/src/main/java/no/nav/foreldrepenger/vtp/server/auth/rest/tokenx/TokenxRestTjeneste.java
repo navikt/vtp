@@ -16,11 +16,13 @@ import javax.ws.rs.core.Response;
 
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.nimbusds.jwt.JWTParser;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +32,12 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 @Path("/tokenx")
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
+
+    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
+            .setSkipAllValidators()
+            .setDisableRequireSignature()
+            .setSkipSignatureVerification()
+            .build();
 
     @GET
     @Path("/isAlive")
@@ -105,9 +113,9 @@ public class TokenxRestTjeneste {
 
     private String hentSubjectFraJWT(String subject_token) {
         try {
-            var jwt = JWTParser.parse(subject_token);
-            return jwt.getJWTClaimsSet().getSubject();
-        } catch (java.text.ParseException e) {
+            var claims = UNVALIDATING_CONSUMER.processToClaims(subject_token);
+            return claims.getSubject();
+        } catch (InvalidJwtException | MalformedClaimException e) {
             throw new RuntimeException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
         }
     }

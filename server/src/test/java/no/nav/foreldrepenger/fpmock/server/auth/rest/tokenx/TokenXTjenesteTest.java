@@ -3,10 +3,11 @@ package no.nav.foreldrepenger.fpmock.server.auth.rest.tokenx;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.text.ParseException;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -14,9 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.nimbusds.jwt.JWT;
-import com.nimbusds.jwt.JWTParser;
 
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenXWellKnownResponse;
@@ -52,7 +50,7 @@ class TokenXTjenesteTest {
 
     @Test
     @Disabled // Mangler keystore i pipe... Legge denne til eller fjerne test? TODO
-    public void verifisererTokenSomGenereresHarRiktigAudienceOgSubject() throws JoseException, ParseException {
+    public void verifisererTokenSomGenereresHarRiktigAudienceOgSubject() throws JoseException, MalformedClaimException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
         var subject_token = """
@@ -69,18 +67,17 @@ class TokenXTjenesteTest {
                 audience);
 
         var tokenExchangeResponse = (TokenExchangeResponse) response.getEntity();
-        var jwt = jwt(tokenExchangeResponse.access_token());
-        var jwtClaimsSet = jwt.getJWTClaimsSet();
-        assertThat(jwtClaimsSet.getSubject()).isEqualTo("17498832857");
-        assertThat(jwtClaimsSet.getAudience())
+        var jwtClaims = jwt(tokenExchangeResponse.access_token());
+        assertThat(jwtClaims.getSubject()).isEqualTo("17498832857");
+        assertThat(jwtClaims.getAudience())
                 .hasSize(1)
                 .contains(audience);
     }
 
-    private JWT jwt(String access_token) {
+    private JwtClaims jwt(String access_token) {
         try {
-            return JWTParser.parse(access_token);
-        } catch (ParseException e) {
+            return TokenxRestTjeneste.UNVALIDATING_CONSUMER.processToClaims(access_token);
+        } catch (InvalidJwtException e) {
             throw new RuntimeException("Ikke gyldig access_token!");
         }
     }

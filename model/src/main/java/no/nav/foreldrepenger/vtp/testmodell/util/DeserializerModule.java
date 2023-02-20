@@ -1,14 +1,13 @@
 package no.nav.foreldrepenger.vtp.testmodell.util;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.threeten.extra.PeriodDuration;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -109,7 +108,7 @@ public class DeserializerModule extends SimpleModule {
                 String op = matcher.group(3);
                 if (op != null) {
                     String per = matcher.group(4);
-                    PeriodDuration period = PeriodDuration.parse(per);
+                    var period = Duration.parse(per);
                     if ("-".equals(op)) {
                         return base.minus(period);
                     } else {
