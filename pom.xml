@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>0.4.1</version>
+        <version>0.4.3</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -39,16 +39,16 @@
 
         <!--    Interne avhengigheter    -->
         <fp-kontrakter.version>6.2.9</fp-kontrakter.version>
-        <tjenestespesifikasjoner.version>2610.9b6de22</tjenestespesifikasjoner.version>
+        <tjenestespesifikasjoner.version>2612.db4dc68</tjenestespesifikasjoner.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
 
         <!--    Eksterne avhengigheter    -->
         <avro.version>1.11.1</avro.version>
-        <confluent.version>7.0.1</confluent.version>
+        <confluent.version>7.3.1</confluent.version>
         <cxf.version>3.5.4</cxf.version>
         <apache.httpcomponents>4.5.14</apache.httpcomponents>
         <swagger.version>1.6.9</swagger.version>
-        <swagger-codegen-maven-plugin.version>2.4.29</swagger-codegen-maven-plugin.version>
+        <swagger-codegen-maven-plugin.version>2.4.30</swagger-codegen-maven-plugin.version>
         <graphql-java.version>20.0</graphql-java.version>
         <graphql-scalar-java.version>20.0</graphql-scalar-java.version>
         <graphql-codegen-maven-plugin.version>5.5.0</graphql-codegen-maven-plugin.version>
@@ -71,7 +71,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>0.4.1</version>
+                <version>0.4.3</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -135,6 +135,10 @@
                         <groupId>io.swagger</groupId>
                         <artifactId>swagger-annotations</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>io.swagger.core.v3</groupId>
+                        <artifactId>swagger-annotations</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -175,13 +179,7 @@
             <dependency>
                 <groupId>org.bitbucket.b_c</groupId>
                 <artifactId>jose4j</artifactId>
-                <version>0.9.2</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.threeten</groupId>
-                <artifactId>threeten-extra</artifactId>
-                <version>1.7.2</version>
+                <version>0.9.3</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger</groupId>
@@ -199,6 +197,11 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-core</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>2.2.8</version>
             </dependency>
 
             <dependency>
