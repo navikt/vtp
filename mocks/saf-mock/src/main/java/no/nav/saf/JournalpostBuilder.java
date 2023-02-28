@@ -21,7 +21,7 @@ public class JournalpostBuilder {
         throw new IllegalStateException("Utility class");
     }
 
-    private static String BREVKODE_IM = "4036";
+    private static String BREVKODE_IM = "4936";
 
     public static Journalpost buildFrom(JournalpostModell modell) {
         Journalpost journalpost = new Journalpost();
