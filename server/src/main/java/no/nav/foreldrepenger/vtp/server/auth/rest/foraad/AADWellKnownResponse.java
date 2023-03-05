@@ -100,7 +100,7 @@ class AADWellKnownResponse {
 
     @JsonProperty("userinfo_endpoint")
     public String getUserinfoEndpoint() {
-        return baseUrl + "/rest/MicrosoftGraphApi/oidc/userinfo";
+        return baseUrl + "/rest/for/MicrosoftGraphApi/oidc/userinfo";
     }
 
     AADWellKnownResponse(String url, String tenant) {

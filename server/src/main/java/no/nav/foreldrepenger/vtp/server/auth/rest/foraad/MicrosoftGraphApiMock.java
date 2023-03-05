@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 @Api(tags = {"AzureAd"})
-@Path("/MicrosoftGraphApi")
+@Path("/for/MicrosoftGraphApi")
 public class MicrosoftGraphApiMock {
 
     private static final JwtConsumer unvalidatingConsumer = new JwtConsumerBuilder()
