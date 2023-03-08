@@ -9,4 +9,5 @@ jobs:
     uses: navikt/fp-gha-workflows/.github/workflows/release-feature.yml@main
     with:
       release-version: ${{ github.event.release.tag_name }}
+      use-reader: true
     secrets: inherit
