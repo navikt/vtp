@@ -7,8 +7,13 @@ public enum Permisjonstype {
     PERMISJON_MED_FORELDREPENGER("permisjonMedForeldrepenger"),
     PERMISJON_VED_MILITÆRTJENESTE("permisjonVedMilitaertjeneste"),
     PERMITTERING("permittering"),
+
     UTDANNINGSPERMISJON("utdanningspermisjon"),
-    VELFERDSPERMISJON("velferdspermisjon");
+    UTDANNINGSPERMISJON_IKKE_LOVFESTET("utdanningspermisjonIkkeLovfestet"),
+    UTDANNINGSPERMISJON_LOVFESTET("utdanningspermisjonLovfestet"),
+    VELFERDSPERMISJON("velferdspermisjon"),
+    ANNEN_PERMISJON_IKKE_LOVFESTET("andreIkkeLovfestedePermisjoner"),
+    ANNEN_PERMISJON_LOVFESTET("andreLovfestedePermisjoner");
 
     private final String kode;
 
