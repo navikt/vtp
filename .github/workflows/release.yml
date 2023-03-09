@@ -34,4 +34,4 @@ jobs:
       - name: Publish artifacts
         run: |
           mvn -B -s settings.xml versions:set -DnewVersion=${{ github.event.release.tag_name }}
-          mvn -B -s settings.xml clean deploy -DskipTests
+          mvn deploy -s settings.xml -e -B -am -pl model,kontrakter -DtrimStackTrace=false -Dfile.encoding=UTF-8 -DdeployAtEnd=true
