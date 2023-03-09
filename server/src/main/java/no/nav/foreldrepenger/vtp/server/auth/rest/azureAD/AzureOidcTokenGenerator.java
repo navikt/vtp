@@ -1,10 +1,12 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;

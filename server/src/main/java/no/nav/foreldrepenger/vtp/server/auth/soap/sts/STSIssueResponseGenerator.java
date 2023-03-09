@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.vtp.server.auth.soap.sts;
 
-import static no.nav.foreldrepenger.util.KeystoreUtils.getKeyAndCertAlias;
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class STSIssueResponseGenerator {
                 UnsupportedCallbackException {
             for (int i = 0; i < callbacks.length; i++) {
                 if (callbacks[i] instanceof WSPasswordCallback pc) { // CXF
-                    if (getKeyAndCertAlias().equals(pc.getIdentifier())) {
+                    if (KeystoreUtils.getKeyAndCertAlias().equals(pc.getIdentifier())) {
                         pc.setPassword(KeystoreUtils.getKeyStorePassword());
                         break;
                     }
@@ -164,7 +162,7 @@ public class STSIssueResponseGenerator {
 
     private static StaticSTSProperties initSTSProperties(Crypto CRYPTO) {
         // Add STSProperties object
-        String alias = getKeyAndCertAlias();
+        String alias = KeystoreUtils.getKeyAndCertAlias();
         StaticSTSProperties stsProperties = new StaticSTSProperties();
         stsProperties.setEncryptionCrypto(CRYPTO);
         stsProperties.setSignatureCrypto(CRYPTO);

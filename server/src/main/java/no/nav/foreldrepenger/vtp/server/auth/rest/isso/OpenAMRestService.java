@@ -167,8 +167,9 @@ public class OpenAMRestService {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av Oauth2 jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
-        var jwks = JsonWebKeyHelper.getJwks();
-        LOG.info("kall på /oauth2/connect/jwk_uri. JWKS returnert: {}", jwks);
+        LOG.info("kall på /oauth2/connect/jwk_uri");
+        String jwks = JsonWebKeyHelper.getJwks();
+        LOG.info("JWKS: " + jwks);
         return Response.ok(jwks).build();
     }
 
@@ -192,13 +193,11 @@ public class OpenAMRestService {
 
             EndUserAuthenticateTemplate.Name namePrompt = new EndUserAuthenticateTemplate.Name("prompt", "User Name:");
             EndUserAuthenticateTemplate.Name usernameInput = new EndUserAuthenticateTemplate.Name("IDToken1", "");
-            EndUserAuthenticateTemplate.Callback nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt,
-                    usernameInput);
+            EndUserAuthenticateTemplate.Callback nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt, usernameInput);
 
             EndUserAuthenticateTemplate.Name passwordPrompt = new EndUserAuthenticateTemplate.Name("prompt", "Password:");
             EndUserAuthenticateTemplate.Name passwordInput = new EndUserAuthenticateTemplate.Name("IDToken2", "");
-            EndUserAuthenticateTemplate.Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback",
-                    passwordPrompt, passwordInput);
+            EndUserAuthenticateTemplate.Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
 
             template.setCallbacks(Arrays.asList(nameCallback, passwordCallback));
 
