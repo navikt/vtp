@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>0.4.3</version>
+        <version>0.4.5</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -35,6 +35,7 @@
         <java.version>17</java.version>
 
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+        <sonar.projectName>vtp</sonar.projectName>
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
@@ -51,7 +52,7 @@
         <swagger-codegen-maven-plugin.version>2.4.30</swagger-codegen-maven-plugin.version>
         <graphql-java.version>20.0</graphql-java.version>
         <graphql-scalar-java.version>20.0</graphql-scalar-java.version>
-        <graphql-codegen-maven-plugin.version>5.5.0</graphql-codegen-maven-plugin.version>
+        <graphql-codegen-maven-plugin.version>5.6.0</graphql-codegen-maven-plugin.version>
     </properties>
 
     <repositories>
@@ -71,7 +72,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>0.4.3</version>
+                <version>0.4.5</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -509,6 +510,13 @@
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
