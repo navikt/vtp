@@ -5,7 +5,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_vtp&metric=coverage)](https://sonarcloud.io/dashboard?id=navikt_vtp)
 Virtuell Tjeneste Plattform (VTP)
 =================================
-![alt text](vtp.png "Logo Title Text 1")
+![alt text](docs/vtp.png "Logo Title Text 1")
 
 
 #### VTP hjelper deg med å: 

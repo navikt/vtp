@@ -8,10 +8,13 @@ on:
       - '**.md'
       - '**.MD'
       - '.gitignore'
+      - '.editorconfig'
+      - '.java-version'
+      - '.project'
       - 'LICENSE'
       - 'CODEOWNERS'
-      - 'dokumentasjon/**'
-      - 'lokalutvikling/**'
+      - 'docs/**'
+      - '.github/*.yml'
   schedule:
     - cron: '0 4 * * 1'
 
