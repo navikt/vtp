@@ -137,9 +137,15 @@ public class STSRestTjeneste {
     @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
-        return Response
-                .ok(new STSWellKnownResponse(getIssuer(req)))
-                .build();
+
+        String basePath = getIssuer(req);
+        var wkr = new STSWellKnownResponse(basePath);
+
+        wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
+        wkr.setTokenEndpoint(basePath + "/token");
+        wkr.setJwksUri(basePath + "/jwks");
+
+        return Response.ok(wkr).build();
     }
 
     public static class SAMLResponse {
