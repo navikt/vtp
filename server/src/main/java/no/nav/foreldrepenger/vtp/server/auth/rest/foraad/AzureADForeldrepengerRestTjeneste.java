@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
+package no.nav.foreldrepenger.vtp.server.auth.rest.foraad;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.UriBuilder.fromUri;
@@ -54,9 +54,9 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 @ApplicationScoped
 @Api(tags = {"AzureAd"})
-@Path("/AzureAd")
-public class AzureADRestTjeneste {
-    private static final Logger LOG = LoggerFactory.getLogger(AzureADRestTjeneste.class);
+@Path("/for/AzureAd")
+public class AzureADForeldrepengerRestTjeneste {
+    private static final Logger LOG = LoggerFactory.getLogger(AzureADForeldrepengerRestTjeneste.class);
     private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
 

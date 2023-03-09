@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 
@@ -29,7 +29,7 @@ class TokenProviderTjenesteTest {
     @BeforeAll
     public static void setup() {
         System.setProperty("javax.net.ssl.keystore.test", "src/test/resources/.modig/keystore.jks");
-        var aadRestTjeneste = new AzureADRestTjeneste();
+        var aadRestTjeneste = new AzureADForeldrepengerRestTjeneste();
         var openAMRestService = new OpenAMRestService();
         var tokenxRestTjeneste = new TokenxRestTjeneste();
         tokenProviderTjeneste = new TokenProviderTjeneste(aadRestTjeneste, openAMRestService, tokenxRestTjeneste);

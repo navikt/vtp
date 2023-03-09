@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
 
 import static javax.ws.rs.core.UriBuilder.fromUri;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService.CODE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CODE;
 
 import java.net.URI;
 import java.util.Collection;
@@ -25,6 +25,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.Token;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,7 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import no.nav.foreldrepenger.vtp.server.auth.rest.AzureOidcTokenGenerator;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
@@ -71,7 +73,7 @@ public class AADRestTjeneste {
     @ApiOperation(value = "azureAd/discovery/keys", notes = ("Mock impl av Azure AD jwk_uri"))
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/connect/jwk_uri");
-        String jwks = KeyStoreTool.getJwks();
+        String jwks = JsonWebKeyHelper.getJwks();
         LOG.info("JWKS: {}", jwks);
         return Response.ok(jwks).build();
     }
@@ -92,7 +94,7 @@ public class AADRestTjeneste {
         String token = createIdToken(req, code, tenant);
         LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
         LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token, redirectUri);
-        Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
+        Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(new Token(token));
         return Response.ok(oauthResponse).build();
     }
 

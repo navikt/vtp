@@ -8,8 +8,8 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.STATE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.NONCE;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste.ansattIDFra;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste.authorizeHtmlPage;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.ansattIDFra;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.authorizeHtmlPage;
 
 import java.util.Arrays;
 import java.util.Map;

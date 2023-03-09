@@ -4,20 +4,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.servlet.http.HttpServletRequest;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 class AADRestTjenesteTest {
 
-    private static AzureADRestTjeneste aadRestTjeneste;
+    private static AzureADForeldrepengerRestTjeneste aadRestTjeneste;
 
     @Mock
     private HttpServletRequest req;
 
     @BeforeAll
     public static void setup() {
-        aadRestTjeneste = new AzureADRestTjeneste();
+        aadRestTjeneste = new AzureADForeldrepengerRestTjeneste();
     }
 
     @Test
@@ -28,7 +29,7 @@ class AADRestTjenesteTest {
         var clientIDFpabakus = "localhost.teamforeldrepenger.fpabakus";
 
         var scope = "OIDC api://" + clientIDFpsak +"/.default api://" + clientIDFpabakus +"/.default";
-        var audience = AzureADRestTjeneste.hentAudienceFra(scope);
+        var audience = AzureADForeldrepengerRestTjeneste.hentAudienceFra(scope);
 
         assertThat(audience).hasSize(3)
                 .containsExactly("OIDC", clientIDFpsak, clientIDFpabakus);

@@ -8,8 +8,8 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.ACR;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.AZP;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.defaultJwtClaims;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste.TENANT;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste.getIssuer;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.TENANT;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.getIssuer;
 
 import java.text.ParseException;
 
@@ -27,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
@@ -43,7 +43,7 @@ public class TokenProviderTjeneste {
 
     private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
 
-    private final AzureADRestTjeneste aadRestTjeneste;
+    private final AzureADForeldrepengerRestTjeneste aadRestTjeneste;
     private final OpenAMRestService openAMRestService;
     private final TokenxRestTjeneste tokenxRestTjeneste;
 
@@ -52,7 +52,7 @@ public class TokenProviderTjeneste {
 
 
     @Inject
-    public TokenProviderTjeneste(AzureADRestTjeneste aadRestTjeneste,
+    public TokenProviderTjeneste(AzureADForeldrepengerRestTjeneste aadRestTjeneste,
                                  OpenAMRestService openAMRestService,
                                  TokenxRestTjeneste tokenxRestTjeneste) {
         this.aadRestTjeneste = aadRestTjeneste;

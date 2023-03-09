@@ -28,6 +28,8 @@ import javax.ws.rs.ext.ParamConverter;
 import javax.ws.rs.ext.ParamConverterProvider;
 import javax.ws.rs.ext.Provider;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -57,7 +59,7 @@ import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.TokenProviderTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AzureADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
@@ -137,7 +139,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         // tekniske ting
         classes.add(OpenAMRestService.class);
-        classes.add(AzureADRestTjeneste.class);
+        classes.add(AzureADForeldrepengerRestTjeneste.class);
+        classes.add(AADRestTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);

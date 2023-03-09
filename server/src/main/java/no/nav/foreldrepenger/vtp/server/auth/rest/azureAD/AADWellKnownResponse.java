@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-class AzureADWellKnownResponse {
+class AADWellKnownResponse {
     private final String baseUrl;
     private final String tenant;
 
@@ -107,7 +107,7 @@ class AzureADWellKnownResponse {
         return baseUrl + "/rest/AzureGraphAPI/oidc/userinfo";
     }
 
-    AzureADWellKnownResponse(String url, String tenant) {
+    AADWellKnownResponse(String url, String tenant) {
         this.baseUrl = url;
         this.tenant = tenant;
     }
