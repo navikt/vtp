@@ -8,8 +8,8 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.STATE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.NONCE;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.ansattIDFra;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.authorizeHtmlPage;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.addQueryParamToRequestIfNotNullOrEmpty;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.authorizeHtmlPage;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -84,13 +84,14 @@ public class OpenAMRestService {
                 .queryParam(CLIENT_ID, clientId)
                 .queryParam(ISSUER, getIssuer(req))
                 .queryParam(REDIRECT_URI, redirectUri);
+        addQueryParamToRequestIfNotNullOrEmpty(redirectTo, "scope", scope);
         clientIdCache.put(state, clientId);
         if (req.getParameter(NONCE) != null && !req.getParameter(NONCE).isEmpty()) {
             nonceCache.put(state, req.getParameter(NONCE));
         }
 
         if (erAuthorizationEndepunktKaltFraBrowser(req)) {
-            return authorizeHtmlPage(redirectTo, scope);
+            return authorizeHtmlPage(redirectTo);
         } else {
             return authorizeRedirect(redirectTo);
         }
@@ -119,7 +120,9 @@ public class OpenAMRestService {
             @FormParam(CODE) String code,
             @FormParam(STATE) String state,
             @FormParam(REDIRECT_URI) String redirectUri) {
-        var token = createIdToken(req, ansattIDFra(code), state);
+        // dummy sikkerhet, returnerer alltid en idToken/refresh_token
+        var token = createIdToken(req, code, state);
+        LOG.info("Fikk parametere: {}", req.getParameterMap().toString());
         LOG.info("kall på /oauth2/access_token, opprettet token: {} med redirect-url: {}", token.value(), redirectUri);
         Oauth2AccessTokenResponse oauthResponse = new Oauth2AccessTokenResponse(token);
         return Response.ok(oauthResponse).build();
@@ -181,19 +184,21 @@ public class OpenAMRestService {
                                               @ApiParam("Liste over aksjonspunkt som skal bekreftes, inklusiv data som trengs for å løse de.") EndUserAuthenticateTemplate enduserTemplate) {
         LOG.info("kall på /json/authenticate");
         if (enduserTemplate == null) {
-            var template = new EndUserAuthenticateTemplate();
+            EndUserAuthenticateTemplate template = new EndUserAuthenticateTemplate();
             template.setAuthId(UUID.randomUUID().toString());
             template.setHeader("Sign in to VTP");
             template.setStage("DataStore1");
             template.setTemplate("");
 
-            var namePrompt = new EndUserAuthenticateTemplate.Name("prompt", "User Name:");
-            var usernameInput = new EndUserAuthenticateTemplate.Name("IDToken1", "");
-            var nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt, usernameInput);
+            EndUserAuthenticateTemplate.Name namePrompt = new EndUserAuthenticateTemplate.Name("prompt", "User Name:");
+            EndUserAuthenticateTemplate.Name usernameInput = new EndUserAuthenticateTemplate.Name("IDToken1", "");
+            EndUserAuthenticateTemplate.Callback nameCallback = new EndUserAuthenticateTemplate.Callback("NameCallback", namePrompt,
+                    usernameInput);
 
-            var passwordPrompt = new EndUserAuthenticateTemplate.Name("prompt", "Password:");
-            var passwordInput = new EndUserAuthenticateTemplate.Name("IDToken2", "");
-            var passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback", passwordPrompt, passwordInput);
+            EndUserAuthenticateTemplate.Name passwordPrompt = new EndUserAuthenticateTemplate.Name("prompt", "Password:");
+            EndUserAuthenticateTemplate.Name passwordInput = new EndUserAuthenticateTemplate.Name("IDToken2", "");
+            EndUserAuthenticateTemplate.Callback passwordCallback = new EndUserAuthenticateTemplate.Callback("PasswordCallback",
+                    passwordPrompt, passwordInput);
 
             template.setCallbacks(Arrays.asList(nameCallback, passwordCallback));
 

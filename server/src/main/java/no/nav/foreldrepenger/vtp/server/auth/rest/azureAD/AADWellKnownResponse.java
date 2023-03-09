@@ -33,10 +33,7 @@ class AADWellKnownResponse {
             "ver",
             "at_hash",
             "c_hash",
-            "email",
-            "oid",
-            "NAVident",
-            "azp_name"
+            "email"
     );
 
     @JsonProperty("cloud_graph_host_name")
