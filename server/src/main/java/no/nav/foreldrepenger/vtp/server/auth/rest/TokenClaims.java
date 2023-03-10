@@ -38,12 +38,12 @@ public class TokenClaims {
         return claims;
     }
 
-    public static JWTClaimsSet.Builder azureOidcTokenClaims(NAVAnsatt ansatt,
-                                                            List<String> aud,
-                                                            String clientId,
-                                                            String issuer,
-                                                            String scope,
-                                                            String tenant) {
+    public static JWTClaimsSet.Builder azureOnBehalfOfTokenClaims(NAVAnsatt ansatt,
+                                                                  List<String> aud,
+                                                                  String clientId,
+                                                                  String issuer,
+                                                                  String scope,
+                                                                  String tenant) {
         return defaultJwtClaims(clientId + ":" + ansatt.cn(), issuer, aud)
                 .claim("oid", UUID.nameUUIDFromBytes(ansatt.cn().getBytes()).toString())
                 .claim("tid", tenant)

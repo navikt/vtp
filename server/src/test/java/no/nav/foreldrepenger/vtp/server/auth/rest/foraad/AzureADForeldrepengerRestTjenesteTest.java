@@ -1,15 +1,14 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
+package no.nav.foreldrepenger.vtp.server.auth.rest.foraad;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.servlet.http.HttpServletRequest;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-class AADRestTjenesteTest {
+class AzureADForeldrepengerRestTjenesteTest {
 
     private static AzureADForeldrepengerRestTjeneste aadRestTjeneste;
 

@@ -8,7 +8,7 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.STATE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.NONCE;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.azureOidcTokenClaims;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.azureOnBehalfOfTokenClaims;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.azureSystemTokenClaims;
 
 import java.net.URI;
@@ -135,7 +135,7 @@ public class AzureADForeldrepengerRestTjeneste {
                 var scopes = scope != null ? scope : scopesFra(code);
                 var audience = hentAudienceFra(scopes);
                 var navAnsatt = ansattIndeks.findByCn(ansattID);
-                var claim = azureOidcTokenClaims(navAnsatt, audience, clientId, getIssuer(req, tenant), scope, tenant)
+                var claim = azureOnBehalfOfTokenClaims(navAnsatt, audience, clientId, getIssuer(req, tenant), scope, tenant)
                         .claim(NONCE, nonceCache.get(clientId)).build();
                 var token = Token.fra(claim);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
@@ -268,7 +268,7 @@ public class AzureADForeldrepengerRestTjeneste {
     }
 
     private Token genererTokenFraRequest(NAVAnsatt ansatt, List<String> audience, String issuer, String tenant, String scope, String clientId) {
-        var claims = azureOidcTokenClaims(ansatt, audience, clientId, issuer, scope, tenant).build();
+        var claims = azureOnBehalfOfTokenClaims(ansatt, audience, clientId, issuer, scope, tenant).build();
         return Token.fra(claims);
     }
 
