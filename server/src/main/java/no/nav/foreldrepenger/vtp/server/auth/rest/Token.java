@@ -15,6 +15,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public record Token(@JsonValue String value, Integer expiresIn) {
 
+    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
+            .setSkipAllValidators()
+            .setDisableRequireSignature()
+            .setSkipSignatureVerification()
+            .build();
+
     public Token(String value) {
         this(value, null);
     }
@@ -49,16 +55,7 @@ public record Token(@JsonValue String value, Integer expiresIn) {
         } catch (MalformedClaimException e) {
             throw new RuntimeException(e);
         }
-
-
     }
-
-    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
-            .setDisableRequireSignature()
-            .setSkipSignatureVerification()
-            .build();
-
 
     @Override
     public String value() {

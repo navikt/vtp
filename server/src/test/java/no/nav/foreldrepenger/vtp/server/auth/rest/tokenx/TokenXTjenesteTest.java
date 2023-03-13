@@ -7,10 +7,7 @@ import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.lang.JoseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -51,7 +48,7 @@ class TokenXTjenesteTest {
 
     @Test
     @Disabled// Mangler keystore i pipe... Legge denne til eller fjerne test? TODO
-    void verifisererTokenSomGenereresHarRiktigAudienceOgSubject() throws JoseException, ParseException, MalformedClaimException, ParseException {
+    void verifisererTokenSomGenereresHarRiktigAudienceOgSubject() throws MalformedClaimException, ParseException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
         var subject_token = new Token("""
@@ -68,18 +65,10 @@ class TokenXTjenesteTest {
                 audience);
 
         var tokenExchangeResponse = (TokenxRestTjeneste.TokenDingsResponsDto) response.getEntity();
-        var jwt = jwt(tokenExchangeResponse.accessToken().value());
+        var jwt = tokenExchangeResponse.accessToken().parseToken();
         assertThat(jwt.getSubject()).isEqualTo("17498832857");
         assertThat(jwt.getAudience())
                 .hasSize(1)
                 .contains(audience);
-    }
-
-    private JwtClaims jwt(String access_token) {
-        try {
-            return TokenxRestTjeneste.UNVALIDATING_CONSUMER.processToClaims(access_token);
-        } catch (InvalidJwtException e) {
-            throw new RuntimeException("Ikke gyldig access_token!");
-        }
     }
 }

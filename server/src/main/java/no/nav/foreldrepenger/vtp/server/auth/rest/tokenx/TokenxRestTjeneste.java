@@ -21,10 +21,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +38,6 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.Token;
 @Path("/tokenx")
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
-
-    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
-            .setDisableRequireSignature()
-            .setSkipSignatureVerification()
-            .build();
 
     @GET
     @Path("/isAlive")
@@ -90,18 +82,17 @@ public class TokenxRestTjeneste {
                           @FormParam(SUBJECT_TOKEN_TYPE) @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subject_token_type,
                           @FormParam(SUBJECT_TOKEN) @Valid Token subject_token,
                           @FormParam(AUDIENCE) String audience) throws ParseException {
-        var subject = hentSubjectFraJWT(subject_token);;
+        var subject = hentSubjectFraJWT(subject_token.parseToken());
         var accessToken = Token.fra(tokenXClaims(subject, getIssuer(req), audience));
         LOG.info("Henter accessToken for subject [{}] som kan brukes til å kalle audience [{}]: {}", subject, audience, accessToken.value());
         return Response.ok(new TokenDingsResponsDto(accessToken)).build();
     }
 
-    private String hentSubjectFraJWT(Token subject_token) {
+    private String hentSubjectFraJWT(JwtClaims claims) {
         try {
-            var claims = UNVALIDATING_CONSUMER.processToClaims(subject_token.value());
             return claims.getSubject();
-        } catch (InvalidJwtException | MalformedClaimException e) {
-            throw new RuntimeException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
+        } catch (MalformedClaimException e) {
+            throw new RuntimeException("Fant ikke 'sub' claim for subject_token", e);
         }
     }
 
