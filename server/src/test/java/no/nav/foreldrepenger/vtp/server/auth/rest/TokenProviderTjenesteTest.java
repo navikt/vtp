@@ -8,13 +8,14 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.jose4j.jwt.MalformedClaimException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.fpaad.AzureADForeldrepengerRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 
@@ -36,7 +37,7 @@ class TokenProviderTjenesteTest {
     }
 
     @Test
-    void openAMTokenVerifisering() throws ParseException {
+    void openAMTokenVerifisering() throws MalformedClaimException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
         when(req.getParameter("state")).thenReturn(UUID.randomUUID().toString());
@@ -55,7 +56,7 @@ class TokenProviderTjenesteTest {
     }
 
     @Test
-    void azureADOnBehalfOfTest() throws ParseException {
+    void azureADOnBehalfOfTest() throws ParseException, MalformedClaimException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
 
@@ -73,14 +74,14 @@ class TokenProviderTjenesteTest {
 
         assertThat(claims.getSubject()).isEqualTo(clientId + ":" + ansattId);
         assertThat(claims.getIssuer()).isNotNull();
-        assertThat(claims.getStringClaim("tid")).isEqualTo(tenant);
-        assertThat(claims.getStringClaim("preferred_username")).isNotNull();
-        assertThat(claims.getStringClaim("NAVident")).isEqualTo(ansattId);
+        assertThat(claims.getClaimValueAsString("tid")).isEqualTo(tenant);
+        assertThat(claims.getClaimValueAsString("preferred_username")).isNotNull();
+        assertThat(claims.getClaimValueAsString("NAVident")).isEqualTo(ansattId);
     }
 
 
     @Test
-    void azureClientCredentialTest() throws ParseException {
+    void azureClientCredentialTest() throws ParseException, MalformedClaimException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
 
@@ -97,12 +98,12 @@ class TokenProviderTjenesteTest {
 
         assertThat(claims.getSubject()).isNotNull();
         assertThat(claims.getIssuer()).isNotNull();
-        assertThat(claims.getStringClaim("tid")).isEqualTo(tenant);
+        assertThat(claims.getStringClaimValue("tid")).isEqualTo(tenant);
     }
 
 
     @Test
-    void tokenDingsTokenExchange() throws ParseException {
+    void tokenDingsTokenExchange() throws ParseException, MalformedClaimException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
 
@@ -117,8 +118,8 @@ class TokenProviderTjenesteTest {
         var claims = tokenDingsResponsDto.accessToken().parseToken();
 
         assertThat(claims.getSubject()).isEqualTo(fnr);
-        assertThat(claims.getStringClaim("pid")).isEqualTo(fnr);
         assertThat(claims.getAudience()).containsExactly(audience);
+        assertThat(claims.getClaimValueAsString("pid")).isEqualTo(fnr);
     }
 
 }

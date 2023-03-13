@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.isso;
 
-import static com.nimbusds.jwt.JWTClaimNames.ISSUER;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CLIENT_ID;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CODE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.GRANT_TYPE;
@@ -10,6 +9,7 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.NONCE;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.addQueryParamToRequestIfNotNullOrEmpty;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste.authorizeHtmlPage;
+import static org.jose4j.jwt.ReservedClaimNames.ISSUER;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -141,9 +141,9 @@ public class OpenAMRestService {
         var claims = TokenClaims.openAmTokenClaims(username, issuer, nonce);
         if (state != null && clientIdCache.containsKey(state)) {
             var clientId = clientIdCache.get(state);
-            claims.audience(clientId);
+            claims.setAudience(clientId);
         }
-        return Token.fra(claims.build());
+        return Token.fra(claims);
     }
 
     @GET

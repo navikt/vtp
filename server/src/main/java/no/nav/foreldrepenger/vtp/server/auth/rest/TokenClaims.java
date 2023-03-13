@@ -1,18 +1,16 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.nimbusds.jwt.JWTClaimsSet;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.NumericDate;
 
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
 
 public class TokenClaims {
-    private static final int DEFAULT_EXPIRE_TIME_SECONDS = 3600;
-    private static final int EXPIRE_TIME_SECONDS = tokenExpireTime();
+    private static final int DEFAULT_EXPIRE_TIME_MINUTES = 60;
+    private static final int EXPIRE_TIME_MINUTES = tokenExpireTime();
     public static final String AZP = "azp";
     public static final String ACR = "acr";
     public static final String SCP = "scp";
@@ -24,81 +22,83 @@ public class TokenClaims {
         // Statisk implementasjon
     }
 
-    public static JWTClaimsSet.Builder stsTokenClaims(String sub, String issuer, String scope) {
-        return defaultJwtClaims(sub, issuer, sub)
-                .claim(SCP, scope)
-                .claim(AZP, sub);
-    }
-
-    public static JWTClaimsSet.Builder openAmTokenClaims(String sub, String issuer, String nonce) {
-        var claims = defaultJwtClaims(sub, issuer, "OIDC")
-                .claim(AZP, "OIDC")
-                .claim(ACR, "Level4");
-        if (nonce !=  null) claims.claim(NONCE, nonce);
+    public static JwtClaims stsTokenClaims(String sub, String issuer, String scope) {
+        var claims = defaultJwtClaims(sub, issuer, sub);
+        claims.setClaim(SCP, scope);
+        claims.setClaim(AZP, sub);
         return claims;
     }
 
-    public static JWTClaimsSet.Builder azureOnBehalfOfTokenClaims(NAVAnsatt ansatt,
+    public static JwtClaims openAmTokenClaims(String sub, String issuer, String nonce) {
+        var claims = defaultJwtClaims(sub, issuer, "OIDC");
+        claims.setClaim(AZP, "OIDC");
+        claims.setClaim(ACR, "Level4");
+        if (nonce !=  null) claims.setClaim(NONCE, nonce);
+        return claims;
+    }
+
+    public static JwtClaims azureOnBehalfOfTokenClaims(NAVAnsatt ansatt,
                                                                   List<String> aud,
                                                                   String clientId,
                                                                   String issuer,
                                                                   String scope,
                                                                   String tenant) {
-        return defaultJwtClaims(clientId + ":" + ansatt.cn(), issuer, aud)
-                .claim("oid", UUID.nameUUIDFromBytes(ansatt.cn().getBytes()).toString())
-                .claim("tid", tenant)
-                .claim("preferred_username", ansatt.email())
-                .claim("ver", "2.0")
-                .claim(NAVIDENT, ansatt.cn())
-                .claim(SCP, scope)
-                .claim(AZP, clientId)
-                .claim(AZP_NAME, clientId);
+        var claims = defaultJwtClaims(clientId + ":" + ansatt.cn(), issuer, aud);
+        claims.setClaim("oid", UUID.nameUUIDFromBytes(ansatt.cn().getBytes()).toString());
+        claims.setClaim("tid", tenant);
+        claims.setClaim("preferred_username", ansatt.email());
+        claims.setClaim("ver", "2.0");
+        claims.setClaim(NAVIDENT, ansatt.cn());
+        claims.setClaim(SCP, scope);
+        claims.setClaim(AZP, clientId);
+        claims.setClaim(AZP_NAME, clientId);
+        return claims;
     }
 
-    public static JWTClaimsSet.Builder azureSystemTokenClaims(List<String> aud,
+    public static JwtClaims azureSystemTokenClaims(List<String> aud,
                                                               String sub,
                                                               String clientId,
                                                               String issuer,
                                                               String tenantId) {
-        return defaultJwtClaims(sub, issuer, aud)
-                .claim(AZP_NAME, clientId)
-                .claim(AZP, clientId)
-                .claim("oid", sub)
-                .claim("tid", tenantId)
-                .claim("ver", "2.0")
-                .claim("roles", List.of("access_as_application"));
+        var claims = defaultJwtClaims(sub, issuer, aud);
+        claims.setClaim(AZP_NAME, clientId);
+        claims.setClaim(AZP, clientId);
+        claims.setClaim("oid", sub);
+        claims.setClaim("tid", tenantId);
+        claims.setClaim("ver", "2.0");
+        claims.setClaim("roles", List.of("access_as_application"));
+        return claims;
     }
 
-    public static JWTClaimsSet.Builder tokenXClaims(String sub, String issuer, String aud) {
-        return defaultJwtClaims(sub, issuer, aud)
-                .claim("pid", sub)
-                .claim(ACR, "Level4");
+    public static JwtClaims tokenXClaims(String sub, String issuer, String aud) {
+        var claims =  defaultJwtClaims(sub, issuer, aud);
+        claims.setClaim("pid", sub);
+        claims.setClaim(ACR, "Level4");
+        return claims;
     }
 
-    public static JWTClaimsSet.Builder defaultJwtClaims(String sub, String issuer, String audience) {
+    public static JwtClaims defaultJwtClaims(String sub, String issuer, String audience) {
         return defaultJwtClaims(sub, issuer, List.of(audience));
     }
 
-    public static JWTClaimsSet.Builder defaultJwtClaims(String sub, String issuer, List<String> audience) {
-        var localDateTimeNow = LocalDateTime.now();
-        var now = Date.from(localDateTimeNow.atZone(ZoneId.systemDefault()).toInstant());
-        var expire = Date.from(localDateTimeNow.plusSeconds(EXPIRE_TIME_SECONDS).atZone(ZoneId.systemDefault()).toInstant());
-        return new JWTClaimsSet.Builder()
-                .audience(audience)
-                .issuer(issuer)
-                .subject(sub)
-                .issueTime(now)
-                .notBeforeTime(now)
-                .expirationTime(expire)
-                .jwtID(UUID.randomUUID().toString());
+    public static JwtClaims defaultJwtClaims(String sub, String issuer, List<String> audience) {
+        var claims = new JwtClaims();
+        claims.setAudience(audience);
+        claims.setIssuer(issuer);
+        claims.setSubject(sub);
+        claims.setIssuedAtToNow();
+        claims.setNotBefore(NumericDate.now());
+        claims.setExpirationTimeMinutesInTheFuture(EXPIRE_TIME_MINUTES);
+        claims.setJwtId(UUID.randomUUID().toString());
+        return claims;
     }
 
     private static int tokenExpireTime() {
-        var token_expire_time_seconds = System.getenv("OVERRIDE_TOKEN_EXPIRE_TIME_SECONDS");
-        if (token_expire_time_seconds != null && kanBliParsetTilInteger(token_expire_time_seconds) ) {
-            return Integer.parseInt(token_expire_time_seconds);
+        var token_expire_time_minutes = System.getenv("OVERRIDE_TOKEN_EXPIRE_TIME_MINUTES");
+        if (token_expire_time_minutes != null && kanBliParsetTilInteger(token_expire_time_minutes) ) {
+            return Integer.parseInt(token_expire_time_minutes);
         }
-        return DEFAULT_EXPIRE_TIME_SECONDS;
+        return DEFAULT_EXPIRE_TIME_MINUTES;
     }
 
     public static boolean kanBliParsetTilInteger(String streng) {

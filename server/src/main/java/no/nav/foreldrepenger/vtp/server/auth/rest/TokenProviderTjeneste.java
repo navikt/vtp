@@ -8,8 +8,8 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.ACR;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.AZP;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.TokenClaims.defaultJwtClaims;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.TENANT;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste.getIssuer;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.fpaad.AzureADForeldrepengerRestTjeneste.TENANT;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.fpaad.AzureADForeldrepengerRestTjeneste.getIssuer;
 
 import java.text.ParseException;
 
@@ -26,8 +26,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jose4j.jwt.MalformedClaimException;
+
 import io.swagger.annotations.ApiOperation;
-import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.fpaad.AzureADForeldrepengerRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
@@ -114,12 +116,12 @@ public class TokenProviderTjeneste {
                                            @FormParam(CLIENT_ID) String clientId,
                                            @FormParam(TENANT) @NotNull String tenant,
                                            @FormParam(SCOPE) String scope,
-                                           @FormParam(GRANT_TYPE) String grantType) throws ParseException {
+                                           @FormParam(GRANT_TYPE) String grantType) throws ParseException, MalformedClaimException {
         Token subjectToken = null;
         if (grantType.equalsIgnoreCase("urn:ietf:params:oauth:grant-type:jwt-bearer")) {
             var ansatt = ansattIndeks.findByCn(ansattId);
             var basicClaimsMedSubject = defaultJwtClaims(clientId + ":" + ansatt.cn(), "ikke_i_bruk", "ikke_i_bruk");
-            subjectToken = Token.fra(basicClaimsMedSubject.build());
+            subjectToken = Token.fra(basicClaimsMedSubject);
         }
         return aadRestTjeneste.accessToken(req,
                 tenant,
@@ -140,13 +142,13 @@ public class TokenProviderTjeneste {
     public Response henterLoginserviceTokenSelvbetjening(@Context HttpServletRequest req,
                                                          @FormParam(TENANT) String tenant,
                                                          @FormParam(FNR) String fnr) {
-        var basicClaimsMedSubject = defaultJwtClaims(fnr, getIssuer(req, tenant), "OIDC")
-                .claim("tid", tenant)
-                .claim("ver", "2.0")
-                .claim("oid", fnr)
-                .claim(AZP, "OIDC")
-                .claim(ACR, "Level4");
-        var token = Token.fra(basicClaimsMedSubject.build());
+        var claims = defaultJwtClaims(fnr, getIssuer(req, tenant), "OIDC");
+        claims.setClaim("tid", tenant);
+        claims.setClaim("ver", "2.0");
+        claims.setClaim("oid", fnr);
+        claims.setClaim(AZP, "OIDC");
+        claims.setClaim(ACR, "Level4");
+        var token = Token.fra(claims);
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
@@ -179,7 +181,7 @@ public class TokenProviderTjeneste {
                 "urn:ietf:params:oauth:grant-type:token-exchange",
                 null,
                 null,
-                Token.fra(basicClaimsMedSubject.build()),
+                Token.fra(basicClaimsMedSubject),
                 audience);
     }
 

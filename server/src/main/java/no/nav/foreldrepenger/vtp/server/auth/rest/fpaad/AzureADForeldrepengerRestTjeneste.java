@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.foraad;
+package no.nav.foreldrepenger.vtp.server.auth.rest.fpaad;
 
 import static javax.ws.rs.core.Response.ok;
 import static javax.ws.rs.core.UriBuilder.fromUri;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -37,11 +38,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.unboundid.util.NotNull;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -124,7 +124,7 @@ public class AzureADForeldrepengerRestTjeneste {
                                 @FormParam("assertion") @Valid Token assertion,
                                 @FormParam("requested_token_use") String requested_token_use,
                                 @FormParam("refresh_token") @Valid Token refresh_token,
-                                @FormParam(CODE) String code) throws ParseException {
+                                @FormParam(CODE) String code) throws ParseException, MalformedClaimException {
         LOG.info("Kall på {} med følgende grant {}", req.getRequestURI(), grantType);
         return switch (grantType) {
             case "authorization_code" -> {
@@ -135,8 +135,8 @@ public class AzureADForeldrepengerRestTjeneste {
                 var scopes = scope != null ? scope : scopesFra(code);
                 var audience = hentAudienceFra(scopes);
                 var navAnsatt = ansattIndeks.findByCn(ansattID);
-                var claim = azureOnBehalfOfTokenClaims(navAnsatt, audience, clientId, getIssuer(req, tenant), scope, tenant)
-                        .claim(NONCE, nonceCache.get(clientId)).build();
+                var claim = azureOnBehalfOfTokenClaims(navAnsatt, audience, clientId, getIssuer(req, tenant), scope, tenant);
+                claim.setClaim(NONCE, nonceCache.get(clientId));
                 var token = Token.fra(claim);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
@@ -144,9 +144,7 @@ public class AzureADForeldrepengerRestTjeneste {
                 if (isNullOrBlank(scope)) {
                     yield badRequest("Client credentials kall mangler scope!");
                 }
-                var accessToken = Token.fra(azureSystemTokenClaims(hentAudienceFra(scope),
-                        "im-just-a-fake-code", clientId, getIssuer(req, tenant), tenant)
-                        .build());
+                var accessToken = Token.fra(azureSystemTokenClaims(hentAudienceFra(scope), "im-just-a-fake-code", clientId, getIssuer(req, tenant), tenant));
                 yield ok(new Oauth2AccessTokenResponse(accessToken)).build();
             }
             case "urn:ietf:params:oauth:grant-type:jwt-bearer" -> {
@@ -158,8 +156,9 @@ public class AzureADForeldrepengerRestTjeneste {
                 }
                 var claimsSubjectToken = assertion.parseToken();
                 var ansatt = ansattIndeks.findByCn(ansattIdFraSubjectClaims(claimsSubjectToken));
-                var idToken = genererTokenFraRequest(ansatt, List.of(clientId), getIssuer(req, tenant), tenant, scope, clientId);
-                var accessToken = genererTokenFraRequest(ansatt, hentAudienceFra(scope), getIssuer(req, tenant), tenant, scope, clientId);
+                var idToken = Token.fra(azureOnBehalfOfTokenClaims(ansatt, List.of(clientId), clientId, getIssuer(req, tenant), scope, tenant));
+                var accessToken = Token.fra(azureOnBehalfOfTokenClaims(ansatt, hentAudienceFra(scope), clientId, getIssuer(req, tenant), scope, tenant));
+
                 LOG.info("Access_token utstedt for {}: {}", ansatt.displayName(), accessToken.value());
                 yield ok(new Oauth2AccessTokenResponse(idToken, accessToken)).build();
             }
@@ -169,7 +168,8 @@ public class AzureADForeldrepengerRestTjeneste {
                 }
                 var claimsSubjectToken = refresh_token.parseToken();
                 var ansatt = ansattIndeks.findByCn(ansattIdFraSubjectClaims(claimsSubjectToken));
-                var token = genererTokenFraRequest(ansatt, List.of(clientId), getIssuer(req, tenant), tenant, scope, clientId);
+                var token = Token.fra(azureOnBehalfOfTokenClaims(ansatt, List.of(clientId), clientId, getIssuer(req, tenant), scope, tenant));
+
                 LOG.info("Token refreshet for {}: {}", ansatt.displayName(), token.value());
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
@@ -242,7 +242,7 @@ public class AzureADForeldrepengerRestTjeneste {
         return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.displayName());
     }
 
-    private static String ansattIdFraSubjectClaims(JWTClaimsSet claimsSubjectToken) {
+    private static String ansattIdFraSubjectClaims(JwtClaims claimsSubjectToken) throws MalformedClaimException {
         return claimsSubjectToken.getSubject().split(":")[1];
     }
 
@@ -265,11 +265,6 @@ public class AzureADForeldrepengerRestTjeneste {
                 .map(s -> s.replaceFirst("api://", ""))
                 .map(s -> s.replace("/.default", ""))
                 .toList();
-    }
-
-    private Token genererTokenFraRequest(NAVAnsatt ansatt, List<String> audience, String issuer, String tenant, String scope, String clientId) {
-        var claims = azureOnBehalfOfTokenClaims(ansatt, audience, clientId, issuer, scope, tenant).build();
-        return Token.fra(claims);
     }
 
     private static Response badRequest(String message) {

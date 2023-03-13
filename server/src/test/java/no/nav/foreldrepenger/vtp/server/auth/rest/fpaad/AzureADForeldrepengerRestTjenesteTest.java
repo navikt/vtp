@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.foraad;
+package no.nav.foreldrepenger.vtp.server.auth.rest.fpaad;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

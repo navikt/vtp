@@ -59,7 +59,7 @@ import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.TokenProviderTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.foraad.AzureADForeldrepengerRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.fpaad.AzureADForeldrepengerRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
 import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;

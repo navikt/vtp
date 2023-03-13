@@ -104,7 +104,7 @@ public class STSRestTjeneste {
 
     private Oauth2AccessTokenResponse createTokenForUser(String username, String scope, HttpServletRequest request) {
         var claims = stsTokenClaims(username, getIssuer(request), scope);
-        return new Oauth2AccessTokenResponse(Token.fra(claims.build()));
+        return new Oauth2AccessTokenResponse(Token.fra(claims));
     }
 
     private String getUsername(HttpServletRequest req) {

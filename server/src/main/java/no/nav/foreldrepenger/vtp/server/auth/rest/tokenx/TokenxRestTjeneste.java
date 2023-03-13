@@ -91,7 +91,7 @@ public class TokenxRestTjeneste {
                           @FormParam(SUBJECT_TOKEN) @Valid Token subject_token,
                           @FormParam(AUDIENCE) String audience) throws ParseException {
         var subject = hentSubjectFraJWT(subject_token);;
-        var accessToken = Token.fra(tokenXClaims(subject, getIssuer(req), audience).build());
+        var accessToken = Token.fra(tokenXClaims(subject, getIssuer(req), audience));
         LOG.info("Henter accessToken for subject [{}] som kan brukes til å kalle audience [{}]: {}", subject, audience, accessToken.value());
         return Response.ok(new TokenDingsResponsDto(accessToken)).build();
     }
