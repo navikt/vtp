@@ -22,12 +22,13 @@ public class LocalKafkaConsumerStream {
     private static final Serde<String> STRING = Serdes.String();
 
     private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaConsumerStream.class);
-    private KafkaStreams stream;
-
+    private final KafkaStreams stream;
 
     public LocalKafkaConsumerStream(String bootstrapServers, Collection<String> topics) {
-        LOG.info("Starter konsumering av topics: {}", String.join(",", topics));
-        Properties props = new Properties();
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Starter konsumering av topics: {}", String.join(",", topics));
+        }
+        var props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "vtp");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, STRING.getClass().getName());
@@ -39,10 +40,10 @@ public class LocalKafkaConsumerStream {
         props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, KeystoreUtils.getKeystoreFilePath());
         props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, KeystoreUtils.getKeyStorePassword());
         props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "");
-        String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
+        var jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
         props.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(jaasTemplate, "vtp", "vtp"));
 
-        final StreamsBuilder builder = new StreamsBuilder();
+        final var builder = new StreamsBuilder();
         Consumed<String, String> stringStringConsumed = Consumed.with(Topology.AutoOffsetReset.EARLIEST);
         topics.forEach(topic -> builder
                 .stream(topic, stringStringConsumed)
