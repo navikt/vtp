@@ -3,17 +3,12 @@ package no.nav.foreldrepenger.vtp.server;
 import static no.nav.foreldrepenger.vtp.server.ApplicationConfigJersey.API_URI;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.LogManager;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
@@ -36,8 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import no.nav.familie.topic.Topic;
-import no.nav.familie.topic.TopicManifest;
 import no.nav.foreldrepenger.util.KeystoreUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
@@ -108,33 +101,13 @@ public class MockServer {
     }
 
     private Set<String> getBootstrapTopics() {
-        final var topics = getEnvValueList("CREATE_TOPICS");
-
-        final var fields = TopicManifest.class.getFields();
-        final var topicSet = Stream.of(fields)
-                .filter(f -> Modifier.isStatic(f.getModifiers()))
-                .filter(f -> f.getType().equals(Topic.class))
-                .map(this::getTopic)
-                .filter(Objects::nonNull)
-                .map(Topic.class::cast)
-                .map(Topic::getTopic)
-                .collect(Collectors.toCollection(HashSet::new));
-        topicSet.addAll(topics);
-        return topicSet;
+        return new HashSet<>(getEnvValueList("CREATE_TOPICS"));
     }
 
     private static List<String> getEnvValueList(String envName) {
         return Arrays.stream((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
                 .map(String::trim)
                 .toList();
-    }
-
-    private Object getTopic(Field f) {
-        try {
-            return f.get(null);
-        } catch (IllegalAccessException e) {
-            return null;
-        }
     }
 
     @SuppressWarnings("resource")
