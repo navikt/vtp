@@ -1,14 +1,16 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.foraad;
+package no.nav.foreldrepenger.vtp.server.auth.rest.aadfp;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.NumericDate;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
@@ -18,38 +20,42 @@ public final class AzureOidcTokenGenerator {
     private AzureOidcTokenGenerator() {
     }
 
-    public static String azureUserToken(List<String> aud, String sub, String issuer, Map<String, String> additionalClaims, String nonce, String sid) {
+    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
+            .setSkipAllValidators()
+            .setDisableRequireSignature()
+            .setSkipSignatureVerification()
+            .build();
+
+    static JwtClaims getClaimsFromAssertion(String assertion) {
+        try {
+            return UNVALIDATING_CONSUMER.processToClaims(assertion);
+        } catch (Exception e) {
+            throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>", Response.Status.FORBIDDEN);
+        }
+    }
+
+    static String getNavIdent(JwtClaims claims)  {
+        try {
+            return claims.getStringClaimValue("NAVident");
+        } catch (MalformedClaimException e) {
+            return null;
+        }
+    }
+
+    public static String azureUserToken(StandardBruker bruker, String issuer) {
 
         var issuedAt = NumericDate.now();
-        JwtClaims claims = createCommonClaims(sub, issuer, issuedAt);
-        additionalClaims.forEach(claims::setStringClaim);
-        Optional.ofNullable(nonce).filter(n -> !n.isEmpty()).ifPresent(n -> claims.setClaim("nonce", n));
-        claims.setStringClaim("ver", "2.0");
-
-        // Groups claims.setClaim("groups", List<String>)
-        Optional.ofNullable(sid).ifPresent(s -> claims.setClaim("sid", s));
-
-        if (aud.size() == 1) {
-            claims.setAudience(aud.get(0));
-        } else {
-            claims.setAudience(aud);
-        }
+        JwtClaims claims = createCommonClaims(bruker.getIdent(), issuer, issuedAt);
+        claims.setStringClaim("NAVident", bruker.getIdent());
+        claims.setStringListClaim("groups", bruker.getGrupper().stream().toList());
 
         return createToken(claims);
     }
 
-    public static String azureClientCredentialsToken(List<String> aud, String sub, String issuer,  Map<String, String> additionalClaims) {
+    public static String azureClientCredentialsToken(String sub, String issuer) {
         var issuedAt = NumericDate.now();
         JwtClaims claims = createCommonClaims(sub, issuer, issuedAt);
-        additionalClaims.forEach(claims::setStringClaim);
 
-        if (aud.size() == 1) {
-            claims.setAudience(aud.get(0));
-        } else {
-            claims.setAudience(aud);
-        }
-
-        claims.setClaim("ver", "2.0");
         claims.setClaim("oid", sub); // Konvensjon
 
         return createToken(claims);
@@ -64,6 +70,10 @@ public final class AzureOidcTokenGenerator {
         claims.setNotBefore(issuedAt);
         claims.setSubject(sub);
         claims.setStringClaim("acr", "Level4");
+        claims.setAudience("vtp");
+        claims.setStringClaim("azp_name", "vtp:teamforeldrepenger:vtp");
+        claims.setStringClaim("azp", "vtp");
+        claims.setStringClaim("scp", "api://vtp.teamforeldrepenger.vtp/.default");
         return claims;
     }
 
