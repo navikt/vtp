@@ -43,9 +43,7 @@ public final class AzureOidcTokenGenerator {
     }
 
     public static String azureUserToken(StandardBruker bruker, String issuer) {
-
-        var issuedAt = NumericDate.now();
-        JwtClaims claims = createCommonClaims(bruker.getIdent(), issuer, issuedAt);
+        JwtClaims claims = createCommonClaims(bruker.getIdent(), issuer);
         claims.setStringClaim("NAVident", bruker.getIdent());
         claims.setStringListClaim("groups", bruker.getGrupper().stream().toList());
 
@@ -53,18 +51,18 @@ public final class AzureOidcTokenGenerator {
     }
 
     public static String azureClientCredentialsToken(String sub, String issuer) {
-        var issuedAt = NumericDate.now();
-        JwtClaims claims = createCommonClaims(sub, issuer, issuedAt);
+        JwtClaims claims = createCommonClaims(sub, issuer);
 
         claims.setClaim("oid", sub); // Konvensjon
 
         return createToken(claims);
     }
 
-    private static JwtClaims createCommonClaims(String sub, String issuer, NumericDate issuedAt) {
+    private static JwtClaims createCommonClaims(String sub, String issuer) {
+        var issuedAt = NumericDate.now();
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(issuer);
-        claims.setExpirationTime(NumericDate.fromSeconds(issuedAt.getValue() + 3600 * 6));
+        claims.setExpirationTime(NumericDate.fromSeconds(issuedAt.getValue() + 3600 * 10));
         claims.setGeneratedJwtId();
         claims.setIssuedAt(issuedAt);
         claims.setNotBefore(issuedAt);

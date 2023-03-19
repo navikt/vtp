@@ -53,21 +53,19 @@ public class EnkelAADRestTjeneste {
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
-        var wellKnownResponse = new AADWellKnownResponse(getIssuer(), baseUrl + "/authorize",
-                baseUrl + "/keys", baseUrl + "/token");
+        var wellKnownResponse = new AADWellKnownResponse(ISSUER, baseUrl + "/authorize",
+                baseUrl + "/jwks", baseUrl + "/token");
         return Response.ok(wellKnownResponse).build();
     }
 
     record AADWellKnownResponse(String issuer, String authorization_endpoint, String jwks_uri, String token_endpoint) { }
 
     @GET
-    @Path("/keys")
+    @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "azureAd/discovery/keys", notes = ("Mock impl av Azure AD jwk_uri"))
     public Response authorize() {
-        LOG.info("kall på /oauth2/connect/jwk_uri");
         String jwks = KeyStoreTool.getJwks();
-        LOG.info("JWKS: {}", jwks);
         return Response.ok(jwks).build();
     }
 
@@ -82,20 +80,17 @@ public class EnkelAADRestTjeneste {
                                 @FormParam("assertion") String assertion)  {
         String token;
         if ("client_credentials".equalsIgnoreCase(grantType)) {
-            var issuer = getIssuer();
-            token = createClientCredentialsToken(issuer);
+            token = createClientCredentialsToken();
         } else if ("urn:ietf:params:oauth:grant-type:jwt-bearer".equalsIgnoreCase(grantType)) {
             Objects.requireNonNull(assertion);
             var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
             var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
             var bruker = Optional.ofNullable(ansattId).map(StandardBruker::finnIdent).orElseThrow();
-            var issuer = getIssuer();
-            token = createToken(bruker, issuer);
+            token = createToken(bruker);
         } else if ("authorization_code".equalsIgnoreCase(grantType)) {
             var ident = Optional.ofNullable(code).map(StandardBruker::finnIdent)
                     .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
-            var issuer = getIssuer();
-            token = createToken(ident, issuer);
+            token = createToken(ident);
         } else {
             LOG.warn("Ukjent / unsupported grant type {}", grantType);
             throw new WebApplicationException("Ukjent / unsupported grant type " + grantType, Response.Status.UNAUTHORIZED);
@@ -109,25 +104,20 @@ public class EnkelAADRestTjeneste {
     @ApiOperation(value = "azureAd/access_token", notes = ("Mock impl av Azure AD access_token"))
     public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident)  {
         var bruker = Optional.ofNullable(StandardBruker.finnIdent(ident)).orElseThrow();
-        var issuer = getIssuer();
-        var token = createToken(bruker, issuer);
+        var token = createToken(bruker);
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
-    private String createToken(StandardBruker bruker, String requestedIssuer) {
-        return AzureOidcTokenGenerator.azureUserToken(bruker, requestedIssuer);
+    private String createToken(StandardBruker bruker) {
+        return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER);
     }
 
-    private String createClientCredentialsToken(String requestedIssuer) {
-        return AzureOidcTokenGenerator.azureClientCredentialsToken(UUID.randomUUID().toString().substring(0,19), requestedIssuer);
+    private String createClientCredentialsToken() {
+        return AzureOidcTokenGenerator.azureClientCredentialsToken(UUID.randomUUID().toString().substring(0,19), ISSUER);
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
         return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/rest/aadfp";
-    }
-
-    private static String getIssuer() {
-        return ISSUER;
     }
 
     @GET
@@ -145,17 +135,14 @@ public class EnkelAADRestTjeneste {
         var uriBuilder = fromUri(redirectUri);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "scope", scope);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "client_id", clientId);
-        final String issuer = getIssuer();
-        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "iss", issuer);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "iss", ISSUER);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "redirect_uri", redirectUri);
 
         return authorizeHtmlPage(uriBuilder);
     }
 
     public static void addQueryParamToRequestIfNotNullOrEmpty(UriBuilder uriBuilder, String name, String value) {
-        if (value != null && !value.isBlank()) {
-            uriBuilder.queryParam(name, value);
-        }
+        Optional.ofNullable(value).filter(s -> !s.isBlank()).ifPresent(v -> uriBuilder.queryParam(name, v));
     }
 
     public static Response authorizeHtmlPage(UriBuilder location) {
