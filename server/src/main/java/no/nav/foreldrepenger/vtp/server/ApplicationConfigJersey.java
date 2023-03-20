@@ -55,6 +55,7 @@ import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjene
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.aadfp.EnkelAADRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.LoginserviceLoginTjeneste;
@@ -138,6 +139,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         // tekniske ting
         classes.add(OpenAMRestService.class);
         classes.add(AADRestTjeneste.class);
+        classes.add(EnkelAADRestTjeneste.class);
         classes.add(LoginserviceLoginTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
