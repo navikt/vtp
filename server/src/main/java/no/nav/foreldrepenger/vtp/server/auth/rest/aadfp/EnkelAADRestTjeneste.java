@@ -130,7 +130,7 @@ public class EnkelAADRestTjeneste {
                               @QueryParam("redirect_uri") String redirectUri
     )
             throws Exception {
-        LOG.info("kall mot AzureAD authorize med redirecturi {}", redirectUri);
+        LOG.info("kall mot AzureAD authorize");
 
         var uriBuilder = fromUri(redirectUri);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "scope", scope);
