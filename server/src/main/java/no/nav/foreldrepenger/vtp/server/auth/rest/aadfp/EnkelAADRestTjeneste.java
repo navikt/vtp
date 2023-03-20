@@ -117,7 +117,7 @@ public class EnkelAADRestTjeneste {
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
-        return req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/rest/aadfp";
+        return req.getScheme() + "://vtp:" + req.getServerPort() + "/rest/aadfp";
     }
 
     @GET
