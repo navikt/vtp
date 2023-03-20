@@ -129,7 +129,7 @@ public class STSRestTjeneste {
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
 
-        String basePath = getBaseUrl(req);
+        String basePath = getIssuer(req);
         var wkr = new STSWellKnownResponse(basePath);
 
         wkr.setExchangeTokenEndpoint(basePath + "/token/exchange");
