@@ -27,11 +27,6 @@
             <artifactId>graphql-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.kobylynskyi</groupId>
-            <artifactId>graphql-codegen-maven-plugin</artifactId>
-            <version>${graphql-codegen-maven-plugin.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.distelli.graphql</groupId>
             <artifactId>graphql-apigen-deps</artifactId>
             <version>${apigen.version}</version>
@@ -39,6 +34,10 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-extended-scalars</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.kobylynskyi</groupId>
+            <artifactId>graphql-java-codegen</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -55,7 +54,6 @@
             <plugin>
                 <groupId>io.github.kobylynskyi</groupId>
                 <artifactId>graphql-codegen-maven-plugin</artifactId>
-                <version>${graphql-codegen-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
