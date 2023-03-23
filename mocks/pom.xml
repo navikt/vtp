@@ -38,6 +38,10 @@
         <module>fpwsproxy-mock</module>
     </modules>
 
+    <properties>
+        <graphql-java-codegen.version>5.7.1</graphql-java-codegen.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -50,6 +54,11 @@
                         <artifactId>okhttp</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.github.kobylynskyi</groupId>
+                <artifactId>graphql-java-codegen</artifactId>
+                <version>${graphql-java-codegen.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -67,6 +76,16 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.github.kobylynskyi</groupId>
+                    <artifactId>graphql-codegen-maven-plugin</artifactId>
+                    <version>${graphql-java-codegen.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

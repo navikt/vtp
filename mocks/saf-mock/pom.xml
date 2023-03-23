@@ -50,7 +50,6 @@
             <plugin>
                 <groupId>io.github.kobylynskyi</groupId>
                 <artifactId>graphql-codegen-maven-plugin</artifactId>
-                <version>5.6.0</version>
                 <executions>
                     <execution>
                         <id>saf</id>
