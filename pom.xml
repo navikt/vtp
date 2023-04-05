@@ -39,7 +39,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>6.2.15</fp-kontrakter.version>
+        <fp-kontrakter.version>6.2.16</fp-kontrakter.version>
         <tjenestespesifikasjoner.version>2612.db4dc68</tjenestespesifikasjoner.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
 
