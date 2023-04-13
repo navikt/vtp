@@ -51,7 +51,7 @@
         <swagger.version>1.6.10</swagger.version>
         <swagger-codegen-maven-plugin.version>2.4.31</swagger-codegen-maven-plugin.version>
         <graphql-java.version>20.0</graphql-java.version>
-        <graphql-scalar-java.version>20.0</graphql-scalar-java.version>
+        <graphql-scalar-java.version>20.2</graphql-scalar-java.version>
     </properties>
 
     <repositories>
