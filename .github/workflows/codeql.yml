@@ -16,4 +16,6 @@ jobs:
      contents: read
      security-events: write
    uses: navikt/fp-gha-workflows/.github/workflows/codeql.yml@main
+   with:
+     use-reader: true
    secrets: inherit
