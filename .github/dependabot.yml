@@ -1,10 +1,10 @@
 version: 2
 registries:
-  fp-felles: # Gir tilgang til registre innad i nav med fp-felles som inngang (PATen bestemmer)
+  maven-github:
     type: maven-repository
     url: https://maven.pkg.github.com/navikt/fp-felles
     username: x-access-token
-    password: ${{ secrets.PAT }}
+    password: ${{ secrets.READER_TOKEN }}
 
 updates:
   - package-ecosystem: github-actions
@@ -15,7 +15,7 @@ updates:
   - package-ecosystem: maven
     directory: "/"
     registries:
-      - fp-felles
+      - maven-github
     schedule:
       interval: daily
     open-pull-requests-limit: 20
