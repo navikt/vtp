@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.2</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -39,8 +39,8 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>6.2.15</fp-kontrakter.version>
-        <tjenestespesifikasjoner.version>2612.db4dc68</tjenestespesifikasjoner.version>
+        <fp-kontrakter.version>6.2.20</fp-kontrakter.version>
+        <tjenestespesifikasjoner.version>2616.df1f47c</tjenestespesifikasjoner.version>
         <okonomistotte.versjon>2.0_20190412163011_bb51d0e</okonomistotte.versjon>
 
         <!--    Eksterne avhengigheter    -->
@@ -50,8 +50,8 @@
         <apache.httpcomponents>4.5.14</apache.httpcomponents>
         <swagger.version>1.6.10</swagger.version>
         <swagger-codegen-maven-plugin.version>2.4.31</swagger-codegen-maven-plugin.version>
-        <graphql-java.version>20.0</graphql-java.version>
-        <graphql-scalar-java.version>20.0</graphql-scalar-java.version>
+        <graphql-java.version>20.2</graphql-java.version>
+        <graphql-scalar-java.version>20.2</graphql-scalar-java.version>
     </properties>
 
     <repositories>
@@ -71,7 +71,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>0.5.0</version>
+                <version>0.5.2</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
