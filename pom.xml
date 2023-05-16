@@ -48,7 +48,7 @@
         <confluent.version>7.3.3</confluent.version>
         <cxf.version>3.5.4</cxf.version>
         <apache.httpcomponents>4.5.14</apache.httpcomponents>
-        <swagger.version>1.6.10</swagger.version>
+        <swagger.version>1.6.11</swagger.version>
         <swagger-codegen-maven-plugin.version>2.4.31</swagger-codegen-maven-plugin.version>
         <graphql-java.version>20.2</graphql-java.version>
         <graphql-scalar-java.version>20.2</graphql-scalar-java.version>
