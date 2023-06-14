@@ -45,7 +45,7 @@
 
         <!--    Eksterne avhengigheter    -->
         <avro.version>1.11.1</avro.version>
-        <confluent.version>7.3.3</confluent.version>
+        <confluent.version>7.4.0</confluent.version>
         <cxf.version>3.5.4</cxf.version>
         <apache.httpcomponents>4.5.14</apache.httpcomponents>
         <swagger.version>1.6.10</swagger.version>
