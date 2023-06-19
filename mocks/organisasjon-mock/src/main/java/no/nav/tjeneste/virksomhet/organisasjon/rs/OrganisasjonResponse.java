@@ -116,6 +116,8 @@ public class OrganisasjonResponse {
     }
 
     static class Navn {
+        @JsonProperty("sammensattnavn")
+        private String sammensattnavn; // NAV-tillegg. Kildedata har opptil 5 navnelinjer.
         @JsonProperty("navnelinje1")
         private String navnelinje1;
         @JsonProperty("navnelinje2")
@@ -152,6 +154,7 @@ public class OrganisasjonResponse {
                 svar.navnelinje4 = navn.navnelinje()[3];
             if (max > 4)
                 svar.navnelinje5 = navn.navnelinje()[4];
+            svar.sammensattnavn = svar.getNavn();
             return svar;
         }
     }
