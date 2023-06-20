@@ -19,8 +19,9 @@
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
+            <groupId>io.swagger.codegen.v3</groupId>
+            <artifactId>swagger-codegen-cli</artifactId>
+            <version>${swagger-codegen-maven-plugin.version}</version>
         </dependency>
     </dependencies>
 
@@ -28,7 +29,7 @@
         <plugins>
             <!-- activate the plugin -->
             <plugin>
-                <groupId>io.swagger</groupId>
+                <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
                 <executions>
                     <execution>
@@ -37,7 +38,7 @@
                         </goals>
                         <configuration>
                             <!-- specify the swagger yaml -->
-                            <inputSpec>${basedir}/src/main/swagger/swagger.json</inputSpec>
+                            <inputSpec>${basedir}/src/main/swagger/swagger.yml</inputSpec>
                             <!--<configHelp>true</configHelp> -->
                             <language>jaxrs-cxf-cdi</language>
 

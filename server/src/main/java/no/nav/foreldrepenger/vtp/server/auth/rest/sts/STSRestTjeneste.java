@@ -21,13 +21,13 @@ import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenRespons
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
 import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 
-@Api(tags = {"Security Token Service"})
+@Tag(name = "Security Token Service")
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
@@ -115,7 +115,7 @@ public class STSRestTjeneste {
     @GET
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av jwk_uri"))
+    @Operation(description = "oauth2/connect/jwk_uri")
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         String jwks = KeyStoreTool.getJwks();
         LOG.info("JWKS: {}", jwks);
@@ -125,7 +125,7 @@ public class STSRestTjeneste {
     @GET
     @Path("/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
+    @Operation(description = "Discovery url")
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /rest/v1/sts/.well-known/openid-configuration");
 

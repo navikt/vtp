@@ -24,11 +24,11 @@ import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 
-@Api(tags = {"TokenX"})
+@Tag(name = "TokenX")
 @Path("/tokenx")
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
@@ -50,7 +50,7 @@ public class TokenxRestTjeneste {
     @GET
     @Path("/.well-known/oauth-authorization-server")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "TokenX Discovery url", notes = ("Mock impl av TokenX discovery urlen"))
+    @Operation(description = "TokenX Discovery url")
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         var issuer = getIssuer(req);
@@ -63,7 +63,7 @@ public class TokenxRestTjeneste {
     @GET
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "TokenX public key set")
+    @Operation(description = "TokenX public key set")
     public Response jwks(@Context HttpServletRequest req) {
         LOG.info("Kall på /tokenx/jwks");
         var jwks = KeyStoreTool.getJwks();
@@ -74,7 +74,7 @@ public class TokenxRestTjeneste {
     @POST
     @Path("/token")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "TokenX public key set")
+    @Operation(description = "TokenX public key set")
     public Response token(@Context HttpServletRequest req,
                           @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grant_type,
                           @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String client_assertion_type,

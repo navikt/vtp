@@ -17,62 +17,61 @@
 		<plugins>
 			<!-- activate the plugin -->
 			<plugin>
-				<groupId>io.swagger</groupId>
-				<artifactId>swagger-codegen-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<!-- specify the swagger yaml -->
-							<inputSpec>${basedir}/src/main/swagger/swagger.json</inputSpec>
-							<!--<configHelp>true</configHelp> -->
-							<language>jaxrs-cxf-cdi</language>
-							<output>${project.build.directory}/generated-sources</output>
-							<apiPackage>no.nav.infotrygdpaaroerendesykdom.generated.api</apiPackage>
-							<modelPackage>no.nav.infotrygdpaaroerendesykdom.generated.model</modelPackage>
-							<invokerPackage>no.nav.infotrygdpaaroerendesykdom.generated</invokerPackage>
-
-							<!--kun modell ... -->
-							<generateApis>false</generateApis>
-							<generateSupportingFiles>false</generateSupportingFiles>
-
-							<!-- pass any necessary config options -->
-							<configOptions>
-								<dateLibrary>java8</dateLibrary>
-								<interfaceOnly>true</interfaceOnly>
-								<java8>false</java8>
-								<implFolder>ignore-this-folder</implFolder>
-								<sourceFolder>src/main/java</sourceFolder>
-							</configOptions>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 			</plugin>
+            <plugin>
+                <groupId>io.swagger.codegen.v3</groupId>
+                <artifactId>swagger-codegen-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- specify the swagger yaml -->
+                            <inputSpec>${basedir}/src/main/swagger/swagger.yml</inputSpec>
+                            <!--<configHelp>true</configHelp> -->
+                            <language>jaxrs-cxf-cdi</language>
+                            <output>${project.build.directory}/generated-sources</output>
+                            <apiPackage>no.nav.infotrygdpaaroerendesykdom.generated.api</apiPackage>
+                            <modelPackage>no.nav.infotrygdpaaroerendesykdom.generated.model</modelPackage>
+                            <invokerPackage>no.nav.infotrygdpaaroerendesykdom.generated</invokerPackage>
+
+                            <!--kun modell ... -->
+                            <generateApis>false</generateApis>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+
+                            <!-- pass any necessary config options -->
+                            <configOptions>
+                                <dateLibrary>java8</dateLibrary>
+                                <interfaceOnly>true</interfaceOnly>
+                                <java8>false</java8>
+                                <implFolder>ignore-this-folder</implFolder>
+                                <sourceFolder>src/main/java</sourceFolder>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
 		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-jaxrs</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>io.swagger.codegen.v3</groupId>
+            <artifactId>swagger-codegen-cli</artifactId>
+            <version>${swagger-codegen-maven-plugin.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
-            <version>2.0.2</version>
         </dependency>
 	</dependencies>
 </project>

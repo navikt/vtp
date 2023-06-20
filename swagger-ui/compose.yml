@@ -1,0 +1,11 @@
+services:
+  swagger-vtp:
+    image: swaggerapi/swagger-ui
+    restart: on-failure
+    container_name: swagger-vtp
+    mem_limit: 16mb
+    environment:
+      SWAGGER_JSON_URL: http://localhost:8060/rest/openapi.json
+      BASE_URL: /swagger
+    ports:
+      - 8061:8080

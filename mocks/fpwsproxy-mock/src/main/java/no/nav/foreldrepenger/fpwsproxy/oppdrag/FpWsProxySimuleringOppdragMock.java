@@ -15,10 +15,15 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.OppdragskontrollDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.respons.BeregningDto;
 
+@Tag(name = "Fpwsproxy")
 @Path("/api/fpwsproxy/simulering")
 public class FpWsProxySimuleringOppdragMock {
     private static final Logger LOG = LoggerFactory.getLogger(FpWsProxySimuleringOppdragMock.class);
@@ -27,7 +32,9 @@ public class FpWsProxySimuleringOppdragMock {
     @Path("/start")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Simulering av oppdragskontroll via fpwsproxy", response = BeregningDto[].class)
+    @Operation(description = "Simulering av oppdragskontroll via fpwsproxy", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = BeregningDto[].class))),
+    })
     public Response simulerBereging(@Valid OppdragskontrollDto oppdragskontrollDto,
                                     @QueryParam("uten_inntrekk") @DefaultValue("false") boolean utenInntrekk,
                                     @QueryParam("ytelse_type") YtelseType ytelseType) {

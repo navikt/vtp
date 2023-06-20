@@ -6,15 +6,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /*
  * Tjeneste for å sjekke om person er skjermet.
  * Grensesnitt https://skjermede-personer-pip.<intern-standard-dev-uri>/swagger-ui/index.html#/
  */
 
-@Api(tags = {"nom"})
+@Tag(name = "nom")
 @Path("/api/nom")
 public class SkjermetPersonMock {
 
@@ -22,7 +22,7 @@ public class SkjermetPersonMock {
     @Path("/skjermet")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Person skjermet")
+    @Operation(description = "Person skjermet")
     public Boolean personErSkjermet(SkjermetRequestDto request) {
         return false;
     }

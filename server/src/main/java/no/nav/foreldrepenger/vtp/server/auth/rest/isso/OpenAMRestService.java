@@ -28,15 +28,15 @@ import javax.ws.rs.core.UriBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
 
 
-@Api(tags = {"Openam"})
+@Tag(name = "Openam")
 @Path("/isso")
 public class OpenAMRestService {
 
@@ -54,7 +54,7 @@ public class OpenAMRestService {
     @GET
     @Path("/oauth2/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
-    @ApiOperation(value = "oauth2/authorize", notes = ("Mock impl av Oauth2 authorize"))
+    @Operation(description = "oauth2/authorize")
     @SuppressWarnings("unused")
     public Response authorize(
             @Context HttpServletRequest req,
@@ -111,7 +111,7 @@ public class OpenAMRestService {
     @POST
     @Path("/oauth2/access_token")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "oauth2/access_token", notes = ("Mock impl av Oauth2 access_token"))
+    @Operation(description = "oauth2/access_token")
     @SuppressWarnings("unused")
     public Response accessToken(
             @Context HttpServletRequest req,
@@ -165,7 +165,7 @@ public class OpenAMRestService {
     @GET
     @Path("/oauth2/connect/jwk_uri")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "oauth2/connect/jwk_uri", notes = ("Mock impl av Oauth2 jwk_uri"))
+    @Operation(description = "oauth2/connect/jwk_uri")
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/connect/jwk_uri");
         String jwks = KeyStoreTool.getJwks();
@@ -180,9 +180,9 @@ public class OpenAMRestService {
     @Path("/json/authenticate")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "json/authenticate", notes = ("Mock impl av OpenAM autenticate for service bruker innlogging"))
+    @Operation(description = "json/authenticate")
     public Response serviceBrukerAuthenticate(@SuppressWarnings("unused") @Context HttpServletRequest req,
-                                              @ApiParam("Liste over aksjonspunkt som skal bekreftes, inklusiv data som trengs for å løse de.") EndUserAuthenticateTemplate enduserTemplate) {
+                                              @Parameter(description = "Liste over aksjonspunkt som skal bekreftes, inklusiv data som trengs for å løse de.") EndUserAuthenticateTemplate enduserTemplate) {
         LOG.info("kall på /json/authenticate");
         if (enduserTemplate == null) {
             EndUserAuthenticateTemplate template = new EndUserAuthenticateTemplate();
@@ -217,7 +217,7 @@ public class OpenAMRestService {
     @GET
     @Path("/oauth2/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Discovery url", notes = ("Mock impl av discovery urlen. "))
+    @Operation(description = "Discovery url")
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/.well-known/openid-configuration");
         String baseUrl = getBaseUrl(req);

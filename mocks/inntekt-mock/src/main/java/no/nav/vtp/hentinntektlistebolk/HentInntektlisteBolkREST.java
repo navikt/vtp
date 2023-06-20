@@ -14,8 +14,8 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
@@ -27,7 +27,7 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.response.HentInntektListe
 import no.nav.vtp.hentinntektlistebolk.modell.HentInntektlisteBolkMapperRest;
 
 
-@Api("/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk")
+@Tag(name = "/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk")
 @Path("/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk")
 public class HentInntektlisteBolkREST {
     private static final Logger LOG = LoggerFactory.getLogger(HentInntektlisteBolkREST.class);
@@ -41,7 +41,7 @@ public class HentInntektlisteBolkREST {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "HentInntektlisteBolk", notes = ("Returnerer inntektliste fra Inntektskomponenten"))
+    @Operation(description = "Returnerer inntektliste fra Inntektskomponenten")
     public HentInntektListeBolkResponse hentInntektlisteBolk(HentInntektListeBolkRequest request){
 
         List<Aktoer> identListe = request.getIdentListe();

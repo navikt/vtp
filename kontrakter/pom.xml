@@ -19,11 +19,9 @@
 			<groupId>no.nav.foreldrepenger.vtp</groupId>
 			<artifactId>testmodell</artifactId>
 		</dependency>
-
-        <!-- 3dje parts biblioteker -->
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-jaxrs</artifactId>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
         </dependency>
     </dependencies>
 

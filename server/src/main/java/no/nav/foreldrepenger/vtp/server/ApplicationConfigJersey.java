@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ApplicationPath;
@@ -42,6 +43,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.integration.GenericOpenApiContextBuilder;
+import io.swagger.v3.oas.integration.OpenApiConfigurationException;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.dkif.DigdirKrrProxyMock;
 import no.nav.dkif.DigitalKontaktinformasjonMock;
@@ -101,6 +109,25 @@ public class ApplicationConfigJersey extends ResourceConfig {
         register(new LoggingFeature(java.util.logging.Logger.getLogger(getClass().getName()),
                 FINE, PAYLOAD_ANY, 10000));
         registerClasses(registerClasses());
+        instanserSwagger();
+    }
+
+    private void instanserSwagger() {
+        var oas = new OpenAPI();
+        var info = new Info()
+                .title("VTP - Virtuell Tjeneste Plattform")
+                .version("1.0")
+                .description("REST grensesnitt for VTP.");
+
+        oas.info(info).addServersItem(new Server().url("/"));
+        var oasConfig = new SwaggerConfiguration().openAPI(oas)
+                .prettyPrint(true)
+                .resourceClasses(getClasses().stream().map(Class::getName).collect(Collectors.toSet()));
+        try {
+            new GenericOpenApiContextBuilder<>().openApiConfiguration(oasConfig).buildContext(true).read();
+        } catch (OpenApiConfigurationException e) {
+            throw new RuntimeException("OPEN-API", e);
+        }
     }
 
     public static Set<Class<?>> registerClasses() {
@@ -146,8 +173,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(PdpRestTjeneste.class);
         classes.add(TokenxRestTjeneste.class);
 
-        classes.add(io.swagger.jaxrs.listing.ApiListingResource.class);
-        classes.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
         classes.add(JacksonConfigResolver.class);
@@ -157,6 +182,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         classes.add(LocalDateStringConverterProvider.class);
         classes.add(TilbakekrevingKonsistensTjeneste.class);
+        classes.add(OpenApiResource.class);
 
         return classes;
     }

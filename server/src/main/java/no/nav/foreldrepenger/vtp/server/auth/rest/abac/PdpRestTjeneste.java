@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(tags = { "ABAC-PDP-Mock" })
+@Tag(name = "ABAC-PDP-Mock")
 @Path("/asm-pdp/authorize")
 public class PdpRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(PdpRestTjeneste.class);
@@ -25,7 +25,7 @@ public class PdpRestTjeneste {
 
     @POST
     @Produces("application/xacml+json")
-    @ApiOperation(value = "asm-pdp/authorize", notes = ("Mock impl av ABAC PDP authorize"))
+    @Operation(description = "asm-pdp/authorize")
     public Response authorize(String entity) throws IOException {
         LOG.debug("Invoke: autorize with entry: {}", entity);
         int permits = getPermits(entity);

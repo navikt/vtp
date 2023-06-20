@@ -32,7 +32,8 @@ Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 For utvikling på VTP benytt oppsett for å starte server gjennom IDE.
 I verdikjedetester benyttes oftest Docker-image av VTP. Dette bygges i VTP sin pipeline. 
 
-Når applikasjonen har startet blir Swagger tilgjengelig på http://localhost:8060/swagger/
+Når applikasjonen har startet blir Swagger konfigurasjonen tilgjengelig på http://localhost:8060/rest/openapi.json
+Swagger-ui kan startet vi docker-compose oppsett i /swagger-ui og blir da tilgjengelig på http://localhost:8061/swagger/
 
 #### Starte backend-server via IDE
 * IntelliJ må konfigureres med å sette classpath of module til server, og sette working directory til `$MODULE_WORKING_DIR$` i run/debug-konfiguration.

@@ -29,8 +29,11 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
@@ -43,7 +46,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapper;
 
-@Api(tags = { "Testscenario" })
+@Tag(name = "Testscenario")
 @Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
@@ -57,7 +60,9 @@ public class TestscenarioRestTjeneste {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter alle testcaser som er initiert i minnet til VTP", responseContainer = "List", response = TestscenarioDto.class)
+    @Operation(description = "Henter alle testcaser som er initiert i minnet til VTP", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = TestscenarioDto[].class))),
+    })
     public Response hentInitialiserteCaser() {
         Map<String, Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
         List<TestscenarioDto> testscenarioList = new ArrayList<>();
@@ -78,7 +83,9 @@ public class TestscenarioRestTjeneste {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Returnerer testscenario som matcher id", response = TestscenarioDto.class)
+    @Operation(description = "Returnerer testscenario som matcher id", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = TestscenarioDto.class))),
+    })
     public Response hentScenario(@PathParam(SCENARIO_ID) String id) {
         if (testscenarioRepository.getTestscenario(id) != null) {
             Testscenario testscenario = testscenarioRepository.getTestscenario(id);
@@ -95,7 +102,9 @@ public class TestscenarioRestTjeneste {
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Oppdaterer hele scenario som matcher id", response = TestscenarioDto.class)
+    @Operation(description = "Oppdaterer hele scenario som matcher id", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = TestscenarioDto.class))),
+    })
     public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, String testscenarioJson, @Context UriInfo uriInfo) {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.oppdaterTestscenario(id, testscenarioJson, userSuppliedVariables);
@@ -109,14 +118,18 @@ public class TestscenarioRestTjeneste {
     @PATCH
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Oppdaterer deler av et scenario som matcher id", response = TestscenarioDto.class)
+    @Operation(description = "Oppdaterer deler av et scenario som matcher id", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = TestscenarioDto.class))),
+    })
     public Response endreScenario(@PathParam(SCENARIO_ID) String id, String patchArray) {
         return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet"), response = TestscenarioDto.class)
+    @Operation(description = "Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = TestscenarioDto.class))),
+    })
     public Response initialiserTestScenario(String testscenarioJson, @Context UriInfo uriInfo) {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);
@@ -128,7 +141,7 @@ public class TestscenarioRestTjeneste {
 
     @DELETE
     @Path("/{id}")
-    @ApiOperation(value = "", notes = "Sletter et initialisert testscenario som matcher id")
+    @Operation(description = "Sletter et initialisert testscenario som matcher id")
     public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
         logger.info("Sletter testscenario med id: [{}]", id);
         if (Boolean.TRUE.equals(testscenarioRepository.slettScenario(id))) {

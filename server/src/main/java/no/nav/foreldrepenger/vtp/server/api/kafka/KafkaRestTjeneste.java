@@ -21,11 +21,14 @@ import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 
-@Api(tags = "Kafka services")
+@Tag(name = "Kafka services")
 @Path("/api/kafka")
 public class KafkaRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(KafkaRestTjeneste.class);
@@ -38,7 +41,9 @@ public class KafkaRestTjeneste {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/topics")
-    @ApiOperation(value = "", notes = ("Returnerer kafka topics"), response = ArrayList.class)
+    @Operation(description = "Returnerer kafka topics", responses = {
+            @ApiResponse(responseCode = "OK", description = "liste av kafka topics", content = @Content(schema = @Schema(implementation  = String[].class))),
+    })
     public Response getTopics() throws InterruptedException, ExecutionException {
         ArrayList<KafkaTopicDto> list = new ArrayList<>();
         Map<String, TopicListing> topics = kafkaAdminClient.listTopics().namesToListings().get();
@@ -58,7 +63,7 @@ public class KafkaRestTjeneste {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/topics/{topic}")
-    @ApiOperation(value = "", notes = ("Oppretter ny (tom) Kafka topic."))
+    @Operation(description = "Oppretter ny (tom) Kafka topic.")
     public Response createTopic(@PathParam("topic") String topic) {
         LOG.info("Request: oppretter topic: {}", topic);
         kafkaAdminClient.createTopics(Collections.singleton(new NewTopic(topic, 1, (short) 1)));
@@ -72,7 +77,7 @@ public class KafkaRestTjeneste {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/send/{topic}")
-    @ApiOperation(value = "", notes = ("Legger melding på Kafka topic"))
+    @Operation(description = "Legger melding på Kafka topic")
     public Response sendMessage(@PathParam("topic") String topic, @QueryParam("key") String key, String message) {
         LOG.info("Request: send message to topic [{}]: {}", topic, message);
         localKafkaProducer.sendMelding(topic, key, message);
