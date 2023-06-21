@@ -9,9 +9,4 @@ public record Prosent(@JsonValue Integer prosent) {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public Prosent {
     }
-
-    @Override
-    public Integer prosent() {
-        return prosent;
-    }
 }

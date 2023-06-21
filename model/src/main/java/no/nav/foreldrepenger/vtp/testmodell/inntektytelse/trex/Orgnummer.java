@@ -8,9 +8,4 @@ public record Orgnummer(@JsonValue String orgnummer) {
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public Orgnummer {
     }
-
-    @Override
-    public String orgnummer() {
-        return orgnummer;
-    }
 }
