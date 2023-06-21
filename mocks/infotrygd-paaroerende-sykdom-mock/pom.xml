@@ -64,12 +64,6 @@
 			<scope>provided</scope>
 		</dependency>
         <dependency>
-            <groupId>io.swagger.codegen.v3</groupId>
-            <artifactId>swagger-codegen-cli</artifactId>
-            <version>${swagger-codegen-maven-plugin.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>

@@ -9,9 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;docker
 
-@Api(tags = {"AzureAd"})
+@Tag(name = "AzureAd")
 @Path("/MicrosoftGraphApi")
 public class MicrosoftGraphApiMock {
     @GET

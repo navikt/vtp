@@ -18,11 +18,6 @@
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.swagger.codegen.v3</groupId>
-            <artifactId>swagger-codegen-cli</artifactId>
-            <version>${swagger-codegen-maven-plugin.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
