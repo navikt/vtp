@@ -67,7 +67,7 @@ class OppdragKontrollTilBeregningMapperTest {
     @Test
     void simuleringESReturnererEnBeregningMedFomOgTomLik() {
         var oppdrag110Dto = lagOppdrag110(KodeFagområde.REFUTG,
-                lagOppdragslinje150(NOW, NOW, KodeEndringLinje.NY, TypeSats.ENG, SatsDto.valueOf(90_300), null, 121100100L)
+                lagOppdragslinje150(NOW, NOW.plusDays(3), KodeEndringLinje.NY, TypeSats.ENG, SatsDto.valueOf(90_300), null, 121100100L)
         );
         var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
 
