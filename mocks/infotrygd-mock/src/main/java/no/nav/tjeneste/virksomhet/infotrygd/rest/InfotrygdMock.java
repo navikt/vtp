@@ -16,18 +16,18 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Grunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.saker.Saker;
 
-@Api(tags = {"Infotrygdmock"})
+@Tag(name = "Infotrygdmock")
 @Path("/infotrygd")
 public class InfotrygdMock {
 
@@ -44,7 +44,7 @@ public class InfotrygdMock {
     @GET
     @Path("/grunnlag/foreldrepenger")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "foreldrepenger", notes = ("Returnerer foreldrepenger fra Infotrygd"))
+    @Operation(description = "Returnerer foreldrepenger fra Infotrygd")
     public Grunnlag[] getForeldrepenger(@QueryParam("fnr") String fnr,
                                         @QueryParam("fom") String fom,
                                         @QueryParam("tom") String tom) {
@@ -63,7 +63,7 @@ public class InfotrygdMock {
     @GET
     @Path("/grunnlag/svangerskapspenger")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "foreldrepenger", notes = ("Returnerer svangerskapspenger fra Infotrygd"))
+    @Operation(description = "Returnerer svangerskapspenger fra Infotrygd")
     public Grunnlag[] getSvangerskapspenger(@QueryParam("fnr") String fnr,
                                             @QueryParam("fom") String fom,
                                             @QueryParam("tom") String tom) {
@@ -79,7 +79,7 @@ public class InfotrygdMock {
     @GET
     @Path("/grunnlag/sykepenger")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "foreldrepenger", notes = ("Returnerer sykepenger fra Infotrygd"))
+    @Operation(description = "Returnerer sykepenger fra Infotrygd")
     public Grunnlag[] getSykepenger(@QueryParam("fnr") String fnr,
                                     @QueryParam("fom") String fom,
                                     @QueryParam("tom") String tom) {
@@ -95,7 +95,7 @@ public class InfotrygdMock {
     @GET
     @Path("/grunnlag/paaroerende-sykdom")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "foreldrepenger", notes = ("Returnerer barns sykdom fra Infotrygd"))
+    @Operation(description = "Returnerer barns sykdom fra Infotrygd")
     public Grunnlag[] getPaaroerendeSykdom(@QueryParam("fnr") String fnr,
                                            @QueryParam("fom") String fom,
                                            @QueryParam("tom") String tom) {
@@ -111,12 +111,10 @@ public class InfotrygdMock {
     @POST
     @Path("/grunnlag/paaroerende-sykdom")
     @Produces({"application/json"})
-    @ApiOperation(value = "foreldrepenger", notes = "", response = Grunnlag.class, responseContainer = "List", authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Grunnlag.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized")})
+    @Operation(description = "foreldrepenger", responses = {
+            @ApiResponse(responseCode = "OK", description = "OK", content =@Content(schema = @Schema(implementation  = Grunnlag.class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "UNAUTHORIZED")
+    })
     public Grunnlag[] paaroerendeSykdomUsingPost(PersonRequest personRequest) {
         return personRequest.fnr().stream().flatMap(fnr -> {
             LOG.info(LOG_PREFIX, "pårørendesykdom");
@@ -130,7 +128,7 @@ public class InfotrygdMock {
     @GET
     @Path("/saker/foreldrepenger")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "hentSak", notes = ("Returnerer dummy respons av saker fra Infotrygd"))
+    @Operation(description = "Returnerer dummy respons av saker fra Infotrygd")
     public Response hentSakUsingGET(@QueryParam("fnr") String fnr,
                                     @QueryParam("fom") LocalDate fom,
                                     @QueryParam("tom") LocalDate tom) {

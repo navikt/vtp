@@ -19,12 +19,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
@@ -44,8 +44,7 @@ import no.nav.infotrygdpaaroerendesykdom.generated.model.VedtakPleietrengendeDto
 
 @Path("/paaroerendeSykdom")
 @RequestScoped
-@Api(
-        description = "the paaroerendeSykdom API")
+@Tag(name = "the paaroerendeSykdom API")
 public class PårørendeSykdomMock {
     private TestscenarioBuilderRepository scenarioRepository;
 
@@ -62,13 +61,13 @@ public class PårørendeSykdomMock {
     @GET
     @Path("/saker")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SakResult.class),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response hentSakUsingGET(@NotNull @ApiParam(value = "fnr", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "fom", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "tom") @QueryParam("tom") LocalDate tom) {
+    @Operation(description = "hentSak", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation  = SakResult.class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
+    })
+    public Response hentSakUsingGET(@NotNull @Parameter(name = "fnr", required = true) @QueryParam("fnr") String fnr,
+                                    @NotNull @Parameter(name = "fom", required = true) @QueryParam("fom") LocalDate fom,
+                                    @Parameter(name = "tom") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
 
         if (inntektYtelseModellOptional.isEmpty()) {
@@ -86,12 +85,10 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/saker")
     @Produces({"application/json"})
-    @ApiOperation(value = "hentSak", notes = "", response = SakResult.class, authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SakResult.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    @Operation(description = "hentSak", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller",  content = @Content(schema = @Schema(implementation  = SakResult[].class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
+    })
     public Response hentSakUsingPost(PersonRequest personRequest) {
         var result = personRequest.fnr().stream().flatMap(fnr -> {
             Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
@@ -109,13 +106,13 @@ public class PårørendeSykdomMock {
     @GET
     @Path("/grunnlag")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @ApiOperation(value = "paaroerendeSykdom", notes = "", response = PaaroerendeSykdom.class, responseContainer = "List", authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = PaaroerendeSykdom.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response paaroerendeSykdomUsingGET1(@NotNull @ApiParam(value = "fnr", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "fom", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "tom") @QueryParam("tom") LocalDate tom) {
+    @Operation(description = "paaroerendeSykdom", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation  = PaaroerendeSykdom[].class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
+    })
+    public Response paaroerendeSykdomUsingGET1(@NotNull @Parameter(name = "fnr", required = true) @QueryParam("fnr") String fnr,
+                                               @NotNull @Parameter(name = "fom", required = true) @QueryParam("fom") LocalDate fom,
+                                               @Parameter(name = "tom") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
         if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
@@ -134,12 +131,10 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/grunnlag")
     @Produces({"application/json"})
-    @ApiOperation(value = "paaroerendeSykdom", notes = "", response = PaaroerendeSykdom.class, responseContainer = "List", authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = PaaroerendeSykdom.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    @Operation(description = "paaroerendeSykdom", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = PaaroerendeSykdom[].class))),
+            @ApiResponse(responseCode = "AUTHORIZATION", description = "Unauthorized")
+    })
     public Response paaroerendeSykdomUsingPost(PersonRequest personRequest) {
         var result = personRequest.fnr().stream().flatMap(fnr -> {
             Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
@@ -161,13 +156,13 @@ public class PårørendeSykdomMock {
     @GET
     @Path("/vedtakForPleietrengende")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = VedtakPleietrengendeDto.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response finnVedtakForPleietrengendeUsingGET(@NotNull @ApiParam(value = "Pleietrengendes fødselsnummer", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.") @QueryParam("tom") LocalDate tom) {
+    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = VedtakPleietrengendeDto[].class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
+    })
+    public Response finnVedtakForPleietrengendeUsingGET(@NotNull @Parameter(name = "Pleietrengendes fødselsnummer", required = true) @QueryParam("fnr") String fnr,
+                                                        @NotNull @Parameter(name = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.", required = true) @QueryParam("fom") LocalDate fom,
+                                                        @Parameter(name = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.") @QueryParam("tom") LocalDate tom) {
         return Response.ok(List.of()).build();
     }
 
@@ -176,12 +171,10 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/vedtakForPleietrengende")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @ApiOperation(value = "Finner vedtak basert på fødselsnummeret til pleietrengende.", notes = "", response = VedtakPleietrengendeDto.class, responseContainer = "List", authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = VedtakPleietrengendeDto.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
+    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = VedtakPleietrengendeDto[].class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
+    })
     public Response finnVedtakForPleietrengendeUsingPost(PersonRequest personRequest) {
         var alleVedtak = personRequest.fnr().stream().flatMap(fnr -> {
                     var vedtakList = new ArrayList<VedtakPleietrengendeDto>();
@@ -209,13 +202,13 @@ public class PårørendeSykdomMock {
     @GET
     @Path("/rammevedtak/omsorgspenger")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @ApiOperation(value = "Finner rammevedtak basert på fødselsnummeret til søker.", notes = "", response = RammevedtakDto.class, responseContainer = "List", authorizations = {
-            @Authorization(value = "JWT")
-    }, tags = {"paaroerende-sykdom-controller"})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = RammevedtakDto.class, responseContainer = "List"),
-            @ApiResponse(code = 401, message = "Unauthorized", response = Void.class)})
-    public Response finnRammevedtakForOmsorgspengerUsingGET(@NotNull @ApiParam(value = "Søkers fødselsnummer", required = true) @QueryParam("fnr") String fnr, @NotNull @ApiParam(value = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.", required = true) @QueryParam("fom") LocalDate fom, @ApiParam(value = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.") @QueryParam("tom") LocalDate tom) {
+    @Operation(description = "Finner rammevedtak basert på fødselsnummeret til søker.", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = RammevedtakDto[].class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
+    })
+    public Response finnRammevedtakForOmsorgspengerUsingGET(@NotNull @Parameter(name = "Søkers fødselsnummer", required = true) @QueryParam("fnr") String fnr,
+                                                            @NotNull @Parameter(name = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.", required = true) @QueryParam("fom") LocalDate fom,
+                                                            @Parameter(name = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.") @QueryParam("tom") LocalDate tom) {
         Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
         if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();

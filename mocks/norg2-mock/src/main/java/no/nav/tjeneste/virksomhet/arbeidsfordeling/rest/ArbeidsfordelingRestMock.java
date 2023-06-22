@@ -12,14 +12,14 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-@Api(tags = {"ArbeidsfordelingMock"})
+@Tag(name = "ArbeidsfordelingMock")
 @Path("/norg2/api/v1/arbeidsfordeling")
 public class ArbeidsfordelingRestMock {
 
@@ -35,7 +35,7 @@ public class ArbeidsfordelingRestMock {
     @Path("/enheter")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "allenheter", notes = ("Returnerer enheter fra NORG2"))
+    @Operation(description = "Returnerer enheter fra NORG2")
     public ArbeidsfordelingResponse[] hentAlleEnheter(ArbeidsfordelingRequest request) {
         LOG.info(LOG_PREFIX, "allenheter");
         return scenarioRepository.getEnheterIndeks().getAlleEnheter().stream()
@@ -53,7 +53,7 @@ public class ArbeidsfordelingRestMock {
     @Path("/enheter/bestmatch")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "finnenhet", notes = ("Returnerer  enheter fra NORG2"))
+    @Operation(description = "Returnerer enheter fra NORG2")
     public ArbeidsfordelingResponse[] finnEnhet(ArbeidsfordelingRequest request) {
         LOG.info(LOG_PREFIX, "bestmatch");
         List<String> spesielleDiskrKoder = List.of("UFB", "SPSF", "SPFO");

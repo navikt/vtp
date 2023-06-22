@@ -25,18 +25,18 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(tags = "Sak Mock")
+@Tag(name = "Sak Mock")
 @Path("sak/api/v1/saker")
 public class SakRestMock {
     private static final Logger LOG = LoggerFactory.getLogger(SakRestMock.class);
@@ -46,14 +46,14 @@ public class SakRestMock {
     private GsakRepo gsakRepo;
 
     @POST
-    @ApiOperation(value = "Opprett sak", response = SakJson.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = "Authorization", required = true, dataType = "string", paramType = "header")
-
+    @Operation(description = "Opprett sak", responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation = SakJson.class)))
+            }, parameters = {
+            @Parameter(name = "X-Correlation-ID", required = true, in = ParameterIn.HEADER),
+            @Parameter(name = "Authorization", required = true, in = ParameterIn.HEADER)
     })
     public Response opprettSak(
-            @Valid @ApiParam(value = "Sakem som opprettes", required = true) ObjectNode sak,
+            @Valid @Parameter(description = "Sakem som opprettes", required = true) ObjectNode sak,
             @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -66,14 +66,16 @@ public class SakRestMock {
     }
 
     @GET
-    @ApiOperation(value = "Hent oppgaver", response = SakJson.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = "Authorization", required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = "tema", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "fagsakNr", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "applikasjon", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "aktoerId", dataType = "string", paramType = "query")
+    @Operation(description = "Hent oppgaver",
+            responses = {
+            @ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation = SakJson.class)))
+            }, parameters = {
+            @Parameter(name = "X-Correlation-ID", required = true, in = ParameterIn.HEADER),
+            @Parameter(name = "Authorization", required = true, in = ParameterIn.HEADER),
+            @Parameter(name = "tema", in = ParameterIn.QUERY),
+            @Parameter(name = "fagsakNr", in = ParameterIn.QUERY),
+            @Parameter(name = "applikasjon", in = ParameterIn.QUERY),
+            @Parameter(name = "aktoerId", in = ParameterIn.QUERY)
     })
     public Response finnSaker(
             @Context HttpHeaders httpHeaders,
@@ -126,15 +128,21 @@ public class SakRestMock {
 
     @GET
     @Path("/{id}")
-    @ApiOperation(value = "Henter sak for en gitt id", response = SakJson.class)
-    @ApiImplicitParams({@ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header")})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 401, message = "Konsument mangler gyldig token"),
-            @ApiResponse(code = 403, message = "Bruker er ikke autorisert for denne operasjonen"),
-            @ApiResponse(code = 404, message = "Det finnes ingen oppgave for angitt id"),
-            @ApiResponse(code = 409, message = "Konflikt"),
-            @ApiResponse(code = 500, message = "Ukjent feilsituasjon har oppstått i Oppgave")
+    @Operation(description = "Henter sak for en gitt id",
+            responses = {
+                @ApiResponse(responseCode = "OK", description = "Hentet oppgave", content = @Content(schema = @Schema(implementation  = SakJson.class))),
+                @ApiResponse(responseCode = "UNAUTHORIZED", description = "Konsument mangler gyldig token"),
+                @ApiResponse(responseCode = "FORBIDDEN", description = "Bruker er ikke autorisert for denne operasjonen"),
+                @ApiResponse(responseCode = "NOT_FOUND", description = "Det finnes ingen oppgave for angitt id"),
+                @ApiResponse(responseCode = "CONFLICT", description = "Konflikt"),
+                @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Ukjent feilsituasjon har oppstått i Oppgave")
+            }, parameters = {
+                @Parameter(name = "X-Correlation-ID", required = true, in = ParameterIn.HEADER),
+                @Parameter(name = "Authorization"),
+                @Parameter(name = "tema"),
+                @Parameter(name = "fagsakNr"),
+                @Parameter(name = "applikasjon"),
+                @Parameter(name = "aktoerId")
     })
     public Response hentSak(@PathParam("id") Long id, @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);

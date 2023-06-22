@@ -15,8 +15,8 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.dokarkiv.generated.model.DokumentInfo;
 import no.nav.dokarkiv.generated.model.FerdigstillJournalpostRequest;
 import no.nav.dokarkiv.generated.model.OppdaterJournalpostRequest;
@@ -29,7 +29,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 // Ref: https://confluence.adeo.no/display/BOA/Oversikt+over+Joark-+og+dokarkiv-tjenester
-@Api(tags = {"Dokarkiv"})
+@Tag(name = "Dokarkiv")
 @Path("/dokarkiv/rest/journalpostapi/v1")
 public class JournalpostMock {
     private static final Logger LOG = LoggerFactory.getLogger(JournalpostMock.class);
@@ -40,7 +40,7 @@ public class JournalpostMock {
 
     @POST
     @Path("/journalpost")
-    @ApiOperation(value = "lag journalpost")
+    @Operation(description = "lag journalpost")
     public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest, @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
         LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", forsoekFerdigstill);
 
@@ -57,7 +57,7 @@ public class JournalpostMock {
 
     @PUT
     @Path("/journalpost/{journalpostid}")
-    @ApiOperation(value = "Oppdater journalpost")
+    @Operation(description = "Oppdater journalpost")
     public Response oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest, @PathParam("journalpostid") String journalpostId){
 
         LOG.info("Kall til oppdater journalpost: {}", journalpostId);
@@ -74,7 +74,7 @@ public class JournalpostMock {
 
     @PATCH
     @Path("/journalpost/{journalpostid}/ferdigstill")
-    @ApiOperation(value = "Ferdigstill journalpost")
+    @Operation(description = "Ferdigstill journalpost")
     public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest){
 
         var journalfoerendeEnhet = ferdigstillJournalpostRequest.getJournalfoerendeEnhet();
@@ -85,7 +85,7 @@ public class JournalpostMock {
 
     @PUT
     @Path("/journalpost/{journalpostid}/tilknyttVedlegg")
-    @ApiOperation(value = "Tilknytt vedlegg")
+    @Operation(description = "Tilknytt vedlegg")
     public TilknyttVedleggResponse tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest){
 
         var response = new TilknyttVedleggResponse();

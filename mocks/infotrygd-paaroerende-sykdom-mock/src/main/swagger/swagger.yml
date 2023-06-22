@@ -1,0 +1,549 @@
+openapi: 3.0.1
+info:
+  title: Api Documentation
+  description: Api Documentation
+  termsOfService: urn:tos
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: "1.0"
+servers:
+  - url: //localhost:8080/
+tags:
+  - name: paaroerende-sykdom-controller
+    description: Paaroerende Sykdom Controller
+  - name: table-controller
+    description: Table Controller
+paths:
+  /grunnlag:
+    get:
+      tags:
+        - paaroerende-sykdom-controller
+      summary: Finner beregningsgrunnlag basert på fødselsnummeret til søker.
+      operationId: paaroerendeSykdomUsingGET
+      parameters:
+        - name: fnr
+          in: query
+          description: Søkers fødselsnummer
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: fom
+          in: query
+          description: Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+        - name: tom
+          in: query
+          description: Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaaroerendeSykdom'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+  /paaroerendeSykdom/grunnlag:
+    get:
+      tags:
+        - paaroerende-sykdom-controller
+      summary: Finner beregningsgrunnlag basert på fødselsnummeret til søker.
+      operationId: paaroerendeSykdomUsingGET_1
+      parameters:
+        - name: fnr
+          in: query
+          description: Søkers fødselsnummer
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: fom
+          in: query
+          description: Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+        - name: tom
+          in: query
+          description: Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaaroerendeSykdom'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+  /paaroerendeSykdom/sak:
+    get:
+      tags:
+        - paaroerende-sykdom-controller
+      summary: Finner saker og vedtak basert på fødselsnummeret til søker.
+      operationId: hentSakUsingGET
+      parameters:
+        - name: fnr
+          in: query
+          description: Søkers fødselsnummer
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: fom
+          in: query
+          description: Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+        - name: tom
+          in: query
+          description: Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SakResult'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+  /rammevedtak/omsorgspenger:
+    get:
+      tags:
+        - paaroerende-sykdom-controller
+      summary: Finner rammevedtak basert på fødselsnummeret til søker.
+      operationId: finnRammevedtakForOmsorgspengerUsingGET
+      parameters:
+        - name: fnr
+          in: query
+          description: Søkers fødselsnummer
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: fom
+          in: query
+          description: Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+        - name: tom
+          in: query
+          description: Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RammevedtakDto'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+  /saker:
+    get:
+      tags:
+        - paaroerende-sykdom-controller
+      summary: Finner saker og vedtak basert på fødselsnummeret til søker.
+      operationId: hentSakUsingGET_1
+      parameters:
+        - name: fnr
+          in: query
+          description: Søkers fødselsnummer
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: fom
+          in: query
+          description: Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+        - name: tom
+          in: query
+          description: Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SakResult'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+  /tables:
+    get:
+      tags:
+        - table-controller
+      summary: get
+      operationId: getUsingGET
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+  /vedtakForPleietrengende:
+    get:
+      tags:
+        - paaroerende-sykdom-controller
+      summary: Finner vedtak basert på fødselsnummeret til pleietrengende.
+      operationId: finnVedtakForPleietrengendeUsingGET
+      parameters:
+        - name: fnr
+          in: query
+          description: Pleietrengendes fødselsnummer
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+        - name: fom
+          in: query
+          description: Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          required: true
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+        - name: tom
+          in: query
+          description: Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato
+            for saker.
+          allowEmptyValue: false
+          schema:
+            type: string
+            format: date
+          example: 2019-01-01
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VedtakPleietrengendeDto'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      deprecated: false
+      security:
+        - JWT:
+            - global
+components:
+  schemas:
+    Arbeidsforhold:
+      title: Arbeidsforhold
+      required:
+        - arbeidsgiverOrgnr
+        - inntektsperiode
+        - refusjon
+      type: object
+      properties:
+        arbeidsgiverOrgnr:
+          type: string
+        inntektForPerioden:
+          type: number
+        inntektsperiode:
+          $ref: '#/components/schemas/Kodeverdi'
+        refusjon:
+          type: boolean
+    Kodeverdi:
+      title: Kodeverdi
+      required:
+        - kode
+        - termnavn
+      type: object
+      properties:
+        kode:
+          type: string
+        termnavn:
+          type: string
+    PaaroerendeSykdom:
+      title: PaaroerendeSykdom
+      required:
+        - arbeidsforhold
+        - behandlingstema
+        - identdato
+        - vedtak
+      type: object
+      properties:
+        foedselsnummerSoeker:
+          type: string
+        arbeidsforhold:
+          type: array
+          items:
+            $ref: '#/components/schemas/Arbeidsforhold'
+        arbeidskategori:
+          $ref: '#/components/schemas/Kodeverdi'
+        behandlingstema:
+          $ref: '#/components/schemas/Kodeverdi'
+        foedselsdatoPleietrengende:
+          type: string
+          format: date
+        foedselsnummerPleietrengende:
+          type: string
+        identdato:
+          type: string
+          format: date
+        iverksatt:
+          type: string
+          format: date
+        opphoerFom:
+          type: string
+          format: date
+        periode:
+          $ref: '#/components/schemas/Periode'
+        registrert:
+          type: string
+          format: date
+        saksbehandlerId:
+          type: string
+        status:
+          $ref: '#/components/schemas/Kodeverdi'
+        tema:
+          $ref: '#/components/schemas/Kodeverdi'
+        vedtak:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vedtak'
+    Periode:
+      title: Periode
+      required:
+        - fom
+        - tom
+      type: object
+      properties:
+        fom:
+          type: string
+          format: date
+        tom:
+          type: string
+          format: date
+    RammevedtakDto:
+      title: RammevedtakDto
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        fom:
+          type: string
+          format: date
+        tekst:
+          type: string
+        tom:
+          type: string
+          format: date
+    SakDto:
+      title: SakDto
+      type: object
+      properties:
+        behandlingstema:
+          $ref: '#/components/schemas/Kodeverdi'
+        iverksatt:
+          type: string
+          format: date
+        opphoerFom:
+          type: string
+          format: date
+        registrert:
+          type: string
+          format: date
+        resultat:
+          $ref: '#/components/schemas/Kodeverdi'
+        sakId:
+          type: string
+        status:
+          $ref: '#/components/schemas/Kodeverdi'
+        tema:
+          $ref: '#/components/schemas/Kodeverdi'
+        type:
+          $ref: '#/components/schemas/Kodeverdi'
+        vedtatt:
+          type: string
+          format: date
+    SakResult:
+      title: SakResult
+      required:
+        - saker
+        - vedtak
+      type: object
+      properties:
+        saker:
+          type: array
+          items:
+            $ref: '#/components/schemas/SakDto'
+        vedtak:
+          type: array
+          items:
+            $ref: '#/components/schemas/SakDto'
+    Vedtak:
+      title: Vedtak
+      required:
+        - periode
+        - utbetalingsgrad
+      type: object
+      properties:
+        periode:
+          $ref: '#/components/schemas/Periode'
+        utbetalingsgrad:
+          type: integer
+          format: int32
+    VedtakPleietrengendeDto:
+      title: VedtakPleietrengendeDto
+      type: object
+      properties:
+        soekerFnr:
+          type: string
+          description: Søkers fødselsnummer
+        vedtak:
+          type: array
+          description: Vedtak for pleietrengende som tilhører denne søkeren
+          items:
+            $ref: '#/components/schemas/SakDto'
+  securitySchemes:
+    JWT:
+      type: apiKey
+      name: Authorization
+      in: header

@@ -15,8 +15,11 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.hendelse.JournalforingHendelseSender;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
@@ -26,7 +29,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
-@Api(tags = "Journalføringsmock")
+@Tag(name = "Journalføringsmock")
 @Path("/api/journalforing")
 public class JournalforingRestTjeneste {
 
@@ -48,7 +51,9 @@ public class JournalforingRestTjeneste {
     @Path("/journalfor")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Journalfører journalpost og send en journalføringhendelse på topic"), response = JournalforingResultatDto.class)
+    @Operation(description = "Journalfører journalpost og send en journalføringhendelse på topic", responses = {
+        @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = JournalforingResultatDto.class)))
+    })
     public JournalforingResultatDto journalførJournalpost(JournalpostModell journalpostModell){
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
         LOG.info("Oppretter journalpost for bruker: {}, JournalpostId: {}", journalpostModell.getAvsenderFnr(), journalpostId);
@@ -65,7 +70,9 @@ public class JournalforingRestTjeneste {
     @POST
     @Path("/journalfor/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = ("Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body."), response = JournalforingResultatDto.class)
+    @Operation(description = "Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body.", responses = {
+            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = JournalforingResultatDto.class)))
+    })
     public JournalforingResultatDto journalførDokument(String content, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId){
         var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(content, fnr, DokumenttypeId.valueOfKode(dokumenttypeId));
         journalpostModell.setMottattDato(LocalDateTime.now());

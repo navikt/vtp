@@ -21,8 +21,8 @@ import org.apache.avro.generic.GenericRecordBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
@@ -41,7 +41,7 @@ import no.nav.person.pdl.leesah.doedsfall.Doedsfall;
 import no.nav.person.pdl.leesah.familierelasjon.Familierelasjon;
 import no.nav.person.pdl.leesah.foedsel.Foedsel;
 
-@Api(tags = "Legge hendelser på PDL topic")
+@Tag(name = "Legge hendelser på PDL topic")
 @Path("/api/pdl/leesah")
 public class PdlLeesahRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(PdlLeesahRestTjeneste.class);
@@ -72,7 +72,7 @@ public class PdlLeesahRestTjeneste {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Legg til hendelse")
+    @Operation(description = "Legg til hendelse")
     public Response leggTilHendelse(PersonhendelseDto personhendelseDto) {
         try {
             if (personhendelseDto instanceof FødselshendelseDto fødselshendelseDto) {

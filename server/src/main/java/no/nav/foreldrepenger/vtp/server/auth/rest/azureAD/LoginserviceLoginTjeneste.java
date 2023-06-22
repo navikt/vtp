@@ -18,10 +18,10 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Api(tags = {"loginservice"})
+@Tag(name = "loginservice")
 @Path("/loginservice")
 public class LoginserviceLoginTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(LoginserviceLoginTjeneste.class);
@@ -55,7 +55,7 @@ public class LoginserviceLoginTjeneste {
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "azureAd/access_token", notes = ("Mock impl av Azure AD access_token"))
+    @Operation(description = "azureAd/access_token")
     @SuppressWarnings("unused")
     public Response accessToken(@Context HttpServletRequest req,
                                 @FormParam("fnr") String fnr,

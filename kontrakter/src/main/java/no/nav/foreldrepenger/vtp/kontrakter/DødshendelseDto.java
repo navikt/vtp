@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(value = "DødshendelseDto")
+
+@Schema(name = "DødshendelseDto")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DødshendelseDto(@ApiModelProperty String endringstype,
-                              @ApiModelProperty String tidligereHendelseId,
-                              @ApiModelProperty String fnr,
-                              @ApiModelProperty LocalDate doedsdato) implements PersonhendelseDto {
+public record DødshendelseDto(@Schema String endringstype,
+                              @Schema String tidligereHendelseId,
+                              @Schema String fnr,
+                              @Schema LocalDate doedsdato) implements PersonhendelseDto {
 
 }

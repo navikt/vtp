@@ -29,18 +29,17 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ResponseHeader;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(tags = "Oppgave Mock")
+@Tag(name = "Oppgave Mock")
 @Path("oppgave/api/v1/oppgaver")
 public class OppgaveMockImpl {
 
@@ -50,14 +49,12 @@ public class OppgaveMockImpl {
     private static final Map<Long, ObjectNode> oppgaver = new ConcurrentHashMap<>();
 
     @POST
-    @ApiOperation(value = "Opprett oppgave", response = OppgaveJson.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = "Authorization", required = true, dataType = "string", paramType = "header")
-
+    @Operation(description = "Opprett oppgave", parameters = {
+        @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY),
+        @Parameter(name = "Authorization", required = true, in = ParameterIn.QUERY)
     })
     public Response opprettOppgave(
-            @Valid @ApiParam(value = "Oppgaven som opprettes", required = true) ObjectNode oppgave,
+            @Valid @Parameter(name = "Oppgaven som opprettes", required = true) ObjectNode oppgave,
             @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -77,18 +74,16 @@ public class OppgaveMockImpl {
     }
 
     @GET
-    @ApiOperation(value = "Hent oppgaver", response = HentOppgaverResponse.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = "Authorization", required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = "tema", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "oppgavetype", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "journalpostId", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "aktoerId", dataType = "string", paramType = "query")
+    @Operation(description = "Hent oppgaver", parameters = {
+        @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY),
+        @Parameter(name = "Authorization", required = true, in = ParameterIn.QUERY),
+        @Parameter(name = "tema", in = ParameterIn.QUERY),
+        @Parameter(name = "oppgavetype", in = ParameterIn.QUERY),
+        @Parameter(name = "journalpostId", in = ParameterIn.QUERY),
+        @Parameter(name = "aktoerId", in = ParameterIn.QUERY)
     })
-    public Response hentOppgaver(
-            @Context HttpHeaders httpHeaders,
-            @Context UriInfo uriInfo) {
+
+    public Response hentOppgaver(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
             return validert.get();
@@ -130,17 +125,15 @@ public class OppgaveMockImpl {
     @SuppressWarnings("resource")
     @GET
     @Path("/{id}")
-    @ApiOperation(value = "Henter oppgave for en gitt id", response = OppgaveJson.class)
-    @ApiImplicitParams({@ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header")})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 401, message = "Konsument mangler gyldig token"),
-            @ApiResponse(code = 403, message = "Bruker er ikke autorisert for denne operasjonen"),
-            @ApiResponse(code = 404, message = "Det finnes ingen oppgave for angitt id"),
-            @ApiResponse(code = 409, message = "Konflikt"),
-            @ApiResponse(code = 500, message = "Ukjent feilsituasjon har oppstått i Oppgave")
-    }
-    )
+    @Operation(description = "Henter oppgave for en gitt id", responses = {
+            @ApiResponse(responseCode = "OK", description = "Hentet oppgave", content = @Content(schema = @Schema(implementation  = OppgaveJson.class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Konsument mangler gyldig token"),
+            @ApiResponse(responseCode = "FORBIDDEN", description = "Bruker er ikke autorisert for denne operasjonen"),
+            @ApiResponse(responseCode = "NOT_FOUND", description = "Det finnes ingen oppgave for angitt id"),
+            @ApiResponse(responseCode = "CONFLICT", description = "Konflikt"),
+            @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Ukjent feilsituasjon har oppstått i Oppgave")
+    })
+    @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY)
     public Response hentOppgave(@PathParam("id") Long id, @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -152,17 +145,15 @@ public class OppgaveMockImpl {
 
     @PATCH
     @Path("/{id}")
-    @ApiOperation(value = "Endrer en eksisterende oppgave", response = OppgaveJson.class)
-    @ApiImplicitParams({@ApiImplicitParam(name = "X-Correlation-ID", required = true, dataType = "string", paramType = "header")})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Oppgave patchet", responseHeaders = @ResponseHeader(name = "location", description = "Angir URI til den patchede oppgaven")),
-            @ApiResponse(code = 401, message = "Konsument mangler gyldig token"),
-            @ApiResponse(code = 403, message = "Bruker er ikke autorisert for denne operasjonen"),
-            @ApiResponse(code = 409, message = "Konflikt"),
-            @ApiResponse(code = 500, message = "Ukjent feilsituasjon har oppstått i Oppgave")
-    }
-    )
-    public Response patchOppgave(@Valid @ApiParam(value = "Oppgaven som endres", required = true) ObjectNode patch,
+    @Operation(description = "Endrer en eksisterende oppgave", responses = {
+            @ApiResponse(responseCode = "OK", description = "Oppgave patchet", content = @Content(schema = @Schema(implementation  = OppgaveJson.class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Konsument mangler gyldig token"),
+            @ApiResponse(responseCode = "FORBIDDEN", description = "Bruker er ikke autorisert for denne operasjonen"),
+            @ApiResponse(responseCode = "CONFLICT", description = "Konflikt"),
+            @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Ukjent feilsituasjon har oppstått i Oppgave")
+            } )
+    @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY)
+    public Response patchOppgave(@Valid @Parameter(description = "Oppgaven som endres", required = true) ObjectNode patch,
                                  @PathParam("id") Long id,
                                  @Context UriInfo uriInfo,
                                  @Context HttpHeaders httpHeaders) {

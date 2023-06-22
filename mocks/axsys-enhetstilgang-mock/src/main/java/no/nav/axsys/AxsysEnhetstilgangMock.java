@@ -17,13 +17,13 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Path("axsys-enhetstilgang/api/v1/tilgang/")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(tags = {"Axsys/enhetstilgang"})
+@Tag(name = "Axsys/enhetstilgang")
 public class AxsysEnhetstilgangMock {
 
     private static final Logger LOG = LoggerFactory.getLogger(AxsysEnhetstilgangMock.class);
@@ -34,7 +34,7 @@ public class AxsysEnhetstilgangMock {
     @SuppressWarnings("unused")
     @GET
     @Path("/{ident}")
-    @ApiOperation(value = "Henter enhetstilgang for saksbehandlerident")
+    @Operation(description = "Henter enhetstilgang for saksbehandlerident")
     public AxsysTilgangDto hentOrganisasjonAdresse(@PathParam("ident") String ident,
                                                    @Context HttpHeaders httpHeaders,
                                                    @Context UriInfo uriInfo) {

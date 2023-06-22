@@ -2,15 +2,14 @@ package no.nav.foreldrepenger.vtp.kontrakter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(value = "FamilierelasjonHendelseDto")
+@Schema(name = "FamilierelasjonHendelseDto")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record FamilierelasjonHendelseDto(@ApiModelProperty String endringstype,
-                                         @ApiModelProperty String fnr,
-                                         @ApiModelProperty String relatertPersonsFnr,
-                                         @ApiModelProperty String relatertPersonsRolle,
-                                         @ApiModelProperty String minRolleForPerson) implements PersonhendelseDto {
+public record FamilierelasjonHendelseDto(@Schema String endringstype,
+                                         @Schema String fnr,
+                                         @Schema String relatertPersonsFnr,
+                                         @Schema String relatertPersonsRolle,
+                                         @Schema String minRolleForPerson) implements PersonhendelseDto {
 
 }

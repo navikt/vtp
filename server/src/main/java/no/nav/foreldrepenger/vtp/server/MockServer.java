@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import static no.nav.foreldrepenger.vtp.server.ApplicationConfigJersey.API_URI;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,17 +18,13 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.Resource;
-import org.eclipse.jetty.webapp.WebAppContext;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import io.swagger.jaxrs.config.BeanConfig;
 import no.nav.foreldrepenger.util.KeystoreUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
@@ -121,8 +115,6 @@ public class MockServer {
 
         addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, handler);
 
-        addWebResources(handler);
-
         startServer();
 
         // kjør soap oppsett etter jetty har startet
@@ -159,30 +151,6 @@ public class MockServer {
         new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository);
     }
 
-
-    protected void addWebResources(HandlerContainer handler) {
-        // Swagger
-        var beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0");
-        beanConfig.setSchemes(new String[] { "http", "https" });
-        beanConfig.setBasePath(API_URI);
-        beanConfig.setTitle("VLMock2 - Virtualiserte Tjenester");
-        beanConfig.setResourcePackage("no.nav");
-        beanConfig.setDescription("REST grensesnitt for VTP.");
-        beanConfig.setScan(true);
-
-        var swaggerPath = "/swagger";
-        var ctx = new WebAppContext(handler, Resource.newClassPathResource(swaggerPath), swaggerPath);
-        ctx.setThrowUnavailableOnStartupException(true);
-        ctx.setLogUrlOnStart(true);
-
-        var defaultServlet = new DefaultServlet();
-        var servletHolder = new ServletHolder(defaultServlet);
-        servletHolder.setInitParameter("dirAllowed", "false");
-
-        ctx.addServlet(servletHolder, swaggerPath);
-
-    }
 
     protected void setConnectors(Server server) {
 

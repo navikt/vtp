@@ -5,16 +5,15 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel(value = "FødselshendelseDto")
+@Schema(name = "FødselshendelseDto")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record FødselshendelseDto(@ApiModelProperty String endringstype,
-                                 @ApiModelProperty String tidligereHendelseId,
-                                 @ApiModelProperty String fnrMor,
-                                 @ApiModelProperty String fnrFar,
-                                 @ApiModelProperty String fnrBarn,
-                                 @ApiModelProperty @JsonProperty("foedselsdato") LocalDate fødselsdato) implements PersonhendelseDto {
+public record FødselshendelseDto(@Schema String endringstype,
+                                 @Schema String tidligereHendelseId,
+                                 @Schema String fnrMor,
+                                 @Schema String fnrFar,
+                                 @Schema String fnrBarn,
+                                 @Schema @JsonProperty("foedselsdato") LocalDate fødselsdato) implements PersonhendelseDto {
 }
 

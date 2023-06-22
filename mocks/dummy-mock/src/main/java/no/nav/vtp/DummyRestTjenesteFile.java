@@ -9,12 +9,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Api(tags = {"Utilities"})
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Utilities")
 @Path("/dummyfile/")
 public class DummyRestTjenesteFile {
 
@@ -26,7 +27,7 @@ public class DummyRestTjenesteFile {
 
     @POST
     @Path("/pdf{var:.*}")
-    @ApiOperation(value = "post", notes = ("Returnerer en pdf"))
+    @Operation(description = "Returnerer en pdf")
     public Response postpdf() throws IOException {
         LOG.info("Lager en forespørsel på DummyRestTjeneste for pdf");
         InputStream is = getClass().getResourceAsStream("/filer/dummy.pdf");
@@ -39,7 +40,7 @@ public class DummyRestTjenesteFile {
 
     @GET
     @Path("/pdf{var:.*}")
-    @ApiOperation(value = "post", notes = ("Returnerer en pdf"))
+    @Operation(description = "Returnerer en pdf")
     public Response getpdf() throws IOException {
         LOG.info("Lager en forespørsel på DummyRestTjeneste for pdf");
         InputStream is = getClass().getResourceAsStream("/filer/dummy.pdf");

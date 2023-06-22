@@ -11,13 +11,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-@Api(tags = {"digdir-krr-proxy"})
+@Tag(name = "digdir-krr-proxy")
 @Path("/digdir")
 public class DigdirKrrProxyMock {
 
@@ -33,7 +33,7 @@ public class DigdirKrrProxyMock {
     @Path("/rest/v1/person")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter kontaktinformasjon for person")
+    @Operation(description = "Henter kontaktinformasjon for person")
     public Response hentKontaktinformasjon(@HeaderParam(HEADER_NAV_PERSONIDENT) @NotNull String fnr,
                                            @HeaderParam(AUTHORIZATION) String authorizationHeader) {
         var spraak = hentUtForetrukketSpråkFraBruker(fnr);

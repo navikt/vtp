@@ -18,10 +18,10 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -29,7 +29,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 @Path("aareg-services/api/v1/arbeidstaker")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(tags = {"AARegister Rest"})
+@Tag(name = "AARegister Rest")
 public class AaregRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(AaregRSV1Mock.class);
@@ -49,15 +49,14 @@ public class AaregRSV1Mock {
     @SuppressWarnings("unused")
     @GET
     @Path("/arbeidsforhold")
-    @ApiOperation(value = "Henter arbeidsforhold for en person")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = HEADER_NAV_PERSONIDENT, required = true, dataType = "string", paramType = "header"),
-            @ApiImplicitParam(name = QPRM_FOM, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = QPRM_TOM, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = ARBEIDSFORHOLDTYPE, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "sporingsinformasjon", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = QPRM_REGELVERK, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "historikk", dataType = "string", paramType = "query")
+    @Operation(description = "Henter arbeidsforhold for en person", parameters = {
+            @Parameter(name = HEADER_NAV_PERSONIDENT, required = true, in = ParameterIn.HEADER),
+            @Parameter(name = QPRM_FOM, in = ParameterIn.QUERY),
+            @Parameter(name = QPRM_TOM, in = ParameterIn.QUERY),
+            @Parameter(name = ARBEIDSFORHOLDTYPE, in = ParameterIn.QUERY),
+            @Parameter(name = "sporingsinformasjon", in = ParameterIn.QUERY),
+            @Parameter(name = QPRM_REGELVERK, in = ParameterIn.QUERY),
+            @Parameter(name = "historikk", in = ParameterIn.QUERY)
     })
     public List<ArbeidsforholdRS> hentArbeidsforholdFor(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         var ident = httpHeaders.getHeaderString(HEADER_NAV_PERSONIDENT);

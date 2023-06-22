@@ -29,8 +29,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.AzureOidcTokenGenerator;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
@@ -38,7 +38,7 @@ import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
-@Api(tags = {"AzureAd"})
+@Tag(name = "AzureAd")
 @Path("/AzureAd")
 public class AADRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AADRestTjeneste.class);
@@ -57,7 +57,7 @@ public class AADRestTjeneste {
     @GET
     @Path("/{tenant}/v2.0/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Azure AD Discovery url", notes = ("Mock impl av Azure AD discovery urlen. "))
+    @Operation(description = "Azure AD Discovery url")
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req, @PathParam("tenant") String tenant) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
@@ -68,7 +68,7 @@ public class AADRestTjeneste {
     @GET
     @Path("/{tenant}/discovery/v2.0/keys")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "azureAd/discovery/keys", notes = ("Mock impl av Azure AD jwk_uri"))
+    @Operation(description = "azureAd/discovery/keys")
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("kall på /oauth2/connect/jwk_uri");
         String jwks = KeyStoreTool.getJwks();
@@ -79,7 +79,7 @@ public class AADRestTjeneste {
     @POST
     @Path("/{tenant}/oauth2/v2.0/token")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "azureAd/access_token", notes = ("Mock impl av Azure AD access_token"))
+    @Operation(description = "azureAd/access_token")
     @SuppressWarnings("unused")
     public Response accessToken(
             @Context HttpServletRequest req,
@@ -111,7 +111,7 @@ public class AADRestTjeneste {
     @GET
     @Path("/{tenant}/v2.0/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
-    @ApiOperation(value = "AzureAD/v2.0/authorize", notes = ("Mock impl av Azure AD authorize"))
+    @Operation(description = "AzureAD/v2.0/authorize")
     @SuppressWarnings("unused")
     public Response authorize(
             @Context HttpServletRequest req,

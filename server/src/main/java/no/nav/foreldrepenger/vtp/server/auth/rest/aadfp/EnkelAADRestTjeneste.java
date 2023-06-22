@@ -27,12 +27,12 @@ import javax.ws.rs.core.UriBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 
-@Api(tags = {"Forenklet AzureAd"})
+@Tag(name = "Forenklet AzureAd")
 @Path("/aadfp")
 public class EnkelAADRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(EnkelAADRestTjeneste.class);
@@ -49,7 +49,7 @@ public class EnkelAADRestTjeneste {
     @GET
     @Path("/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Azure AD Discovery url", notes = ("Mock impl av Azure AD discovery urlen. "))
+    @Operation(description = "Azure AD Discovery url")
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
@@ -63,7 +63,7 @@ public class EnkelAADRestTjeneste {
     @GET
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "azureAd/discovery/keys", notes = ("Mock impl av Azure AD jwk_uri"))
+    @Operation(description = "azureAd/discovery/keys")
     public Response authorize() {
         String jwks = KeyStoreTool.getJwks();
         return Response.ok(jwks).build();
@@ -73,7 +73,7 @@ public class EnkelAADRestTjeneste {
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "azureAd/access_token", notes = ("Mock impl av Azure AD access_token"))
+    @Operation(description = "azureAd/access_token")
     @SuppressWarnings("unused")
     public Response accessToken(@FormParam("grant_type") String grantType,
                                 @FormParam("code") String code,
@@ -101,7 +101,7 @@ public class EnkelAADRestTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "azureAd/access_token", notes = ("Mock impl av Azure AD access_token"))
+    @Operation(description = "azureAd/access_token")
     public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident)  {
         var bruker = Optional.ofNullable(StandardBruker.finnIdent(ident)).orElseThrow();
         var token = createToken(bruker);
@@ -123,7 +123,7 @@ public class EnkelAADRestTjeneste {
     @GET
     @Path("/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
-    @ApiOperation(value = "AzureAD/v2.0/authorize", notes = ("Mock impl av Azure AD authorize"))
+    @Operation(description = "AzureAD/v2.0/authorize")
     @SuppressWarnings("unused")
     public Response authorize(@QueryParam("scope") @DefaultValue("openid") String scope,
                               @QueryParam("client_id") String clientId,

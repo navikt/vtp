@@ -1,15 +1,16 @@
 package no.nav.vtp;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@Api(tags = {"Utilities"})
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name= "Utilities")
 @Path("/dummy/boolean")
 public class DummyRestTjenesteBoolean {
 
@@ -18,7 +19,7 @@ public class DummyRestTjenesteBoolean {
 
     @GET
     @Path("/true/{var:.+}")
-    @ApiOperation(value = "get", notes = ("Returnerer 200 response boolean true"))
+    @Operation(description = "Returnerer 200 response boolean true")
     public Response getTrue() {
         LOG.info("Fikk en forespørsel på DummyRestTjenesteTrue");
         return Response.ok().entity(true).build();
@@ -26,7 +27,7 @@ public class DummyRestTjenesteBoolean {
 
     @GET
     @Path("/false/{var:.+}")
-    @ApiOperation(value = "get", notes = ("Returnerer 200 response boolean false"))
+    @Operation(description = "Returnerer 200 response boolean false")
     public Response getFalse() {
         LOG.info("Fikk en forespørsel på DummyRestTjenesteFalse");
         return Response.ok().entity(false).build();

@@ -15,17 +15,18 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Path("ereg/api/v1/organisasjon")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Api(tags = {"Enhetsregister Rest"})
+@Tag(name = "Enhetsregister Rest")
 public class OrganisasjonRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonRSV1Mock.class);
@@ -38,10 +39,10 @@ public class OrganisasjonRSV1Mock {
     @SuppressWarnings("unused")
     @GET
     @Path("/{orgnummer}")
-    @ApiOperation(value = "Henter adresse informasjon for et organisasjonsnummer")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
+    @Operation(description = "Henter adresse informasjon for et organisasjonsnummer")
+    @Parameters({
+            @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY),
+            @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
     })
     public OrganisasjonResponse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
                                                         @Context HttpHeaders httpHeaders,
@@ -63,10 +64,10 @@ public class OrganisasjonRSV1Mock {
     @SuppressWarnings("unused")
     @GET
     @Path("/{orgnummer}/noekkelinfo")
-    @ApiOperation(value = "Henter noekkelinformasjon for et organisasjonsnummer")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "inkluderHierarki", dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "inkluderHistorikk", dataType = "string", paramType = "query")
+    @Operation(description = "Henter noekkelinformasjon for et organisasjonsnummer")
+    @Parameters({
+            @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY),
+            @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
     })
     public OrganisasjonNoekkelinfo hentOrganisasjonNoekkelinfo(@PathParam("orgnummer") String orgnummer,
                                                                @Context HttpHeaders httpHeaders,

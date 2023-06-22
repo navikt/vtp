@@ -12,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -21,7 +21,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
 @Deprecated(forRemoval = true)
-@Api(tags = {"dkif"})
+@Tag(name = "dkif")
 @Path("/api/v1/personer")
 public class DigitalKontaktinformasjonMock {
     private static final Logger LOG = LoggerFactory.getLogger(DigitalKontaktinformasjonMock.class);
@@ -39,7 +39,7 @@ public class DigitalKontaktinformasjonMock {
     @Path("/kontaktinformasjon")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "", notes = "Henter kontaktinformasjon for bruker")
+    @Operation(description = "Henter kontaktinformasjon for bruker")
     public DigitalKontaktinfoResponsDto hentKontaktinformasjon(@HeaderParam(HEADER_NAV_PERSONIDENT) String fnr,
                                            @HeaderParam(AUTHORIZATION) String authorizationHeader,
                                            @HeaderParam(NAV_CALLID) String navCallid,

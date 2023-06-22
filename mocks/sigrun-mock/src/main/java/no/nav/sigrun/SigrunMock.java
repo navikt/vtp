@@ -15,15 +15,15 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Oppføring;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-@Api(tags = {"Sigrun/beregnetskatt"})
+@Tag(name = "Sigrun/beregnetskatt")
 @Path("/api/beregnetskatt")
 public class SigrunMock {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
@@ -39,7 +39,7 @@ public class SigrunMock {
     @SuppressWarnings("unused")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "beregnetskatt", notes = ("Returnerer beregnetskatt fra Sigrun"))
+    @Operation(description = "Returnerer beregnetskatt fra Sigrun")
     public Response buildPermitResponse(@Context UriInfo ui, @Context HttpHeaders httpHeaders) {
 
         String brukerFnr = null;
