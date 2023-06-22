@@ -49,7 +49,7 @@
         <cxf.version>3.5.4</cxf.version>
         <apache.httpcomponents>4.5.14</apache.httpcomponents>
         <swagger-codegen-maven-plugin.version>3.0.41</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
-        <graphql-java.version>20.2</graphql-java.version>
+        <graphql-java.version>20.4</graphql-java.version>
         <graphql-scalar-java.version>20.2</graphql-scalar-java.version>
     </properties>
 
