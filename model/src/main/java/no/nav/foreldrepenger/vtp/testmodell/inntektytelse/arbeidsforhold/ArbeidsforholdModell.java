@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ArbeidsforholdModell(List<Arbeidsforhold> arbeidsforhold) {
 
@@ -12,7 +13,7 @@ public record ArbeidsforholdModell(List<Arbeidsforhold> arbeidsforhold) {
     }
 
     @JsonCreator
-    public ArbeidsforholdModell(List<Arbeidsforhold> arbeidsforhold) {
+    public ArbeidsforholdModell(@JsonProperty("arbeidsforhold") List<Arbeidsforhold> arbeidsforhold) {
         this.arbeidsforhold = Optional.ofNullable(arbeidsforhold).orElse(List.of());
     }
 }

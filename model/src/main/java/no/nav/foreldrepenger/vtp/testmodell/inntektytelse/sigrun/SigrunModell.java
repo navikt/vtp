@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record SigrunModell(List<Inntektsår> inntektsår) {
 
@@ -12,7 +13,7 @@ public record SigrunModell(List<Inntektsår> inntektsår) {
     }
 
     @JsonCreator
-    public SigrunModell(List<Inntektsår> inntektsår) {
+    public SigrunModell(@JsonProperty("inntektsår") List<Inntektsår> inntektsår) {
         this.inntektsår = Optional.ofNullable(inntektsår).orElse(List.of());
     }
 }
