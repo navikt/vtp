@@ -12,5 +12,11 @@
     <name>VTP ::dkif-mock</name>
     <packaging>jar</packaging>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
