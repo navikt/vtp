@@ -4,15 +4,6 @@ import static no.nav.medl2.rest.api.v1.MedlemskapsunntakApiParams.API_OPERATION_
 import static no.nav.medl2.rest.api.v1.MedlemskapsunntakApiParams.API_OPERATION_MEDLEMSKAPSUNNTAK_I_PERIODE;
 import static no.nav.medl2.rest.api.v1.MedlemskapsunntakApiParams.API_PARAM_INKLUDER_SPORINGSINFO;
 import static no.nav.medl2.rest.api.v1.MedlemskapsunntakApiParams.API_PARAM_UNNTAK_ID;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.HEADER_NAV_CALL_ID;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.HEADER_NAV_CONSUMER_ID;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.HEADER_NAV_PERSONIDENT;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_EKSKLUDER_KILDER;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_FRA_OG_MED;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_INKLUDER_SPORINGSINFO;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_STATUSER;
-import static no.nav.tjenester.medlemskapsunntak.api.v1.HttpRequestConstants.PARAM_TIL_OG_MED;
-
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -32,13 +23,21 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.tjenester.medlemskapsunntak.api.v1.Medlemskapsunntak;
 
 @Path("medl2/api/v1/medlemskapsunntak")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Medlemskapsunntak")
 public class MedlemskapsunntakMock {
+
+    private static final String HEADER_NAV_CONSUMER_ID = "Nav-Consumer-Id";
+    private static final String HEADER_NAV_CALL_ID = "Nav-Call-Id";
+    private static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
+    private static final String PARAM_FRA_OG_MED = "fraOgMed";
+    private static final String PARAM_TIL_OG_MED = "tilOgMed";
+    private static final String PARAM_STATUSER = "statuser";
+    private static final String PARAM_EKSKLUDER_KILDER = "ekskluderKilder";
+    private static final String PARAM_INKLUDER_SPORINGSINFO = "inkluderSporingsinfo";
 
     @Context
     private TestscenarioBuilderRepository scenarioRepository;

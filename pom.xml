@@ -320,11 +320,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.tjenester</groupId>
-                <artifactId>medlemskapsunntak-api-v1</artifactId>
-                <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
                 <artifactId>tilbakekreving-v1-tjenestespesifikasjon</artifactId>
                 <version>1.0.4</version>
                 <classifier>jaxws</classifier>

@@ -11,11 +11,4 @@
     <packaging>jar</packaging>
     <name>VTP ::medl-mock</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>no.nav.tjenester</groupId>
-            <artifactId>medlemskapsunntak-api-v1</artifactId>
-        </dependency>
-    </dependencies>
-
 </project>
