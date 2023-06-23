@@ -35,15 +35,13 @@ public class HentPersonWiring {
                                 .anyMatch(felt -> felt.toString().contains("name='navn'")
                                         && felt.toString().contains("Argument{name='historikk', value=BooleanValue{value=true}"));
 
-                        LOG.info("query hentPerson for ident={}, historikk", ident);
-
                         var person = coordinator.hentPerson(ident, historikk);
                         if (person == null) {
                             return DataFetcherResult.newResult()
                                     .error(ErrorCode.NOT_FOUND.construct(environment, "Fant ikke person"))
                                     .build();
                         }
-                        LOG.info("person hentet for ident={}", ident);
+                        LOG.info("Personinfo hentet fra pdl for ident={}", ident);
 
                         return person;
                     } catch (PdlFunctionalException e) {

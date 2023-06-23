@@ -36,7 +36,7 @@ public class HentGeografiskTilknytningWiring {
                                     .build();
                         }
 
-                        LOG.info("Geografisk Tilknytning hentet for ident={}", ident);
+                        LOG.info("Geografisk Tilknytning hentet fra pdl for ident={}", ident);
                         return geografiskTilknytning;
                     } catch (PdlFunctionalException e) {
                         return DataFetcherResult.newResult()
