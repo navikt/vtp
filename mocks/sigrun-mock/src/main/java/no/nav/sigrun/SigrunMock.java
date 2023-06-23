@@ -24,7 +24,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
 @Tag(name = "Sigrun/beregnetskatt")
-@Path("/api/beregnetskatt")
+@Path("/api")
 public class SigrunMock {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
     private static final String X_NATURLIGIDENT_HEADER = "x-naturligident";
@@ -38,6 +38,7 @@ public class SigrunMock {
 
     @SuppressWarnings("unused")
     @GET
+    @Path("/beregnetskatt")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer beregnetskatt fra Sigrun")
     public Response buildPermitResponse(@Context UriInfo ui, @Context HttpHeaders httpHeaders) {
@@ -90,5 +91,13 @@ public class SigrunMock {
             return Response.status(404, "Kunne ikke finne bruker").build();
         }
         return Response.status(200).entity(response).build();
+    }
+
+    @GET
+    @Path("/v1/summertskattegrunnlag")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Returnerer tom respons ved ved oppskal av summertskattegrunmlag fra Sigrun")
+    public Response dummySummertSkattGrunnlag(@Context UriInfo ui, @Context HttpHeaders httpHeaders) {
+        return Response.noContent().build();
     }
 }

@@ -34,7 +34,6 @@ public class HentIdenterWiring {
                                     try {
                                         var ident = (String) environment.getArgument("ident");
                                         var grupper = (List<String>) environment.getArgument("grupper");
-                                        LOG.info("query hentPerson for ident={}", ident);
 
                                         Identliste identliste = coordinator.hentIdenter(ident, grupper);
                                         if (identliste == null) {
@@ -42,8 +41,7 @@ public class HentIdenterWiring {
                                                     .error(ErrorCode.NOT_FOUND.construct(environment, "Fant ikke person"))
                                                     .build();
                                         }
-                                        LOG.info("blaba hentet for ident={}", ident);
-
+                                        LOG.info("Identer hentet fra pdl {} for ident={}", grupper, ident);
                                         return identliste;
                                     } catch (PdlFunctionalException e) {
                                         return DataFetcherResult.newResult()

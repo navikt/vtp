@@ -22,7 +22,7 @@ public class DokdistfordelingMock {
     @POST
     @Operation(description = "distribuer journalpost")
     public Response distribuerjournalpost(DistribuerJournalpostRequestToModel request) {
-        LOG.info("Distribuer journalpost request: [{}]", request);
+        LOG.info("Distribuer journalpost med jouralpostId {} for fagsystem {}", request.getJournalpostId(), request.getBestillendeFagsystem());
 
         DistribuerJournalpostResponseToModel response = new DistribuerJournalpostResponseToModel();
         response.setBestillingsId(UUID.randomUUID().toString());

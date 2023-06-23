@@ -20,10 +20,10 @@ import no.nav.pdl.hentGeografiskTilknytning.HentGeografiskTilknytningCoordinator
 import no.nav.pdl.hentGeografiskTilknytning.HentGeografiskTilknytningWiring;
 import no.nav.pdl.hentIdenter.HentIdenterCoordinatorFunction;
 import no.nav.pdl.hentIdenter.HentIdenterWiring;
-import no.nav.pdl.hentIdenterBolk.HentIdenterBolkCoordinatorFunction;
 import no.nav.pdl.hentIdenterBolk.HentIdenterBolkWiring;
 import no.nav.pdl.hentperson.HentPersonCoordinatorFunction;
 import no.nav.pdl.hentperson.HentPersonWiring;
+import no.nav.pdl.hentpersonBolk.HentPersonBolkWiring;
 
 public class PdlGraphqlTjeneste {
 
@@ -33,6 +33,7 @@ public class PdlGraphqlTjeneste {
     private final TestscenarioBuilderRepository scenarioRepository;
 
     private GraphQLSchema hentPersonGraphqlSchema;
+    private GraphQLSchema hentPersonBolkGraphqlSchema;
     private GraphQLSchema hentGeografiskTilknytningGraphqlSchema;
     private GraphQLSchema hentIdenterGraphqlSchema;
     private GraphQLSchema hentIdenterBolkGraphqlSchema;
@@ -62,6 +63,9 @@ public class PdlGraphqlTjeneste {
         var hentPersonWiring = HentPersonWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonWiring);
 
+        var hentPersonBolkWiring = HentPersonBolkWiring.lagRuntimeWiring(hentPersonCoordinator);
+        hentPersonBolkGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonBolkWiring);
+
         var hentGeografiskTilknytningCoordinator = HentGeografiskTilknytningCoordinatorFunction.opprettCoordinator(scenarioRepository);
         var hentGeografiskTilknyningWiring = HentGeografiskTilknytningWiring.lagRuntimeWiring(hentGeografiskTilknytningCoordinator);
         hentGeografiskTilknytningGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentGeografiskTilknyningWiring);
@@ -70,13 +74,16 @@ public class PdlGraphqlTjeneste {
         var hentIdenterWiring = HentIdenterWiring.lagRuntimeWiring(hentIdenterCoordinator);
         hentIdenterGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterWiring);
 
-        var hentIdenterBolkCoordinator = HentIdenterBolkCoordinatorFunction.opprettCoordinator(scenarioRepository);
-        var hentIdenterBolkWiring = HentIdenterBolkWiring.lagRuntimeWiring(hentIdenterBolkCoordinator);
+        var hentIdenterBolkWiring = HentIdenterBolkWiring.lagRuntimeWiring(hentIdenterCoordinator);
         hentIdenterBolkGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterBolkWiring);
     }
 
     ExecutionResult hentPerson(GraphQLRequest request) {
         return byggExecutionResult(request, hentPersonGraphqlSchema);
+    }
+
+    ExecutionResult hentPersonBolk(GraphQLRequest request) {
+        return byggExecutionResult(request, hentPersonBolkGraphqlSchema);
     }
 
     ExecutionResult hentGeografiskTilknytning(GraphQLRequest request) {
