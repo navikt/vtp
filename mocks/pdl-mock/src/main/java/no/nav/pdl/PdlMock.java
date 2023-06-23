@@ -52,7 +52,6 @@ public class PdlMock {
                                               @HeaderParam(NAV_CALLID) String navCallid,
                                               @HeaderParam(NAV_CONSUMER_ID) String navConsumerId,
                                               GraphQLRequest request) {
-
         var operationName = hentOperationName(request);
         if ("hentPerson".equals(operationName)) {
             var executionResult = graphqlTjeneste.hentPerson(request);
@@ -68,6 +67,10 @@ public class PdlMock {
         }
         if ("hentIdenterBolk".equals(operationName)) {
             var executionResult = graphqlTjeneste.hentIdenterBolk(request);
+            return executionResult.toSpecification();
+        }
+        if ("hentPersonBolk".equals(operationName)) {
+            var executionResult = graphqlTjeneste.hentPersonBolk(request);
             return executionResult.toSpecification();
         }
         throw new NotImplementedException("Operasjon er ikke implementert:" + operationName);
