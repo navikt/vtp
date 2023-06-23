@@ -1,4 +1,4 @@
-package no.nav.dkif;
+package no.nav.digdir;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,9 +13,8 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-public class DKIFOgDigdirKrrProxyTjenesteTest {
+public class DigdirKrrProxyMockTest {
 
-    private static DigitalKontaktinformasjonMock digitalKontaktinformasjonMock;
     private static DigdirKrrProxyMock digdirKrrProxyMock;
     private static SøkerModell søker;
 
@@ -24,7 +23,6 @@ public class DKIFOgDigdirKrrProxyTjenesteTest {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();
-        digitalKontaktinformasjonMock = new DigitalKontaktinformasjonMock();
         digdirKrrProxyMock = new DigdirKrrProxyMock();
 
         var testscenarioObjekt = testscenarioHenter.hentScenario("1");
@@ -32,15 +30,6 @@ public class DKIFOgDigdirKrrProxyTjenesteTest {
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
         søker = testscenario.getPersonopplysninger().getSøker();
     }
-
-    @Test
-    void hentSpråkFraDKIF() {
-        var response = digitalKontaktinformasjonMock.hentKontaktinformasjon(søker.getIdent(), null, null, null);
-
-        assertThat(response).isNotNull();
-        assertThat(response.getSpraak(søker.getIdent()).get()).isEqualTo("NB");
-    }
-
 
     @Test
     void hentSpråkFraDigdirKrrProxy() {

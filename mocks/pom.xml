@@ -30,7 +30,7 @@
         <module>organisasjon-mock</module>
         <module>sigrun-mock</module>
         <module>pdl-mock</module>
-        <module>dkif-mock</module>
+        <module>digdir-mock</module>
         <module>infotrygd-paaroerende-sykdom-mock</module>
         <module>omsorgspenger-rammemeldinger-mock</module>
         <module>skjermet-person-mock</module>

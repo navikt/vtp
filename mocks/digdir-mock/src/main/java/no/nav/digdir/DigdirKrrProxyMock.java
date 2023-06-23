@@ -1,4 +1,4 @@
-package no.nav.dkif;
+package no.nav.digdir;
 
 import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
