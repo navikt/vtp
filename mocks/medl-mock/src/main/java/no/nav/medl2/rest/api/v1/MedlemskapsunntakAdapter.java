@@ -7,11 +7,8 @@ import java.util.Set;
 
 import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapperiodeModell;
 import no.nav.foreldrepenger.vtp.testmodell.medlemskap.PeriodeStatus;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.tjenester.medlemskapsunntak.api.v1.Medlemskapsunntak;
-import no.nav.tjenester.medlemskapsunntak.api.v1.Sporingsinformasjon;
 
 public class MedlemskapsunntakAdapter {
 
@@ -23,10 +20,8 @@ public class MedlemskapsunntakAdapter {
 
     public List<Medlemskapsunntak> finnMedlemsunntak(String aktørId) {
         if (aktørId != null) {
-            BrukerModell brukerModell = scenarioRepository.getPersonIndeks().finnByAktørIdent(aktørId);
-            if (brukerModell instanceof PersonModell) {
-                PersonModell pm = (PersonModell)brukerModell;
-
+            var brukerModell = scenarioRepository.getPersonIndeks().finnByAktørIdent(aktørId);
+            if (brukerModell instanceof PersonModell pm) {
                 List<Medlemskapsunntak> periodeListe = new ArrayList<>();
                 if(pm.getMedlemskap() != null && pm.getMedlemskap().getPerioder() != null) {
                     pm.getMedlemskap().getPerioder().forEach(medlemsskapsperiode -> periodeListe.add(tilMedlemsperiode(medlemsskapsperiode)));
@@ -37,20 +32,18 @@ public class MedlemskapsunntakAdapter {
         return Collections.emptyList();
     }
 
-    private Medlemskapsunntak tilMedlemsperiode(MedlemskapperiodeModell medlemsskapsperiode) {
-        return Medlemskapsunntak.builder()
-                .medlem(Set.of(PeriodeStatus.INNV, PeriodeStatus.GYLD).contains(medlemsskapsperiode.status()))
-                .fraOgMed(medlemsskapsperiode.fom())
-                .tilOgMed(medlemsskapsperiode.tom())
-                .dekning(medlemsskapsperiode.trygdedekning().kode())
-                .lovvalg(medlemsskapsperiode.lovvalgType().name())
-                .lovvalgsland(medlemsskapsperiode.land().getKode())
-                .status(medlemsskapsperiode.status().name())
-                .unntakId(medlemsskapsperiode.id())
-                .sporingsinformasjon(Sporingsinformasjon.builder()
-                        .kilde(medlemsskapsperiode.kilde().name())
-                        .besluttet(medlemsskapsperiode.besluttetDato())
-                        .build())
-                .build();
+    private Medlemskapsunntak tilMedlemsperiode(MedlemskapperiodeModell medlPeriode) {
+        return new Medlemskapsunntak(
+                medlPeriode.id(),
+                medlPeriode.fom(),
+                medlPeriode.tom(),
+                medlPeriode.trygdedekning().kode(),
+                null,
+                medlPeriode.lovvalgType().name(),
+                medlPeriode.land().getKode(),
+                null,
+                Set.of(PeriodeStatus.INNV, PeriodeStatus.GYLD).contains(medlPeriode.status()),
+                new Medlemskapsunntak.Sporingsinformasjon(medlPeriode.besluttetDato(), medlPeriode.kilde().name()),
+                null);
     }
 }
