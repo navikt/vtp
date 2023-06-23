@@ -11,15 +11,4 @@
     <name>VTP ::infotrygd-mock</name>
     <packaging>jar</packaging>
 
-	<dependencies>
-        <!-- 3dje parts biblioteker -->
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-http-spi</artifactId>
-        </dependency>
-	</dependencies>
 </project>

@@ -12,24 +12,9 @@
     <name>VTP ::medl-mock</name>
 
     <dependencies>
-        <!-- 3dje parts NAV felleskomponenter -->
         <dependency>
             <groupId>no.nav.tjenester</groupId>
             <artifactId>medlemskapsunntak-api-v1</artifactId>
-        </dependency>
-
-        <!-- 3dje parts biblioteker -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-http-spi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
     </dependencies>
 

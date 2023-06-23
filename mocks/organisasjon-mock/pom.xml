@@ -12,15 +12,4 @@
 	<name>VTP ::organisasjon-mock</name>
 	<packaging>jar</packaging>
 
-	<dependencies>
-		<!-- 3dje parts biblioteker -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-http-spi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.ws.rs</groupId>
-			<artifactId>javax.ws.rs-api</artifactId>
-		</dependency>
-	</dependencies>
 </project>

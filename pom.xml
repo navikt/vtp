@@ -46,8 +46,9 @@
         <!--    Eksterne avhengigheter    -->
         <avro.version>1.11.1</avro.version>
         <confluent.version>7.4.0</confluent.version>
+        <zookeeper.version>3.8.1</zookeeper.version>
         <cxf.version>3.5.4</cxf.version>
-        <apache.httpcomponents>4.5.14</apache.httpcomponents>
+        <jaxws.version>2.3.5</jaxws.version>
         <swagger-codegen-maven-plugin.version>3.0.41</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>20.4</graphql-java.version>
         <graphql-scalar-java.version>20.2</graphql-scalar-java.version>
@@ -74,25 +75,11 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcomponents-client</artifactId>
-                <version>${apache.httpcomponents}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- fjernet fra SE i Java11 -->
             <dependency>
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-rt</artifactId>
-                <version>2.3.5</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>2.1.1</version>
+                <version>${jaxws.version}</version>
             </dependency>
 
             <!-- CXF - for å kunne stubbe WS-trust -->
@@ -102,18 +89,12 @@
                 <version>${cxf.version}</version>
             </dependency>
 
+            <!-- Kafka -->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka_2.12</artifactId>
                 <version>${kafka.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>net.shibboleth.utilities</groupId>
-                <artifactId>java-support</artifactId>
-                <version>8.0.0</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro</artifactId>
@@ -127,13 +108,7 @@
             <dependency>
                 <groupId>org.apache.zookeeper</groupId>
                 <artifactId>zookeeper</artifactId>
-                <version>3.8.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>8.0.1</version>
+                <version>${zookeeper.version}</version>
             </dependency>
 
             <dependency>
@@ -170,18 +145,6 @@
                 <groupId>org.jvnet.jaxb2_commons</groupId>
                 <artifactId>jaxb2-basics-runtime</artifactId>
                 <version>1.11.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>1.9.4</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-logging</groupId>
-                        <artifactId>commons-logging</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- Interne prosjektavhengigheter -->
@@ -402,14 +365,17 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
