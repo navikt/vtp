@@ -12,11 +12,5 @@
     <artifactId>skjermet-person-mock</artifactId>
     <name>VTP ::skjermet-person-mock</name>
     <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>
