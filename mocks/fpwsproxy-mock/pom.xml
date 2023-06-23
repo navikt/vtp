@@ -22,11 +22,6 @@
             <artifactId>fp-ws-proxy-v1</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>oppdrag-mock</artifactId> <!-- TODO: Fjern denne avhengigheten etter flytt og sanering-->
         </dependency>
