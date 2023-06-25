@@ -1,16 +1,16 @@
 package no.nav.foreldrepenger.vtp.server.auth.soap.sts;
 
-import javax.annotation.Resource;
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.ws.Action;
-import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.soap.Addressing;
+import jakarta.annotation.Resource;
+import jakarta.jws.HandlerChain;
+import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebResult;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.ws.Action;
+import jakarta.xml.ws.WebServiceContext;
+import jakarta.xml.ws.soap.Addressing;
 
 import org.apache.cxf.ws.security.sts.provider.SecurityTokenService;
 import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenCollectionType;

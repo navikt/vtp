@@ -58,6 +58,7 @@
                                     <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
                                 </EpochMillis>
                             </customAnnotationsMapping>
+                            <modelValidationAnnotation>@jakarta.validation.constraints.NotNull</modelValidationAnnotation>
                         </configuration>
                     </execution>
                     <execution>
@@ -79,6 +80,7 @@
                                     <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
                                 </EpochMillis>
                             </customAnnotationsMapping>
+                            <modelValidationAnnotation>@jakarta.validation.constraints.NotNull</modelValidationAnnotation>
                         </configuration>
                     </execution>
                 </executions>

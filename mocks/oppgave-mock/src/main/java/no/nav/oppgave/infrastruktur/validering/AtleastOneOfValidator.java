@@ -2,8 +2,8 @@ package no.nav.oppgave.infrastruktur.validering;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @SuppressWarnings("WeakerAccess")
 public class AtleastOneOfValidator implements ConstraintValidator<AtleastOneOf, Object> {
