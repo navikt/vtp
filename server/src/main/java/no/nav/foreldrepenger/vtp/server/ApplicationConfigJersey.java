@@ -51,8 +51,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import no.nav.axsys.AxsysEnhetstilgangMock;
-import no.nav.dkif.DigdirKrrProxyMock;
-import no.nav.dkif.DigitalKontaktinformasjonMock;
+import no.nav.digdir.DigdirKrrProxyMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
@@ -154,7 +153,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(PdlMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
-        classes.add(DigitalKontaktinformasjonMock.class);
         classes.add(DigdirKrrProxyMock.class);
         classes.add(AxsysEnhetstilgangMock.class);
         classes.add(SkjermetPersonMock.class);
@@ -260,7 +258,9 @@ public class ApplicationConfigJersey extends ResourceConfig {
                 logMsg.append("\n\t").append(header).append("=").append(req.getHeader(header));
             }
             var logMessage = logMsg.toString();
+
             log.warn(logMessage);
+
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
         }
     }

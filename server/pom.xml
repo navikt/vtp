@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>dkif-mock</artifactId>
+            <artifactId>digdir-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
