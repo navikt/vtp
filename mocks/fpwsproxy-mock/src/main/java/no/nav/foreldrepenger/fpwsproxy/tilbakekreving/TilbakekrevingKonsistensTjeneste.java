@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.fpwsproxy.tilbakekreving;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import jakarta.ws.rs.POST;
@@ -18,7 +19,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
 @Path("/api/tilbakekreving")
 public class TilbakekrevingKonsistensTjeneste {
 
-    private static final Random RANDOM =  new Random();
+    private static final Random RANDOM =  new SecureRandom();
 
     private static int sisteSaksnummer = genererTilfeldigSaksnummer();
     private static String sisteHenvisning = "1";
