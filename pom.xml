@@ -72,11 +72,6 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <dependency>
-                <groupId>com.sun.xml.ws</groupId>
-                <artifactId>jaxws-rt</artifactId>
-                <version>${jaxws.version}</version>
-            </dependency>
 
             <!-- Kafka -->
             <dependency>
@@ -307,10 +302,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-rt</artifactId>
-        </dependency>
         <!--    TEST    -->
         <dependency>
             <groupId>org.assertj</groupId>
