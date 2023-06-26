@@ -43,7 +43,6 @@
 
         <!--    Eksterne avhengigheter    -->
 
-        <cxf.version>4.0.2</cxf.version>
         <jaxws.version>3.0.2</jaxws.version>
         <swagger-codegen-maven-plugin.version>3.0.45</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>21.0</graphql-java.version>
@@ -77,13 +76,6 @@
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-rt</artifactId>
                 <version>${jaxws.version}</version>
-            </dependency>
-
-            <!-- CXF - for å kunne stubbe WS-trust -->
-            <dependency>
-                <groupId>org.apache.cxf.services.sts</groupId>
-                <artifactId>cxf-services-sts-core</artifactId>
-                <version>${cxf.version}</version>
             </dependency>
 
             <!-- Kafka -->
@@ -238,11 +230,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>oppdrag-mock</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>oppgave-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -315,18 +302,7 @@
                 <artifactId>aordningen-inntektsinformasjon-v1</artifactId>
                 <version>1.7</version>
             </dependency>
-            <dependency>
-                <groupId>no.nav.tjenester</groupId>
-                <artifactId>tilbakekreving-v1-tjenestespesifikasjon</artifactId>
-                <version>1.0.4</version>
-                <classifier>jaxws</classifier>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.oppdrag.tjenester</groupId>
-                <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
-                <version>1.0.5</version>
-                <classifier>jaxws</classifier>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -28,7 +28,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import no.nav.foreldrepenger.util.KeystoreUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
@@ -116,9 +115,6 @@ public class MockServer {
         addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, handler);
 
         startServer();
-
-        // kjør soap oppsett etter jetty har startet
-        //addSoapServices(testScenarioRepository);
     }
 
     private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
@@ -145,10 +141,6 @@ public class MockServer {
     protected void startServer() throws Exception {
         server.start();
         jettyHttpServer = new JettyHttpServer(server, true);
-    }
-
-    protected void addSoapServices(TestscenarioBuilderRepository testScenarioRepository) {
-        new SoapWebServiceConfig(jettyHttpServer).setup(testScenarioRepository);
     }
 
 

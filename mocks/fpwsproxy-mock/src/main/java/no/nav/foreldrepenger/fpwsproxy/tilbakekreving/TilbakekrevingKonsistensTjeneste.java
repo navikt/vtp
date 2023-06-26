@@ -1,4 +1,4 @@
-package no.nav.okonomi.tilbakekrevingservice;
+package no.nav.foreldrepenger.fpwsproxy.tilbakekreving;
 
 import java.util.Random;
 
@@ -14,7 +14,6 @@ import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
  * Tjenesten tar vare på siste saksnummer og henvisning (behandlingId) fra Autotest,
  * slik at de kan sendes tilbake i genererte kravgrunnlag som da vil være konsistente med siste kjente sak.
  */
-// TODO: Flytt over til fpwsproxy-mock/tilbakekreving etter sannering
 @Tag(name = "Tilbakekreving")
 @Path("/api/tilbakekreving")
 public class TilbakekrevingKonsistensTjeneste {
