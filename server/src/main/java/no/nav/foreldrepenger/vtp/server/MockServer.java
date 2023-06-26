@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.LogManager;
 
-import org.eclipse.jetty.http.spi.JettyHttpServer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
 import org.eclipse.jetty.server.HttpConfiguration;

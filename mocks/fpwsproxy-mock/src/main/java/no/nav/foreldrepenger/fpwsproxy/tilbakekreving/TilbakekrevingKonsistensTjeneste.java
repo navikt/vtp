@@ -24,10 +24,13 @@ public class TilbakekrevingKonsistensTjeneste {
     private static int sisteSaksnummer = genererTilfeldigSaksnummer();
     private static String sisteHenvisning = "1";
 
+    private TilbakekrevingKonsistensTjeneste() {
+    }
+
     @POST
     @Path("/konsistens")
     @Operation(description = "Sørger for at kravgrunnlag som returneres av mock har riktig saksnummer og henvisning")
-    public Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
+    public static Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
         sisteSaksnummer = Integer.parseInt(request.saksnummer());
         sisteHenvisning = request.behandlingId();
         return Response.status(200).build();
