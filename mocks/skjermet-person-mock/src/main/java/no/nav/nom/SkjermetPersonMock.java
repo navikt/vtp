@@ -1,5 +1,9 @@
 package no.nav.nom;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,5 +32,17 @@ public class SkjermetPersonMock {
     }
 
 
+    @POST
+    @Path("/skjermetBulk")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Map<String, Boolean> isSkjermetBulk(SkjermetBulkRequestDto request) {
+        Map<String, Boolean> response = new LinkedHashMap<>();
+        request.personidenter().forEach(pi -> response.put(pi, false));
+        return response;
+    }
+
     record SkjermetRequestDto(String personident) { }
+
+    record SkjermetBulkRequestDto(List<String> personidenter) { }
 }
