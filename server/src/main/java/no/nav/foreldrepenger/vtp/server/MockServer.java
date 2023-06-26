@@ -50,7 +50,6 @@ public class MockServer {
     private final LdapServer ldapServer;
     private final LocalKafkaServer kafkaServer;
     private Server server;
-    private JettyHttpServer jettyHttpServer;
     private String host = HTTP_HOST;
 
     static {
@@ -140,7 +139,6 @@ public class MockServer {
 
     protected void startServer() throws Exception {
         server.start();
-        jettyHttpServer = new JettyHttpServer(server, true);
     }
 
 

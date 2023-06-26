@@ -27,7 +27,7 @@ public class TilbakekrevingKonsistensTjeneste {
     @POST
     @Path("/konsistens")
     @Operation(description = "Sørger for at kravgrunnlag som returneres av mock har riktig saksnummer og henvisning")
-    public static Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
+    public Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
         sisteSaksnummer = Integer.parseInt(request.saksnummer());
         sisteHenvisning = request.behandlingId();
         return Response.status(200).build();
