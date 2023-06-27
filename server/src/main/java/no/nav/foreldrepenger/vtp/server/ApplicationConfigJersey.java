@@ -51,6 +51,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import no.nav.axsys.AxsysEnhetstilgangMock;
+import no.nav.axsys.AxsysEnhetstilgangV2Mock;
 import no.nav.digdir.DigdirKrrProxyMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -155,6 +156,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(DokdistfordelingMock.class);
         classes.add(DigdirKrrProxyMock.class);
         classes.add(AxsysEnhetstilgangMock.class);
+        classes.add(AxsysEnhetstilgangV2Mock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(UføreMock.class);
         classes.add(FpWsProxyArenaMock.class);
