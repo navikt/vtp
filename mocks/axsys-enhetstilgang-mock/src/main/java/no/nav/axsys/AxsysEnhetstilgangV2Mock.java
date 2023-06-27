@@ -15,8 +15,6 @@ import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -49,8 +47,8 @@ public class AxsysEnhetstilgangV2Mock {
     }
 
     record AxsysEnhetDto(String enhetId,
-                         @JsonProperty("navn") String enhetNavn,
-                         @JsonProperty("fagomrader") Set<String> fagområder) {}
+                         String navn,
+                         Set<String> temaer) {}
 
     record AxsysTilgangDto(List<AxsysEnhetDto> enheter) {}
 }
