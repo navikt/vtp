@@ -306,10 +306,11 @@
                 <artifactId>fp-ws-proxy-v1</artifactId>
                 <version>${fp-kontrakter.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>no.nav.dok</groupId>
-                <artifactId>dok-journalfoering-hendelse-v1</artifactId>
-                <version>0.0.3</version>
+                <groupId>no.nav.teamdokumenthandtering</groupId>
+                <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
+                <version>96ec5ebb</version>
             </dependency>
 
             <dependency>
