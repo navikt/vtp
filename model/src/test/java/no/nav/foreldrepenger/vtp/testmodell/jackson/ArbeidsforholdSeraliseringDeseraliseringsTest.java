@@ -71,7 +71,7 @@ class ArbeidsforholdSeraliseringDeseraliseringsTest extends TestscenarioSerializ
     private Arbeidsforhold lagArbeidsforhold() {
         return new Arbeidsforhold(List.of(lagArbeidsavtale()), List.of(lagPermisjon()), "123456789",
                 10000L, LocalDate.now(), LocalDate.now(), Arbeidsforholdstype.MARITIMT_ARBEIDSFORHOLD,
-                List.of(lagAntallTimerIPerioden()), "90807060", "90807061", "99123456789");
+                List.of(lagAntallTimerIPerioden()), "90807060", "90807061", "99123456789", null);
     }
 
     private Permisjon lagPermisjon() {

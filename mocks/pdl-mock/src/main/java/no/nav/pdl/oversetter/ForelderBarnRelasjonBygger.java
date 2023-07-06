@@ -18,6 +18,10 @@ public class ForelderBarnRelasjonBygger {
     }
 
     public static Person byggForelderBarnRelasjoner(String aktørIdent, Personopplysninger personopplysningerModell, Person person) {
+        if (personopplysningerModell == null) {
+            return person;
+        }
+
         person.setForelderBarnRelasjon(new ArrayList<>()); // init array
         person.setForelderBarnRelasjon(new ArrayList<>()); // init array
 

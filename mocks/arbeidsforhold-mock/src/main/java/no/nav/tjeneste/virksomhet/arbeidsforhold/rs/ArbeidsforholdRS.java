@@ -39,7 +39,7 @@ public class ArbeidsforholdRS {
         this.registrert = arbeidsforhold.ansettelsesperiodeFom();
         this.type = arbeidsforhold.arbeidsforholdstype().getKode();
         this.ansettelsesperiode = new AnsettelsesperiodeRS(new PeriodeRS(arbeidsforhold.ansettelsesperiodeFom(), arbeidsforhold.ansettelsesperiodeTom()));
-        this.arbeidsgiver = new OpplysningspliktigArbeidsgiverRS(arbeidsforhold.arbeidsgiverOrgnr(), arbeidsforhold.arbeidsgiverAktorId());
+        this.arbeidsgiver = new OpplysningspliktigArbeidsgiverRS(arbeidsforhold.arbeidsgiverOrgnr(), arbeidsforhold.aktorIDArbeidsgiver());
         this.permisjonPermitteringer = arbeidsforhold.permisjoner().stream()
                 .map(PermisjonPermitteringRS::new)
                 .collect(Collectors.toList());

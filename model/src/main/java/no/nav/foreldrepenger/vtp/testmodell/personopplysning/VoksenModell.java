@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class VoksenModell extends PersonModell {
 
+    @Deprecated
     @JsonProperty("harUføretrygd")
     private boolean harUføretrygd;
 
@@ -18,6 +19,7 @@ public abstract class VoksenModell extends PersonModell {
         setKjønn(kjønn);
     }
 
+    @Deprecated
     public boolean harUføretrygd() {
         return harUføretrygd;
     }

@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
 import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,9 @@ import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 @JsonSubTypes({ @Type(BarnModell.class), @Type(SøkerModell.class), @Type(AnnenPartModell.class), @Type(BrukerIdent.class), @Type(PersonArbeidsgiver.class) })
 public abstract class BrukerModell {
 
+    @JsonIgnore
+    private UUID id;
+
     /** Ident referanse, hver unik referanse vil erstattes av en syntetisk men 'gyldig' ident (FNR). */
     @JsonIgnore
     private String lokalIdent;
@@ -45,6 +49,17 @@ public abstract class BrukerModell {
 
     public BrukerModell(String lokalIdent) {
         this.lokalIdent = lokalIdent;
+    }
+
+
+    @JsonIgnore
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    @JsonIgnore
+    public void setLokalIdentFraId() {
+        setLokalIdent(id.toString());
     }
 
     @JsonSetter("ident")

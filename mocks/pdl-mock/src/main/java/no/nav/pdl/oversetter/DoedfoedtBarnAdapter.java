@@ -18,6 +18,9 @@ public class DoedfoedtBarnAdapter {
     }
 
     public static List<DoedfoedtBarn> tilDoedfoedtBarn(String aktørIdent, Personopplysninger personopplysningerModell) {
+        if (personopplysningerModell == null) {
+            return new ArrayList<>();
+        }
         var erBarnet = erIdentenBarnet(aktørIdent, personopplysningerModell);
         return leggTilDoedfoedtBarnForRelasjonerMedFDATIdent(personopplysningerModell, erBarnet);
     }

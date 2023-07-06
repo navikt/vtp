@@ -151,11 +151,11 @@ public class TestscenarioRestTjeneste {
         }
     }
 
-    private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario) {
+    public static TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario) {
         return konverterTilTestscenarioDto(testscenario, null, null);
     }
 
-    private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateNavn) {
+    private static TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateNavn) {
         String templateKey = null;
         if (templateNavn != null) {
             templateKey = templateNavn.replaceFirst("[-_].+$", "");
@@ -163,7 +163,7 @@ public class TestscenarioRestTjeneste {
         return konverterTilTestscenarioDto(testscenario, templateKey, templateNavn);
     }
 
-    private TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
+    private static TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
         String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
         String fnrAnnenPart = null;
         String aktørIdAnnenPart = null;
@@ -204,7 +204,7 @@ public class TestscenarioRestTjeneste {
             annenpartInntektYtelse);
     }
 
-    private Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
+    private static Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
         Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
             .stream()
             .filter(modell -> modell.getTil() instanceof BarnModell)
@@ -214,7 +214,7 @@ public class TestscenarioRestTjeneste {
         return barnModell.map(PersonModell::getFødselsdato);
     }
 
-    private Map<String, String> barnidenter(Testscenario testscenario) {
+    private static Map<String, String> barnidenter(Testscenario testscenario) {
         return testscenario.getPersonopplysninger().getFamilierelasjoner()
             .stream()
             .filter(modell -> modell.getTil() instanceof BarnModell)

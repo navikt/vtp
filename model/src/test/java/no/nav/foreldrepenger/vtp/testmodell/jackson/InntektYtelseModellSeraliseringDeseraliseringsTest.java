@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 
@@ -34,9 +35,11 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSer
 
     @BeforeAll
     public static void utviderObjectmapperMedInjectables() {
+        var adresseIndeks = new AdresseIndeks();
         var jacksonWrapper = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
         jacksonWrapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
+        jacksonWrapper.addInjectable(AdresseIndeks.class, adresseIndeks);
         mapper = jacksonWrapper.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 
@@ -49,7 +52,8 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSer
                 inntektskomponent.lagInntektskomponentModell(),
                 arbeidsforhold.lagArbeidsforholdModell(),
                 sigrun.lagSigrunModell(),
-                omsorgpenger.lagOmsorgspengerModell()));
+                omsorgpenger.lagOmsorgspengerModell(),
+                null));
     }
 
 }
