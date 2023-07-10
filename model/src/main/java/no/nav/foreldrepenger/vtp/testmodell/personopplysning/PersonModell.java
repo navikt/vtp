@@ -233,18 +233,8 @@ public abstract class PersonModell extends BrukerModell {
         this.personstatus = personstatus;
     }
 
-    public void setPersonstatus(PersonstatusModell personstatus) {
-        this.personstatus.clear();
-        this.personstatus.add(personstatus);
-    }
-
     public void setSivilstand(List<SivilstandModell> sivilstand) {
         this.sivilstand = sivilstand;
-    }
-
-    public void setSivilstand(SivilstandModell sivilstand) {
-        this.sivilstand.clear();
-        this.sivilstand.add(sivilstand);
     }
 
     public void setSpråk(String språk) {
@@ -253,11 +243,6 @@ public abstract class PersonModell extends BrukerModell {
 
     public void setStatsborgerskap(List<StatsborgerskapModell> statsborgerskap) {
         this.statsborgerskap = statsborgerskap;
-    }
-
-    public void setStatsborgerskap(StatsborgerskapModell statsborgerskap) {
-        this.statsborgerskap.clear();
-        this.statsborgerskap.add(statsborgerskap);
     }
 
     public void setEtternavn(String navn) {
