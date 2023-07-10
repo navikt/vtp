@@ -14,6 +14,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Innte
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenarioUtvider;
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
@@ -22,9 +23,11 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSeria
 
     @BeforeAll
     static void utvidObjectmapperMedInjectables() {
+        var adresseIndeks = new AdresseIndeks();
         var jsonMapper = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
         jsonMapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
+        jsonMapper.addInjectable(AdresseIndeks.class, adresseIndeks);
         mapper = jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 

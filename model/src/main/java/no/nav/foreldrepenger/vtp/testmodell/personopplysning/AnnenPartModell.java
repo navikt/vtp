@@ -20,4 +20,11 @@ public class AnnenPartModell extends VoksenModell {
         super(lokalIdent, navn, fødselsdato, harUføretrygd, kjønn);
     }
 
+    public Rolle rolle() {
+        return rolle;
+    }
+
+    public void setRolle(Rolle rolle) {
+        this.rolle = rolle;
+    }
 }

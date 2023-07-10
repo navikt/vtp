@@ -63,6 +63,7 @@ import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjene
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioV2RestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.aadfp.EnkelAADRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
@@ -138,6 +139,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(InfotrygdMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
         classes.add(TestscenarioRestTjeneste.class);
+        classes.add(TestscenarioV2RestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SakRestMock.class);
         classes.add(SafMock.class);

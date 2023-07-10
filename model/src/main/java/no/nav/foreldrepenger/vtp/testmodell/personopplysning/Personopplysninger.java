@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
@@ -26,13 +27,13 @@ public class Personopplysninger {
 
     @JsonInclude(Include.NON_EMPTY)
     @JsonProperty("familierelasjoner")
-    private List<FamilierelasjonModell> familierelasjoner = new ArrayList<>();
+    private List<FamilierelasjonModell> familierelasjoner;
 
     @JsonProperty("familierelasjonerAnnenPart")
-    private List<FamilierelasjonModell> familierelasjonerAnnenPart = new ArrayList<>();
+    private List<FamilierelasjonModell> familierelasjonerAnnenPart;
 
     @JsonProperty("familierelasjonerBarn")
-    private List<FamilierelasjonModell> familierelasjonerBarn = new ArrayList<>();
+    private List<FamilierelasjonModell> familierelasjonerBarn;
 
     /**
      * identity cache for dette scenario. Medfører at identer kan genereres dynamisk basert på lokal id referanse i scenarioet.
@@ -44,18 +45,21 @@ public class Personopplysninger {
     @JacksonInject
     private VariabelContainer vars;
 
-    public Personopplysninger(SøkerModell søker) {
-        this.søker = søker;
-    }
-
-    public Personopplysninger(SøkerModell søker, AnnenPartModell annenPart) {
+    public Personopplysninger(SøkerModell søker,
+                              AnnenPartModell annenPart,
+                              List<FamilierelasjonModell> familierelasjoner,
+                              List<FamilierelasjonModell> familierelasjonerAnnenPart,
+                              List<FamilierelasjonModell> familierelasjonerBarn) {
         this.søker = søker;
         this.annenPart = annenPart;
+        this.familierelasjoner = Optional.ofNullable(familierelasjoner).orElse(new ArrayList<>());
+        this.familierelasjonerAnnenPart = Optional.ofNullable(familierelasjonerAnnenPart).orElse(new ArrayList<>());
+        this.familierelasjonerBarn = Optional.ofNullable(familierelasjonerBarn).orElse(new ArrayList<>());
     }
 
-    Personopplysninger() {
+    public SøkerModell getSøker() {
+        return søker;
     }
-
 
     public AnnenPartModell getAnnenPart() {
         return annenPart;
@@ -75,10 +79,6 @@ public class Personopplysninger {
 
     public Stream<FamilierelasjonModell> getFamilierelasjoner(Rolle rolle) {
         return getFamilierelasjoner().stream().filter(f -> rolle.equals(f.getRolle()));
-    }
-
-    public SøkerModell getSøker() {
-        return søker;
     }
 
     public LokalIdentIndeks getIdenter() {
@@ -125,7 +125,27 @@ public class Personopplysninger {
         if (this.annenPart != null) {
             this.annenPart.setIdenter(identer);
         }
+        Stream.concat(this.familierelasjoner.stream(), Stream.concat(this.familierelasjonerAnnenPart.stream(), this.familierelasjonerBarn.stream()))
+                    .forEach(f -> f.getTil().setIdenter(identer));
     }
+
+    public void setVars(VariabelContainer vars) {
+        this.vars = vars;
+        this.søker.setVars(vars);
+        if (this.annenPart != null) {
+            this.annenPart.setVars(vars);
+        }
+        Stream.concat(this.familierelasjoner.stream(), Stream.concat(this.familierelasjonerAnnenPart.stream(), this.familierelasjonerBarn.stream()))
+                .forEach(f -> f.getTil().setVars(vars));
+    }
+
+    public void setAdresseIndeks(AdresseIndeks adresseIndeks) {
+        this.søker.setAdresseIndeks(adresseIndeks);
+        if (this.annenPart != null) {
+            this.annenPart.setAdresseIndeks(adresseIndeks);
+        }
+    }
+
 
     private void leggTilBarnIFamilierelasjonsModeller(BarnModell barn, String lokalIdent) {
         barn.setVars(vars);

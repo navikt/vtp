@@ -268,11 +268,11 @@ public abstract class PersonModell extends BrukerModell {
         this.fornavn = fornavn;
     }
 
-    void setFødselsdato(LocalDate fødselsdato) {
+    public void setFødselsdato(LocalDate fødselsdato) {
         this.fødselsdato = fødselsdato;
     }
 
-    void setKjønn(Kjønn kjønn) {
+    public void setKjønn(Kjønn kjønn) {
         this.kjønn = kjønn;
     }
 }

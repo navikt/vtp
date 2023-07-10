@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonTypeName("person")
-public class PersonArbeidsgiver extends BrukerModell {
+public class PersonArbeidsgiver extends PersonModell {
 
     private static final Pattern NUMERIC = Pattern.compile("^\\d+$");
 
@@ -14,7 +14,7 @@ public class PersonArbeidsgiver extends BrukerModell {
     }
 
     public PersonArbeidsgiver(String ident) {
-        super(ident);
+        super(ident, "Privat Arbeidsgiver", null);
     }
 
     @Override

@@ -36,7 +36,9 @@ public class UføreMock {
     public HarUføreGrad harUføreGrad(@HeaderParam(HEADER_FNR) String fnr) {
         var personIndeks = testscenarioRepository.getPersonIndeks();
         VoksenModell voksenModell = personIndeks.finnByIdent(fnr);
-        if (voksenModell.harUføretrygd()) {
+
+        var innektytelsemodell = testscenarioRepository.getInntektYtelseModell(fnr);
+        if (voksenModell.harUføretrygd() || (innektytelsemodell.isPresent() && innektytelsemodell.get().pesysmodell().harUføretrygd())) {
             return new HarUføreGrad(true, FEM_ÅR_SIDEN, FEM_ÅR_SIDEN);
         } else {
             return new HarUføreGrad(false, null, null);

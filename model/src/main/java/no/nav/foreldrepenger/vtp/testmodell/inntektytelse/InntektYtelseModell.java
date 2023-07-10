@@ -19,11 +19,12 @@ public record InntektYtelseModell(@JsonProperty("arena") ArenaModell arenaModell
                                   @JsonProperty("inntektskomponent") InntektskomponentModell inntektskomponentModell,
                                   @JsonProperty("aareg") ArbeidsforholdModell arbeidsforholdModell,
                                   @JsonProperty("sigrun") SigrunModell sigrunModell,
-                                  @JsonProperty("omsorgspenger") OmsorgspengerModell omsorgspengerModell) {
+                                  @JsonProperty("omsorgspenger") OmsorgspengerModell omsorgspengerModell,
+                                  @JsonProperty("pesys") PesysModell pesysmodell) {
     @JsonCreator
     public InntektYtelseModell(ArenaModell arenaModell, InfotrygdModell infotrygdModell, TRexModell trexModell,
                                InntektskomponentModell inntektskomponentModell, ArbeidsforholdModell arbeidsforholdModell,
-                               SigrunModell sigrunModell, OmsorgspengerModell omsorgspengerModell) {
+                               SigrunModell sigrunModell, OmsorgspengerModell omsorgspengerModell, PesysModell pesysmodell) {
         this.arenaModell = Optional.ofNullable(arenaModell).orElse(new ArenaModell());
         this.infotrygdModell = Optional.ofNullable(infotrygdModell).orElse(new InfotrygdModell());
         this.trexModell = Optional.ofNullable(trexModell).orElse(new TRexModell());
@@ -31,5 +32,6 @@ public record InntektYtelseModell(@JsonProperty("arena") ArenaModell arenaModell
         this.arbeidsforholdModell = Optional.ofNullable(arbeidsforholdModell).orElse(new ArbeidsforholdModell());
         this.sigrunModell = Optional.ofNullable(sigrunModell).orElse(new SigrunModell());
         this.omsorgspengerModell = Optional.ofNullable(omsorgspengerModell).orElse(new OmsorgspengerModell());
+        this.pesysmodell = Optional.ofNullable(pesysmodell).orElse(new PesysModell());
     }
 }
