@@ -129,6 +129,7 @@ public class PersonopplysningModellMapper {
             case BARN -> FamilierelasjonModell.Rolle.BARN;
             case FAR -> FamilierelasjonModell.Rolle.FARA;
             case MOR -> FamilierelasjonModell.Rolle.MORA;
+            case MEDMOR -> FamilierelasjonModell.Rolle.MMOR;
         };
     }
 

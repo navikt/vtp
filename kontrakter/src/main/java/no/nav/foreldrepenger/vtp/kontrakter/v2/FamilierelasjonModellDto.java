@@ -9,6 +9,7 @@ public record FamilierelasjonModellDto(Relasjon relasjon, UUID relatertTilId) {
         SAMBOER,
         BARN,
         FAR,
-        MOR
+        MOR,
+        MEDMOR
     }
 }
