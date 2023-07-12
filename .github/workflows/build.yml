@@ -19,6 +19,9 @@ on:
 jobs:
   build-app:
     name: Build
+    permissions:
+      contents: read
+      packages: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-no-db.yml@main
     with:
       build-image: ${{ github.ref_name == 'master' }} # default: true
@@ -29,6 +32,9 @@ jobs:
 
   release-drafter:
     name: Update
+    permissions:
+      contents: write
+      pull-requests: read
     if: github.ref_name == 'master'
     needs: build-app
     uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main
