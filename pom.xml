@@ -44,7 +44,7 @@
 
         <!--    Eksterne avhengigheter    -->
         <avro.version>1.11.1</avro.version>
-        <confluent.version>7.4.0</confluent.version>
+        <confluent.version>7.4.1</confluent.version>
         <zookeeper.version>3.8.1</zookeeper.version>
         <cxf.version>3.5.4</cxf.version>
         <jaxws.version>2.3.5</jaxws.version>
