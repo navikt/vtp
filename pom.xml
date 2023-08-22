@@ -50,7 +50,7 @@
         <jaxws.version>2.3.5</jaxws.version>
         <swagger-codegen-maven-plugin.version>3.0.41</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>20.4</graphql-java.version>
-        <graphql-scalar-java.version>20.2</graphql-scalar-java.version>
+        <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
     </properties>
 
     <repositories>
