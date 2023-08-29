@@ -72,7 +72,7 @@ class OppdragKontrollTilBeregningMapperTest {
         var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
-        verifiserKorrektMapping(beregninger, 1, 1, 1, 1);
+        verifiserKorrektMapping(beregninger, 1, 1, null, 1);
     }
 
 
