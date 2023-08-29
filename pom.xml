@@ -40,7 +40,6 @@
 
         <!--    Interne avhengigheter    -->
         <fp-kontrakter.version>6.2.21</fp-kontrakter.version>
-        <tjenestespesifikasjoner.version>2616.df1f47c</tjenestespesifikasjoner.version>
 
         <!--    Eksterne avhengigheter    -->
         <avro.version>1.11.1</avro.version>
@@ -335,11 +334,6 @@
                 <artifactId>nav-system-os-simuler-fp-service-tjenestespesifikasjon</artifactId>
                 <version>1.0.5</version>
                 <classifier>jaxws</classifier>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.tjenestespesifikasjoner</groupId>
-                <artifactId>nav-fim-kodeverk-v2-tjenestespesifikasjon</artifactId>
-                <version>${tjenestespesifikasjoner.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
