@@ -1,7 +1,7 @@
 package no.nav.oppgave.infrastruktur.validering;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 import static java.util.Arrays.asList;

@@ -1,7 +1,7 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import javax.xml.ws.Endpoint;
-import javax.xml.ws.WebServiceFeature;
+import jakarta.xml.ws.Endpoint;
+import jakarta.xml.ws.WebServiceFeature;
 
 import org.eclipse.jetty.http.spi.HttpSpiContextHandler;
 import org.eclipse.jetty.http.spi.JettyHttpContext;
@@ -22,7 +22,7 @@ public class SoapWebServiceConfig {
 
     public void setup(TestscenarioBuilderRepository repo) {
 
-        System.setProperty("javax.xml.soap.SAAJMetaFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl");
+        System.setProperty("jakarta.xml.soap.SAAJMetaFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl");
 
         publishWebService(new SecurityTokenServiceMockImpl(), "/soap/SecurityTokenServiceProvider/");
         publishWebService(new SimulerFpServiceMockImpl(repo), "/soap/cics/services/oppdragService");

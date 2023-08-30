@@ -7,7 +7,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>0.8.2</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -39,13 +39,13 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>6.3.2</fp-kontrakter.version>
+        <fp-kontrakter.version>7.0.0</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
 
-        <cxf.version>3.5.4</cxf.version>
-        <jaxws.version>2.3.5</jaxws.version>
-        <swagger-codegen-maven-plugin.version>3.0.41</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
+        <cxf.version>4.0.2</cxf.version>
+        <jaxws.version>3.0.2</jaxws.version>
+        <swagger-codegen-maven-plugin.version>3.0.45</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>21.0</graphql-java.version>
         <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
         <avro.version>1.11.2</avro.version>
@@ -65,14 +65,14 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>0.8.2</version>
+                <version>1.0.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <!-- fjernet fra SE i Java11 -->
             <dependency>
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-rt</artifactId>
@@ -141,13 +141,6 @@
                 <groupId>com.neovisionaries</groupId>
                 <artifactId>nv-i18n</artifactId>
                 <version>1.29</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>org.jvnet.jaxb2_commons</groupId>
-                <artifactId>jaxb2-basics-runtime</artifactId>
-                <version>1.11.1</version>
             </dependency>
 
             <!-- Interne prosjektavhengigheter -->
@@ -317,7 +310,7 @@
                 <version>873c5cdd</version>
             </dependency>
 
-            <dependency>
+            <dependency> <!-- abakus -->
                 <groupId>no.nav.tjenester</groupId>
                 <artifactId>aordningen-inntektsinformasjon-v1</artifactId>
                 <version>1.7</version>
@@ -338,12 +331,10 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- fjernet fra SE i Java11. legger derfor til -->
         <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
         </dependency>
-
         <!--    TEST    -->
         <dependency>
             <groupId>org.assertj</groupId>

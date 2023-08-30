@@ -118,7 +118,7 @@ public class MockServer {
         startServer();
 
         // kjør soap oppsett etter jetty har startet
-        addSoapServices(testScenarioRepository);
+        //addSoapServices(testScenarioRepository);
     }
 
     private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
