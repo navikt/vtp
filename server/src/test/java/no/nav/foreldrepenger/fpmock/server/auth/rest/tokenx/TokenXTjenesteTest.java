@@ -47,9 +47,8 @@ class TokenXTjenesteTest {
 
     }
 
-
     @Test
-    @Disabled // Mangler keystore i pipe... Legge denne til eller fjerne test? TODO
+    @Disabled // Mangler keystore i ´pipe... Legge denne til eller fjerne test? TODO
     public void verifisererTokenSomGenereresHarRiktigAudienceOgSubject() throws JoseException, MalformedClaimException {
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);

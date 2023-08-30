@@ -21,9 +21,5 @@
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
             <artifactId>fp-ws-proxy-v1</artifactId>
         </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>oppdrag-mock</artifactId> <!-- TODO: Fjern denne avhengigheten etter flytt og sanering-->
-        </dependency>
     </dependencies>
 </project>

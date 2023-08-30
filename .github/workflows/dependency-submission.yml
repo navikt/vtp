@@ -1,0 +1,16 @@
+name: Dependency Submission
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "pom.xml"
+      - "**/pom.xml"
+  workflow_dispatch:
+
+jobs:
+  deps:
+    permissions:
+      contents: write
+    uses: navikt/fp-gha-workflows/.github/workflows/mvn-dependency-submission.yml@main
+    secrets: inherit

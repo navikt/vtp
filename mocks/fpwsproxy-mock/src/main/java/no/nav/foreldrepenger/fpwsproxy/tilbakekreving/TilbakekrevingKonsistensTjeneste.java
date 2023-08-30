@@ -1,5 +1,6 @@
-package no.nav.okonomi.tilbakekrevingservice;
+package no.nav.foreldrepenger.fpwsproxy.tilbakekreving;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import jakarta.ws.rs.POST;
@@ -14,15 +15,17 @@ import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
  * Tjenesten tar vare på siste saksnummer og henvisning (behandlingId) fra Autotest,
  * slik at de kan sendes tilbake i genererte kravgrunnlag som da vil være konsistente med siste kjente sak.
  */
-// TODO: Flytt over til fpwsproxy-mock/tilbakekreving etter sannering
 @Tag(name = "Tilbakekreving")
 @Path("/api/tilbakekreving")
 public class TilbakekrevingKonsistensTjeneste {
 
-    private static final Random RANDOM =  new Random();
+    private static final Random RANDOM =  new SecureRandom();
 
     private static int sisteSaksnummer = genererTilfeldigSaksnummer();
     private static String sisteHenvisning = "1";
+
+    private TilbakekrevingKonsistensTjeneste() {
+    }
 
     @POST
     @Path("/konsistens")

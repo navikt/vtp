@@ -18,13 +18,10 @@ import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.lang.JoseException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.impl.KeyStoreX509CredentialAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import no.nav.foreldrepenger.util.KeystoreUtils;
 
 public class KeyStoreTool {
-    private static final Logger LOG = LoggerFactory.getLogger(KeyStoreTool.class);
     private static RsaJsonWebKey jwk = null;
     private static KeyStore keystore = null;
 

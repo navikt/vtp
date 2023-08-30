@@ -11,7 +11,7 @@ Virtuell Tjeneste Plattform (VTP)
 #### VTP hjelper deg med å: 
 - virtualisere grensesnitt rundt applikasjonene i FP-familien. 
 - instansierer og holde testdata konsistente på tvers av grensesnittene
-- ha en plattform for å simulere grensesnitt over REST, SOAP, Kafka, LDAP.
+- ha en plattform for å simulere grensesnitt over REST, GRAPHQL, Kafka, LDAP.
 - sikkerhetshåndtering over OAuth2
 - REST-grensesnitt for å programatisk opprette testdata (for automatiske tester) 
 - GUI for å opprette testdata for mennesker.
@@ -73,7 +73,7 @@ kan bli brukt i requesten.
  
 
 ## Sertifiakter for SSL/TLS
-For å få VTP til å kjøre med SSL/TLS forbindelse over SOAP, REST og Kafka må keystore angitt i VTP være tilgjengelig i SUT (System under test) sin Truststore. 
+For å få VTP til å kjøre med SSL/TLS forbindelse over REST, GRAPHQL og Kafka må keystore angitt i VTP være tilgjengelig i SUT (System under test) sin Truststore. 
 For lokal utvikling på Team Foreldrepenger og Sykdom-i-familien opprettes key- og truststore i.h.t til instruksjoner i verdikjede/autotest. 
 Følgende systemvariabler kan defineres for å overstyre defaults i VTP: 
 
@@ -85,7 +85,6 @@ NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD
 ```
 
 ## Konfigurere nye tjenester
-Se SoapWebServerConfig for liste over url til genererte wsdl'er. Nye webtjenester registreres her. 
 Se ApplicationConfig for liste over registrerte REST-tjenester. Nye REST-tjenester registreres her.     
 
 ## Kjente feil 
