@@ -13,6 +13,13 @@
 	<name>VTP ::dokarkiv-mock</name>
 	<packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+    </dependencies>
+
 	<build>
 		<plugins>
 			<!-- activate the plugin -->

@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.request.HentKravgrunnlagDetaljDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.FagOmrådeKode;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.GjelderType;
@@ -17,7 +15,6 @@ import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.re
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravgrunnlagBelop433Dto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravgrunnlagPeriode432Dto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.Periode;
-import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
 
 class Kravgrunnlag431DtoMapper {
 
@@ -60,7 +57,7 @@ class Kravgrunnlag431DtoMapper {
                         hentBeløp(BigDecimal.ZERO, BigDecimal.valueOf(21000.00), BigDecimal.valueOf(21000.00), BigDecimal.ZERO, KlasseType.YTEL, 30)
                 ))
                 .build();
-        return Lists.newArrayList(kravgrunnlagPeriode1, kravgrunnlagPeriode2);
+        return List.of(kravgrunnlagPeriode1, kravgrunnlagPeriode2);
     }
 
     private static KravgrunnlagBelop433Dto hentBeløp(BigDecimal nyBeløp,

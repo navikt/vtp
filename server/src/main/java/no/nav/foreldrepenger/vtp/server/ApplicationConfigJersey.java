@@ -82,7 +82,7 @@ import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.mock.pesys.UføreMock;
 import no.nav.nom.SkjermetPersonMock;
-import no.nav.okonomi.tilbakekrevingservice.TilbakekrevingKonsistensTjeneste;
+import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.TilbakekrevingKonsistensTjeneste;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;

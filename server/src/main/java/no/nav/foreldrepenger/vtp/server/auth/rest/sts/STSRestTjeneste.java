@@ -1,6 +1,5 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
@@ -15,9 +14,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.xml.bind.JAXB;
 
-import org.apache.cxf.ws.security.sts.provider.model.RequestSecurityTokenResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,14 +22,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
-import no.nav.foreldrepenger.vtp.server.auth.soap.sts.STSIssueResponseGenerator;
 
 @Tag(name = "Security Token Service")
 @Path("/v1/sts")
 public class STSRestTjeneste {
 
     private static final Logger LOG = LoggerFactory.getLogger(STSRestTjeneste.class);
-    private final STSIssueResponseGenerator generator = new STSIssueResponseGenerator();
 
     @SuppressWarnings("unused")
     @POST
@@ -41,19 +36,7 @@ public class STSRestTjeneste {
     public SAMLResponse dummySaml(@QueryParam("grant_type") String grant_type,
                                   @QueryParam("subject_token_type") String issuedTokenType,
                                   @QueryParam("subject_token") String subject_token) {
-        RequestSecurityTokenResponseType token = generator.buildRequestSecurityTokenResponseType("urn:oasis:names:tc:SAML:2.0:assertion");
-        StringWriter sw = new StringWriter();
-        JAXB.marshal(token, sw);
-        String xmlString = sw.toString();
-
-        SAMLResponse response = new SAMLResponse();
-        response.setAccess_token(Base64.getUrlEncoder().withoutPadding().encodeToString(xmlString.getBytes()));
-        response.setDecodedToken(xmlString);
-        response.setToken_type("Bearer");
-        response.setIssued_token_type(issuedTokenType);
-        response.setExpires_in(LocalDateTime.MAX);
-
-        return response;
+        throw new UnsupportedOperationException("/token/exchange - er ikke lenger supportert.");
     }
 
     @SuppressWarnings("unused")

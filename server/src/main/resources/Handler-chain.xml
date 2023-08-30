@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<handler-chains xmlns="https://jakarta.ee/xml/ns/jakartaee">
-    <handler-chain>
-        <handler>
-            <handler-class>no.nav.foreldrepenger.vtp.server.MockServiceSOAPHandler</handler-class>
-        </handler>
-    </handler-chain>
-</handler-chains>
