@@ -298,6 +298,12 @@
                 <version>1.7</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.opensaml</groupId>
+                <artifactId>opensaml-security-impl</artifactId>
+                <version>3.4.6</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
