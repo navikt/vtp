@@ -43,7 +43,6 @@
 
         <!--    Eksterne avhengigheter    -->
 
-        <jaxws.version>3.0.2</jaxws.version>
         <swagger-codegen-maven-plugin.version>3.0.46</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>21.0</graphql-java.version>
         <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
