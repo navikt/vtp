@@ -288,7 +288,7 @@
             <dependency>
                 <groupId>no.nav.teamdokumenthandtering</groupId>
                 <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
-                <version>08271806</version>
+                <version>3aec620a</version>
             </dependency>
 
             <dependency> <!-- abakus -->
