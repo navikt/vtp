@@ -24,9 +24,6 @@ public class TilbakekrevingKonsistensTjeneste {
     private static int sisteSaksnummer = genererTilfeldigSaksnummer();
     private static String sisteHenvisning = "1";
 
-    private TilbakekrevingKonsistensTjeneste() {
-    }
-
     @POST
     @Path("/konsistens")
     @Operation(description = "Sørger for at kravgrunnlag som returneres av mock har riktig saksnummer og henvisning")
