@@ -14,6 +14,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import no.nav.foreldrepenger.vtp.server.MockServer;
+
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -29,9 +31,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 
 @Tag(name = "TokenX")
-@Path("/tokenx")
+@Path(TokenxRestTjeneste.TJENESTE_PATH)
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
+
+    protected static final String TJENESTE_PATH = "/tokenx";
 
     public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
             .setSkipAllValidators()
@@ -98,7 +102,7 @@ public class TokenxRestTjeneste {
         jwtClaims.setExpirationTimeMinutesInTheFuture(EXPIRE_IN_SECONDS / 60f);
         jwtClaims.setGeneratedJwtId();
         jwtClaims.setIssuedAtToNow();
-        jwtClaims.setClaim("acr", "Level4");
+        jwtClaims.setClaim("acr", System.getProperty("idporten.acr.scope", "idporten-loa-high"));
         jwtClaims.setNotBeforeMinutesInThePast(0F);
 
         var rsaJWK = KeyStoreTool.getJsonWebKey();
@@ -125,7 +129,7 @@ public class TokenxRestTjeneste {
     }
 
     private String getIssuer(HttpServletRequest req) {
-        return getBaseUrl(req) + "/rest/tokenx";
+        return getBaseUrl(req) + MockServer.CONTEXT_PATH + TJENESTE_PATH;
     }
 
 }

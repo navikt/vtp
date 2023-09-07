@@ -4,6 +4,11 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -14,14 +19,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
-import no.nav.foreldrepenger.vtp.server.auth.rest.OidcTokenGenerator;
 
 @Tag(name = "Security Token Service")
 @Path("/v1/sts")
@@ -76,8 +74,7 @@ public class STSRestTjeneste {
     }
 
     private UserTokenResponse createTokenForUser(String username, HttpServletRequest request) {
-        var tokenGenerator = new OidcTokenGenerator(username, null)
-                .withIssuer(getIssuer(request));
+        var tokenGenerator = new OidcTokenGenerator(username, null).withIssuer(getIssuer(request));
         return new UserTokenResponse(tokenGenerator.create(), OidcTokenGenerator.EXPIRE_IN_SECONDS, "Bearer");
     }
 
@@ -210,11 +207,8 @@ public class STSRestTjeneste {
 
         @Override
         public String toString() {
-            return "UserTokenImpl{" +
-                    "access_token='" + access_token + '\'' +
-                    ", expires_in=" + expires_in +
-                    ", token_type='" + token_type + '\'' +
-                    '}';
+            return "UserTokenImpl{" + "access_token='" + access_token + '\'' + ", expires_in=" + expires_in + ", token_type='"
+                    + token_type + '\'' + '}';
         }
     }
 

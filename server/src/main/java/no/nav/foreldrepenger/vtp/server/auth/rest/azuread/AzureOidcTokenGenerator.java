@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.aadfp;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
@@ -14,6 +14,8 @@ import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+
+import java.util.Objects;
 
 
 public final class AzureOidcTokenGenerator {
@@ -42,10 +44,14 @@ public final class AzureOidcTokenGenerator {
         }
     }
 
-    public static String azureUserToken(StandardBruker bruker, String issuer) {
+    public static String azureUserToken(StandardBruker bruker, String issuer, String nonce) {
         JwtClaims claims = createCommonClaims(bruker.getIdent(), issuer);
         claims.setStringClaim("NAVident", bruker.getIdent());
         claims.setStringListClaim("groups", bruker.getGrupper().stream().toList());
+
+        if (Objects.nonNull(nonce) && !nonce.isBlank()) {
+            claims.setClaim("nonce", nonce);
+        }
 
         return createToken(claims);
     }
@@ -67,7 +73,6 @@ public final class AzureOidcTokenGenerator {
         claims.setIssuedAt(issuedAt);
         claims.setNotBefore(issuedAt);
         claims.setSubject(sub);
-        claims.setStringClaim("acr", "Level4");
         claims.setAudience("vtp");
         claims.setStringClaim("azp_name", "vtp:teamforeldrepenger:vtp");
         claims.setStringClaim("azp", "vtp");

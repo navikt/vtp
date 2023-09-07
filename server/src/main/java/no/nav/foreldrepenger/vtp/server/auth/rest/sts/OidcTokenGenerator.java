@@ -1,9 +1,11 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest;
+package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -30,7 +32,6 @@ public class OidcTokenGenerator {
 
     public OidcTokenGenerator(String brukerId, String nonce) {
         additionalClaims.put("azp", "OIDC");
-        additionalClaims.put("acr", "Level4");
         this.subject = brukerId;
         this.nonce = nonce;
 

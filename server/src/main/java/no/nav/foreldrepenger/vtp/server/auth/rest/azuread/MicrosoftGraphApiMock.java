@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.azureAD;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
 import java.util.HashMap;
 import java.util.Map;

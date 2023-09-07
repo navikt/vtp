@@ -44,6 +44,7 @@ public class MockServer {
     private static final String TRUSTSTORE_PATH_PROP = "javax.net.ssl.trustStore";
     private static final String KEYSTORE_PASSW_PROP = "no.nav.modig.security.appcert.password";
     private static final String KEYSTORE_PATH_PROP = "no.nav.modig.security.appcert.keystore";
+    public static final String CONTEXT_PATH = System.getProperty("server.context.path", "/rest");
 
     private final int port;
     private final LdapServer ldapServer;
@@ -124,7 +125,7 @@ public class MockServer {
                         kafkaServer.getKafkaAdminClient(),
                         journalRepository);
 
-        var context = new ServletContextHandler(handler, "/rest");
+        var context = new ServletContextHandler(handler, CONTEXT_PATH);
         var jerseyServlet = new ServletHolder(new ServletContainer(config));
         jerseyServlet.setInitOrder(1);
         context.addServlet(jerseyServlet, "/*");

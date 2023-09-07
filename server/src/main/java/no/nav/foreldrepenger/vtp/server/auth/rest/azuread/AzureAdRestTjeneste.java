@@ -1,15 +1,22 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.aadfp;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
 import static jakarta.ws.rs.core.UriBuilder.fromUri;
-import static no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService.CODE;
 
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.FormParam;
@@ -23,20 +30,21 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import no.nav.foreldrepenger.vtp.server.MockServer;
 import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
+import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
 
-@Tag(name = "Forenklet AzureAd")
-@Path("/aadfp")
-public class EnkelAADRestTjeneste {
-    private static final Logger LOG = LoggerFactory.getLogger(EnkelAADRestTjeneste.class);
-    private static final String ISSUER = "http://vtp/rest/aadfp";
+@Tag(name = "AzureAd")
+@Path(AzureAdRestTjeneste.TJENESTE_PATH)
+public class AzureAdRestTjeneste {
+    private static final Logger LOG = LoggerFactory.getLogger(AzureAdRestTjeneste.class);
+    protected static final String TJENESTE_PATH = "/azure";
+    private static final String ISSUER = "http://vtp/rest/AzureAd";
+    public static final String CODE = "code";
+    private static final String NONCE_KEY = "nonce";
+    private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
+
 
     @GET
     @Path("/isAlive")
@@ -53,12 +61,9 @@ public class EnkelAADRestTjeneste {
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
-        var wellKnownResponse = new AADWellKnownResponse(ISSUER, baseUrl + "/authorize",
-                baseUrl + "/jwks", baseUrl + "/token");
+        var wellKnownResponse = new WellKnownResponse(ISSUER, baseUrl + "/authorize", baseUrl + "/jwks", baseUrl + "/token");
         return Response.ok(wellKnownResponse).build();
     }
-
-    record AADWellKnownResponse(String issuer, String authorization_endpoint, String jwks_uri, String token_endpoint) { }
 
     @GET
     @Path("/jwks")
@@ -69,16 +74,19 @@ public class EnkelAADRestTjeneste {
         return Response.ok(jwks).build();
     }
 
-
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token")
     @SuppressWarnings("unused")
+
     public Response accessToken(@FormParam("grant_type") String grantType,
                                 @FormParam("code") String code,
-                                @FormParam("assertion") String assertion)  {
+                                @FormParam("assertion") String assertion) {
         String token;
+        var nonce = clientIdCache.get(NONCE_KEY);
+        LOG.info("Leser nonce: {}", nonce);
+
         if ("client_credentials".equalsIgnoreCase(grantType)) {
             token = createClientCredentialsToken();
         } else if ("urn:ietf:params:oauth:grant-type:jwt-bearer".equalsIgnoreCase(grantType)) {
@@ -86,11 +94,12 @@ public class EnkelAADRestTjeneste {
             var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
             var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
             var bruker = Optional.ofNullable(ansattId).map(StandardBruker::finnIdent).orElseThrow();
-            token = createToken(bruker);
+            token = createToken(bruker, nonce);
         } else if ("authorization_code".equalsIgnoreCase(grantType)) {
-            var ident = Optional.ofNullable(code).map(StandardBruker::finnIdent)
+            var ident = Optional.ofNullable(code)
+                    .map(StandardBruker::finnIdent)
                     .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
-            token = createToken(ident);
+            token = createToken(ident, nonce);
         } else {
             LOG.warn("Ukjent / unsupported grant type {}", grantType);
             throw new WebApplicationException("Ukjent / unsupported grant type " + grantType, Response.Status.UNAUTHORIZED);
@@ -102,22 +111,22 @@ public class EnkelAADRestTjeneste {
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token")
-    public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident)  {
+    public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident) {
         var bruker = Optional.ofNullable(StandardBruker.finnIdent(ident)).orElseThrow();
-        var token = createToken(bruker);
+        var token = createToken(bruker, clientIdCache.get(NONCE_KEY));
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
-    private String createToken(StandardBruker bruker) {
-        return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER);
+    private String createToken(StandardBruker bruker, String nonce) {
+        return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
     }
 
     private String createClientCredentialsToken() {
-        return AzureOidcTokenGenerator.azureClientCredentialsToken(UUID.randomUUID().toString().substring(0,19), ISSUER);
+        return AzureOidcTokenGenerator.azureClientCredentialsToken(UUID.randomUUID().toString().substring(0, 19), ISSUER);
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
-        return req.getScheme() + "://vtp:" + req.getServerPort() + "/rest/aadfp";
+        return req.getScheme() + "://vtp:" + req.getServerPort() + MockServer.CONTEXT_PATH + TJENESTE_PATH;
     }
 
     @GET
@@ -127,16 +136,23 @@ public class EnkelAADRestTjeneste {
     @SuppressWarnings("unused")
     public Response authorize(@QueryParam("scope") @DefaultValue("openid") String scope,
                               @QueryParam("client_id") String clientId,
-                              @QueryParam("redirect_uri") String redirectUri
-    )
-            throws Exception {
+                              @QueryParam(NONCE_KEY) String nonce,
+                              @QueryParam("state") String state,
+                              @QueryParam("redirect_uri") String redirectUri) {
         LOG.info("kall mot AzureAD authorize");
 
         var uriBuilder = fromUri(redirectUri);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "scope", scope);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "client_id", clientId);
+        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "state", state);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "iss", ISSUER);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "redirect_uri", redirectUri);
+
+        LOG.info("Har fått nonce param fra WW: {}", nonce);
+        if (!StringUtils.isEmpty(nonce)) {
+            LOG.info("Cacher nonce: {}", nonce);
+            clientIdCache.put(NONCE_KEY, nonce);
+        }
 
         return authorizeHtmlPage(uriBuilder);
     }
@@ -147,24 +163,24 @@ public class EnkelAADRestTjeneste {
 
     public static Response authorizeHtmlPage(UriBuilder location) {
         var htmlSideForInnlogging = String.format("""
-                     <!DOCTYPE html>
-                     <html>
-                     <head>
-                     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                     <title>Velg bruker</title>
-                     </head>
-                         <body>
-                         <div style="text-align:center;width:100%%;">
-                             <caption><h3>Velg bruker:</h3></caption>
-                             <table>
-                                 <tbody>
-                                     %s
-                                 </tbody>
-                             </table>
-                         </div>
-                     </body>
-                     </html>
-                 """, leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(location));
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                    <title>Velg bruker</title>
+                    </head>
+                        <body>
+                        <div style="text-align:center;width:100%%;">
+                            <caption><h3>Velg bruker:</h3></caption>
+                            <table>
+                                <tbody>
+                                    %s
+                                </tbody>
+                            </table>
+                        </div>
+                    </body>
+                    </html>
+                """, leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(location));
         return Response.ok(htmlSideForInnlogging, MediaType.TEXT_HTML).build();
     }
 
@@ -175,9 +191,7 @@ public class EnkelAADRestTjeneste {
     }
 
     private static String leggTilRadITabell(URI location, StandardBruker ansatt) {
-        var redirectForInnloggingAvAnsatt = fromUri(location)
-                .queryParam(CODE, ansatt.getIdent())
-                .build();
+        var redirectForInnloggingAvAnsatt = fromUri(location).queryParam(CODE, ansatt.getIdent()).build();
         return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.getNavn());
     }
 

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.aadfp;
+package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
 import java.util.HashSet;
 import java.util.Objects;
