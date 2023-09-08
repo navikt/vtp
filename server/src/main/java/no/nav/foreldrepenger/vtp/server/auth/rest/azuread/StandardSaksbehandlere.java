@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public enum StandardBruker {
+public enum StandardSaksbehandlere {
     SAKSBEHANDLER("saksbeh", "Sara Saksbehandler", true, Set.of()),
     SAKSBEHANDLER_K6("saksbeh6", "Sa6a Saksbehandler", true, Set.of("kode6")),
     SAKSBEHANDLER_K7("saksbeh7", "Sa7a Saksbehandler", true, Set.of("kode7")),
@@ -20,7 +20,7 @@ public enum StandardBruker {
     private final String navn;
     private final Set<String> grupper;
 
-    StandardBruker(String ident, String navn, boolean erSaksbehandler, Set<String> grupper) {
+    StandardSaksbehandlere(String ident, String navn, boolean erSaksbehandler, Set<String> grupper) {
         this.ident = ident;
         this.navn = navn;
         this.grupper = new HashSet<>(grupper);
@@ -41,7 +41,7 @@ public enum StandardBruker {
         return grupper;
     }
 
-    public static StandardBruker finnIdent(String ident) {
+    public static StandardSaksbehandlere finnIdent(String ident) {
         for (var v : values()) {
             if (Objects.equals(ident, v.ident)) {
                 return v;

@@ -11,6 +11,7 @@ import org.jose4j.lang.JoseException;
 
 
 public final class IdportenOidcTokenGenerator {
+
     private IdportenOidcTokenGenerator() {
     }
 
@@ -45,7 +46,7 @@ public final class IdportenOidcTokenGenerator {
         try {
             return jws.getCompactSerialization();
         } catch (JoseException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 

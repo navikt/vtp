@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -120,7 +122,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         try {
             new GenericOpenApiContextBuilder<>().openApiConfiguration(oasConfig).buildContext(true).read();
         } catch (OpenApiConfigurationException e) {
-            throw new RuntimeException("OPEN-API", e);
+            throw new IllegalStateException("OPEN-API", e);
         }
     }
 
@@ -214,14 +216,15 @@ public class ApplicationConfigJersey extends ResourceConfig {
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
-        private static final ObjectMapper objectMapper = new ObjectMapper();
+        private final ObjectMapper objectMapper = JsonMapper.builder()
+                .addModules(new Jdk8Module(), new JavaTimeModule())
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+                .build();
 
         public JacksonConfigResolver() {
-            objectMapper.registerModule(new Jdk8Module());
-            objectMapper.registerModule(new JavaTimeModule());
-            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            //CDI
         }
 
         @Override

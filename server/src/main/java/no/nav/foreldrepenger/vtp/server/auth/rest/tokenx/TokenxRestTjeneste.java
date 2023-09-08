@@ -35,7 +35,7 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
 
-    protected static final String TJENESTE_PATH = "/tokenx";
+    protected static final String TJENESTE_PATH = "/tokenx"; //NOSONAR
 
     public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
             .setSkipAllValidators()
@@ -58,9 +58,9 @@ public class TokenxRestTjeneste {
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         var issuer = getIssuer(req);
-        var token_endpoint = issuer + "/token";
-        var jwks_endpoint = issuer + "/jwks";
-        var wellKnownResponse = new TokenXWellKnownResponse(issuer, token_endpoint, jwks_endpoint);
+        var tokenEndpoint = issuer + "/token";
+        var jwksEndpoint = issuer + "/jwks";
+        var wellKnownResponse = new TokenXWellKnownResponse(issuer, tokenEndpoint, jwksEndpoint);
         return Response.ok(wellKnownResponse).build();
     }
 
@@ -80,13 +80,13 @@ public class TokenxRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "TokenX public key set")
     public Response token(@Context HttpServletRequest req,
-                          @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grant_type,
-                          @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String client_assertion_type,
-                          @FormParam("client_assertion") String client_assertion,
-                          @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subject_token_type,
-                          @FormParam("subject_token") String subject_token,
+                          @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
+                          @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
+                          @FormParam("client_assertion") String clientAssertion,
+                          @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
+                          @FormParam("subject_token") String subjectToken,
                           @FormParam("audience") String audience) throws JoseException {
-        var subject = hentSubjectFraJWT(subject_token);
+        var subject = hentSubjectFraJWT(subjectToken);
         var token = accessTokenForAudienceOgSubject(req, audience, subject);
         LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, audience);
         LOG.info("TokenX token: {}", token);
@@ -115,12 +115,12 @@ public class TokenxRestTjeneste {
         return jws.getCompactSerialization();
     }
 
-    private String hentSubjectFraJWT(String subject_token) {
+    private String hentSubjectFraJWT(String subjectToken) {
         try {
-            var claims = UNVALIDATING_CONSUMER.processToClaims(subject_token);
+            var claims = UNVALIDATING_CONSUMER.processToClaims(subjectToken);
             return claims.getSubject();
         } catch (InvalidJwtException | MalformedClaimException e) {
-            throw new RuntimeException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
+            throw new IllegalStateException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
         }
     }
 

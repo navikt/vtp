@@ -106,7 +106,7 @@ public class OidcTokenGenerator {
         try {
             return jws.getCompactSerialization();
         } catch (JoseException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

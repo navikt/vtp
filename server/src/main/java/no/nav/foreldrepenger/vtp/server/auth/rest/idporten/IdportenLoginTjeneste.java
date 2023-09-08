@@ -22,7 +22,7 @@ import java.net.URI;
 @Path(IdportenLoginTjeneste.TJENESTE_PATH)
 public class IdportenLoginTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(IdportenLoginTjeneste.class);
-    protected static final String TJENESTE_PATH = "/idporten";
+    protected static final String TJENESTE_PATH = "/idporten"; //NOSONAR
     private static final String ISSUER = "http://vtp/rest/idporten";
 
     @GET
@@ -56,7 +56,7 @@ public class IdportenLoginTjeneste {
     @GET
     @Path("/login")
     @Produces(MediaType.TEXT_HTML)
-    public Response hent(@Context HttpServletRequest req, @QueryParam("redirect") URI redirectUri) {
+    public Response hent(@QueryParam("redirect") URI redirectUri) {
         String tmpl = """
                     <!DOCTYPE html>
                     <html>
@@ -96,7 +96,7 @@ public class IdportenLoginTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "idporten/access_token")
+    @Operation(description = "idporten/access_token - brukes primært av autotest til å logge inn en bruker programmatisk (uten interaksjon med GUI)")
     public Response accessToken(@QueryParam("fnr") String fnr) {
         var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER);
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();

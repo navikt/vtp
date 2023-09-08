@@ -44,7 +44,7 @@ public final class AzureOidcTokenGenerator {
         }
     }
 
-    public static String azureUserToken(StandardBruker bruker, String issuer, String nonce) {
+    public static String azureUserToken(StandardSaksbehandlere bruker, String issuer, String nonce) {
         JwtClaims claims = createCommonClaims(bruker.getIdent(), issuer);
         claims.setStringClaim("NAVident", bruker.getIdent());
         claims.setStringListClaim("groups", bruker.getGrupper().stream().toList());
@@ -91,7 +91,7 @@ public final class AzureOidcTokenGenerator {
         try {
             return jws.getCompactSerialization();
         } catch (JoseException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 

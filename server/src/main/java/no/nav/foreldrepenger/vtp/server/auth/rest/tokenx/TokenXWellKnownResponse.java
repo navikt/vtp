@@ -10,8 +10,8 @@ public record TokenXWellKnownResponse(String issuer,
                                       List<String> token_endpoint_auth_signing_alg_values_supported,
                                       List<String> subject_types_supported) {
 
-    public TokenXWellKnownResponse(String issuer, String token_endpoint, String jwks_uri) {
-        this(issuer, token_endpoint, jwks_uri, List.of("urn:ietf:params:oauth:grant-type:token-exchange"), List.of("private_key_jwt"),
+    public TokenXWellKnownResponse(String issuer, String tokenEndpoint, String jwksUri) {
+        this(issuer, tokenEndpoint, jwksUri, List.of("urn:ietf:params:oauth:grant-type:token-exchange"), List.of("private_key_jwt"),
                 List.of("RS256"), List.of("public"));
     }
 }

@@ -39,12 +39,11 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
 @Path(AzureAdRestTjeneste.TJENESTE_PATH)
 public class AzureAdRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AzureAdRestTjeneste.class);
-    protected static final String TJENESTE_PATH = "/azure";
+    protected static final String TJENESTE_PATH = "/azuread"; //NOSONAR
     private static final String ISSUER = "http://vtp/rest/AzureAd";
     public static final String CODE = "code";
     private static final String NONCE_KEY = "nonce";
     private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
-
 
     @GET
     @Path("/isAlive")
@@ -78,14 +77,11 @@ public class AzureAdRestTjeneste {
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token")
-    @SuppressWarnings("unused")
-
     public Response accessToken(@FormParam("grant_type") String grantType,
                                 @FormParam("code") String code,
                                 @FormParam("assertion") String assertion) {
         String token;
         var nonce = clientIdCache.get(NONCE_KEY);
-        LOG.info("Leser nonce: {}", nonce);
 
         if ("client_credentials".equalsIgnoreCase(grantType)) {
             token = createClientCredentialsToken();
@@ -93,11 +89,11 @@ public class AzureAdRestTjeneste {
             Objects.requireNonNull(assertion);
             var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
             var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
-            var bruker = Optional.ofNullable(ansattId).map(StandardBruker::finnIdent).orElseThrow();
+            var bruker = Optional.ofNullable(ansattId).map(StandardSaksbehandlere::finnIdent).orElseThrow();
             token = createToken(bruker, nonce);
         } else if ("authorization_code".equalsIgnoreCase(grantType)) {
             var ident = Optional.ofNullable(code)
-                    .map(StandardBruker::finnIdent)
+                    .map(StandardSaksbehandlere::finnIdent)
                     .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
             token = createToken(ident, nonce);
         } else {
@@ -110,14 +106,14 @@ public class AzureAdRestTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "azureAd/access_token")
+    @Operation(description = "azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)")
     public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident) {
-        var bruker = Optional.ofNullable(StandardBruker.finnIdent(ident)).orElseThrow();
+        var bruker = Optional.ofNullable(StandardSaksbehandlere.finnIdent(ident)).orElseThrow();
         var token = createToken(bruker, clientIdCache.get(NONCE_KEY));
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
-    private String createToken(StandardBruker bruker, String nonce) {
+    private String createToken(StandardSaksbehandlere bruker, String nonce) {
         return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
     }
 
@@ -148,20 +144,19 @@ public class AzureAdRestTjeneste {
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "iss", ISSUER);
         addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "redirect_uri", redirectUri);
 
-        LOG.info("Har fått nonce param fra WW: {}", nonce);
         if (!StringUtils.isEmpty(nonce)) {
-            LOG.info("Cacher nonce: {}", nonce);
+            // Token som produseres ved innloging må ha riktig nonce verdi siden Wonderwall validerer verdien.
             clientIdCache.put(NONCE_KEY, nonce);
         }
 
         return authorizeHtmlPage(uriBuilder);
     }
 
-    public static void addQueryParamToRequestIfNotNullOrEmpty(UriBuilder uriBuilder, String name, String value) {
+    private static void addQueryParamToRequestIfNotNullOrEmpty(UriBuilder uriBuilder, String name, String value) {
         Optional.ofNullable(value).filter(s -> !s.isBlank()).ifPresent(v -> uriBuilder.queryParam(name, v));
     }
 
-    public static Response authorizeHtmlPage(UriBuilder location) {
+    private static Response authorizeHtmlPage(UriBuilder location) {
         var htmlSideForInnlogging = String.format("""
                     <!DOCTYPE html>
                     <html>
@@ -185,12 +180,12 @@ public class AzureAdRestTjeneste {
     }
 
     private static String leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(UriBuilder location) {
-        return Arrays.stream(StandardBruker.values())
+        return Arrays.stream(StandardSaksbehandlere.values())
                 .map(ansatt -> leggTilRadITabell(location.build(), ansatt))
                 .collect(Collectors.joining("\n"));
     }
 
-    private static String leggTilRadITabell(URI location, StandardBruker ansatt) {
+    private static String leggTilRadITabell(URI location, StandardSaksbehandlere ansatt) {
         var redirectForInnloggingAvAnsatt = fromUri(location).queryParam(CODE, ansatt.getIdent()).build();
         return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.getNavn());
     }
