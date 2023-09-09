@@ -57,7 +57,8 @@ public final class AzureOidcTokenGenerator {
 
     public static String azureClientCredentialsToken(String sub, String issuer) {
         JwtClaims claims = createCommonClaims(sub, issuer);
-        claims.setClaim("oid", sub); // Konvensjon
+        claims.setClaim("oid", sub); // Konvensjon - på vei mot idtyp - men behold til ca 2030.
+        claims.setClaim("idtyp", "app"); // Optional claim som settes for app-only = CC flow
         return createToken(claims);
     }
 
