@@ -3,17 +3,6 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse.EXPIRE_IN_SECONDS;
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.FormParam;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -26,15 +15,27 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.server.MockServer;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 @Tag(name = "TokenX")
-@Path("/tokenx")
+@Path(TokenxRestTjeneste.TJENESTE_PATH)
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
 
-    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
+    protected static final String TJENESTE_PATH = "/tokenx"; //NOSONAR
+
+    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder().setSkipAllValidators()
             .setDisableRequireSignature()
             .setSkipSignatureVerification()
             .build();
@@ -54,9 +55,9 @@ public class TokenxRestTjeneste {
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         var issuer = getIssuer(req);
-        var token_endpoint = issuer + "/token";
-        var jwks_endpoint = issuer + "/jwks";
-        var wellKnownResponse = new TokenXWellKnownResponse(issuer, token_endpoint, jwks_endpoint);
+        var tokenEndpoint = issuer + "/token";
+        var jwksEndpoint = issuer + "/jwks";
+        var wellKnownResponse = new TokenXWellKnownResponse(issuer, tokenEndpoint, jwksEndpoint);
         return Response.ok(wellKnownResponse).build();
     }
 
@@ -66,7 +67,7 @@ public class TokenxRestTjeneste {
     @Operation(description = "TokenX public key set")
     public Response jwks(@Context HttpServletRequest req) {
         LOG.info("Kall på /tokenx/jwks");
-        var jwks = KeyStoreTool.getJwks();
+        var jwks = JsonWebKeyHelper.getJwks();
         LOG.trace("Jwks er {}", jwks);
         return Response.ok(jwks).build();
     }
@@ -76,13 +77,13 @@ public class TokenxRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "TokenX public key set")
     public Response token(@Context HttpServletRequest req,
-                          @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grant_type,
-                          @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String client_assertion_type,
-                          @FormParam("client_assertion") String client_assertion,
-                          @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subject_token_type,
-                          @FormParam("subject_token") String subject_token,
+                          @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
+                          @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
+                          @FormParam("client_assertion") String clientAssertion,
+                          @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
+                          @FormParam("subject_token") String subjectToken,
                           @FormParam("audience") String audience) throws JoseException {
-        var subject = hentSubjectFraJWT(subject_token);
+        var subject = hentSubjectFraJWT(subjectToken);
         var token = accessTokenForAudienceOgSubject(req, audience, subject);
         LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, audience);
         LOG.info("TokenX token: {}", token);
@@ -98,10 +99,10 @@ public class TokenxRestTjeneste {
         jwtClaims.setExpirationTimeMinutesInTheFuture(EXPIRE_IN_SECONDS / 60f);
         jwtClaims.setGeneratedJwtId();
         jwtClaims.setIssuedAtToNow();
-        jwtClaims.setClaim("acr", "Level4");
+        jwtClaims.setClaim("acr", System.getProperty("idporten.acr.scope", "idporten-loa-high"));
         jwtClaims.setNotBeforeMinutesInThePast(0F);
 
-        var rsaJWK = KeyStoreTool.getJsonWebKey();
+        var rsaJWK = JsonWebKeyHelper.getJsonWebKey();
         var jws = new JsonWebSignature();
         jws.setPayload(jwtClaims.toJson());
         jws.setKeyIdHeaderValue(rsaJWK.getKeyId());
@@ -111,12 +112,12 @@ public class TokenxRestTjeneste {
         return jws.getCompactSerialization();
     }
 
-    private String hentSubjectFraJWT(String subject_token) {
+    private String hentSubjectFraJWT(String subjectToken) {
         try {
-            var claims = UNVALIDATING_CONSUMER.processToClaims(subject_token);
+            var claims = UNVALIDATING_CONSUMER.processToClaims(subjectToken);
             return claims.getSubject();
         } catch (InvalidJwtException | MalformedClaimException e) {
-            throw new RuntimeException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
+            throw new IllegalStateException("Subjekt_token er ikke av typen JWT og vi kan derfor ikke hente ut sub i claims", e);
         }
     }
 
@@ -125,7 +126,7 @@ public class TokenxRestTjeneste {
     }
 
     private String getIssuer(HttpServletRequest req) {
-        return getBaseUrl(req) + "/rest/tokenx";
+        return getBaseUrl(req) + MockServer.CONTEXT_PATH + TJENESTE_PATH;
     }
 
 }

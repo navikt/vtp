@@ -44,7 +44,7 @@
         <!--    Eksterne avhengigheter    -->
 
         <swagger-codegen-maven-plugin.version>3.0.46</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
-        <graphql-java.version>21.0</graphql-java.version>
+        <graphql-java.version>21.1</graphql-java.version>
         <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
         <avro.version>1.11.2</avro.version>
     </properties>
@@ -296,13 +296,6 @@
                 <artifactId>aordningen-inntektsinformasjon-v1</artifactId>
                 <version>1.7</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.opensaml</groupId>
-                <artifactId>opensaml-security-impl</artifactId>
-                <version>3.4.6</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 

@@ -202,11 +202,6 @@
             <artifactId>nv-i18n</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.opensaml</groupId>
-            <artifactId>opensaml-security-impl</artifactId>
-        </dependency>
-
         <!-- Testavhengigheter -->
     </dependencies>
 

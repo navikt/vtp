@@ -19,38 +19,25 @@ class STSWellKnownResponse {
     private String jwksUri;
 
     @JsonProperty("subject_types_supported")
-    private List<String> subjectTypesSupported = List.of(
-        "public");
+    private List<String> subjectTypesSupported = List.of("public");
 
     @JsonProperty("grant_types_supported")
-    private List<String> grantTypesSupported = List.of(
-        "urn:ietf:params:oauth:grant-type:token-exchange",
-        "client_credentials");
+    private List<String> grantTypesSupported = List.of("urn:ietf:params:oauth:grant-type:token-exchange", "client_credentials");
 
     @JsonProperty("scopes_supported")
     private List<String> scopesSupported = List.of("openid");
 
     @JsonProperty("token_endpoint_auth_methods_supported")
-    private List<String> tokenEndpointAuthMethodsSupported = List.of(
-        "client_secret_basic");
+    private List<String> tokenEndpointAuthMethodsSupported = List.of("client_secret_basic");
 
     @JsonProperty("response_types_supported")
-    private List<String> responseTypesSupported = List.of(
-        "id_token token");
+    private List<String> responseTypesSupported = List.of("id_token token");
 
     @JsonProperty("response_modes_supported")
-    private List<String> responseModesSupported = List.of(
-        "form_post");
+    private List<String> responseModesSupported = List.of("form_post");
 
     @JsonProperty("id_token_signing_alg_values_supported")
-    private List<String> idTokenSigningAlgValuesSupported = List.of(
-        "ES384",
-        "HS256",
-        "HS512",
-        "ES256",
-        "RS256",
-        "HS384",
-        "ES512");
+    private List<String> idTokenSigningAlgValuesSupported = List.of("ES384", "HS256", "HS512", "ES256", "RS256", "HS384", "ES512");
 
     public STSWellKnownResponse(String issuer) {
         this.issuer = issuer;

@@ -13,21 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.container.ContainerResponseContext;
-import jakarta.ws.rs.container.ContainerResponseFilter;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.ContextResolver;
-import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.ParamConverter;
-import jakarta.ws.rs.ext.ParamConverterProvider;
-import jakarta.ws.rs.ext.Provider;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -50,6 +36,21 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ContextResolver;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.ParamConverter;
+import jakarta.ws.rs.ext.ParamConverterProvider;
+import jakarta.ws.rs.ext.Provider;
 import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.axsys.AxsysEnhetstilgangV2Mock;
 import no.nav.digdir.DigdirKrrProxyMock;
@@ -58,18 +59,17 @@ import no.nav.dokdistfordeling.DokdistfordelingMock;
 import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
 import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
 import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.FpWsProxyTilbakekrevingMock;
+import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.TilbakekrevingKonsistensTjeneste;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioV2RestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.aadfp.EnkelAADRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.AADRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.LoginserviceLoginTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.azureAD.MicrosoftGraphApiMock;
-import no.nav.foreldrepenger.vtp.server.auth.rest.isso.OpenAMRestService;
+import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
@@ -82,7 +82,6 @@ import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.mock.pesys.UføreMock;
 import no.nav.nom.SkjermetPersonMock;
-import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.TilbakekrevingKonsistensTjeneste;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
@@ -107,18 +106,14 @@ public class ApplicationConfigJersey extends ResourceConfig {
     public ApplicationConfigJersey() {
         setApplicationName("VTP");
         packages("no.nav", "com.fasterxml.jackson.jaxrs.json");
-        register(new LoggingFeature(java.util.logging.Logger.getLogger(getClass().getName()),
-                FINE, PAYLOAD_ANY, 10000));
+        register(new LoggingFeature(java.util.logging.Logger.getLogger(getClass().getName()), FINE, PAYLOAD_ANY, 10000));
         registerClasses(registerClasses());
         instanserSwagger();
     }
 
     private void instanserSwagger() {
         var oas = new OpenAPI();
-        var info = new Info()
-                .title("VTP - Virtuell Tjeneste Plattform")
-                .version("1.0")
-                .description("REST grensesnitt for VTP.");
+        var info = new Info().title("VTP - Virtuell Tjeneste Plattform").version("1.0").description("REST grensesnitt for VTP.");
 
         oas.info(info).addServersItem(new Server().url("/"));
         var oasConfig = new SwaggerConfiguration().openAPI(oas)
@@ -127,7 +122,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         try {
             new GenericOpenApiContextBuilder<>().openApiConfiguration(oasConfig).buildContext(true).read();
         } catch (OpenApiConfigurationException e) {
-            throw new RuntimeException("OPEN-API", e);
+            throw new IllegalStateException("OPEN-API", e);
         }
     }
 
@@ -166,10 +161,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxyTilbakekrevingMock.class);
 
         // tekniske ting
-        classes.add(OpenAMRestService.class);
-        classes.add(AADRestTjeneste.class);
-        classes.add(EnkelAADRestTjeneste.class);
-        classes.add(LoginserviceLoginTjeneste.class);
+        classes.add(AzureAdRestTjeneste.class);
+        classes.add(IdportenLoginTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
@@ -223,14 +216,15 @@ public class ApplicationConfigJersey extends ResourceConfig {
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
-        private static final ObjectMapper objectMapper = new ObjectMapper();
+        private final ObjectMapper objectMapper = JsonMapper.builder()
+                .addModules(new Jdk8Module(), new JavaTimeModule())
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+                .build();
 
         public JacksonConfigResolver() {
-            objectMapper.registerModule(new Jdk8Module());
-            objectMapper.registerModule(new JavaTimeModule());
-            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            //CDI
         }
 
         @Override
@@ -285,13 +279,17 @@ public class ApplicationConfigJersey extends ResourceConfig {
     public static class LocalDateStringConverter implements ParamConverter<LocalDate> {
         @Override
         public LocalDate fromString(String s) {
-            if (s == null) return null;
+            if (s == null) {
+                return null;
+            }
             return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
         }
 
         @Override
         public String toString(LocalDate localDate) {
-            if (localDate == null) return null;
+            if (localDate == null) {
+                return null;
+            }
             return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
     }
@@ -300,19 +298,14 @@ public class ApplicationConfigJersey extends ResourceConfig {
     public static class CorsFilter implements ContainerResponseFilter {
 
         @Override
-        public void filter(ContainerRequestContext requestContext,
-                           ContainerResponseContext responseContext) throws IOException {
-            responseContext.getHeaders().add(
-                    "Access-Control-Allow-Origin", "*");
-            responseContext.getHeaders().add(
-                    "Access-Control-Allow-Credentials", "true");
-            responseContext.getHeaders().add(
-                    "Access-Control-Allow-Headers",
-                    "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, x-requested-with, " +
-                            "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, authorization");
-            responseContext.getHeaders().add(
-                    "Access-Control-Allow-Methods",
-                    "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+            responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
+            responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
+            responseContext.getHeaders()
+                    .add("Access-Control-Allow-Headers",
+                            "content-type, pragma, accept, expires, accept-language, cache-control, accepted-encoding, x-requested-with, "
+                                    + "host, origin, content-length, user-agent, referer, connection, cookie, nav-callid, x_nav-callid, authorization");
+            responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         }
     }
 }

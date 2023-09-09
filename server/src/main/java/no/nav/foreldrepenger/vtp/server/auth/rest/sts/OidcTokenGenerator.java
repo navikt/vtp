@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest;
+package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,8 @@ import org.jose4j.lang.JoseException;
 
 import com.google.common.base.Strings;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
+
 
 public class OidcTokenGenerator {
 
@@ -24,13 +26,12 @@ public class OidcTokenGenerator {
     private String issuer;
     private NumericDate issuedAt = NumericDate.now();
     private final String subject;
-    private String kid = KeyStoreTool.getJsonWebKey().getKeyId();
+    private String kid = JsonWebKeyHelper.getJsonWebKey().getKeyId();
     private final String nonce;
     private final Map<String, String> additionalClaims = new HashMap<>();
 
     public OidcTokenGenerator(String brukerId, String nonce) {
         additionalClaims.put("azp", "OIDC");
-        additionalClaims.put("acr", "Level4");
         this.subject = brukerId;
         this.nonce = nonce;
 
@@ -95,7 +96,7 @@ public class OidcTokenGenerator {
         for (Map.Entry<String, String> entry : additionalClaims.entrySet()) {
             claims.setStringClaim(entry.getKey(), entry.getValue());
         }
-        RsaJsonWebKey senderJwk = KeyStoreTool.getJsonWebKey();
+        RsaJsonWebKey senderJwk = JsonWebKeyHelper.getJsonWebKey();
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
         jws.setKeyIdHeaderValue(kid);
@@ -105,7 +106,7 @@ public class OidcTokenGenerator {
         try {
             return jws.getCompactSerialization();
         } catch (JoseException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
