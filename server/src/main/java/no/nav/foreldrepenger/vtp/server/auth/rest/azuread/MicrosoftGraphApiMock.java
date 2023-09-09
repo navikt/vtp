@@ -30,12 +30,13 @@ public class MicrosoftGraphApiMock {
             .build();
 
     private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
+    protected static final String AUTHORIZATION = "Authorization";
 
     @GET
     @Produces({"application/json;charset=UTF-8"})
     @Path("/oidc/userinfo")
     public UserInfo userInfo(@Context HttpServletRequest req) {
-        var ansatt = getAnsatt(req.getHeader("Authorization"));
+        var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
         return new UserInfo(ansatt.ansattId(), ansatt.ansatt().displayName(), req.getLocalName(), ansatt.ansatt().cn(),
                 "http://example.com/picture.jpg", "user@nav.no");
     }
@@ -44,7 +45,7 @@ public class MicrosoftGraphApiMock {
     @Produces({"application/json;charset=UTF-8"})
     @Path("/v1.0/me")
     public Response me(@Context HttpServletRequest req, @QueryParam("select") String select) {
-        var ansatt = getAnsatt(req.getHeader("Authorization"));
+        var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
         var user = new User(ansatt.ansattId(),
                 "https://graph.microsoft.com/v1.0/$metadata#users(id," + ansatt.ansattId() + ")/$entity", ansatt.ansattId(),
                 ansatt.ansatt().groups().stream().map(Group::new).toList());
@@ -55,7 +56,7 @@ public class MicrosoftGraphApiMock {
     @Produces({"application/json;charset=UTF-8"})
     @Path("/v1.0/users/{id}/memberOf/microsoft.graph.group")
     public Response memberOf(@Context HttpServletRequest req, @PathParam("id") String id) {
-        var ansatt = getAnsatt(req.getHeader("Authorization"));
+        var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
         var user = new MemberOfResponse("https://graph.microsoft.com/v1.0/$metadata#groups(" + ansatt.ansatt().displayName() + ")",
                 null, ansatt.ansatt().groups().stream().map(Group::new).toList());
         return Response.ok(user).build();

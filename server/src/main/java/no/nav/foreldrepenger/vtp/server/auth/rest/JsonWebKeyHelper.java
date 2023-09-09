@@ -51,7 +51,7 @@ public class JsonWebKeyHelper {
             var cert = ks.getCertificate(keyAndCertAlias);
             myPublicKey = cert.getPublicKey();
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException | UnrecoverableEntryException e) {
-            throw new RuntimeException("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
+            throw new IllegalStateException("Error during loading of keystore. Do you have your keystore in order, soldier?", e);
         }
 
         try {
@@ -61,7 +61,7 @@ public class JsonWebKeyHelper {
             jwk.setAlgorithm("RS256");
             jwk.setUse("sig");
         } catch (JoseException e) {
-            throw new RuntimeException("Error during init of JWK: ", e);
+            throw new IllegalStateException("Error during init of JWK: ", e);
         }
     }
 
