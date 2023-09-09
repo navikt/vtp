@@ -1,5 +1,10 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.sts;
 
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.GRANT_TYPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SUBJECT_TOKEN;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SUBJECT_TOKEN_TYPE;
+
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
@@ -19,7 +24,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 @Tag(name = "Security Token Service")
 @Path("/v1/sts")
@@ -31,9 +36,9 @@ public class STSRestTjeneste {
     @POST
     @Path("/token/exchange")
     @Produces({MediaType.APPLICATION_JSON})
-    public SAMLResponse dummySaml(@QueryParam("grant_type") String grantType,
-                                  @QueryParam("subject_token_type") String issuedTokenType,
-                                  @QueryParam("subject_token") String subjectToken) {
+    public SAMLResponse dummySaml(@QueryParam(GRANT_TYPE) String grantType,
+                                  @QueryParam(SUBJECT_TOKEN_TYPE) String issuedTokenType,
+                                  @QueryParam(SUBJECT_TOKEN) String subjectToken) {
         throw new UnsupportedOperationException("/token/exchange - er ikke lenger supportert.");
     }
 
@@ -44,8 +49,8 @@ public class STSRestTjeneste {
     @GET
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getDummyToken(@QueryParam("grant_type") String grantType,
-                                  @QueryParam("scope") String scope,
+    public Response getDummyToken(@QueryParam(GRANT_TYPE) String grantType,
+                                  @QueryParam(SCOPE) String scope,
                                   @Context HttpServletRequest req) {
         LOG.warn("Kall på deprecated GET /token endepunkt!");
         var username = getUsername(req);
@@ -61,8 +66,8 @@ public class STSRestTjeneste {
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response dummyToken(@FormParam("grant_type") String grantType,
-                               @FormParam("scope") String scope,
+    public Response dummyToken(@FormParam(GRANT_TYPE) String grantType,
+                               @FormParam(SCOPE) String scope,
                                @Context HttpServletRequest req) {
         var username = getUsername(req);
         if (username != null) {
@@ -99,7 +104,7 @@ public class STSRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "oauth2/connect/jwk_uri")
     public Response authorize(@SuppressWarnings("unused") @Context HttpServletRequest req) {
-        String jwks = KeyStoreTool.getJwks();
+        String jwks = JsonWebKeyHelper.getJwks();
         LOG.info("JWKS: {}", jwks);
         return Response.ok(jwks).build();
     }

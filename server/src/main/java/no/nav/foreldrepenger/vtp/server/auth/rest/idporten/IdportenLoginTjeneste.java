@@ -1,22 +1,26 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.idporten;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.server.MockServer;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
-import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
-
-import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
+import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.server.MockServer;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
+import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
 
 @Tag(name = "ID-Porten")
 @Path(IdportenLoginTjeneste.TJENESTE_PATH)
@@ -49,7 +53,7 @@ public class IdportenLoginTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "idporten/discovery/keys")
     public Response authorize() {
-        String jwks = KeyStoreTool.getJwks();
+        String jwks = JsonWebKeyHelper.getJwks();
         return Response.ok(jwks).build();
     }
 

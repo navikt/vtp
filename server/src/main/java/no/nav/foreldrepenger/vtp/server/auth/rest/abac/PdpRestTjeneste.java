@@ -3,11 +3,6 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.abac;
 import java.io.IOException;
 import java.util.List;
 
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Response;
 
 @Tag(name = "ABAC-PDP-Mock")
 @Path("/asm-pdp/authorize")
@@ -51,17 +50,17 @@ public class PdpRestTjeneste {
 
     @SuppressWarnings("unused")
     private String buildDenyResponse() {
-        return " { \"Response\" : {\"Decision\" : \"Deny\",\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
-            "\"urn:oasis:names:tc:xacml:1.0:status:ok\",\"StatusCode\" : {\"Value\" : " +
-            "\"urn:oasis:names:tc:xacml:1.0:status:ok\"}}}}}";
+        return " { \"Response\" : {\"Decision\" : \"Deny\",\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : "
+                + "\"urn:oasis:names:tc:xacml:1.0:status:ok\",\"StatusCode\" : {\"Value\" : "
+                + "\"urn:oasis:names:tc:xacml:1.0:status:ok\"}}}}}";
     }
 
     private String buildPermitResponse(int antallPermits) {
 
         // hardkoder en respons, må matche antall decisions som skal gjøres
-        String permit = "{\"Decision\" : \"Permit\",\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : " +
-            "\"urn:oasis:names:tc:xacml:1.0:status:ok\",\"StatusCode\" : {\"Value\" : " +
-            "\"urn:oasis:names:tc:xacml:1.0:status:ok\"}}}}";
+        String permit = "{\"Decision\" : \"Permit\",\"InfotrygdSakStatus\" : {\"StatusCode\" : {\"Value\" : "
+                + "\"urn:oasis:names:tc:xacml:1.0:status:ok\",\"StatusCode\" : {\"Value\" : "
+                + "\"urn:oasis:names:tc:xacml:1.0:status:ok\"}}}}";
 
         if (antallPermits > 1) {
             int genPermits = antallPermits;

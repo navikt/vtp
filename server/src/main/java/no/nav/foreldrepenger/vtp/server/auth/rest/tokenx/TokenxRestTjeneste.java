@@ -3,19 +3,6 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse.EXPIRE_IN_SECONDS;
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.FormParam;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
-import no.nav.foreldrepenger.vtp.server.MockServer;
-
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -28,7 +15,18 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.server.MockServer;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 @Tag(name = "TokenX")
 @Path(TokenxRestTjeneste.TJENESTE_PATH)
@@ -37,8 +35,7 @@ public class TokenxRestTjeneste {
 
     protected static final String TJENESTE_PATH = "/tokenx"; //NOSONAR
 
-    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
+    public static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder().setSkipAllValidators()
             .setDisableRequireSignature()
             .setSkipSignatureVerification()
             .build();
@@ -70,7 +67,7 @@ public class TokenxRestTjeneste {
     @Operation(description = "TokenX public key set")
     public Response jwks(@Context HttpServletRequest req) {
         LOG.info("Kall på /tokenx/jwks");
-        var jwks = KeyStoreTool.getJwks();
+        var jwks = JsonWebKeyHelper.getJwks();
         LOG.trace("Jwks er {}", jwks);
         return Response.ok(jwks).build();
     }
@@ -105,7 +102,7 @@ public class TokenxRestTjeneste {
         jwtClaims.setClaim("acr", System.getProperty("idporten.acr.scope", "idporten-loa-high"));
         jwtClaims.setNotBeforeMinutesInThePast(0F);
 
-        var rsaJWK = KeyStoreTool.getJsonWebKey();
+        var rsaJWK = JsonWebKeyHelper.getJsonWebKey();
         var jws = new JsonWebSignature();
         jws.setPayload(jwtClaims.toJson());
         jws.setKeyIdHeaderValue(rsaJWK.getKeyId());

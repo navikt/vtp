@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.idporten;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -36,10 +36,10 @@ public final class IdportenOidcTokenGenerator {
     }
 
     private static String createToken(JwtClaims claims) {
-        RsaJsonWebKey senderJwk = KeyStoreTool.getJsonWebKey();
+        RsaJsonWebKey senderJwk = JsonWebKeyHelper.getJsonWebKey();
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
-        jws.setKeyIdHeaderValue(KeyStoreTool.getJsonWebKey().getKeyId());
+        jws.setKeyIdHeaderValue(JsonWebKeyHelper.getJsonWebKey().getKeyId());
         jws.setAlgorithmHeaderValue("RS256");
         jws.setKey(senderJwk.getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);

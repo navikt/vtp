@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
-
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
@@ -15,6 +13,8 @@ import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 
 import com.google.common.base.Strings;
+
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 
 public class OidcTokenGenerator {
@@ -26,7 +26,7 @@ public class OidcTokenGenerator {
     private String issuer;
     private NumericDate issuedAt = NumericDate.now();
     private final String subject;
-    private String kid = KeyStoreTool.getJsonWebKey().getKeyId();
+    private String kid = JsonWebKeyHelper.getJsonWebKey().getKeyId();
     private final String nonce;
     private final Map<String, String> additionalClaims = new HashMap<>();
 
@@ -96,7 +96,7 @@ public class OidcTokenGenerator {
         for (Map.Entry<String, String> entry : additionalClaims.entrySet()) {
             claims.setStringClaim(entry.getKey(), entry.getValue());
         }
-        RsaJsonWebKey senderJwk = KeyStoreTool.getJsonWebKey();
+        RsaJsonWebKey senderJwk = JsonWebKeyHelper.getJsonWebKey();
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
         jws.setKeyIdHeaderValue(kid);

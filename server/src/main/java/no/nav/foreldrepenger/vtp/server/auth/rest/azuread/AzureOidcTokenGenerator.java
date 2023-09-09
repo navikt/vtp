@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
+import java.util.Objects;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -13,17 +12,16 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
-
-import java.util.Objects;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 
 public final class AzureOidcTokenGenerator {
     private AzureOidcTokenGenerator() {
     }
 
-    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
+    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder().setSkipAllValidators()
             .setDisableRequireSignature()
             .setSkipSignatureVerification()
             .build();
@@ -32,11 +30,12 @@ public final class AzureOidcTokenGenerator {
         try {
             return UNVALIDATING_CONSUMER.processToClaims(assertion);
         } catch (Exception e) {
-            throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>", Response.Status.FORBIDDEN);
+            throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>",
+                    Response.Status.FORBIDDEN);
         }
     }
 
-    static String getNavIdent(JwtClaims claims)  {
+    static String getNavIdent(JwtClaims claims) {
         try {
             return claims.getStringClaimValue("NAVident");
         } catch (MalformedClaimException e) {
@@ -58,9 +57,7 @@ public final class AzureOidcTokenGenerator {
 
     public static String azureClientCredentialsToken(String sub, String issuer) {
         JwtClaims claims = createCommonClaims(sub, issuer);
-
         claims.setClaim("oid", sub); // Konvensjon
-
         return createToken(claims);
     }
 
@@ -81,10 +78,10 @@ public final class AzureOidcTokenGenerator {
     }
 
     private static String createToken(JwtClaims claims) {
-        RsaJsonWebKey senderJwk = KeyStoreTool.getJsonWebKey();
+        RsaJsonWebKey senderJwk = JsonWebKeyHelper.getJsonWebKey();
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
-        jws.setKeyIdHeaderValue(KeyStoreTool.getJsonWebKey().getKeyId());
+        jws.setKeyIdHeaderValue(JsonWebKeyHelper.getJsonWebKey().getKeyId());
         jws.setAlgorithmHeaderValue("RS256");
         jws.setKey(senderJwk.getPrivateKey());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);

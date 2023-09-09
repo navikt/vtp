@@ -1,6 +1,15 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
+import static jakarta.ws.rs.core.Response.ok;
 import static jakarta.ws.rs.core.UriBuilder.fromUri;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CLIENT_ID;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.CODE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.GRANT_TYPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.NONCE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.REDIRECT_URI;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.SCOPE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.STATE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureOidcTokenGenerator.azureClientCredentialsToken;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -11,13 +20,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -31,7 +41,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import no.nav.foreldrepenger.vtp.server.MockServer;
-import no.nav.foreldrepenger.vtp.server.auth.rest.KeyStoreTool;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
 
@@ -41,16 +51,14 @@ public class AzureAdRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AzureAdRestTjeneste.class);
     protected static final String TJENESTE_PATH = "/azuread"; //NOSONAR
     private static final String ISSUER = "http://vtp/rest/AzureAd";
-    public static final String CODE = "code";
-    private static final String NONCE_KEY = "nonce";
-    private static final Map<String, String> clientIdCache = new ConcurrentHashMap<>();
+    private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
 
     @GET
     @Path("/isAlive")
     @Produces(MediaType.TEXT_HTML)
     public Response isAliveMock() {
         String isAlive = "Azure AD is OK";
-        return Response.ok(isAlive).build();
+        return ok(isAlive).build();
     }
 
     @GET
@@ -61,7 +69,7 @@ public class AzureAdRestTjeneste {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
         var wellKnownResponse = new WellKnownResponse(ISSUER, baseUrl + "/authorize", baseUrl + "/jwks", baseUrl + "/token");
-        return Response.ok(wellKnownResponse).build();
+        return ok(wellKnownResponse).build();
     }
 
     @GET
@@ -69,38 +77,63 @@ public class AzureAdRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "azureAd/discovery/keys")
     public Response authorize() {
-        String jwks = KeyStoreTool.getJwks();
-        return Response.ok(jwks).build();
+        String jwks = JsonWebKeyHelper.getJwks();
+        return ok(jwks).build();
     }
 
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token")
-    public Response accessToken(@FormParam("grant_type") String grantType,
-                                @FormParam("code") String code,
-                                @FormParam("assertion") String assertion) {
+    public Response accessToken(@FormParam(GRANT_TYPE) String grantType,
+                                @FormParam(CODE) String code,
+                                @FormParam("assertion") String assertion,
+                                @FormParam("refresh_token") @Valid String refreshToken) {
         String token;
-        var nonce = clientIdCache.get(NONCE_KEY);
+        var nonce = nonceCache.get(NONCE);
 
-        if ("client_credentials".equalsIgnoreCase(grantType)) {
-            token = createClientCredentialsToken();
-        } else if ("urn:ietf:params:oauth:grant-type:jwt-bearer".equalsIgnoreCase(grantType)) {
-            Objects.requireNonNull(assertion);
-            var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
-            var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
-            var bruker = Optional.ofNullable(ansattId).map(StandardSaksbehandlere::finnIdent).orElseThrow();
-            token = createToken(bruker, nonce);
-        } else if ("authorization_code".equalsIgnoreCase(grantType)) {
-            var ident = Optional.ofNullable(code)
-                    .map(StandardSaksbehandlere::finnIdent)
-                    .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
-            token = createToken(ident, nonce);
-        } else {
-            LOG.warn("Ukjent / unsupported grant type {}", grantType);
-            throw new WebApplicationException("Ukjent / unsupported grant type " + grantType, Response.Status.UNAUTHORIZED);
-        }
-        return Response.ok(new Oauth2AccessTokenResponse(token)).build();
+        return switch (grantType) {
+            case "client_credentials" -> {
+                token = azureClientCredentialsToken(UUID.randomUUID().toString().substring(0, 19), ISSUER);
+                yield ok(new Oauth2AccessTokenResponse(token)).build();
+            }
+            case "urn:ietf:params:oauth:grant-type:jwt-bearer" -> {
+                Objects.requireNonNull(assertion);
+                var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
+                var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
+                var ansattIdent = Optional.ofNullable(ansattId).map(StandardSaksbehandlere::finnIdent).orElseThrow();
+                token = createToken(ansattIdent, nonce);
+                yield ok(new Oauth2AccessTokenResponse(token)).build();
+            }
+            case "authorization_code" -> {
+                var ansattIdent = Optional.ofNullable(code)
+                        .map(StandardSaksbehandlere::finnIdent)
+                        .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
+                token = createToken(ansattIdent, nonce);
+                yield ok(new Oauth2AccessTokenResponse(token)).build();
+            }
+            case "refresh_token" -> {
+                if (refreshToken == null) {
+                    yield badRequest();
+                }
+                token = createToken(StandardSaksbehandlere.finnIdent("saksbeh"), nonce);
+                yield ok(new Oauth2AccessTokenResponse(token)).build();
+            }
+            default -> {
+                LOG.warn("Ukjent / unsupported grant type {}", grantType);
+                throw new WebApplicationException("Ukjent / unsupported grant type " + grantType, Response.Status.UNAUTHORIZED);
+            }
+        };
+    }
+
+    private static Response badRequest() {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("Forsøk på refresh av token uten refresh_token lagt ved i requesten")
+                .build();
+    }
+
+    private static boolean isNotNullAndBlank(String value) {
+        return value != null && !value.isBlank();
     }
 
     @GET
@@ -109,16 +142,12 @@ public class AzureAdRestTjeneste {
     @Operation(description = "azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)")
     public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident) {
         var bruker = Optional.ofNullable(StandardSaksbehandlere.finnIdent(ident)).orElseThrow();
-        var token = createToken(bruker, clientIdCache.get(NONCE_KEY));
-        return Response.ok(new Oauth2AccessTokenResponse(token)).build();
+        var token = createToken(bruker, nonceCache.get(NONCE));
+        return ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
     private String createToken(StandardSaksbehandlere bruker, String nonce) {
         return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
-    }
-
-    private String createClientCredentialsToken() {
-        return AzureOidcTokenGenerator.azureClientCredentialsToken(UUID.randomUUID().toString().substring(0, 19), ISSUER);
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
@@ -130,33 +159,31 @@ public class AzureAdRestTjeneste {
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
     @Operation(description = "AzureAD/v2.0/authorize")
     @SuppressWarnings("unused")
-    public Response authorize(@QueryParam("scope") @DefaultValue("openid") String scope,
-                              @QueryParam("client_id") String clientId,
-                              @QueryParam(NONCE_KEY) String nonce,
-                              @QueryParam("state") String state,
-                              @QueryParam("redirect_uri") String redirectUri) {
+    public Response authorize(@QueryParam("response_type") @DefaultValue(CODE) String responseType,
+                              @QueryParam(SCOPE) @DefaultValue("openid") String scope,
+                              // openid, offline_access eller https://graph.microsoft.com/mail.read permissions
+                              @QueryParam(CLIENT_ID) @NotNull String clientId,
+                              @QueryParam(STATE) String state,
+                              @QueryParam(NONCE) String nonce,
+                              @QueryParam(REDIRECT_URI) @NotNull String redirectUri) {
         LOG.info("kall mot AzureAD authorize");
 
-        var uriBuilder = fromUri(redirectUri);
-        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "scope", scope);
-        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "client_id", clientId);
-        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "state", state);
-        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "iss", ISSUER);
-        addQueryParamToRequestIfNotNullOrEmpty(uriBuilder, "redirect_uri", redirectUri);
-
-        if (!StringUtils.isEmpty(nonce)) {
-            // Token som produseres ved innloging må ha riktig nonce verdi siden Wonderwall validerer verdien.
-            clientIdCache.put(NONCE_KEY, nonce);
+        if (!Objects.equals(responseType, CODE)) {
+            throw new IllegalArgumentException("Unsupported responseType [" + responseType + "], should be 'code'");
         }
 
-        return authorizeHtmlPage(uriBuilder);
+        var location = fromUri(redirectUri);
+        if (isNotNullAndBlank(state)) {
+            location.queryParam(STATE, state);
+        }
+        if (isNotNullAndBlank(nonce)) {
+            // Token som produseres ved innloging må ha riktig nonce verdi siden Wonderwall validerer verdien.
+            nonceCache.put(NONCE, nonce);
+        }
+        return authorizeHtmlPage(location);
     }
 
-    private static void addQueryParamToRequestIfNotNullOrEmpty(UriBuilder uriBuilder, String name, String value) {
-        Optional.ofNullable(value).filter(s -> !s.isBlank()).ifPresent(v -> uriBuilder.queryParam(name, v));
-    }
-
-    private static Response authorizeHtmlPage(UriBuilder location) {
+    public static Response authorizeHtmlPage(UriBuilder location) {
         var htmlSideForInnlogging = String.format("""
                     <!DOCTYPE html>
                     <html>
@@ -189,5 +216,4 @@ public class AzureAdRestTjeneste {
         var redirectForInnloggingAvAnsatt = fromUri(location).queryParam(CODE, ansatt.getIdent()).build();
         return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.getNavn());
     }
-
 }
