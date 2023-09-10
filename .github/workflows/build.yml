@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: read
+      id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-no-db.yml@main
     with:
       build-image: ${{ github.ref_name == 'master' }} # default: true
