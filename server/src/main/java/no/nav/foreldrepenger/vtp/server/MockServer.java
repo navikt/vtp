@@ -11,14 +11,12 @@ import java.util.logging.LogManager;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.HandlerContainer;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +64,10 @@ public class MockServer {
         server = new Server();
         setConnectors(server);
 
-        //var contextHandlerCollection = new ContextHandlerCollection();
-        //server.setHandler(contextHandlerCollection);
-
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
         var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
         var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
         kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -109,14 +103,12 @@ public class MockServer {
         var gsakRepo = new GsakRepo();
         var journalRepository = JournalRepositoryImpl.getInstance();
 
-        var handler = (HandlerContainer) server.getHandler();
-
-        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, handler);
+        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository);
 
         startServer();
     }
 
-    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, HandlerContainer handler) {
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository) {
         var config = new ApplicationConfigJersey()
                 .setup(testScenarioRepository,
                         instance,
