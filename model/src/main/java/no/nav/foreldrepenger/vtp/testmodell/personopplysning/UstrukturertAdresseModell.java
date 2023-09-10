@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UstrukturertAdresseModell extends AdresseModell {
     private String adresseLinje1;
@@ -18,7 +19,19 @@ public class UstrukturertAdresseModell extends AdresseModell {
     }
 
     @JsonCreator
-    public UstrukturertAdresseModell(LocalDate fom, LocalDate tom, Endringstype endringstype, LocalDate endringstidspunkt, AdresseType adresseType, Landkode land, String matrikkelId, String adresseLinje1, String adresseLinje2, String adresseLinje3, String adresseLinje4, String postNr, String poststed) {
+    public UstrukturertAdresseModell(@JsonProperty("fom") LocalDate fom,
+                                     @JsonProperty("tom") LocalDate tom,
+                                     @JsonProperty("endringstype") Endringstype endringstype,
+                                     @JsonProperty("endringstidspunkt") LocalDate endringstidspunkt,
+                                     @JsonProperty("adresseType") AdresseType adresseType,
+                                     @JsonProperty("land") Landkode land,
+                                     @JsonProperty("matrikkelId") String matrikkelId,
+                                     @JsonProperty("adresseLinje1") String adresseLinje1,
+                                     @JsonProperty("adresseLinje2") String adresseLinje2,
+                                     @JsonProperty("adresseLinje3") String adresseLinje3,
+                                     @JsonProperty("adresseLinje4") String adresseLinje4,
+                                     @JsonProperty("postNr") String postNr,
+                                     @JsonProperty("poststed") String poststed) {
         super(fom, tom, endringstype, endringstidspunkt, adresseType, land, matrikkelId);
         this.adresseLinje1 = adresseLinje1;
         this.adresseLinje2 = adresseLinje2;
