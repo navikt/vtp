@@ -45,6 +45,9 @@ public class Personopplysninger {
     @JacksonInject
     private VariabelContainer vars;
 
+    public Personopplysninger() {
+    }
+
     public Personopplysninger(SøkerModell søker,
                               AnnenPartModell annenPart,
                               List<FamilierelasjonModell> familierelasjoner,

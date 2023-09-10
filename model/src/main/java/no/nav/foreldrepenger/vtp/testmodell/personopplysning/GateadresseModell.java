@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GateadresseModell extends AdresseModell {
     private String gatenavn;
@@ -18,7 +19,19 @@ public class GateadresseModell extends AdresseModell {
     }
 
     @JsonCreator
-    public GateadresseModell(LocalDate fom, LocalDate tom, Endringstype endringstype, LocalDate endringstidspunkt, AdresseType adresseType, Landkode land, String matrikkelId, String gatenavn, Integer gatenummer, String husbokstav, Integer husnummer, String postnummer, String kommunenummer) {
+    public GateadresseModell(@JsonProperty("fom") LocalDate fom,
+                             @JsonProperty("tom") LocalDate tom,
+                             @JsonProperty("endringstype") Endringstype endringstype,
+                             @JsonProperty("endringstidspunkt") LocalDate endringstidspunkt,
+                             @JsonProperty("adresseType") AdresseType adresseType,
+                             @JsonProperty("land") Landkode land,
+                             @JsonProperty("matrikkelId") String matrikkelId,
+                             @JsonProperty("gatenavn")  String gatenavn,
+                             @JsonProperty("gatenummer") Integer gatenummer,
+                             @JsonProperty("husbokstav") String husbokstav,
+                             @JsonProperty("husnummer") Integer husnummer,
+                             @JsonProperty("postnummer") String postnummer,
+                             @JsonProperty("kommunenummer") String kommunenummer) {
         super(fom, tom, endringstype, endringstidspunkt, adresseType, land, matrikkelId);
         this.gatenavn = gatenavn;
         this.gatenummer = gatenummer;

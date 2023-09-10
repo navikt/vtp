@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.LogManager;
 
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HandlerContainer;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -17,8 +19,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +66,8 @@ public class MockServer {
         server = new Server();
         setConnectors(server);
 
-        var contextHandlerCollection = new ContextHandlerCollection();
-        server.setHandler(contextHandlerCollection);
+        //var contextHandlerCollection = new ContextHandlerCollection();
+        //server.setHandler(contextHandlerCollection);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
         var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
@@ -125,10 +125,12 @@ public class MockServer {
                         kafkaServer.getKafkaAdminClient(),
                         journalRepository);
 
-        var context = new ServletContextHandler(handler, CONTEXT_PATH);
+        var context = new ServletContextHandler();
+        context.setContextPath(CONTEXT_PATH);
         var jerseyServlet = new ServletHolder(new ServletContainer(config));
         jerseyServlet.setInitOrder(1);
         context.addServlet(jerseyServlet, "/*");
+        server.setHandler(context);
     }
 
     private void startLdapServer() {
@@ -139,6 +141,7 @@ public class MockServer {
 
     protected void startServer() throws Exception {
         server.start();
+        server.join();
     }
 
 
@@ -146,8 +149,7 @@ public class MockServer {
 
         var connectors = new ArrayList<>();
 
-        @SuppressWarnings("resource")
-        var httpConnector = new ServerConnector(server);
+        @SuppressWarnings("resource") var httpConnector = new ServerConnector(server);
         httpConnector.setPort(port);
         httpConnector.setHost(host);
         connectors.add(httpConnector);
@@ -172,13 +174,12 @@ public class MockServer {
 
         // keystore genererer sertifikat og TLS for innkommende kall. Bruker standard prop hvis definert, ellers faller tilbake på modig props
         var keystoreProp = System.getProperty("javax.net.ssl.keyStore") != null ? "javax.net.ssl.keyStore" : KEYSTORE_PATH_PROP;
-        var keystorePasswProp = System.getProperty("javax.net.ssl.keyStorePassword") != null ? "javax.net.ssl.keyStorePassword" : KEYSTORE_PASSW_PROP;
+        var keystorePasswProp =
+                System.getProperty("javax.net.ssl.keyStorePassword") != null ? "javax.net.ssl.keyStorePassword" : KEYSTORE_PASSW_PROP;
         System.setProperty(keystoreProp, KeystoreUtils.getKeystoreFilePath());
         System.setProperty(keystorePasswProp, KeystoreUtils.getKeyStorePassword());
 
-        @SuppressWarnings("resource")
-        var sslConnector = new ServerConnector(server,
-                sslConnectionFactory,
+        @SuppressWarnings("resource") var sslConnector = new ServerConnector(server, sslConnectionFactory,
                 new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
