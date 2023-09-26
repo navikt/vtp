@@ -42,10 +42,6 @@ public class SafMock {
     private static final String NAV_CALLID = "Nav-Callid";
     private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
 
-    private static final String JOURNALPOST_ID = "journalpostId";
-    private static final String DOKUMENT_INFO_ID = "dokumentInfoId";
-    private static final String VARIANT_FORMAT = "variantFormat";
-
     @Context
     private JournalRepository journalRepository;
 
@@ -78,10 +74,9 @@ public class SafMock {
     @Path("/rest/hentdokument/{journalpostId}/{dokumentInfoId}/{variantFormat}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Henter dokument")
-    public Response hentDokument( @PathParam(JOURNALPOST_ID) String journalpostId,
-                                  @PathParam(DOKUMENT_INFO_ID) String dokumentInfoId,
-                                  @PathParam(VARIANT_FORMAT) String variantFormat ) {
-
+    public Response hentDokument(@PathParam("journalpostId") String journalpostId,
+                                 @PathParam("dokumentInfoId") String dokumentInfoId,
+                                 @PathParam("variantFormat") String variantFormat ) {
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
         if (dokumentModell.isPresent()) {
             LOG.info("Henter dokument på følgende dokumentId: {}", dokumentModell.get().getDokumentId());
@@ -92,21 +87,10 @@ public class SafMock {
                     .orElseThrow(() -> new IllegalArgumentException("Fant ikke dokument som matchet variantformat: " + variantFormat));
             return Response
                     .status(Response.Status.OK)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat + ".pdf")
+                    .header(HttpHeaders.CONTENT_TYPE, "application/pdf")
                     .entity(dokumentinnhold)
                     .build();
-        } else if (journalpostId != null) { // TODO: Fjern når SafMock ikke er WIP
-            try (InputStream is = getClass().getResourceAsStream("/dokumenter/foreldrepenger_soknad.pdf")) {
-                return Response
-                        .status(Response.Status.OK)
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + dokumentInfoId + "_" + variantFormat)
-                        .entity(is.readAllBytes())
-                        .build();
-            } catch (IOException e) {
-                throw new RuntimeException(String.format("Kunne ikke lese dummyrespons for " +
-                        "journalpostId=%s, dokumentInfoId=%s, variantFormat=%s", journalpostId, dokumentInfoId, variantFormat));
-            }
-
         } else {
             throw new RuntimeException(String.format("Kunne ikke finne dokument for " +
                     "journalpostId=%s, dokumentInfoId=%s, variantFormat=%s", journalpostId, dokumentInfoId, variantFormat));
