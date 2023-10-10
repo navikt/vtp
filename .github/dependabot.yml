@@ -21,3 +21,15 @@ updates:
     open-pull-requests-limit: 20
     ignore:
       - dependency-name: "no.nav.teamdokumenthandtering:teamdokumenthandtering-avro-schemas"
+    groups:
+      prod-deps:
+        dependency-type: "production"
+        exclude-patterns:
+          - "no.nav.*"
+      dev-deps:
+        dependency-type: "development"
+        exclude-patterns:
+          - "no.nav.*"
+      interne-deps:
+        patterns:
+          - "no.nav.*"
