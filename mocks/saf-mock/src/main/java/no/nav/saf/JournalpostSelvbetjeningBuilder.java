@@ -17,10 +17,15 @@ import no.nav.saf.selvbetjening.Sak;
 import no.nav.saf.selvbetjening.Sakstype;
 import no.nav.saf.selvbetjening.Variantformat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 public final class JournalpostSelvbetjeningBuilder {
+    private static final Logger LOG = LoggerFactory.getLogger(JournalpostSelvbetjeningBuilder.class);
 
     private JournalpostSelvbetjeningBuilder() {
         throw new IllegalStateException("Utility class");
@@ -29,7 +34,7 @@ public final class JournalpostSelvbetjeningBuilder {
     public static Journalpost buildFrom(JournalpostModell modell) {
         var builder = Journalpost.builder();
         builder.setJournalpostId(modell.getJournalpostId());
-        builder.setJournalstatus(Journalstatus.JOURNALFOERT);
+        builder.setJournalstatus(tilJournalStatus(modell.getJournalStatus()));
         var journalposttype = Journalposttype.valueOf(modell.getJournalposttype().getKode());
         builder.setJournalposttype(journalposttype);
 
@@ -59,9 +64,21 @@ public final class JournalpostSelvbetjeningBuilder {
         return builder.build();
     }
 
+    private static Journalstatus tilJournalStatus(no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus journalStatus) {
+        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.JOURNALFØRT.equals(journalStatus)) return Journalstatus.JOURNALFOERT;
+        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.MOTTATT.equals(journalStatus)) return Journalstatus.MOTTATT;
+        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.AVBRUTT.equals(journalStatus)) return Journalstatus.AVBRUTT;
+        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.MIDLERTIDIG_JOURNALFØRT.equals(journalStatus)) {
+            return Journalstatus.MOTTATT;
+        } else {
+            LOG.info("Ukjent journalstatus på journalpost '{}'", journalStatus);
+            return Journalstatus.UKJENT;
+        }
+    }
+
     private static DokumentInfo tilDokumentInfo(DokumentModell modell) {
         var dokumentVarianter = modell.getDokumentVariantInnholdListe().stream()
-                .map(dvi -> new Dokumentvariant(Variantformat.ARKIV, "xxx", "PDF",
+                .map(dvi -> new Dokumentvariant(Variantformat.ARKIV, UUID.randomUUID().toString(), "PDF",
                         dvi.getDokumentInnhold().length, true, List.of()))
                 .toList();
         return new DokumentInfo(modell.getDokumentId(), modell.getTittel(), modell.getBrevkode(), dokumentVarianter);

@@ -24,6 +24,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
@@ -37,7 +38,6 @@ public class JournalpostMapper {
         return instance;
     }
 
-    //TODO: utvid med nødvendig mapping
     public JournalpostModell tilModell(OpprettJournalpostRequest journalpostRequest) {
         JournalpostModell modell = new JournalpostModell();
         modell.setJournalposttype(mapJournalposttype(journalpostRequest.getJournalpostType()));
@@ -46,30 +46,59 @@ public class JournalpostMapper {
         tilSak(journalpostRequest, modell);
         tilMottattDato(journalpostRequest, modell);
         tilAvsenderMottaker(journalpostRequest, modell);
-        leggTilDokumentModeller(journalpostRequest, modell);
+        modell.setDokumentModellList(tilDokumentModeller(journalpostRequest.getDokumenter()));
         modell.setTittel(journalpostRequest.getTittel());
         modell.setEksternReferanseId(journalpostRequest.getEksternReferanseId());
         modell.setMottakskanal(Mottakskanal.fraKode(journalpostRequest.getKanal()));
-
-        // Ikke implementert
-        journalpostRequest.getBehandlingstema();
-        journalpostRequest.getTilleggsopplysninger();
-
+        modell.setJournalStatus(erKnyttetTilSak(journalpostRequest.getSak()) ? Journalstatus.JOURNALFØRT : Journalstatus.MOTTATT);
         return modell;
-
     }
 
-    private void leggTilDokumentModeller(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
-        List<DokumentModell> dokumentModeller = new ArrayList<>();
-        if (!journalpostRequest.getDokumenter().isEmpty()) {
-            dokumentModeller.add(mapDokument(journalpostRequest.getDokumenter().remove(0), DokumentTilknyttetJournalpost.HOVEDDOKUMENT));
-            dokumentModeller.addAll(
-                    journalpostRequest
-                            .getDokumenter().stream()
-                            .map(it -> mapDokument(it, DokumentTilknyttetJournalpost.VEDLEGG))
-                            .collect(Collectors.toList()));
+    private boolean erKnyttetTilSak(Sak sak) {
+        return sak != null & sak.getFagsakId() != null;
+    }
+
+    private List<DokumentModell> tilDokumentModeller(List<Dokument> dokumenter) {
+        var dokumentModeller = new ArrayList<DokumentModell>();
+        if (dokumenter == null) {
+            return dokumentModeller;
         }
-        modell.setDokumentModellList(dokumentModeller);
+        var hoveddokument = tilDokumentModell(dokumenter.remove(0), DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
+        var vedlegg = dokumenter.stream()
+                .map(dokument -> tilDokumentModell(dokument, DokumentTilknyttetJournalpost.VEDLEGG))
+                .toList();
+
+        dokumentModeller.add(hoveddokument);
+        dokumentModeller.addAll(vedlegg);
+        return dokumentModeller;
+    }
+
+    private static DokumentModell tilDokumentModell(Dokument dokument, DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost) {
+        return new DokumentModell(
+                null,
+                null,
+                false,
+                dokument.getTittel(),
+                dokument.getBrevkode(),
+                null,
+                dokumentTilknyttetJournalpost,
+                tilDokumentVarianter(dokument.getDokumentvarianter()),
+                new Dokumentkategori(dokument.getDokumentKategori())
+        );
+    }
+
+    private static List<DokumentVariantInnhold> tilDokumentVarianter(List<DokumentVariant> dokumentvarianter) {
+        return dokumentvarianter.stream()
+                .map(JournalpostMapper::tilDokumentVariant)
+                .toList();
+    }
+
+    private static DokumentVariantInnhold tilDokumentVariant(DokumentVariant dokumentVariant) {
+        return new DokumentVariantInnhold(
+                new Arkivfiltype(dokumentVariant.getFiltype()),
+                new Variantformat(dokumentVariant.getVariantformat()),
+                dokumentVariant.getFysiskDokument()
+        );
     }
 
     private void tilAvsenderMottaker(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
@@ -122,33 +151,6 @@ public class JournalpostMapper {
         };
     }
 
-    private DokumentModell mapDokument(Dokument dokument, DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost) {
-        DokumentModell dokumentModell = new DokumentModell();
-        dokumentModell.setDokumentkategori(new Dokumentkategori(dokument.getDokumentKategori()));
-        dokumentModell.setTittel(dokument.getTittel());
-
-        List<DokumentVariantInnhold> dokumentVariantInnholds =
-                dokument.getDokumentvarianter().stream()
-                        .map(this::mapDokumentVariant)
-                        .collect(Collectors.toList());
-
-        dokumentModell.setDokumentVariantInnholdListe(dokumentVariantInnholds);
-        dokumentModell.setDokumentTilknyttetJournalpost(dokumentTilknyttetJournalpost);
-        dokumentModell.setBrevkode(dokument.getBrevkode());
-
-        return dokumentModell;
-    }
-
-    private DokumentVariantInnhold mapDokumentVariant(DokumentVariant dokumentVariant) {
-        return new DokumentVariantInnhold(
-                new Arkivfiltype(dokumentVariant.getFiltype()),
-                new Variantformat(dokumentVariant.getVariantformat()),
-                List.of("JSON", "XML", "PDFA")
-                        .contains(dokumentVariant.getFiltype()) ?
-                        dokumentVariant.getFysiskDokument() :
-                        new byte[0]
-        );
-    }
 
     private Arkivtema mapArkivtema(String tema) {
         return new Arkivtema(tema);

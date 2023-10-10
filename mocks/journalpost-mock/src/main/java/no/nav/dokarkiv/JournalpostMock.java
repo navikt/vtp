@@ -1,6 +1,7 @@
 package no.nav.dokarkiv;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.ws.rs.PATCH;
@@ -11,6 +12,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,10 +78,16 @@ public class JournalpostMock {
     @PATCH
     @Path("/journalpost/{journalpostid}/ferdigstill")
     @Operation(description = "Ferdigstill journalpost")
-    public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest){
+    public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest, @PathParam("journalpostid") String journalpostId){
 
         var journalfoerendeEnhet = ferdigstillJournalpostRequest.getJournalfoerendeEnhet();
         LOG.info("Kall til ferdigstill journalpost på enhet: {}", journalfoerendeEnhet);
+
+        var journalpostModellOpt = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
+        if (journalpostModellOpt.isPresent()) {
+            var journalpostModell = journalpostModellOpt.get();
+            journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
+        }
 
         return Response.ok().entity("OK").build();
     }
