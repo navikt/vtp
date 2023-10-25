@@ -42,7 +42,7 @@ class OppdragKontrollTilBeregningMapperTest {
                 lagOppdragslinje150(NOW.minusWeeks(2).plusDays(3), NOW.plusMonths(1), KodeEndringLinje.NY, KodeKlassifik.FPF_ARBEIDSTAKER, TypeSats.DAG, SatsDto.valueOf(1846), UtbetalingsgradDto.valueOf(100), 121100107L),
                 lagOppdragslinje150(NOW.plusMonths(6), NOW.plusMonths(7), KodeEndringLinje.NY, KodeKlassifik.FERIEPENGER_BRUKER, TypeSats.DAG, SatsDto.valueOf(1846), UtbetalingsgradDto.valueOf(100), 121100108L)
         );
-        var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
+        var oppdragskontroll = new OppdragskontrollDto("1000302", List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
         verifiserKorrektMapping(beregninger, 1, 2, null, 1);
@@ -57,7 +57,7 @@ class OppdragKontrollTilBeregningMapperTest {
                 lagOppdragslinje150(NOW.plusWeeks(3).plusDays(3), NOW.plusMonths(4), KodeEndringLinje.NY, TypeSats.DAG, SatsDto.valueOf(1846), UtbetalingsgradDto.valueOf(100), 121100103L),
                 lagOppdragslinje150(NOW.plusMonths(6), NOW.plusMonths(7), KodeEndringLinje.NY, TypeSats.DAG, SatsDto.valueOf(1846), UtbetalingsgradDto.valueOf(100), 121100104L)
         );
-        var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
+        var oppdragskontroll = new OppdragskontrollDto("1000302", List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
         verifiserKorrektMapping(beregninger, 1, null, null, 1);
@@ -69,7 +69,7 @@ class OppdragKontrollTilBeregningMapperTest {
         var oppdrag110Dto = lagOppdrag110(KodeFagområde.REFUTG,
                 lagOppdragslinje150(NOW, NOW.plusDays(3), KodeEndringLinje.NY, TypeSats.ENG, SatsDto.valueOf(90_300), null, 121100100L)
         );
-        var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
+        var oppdragskontroll = new OppdragskontrollDto("1000302", List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
         verifiserKorrektMapping(beregninger, 1, 1, null, 1);
@@ -81,7 +81,7 @@ class OppdragKontrollTilBeregningMapperTest {
         var oppdrag110Dto = lagOppdrag110(KodeFagområde.FP,
                 new Ompostering116Dto(true, NOW, "2022-11-20-12.50.52.243")
         );
-        var oppdragskontroll = new OppdragskontrollDto(1000302L, List.of(oppdrag110Dto));
+        var oppdragskontroll = new OppdragskontrollDto("1000302", List.of(oppdrag110Dto));
 
         var beregninger = OppdragskontrollTilBeregingMapper.tilBeregningDto(oppdragskontroll, false, null);
         assertThat(beregninger).isEmpty();
@@ -164,7 +164,7 @@ class OppdragKontrollTilBeregningMapperTest {
         return new Oppdrag110Dto(
                 KodeEndring.NY,
                 kodeFagområde,
-                121100L,
+                Long.toString(121100),
                 "12499845829",
                 "saksbeh",
                 ompostering116Dto,
@@ -180,7 +180,7 @@ class OppdragKontrollTilBeregningMapperTest {
         return new Oppdragslinje150Dto(
                 kodeEndringLinje,
                 "2022-11-19",
-                delytelseId,
+                Long.toString(delytelseId),
                 kodeKlassifik,
                 new LukketPeriode(fom, tom),
                 satsDto,
@@ -189,8 +189,8 @@ class OppdragKontrollTilBeregningMapperTest {
                 null,
                 null,
                 FAKE_FNR,
-                delytelseId - 1,
-                126100L,
+                Long.toString(delytelseId - 1),
+                Long.toString(126100L),
                 null
         );
     }
