@@ -46,6 +46,9 @@ public class Personopplysninger {
     private VariabelContainer vars;
 
     public Personopplysninger() {
+        familierelasjoner = new ArrayList<>();
+        familierelasjonerAnnenPart = new ArrayList<>();
+        familierelasjonerBarn = new ArrayList<>();
     }
 
     public Personopplysninger(SøkerModell søker,
@@ -107,7 +110,7 @@ public class Personopplysninger {
         getVars().putVar(lokalIdent, barnIdent);
 
         leggTilBarnIFamilierelasjonsModeller(barn, lokalIdent);
-        return  barnIdent;
+        return barnIdent;
     }
 
     public String leggTilBarn(BarnModell barn) {
@@ -129,7 +132,7 @@ public class Personopplysninger {
             this.annenPart.setIdenter(identer);
         }
         Stream.concat(this.familierelasjoner.stream(), Stream.concat(this.familierelasjonerAnnenPart.stream(), this.familierelasjonerBarn.stream()))
-                    .forEach(f -> f.getTil().setIdenter(identer));
+                .forEach(f -> f.getTil().setIdenter(identer));
     }
 
     public void setVars(VariabelContainer vars) {
