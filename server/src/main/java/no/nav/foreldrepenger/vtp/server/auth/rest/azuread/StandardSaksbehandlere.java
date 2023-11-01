@@ -14,7 +14,8 @@ public enum StandardSaksbehandlere {
     OVERSTYRER("oversty", "Ove Overstyrer", true, Set.of("overstyrer")),
     OPPGAVESTYRER("oppgs", "Oline Oppgavestyrer", true, Set.of("oppgavestyrer")),
     VEILEDER("veil", "Vegard Veileder", false, Set.of("veileder")),
-    DRIFT("drift", "Daniel Drifter", false, Set.of("drift", "veileder"));
+    DRIFT("drift", "Daniel Drifter", false, Set.of("drift", "veileder")),
+    PIP("pip", "Policy Information Point", false, Set.of("pip"));
 
     private final String ident;
     private final String navn;
