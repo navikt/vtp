@@ -5,9 +5,9 @@ public enum YtelseType {
     FP,
     SVP,
     SYKEPENGER,
-    PLEIEPENGER_SYKT_BARN,
-    PLEIEPENGER_NÆRSTÅENDE,
-    OMSORGSPENGER,
-    OPPLÆRINGSPENGER,
+    PSB,
+    PPN,
+    OMP,
+    OLP,
     ;
 }
