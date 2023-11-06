@@ -87,12 +87,7 @@ class TrexModellSeraliseringDeseralseringsTest extends TestscenarioSerialization
     }
 
     protected TRexModell lagTRexModell() {
-        return new TRexModell(
-                List.of(lagGrunnlag(), lagGrunnlag()),
-                List.of(lagGrunnlag(), lagGrunnlag()),
-                null,
-                null
-        );
+        return new TRexModell(null, null);
     }
 
 

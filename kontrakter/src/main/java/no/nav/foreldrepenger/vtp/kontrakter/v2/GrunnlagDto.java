@@ -5,7 +5,7 @@ import java.util.List;
 
 public record GrunnlagDto(Ytelse ytelse, LocalDate fom, LocalDate tom, Status status, LocalDate fødselsdatoBarn, List<Vedtak> vedtak) {
     public enum Ytelse {
-        FP, SVP, SP, BS
+        SP, BS
     }
 
     public enum Status {

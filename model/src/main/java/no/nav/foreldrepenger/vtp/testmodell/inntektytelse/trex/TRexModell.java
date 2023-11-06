@@ -5,19 +5,14 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public record TRexModell(List<Grunnlag> foreldrepenger,
-                         List<Grunnlag> svangerskapspenger,
-                         List<Grunnlag> sykepenger,
-                         List<Grunnlag> barnsykdom){
+public record TRexModell(List<Grunnlag> sykepenger, List<Grunnlag> barnsykdom){
 
     public TRexModell() {
-        this(null, null, null, null);
+        this(null, null);
     }
 
     @JsonCreator
-    public TRexModell(List<Grunnlag> foreldrepenger, List<Grunnlag> svangerskapspenger, List<Grunnlag> sykepenger, List<Grunnlag> barnsykdom) {
-        this.foreldrepenger = Optional.ofNullable(foreldrepenger).orElse(List.of());
-        this.svangerskapspenger = Optional.ofNullable(svangerskapspenger).orElse(List.of());
+    public TRexModell(List<Grunnlag> sykepenger, List<Grunnlag> barnsykdom) {
         this.sykepenger = Optional.ofNullable(sykepenger).orElse(List.of());
         this.barnsykdom = Optional.ofNullable(barnsykdom).orElse(List.of());
     }
