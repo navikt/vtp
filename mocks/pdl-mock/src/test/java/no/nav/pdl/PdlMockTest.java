@@ -139,7 +139,7 @@ public class PdlMockTest extends PdlTestBase {
     public void hent_identer_gruppe() throws JsonProcessingException {
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
-        var ident = søker.getIdent();
+        var ident = søker.getAktørIdent();
         var projection = new IdentlisteResponseProjection()
                 .identer(new IdentInformasjonResponseProjection()
                         .ident()
