@@ -9,5 +9,6 @@ public enum YtelseType {
     PPN,
     OMP,
     OLP,
+    FRISINN,
     ;
 }
