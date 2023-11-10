@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario.mapper;
 
 import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
+import static no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell.SIGRUN_OPPFØRING_TEKNISK_NAVN;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,7 +70,6 @@ public class InntektYtelseModellMapper {
     }
 
     private static final String DUMMY_SAKSNUMMER = "999";
-    private static final String SIGNRUND_OPPFØRING_TEKNISK_NAVN = "personinntektNaering";
     private static final String INNTEKTPERIODE_BESKRIVELSE = "fastloenn";
     private static final Arbeidskategori GRUNNLAG_KATEGORI = new Arbeidskategori(ArbeidskategoriKode.K01, "kategori");
 
@@ -109,7 +109,7 @@ public class InntektYtelseModellMapper {
     }
 
     private static Inntektsår tilInntektår(SigrunDto.InntektsårDto inntektår) {
-        return new Inntektsår(inntektår.år().toString(), List.of(new Oppføring(SIGNRUND_OPPFØRING_TEKNISK_NAVN, inntektår.beløp().toString())));
+        return new Inntektsår(inntektår.år().toString(), List.of(new Oppføring(SIGRUN_OPPFØRING_TEKNISK_NAVN, inntektår.beløp().toString())));
     }
 
     private static ArbeidsforholdModell tilArbeidsforholdModell(AaregDto aareg, Map<UUID, BrukerModell> allePersoner) {

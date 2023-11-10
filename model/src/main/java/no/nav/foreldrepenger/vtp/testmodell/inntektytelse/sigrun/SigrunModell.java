@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record SigrunModell(List<Inntektsår> inntektsår) {
 
+    public static final String SIGRUN_OPPFØRING_TEKNISK_NAVN = "personinntektNaering";
+
     public SigrunModell() {
         this(null);
     }
