@@ -75,6 +75,7 @@ public final class AzureOidcTokenGenerator {
         claims.setStringClaim("azp_name", "vtp:teamforeldrepenger:vtp");
         claims.setStringClaim("azp", "vtp");
         claims.setStringClaim("scp", "api://vtp.teamforeldrepenger.vtp/.default");
+        claims.setStringListClaim("roles", "access_as_application");
         return claims;
     }
 
