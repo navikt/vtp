@@ -226,12 +226,7 @@ public class InntektYtelseModellMapper {
         if (infotrygd == null) {
             return new TRexModell();
         }
-        return new TRexModell(
-                tilFPGrunnlag(infotrygd.ytelser()),
-                tilSVPGrunnlag(infotrygd.ytelser()),
-                tilSykepengerGrunnlag(infotrygd.ytelser()),
-                tilBarnsykdomGrunnlag(infotrygd.ytelser())
-        );
+        return new TRexModell(tilSykepengerGrunnlag(infotrygd.ytelser()), tilBarnsykdomGrunnlag(infotrygd.ytelser()));
     }
 
     private static List<Grunnlag> tilBarnsykdomGrunnlag(List<GrunnlagDto> ytelser) {
@@ -244,20 +239,6 @@ public class InntektYtelseModellMapper {
     private static List<Grunnlag> tilSykepengerGrunnlag(List<GrunnlagDto> ytelser) {
         return safeStream(ytelser)
                 .filter(grunnlag -> grunnlag.ytelse().equals(GrunnlagDto.Ytelse.SP))
-                .map(g -> tilGrunnlag(TemaKode.SP, g))
-                .toList();
-    }
-
-    private static List<Grunnlag> tilSVPGrunnlag(List<GrunnlagDto> ytelser) {
-        return safeStream(ytelser)
-                .filter(grunnlag -> grunnlag.ytelse().equals(GrunnlagDto.Ytelse.SVP))
-                .map(g -> tilGrunnlag(TemaKode.UKJENT, g))
-                .toList();
-    }
-
-    private static List<Grunnlag> tilFPGrunnlag(List<GrunnlagDto> ytelser) {
-        return safeStream(ytelser)
-                .filter(grunnlag -> grunnlag.ytelse().equals(GrunnlagDto.Ytelse.FP))
                 .map(g -> tilGrunnlag(TemaKode.SP, g))
                 .toList();
     }

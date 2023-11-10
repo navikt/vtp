@@ -59,7 +59,7 @@
         <logback.version>1.4.11</logback.version>
 
         <swagger.version>2.2.18</swagger.version>
-        <mockito.version>5.6.0</mockito.version>
+        <mockito.version>5.7.0</mockito.version>
     </properties>
 
     <repositories>
@@ -417,7 +417,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
+            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

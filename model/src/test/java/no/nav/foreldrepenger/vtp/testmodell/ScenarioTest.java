@@ -76,8 +76,6 @@ public class ScenarioTest {
         assertFalse(søkerInntektYtelse.arenaModell().saker().isEmpty());
         assertTrue(søkerInntektYtelse.infotrygdModell().ytelser().isEmpty());
         assertFalse(søkerInntektYtelse.infotrygdModell().grunnlag().isEmpty());
-        assertFalse(søkerInntektYtelse.trexModell().foreldrepenger().isEmpty());
-        assertTrue(søkerInntektYtelse.trexModell().svangerskapspenger().isEmpty());
         assertFalse(søkerInntektYtelse.trexModell().sykepenger().isEmpty());
         assertTrue(søkerInntektYtelse.trexModell().barnsykdom().isEmpty());
         assertTrue(søkerInntektYtelse.inntektskomponentModell().inntektsperioder().isEmpty());
@@ -93,8 +91,6 @@ public class ScenarioTest {
         assertTrue(annenpartInntektYtelse.arenaModell().saker().isEmpty());
         assertTrue(annenpartInntektYtelse.infotrygdModell().ytelser().isEmpty());
         assertTrue(annenpartInntektYtelse.infotrygdModell().grunnlag().isEmpty());
-        assertTrue(annenpartInntektYtelse.trexModell().foreldrepenger().isEmpty());
-        assertTrue(annenpartInntektYtelse.trexModell().svangerskapspenger().isEmpty());
         assertTrue(annenpartInntektYtelse.trexModell().sykepenger().isEmpty());
         assertTrue(annenpartInntektYtelse.trexModell().barnsykdom().isEmpty());
         assertFalse(annenpartInntektYtelse.inntektskomponentModell().inntektsperioder().isEmpty());
