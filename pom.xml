@@ -58,7 +58,7 @@
         <slf4j.version>2.0.9</slf4j.version>
         <logback.version>1.4.11</logback.version>
 
-        <swagger.version>2.2.18</swagger.version>
+        <swagger.version>2.2.19</swagger.version>
         <mockito.version>5.7.0</mockito.version>
     </properties>
 
@@ -184,7 +184,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>7.5.1</version>
+                <version>7.5.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.zookeeper</groupId>
@@ -495,7 +495,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.2.2</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av jacoco-maven-plugin overkrevet -->
                         <argLine>@{argLine} ${argLine}</argLine>
