@@ -34,11 +34,10 @@ jobs:
   build-push-docker-image-ghcr:
     name: Build og push til ghcr
     runs-on: ubuntu-latest
-    #if: github.ref_name == 'master'
+    needs: build-app
+    if: github.ref_name == 'master'
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # ratchet:actions/checkout@v4
-        with:
-          fetch-depth: 0 # checkout gir shallow copy - fetch-depth: 0 vil tilgjengeliggjøre tags
       - name: Setup java and maven
         uses: navikt/fp-gha-workflows/.github/actions/setup-java-and-maven@main # ratchet:exclude
         with:
@@ -46,6 +45,8 @@ jobs:
       - name: Maven install and test
         id: build-and-test
         uses: navikt/fp-gha-workflows/.github/actions/build-maven-application@main # ratchet:exclude
+        with:
+          skip-tests: 'true'
       - name: Login to GitHub Packages Docker Registry
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -61,7 +62,7 @@ jobs:
         id: meta
         with:
           images: ghcr.io/${{ github.repository }}
-          tags: type=raw,value=latest,enable=true
+          tags: type=raw,value=latest,enable={{is_default_branch}}
       - name: Bygg og push docker image
         uses: docker/build-push-action@0a97817b6ade9f46837855d676c4cca3a2471fc9 # ratchet:docker/build-push-action@v4
         id: build_push
