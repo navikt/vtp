@@ -38,7 +38,7 @@
     </modules>
 
     <properties>
-        <graphql-java-codegen.version>5.8.0</graphql-java-codegen.version>
+        <graphql-java-codegen.version>5.9.0</graphql-java-codegen.version>
     </properties>
 
     <dependencyManagement>
