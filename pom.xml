@@ -42,10 +42,10 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>8.1.1</fp-kontrakter.version>
+        <fp-kontrakter.version>8.1.2</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.50</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
+        <swagger-codegen-maven-plugin.version>3.0.51</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>21.3</graphql-java.version>
         <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
         <avro.version>1.11.3</avro.version>
@@ -57,8 +57,8 @@
         <jetty.version>12.0.3</jetty.version>
         <jersey.version>3.1.3</jersey.version>
         <slf4j.version>2.0.9</slf4j.version>
-        <logback.version>1.4.11</logback.version>
-        <swagger.version>2.2.18</swagger.version>
+        <logback.version>1.4.13</logback.version>
+        <swagger.version>2.2.19</swagger.version>
         <mockito.version>5.7.0</mockito.version>
     </properties>
 
@@ -89,7 +89,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.15.3</version>
+                <version>2.16.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -157,7 +157,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
             </dependency>
 
             <!-- Kafka -->
@@ -184,7 +184,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>7.5.1</version>
+                <version>7.5.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.zookeeper</groupId>
@@ -206,7 +206,7 @@
             <dependency>
                 <groupId>com.unboundid</groupId>
                 <artifactId>unboundid-ldapsdk</artifactId>
-                <version>6.0.10</version>
+                <version>6.0.11</version>
             </dependency>
 
             <dependency>
@@ -218,7 +218,7 @@
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1</version>
             </dependency>
 
             <dependency>
@@ -409,7 +409,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.9</version>
+            <version>1.14.10</version>
         </dependency>
 
         <!--    TEST    -->
@@ -467,7 +467,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.16.1</version>
+                    <version>2.16.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -500,7 +500,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.2.2</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av jacoco-maven-plugin overkrevet -->
                         <argLine>@{argLine} ${argLine}</argLine>
@@ -510,7 +510,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
@@ -588,7 +588,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.5.0</version>
                     <executions>
                         <execution>
                             <id>add-source</id>
