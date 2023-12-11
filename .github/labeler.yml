@@ -1,13 +1,15 @@
 kontrakt:
-  - model/src/main/java/**/*
-  - kontrakter/src/main/java/**/*
+  - changed-files:
+      - any-glob-to-any-file: ['model/src/main/java/**/*', 'kontrakter/src/main/java/**/*']
 
 mocks:
-  - 'mocks/**/src/main/java/**/*'
+  - changed-files:
+      - any-glob-to-any-file: ['mocks/**/src/main/java/**/*']
 
 web:
-  - server/src/main/java/**/*
+  - changed-files:
+      - any-glob-to-any-file: ['server/src/main/java/**/*']
 
 pom:
-  - '**/*/pom.xml'
-  - pom.xml
+  - changed-files:
+      - any-glob-to-any-file: ['**/*/pom.xml', 'pom.xml']
