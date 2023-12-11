@@ -1,9 +1,11 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario.mapper;
 
 import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
+import static no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell.SIGRUN_OPPFØRING_SKATTEOPPGJØR;
 import static no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell.SIGRUN_OPPFØRING_TEKNISK_NAVN;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -109,7 +111,8 @@ public class InntektYtelseModellMapper {
     }
 
     private static Inntektsår tilInntektår(SigrunDto.InntektsårDto inntektår) {
-        return new Inntektsår(inntektår.år().toString(), List.of(new Oppføring(SIGRUN_OPPFØRING_TEKNISK_NAVN, inntektår.beløp().toString())));
+        return new Inntektsår(inntektår.år().toString(), List.of(new Oppføring(SIGRUN_OPPFØRING_TEKNISK_NAVN, inntektår.beløp().toString()),
+                new Oppføring(SIGRUN_OPPFØRING_SKATTEOPPGJØR, LocalDate.of(inntektår.år(), 1, 1).toString())));
     }
 
     private static ArbeidsforholdModell tilArbeidsforholdModell(AaregDto aareg, Map<UUID, BrukerModell> allePersoner) {
