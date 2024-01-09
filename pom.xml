@@ -56,7 +56,7 @@
         <logstash.version>7.4</logstash.version>
         <jetty.version>12.0.5</jetty.version>
         <jersey.version>3.1.5</jersey.version>
-        <slf4j.version>2.0.10</slf4j.version>
+        <slf4j.version>2.0.11</slf4j.version>
         <logback.version>1.4.14</logback.version>
         <swagger.version>2.2.20</swagger.version>
         <mockito.version>5.8.0</mockito.version>
