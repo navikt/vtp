@@ -56,7 +56,7 @@
         <logstash.version>7.4</logstash.version>
         <jetty.version>12.0.5</jetty.version>
         <jersey.version>3.1.5</jersey.version>
-        <slf4j.version>2.0.10</slf4j.version>
+        <slf4j.version>2.0.11</slf4j.version>
         <logback.version>1.4.14</logback.version>
         <swagger.version>2.2.20</swagger.version>
         <mockito.version>5.8.0</mockito.version>
@@ -500,7 +500,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.3</version>
+                    <version>3.2.5</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av jacoco-maven-plugin overkrevet -->
                         <argLine>@{argLine} ${argLine}</argLine>
@@ -553,7 +553,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
-                    <version>1.5.0</version>
+                    <version>1.6.0</version>
                     <configuration>
                         <flattenMode>bom</flattenMode>
                         <flattenedPomFilename>.flattened</flattenedPomFilename>
