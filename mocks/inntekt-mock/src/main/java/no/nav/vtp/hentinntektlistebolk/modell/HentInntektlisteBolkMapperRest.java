@@ -93,7 +93,7 @@ public class HentInntektlisteBolkMapperRest {
     }
 
     private static boolean taMedFraInntektsfilter(Inntektsperiode p, boolean filter82830) {
-        if (!filter82830 || p.inntektYtelseType() == null) {
+        if (!filter82830 || p.inntektYtelseType() == null || InntektYtelseType.InntektType.LØNNSINNTEKT.equals(p.inntektYtelseType().getInntektType())) {
             return true;
         }
         if (InntektYtelseType.InntektType.PENSJON_ELLER_TRYGD.equals(p.inntektYtelseType().getInntektType()) ||
