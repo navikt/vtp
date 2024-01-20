@@ -188,8 +188,8 @@ public class InntektYtelseModellMapper {
     }
 
     private static Inntektsperiode tilInntektsperiode(InntektsperiodeDto i, Map<UUID, BrukerModell> allePersoner) {
-        return new Inntektsperiode(i.fom(), i.tom(), null, i.beløp(), tilOrgnummer(i.arbeidsgiver()), tilInntektType(i.inntektType()),
-                tilInntektFordel(i.inntektFordel()), INNTEKTPERIODE_BESKRIVELSE, null, null,
+        return new Inntektsperiode(i.fom(), i.tom(), null, i.beløp(), tilOrgnummer(i.arbeidsgiver()), tilInntektType(i),
+                tilInntektFordel(i.inntektFordel()), tilBeskrivelse(i), null, null,
                 null,
                 tilPrivatArbeidgiver(i.arbeidsgiver(), allePersoner));
     }
@@ -216,13 +216,32 @@ public class InntektYtelseModellMapper {
         };
     }
 
-    private static InntektType tilInntektType(InntektsperiodeDto.InntektTypeDto inntektTypeDto) {
-        return switch (inntektTypeDto) {
-            case LØNNSINNTEKT -> InntektType.LØNNSINNTEKT;
-            case NÆRINGSINNTEKT -> InntektType.NÆRINGSINNTEKT;
-            case PENSJON_ELLER_TRYGD -> InntektType.PENSJON_ELLER_TRYGD;
-            case YTELSE_FRA_OFFENTLIGE -> InntektType.YTELSE_FRA_OFFENTLIGE;
-        };
+    private static InntektType tilInntektType(InntektsperiodeDto inntektsperiodeDto) {
+        if (inntektsperiodeDto.inntektYtelseType() != null) {
+            return switch (inntektsperiodeDto.inntektYtelseType().getInntektType()) {
+                case LØNNSINNTEKT -> InntektType.LØNNSINNTEKT;
+                case NÆRINGSINNTEKT -> InntektType.NÆRINGSINNTEKT;
+                case PENSJON_ELLER_TRYGD -> InntektType.PENSJON_ELLER_TRYGD;
+                case YTELSE_FRA_OFFENTLIGE -> InntektType.YTELSE_FRA_OFFENTLIGE;
+            };
+        } else if (inntektsperiodeDto.inntektType() != null) {
+            return switch (inntektsperiodeDto.inntektType()) {
+                case LØNNSINNTEKT -> InntektType.LØNNSINNTEKT;
+                case NÆRINGSINNTEKT -> InntektType.NÆRINGSINNTEKT;
+                case PENSJON_ELLER_TRYGD -> InntektType.PENSJON_ELLER_TRYGD;
+                case YTELSE_FRA_OFFENTLIGE -> InntektType.YTELSE_FRA_OFFENTLIGE;
+            };
+        } else {
+            return InntektType.LØNNSINNTEKT;
+        }
+    }
+
+    private static String tilBeskrivelse(InntektsperiodeDto inntektsperiodeDto) {
+        if (inntektsperiodeDto.inntektYtelseType() != null) {
+            return inntektsperiodeDto.inntektYtelseType().getBeskrivelse();
+        } else {
+            return INNTEKTPERIODE_BESKRIVELSE;
+        }
     }
 
     private static TRexModell tilTrex(InfotrygdDto infotrygd) {
