@@ -12,6 +12,7 @@ import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektFordel;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektYtelseType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -67,7 +68,7 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSeria
 
     private Inntektsperiode lagInntektsperiode() {
         return new Inntektsperiode(LocalDate.now(), LocalDate.now(), "990234022", 250_000, "90807060",
-                InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "Beskrivelse", "Regel1",
+                InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "Beskrivelse", InntektYtelseType.FASTLØNN, "Regel1",
                 true, false, new PersonArbeidsgiver("987654321"));
     }
 }
