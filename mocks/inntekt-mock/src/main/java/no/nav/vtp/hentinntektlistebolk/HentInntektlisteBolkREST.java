@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
@@ -49,7 +48,8 @@ public class HentInntektlisteBolkREST {
 
         YearMonth fom = request.getMaanedFom() != null ? request.getMaanedFom() : YearMonth.of(1990,1);
         YearMonth tom = request.getMaanedTom() != null ? request.getMaanedTom() : YearMonth.of(1990,1);
-        request.getMaanedTom();
+
+        var filter82830 = request.getAinntektsfilter() != null && request.getAinntektsfilter().startsWith("8");
 
         HentInntektListeBolkResponse response = new HentInntektListeBolkResponse();
         response.setArbeidsInntektIdentListe(new ArrayList<>());
@@ -62,7 +62,7 @@ public class HentInntektlisteBolkREST {
                         inntektskomponentModell
                         , aktoer
                         , fom
-                        , tom);
+                        , tom, filter82830);
                 response.getArbeidsInntektIdentListe().add(arbeidsInntektIdent);
             }
 
