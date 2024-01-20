@@ -14,6 +14,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseModellDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseType;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektkomponentDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektsperiodeDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn;
@@ -52,8 +53,8 @@ class TestscenarioV2RestTjenesteTest {
                         null,
                         null,
                         new InntektkomponentDto(
-                                List.of(new InntektsperiodeDto(LocalDate.now(), null, 2000, InntektsperiodeDto.InntektTypeDto.LØNNSINNTEKT,
-                                        InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new PrivatArbeidsgiver(privateAG)))),
+                                List.of(new InntektsperiodeDto(LocalDate.now(), null, 2000,
+                                        InntektYtelseType.FASTLØNN, InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new PrivatArbeidsgiver(privateAG)))),
                         null,
                         null,
                         null))
@@ -64,8 +65,8 @@ class TestscenarioV2RestTjenesteTest {
                         null,
                         null,
                         new InntektkomponentDto(
-                                List.of(new InntektsperiodeDto(LocalDate.now(), null, 2000, InntektsperiodeDto.InntektTypeDto.LØNNSINNTEKT,
-                                        InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new OrganisasjonDto(new Orgnummer("99999999"), null)))),
+                                List.of(new InntektsperiodeDto(LocalDate.now(), null, 2000,
+                                        InntektYtelseType.FASTLØNN, InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new OrganisasjonDto(new Orgnummer("99999999"), null)))),
                         null,
                         null,
                         null))
