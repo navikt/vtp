@@ -48,7 +48,7 @@ public class OrganisasjonsmodellMapper {
         }
         if (søker.inntektytelse().inntektskomponent() != null) {
             var inntekt = safeStream(søker.inntektytelse().inntektskomponent().inntektsperioder())
-                    .filter(a -> a.arbeidsgiver() instanceof OrganisasjonDto)
+                    .filter(a -> a.arbeidsgiver() instanceof OrganisasjonDto org && org.organisasjonsdetaljer() != null)
                     .map(OrganisasjonsmodellMapper::tilOrganisasjonsmodell)
                     .collect(Collectors.toSet());
             organisasjoner.addAll(inntekt);
