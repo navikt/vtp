@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
-
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -26,6 +24,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -66,9 +65,9 @@ import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioV2RestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
-import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
@@ -93,6 +92,7 @@ import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
+import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
@@ -156,6 +156,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(AxsysEnhetstilgangV2Mock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(UføreMock.class);
+        classes.add(SpøkelseMock.class);
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
