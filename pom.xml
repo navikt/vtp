@@ -42,7 +42,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>9.0.2</fp-kontrakter.version>
+        <fp-kontrakter.version>9.0.4</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
         <swagger-codegen-maven-plugin.version>3.0.52</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
