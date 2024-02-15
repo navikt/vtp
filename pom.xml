@@ -45,7 +45,7 @@
         <fp-kontrakter.version>9.0.2</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.52</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
+        <swagger-codegen-maven-plugin.version>3.0.53</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>21.3</graphql-java.version>
         <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
         <avro.version>1.11.3</avro.version>
@@ -54,9 +54,9 @@
         <!-- Java Enterprise -->
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
         <logstash.version>7.4</logstash.version>
-        <jetty.version>12.0.5</jetty.version>
+        <jetty.version>12.0.6</jetty.version>
         <jersey.version>3.1.5</jersey.version>
-        <slf4j.version>2.0.11</slf4j.version>
+        <slf4j.version>2.0.12</slf4j.version>
         <logback.version>1.4.14</logback.version>
         <swagger.version>2.2.20</swagger.version>
         <mockito.version>5.9.0</mockito.version>
@@ -184,7 +184,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>7.5.3</version>
+                <version>7.6.0</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.zookeeper</groupId>
@@ -212,7 +212,7 @@
             <dependency>
                 <groupId>org.bitbucket.b_c</groupId>
                 <artifactId>jose4j</artifactId>
-                <version>0.9.4</version>
+                <version>0.9.5</version>
             </dependency>
 
             <dependency>
