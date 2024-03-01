@@ -70,6 +70,24 @@ public class InfotrygdMock {
 
     @SuppressWarnings("unused")
     @POST
+    @Path("/grunnlag")
+    @Produces({"application/json"})
+    @Operation(description = "foreldrepenger", responses = {
+            @ApiResponse(responseCode = "OK", description = "OK", content =@Content(schema = @Schema(implementation  = Grunnlag.class))),
+            @ApiResponse(responseCode = "UNAUTHORIZED", description = "UNAUTHORIZED")
+    })
+    public Grunnlag[] getSykepenger(PersonRequest personRequest) {
+        return personRequest.fnr().stream().flatMap(fnr -> {
+            LOG.info(LOG_PREFIX, "sykepenger");
+            List<Grunnlag> tomresponse = new ArrayList<>();
+            return scenarioRepository.getInntektYtelseModell(fnr)
+                    .map(InntektYtelseModell::trexModell)
+                    .map(TRexModell::sykepenger).orElse(tomresponse).stream();
+        }).toArray(Grunnlag[]::new);
+    }
+
+    @SuppressWarnings("unused")
+    @POST
     @Path("/grunnlag/paaroerende-sykdom")
     @Produces({"application/json"})
     @Operation(description = "foreldrepenger", responses = {
