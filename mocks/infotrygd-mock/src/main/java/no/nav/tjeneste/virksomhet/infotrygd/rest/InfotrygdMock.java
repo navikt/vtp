@@ -70,7 +70,7 @@ public class InfotrygdMock {
 
     @SuppressWarnings("unused")
     @POST
-    @Path("/grunnlag")
+    @Path("/grunnlag/sykepenger")
     @Produces({"application/json"})
     @Operation(description = "foreldrepenger", responses = {
             @ApiResponse(responseCode = "OK", description = "OK", content =@Content(schema = @Schema(implementation  = Grunnlag.class))),
