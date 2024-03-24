@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.api.journalforing.hendelse;
 
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.avro.generic.GenericData;
@@ -13,7 +15,11 @@ import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord;
 
 public class JournalforingHendelseSender {
 
-    private static final String JOURNALFØRING_TOPIC = "teamdokumenthandtering.aapen-dok-journalfoering-vtp";
+    private static final String TOPICS = Optional.ofNullable(System.getenv("CREATE_TOPICS")).orElse("");
+    private static final String JOURNALFØRING_TOPIC =  Arrays.stream((TOPICS).split(",")) // Pattern som for PDL
+            .map(String::trim).filter(s -> s.toLowerCase().contains("teamdokumenthandtering"))
+            .findFirst().orElse("teamdokumenthandtering.aapen-dok-journalfoering-vtp");
+
 
     private LocalKafkaProducer localKafkaProducer;
 
