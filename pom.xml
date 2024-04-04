@@ -46,7 +46,7 @@
 
         <!--    Eksterne avhengigheter    -->
         <swagger-codegen-maven-plugin.version>3.0.54</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
-        <graphql-java.version>21.4</graphql-java.version>
+        <graphql-java.version>21.5</graphql-java.version>
         <graphql-scalar-java.version>21.0</graphql-scalar-java.version>
         <avro.version>1.11.3</avro.version>
         <kafka.version>3.5.1</kafka.version>
@@ -54,7 +54,7 @@
         <!-- Java Enterprise -->
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
         <logstash.version>7.4</logstash.version>
-        <jetty.version>12.0.7</jetty.version>
+        <jetty.version>12.0.8</jetty.version>
         <jersey.version>3.1.5</jersey.version>
         <slf4j.version>2.0.12</slf4j.version>
         <logback.version>1.5.3</logback.version>
@@ -414,7 +414,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.12</version>
+            <version>1.14.13</version>
         </dependency>
 
         <!--    TEST    -->
@@ -520,7 +520,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.8.11</version>
+                    <version>0.8.12</version>
                     <configuration>
                         <excludes>
                             <exclude>**/*no/nav*/**Test.class</exclude>
