@@ -115,7 +115,7 @@ public class SigrunMock {
     @Operation(description = "Returnerer tom respons ved ved oppskal av summertskattegrunmlag fra Sigrun")
     public Response dummypgiFolketrygden(@Context UriInfo ui, @Context HttpHeaders httpHeaders) {
 
-        String brukerFnr = httpHeaders.getRequestHeader(HEADER_NAV_PERSONIDENT) != null && !httpHeaders.getRequestHeader(X_NATURLIGIDENT_HEADER).isEmpty() ?
+        String brukerFnr = httpHeaders.getRequestHeader(HEADER_NAV_PERSONIDENT) != null && !httpHeaders.getRequestHeader(HEADER_NAV_PERSONIDENT).isEmpty() ?
                 httpHeaders.getRequestHeader(HEADER_NAV_PERSONIDENT).get(0) : null;
         String inntektsAar = httpHeaders.getRequestHeader(HEADER_INNTEKTSAAR) != null && !httpHeaders.getRequestHeader(HEADER_INNTEKTSAAR).isEmpty() ?
                 httpHeaders.getRequestHeader(HEADER_INNTEKTSAAR).get(0) : null;
