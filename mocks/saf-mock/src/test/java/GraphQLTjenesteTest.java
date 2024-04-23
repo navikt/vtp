@@ -3,32 +3,31 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;
 
-public class GraphQLTjenesteTest {
+class GraphQLTjenesteTest {
 
     private final static String jpId = "12345678";
     private final static String sakId = "sakId";
     private final static String fnr = "12345678901";
 
     @Test
-    public void testSaf() {
+    void testSaf() {
         // Arrange
         GraphQLTjeneste graphQLTjeneste = GraphQLTjeneste.getInstance();
         graphQLTjeneste.init();
@@ -55,7 +54,7 @@ public class GraphQLTjenesteTest {
     }
 
     @Test
-    public void testSafSelvbetjening() {
+    void testSafSelvbetjening() {
 
         GraphQLTjeneste graphQLTjeneste = GraphQLTjeneste.getInstance();
         graphQLTjeneste.init();
@@ -75,7 +74,7 @@ public class GraphQLTjenesteTest {
         assertThat(resultat.get("data"))
                 .extracting("dokumentoversiktSelvbetjening")
                 .extracting("journalposter")
-                .extracting(jp -> ((ArrayList<?>) jp).get(0))
+                .extracting(jp -> ((List<?>) jp).getFirst())
                 .extracting("journalpostId")
                 .matches(jpId::equals);
     }
