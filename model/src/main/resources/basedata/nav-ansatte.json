@@ -1,6 +1,6 @@
 [
   {
-    "cn": "saksbeh",
+    "ident": "saksbeh",
     "displayName": "Sara Saksbehandler",
     "email":"sara.saksbehandler@example.com",
     "enheter": [],
@@ -15,7 +15,7 @@
     ]
   },
   {
-    "cn": "saksbeh6",
+    "ident": "saksbeh6",
     "displayName": "Sa6a Saksbehandler6",
     "email":"sa6a.saksbehandler6@example.com",
     "enheter": [],
@@ -31,7 +31,7 @@
     ]
   },
   {
-    "cn": "saksbeh7",
+    "ident": "saksbeh7",
     "displayName": "Sa7a Saksbehandler7",
     "email":"sa7a.saksbehandler7@example.com",
     "enheter": [],
@@ -47,7 +47,7 @@
     ]
   },
   {
-    "cn": "beslut",
+    "ident": "beslut",
     "displayName": "Birger Beslutter",
     "email":"birger.beslutter@example.com",
     "enheter": [],
@@ -64,7 +64,7 @@
     ]
   },
   {
-    "cn": "oversty",
+    "ident": "oversty",
     "displayName": "Ove Overstyrer",
     "email":"ove.overstyrer@example.com",
     "enheter": [],
@@ -81,7 +81,7 @@
     ]
   },
   {
-    "cn": "klageb",
+    "ident": "klageb",
     "displayName": "Klara Klagebehandler",
     "email":"klara.klagebehandler@example.com",
     "enheter": [],
@@ -97,7 +97,7 @@
     ]
   },
   {
-    "cn": "veil",
+    "ident": "veil",
     "displayName": "Vegard Veileder",
     "email":"vegard.veileder@example.com",
     "enheter": [],
@@ -113,7 +113,7 @@
     ]
   },
   {
-    "cn": "oppgs",
+    "ident": "oppgs",
     "displayName": "Oline Oppgavestyrer",
     "email":"oline.oppgavestyrer@example.com",
     "enheter": [],

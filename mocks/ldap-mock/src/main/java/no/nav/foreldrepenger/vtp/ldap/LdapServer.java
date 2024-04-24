@@ -67,13 +67,13 @@ public class LdapServer {
 
     private void addNavAnsatt(NAVAnsatt navAnsatt) throws LDAPException {
         var entry = new Entry(
-                String.format("CN=%s,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local", navAnsatt.cn()),
+                String.format("CN=%s,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local", navAnsatt.ident()),
                 new Attribute("objectClass", "user", "organizationalPerson", "person", "top"),
                 new Attribute("objectCategory", "CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local"),
-                new Attribute("cn", navAnsatt.cn()),
+                new Attribute("cn", navAnsatt.ident()),
                 new Attribute("displayName", navAnsatt.displayName()),
                 new Attribute("mail", navAnsatt.email()),
-                new Attribute("userPrincipalName", navAnsatt.cn()),
+                new Attribute("userPrincipalName", navAnsatt.ident()),
                 new Attribute("userPassword", "dummy"),
                 new Attribute("memberOf", tilMemberOf(navAnsatt.groups()))
         );

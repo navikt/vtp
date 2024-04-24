@@ -21,7 +21,8 @@ public final class AzureOidcTokenGenerator {
     private AzureOidcTokenGenerator() {
     }
 
-    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder().setSkipAllValidators()
+    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
+            .setSkipAllValidators()
             .setDisableRequireSignature()
             .setSkipSignatureVerification()
             .build();

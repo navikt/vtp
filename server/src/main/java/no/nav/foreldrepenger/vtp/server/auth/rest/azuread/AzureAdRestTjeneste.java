@@ -116,7 +116,7 @@ public class AzureAdRestTjeneste {
                 if (refreshToken == null) {
                     yield badRequest();
                 }
-                token = createToken(StandardSaksbehandlere.finnIdent("saksbeh"), nonce);
+                token = createToken(StandardSaksbehandlere.SAKSBEHANDLER, nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             default -> {

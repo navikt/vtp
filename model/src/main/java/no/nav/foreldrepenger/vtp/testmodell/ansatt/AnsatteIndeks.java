@@ -9,14 +9,14 @@ public class AnsatteIndeks {
     private final Map<String, NAVAnsatt> ansatte = new ConcurrentHashMap<>();
 
     public void leggTil(List<NAVAnsatt> ansatte) {
-        ansatte.forEach(ansatt -> this.ansatte.putIfAbsent(ansatt.cn(), ansatt));
+        ansatte.forEach(ansatt -> this.ansatte.putIfAbsent(ansatt.ident(), ansatt));
     }
 
     public Collection<NAVAnsatt> alleAnsatte() {
         return ansatte.values();
     }
 
-    public NAVAnsatt findByCn(String cn) {
-        return ansatte.get(cn);
+    public NAVAnsatt findByIdent(String ident) {
+        return ansatte.get(ident);
     }
 }

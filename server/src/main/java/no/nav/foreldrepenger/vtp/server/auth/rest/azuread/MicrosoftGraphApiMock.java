@@ -1,12 +1,16 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.azuread;
 
 import java.util.List;
+import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
 
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
@@ -16,6 +20,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
@@ -37,7 +42,7 @@ public class MicrosoftGraphApiMock {
     @Path("/oidc/userinfo")
     public UserInfo userInfo(@Context HttpServletRequest req) {
         var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
-        return new UserInfo(ansatt.ansattId(), ansatt.ansatt().displayName(), req.getLocalName(), ansatt.ansatt().cn(),
+        return new UserInfo(ansatt.ansattId(), ansatt.ansatt().displayName(), req.getLocalName(), ansatt.ansatt().ident(),
                 "http://example.com/picture.jpg", "user@nav.no");
     }
 
@@ -46,22 +51,38 @@ public class MicrosoftGraphApiMock {
     @Path("/v1.0/me")
     public Response me(@Context HttpServletRequest req, @QueryParam("select") String select) {
         var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
-        var user = new User(ansatt.ansattId(),
-                "https://graph.microsoft.com/v1.0/$metadata#users(id," + ansatt.ansattId() + ")/$entity", ansatt.ansattId(),
-                ansatt.ansatt().groups().stream().map(Group::new).toList());
+        var user = new User(UUID.randomUUID(),
+                "https://graph.microsoft.com/v1.0/$metadata#users(id," + ansatt.ansattId() + ")/$entity",
+                ansatt.ansattId(),
+                ansatt.ansatt().displayName());
         return Response.ok(user).build();
+    }
+
+    @GET
+    @Path("/v1.0/me/memberOf")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "hent informasjon om innlogget bruker.")
+    public Response getMemberOf(@Context HttpServletRequest req) {
+        var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
+        if (ansatt.ansatt() != null) {
+            return Response.ok(opprettMemberOfResponse(ansatt.ansatt())).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    private static @NotNull MemberOfResponse opprettMemberOfResponse(NAVAnsatt ansatt) {
+        return new MemberOfResponse("https://graph.microsoft.com/v1.0/$metadata#groups(" + ansatt.displayName() + ")", null,
+                mapTilUserGroupsResponse(ansatt));
     }
 
     @GET
     @Produces({"application/json;charset=UTF-8"})
     @Path("/v1.0/users/{id}/memberOf/microsoft.graph.group")
-    public Response memberOf(@Context HttpServletRequest req, @PathParam("id") String id) {
+    public Response memberOf(@Context HttpServletRequest req, @PathParam("id") @NotNull String id) {
         var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
-        var user = new MemberOfResponse("https://graph.microsoft.com/v1.0/$metadata#groups(" + ansatt.ansatt().displayName() + ")",
-                null, ansatt.ansatt().groups().stream().map(Group::new).toList());
-        return Response.ok(user).build();
+        var response = opprettMemberOfResponse(ansatt.ansatt());
+        return Response.ok(response).build();
     }
-
 
     private Pair getAnsatt(String auth) {
         if (!auth.startsWith("Bearer ")) {
@@ -72,7 +93,7 @@ public class MicrosoftGraphApiMock {
                 var assertion = auth.substring("Bearer ".length());
                 var claims = unvalidatingConsumer.processToClaims(assertion);
                 var ansattId = claims.getStringClaimValue("NAVident");
-                var ansatt = ansattIndeks.findByCn(ansattId);
+                var ansatt = ansattIndeks.findByIdent(ansattId);
                 return new Pair(ansattId, ansatt);
             } catch (Exception e) {
                 throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>",
@@ -81,6 +102,13 @@ public class MicrosoftGraphApiMock {
         }
     }
 
+    private static List<Group> mapTilUserGroupsResponse(NAVAnsatt ansatt) {
+        return ansatt.groups().stream().map(MicrosoftGraphApiMock::mapTilGroup).toList();
+    }
+
+    private static Group mapTilGroup(String group) {
+        return new Group(UUID.randomUUID(), group, group);
+    }
 
     record Pair(String ansattId, NAVAnsatt ansatt) {
     }
@@ -88,15 +116,14 @@ public class MicrosoftGraphApiMock {
     record UserInfo(String sub, String name, String family_name, String given_name, String picture, String email) {
     }
 
-    record User(String id, @JsonProperty("@odata.context") String context, String onPremisesSamAccountName, List<Group> memberOf) {
+    record User(UUID id, @JsonProperty("@odata.context") String context, String onPremisesSamAccountName, String displayName) {
     }
 
-    record Group(String displayName) {
+    record Group(UUID id, String displayName, String onPremisesSamAccountName) {
     }
 
     record MemberOfResponse(@JsonProperty("@odata.context") String context, @JsonProperty("@odata.nextLink") String nextLink,
                             List<Group> value) {
     }
-
 
 }
