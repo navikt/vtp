@@ -110,7 +110,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private void loadAnsatte() {
         try (var is = getClass().getResourceAsStream(ANSATTE)) {
             var ansatte = Arrays.asList(mapper.readValue(is, NAVAnsatt[].class));
-            ansatte.sort(Comparator.comparing(NAVAnsatt::cn));
+            ansatte.sort(Comparator.comparing(NAVAnsatt::ident));
             ansatteIndeks.leggTil(ansatte);
         } catch (IOException e) {
             throwIllegaleStateExecption(ANSATTE, e);
