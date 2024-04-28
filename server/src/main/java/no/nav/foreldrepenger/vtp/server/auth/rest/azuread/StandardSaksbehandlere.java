@@ -8,7 +8,7 @@ public enum StandardSaksbehandlere {
     SAKSBEHANDLER("saksbeh", "Sara Saksbehandler", true, Set.of()),
     SAKSBEHANDLER_K6("saksbeh6", "Sa6a Saksbehandler", true, Set.of("kode6")),
     SAKSBEHANDLER_K7("saksbeh7", "Sa7a Saksbehandler", true, Set.of("kode7")),
-    SAKSBEHANDLER_HAB("saksbha", "SaHa Saksbehandler", true, Set.of("egenansatt")),
+    SAKSBEHANDLER_HAB("saksbha", "Ea Saksbehandler", true, Set.of("egenansatt")),
     KLAGEBEHANDLER("klageb", "Klara Klagebehandler", true, Set.of()),
     BESLUTTER("beslut", "Birger Beslutter", true, Set.of("beslutter")),
     OVERSTYRER("oversty", "Ove Overstyrer", true, Set.of("overstyrer")),
