@@ -53,7 +53,7 @@
             },
             {
                 "oid": "df650e66-9590-4c96-8ecb-8efea46f1306",
-                "name": "0000-GA-STRENGT_FORTROLIG_ADRESSE"
+                "name": "0000-GA-Strengt_Fortrolig_Adresse"
             },
             {
                 "oid": "13e4ed76-6d7f-448f-ba49-41760eed0f30",
@@ -98,7 +98,7 @@
             },
             {
                 "oid": "bc7fde53-c4c3-4fff-9079-c6440ca5ff5e",
-                "name": "0000-GA-FORTROLIG_ADRESSE"
+                "name": "0000-GA-Fortrolig_Adresse"
             },
             {
                 "oid": "65715e95-86b5-497d-992a-12389b1a8ff9",
@@ -143,7 +143,7 @@
             },
             {
                 "oid": "63b3f84f-1ec5-444b-ad33-2ad2d3495da1",
-                "name": "0000-GA-EGNE_ANSATTE"
+                "name": "0000-GA-Egne_ansatte"
             },
             {
                 "oid": "00b7a94d-99e6-455c-a497-a3f1a70a698b",
@@ -360,7 +360,7 @@
             },
             {
                 "oid": "d18989ec-5e07-494b-ad96-0c1f0c76de53",
-                "name": "0000-GA-fpsak-oppgavestyrer"
+                "name": "0000-GA-fpsak-Oppgavestyrer"
             },
             {
                 "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
