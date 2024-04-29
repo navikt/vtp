@@ -118,8 +118,8 @@ public class MicrosoftGraphApiMock {
             try {
                 var assertion = auth.substring("Bearer ".length());
                 var claims = unvalidatingConsumer.processToClaims(assertion);
-                var oid = claims.getClaimValue("oid", UUID.class);
-                return ansattIndeks.findById(oid);
+                var ident = claims.getClaimValue("NAVident", String.class);
+                return ansattIndeks.findByIdent(ident);
             } catch (Exception e) {
                 throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>",
                         Response.Status.FORBIDDEN);
