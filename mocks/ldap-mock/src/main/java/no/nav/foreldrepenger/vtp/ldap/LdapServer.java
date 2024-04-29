@@ -82,9 +82,9 @@ public class LdapServer {
 
     }
 
-    private static List<String> tilMemberOf(List<String> grupper) {
+    private static List<String> tilMemberOf(List<NAVAnsatt.NAVGroup> grupper) {
         return grupper.stream()
-                .map(gruppe -> String.format("CN=%s,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local", gruppe))
+                .map(gruppe -> String.format("CN=%s,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local", gruppe.name()))
                 .toList();
     }
 
