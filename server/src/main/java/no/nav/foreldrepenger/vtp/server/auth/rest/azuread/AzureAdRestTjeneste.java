@@ -179,6 +179,7 @@ public class AzureAdRestTjeneste {
         if (isNotNullAndBlank(nonce)) {
             // Token som produseres ved innloging må ha riktig nonce verdi siden Wonderwall validerer verdien.
             nonceCache.put(NONCE, nonce);
+            location.queryParam(NONCE, nonce);
         }
         return authorizeHtmlPage(location);
     }
