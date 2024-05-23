@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.spokelse.rest;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
@@ -38,5 +41,18 @@ public class SpøkelseMock {
         List<SykepengeVedtak> tomrespons = new ArrayList<>();
         return tomrespons.toArray(SykepengeVedtak[]::new);
     }
+
+    @SuppressWarnings("unused")
+    @POST
+    @Path("/grunnlag")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Returnerer sykepenger fra Spøkelse")
+    public SykepengeVedtak[] postSykepenger(PersonRequest personRequest) {
+        List<SykepengeVedtak> tomrespons = new ArrayList<>();
+        return tomrespons.toArray(SykepengeVedtak[]::new);
+    }
+
+    public record PersonRequest(String fodselsnummer, LocalDate fom) { }
 
 }
