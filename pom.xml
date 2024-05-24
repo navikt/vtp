@@ -46,7 +46,7 @@
 
         <!--    Eksterne avhengigheter    -->
         <swagger-codegen-maven-plugin.version>3.0.56</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
-        <graphql-java.version>22.0</graphql-java.version>
+        <graphql-java.version>22.1</graphql-java.version>
         <graphql-scalar-java.version>22.0</graphql-scalar-java.version>
         <avro.version>1.11.3</avro.version>
         <kafka.version>3.5.1</kafka.version>
@@ -414,7 +414,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.14.15</version>
+            <version>1.14.16</version>
         </dependency>
 
         <!--    TEST    -->
@@ -515,7 +515,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
