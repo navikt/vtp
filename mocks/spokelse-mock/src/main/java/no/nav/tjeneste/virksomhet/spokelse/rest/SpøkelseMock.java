@@ -10,11 +10,9 @@ import org.slf4j.LoggerFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
@@ -30,16 +28,6 @@ public class SpøkelseMock {
 
     public SpøkelseMock(@Context TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
-    }
-
-    @SuppressWarnings("unused")
-    @GET
-    @Path("/grunnlag")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer sykepenger fra Spøkelse")
-    public SykepengeVedtak[] getSykepenger(@QueryParam("fodselsnummer") String fnr, @QueryParam("fom") String fom) {
-        List<SykepengeVedtak> tomrespons = new ArrayList<>();
-        return tomrespons.toArray(SykepengeVedtak[]::new);
     }
 
     @SuppressWarnings("unused")

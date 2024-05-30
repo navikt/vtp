@@ -11,13 +11,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Grunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
@@ -35,38 +32,7 @@ public class InfotrygdMock {
     public InfotrygdMock(@Context TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
-
-    @SuppressWarnings("unused")
-    @GET
-    @Path("/grunnlag/sykepenger")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer sykepenger fra Infotrygd")
-    public Grunnlag[] getSykepenger(@QueryParam("fnr") String fnr,
-                                    @QueryParam("fom") String fom,
-                                    @QueryParam("tom") String tom) {
-        LOG.info(LOG_PREFIX, "sykepenger");
-        List<Grunnlag> tomresponse = new ArrayList<>();
-        return scenarioRepository.getInntektYtelseModell(fnr)
-                .map(InntektYtelseModell::trexModell)
-                .map(TRexModell::sykepenger).orElse(tomresponse)
-                .toArray(Grunnlag[]::new);
-    }
-
-    @SuppressWarnings("unused")
-    @GET
-    @Path("/grunnlag/paaroerende-sykdom")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer barns sykdom fra Infotrygd")
-    public Grunnlag[] getPaaroerendeSykdom(@QueryParam("fnr") String fnr,
-                                           @QueryParam("fom") String fom,
-                                           @QueryParam("tom") String tom) {
-        LOG.info(LOG_PREFIX, "pårørendesykdom");
-        List<Grunnlag> tomresponse = new ArrayList<>();
-        return scenarioRepository.getInntektYtelseModell(fnr)
-                .map(InntektYtelseModell::trexModell)
-                .map(TRexModell::barnsykdom).orElse(tomresponse)
-                .toArray(Grunnlag[]::new);
-    }
+    
 
     @SuppressWarnings("unused")
     @POST
