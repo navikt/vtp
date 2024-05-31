@@ -96,6 +96,7 @@ public class TokenxRestTjeneste {
         jwtClaims.setIssuer(getIssuer(req));
         jwtClaims.setAudience(audience);
         jwtClaims.setSubject(subject);
+        jwtClaims.setClaim("pid", subject);
         jwtClaims.setExpirationTimeMinutesInTheFuture(EXPIRE_IN_SECONDS / 60f);
         jwtClaims.setGeneratedJwtId();
         jwtClaims.setIssuedAtToNow();
