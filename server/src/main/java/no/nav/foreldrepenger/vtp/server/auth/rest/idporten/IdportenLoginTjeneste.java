@@ -49,7 +49,7 @@ public class IdportenLoginTjeneste {
                 ISSUER,
                 baseUrl + "/authorize",
                 baseUrl + "/jwks",
-                baseUrl + "/token",
+                baseUrl + "/access_token",
                 List.of("idporten-loa-high"),
                 List.of("nb")
                 );
@@ -132,6 +132,7 @@ public class IdportenLoginTjeneste {
 
 
     // SPESIAL INNLOGGING
+    @Deprecated
     @GET
     @Path("/login")
     @Produces(MediaType.TEXT_HTML)
@@ -158,6 +159,7 @@ public class IdportenLoginTjeneste {
         return Response.ok(String.format(tmpl, redirectUri), MediaType.TEXT_HTML).build();
     }
 
+    @Deprecated
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
@@ -171,6 +173,7 @@ public class IdportenLoginTjeneste {
         return Response.seeOther(redirectUri).header("Set-Cookie", String.format(cookieTemplate, token)).build();
     }
 
+    @Deprecated
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
