@@ -1,6 +1,14 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.idporten;
 
+import static jakarta.ws.rs.core.UriBuilder.fromUri;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.NONCE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterNames.STATE;
+import static no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste.isNotNullAndBlank;
+
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +28,15 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.MockServer;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
 
 @Tag(name = "ID-Porten")
 @Path(IdportenLoginTjeneste.TJENESTE_PATH)
 public class IdportenLoginTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(IdportenLoginTjeneste.class);
     protected static final String TJENESTE_PATH = "/idporten"; //NOSONAR
-    private static final String ISSUER = "http://vtp/rest/idporten";
+    private static final String ISSUER = "http://vtp:8060/rest/idporten";
+
+    private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
 
     @GET
     @Path("/.well-known/openid-configuration")
@@ -36,7 +45,14 @@ public class IdportenLoginTjeneste {
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
-        var wellKnownResponse = new WellKnownResponse(ISSUER, baseUrl + "/authorize", baseUrl + "/jwks", baseUrl + "/token");
+        var wellKnownResponse = new WellKnownResponse(
+                ISSUER,
+                baseUrl + "/authorize",
+                baseUrl + "/jwks",
+                baseUrl + "/access_token",
+                List.of("idporten-loa-high"),
+                List.of("nb")
+                );
         return Response.ok(wellKnownResponse).build();
     }
 
@@ -57,6 +73,66 @@ public class IdportenLoginTjeneste {
         return Response.ok(jwks).build();
     }
 
+    @GET
+    @Path("/authorize")
+    @Produces(MediaType.TEXT_HTML)
+    public Response autentiserMedRedirectTilInnloggingViaHTML(@QueryParam(NONCE) String nonce, @QueryParam(STATE) String state, @QueryParam("redirect_uri") URI redirectUri) {
+        var location = fromUri(redirectUri);
+
+        if (isNotNullAndBlank(state)) {
+            location.queryParam(STATE, state);
+        }
+        if (isNotNullAndBlank(nonce)) {
+            // Token som produseres ved innloging må ha riktig nonce verdi siden Wonderwall validerer verdien.
+            nonceCache.put(NONCE, nonce);
+            location.queryParam(NONCE, nonce);
+        }
+
+        location.build();
+        String html = """
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                    <title>Velg bruker</title>
+                    </head>
+                        <body>
+                        <div style="text-align:center;width:100%%;">
+                           <caption><h3>Fødselsnummer:</h3></caption>
+                            <form action="%s" method="get">
+                              <input type="hidden" name="state" value="%s" />
+                              <input type="hidden" name="nounce" value="%s" />
+                              <input type="text" name="code" />
+                              <input type="submit" value="Token, takk!" />
+                            </form>
+                        </div>
+                    </body>
+                    </html>
+                """;
+
+        return Response.ok(String.format(html, location, state, nonce), MediaType.TEXT_HTML).build();
+    }
+
+    @POST
+    @Path("/access_token")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(description = "idporten/access_token")
+    @SuppressWarnings("unused")
+    public Response tokenEndpoint(@Context HttpServletRequest req,
+                                @FormParam("code") String code,
+                                @FormParam("redirect_uri") URI redirectUri) {
+
+        var nonce = nonceCache.get(NONCE);
+        var token = IdportenOidcTokenGenerator.idportenUserToken(code, ISSUER, nonce);
+        LOG.info("Kall på idporten /token endepunkt nytt token {}", token);
+        return Response.ok(new Oauth2AccessTokenResponse(token)).build();
+    }
+
+
+
+
+    // SPESIAL INNLOGGING
+    @Deprecated
     @GET
     @Path("/login")
     @Produces(MediaType.TEXT_HTML)
@@ -83,26 +159,27 @@ public class IdportenLoginTjeneste {
         return Response.ok(String.format(tmpl, redirectUri), MediaType.TEXT_HTML).build();
     }
 
+    @Deprecated
     @POST
     @Path("/token")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "idporten/access_token")
     @SuppressWarnings("unused")
-    public Response accessToken(@Context HttpServletRequest req,
-                                @FormParam("fnr") String fnr,
-                                @FormParam("redirect") URI redirectUri) {
-
-        var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER);
+    public Response seeOtherSetCookie(@Context HttpServletRequest req,
+                                    @FormParam("fnr") String fnr,
+                                    @FormParam("redirect") URI redirectUri) {
+        var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER, null);
         var cookieTemplate = "selvbetjening-idtoken=%s;Path=/";
         return Response.seeOther(redirectUri).header("Set-Cookie", String.format(cookieTemplate, token)).build();
     }
 
+    @Deprecated
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "idporten/access_token - brukes primært av autotest til å logge inn en bruker programmatisk (uten interaksjon med GUI)")
     public Response accessToken(@QueryParam("fnr") String fnr) {
-        var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER);
+        var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER, null);
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
