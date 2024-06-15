@@ -1,3 +1,4 @@
+# SOURCE repo:saf:app/src/main/resources/schemas/saf.graphqls
 # ISO-8601 representasjon for en kalenderdato. YYYY-MM-DD. Eksempel: 2018-01-01.
 scalar Date
 
@@ -143,8 +144,12 @@ type Query {
     # * Fysiske dokumentet tilknyttet journalposten kan hentes i saf - REST hentdokument
     journalpost(
         # ID til Journalposten man ønsker å hente detaljer for.
-        # * Hvis argumentet ikke er angitt så returneres en feil.
-        journalpostId: String!
+        # * Hvis både journalpostId og eksternReferanseId er angitt så returneres det basert på journalpostId.
+        journalpostId: String
+
+        # Brukes for sporing og feilsøking på tvers av systemer.
+        # * Hvis eksternReferanseId eller journalpostId argumenter ikke er angitt så returneres en feil.
+        eksternReferanseId: String
     ): Journalpost
 
     # Henter metadata for en dokumentInfo (dokumentbeskrivelse) med tilknyttede journalposter.
@@ -159,6 +164,13 @@ type Query {
         # Typen tilknyttet Journalpost.
         tilknytning: Tilknytning!
     ): [Journalpost]!
+
+    # * Query returnerer alle saker for bruker med angitt fnr / aktoerID.
+    saker(
+        # ID til bruker man ønsker å hente saker for.
+        # * Hvis argumentet ikke er angitt så returneres en feil.
+        brukerId: BrukerIdInput!
+    ): [Sak]!
 }
 
 # Dokumentoversikt er en liste av journalposter som tilfredstiller query kriteriene.
@@ -175,8 +187,14 @@ type SideInfo {
     # Når man paginerer forover, pekeren for å fortsette.
     sluttpeker: String
 
-    # True/False verdi for om neste side eksisterer, når man paginerer forover
+    # True/False verdi for om neste side eksisterer, når man paginerer forover.
     finnesNesteSide: Boolean!
+
+    # Antall journalposter på denne siden.
+    antall: Int
+
+    # Totalt antall journalposter på alle sider.
+    totaltAntall: Int
 }
 
 # * Fagsystemene som arkiverer kan legge til egne fagspesifikke attributter per journalpost.
@@ -274,6 +292,18 @@ type Journalpost {
     # Eksempler på eksternReferanseId kan være sykmeldingsId for sykmeldinger, Altinn ArchiveReference for Altinn-skjema eller SEDid for SED.
     eksternReferanseId: String
 
+    # Metadata om distribusjon av utgående journalpost.
+    # * Forteller hvilken adresse en utgående forsendelse er distribuert til (digital postkasse eller fysisk post)
+    # * Eller hvilken epost/telefonnummer og varseltekst, varsel fra nav.no er sendt til
+    # * Returneres kun for utgående journalposter
+    utsendingsinfo: Utsendingsinfo
+
+    # Regel for innsyn for denne journalposten. Verdi er "BRUK_STANDARDREGLER" om innsyn ikke er overstyrt.
+    innsynsregel: String!
+
+    # Menneskevennlig beskrivelse av aktuell innsynsregel.
+    innsynsregelBeskrivelse: String!
+
     # Liste over fagspesifikke metadata som er tilknyttet journalpost.
     tilleggsopplysninger: [Tilleggsopplysning]
 
@@ -316,6 +346,14 @@ type Sak {
 
     # Kode som indikerer hvilket fagsystem, eventuelt nummerserie for fagsaker, som fagsaken befinner seg i.
     fagsaksystem: String
+
+    # Sier hvorvidt saken inngår i et fagsystem (FAGSAK) eller ikke (GENERELL_SAK).
+    sakstype: Sakstype
+
+    # Temaet/Fagområdet som journalposten og tilhørende sak tilhører, f.eks. "FOR".
+    # * For sakstilknyttede journalposter, er det tema på SAK- eller PSAK-saken som er gjeldende tema.
+    # * For journalposter som enda ikke har fått sakstilknytning, returneres tema på journalposten.inneholder Joark informasjon om antatt tema for journalposten.
+    tema: Tema
 }
 
 # Person eller organisasjon som har et forhold til NAV, f.eks. som mottaker av tjenester eller ytelser.
@@ -345,6 +383,94 @@ type AvsenderMottaker {
     # Angir hvorvidt bruker er lik avsender/mottaker av journalposten.
     # * Informasjonen er ikke garantert korrekt, da tjenesten sammenlikner avsenderMottaker med bruker tilknyttet journalposten, ikke bruker tilknyttet saken.
     erLikBruker: Boolean!
+}
+
+# Metadata om distribusjon av utgående journalpost.
+# * Forteller hvilken adresse en utgående forsendelse er distribuert til (digital postkasse eller fysisk post)
+# * Eller hvilken epost/telefonnummer og varseltekst, varsel fra nav.no er sendt til
+# * Returneres kun for utgående journalposter
+type Utsendingsinfo {
+
+    # Informasjon om varsel som er sendt til mottaker ved digital distribusjon.
+    # Sortert slik at nyeste varsel kommer først
+    varselSendt: [VarselSendt!]!
+
+    # Epostvarsel sendt til bruker ved distribusjon til nav.no
+    # Vil kun være satt hvis brevet er distribuert til nav.no
+    # Dette feltet vil fjernes og erstattes med varselSendt
+    epostVarselSendt: EpostVarselSendt @deprecated(reason: "alle epost-varsler kommer nå i feltet varselSendt")
+
+    # SMS varsel sendt til bruker ved distribusjon til nav.no
+    # Vil kun være satt hvis brevet er distribuert til nav.no
+    # Dette feltet vil fjernes og erstattes med varselSendt
+    smsVarselSendt: SmsVarselSendt @deprecated(reason: "alle sms-varsler kommer nå i feltet varselSendt")
+
+    # Informasjon om distribusjon til fysisk post gjennom Posten Norge
+    # Vil kun være satt hvis brevet er distribuert som fysisk post gjennom sentral utskrift
+    fysiskpostSendt: FysiskpostSendt
+
+    # Informasjon om distribusjon til Digital postkasse til Innbyggere(DPI)
+    # Vil kun være satt hvis brevet er distribuert til DPI
+    digitalpostSendt: DigitalpostSendt
+}
+
+# Informasjon om sms- og epost-varsel som er sendt til mottaker ved digital distribusjon
+type VarselSendt {
+    # Type varsel som er sendt til mottaker.
+    # "EPOST" dersom epost-varsel eller "SMS" dersom sms-varsel
+    type: String!
+
+    # Tittel på epost hvis epost-varsel. Vil være null hvis sms-varsel.
+    tittel: String
+
+    # Adressen varsel ble sendt til.
+    # Kan være en epostadresse (hvis epostvarsel) eller et telefonnummer (hvis smsvarsel).
+    adresse: String!
+
+    # Innhold i varsel som er sendt til mottaker. Kan inneholde HTML.
+    varslingstekst: String!
+
+    # Tidspunkt når varselet ble sendt. Lokal norsk tid.
+    varslingstidspunkt: DateTime
+}
+
+# Epostvarsel sendt til bruker ved distribusjon til nav.no
+# Vil kun være satt hvis brevet er distribuert til nav.no
+# Deprecated: bruk VarselSendt
+type EpostVarselSendt {
+    # Tittel på eposten som ble sendt til bruker.
+    tittel: String!
+
+    # Epostadressen som varselet ble sendt til.
+    adresse: String!
+
+    # Teksten i varslet. Kan inneholde HTML.
+    varslingstekst: String!
+}
+
+# SMS varsel sendt til bruker ved distribusjon til nav.no
+# Vil kun være satt hvis brevet er distribuert til nav.no
+# Deprecated: bruk VarselSendt
+type SmsVarselSendt {
+    # Mobilnummeret som varselet ble sendt til.
+    adresse: String!
+
+    #Teksten i varselet.
+    varslingstekst: String!
+}
+
+# Informasjon om distribusjon til fysisk post gjennom Posten Norge
+# Vil kun være satt hvis brevet er distribuert som fysisk post gjennom sentral utskrift
+type FysiskpostSendt {
+    # Adressen som stod på eller i konvolutten som ble sendt til bruker.
+    adressetekstKonvolutt: String!
+}
+
+# Informasjon om distribusjon til Digital postkasse til Innbyggere
+# Vil kun være satt hvis brevet er distribuert til DPI
+type DigitalpostSendt {
+    # DPI leverandør sin adresse som brevet ble sendt til.
+    adresse: String!
 }
 
 # Metadata tilknyttet et bestemt dokument i Joark (evt til flere varianter av samme dokument).
@@ -408,8 +534,12 @@ type Dokumentvariant {
 
     # Dokumentets filtype, f.eks. PDFA, XML eller JPG. Gyldige verdier finnes på siden Fagarkiv - Filtype.
     # * NB: Informasjonen er ikke garantert å samsvare med dokumentets faktiske filtype, da dette ikke valideres under arkivering.
+    # * NB: Verdien 'PDFA' mappes til 'PDF'
     # * NB: Feltet skal kun brukes etter avtale med Team Dokument.
     filtype: String @deprecated(reason: "Feltet er deprekert og er kun til internt bruk. Feltet skal kun brukes etter avtale med Team Dokument.")
+
+    # Dokumentets filstørrelse i bytes.
+    filstoerrelse: Int @deprecated(reason: "Feltet er deprekert og er kun til internt bruk. Feltet skal kun brukes etter avtale med Team Dokument.")
 
     # Sier hvorvidt saksbehandler som gjør oppslaget vil få tilgang til å åpne denne dokumentvarianten.
     # * Dersom verdien er false, vil tilgang bli avslått dersom saksbehandler forsøker å åpne dokumentet.
@@ -457,6 +587,10 @@ enum Datotype {
     # * Returneres for alle journalposter
     DATO_DOKUMENT
 
+    # * Tidspunkt som hoveddokumentet på journalposten ble lest på nav.no
+    # * returneres for utgående journalposter
+    DATO_LEST
+
 }
 
 # Indikerer hvor man kan finne saksparten som dokumentene er journalført mot, samt en peker til selve fagsaken, dersom det finnes en.
@@ -496,7 +630,7 @@ enum Journalstatus {
     # * Tilsvarer statusen **JOURNALFOERT** for inngående dokumenter.
     FERDIGSTILT
 
-    # Dokumentet er sendt til bruker. Statusen benyttes også når dokumentet er tilgjengeliggjort for bruker på DittNAV, og bruker er varslet.
+    # Dokumentet er sendt til bruker. Statusen benyttes også når dokumentet er tilgjengeliggjort for bruker på Nav.no, og bruker er varslet.
     # * Statusen kan forekomme for utgående dokumenter og notater.
     EKSPEDERT
 
@@ -601,6 +735,21 @@ enum Kanal {
     # Bruker har fylt ut og sendt inn dokumentet sammen med en NAV-ansatt. Det er den NAV-ansatte som var pålogget innsendingsløsningen.
     INNSENDT_NAV_ANSATT
 
+    # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i NAV.
+    NAV_NO_CHAT
+
+    # Brevet er sendt til virksomhet som Taushetsbelagt Post via Altinn.
+    # * Brukes for utgående journalposter.
+    DPVT
+
+    # Forsendelsen er mottatt på e-post.
+    # * Brukes for inngående journalposter.
+    E_POST
+
+    # Forsendelsen er mottatt i en av NAVs meldingsbokser i Altinn.
+    # * Brukes for inngående journalposter.
+    ALTINN_INNBOKS
+
     # Forsendelsen har ingen kjent kanal.
     UKJENT
 }
@@ -614,8 +763,14 @@ enum Tema {
     # Aa-registeret
     AAR
 
-    # Ajourhold - Grunnopplysninger
+    # Ajourhold – grunnopplysninger
     AGR
+
+    # Arbeidsrådgivning – psykologtester
+    ARP
+
+    # Arbeidsrådgivning – skjermet
+    ARS
 
     # Barnetrygd
     BAR
@@ -629,17 +784,26 @@ enum Tema {
     # Dagpenger
     DAG
 
-    # Enslig forsørger
+    # Enslig mor eller far
     ENF
 
     # Erstatning
     ERS
 
-    # Farskap
+    #Barnepensjon
+    EYB
+
+    #Omstillingsstønad
+    EYO
+
+    # Foreldreskap
     FAR
 
     # Feilutbetaling
     FEI
+
+    # Fiskerpensjon
+    FIP
 
     # Foreldre- og svangerskapspenger
     FOR
@@ -647,7 +811,7 @@ enum Tema {
     # Forsikring
     FOS
 
-    # Midlertidig kompensasjonsordning for selvstendig næringsdrivende og frilansere
+    # Kompensasjon for selvstendig næringsdrivende/frilansere
     FRI
 
     # Fullmakt
@@ -677,6 +841,12 @@ enum Tema {
     # Kontantstøtte
     KON
 
+    # Klage – lønnsgaranti
+    KLL
+
+    # Kontroll – anmeldelse
+    KTA
+
     # Kontroll
     KTR
 
@@ -689,7 +859,7 @@ enum Tema {
     # Omsorgspenger, pleiepenger og opplæringspenger
     OMS
 
-    # Oppfølging - Arbeidsgiver
+    # Oppfølging – arbeidsgiver
     OPA
 
     # Oppfølging
@@ -701,10 +871,10 @@ enum Tema {
     # Permittering og masseoppsigelser
     PER
 
-    # Rehabilitering
+    # Rehabiliteringspenger
     REH
 
-    # Rekruttering og stilling
+    # Rekruttering
     REK
 
     # Retting av personopplysninger
@@ -716,19 +886,16 @@ enum Tema {
     # Sanksjon - Arbeidsgiver
     SAA
 
-    # Saksomkostninger
+    # Sakskostnader
     SAK
 
-    # Sanksjon - Person
+    # Sanksjon – person
     SAP
 
     # Serviceklager
     SER
 
-    # Sikkerhetstiltak
-    SIK
-
-    # Regnskap/utbetaling
+    # Regnskap/utbetaling/årsoppgave
     STO
 
     # Supplerende stønad
@@ -752,7 +919,7 @@ enum Tema {
     # Tilleggsstønad
     TSO
 
-    # Tilleggsstønad arbeidssøkere
+    # Tilleggsstønad – arbeidssøkere
     TSR
 
     # Unntak fra medlemskap
@@ -770,7 +937,7 @@ enum Tema {
     # Yrkesrettet attføring
     YRA
 
-    # Yrkesskade / Menerstatning
+    # Yrkesskade og menerstatning
     YRK
 }
 
@@ -842,4 +1009,14 @@ enum AvsenderMottakerIdType {
 
     # Ukjent IdType
     UKJENT
+}
+
+# Sier hvorvidt saken inngår i et fagsystem (FAGSAK) eller ikke (GENERELL_SAK).
+enum Sakstype {
+
+    # Benyttes normalt for dokumenter som ikke saksbehandles i et fagsystem. Generell sak har ikke saksnummer, men kan ses på som brukerens "mappe" av dokumenter på et gitt tema.
+    GENERELL_SAK
+
+    # Vil si at saken tilhører et fagsystem. Hvilket fagsystem saken tilhører, finnes i feltet fagsaksystem.
+    FAGSAK
 }
