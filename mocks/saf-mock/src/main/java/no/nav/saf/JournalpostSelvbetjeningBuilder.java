@@ -1,7 +1,13 @@
 package no.nav.saf;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.saf.selvbetjening.AvsenderMottaker;
 import no.nav.saf.selvbetjening.AvsenderMottakerIdType;
@@ -16,13 +22,6 @@ import no.nav.saf.selvbetjening.RelevantDato;
 import no.nav.saf.selvbetjening.Sak;
 import no.nav.saf.selvbetjening.Sakstype;
 import no.nav.saf.selvbetjening.Variantformat;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.UUID;
 
 public final class JournalpostSelvbetjeningBuilder {
     private static final Logger LOG = LoggerFactory.getLogger(JournalpostSelvbetjeningBuilder.class);
@@ -81,7 +80,7 @@ public final class JournalpostSelvbetjeningBuilder {
                 .map(dvi -> new Dokumentvariant(Variantformat.ARKIV, UUID.randomUUID().toString(), "PDF",
                         dvi.getDokumentInnhold().length, true, List.of()))
                 .toList();
-        return new DokumentInfo(modell.getDokumentId(), modell.getTittel(), modell.getBrevkode(), dokumentVarianter);
+        return new DokumentInfo(modell.getDokumentId(), modell.getTittel(), modell.getBrevkode(), false, dokumentVarianter);
     }
 
 }

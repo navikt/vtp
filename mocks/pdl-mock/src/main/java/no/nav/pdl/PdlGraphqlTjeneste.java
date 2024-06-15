@@ -27,7 +27,7 @@ import no.nav.pdl.hentpersonBolk.HentPersonBolkWiring;
 
 public class PdlGraphqlTjeneste {
 
-    private static final String SCHEME_PATH = "schemas/pdl-api-sdl.graphqls";
+    private static final String SCHEME_PATH = "schemas/pdl.graphqls";
 
     private static PdlGraphqlTjeneste instance;
     private final TestscenarioBuilderRepository scenarioRepository;

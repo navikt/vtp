@@ -33,8 +33,8 @@ import no.nav.saf.selvbetjening.Sakstema;
 
 public class GraphQLTjeneste {
 
-    private static final String SAF_SCHEME_PATH = "schemas/saf.graphql";
-    private static final String SAF_SELVBETJENING_SCHEME_PATH = "schemas/schema.graphqls";
+    private static final String SAF_SCHEME_PATH = "schemas/saf.graphqls";
+    private static final String SAF_SELVBETJENING_SCHEME_PATH = "schemas/safselvbetjening.graphqls";
 
     private TypeDefinitionRegistry typeRegistry;
     private TypeDefinitionRegistry typeRegistrySelvbetjening;
@@ -121,7 +121,7 @@ public class GraphQLTjeneste {
                     .map(JournalpostBuilder::buildFrom)
                     .collect(toList());
 
-            return new Dokumentoversikt(journalposter, new SideInfo("sluttpeker", false));
+            return new Dokumentoversikt(journalposter, new SideInfo("sluttpeker", false, 1, 1));
         };
     }
 
