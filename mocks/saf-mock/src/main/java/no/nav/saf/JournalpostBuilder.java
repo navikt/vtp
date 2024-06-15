@@ -24,10 +24,11 @@ public class JournalpostBuilder {
     private static String BREVKODE_IM = "4936";
 
     public static Journalpost buildFrom(JournalpostModell modell) {
+        var tema = Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "UKJ");
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getJournalpostId());
         journalpost.setTittel(modell.getTittel());
-        journalpost.setTema(Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "UKJ"));
+        journalpost.setTema(tema);
         journalpost.setJournalstatus(tilJournalstatus(modell));
         journalpost.setKanal(Kanal.valueOf(modell.getMottakskanal() != null ? modell.getMottakskanal().getKode() : "UKJENT"));
         journalpost.setBruker(modell.getBruker() != null ? tilBruker(modell.getBruker()) : null);
@@ -42,7 +43,7 @@ public class JournalpostBuilder {
         });
         journalpost.setAvsenderMottaker(avsenderMottaker);
 
-        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), modell.getSakId(), modell.getFagsystemId()));
+        journalpost.setSak(new Sak(modell.getSakId(), Arkivsaksystem.GSAK, Date.from(Instant.now()), modell.getSakId(), modell.getFagsystemId(), Sakstype.FAGSAK, tema));
 
         List<DokumentInfo> dokumentInfoer = new ArrayList<>();
         finnHoveddokumentFraJournalpost(modell).ifPresent(

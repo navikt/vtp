@@ -132,7 +132,7 @@ public class AzureAdRestTjeneste {
                 .build();
     }
 
-    private static boolean isNotNullAndBlank(String value) {
+    public static boolean isNotNullAndBlank(String value) {
         return value != null && !value.isBlank();
     }
 

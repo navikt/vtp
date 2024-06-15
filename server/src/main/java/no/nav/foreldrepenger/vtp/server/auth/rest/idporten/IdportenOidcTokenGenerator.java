@@ -1,6 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.idporten;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
+import java.util.Objects;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -9,19 +9,24 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
+
 
 public final class IdportenOidcTokenGenerator {
 
     private IdportenOidcTokenGenerator() {
     }
 
-    public static String idportenUserToken(String fnr, String issuer) {
-        return createToken(createCommonClaims(fnr, issuer));
+    public static String idportenUserToken(String fnr, String issuer, String nonce) {
+        return createToken(createCommonClaims(fnr, issuer, nonce));
     }
 
-    private static JwtClaims createCommonClaims(String pid, String issuer) {
+    private static JwtClaims createCommonClaims(String pid, String issuer, String nonce) {
         var issuedAt = NumericDate.now();
         JwtClaims claims = new JwtClaims();
+        if (Objects.nonNull(nonce) && !nonce.isBlank()) {
+            claims.setClaim("nonce", nonce);
+        }
         claims.setIssuer(issuer);
         claims.setExpirationTime(NumericDate.fromSeconds(issuedAt.getValue() + 3600 * 10));
         claims.setGeneratedJwtId();
@@ -31,7 +36,7 @@ public final class IdportenOidcTokenGenerator {
         claims.setAudience("vtp");
         claims.setStringClaim("client_id", "vtp");
         claims.setStringClaim("pid", pid);
-        claims.setStringClaim("acr", System.getProperty("idporten.acr.scope", "idporten-loa-high"));
+        claims.setStringClaim("acr", "idporten-loa-high");
         return claims;
     }
 

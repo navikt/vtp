@@ -9,13 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
 import org.slf4j.Logger;
@@ -23,6 +16,12 @@ import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
@@ -40,6 +39,7 @@ import no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn;
 import no.nav.person.pdl.leesah.doedsfall.Doedsfall;
 import no.nav.person.pdl.leesah.familierelasjon.Familierelasjon;
 import no.nav.person.pdl.leesah.foedsel.Foedsel;
+import no.nav.person.pdl.leesah.foedselsdato.Foedselsdato;
 
 @Tag(name = "Legge hendelser på PDL topic")
 @Path("/api/pdl/leesah")
@@ -115,6 +115,27 @@ public class PdlLeesahRestTjeneste {
         }
 
         sendHendelsePåKafka(personhendelse.build());
+
+        // Ny hendelse Foedselsdato
+        GenericRecordBuilder personhendelseV2 = new GenericRecordBuilder(Personhendelse.SCHEMA$);
+
+        personhendelseV2.set(HENDELSE_ID, UUID.randomUUID().toString());
+        personhendelseV2.set(PERSONIDENTER, List.of(barnIdent, testscenarioRepository.getPersonIndeks().finnByIdent(barnIdent).getAktørIdent()));
+        personhendelseV2.set(MASTER_FIELD, "Freg");
+        personhendelseV2.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
+        personhendelseV2.set(OPPLYSNINGSTYPE, "FOEDSELSDATO_V1");
+        personhendelseV2.set(ENDRINGSTYPE, Endringstype.valueOf(fødselshendelseDto.endringstype()));
+        if (fødselshendelseDto.tidligereHendelseId() != null) {
+            personhendelseV2.set(TIDLIGERE_HENDELSE_ID, fødselshendelseDto.tidligereHendelseId());
+        }
+
+        if (!Endringstype.ANNULLERT.toString().equals(fødselshendelseDto.endringstype())) {
+            GenericRecordBuilder fødselsdato = new GenericRecordBuilder(Foedselsdato.SCHEMA$);
+            fødselsdato.set("foedselsdato", oversettLocalDateTilAvroFormat(fødselshendelseDto.fødselsdato()));
+            personhendelseV2.set("foedselsdato", fødselsdato.build());
+        }
+
+        sendHendelsePåKafka(personhendelseV2.build());
     }
 
     public void sendHendelsePåKafka(GenericData.Record rekord) {
