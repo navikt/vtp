@@ -22,6 +22,7 @@ import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
 import no.nav.pdl.Doedsfall;
 import no.nav.pdl.Foedsel;
+import no.nav.pdl.Foedselsdato;
 import no.nav.pdl.Folkeregisteridentifikator;
 import no.nav.pdl.Folkeregistermetadata;
 import no.nav.pdl.Folkeregisterpersonstatus;
@@ -49,6 +50,7 @@ public class PersonAdapter {
         person.setDoedfoedtBarn(tilDoedfoedtBarn(personModell.getAktørIdent(), personopplysninger));
         byggForelderBarnRelasjoner(personModell.getAktørIdent(), personopplysninger, person);
         person.setFoedsel(tilFoedsel(personModell));
+        person.setFoedselsdato(tilFoedselsdato(personModell));
         person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
         person.setForeldreansvar(ikkeImplementert());
@@ -110,6 +112,12 @@ public class PersonAdapter {
 
     private static List<Foedsel> tilFoedsel(PersonModell personModell) {
         var fødsel = new Foedsel();
+        fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
+        return List.of(fødsel);
+    }
+
+    private static List<Foedselsdato> tilFoedselsdato(PersonModell personModell) {
+        var fødsel = new Foedselsdato();
         fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
         return List.of(fødsel);
     }
