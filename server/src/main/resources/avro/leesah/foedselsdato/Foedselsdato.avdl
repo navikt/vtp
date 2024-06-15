@@ -1,0 +1,8 @@
+@namespace("no.nav.person.pdl.leesah.foedselsdato")
+protocol FoedselsdatoV1 {
+
+  record Foedselsdato {
+    union { null, int } foedselsaar = null;
+    union { null, date } foedselsdato = null;
+  }
+}

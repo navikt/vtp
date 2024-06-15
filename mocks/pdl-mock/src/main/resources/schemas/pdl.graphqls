@@ -1,3 +1,4 @@
+# SOURCE repo:pdl:apps/api/src/main/resources/schemas/pdl.graphqls
 # ISO-8601 representasjon for en kalenderdato. YYYY-MM-DD. Eksempel: 2018-01-01.
 scalar Date
 
@@ -137,7 +138,9 @@ type Person {
     doedfoedtBarn: [DoedfoedtBarn!]!
     doedsfall: [Doedsfall!]!
     falskIdentitet: FalskIdentitet
-    foedsel: [Foedsel!]!
+    foedsel: [Foedsel!]! @deprecated(reason: "Erstattet av foedselsdato & foedested")
+    foedselsdato: [Foedselsdato!]!
+    foedested: [Foedested!]!
     folkeregisteridentifikator(historikk: Boolean = false): [Folkeregisteridentifikator!]!
     folkeregisterpersonstatus(historikk: Boolean = false): [Folkeregisterpersonstatus!]!
     forelderBarnRelasjon: [ForelderBarnRelasjon!]!
@@ -153,12 +156,13 @@ type Person {
     sikkerhetstiltak:[Sikkerhetstiltak!]!
     sivilstand(historikk: Boolean = false):[Sivilstand!]!
     statsborgerskap(historikk: Boolean = false): [Statsborgerskap!]!
-    telefonnummer: [Telefonnummer!]!
+    telefonnummer(historikk: Boolean = false): [Telefonnummer!]!
     tilrettelagtKommunikasjon:[TilrettelagtKommunikasjon!]!
     utenlandskIdentifikasjonsnummer(historikk: Boolean = false): [UtenlandskIdentifikasjonsnummer!]!
     innflyttingTilNorge: [InnflyttingTilNorge!]!
     utflyttingFraNorge: [UtflyttingFraNorge!]!
     vergemaalEllerFremtidsfullmakt(historikk: Boolean = false): [VergemaalEllerFremtidsfullmakt!]!
+    rettsligHandleevne(historikk: Boolean = false): [RettsligHandleevne!]!
 }
 
 type DeltBosted {
@@ -379,6 +383,21 @@ type Foedsel {
     metadata: Metadata!
 }
 
+type Foedested {
+    foedeland: String
+    foedested: String
+    foedekommune: String
+    folkeregistermetadata: Folkeregistermetadata
+    metadata: Metadata!
+}
+
+type Foedselsdato {
+    foedselsdato: Date
+    foedselsaar: Int
+    folkeregistermetadata: Folkeregistermetadata
+    metadata: Metadata!
+}
+
 type Kjoenn {
     kjoenn: KjoennType
     folkeregistermetadata: Folkeregistermetadata
@@ -452,7 +471,7 @@ type Navn {
     fornavn: String!
     mellomnavn: String
     etternavn: String!
-    forkortetNavn: String
+    forkortetNavn: String @deprecated
     originaltNavn: OriginaltNavn
     gyldigFraOgMed: Date
 
@@ -612,10 +631,23 @@ type UtflyttingFraNorge {
 }
 
 type VergeEllerFullmektig {
-    navn: Personnavn
+    navn: Personnavn @deprecated(reason:"Erstattes av navn iidentifiserendeInformasjon")
+    identifiserendeInformasjon: IdentifiserendeInformasjon
     motpartsPersonident: String
     omfang: String
-    omfangetErInnenPersonligOmraade: Boolean!
+    omfangetErInnenPersonligOmraade: Boolean
+    tjenesteomraade:[Tjenesteomraade!]
+}
+type IdentifiserendeInformasjon {
+    navn: Personnavn
+    kjoenn: String
+    foedselsdato:Date
+    statsborgerskap: [String!]
+
+}
+type Tjenesteomraade {
+    tjenesteoppgave: String
+    tjenestevirksomhet: String
 }
 
 type VergemaalEllerFremtidsfullmakt {
@@ -623,6 +655,13 @@ type VergemaalEllerFremtidsfullmakt {
     embete: String
     vergeEllerFullmektig: VergeEllerFullmektig!
 
+    folkeregistermetadata: Folkeregistermetadata
+    metadata: Metadata!
+}
+
+
+type RettsligHandleevne {
+    rettsligHandleevneomfang: String
     folkeregistermetadata: Folkeregistermetadata
     metadata: Metadata!
 }
@@ -677,6 +716,8 @@ type Endring {
     # Opphavet til informasjonen. I NAV blir dette satt i forbindelse med registrering (f.eks: Sykehuskassan).
     # Fra Folkeregisteret får vi opphaven til dems opplysning, altså NAV, UDI, Politiet, Skatteetaten o.l.. Fra Folkeregisteret kan det også være tekniske navn som: DSF_MIGRERING, m.m..
     kilde: String!
+
+    hendelseId:String!
 }
 
 enum Endringstype {
@@ -686,16 +727,21 @@ enum Endringstype {
 }
 
 input Criterion {
-    # Feltnavn ikludert sti til ønsket felt (Eksempel: person.navn.fornavn)
-    fieldName:String!
+    # Feltnavn inkludert sti til ønsket felt (Eksempel: person.navn.fornavn)
+    fieldName:String
 
-    searchRule:SearchRule!
+    and:[Criterion]
+    or:[Criterion]
+    not:[Criterion]
+
+    searchRule:SearchRule
     # Søk i historiske data
     # true = søker kun i historiske data.
     # false = søker kun i gjeldende data.
     # null = søke i både historiske og gjeldende data.
     searchHistorical:Boolean
 }
+
 
 input SearchRule {
     # Sjekker om feltet finnes / at det ikke har en null verdi.
@@ -862,5 +908,3 @@ input CompletionFieldValue {
     fieldName: String!
     fieldValue: String
 }
-
-

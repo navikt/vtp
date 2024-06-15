@@ -45,8 +45,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <!-- source repo:saf:app/src/main/resources/schemas/saf.graphqls -->
                             <graphqlSchemaPaths>
-                                <graphqlSchemaPath>${project.basedir}/src/main/resources/schemas/saf.graphql</graphqlSchemaPath>
+                                <graphqlSchemaPath>${project.basedir}/src/main/resources/schemas/saf.graphqls</graphqlSchemaPath>
                             </graphqlSchemaPaths>
                             <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
                             <packageName>no.nav.saf</packageName>
@@ -67,8 +68,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <!-- source repo:safselvbetjening:app/src/main/resources/schemas/safselvbetjening.graphqls -->
                             <graphqlSchemaPaths>
-                                <graphqlSchemaPath>${project.basedir}/src/main/resources/schemas/schema.graphqls</graphqlSchemaPath>
+                                <graphqlSchemaPath>${project.basedir}/src/main/resources/schemas/safselvbetjening.graphqls</graphqlSchemaPath>
                             </graphqlSchemaPaths>
                             <outputDir>${project.build.directory}/generated-sources/graphql-selvbetjening</outputDir>
                             <packageName>no.nav.saf.selvbetjening</packageName>

@@ -213,8 +213,8 @@ public class PdlMockTest extends PdlTestBase {
 
     private String byggProjectionPersonResponse(boolean historikk) {
         var projeksjon = new PersonResponseProjection()
-                .foedsel(
-                        new FoedselResponseProjection()
+                .foedselsdato(
+                        new FoedselsdatoResponseProjection()
                                 .foedselsdato()
                 )
                 .doedsfall(

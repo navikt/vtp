@@ -52,7 +52,8 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <graphqlSchemaPaths>${project.basedir}/src/main/resources/schemas/pdl-api-sdl.graphqls</graphqlSchemaPaths>
+                            <!-- source repo:pdl:apps/api/src/main/resources/schemas/pdl.graphqls -->
+                            <graphqlSchemaPaths>${project.basedir}/src/main/resources/schemas/pdl.graphqls</graphqlSchemaPaths>
                             <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
                             <packageName>no.nav.pdl</packageName>
                             <customTypesMapping>

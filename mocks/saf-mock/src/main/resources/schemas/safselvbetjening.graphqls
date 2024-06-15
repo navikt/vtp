@@ -1,3 +1,4 @@
+# SOURCE repo:safselvbetjening:app/src/main/resources/schemas/safselvbetjening.graphqls
 # ISO-8601 representasjon for en kalenderdato med tid, trunkert til nærmeste sekund. YYYY-MM-DD'T'hh:mm:ss. Eksempel: 2018-01-01T12:00:00.
 scalar DateTime
 
@@ -8,7 +9,11 @@ schema {
 
 # Query roten til safselvbetjening GraphQL API.
 type Query {
+    # Henter dokumentoversikten til bruker. Oversikten kan gruppes på tema eller fagsak. Man kan også få ut en flat liste av journalposter.
     dokumentoversiktSelvbetjening(ident: String!, tema: [Tema]!): Dokumentoversikt!
+
+    # Henter journalpost for journalpostId.
+    journalpostById(journalpostId: String!): Journalpost
 }
 
 # Dokumentoversikt er en liste av journalposter som tilfredstiller query kriteriene.
@@ -93,7 +98,6 @@ type Journalpost {
     # Liste over dokumentinfo tilknyttet journalposten.
     # * Dokumentene returneres i følgende sorteringsrekkefølge: Hoveddokumentet først, deretter vedleggene i tilfeldig rekkefølge.
     dokumenter: [DokumentInfo]
-
 }
 
 # Sakstilknytningen til journalposten.
@@ -143,6 +147,10 @@ type DokumentInfo {
     # * For inngående skjema er brevkoden normalt en NAV-skjemaID f.eks. *"NAV 14-05.09"*. Enkelte vedlegg har en vedleggskode som sier noe om innholdet.
     # * For utgående dokumenter sier brevkoden noe om hvilken dokumentmal som er benyttet og hvordan dokumentet skal distribueres.
     brevkode: String
+
+    # Skjuler dokumentet for brukeren i Pselv (pensjon selvbetjening) ved påloggingsnivå 3 (MinId).
+    # Feltet skal kun brukes av pensjonsområdet.
+    sensitivtPselv: Boolean @deprecated(reason: "Feltet skal kun brukes av pensjonsområdet.")
 
     # Liste over tilgjengelige varianter av dokumentet.
     dokumentvarianter: [Dokumentvariant]!
@@ -307,13 +315,17 @@ enum Kanal {
     # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i NAV.
     NAV_NO_CHAT
 
-    # Brevet er sendt via digital post til virksomhet.
+    # Brevet er sendt til Taushetsbelagt Post via Altinn.
     # * Brukes for utgående journalposter.
     DPV
 
-    # Brevet er sendt via digital post til virksomhet som sensitiv post.
-    # * Brukes for utgående journalposter.
-    DPVS
+    # Forsendelsen er mottatt på e-post.
+    # * Brukes for inngående journalposter.
+    E_POST
+
+    # Forsendelsen er mottatt i en av NAVs meldingsbokser i Altinn.
+    # * Brukes for inngående journalposter.
+    ALTINN_INNBOKS
 
     # Forsendelsen har ingen kjent kanal.
     UKJENT
@@ -393,7 +405,7 @@ enum Tema {
     # Aa-registeret
     AAR
 
-    # Ajourhold - Grunnopplysninger
+    # Ajourhold – grunnopplysninger
     AGR
 
     # Barnetrygd
@@ -408,13 +420,13 @@ enum Tema {
     # Dagpenger
     DAG
 
-    # Enslig forsørger
+    # Enslig mor eller far
     ENF
 
     # Erstatning
     ERS
 
-    # Farskap
+    # Foreldreskap
     FAR
 
     # Feilutbetaling
@@ -465,7 +477,7 @@ enum Tema {
     # Omsorgspenger, pleiepenger og opplæringspenger
     OMS
 
-    # Oppfølging - Arbeidsgiver
+    # Oppfølging – arbeidsgiver
     OPA
 
     # Oppfølging
@@ -477,10 +489,10 @@ enum Tema {
     # Permittering og masseoppsigelser
     PER
 
-    # Rehabilitering
+    # Rehabiliteringspenger
     REH
 
-    # Rekruttering og stilling
+    # Rekruttering
     REK
 
     # Retting av personopplysninger
@@ -492,19 +504,16 @@ enum Tema {
     # Sanksjon - Arbeidsgiver
     SAA
 
-    # Saksomkostninger
+    # Sakskostnader
     SAK
 
-    # Sanksjon - Person
+    # Sanksjon – person
     SAP
 
     # Serviceklager
     SER
 
-    # Sikkerhetstiltak
-    SIK
-
-    # Regnskap/utbetaling
+    # Regnskap/utbetaling/årsoppgave
     STO
 
     # Supplerende stønad
@@ -528,7 +537,7 @@ enum Tema {
     # Tilleggsstønad
     TSO
 
-    # Tilleggsstønad arbeidssøkere
+    # Tilleggsstønad – arbeidssøkere
     TSR
 
     # Unntak fra medlemskap
@@ -546,8 +555,20 @@ enum Tema {
     # Yrkesrettet attføring
     YRA
 
-    # Yrkesskade / Menerstatning
+    # Yrkesskade og menerstatning
     YRK
+
+    # Fiskerpensjon
+    FIP
+
+    # Klage – lønnsgaranti
+    KLL
+
+    # Barnepensjon
+    EYB
+
+    # Omstillingsstønad
+    EYO
 }
 
 # Sier hvorvidt saken inngår i et fagsystem (FAGSAK) eller ikke (GENERELL_SAK).
