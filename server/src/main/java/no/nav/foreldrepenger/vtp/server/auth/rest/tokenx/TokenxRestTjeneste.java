@@ -22,6 +22,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -90,6 +91,18 @@ public class TokenxRestTjeneste {
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
+    @GET
+    @Path("/token")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Tokenx i kontekst av riktig bruker – brukes primært av autotest til å logge inn en bruker programmatisk uten å måtte kalle idporten og deretter tokenx")
+    public Response token(@Context HttpServletRequest req,
+                          @QueryParam("fnr") String fnr,
+                          @QueryParam("audience") String audience) throws JoseException {
+        var token = accessTokenForAudienceOgSubject(req, audience, fnr);
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", fnr, audience);
+        LOG.info("TokenX token: {}", token);
+        return Response.ok(new TokenExchangeResponse(token)).build();
+    }
 
     private String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
         var jwtClaims = new JwtClaims();
