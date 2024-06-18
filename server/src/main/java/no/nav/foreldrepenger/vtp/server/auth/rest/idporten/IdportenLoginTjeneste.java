@@ -129,51 +129,6 @@ public class IdportenLoginTjeneste {
     }
 
 
-
-
-    // SPESIAL INNLOGGING
-    @Deprecated
-    @GET
-    @Path("/login")
-    @Produces(MediaType.TEXT_HTML)
-    public Response hent(@QueryParam("redirect") URI redirectUri) {
-        String tmpl = """
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                    <title>Velg bruker</title>
-                    </head>
-                        <body>
-                        <div style="text-align:center;width:100%%;">
-                           <caption><h3>Fødselsnummer:</h3></caption>
-                            <form action="/rest/idporten/token" method="post">
-                              <input type="hidden" name="redirect" value="%s" />
-                              <input type="text" name="fnr" />
-                              <input type="submit" value="Token, takk!" />
-                            </form>
-                        </div>
-                    </body>
-                    </html>
-                """;
-        return Response.ok(String.format(tmpl, redirectUri), MediaType.TEXT_HTML).build();
-    }
-
-    @Deprecated
-    @POST
-    @Path("/token")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "idporten/access_token")
-    @SuppressWarnings("unused")
-    public Response seeOtherSetCookie(@Context HttpServletRequest req,
-                                    @FormParam("fnr") String fnr,
-                                    @FormParam("redirect") URI redirectUri) {
-        var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER, null);
-        var cookieTemplate = "selvbetjening-idtoken=%s;Path=/";
-        return Response.seeOther(redirectUri).header("Set-Cookie", String.format(cookieTemplate, token)).build();
-    }
-
-    @Deprecated
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})

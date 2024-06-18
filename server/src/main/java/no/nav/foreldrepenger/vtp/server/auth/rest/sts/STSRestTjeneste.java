@@ -26,6 +26,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
+@Deprecated
 @Tag(name = "Security Token Service")
 @Path("/v1/sts")
 public class STSRestTjeneste {
