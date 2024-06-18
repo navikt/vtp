@@ -38,7 +38,6 @@ import no.nav.person.pdl.leesah.Personhendelse;
 import no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn;
 import no.nav.person.pdl.leesah.doedsfall.Doedsfall;
 import no.nav.person.pdl.leesah.familierelasjon.Familierelasjon;
-import no.nav.person.pdl.leesah.foedsel.Foedsel;
 import no.nav.person.pdl.leesah.foedselsdato.Foedselsdato;
 
 @Tag(name = "Legge hendelser på PDL topic")
@@ -102,40 +101,19 @@ public class PdlLeesahRestTjeneste {
         personhendelse.set(PERSONIDENTER, List.of(barnIdent, testscenarioRepository.getPersonIndeks().finnByIdent(barnIdent).getAktørIdent()));
         personhendelse.set(MASTER_FIELD, "Freg");
         personhendelse.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
-        personhendelse.set(OPPLYSNINGSTYPE, "FOEDSEL_V1");
+        personhendelse.set(OPPLYSNINGSTYPE, "FOEDSELSDATO_V1");
         personhendelse.set(ENDRINGSTYPE, Endringstype.valueOf(fødselshendelseDto.endringstype()));
         if (fødselshendelseDto.tidligereHendelseId() != null) {
             personhendelse.set(TIDLIGERE_HENDELSE_ID, fødselshendelseDto.tidligereHendelseId());
         }
 
         if (!Endringstype.ANNULLERT.toString().equals(fødselshendelseDto.endringstype())) {
-            GenericRecordBuilder fødsel = new GenericRecordBuilder(Foedsel.SCHEMA$);
-            fødsel.set("foedselsdato", oversettLocalDateTilAvroFormat(fødselshendelseDto.fødselsdato()));
-            personhendelse.set("foedsel", fødsel.build());
+            GenericRecordBuilder fødselsdato = new GenericRecordBuilder(Foedselsdato.SCHEMA$);
+            fødselsdato.set("foedselsdato", oversettLocalDateTilAvroFormat(fødselshendelseDto.fødselsdato()));
+            personhendelse.set("foedselsdato", fødselsdato.build());
         }
 
         sendHendelsePåKafka(personhendelse.build());
-
-        // Ny hendelse Foedselsdato
-        GenericRecordBuilder personhendelseV2 = new GenericRecordBuilder(Personhendelse.SCHEMA$);
-
-        personhendelseV2.set(HENDELSE_ID, UUID.randomUUID().toString());
-        personhendelseV2.set(PERSONIDENTER, List.of(barnIdent, testscenarioRepository.getPersonIndeks().finnByIdent(barnIdent).getAktørIdent()));
-        personhendelseV2.set(MASTER_FIELD, "Freg");
-        personhendelseV2.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
-        personhendelseV2.set(OPPLYSNINGSTYPE, "FOEDSELSDATO_V1");
-        personhendelseV2.set(ENDRINGSTYPE, Endringstype.valueOf(fødselshendelseDto.endringstype()));
-        if (fødselshendelseDto.tidligereHendelseId() != null) {
-            personhendelseV2.set(TIDLIGERE_HENDELSE_ID, fødselshendelseDto.tidligereHendelseId());
-        }
-
-        if (!Endringstype.ANNULLERT.toString().equals(fødselshendelseDto.endringstype())) {
-            GenericRecordBuilder fødselsdato = new GenericRecordBuilder(Foedselsdato.SCHEMA$);
-            fødselsdato.set("foedselsdato", oversettLocalDateTilAvroFormat(fødselshendelseDto.fødselsdato()));
-            personhendelseV2.set("foedselsdato", fødselsdato.build());
-        }
-
-        sendHendelsePåKafka(personhendelseV2.build());
     }
 
     public void sendHendelsePåKafka(GenericData.Record rekord) {
