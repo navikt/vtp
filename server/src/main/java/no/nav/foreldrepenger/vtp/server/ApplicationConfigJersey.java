@@ -84,6 +84,7 @@ import no.nav.nom.SkjermetPersonMock;
 import no.nav.omsorgspenger.rammemeldinger.OmsorgspengerMock;
 import no.nav.oppgave.OppgaveMockImpl;
 import no.nav.pdl.PdlMock;
+import no.nav.pip.PdlPipMock;
 import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
@@ -149,6 +150,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(OrganisasjonRSV1Mock.class);
         classes.add(AaregRSV1Mock.class);
         classes.add(PdlMock.class);
+        classes.add(PdlPipMock.class);
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
         classes.add(DigdirKrrProxyMock.class);
