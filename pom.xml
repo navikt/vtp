@@ -45,7 +45,7 @@
         <fp-kontrakter.version>9.1.19</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.59</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
+        <swagger-codegen-maven-plugin.version>3.0.60</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>22.1</graphql-java.version>
         <graphql-scalar-java.version>22.0</graphql-scalar-java.version>
         <avro.version>1.11.3</avro.version>
@@ -53,8 +53,8 @@
 
         <!-- Java Enterprise -->
         <jakarta.jakartaee-bom.version>10.0.0</jakarta.jakartaee-bom.version>
-        <logstash.version>7.4</logstash.version>
-        <jetty.version>12.0.11</jetty.version>
+        <logstash.version>8.0</logstash.version>
+        <jetty.version>12.0.12</jetty.version>
         <jersey.version>3.1.7</jersey.version>
         <slf4j.version>2.0.13</slf4j.version>
         <logback.version>1.5.6</logback.version>
