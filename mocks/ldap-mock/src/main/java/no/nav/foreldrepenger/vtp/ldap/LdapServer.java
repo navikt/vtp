@@ -73,7 +73,7 @@ public class LdapServer {
                 new Attribute("cn", navAnsatt.ident()),
                 new Attribute("displayName", navAnsatt.displayName()),
                 new Attribute("givenName", navAnsatt.givenName()),
-                new Attribute("surname", navAnsatt.surname()),
+                new Attribute("sn", navAnsatt.surname()),
                 new Attribute("mail", navAnsatt.email()),
                 new Attribute("streetAddress", navAnsatt.streetAddress()),
                 new Attribute("userPrincipalName", navAnsatt.email()),
