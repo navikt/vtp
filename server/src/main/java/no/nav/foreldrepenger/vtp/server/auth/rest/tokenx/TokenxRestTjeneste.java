@@ -86,8 +86,8 @@ public class TokenxRestTjeneste {
                           @FormParam("audience") String audience) throws JoseException {
         var subject = hentSubjectFraJWT(subjectToken);
         var token = accessTokenForAudienceOgSubject(req, audience, subject);
-        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, audience);
-        LOG.info("TokenX token: {}", token);
+        var cleanaudience = audience.replaceAll("[^A-Za-z0-9:_-]", "");
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, cleanaudience);
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
@@ -99,8 +99,8 @@ public class TokenxRestTjeneste {
                           @QueryParam("fnr") String fnr,
                           @QueryParam("audience") String audience) throws JoseException {
         var token = accessTokenForAudienceOgSubject(req, audience, fnr);
-        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", fnr, audience);
-        LOG.info("TokenX token: {}", token);
+        var cleanaudience = audience.replaceAll("[^A-Za-z0-9:_-]", "");
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", fnr, cleanaudience);
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
