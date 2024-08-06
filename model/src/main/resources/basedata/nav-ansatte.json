@@ -3,7 +3,10 @@
         "ident": "saksbeh",
         "oid": "3c3caafb-a943-4255-aa65-6f29345b7541",
         "displayName": "Sara Saksbehandler",
+        "givenName": "Sara",
+        "surname": "Saksbehandler",
         "email": "sara.saksbehandler@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -40,7 +43,10 @@
         "ident": "saksbeh6",
         "oid": "05801408-feb8-42b2-850a-8d87adb911c7",
         "displayName": "Sa6a Saksbehandler6",
+        "givenName": "Sa6a",
+        "surname": "Saksbehandler",
         "email": "sa6a.saksbehandler6@example.com",
+        "streetAddress": "2103",
         "enheter": [],
         "groups": [
             {
@@ -85,7 +91,10 @@
         "ident": "saksbeh7",
         "oid": "352b0a40-4d13-43e7-8e55-ba6060d6d430",
         "displayName": "Sa7a Saksbehandler7",
+        "givenName": "Sa7a",
+        "surname": "Saksbehandler",
         "email": "sa7a.saksbehandler7@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -130,7 +139,10 @@
         "ident": "saksbha",
         "oid": "98f1a0f3-292e-412c-b84a-d729b6169f2b",
         "displayName": "Ea Saksbehandler",
+        "givenName": "Ea",
+        "surname": "Saksbehandler",
         "email": "ea.saksbehandler@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -175,7 +187,10 @@
         "ident": "beslut",
         "oid": "fb864a55-bc42-4196-aba9-792c78661806",
         "displayName": "Birger Beslutter",
+        "givenName": "Birger",
+        "surname": "Beslutter",
         "email": "birger.beslutter@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -220,7 +235,10 @@
         "ident": "oversty",
         "oid": "d6881997-05d7-4ff2-8ef6-818d8539c434",
         "displayName": "Ove Overstyrer",
+        "givenName": "Ove",
+        "surname": "Overstyrer",
         "email": "ove.overstyrer@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -265,7 +283,10 @@
         "ident": "klageb",
         "oid": "cf70667f-250e-4565-a365-75f07f87fe29",
         "displayName": "Klara Klagebehandler",
+        "givenName": "Klara",
+        "surname": "Klagebehandler",
         "email": "klara.klagebehandler@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -306,7 +327,10 @@
         "ident": "veil",
         "oid": "ba6f0772-b99b-4eb9-857e-7a9e6720d582",
         "displayName": "Vegard Veileder",
+        "givenName": "Vegard",
+        "surname": "Veileder",
         "email": "vegard.veileder@example.com",
+        "streetAddress": "1900",
         "enheter": [],
         "groups": [
             {
@@ -351,7 +375,10 @@
         "ident": "oppgs",
         "oid": "4cd710cc-c367-4110-8126-fe495ee11c23",
         "displayName": "Oline Oppgavestyrer",
+        "givenName": "Oline",
+        "surname": "Oppgavestyrer",
         "email": "oline.oppgavestyrer@example.com",
+        "streetAddress": "4833",
         "enheter": [],
         "groups": [
             {
@@ -396,7 +423,10 @@
         "ident": "drift",
         "oid": "d3b97fcb-8778-4e09-ba7e-f8993d6e26a6",
         "displayName": "Daniel Drifter",
+        "givenName": "Daniel",
+        "surname": "Drifter",
         "email": "daniel.drifter@example.com",
+        "streetAddress": "2970",
         "enheter": [],
         "groups": [
             {
