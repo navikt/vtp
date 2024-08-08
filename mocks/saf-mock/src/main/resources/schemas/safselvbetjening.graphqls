@@ -132,6 +132,9 @@ type AvsenderMottaker {
 
     # Identifikatortypen til parten som er avsender eller mottaker av dokumentene på journalposten.
     type: AvsenderMottakerIdType!
+
+    # Navnet til parten som er avsender eller mottaker av dokumentene på journalposten.
+    navn: String!
 }
 
 # Metadata tilknyttet et bestemt dokument i Joark (evt til flere varianter av samme dokument).
