@@ -12,7 +12,6 @@ import static no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2RequestParameterN
 import static no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureOidcTokenGenerator.azureClientCredentialsToken;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -44,6 +43,9 @@ import no.nav.foreldrepenger.vtp.server.MockServer;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 @Tag(name = "AzureAd")
 @Path(AzureAdRestTjeneste.TJENESTE_PATH)
@@ -52,6 +54,8 @@ public class AzureAdRestTjeneste {
     protected static final String TJENESTE_PATH = "/azuread"; //NOSONAR
     private static final String ISSUER = "http://vtp/rest/AzureAd";
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
+
+    private static final AnsatteIndeks ANSATTE_INDEKS = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
 
     @GET
     @Path("/isAlive")
@@ -101,13 +105,13 @@ public class AzureAdRestTjeneste {
                 Objects.requireNonNull(assertion);
                 var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
                 var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
-                var ansattIdent = Optional.ofNullable(ansattId).map(StandardSaksbehandlere::finnIdent).orElseThrow();
+                var ansattIdent = Optional.ofNullable(ansattId).map(ANSATTE_INDEKS::findByIdent).orElseThrow();
                 token = createToken(ansattIdent, nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             case "authorization_code" -> {
                 var ansattIdent = Optional.ofNullable(code)
-                        .map(StandardSaksbehandlere::finnIdent)
+                        .map(ANSATTE_INDEKS::findByIdent)
                         .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
                 token = createToken(ansattIdent, nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
@@ -116,7 +120,7 @@ public class AzureAdRestTjeneste {
                 if (refreshToken == null) {
                     yield badRequest();
                 }
-                token = createToken(StandardSaksbehandlere.SAKSBEHANDLER, nonce);
+                token = createToken(ANSATTE_INDEKS.findByIdent("saksbeh"), nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             default -> {
@@ -141,12 +145,12 @@ public class AzureAdRestTjeneste {
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)")
     public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident) {
-        var bruker = Optional.ofNullable(StandardSaksbehandlere.finnIdent(ident)).orElseThrow();
+        var bruker = Optional.ofNullable(ANSATTE_INDEKS.findByIdent(ident)).orElseThrow();
         var token = createToken(bruker, nonceCache.get(NONCE));
         return ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
-    private String createToken(StandardSaksbehandlere bruker, String nonce) {
+    private String createToken(NAVAnsatt bruker, String nonce) {
         return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
     }
 
@@ -208,13 +212,13 @@ public class AzureAdRestTjeneste {
     }
 
     private static String leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(UriBuilder location) {
-        return Arrays.stream(StandardSaksbehandlere.values())
+        return ANSATTE_INDEKS.alleAnsatte().stream()
                 .map(ansatt -> leggTilRadITabell(location.build(), ansatt))
                 .collect(Collectors.joining("\n"));
     }
 
-    private static String leggTilRadITabell(URI location, StandardSaksbehandlere ansatt) {
-        var redirectForInnloggingAvAnsatt = fromUri(location).queryParam(CODE, ansatt.getIdent()).build();
-        return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.getNavn());
+    private static String leggTilRadITabell(URI location, NAVAnsatt ansatt) {
+        var redirectForInnloggingAvAnsatt = fromUri(location).queryParam(CODE, ansatt.ident()).build();
+        return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.displayName());
     }
 }

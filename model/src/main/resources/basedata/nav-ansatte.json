@@ -37,7 +37,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler" ]
     },
     {
         "ident": "saksbeh6",
@@ -85,7 +86,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler", "kode6" ]
     },
     {
         "ident": "saksbeh7",
@@ -133,7 +135,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler", "kode7" ]
     },
     {
         "ident": "saksbha",
@@ -181,7 +184,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler", "egenansatt" ]
     },
     {
         "ident": "beslut",
@@ -229,7 +233,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler", "beslutter" ]
     },
     {
         "ident": "oversty",
@@ -277,7 +282,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler", "overstyrer" ]
     },
     {
         "ident": "klageb",
@@ -321,7 +327,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler" ]
     },
     {
         "ident": "veil",
@@ -369,7 +376,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "veileder" ]
     },
     {
         "ident": "oppgs",
@@ -417,7 +425,8 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ]
+        ],
+        "vtpgrupper": [ "saksbehandler", "oppgavestyrer" ]
     },
     {
         "ident": "drift",
@@ -437,6 +446,19 @@
                 "oid": "7ac42b69-14af-479e-9e9c-b2235bea9863",
                 "name": "0000-GA-k9-drift"
             }
-        ]
+        ],
+        "vtpgrupper": [ "drift", "veileder" ]
+    },
+    {
+        "ident": "pip",
+        "oid": "3d48bf40-4bfd-48d8-8280-065bf8ced9cd",
+        "displayName": "Policy Information Point",
+        "givenName": "Policy Information",
+        "surname": "Point",
+        "email": "pip@example.com",
+        "streetAddress": "2970",
+        "enheter": [],
+        "groups": [],
+        "vtpgrupper": [ "pip" ]
     }
 ]

@@ -12,7 +12,7 @@ public class AnsatteIndeks {
 
     public void leggTil(List<NAVAnsatt> ansatte) {
         ansatte.forEach(ansatt -> {
-            this.ansatteByIdent.putIfAbsent(ansatt.ident(), ansatt);
+            this.ansatteByIdent.putIfAbsent(ansatt.ident().toLowerCase(), ansatt);
             this.ansatteById.putIfAbsent(ansatt.oid(), ansatt);
         });
     }
@@ -22,7 +22,7 @@ public class AnsatteIndeks {
     }
 
     public NAVAnsatt findByIdent(String ident) {
-        return ansatteByIdent.get(ident);
+        return ansatteByIdent.get(ident.toLowerCase());
     }
 
     public NAVAnsatt findById(UUID id) {
