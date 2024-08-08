@@ -40,8 +40,8 @@ public class MicrosoftGraphApiMock {
     @Path("/oidc/userinfo")
     public UserInfo userInfo(@Context HttpServletRequest req) {
         var ansatt = getAnsatt(req.getHeader(AUTHORIZATION));
-        return new UserInfo(ansatt.oid().toString(), ansatt.displayName(), req.getLocalName(), ansatt.ident(),
-                "http://example.com/picture.jpg", "user@nav.no");
+        return new UserInfo(ansatt.oid().toString(), ansatt.displayName(), req.getLocalName(), ansatt.ident(), ansatt.givenName(),
+                ansatt.surname(), "http://example.com/picture.jpg", "user@nav.no", ansatt.streetAddress());
     }
 
     @GET
@@ -51,6 +51,7 @@ public class MicrosoftGraphApiMock {
         var navAnsatt = getAnsatt(req.getHeader(AUTHORIZATION));
         if (navAnsatt != null) {
             var user = new User(navAnsatt.oid(), navAnsatt.ident(), navAnsatt.displayName(),
+                    navAnsatt.givenName(), navAnsatt.surname(), navAnsatt.streetAddress(),
                     "https://graph.microsoft.com/v1.0/$metadata#users(id," + navAnsatt.ident() + ")/$entity");
             return Response.ok(user).build();
         }
@@ -92,6 +93,7 @@ public class MicrosoftGraphApiMock {
             var user = new User(ansatt.oid(),
                     ansatt.ident(),
                     ansatt.displayName(),
+                    ansatt.givenName(), ansatt.surname(), ansatt.streetAddress(),
                     "https://graph.microsoft.com/v1.0/$metadata#users(id," + identifikator + ")/$entity");
             return Response.ok(user).build();
         }
@@ -135,10 +137,12 @@ public class MicrosoftGraphApiMock {
         return new Group(group.oid(), group.name(), group.name());
     }
 
-    record UserInfo(String sub, String name, String family_name, String given_name, String picture, String email) {
+    record UserInfo(String sub, String name, String family_name, String given_name, String givenName, String surname,
+                    String picture, String email, String streetAddress) {
     }
 
-    record User(UUID id, String onPremisesSamAccountName, String displayName, @JsonProperty("@odata.context") String context) {
+    record User(UUID id, String onPremisesSamAccountName, String displayName, String givenName, String surname, String streetAddress,
+                @JsonProperty("@odata.context") String context) {
     }
 
     record Group(UUID id, String displayName, String onPremisesSamAccountName) {

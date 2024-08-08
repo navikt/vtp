@@ -72,7 +72,10 @@ public class LdapServer {
                 new Attribute("objectCategory", "CN=Person,CN=Schema,CN=Configuration,DC=test,DC=local"),
                 new Attribute("cn", navAnsatt.ident()),
                 new Attribute("displayName", navAnsatt.displayName()),
+                new Attribute("givenName", navAnsatt.givenName()),
+                new Attribute("sn", navAnsatt.surname()),
                 new Attribute("mail", navAnsatt.email()),
+                new Attribute("streetAddress", navAnsatt.streetAddress()),
                 new Attribute("userPrincipalName", navAnsatt.email()),
                 new Attribute("userPassword", "dummy"),
                 new Attribute("memberOf", tilMemberOf(navAnsatt.groups()))
