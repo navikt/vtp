@@ -37,7 +37,7 @@ public final class JournalpostSelvbetjeningBuilder {
         var journalposttype = Journalposttype.valueOf(modell.getJournalposttype().getKode());
         builder.setJournalposttype(journalposttype);
 
-        var avsenderMottaker = new AvsenderMottaker(modell.getAvsenderMottaker().getIdent(), AvsenderMottakerIdType.FNR);
+        var avsenderMottaker = new AvsenderMottaker(modell.getAvsenderMottaker().getIdent(), AvsenderMottakerIdType.FNR, "Navn");
         if (journalposttype == Journalposttype.I) {
             builder.setAvsender(avsenderMottaker);
         } else {
