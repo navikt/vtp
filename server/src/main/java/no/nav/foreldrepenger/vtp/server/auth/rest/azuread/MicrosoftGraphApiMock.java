@@ -32,7 +32,7 @@ public class MicrosoftGraphApiMock {
             .setSkipSignatureVerification()
             .build();
 
-    private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
+    private static final AnsatteIndeks ANSATTE_INDEKS = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     protected static final String AUTHORIZATION = "Authorization";
 
     @GET
@@ -84,9 +84,9 @@ public class MicrosoftGraphApiMock {
 
         NAVAnsatt ansatt;
         if (filterBy[0].contains("onPremisesSamAccountName")) {
-            ansatt = ansattIndeks.findByIdent(identifikator);
+            ansatt = ANSATTE_INDEKS.findByIdent(identifikator);
         } else {
-            ansatt = ansattIndeks.findById(UUID.fromString(identifikator));
+            ansatt = ANSATTE_INDEKS.findById(UUID.fromString(identifikator));
         }
 
         if (ansatt != null) {
@@ -104,7 +104,7 @@ public class MicrosoftGraphApiMock {
     @Produces({"application/json;charset=UTF-8"})
     @Path("/v1.0/users/{oid}/memberOf")
     public Response userMemberOf(@PathParam("oid") @NotNull UUID id) {
-        var ansatt = ansattIndeks.findById(id);
+        var ansatt = ANSATTE_INDEKS.findById(id);
         if (ansatt != null) {
             var response = opprettMemberOfResponse(ansatt);
             return Response.ok(response).build();
@@ -121,7 +121,7 @@ public class MicrosoftGraphApiMock {
                 var assertion = auth.substring("Bearer ".length());
                 var claims = unvalidatingConsumer.processToClaims(assertion);
                 var ident = claims.getClaimValue("NAVident", String.class);
-                return ansattIndeks.findByIdent(ident);
+                return ANSATTE_INDEKS.findByIdent(ident);
             } catch (Exception e) {
                 throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>",
                         Response.Status.FORBIDDEN);
