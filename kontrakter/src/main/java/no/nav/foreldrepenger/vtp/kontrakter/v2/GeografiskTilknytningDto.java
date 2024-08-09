@@ -6,7 +6,7 @@ public record GeografiskTilknytningDto(CountryCode land, GeografiskTilknytningTy
 
 
     public static GeografiskTilknytningDto norsk() {
-        return new GeografiskTilknytningDto(CountryCode.NO, GeografiskTilknytningType.LAND);
+        return new GeografiskTilknytningDto(CountryCode.NO, GeografiskTilknytningType.KOMMUNE);
     }
 
     public enum GeografiskTilknytningType {
