@@ -45,7 +45,7 @@
         <fp-kontrakter.version>9.1.19</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.60</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
+        <swagger-codegen-maven-plugin.version>3.0.61</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>22.1</graphql-java.version>
         <graphql-scalar-java.version>22.0</graphql-scalar-java.version>
         <avro.version>1.12.0</avro.version>
@@ -218,7 +218,7 @@
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
-                <version>3.0.2</version>
+                <version>3.0.3</version>
             </dependency>
 
             <dependency>
