@@ -67,6 +67,7 @@ public class OrganisasjonsmodellMapper {
                         organisasjonsdetaljer.registreringsdato(),
                         organisasjonsdetaljer.datoSistEndret(),
                         null,
+                        null,
                         null
                 ));
     }
@@ -81,6 +82,7 @@ public class OrganisasjonsmodellMapper {
                 new OrganisasjonDetaljerModell(
                         organisasjonsdetaljer.registreringsdato(),
                         organisasjonsdetaljer.datoSistEndret(),
+                        null,
                         null,
                         null
                 ));
