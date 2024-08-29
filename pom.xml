@@ -45,7 +45,7 @@
         <fp-kontrakter.version>9.1.19</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.61</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
+        <swagger-codegen-maven-plugin.version>3.0.62</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
         <graphql-java.version>22.2</graphql-java.version>
         <graphql-scalar-java.version>22.0</graphql-scalar-java.version>
         <avro.version>1.12.0</avro.version>
@@ -58,7 +58,7 @@
         <jersey.version>3.1.8</jersey.version>
         <slf4j.version>2.0.16</slf4j.version>
         <logback.version>1.5.7</logback.version>
-        <swagger.version>2.2.22</swagger.version>
+        <swagger.version>2.2.23</swagger.version>
         <mockito.version>5.12.0</mockito.version>
     </properties>
 
@@ -505,7 +505,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.5.0</version>
                     <configuration>
                         <!-- Må ha @{argLine} ellers blir properties satt av jacoco-maven-plugin overkrevet -->
                         <argLine>@{argLine} ${argLine}</argLine>
