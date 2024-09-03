@@ -38,6 +38,11 @@ public class OrganisasjonNoekkelinfo {
                 && !modell.organisasjonDetaljer().forretningsadresser().isEmpty()) {
             this.adresse = modell.organisasjonDetaljer().forretningsadresser().get(0);
         }
+
+        if (modell.organisasjonDetaljer() != null
+                && modell.organisasjonDetaljer().opphoersdato() != null) {
+            this.opphoersdato = modell.organisasjonDetaljer().opphoersdato().toString();
+        }
     }
 
     public AdresseEReg getAdresse() {

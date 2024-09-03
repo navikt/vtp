@@ -11,5 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public record OrganisasjonDetaljerModell(LocalDate registreringsDato,
                                          LocalDate datoSistEndret,
                                          List<AdresseEReg> forretningsadresser,
-                                         List<AdresseEReg> postadresser) {
+                                         List<AdresseEReg> postadresser,
+                                         LocalDate opphoersdato) {
 }
+

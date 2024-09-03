@@ -50,6 +50,9 @@ public class OrganisasjonResponse {
         if (modell.organisasjonDetaljer() != null && modell.organisasjonDetaljer().postadresser() != null) {
             this.organisasjonDetaljer.postadresser = modell.organisasjonDetaljer().postadresser();
         }
+        if (modell.organisasjonDetaljer() != null && modell.organisasjonDetaljer().opphoersdato() != null) {
+            this.organisasjonDetaljer.opphoersdato = modell.organisasjonDetaljer().opphoersdato();
+        }
     }
 
     public String getOrganisasjonsnummer() {
