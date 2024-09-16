@@ -1,55 +1,63 @@
- [
-	{
-		"diskresjonskode": "UFB",
-		"enhetId": "1900",
-		"navn": "NAV Troms",
-		"type": "KONTAKT",
-		"status": "AKTIV"
-	},
-	{
-		"diskresjonskode": "SPFO",
-		"enhetId": "1001",
-		"navn": "NAV Kristiansand",
-		"type": "KONTAKT",
-		"status": "AKTIV"
-	},
-	{
-		"diskresjonskode": "SPSF",
-		"enhetId": "2103",
-		"navn": "NAV Viken",
-		"type": "KO",
-		"status": "AKTIV"
-	},
-	{
-		"diskresjonskode": "NORMAL-FOR",
-		"enhetId": "4833",
-		"navn": "NAV Familie og Pensjonsytelser Oslo",
-		"type": "FPY",
+[
+    {
+        "diskresjonskode": "UFB",
+        "enhetId": "1900",
+        "navn": "NAV Troms",
+        "type": "KONTAKT",
+        "status": "AKTIV"
+    },
+    {
+        "diskresjonskode": "SPFO",
+        "enhetId": "1001",
+        "navn": "NAV Kristiansand",
+        "type": "KONTAKT",
+        "status": "AKTIV"
+    },
+    {
+        "diskresjonskode": "SPSF",
+        "enhetId": "2103",
+        "navn": "NAV Viken",
+        "type": "KO",
+        "status": "AKTIV"
+    },
+    {
+        "diskresjonskode": "NORMAL-FOR",
+        "enhetId": "4833",
+        "navn": "NAV Familie og Pensjonsytelser Oslo",
+        "type": "FPY",
         "tema": "FOR",
-		"status": "AKTIV"
-	},
-	{
-		"diskresjonskode": "NORMAL-OMS",
-	 	"navn": "NAV Arbeid og ytelser Arendal",
-	 	"enhetId": "4409",
-	 	"status": "AKTIV",
-	 	"type": "YTA",
+        "status": "AKTIV"
+    },
+    {
+        "diskresjonskode": "NORMAL-OMS",
+        "navn": "NAV Arbeid og ytelser Arendal",
+        "enhetId": "4409",
+        "status": "AKTIV",
+        "type": "YTA",
         "tema": "OMS"
-	},
-	 {
-		 "diskresjonskode": "NORMAL-SYK",
-		 "navn": "NAV Arbeid og ytelser Arendal",
-		 "enhetId": "4409",
-		 "status": "AKTIV",
-		 "type": "YTA",
-         "tema": "SYK"
-	 },
-     {
-         "diskresjonskode": "NORMAL-FRI",
-         "navn": "NAV Familie- og pensjonsytelser midlertidig enhet",
-         "enhetId": "4863",
-         "status": "AKTIV",
-         "type": "KO",
-         "tema": "FRI"
-     }
- ]
+    },
+    {
+        "diskresjonskode": "NORMAL-SYK",
+        "navn": "NAV Arbeid og ytelser Arendal",
+        "enhetId": "4409",
+        "status": "AKTIV",
+        "type": "YTA",
+        "tema": "SYK"
+    },
+    {
+        "diskresjonskode": "NORMAL-FRI",
+        "navn": "NAV Familie- og pensjonsytelser midlertidig enhet",
+        "enhetId": "4863",
+        "status": "AKTIV",
+        "type": "KO",
+        "tema": "FRI"
+    },
+    {
+        "diskresjonskode": "NORMAL-UNG",
+        "navn": "NAV Arbeid og ytelser midlertidig enhet",
+        "enhetId": "4863",
+        "status": "AKTIV",
+        "type": "KO",
+        "tema": "UNG"
+    }
+]
