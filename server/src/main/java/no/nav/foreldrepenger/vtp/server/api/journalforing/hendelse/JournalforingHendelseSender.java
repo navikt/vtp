@@ -20,8 +20,7 @@ public class JournalforingHendelseSender {
             .map(String::trim).filter(s -> s.toLowerCase().contains("teamdokumenthandtering"))
             .findFirst().orElse("teamdokumenthandtering.aapen-dok-journalfoering-vtp");
 
-
-    private LocalKafkaProducer localKafkaProducer;
+    private final LocalKafkaProducer localKafkaProducer;
 
     public JournalforingHendelseSender(LocalKafkaProducer localKafkaProducer) {
         this.localKafkaProducer = localKafkaProducer;
@@ -47,16 +46,15 @@ public class JournalforingHendelseSender {
 
     private String tilHendelsesType(JournalpostModell modell) {
         return switch (modell.getJournalStatus() != null ? modell.getJournalStatus().getKode() : "") {
-            case "J" -> "Journalført";
-            case "MO" -> "Mottatt";
-            case "M" -> "MidlertidigJournalført";
-            case "A" -> "Avbrutt";
-            default -> "MidlertidigJournalført";
+            case "J" -> "EndeligJournalført";
+            case "MO" -> "JournalpostMottatt";
+            case "A" -> "JournalpostUtgått";
+            default -> "TemaEndret";
         };
     }
 
     private BehandlingsTema tilBehandlingsTema(JournalpostModell modell) {
-        return switch (modell.getDokumentModellList().isEmpty() ? DokumenttypeId.UDEFINERT : modell.getDokumentModellList().get(0).getDokumentType()) {
+        return switch (modell.getDokumentModellList().isEmpty() ? DokumenttypeId.UDEFINERT : modell.getDokumentModellList().getFirst().getDokumentType()) {
             case SØKNAD_SVANGERSKAPSPENGER -> BehandlingsTema.SVANGERSKAPSPENGER;
             case SØKNAD_FORELDREPENGER_ADOPSJON -> BehandlingsTema.FORELDREPENGER_ADOPSJON;
             case SØKNAD_FORELDREPENGER_FØDSEL -> BehandlingsTema.FORELDREPENGER_FØDSEL;

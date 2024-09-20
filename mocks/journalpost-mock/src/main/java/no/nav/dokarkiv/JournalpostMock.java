@@ -72,7 +72,7 @@ public class JournalpostMock {
         }
         var oppdaterJournalpostResponse = new OppdaterJournalpostResponse();
         oppdaterJournalpostResponse.setJournalpostId(journalpostId);
-        return Response.accepted().entity(oppdaterJournalpostResponse).build();
+        return Response.ok().entity(oppdaterJournalpostResponse).build();
     }
 
     @PATCH
