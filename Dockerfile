@@ -10,7 +10,7 @@ COPY server/src/main/resources/logback.xml ./
 COPY server/target/app.jar ./
 COPY server/target/lib/*.jar ./lib/
 
-ENV JAVA_OPTS "-XX:MaxRAMPercentage=75.0 \
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75.0 \
     -XX:+PrintCommandLineFlags \
     -Dfile.encoding=UTF-8 \
     -Duser.timezone=Europe/Oslo \
