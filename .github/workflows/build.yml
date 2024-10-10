@@ -40,7 +40,7 @@ jobs:
     needs: build-app
     if: github.ref_name == 'master'
     steps:
-      - uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # ratchet:actions/checkout@v4
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # ratchet:actions/checkout@v4
       - name: Setup java and maven
         uses: navikt/fp-gha-workflows/.github/actions/setup-java-and-maven@main # ratchet:exclude
         with:
@@ -59,7 +59,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # ratchet:docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # ratchet:docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # ratchet:docker/setup-buildx-action@v2
       - name: Docker meta
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # ratchet:docker/metadata-action@v4
         id: meta

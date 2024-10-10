@@ -39,6 +39,7 @@ public class HentIdenterBolkWiring {
                                         for (var ident : identer) {
                                            var identliste = coordinator.hentIdenter(ident, grupper);
                                            var hentIDenterBolkResult = new HentIdenterBolkResult.Builder()
+                                                   .setCode("ok")
                                                    .setIdent(ident)
                                                    .setIdenter(identliste.getIdenter())
                                                    .build();
