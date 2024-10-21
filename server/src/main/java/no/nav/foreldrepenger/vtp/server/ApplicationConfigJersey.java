@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import no.nav.altinn.AltinnRettigheterProxyMock;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -162,6 +164,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
+        classes.add(AltinnRettigheterProxyMock.class);
 
         // tekniske ting
         classes.add(AzureAdRestTjeneste.class);
