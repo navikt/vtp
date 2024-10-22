@@ -36,6 +36,7 @@
         <module>pesys-mock</module>
         <module>spokelse-mock</module>
         <module>fpwsproxy-mock</module>
+        <module>altinn-proxy-mock</module>
     </modules>
 
     <properties>
