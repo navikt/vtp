@@ -42,7 +42,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>9.1.20</fp-kontrakter.version>
+        <fp-kontrakter.version>9.1.21</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
         <swagger-codegen-maven-plugin.version>3.0.63</swagger-codegen-maven-plugin.version> <!-- > 3.0.41 har bug med slf4.. -->
@@ -347,6 +347,11 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>altinn-proxy-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>saf-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -414,7 +419,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.15.5</version>
+            <version>1.15.7</version>
         </dependency>
 
         <!--    TEST    -->
@@ -427,7 +432,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.11.2</version>
+            <version>5.11.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -515,7 +520,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>3.5.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
