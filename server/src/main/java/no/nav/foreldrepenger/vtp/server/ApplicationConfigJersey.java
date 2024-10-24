@@ -71,7 +71,6 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.sts.STSRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
@@ -170,7 +169,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(AzureAdRestTjeneste.class);
         classes.add(IdportenLoginTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
-        classes.add(STSRestTjeneste.class);
         classes.add(PdpRestTjeneste.class);
         classes.add(TokenxRestTjeneste.class);
 
