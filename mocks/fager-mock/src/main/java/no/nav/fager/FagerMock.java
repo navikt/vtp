@@ -58,7 +58,7 @@ public class FagerMock {
                                               GraphQLRequest request) {
         var operationName = hentOperationName(request);
         LOG.info("FAGER: Operation name: {}", operationName);
-        LOG.info("FAGER: Query: {}", request.getQuery());
+        LOG.debug("FAGER: Query: {}", request.getQuery());
         if ("nySak".equals(operationName)) {
             LOG.info("FAGER: nySak operation");
             var executionResult = graphqlTjeneste.sak(request);
