@@ -1,0 +1,2010 @@
+# Denne dokumentasjonen er skrev i "du/dere"-form, hvor du/dere er produsenter, og "vi" er
+# notifikasjons-plattformen.
+
+
+directive @Validate on ARGUMENT_DEFINITION
+directive @MaxLength(max: Int) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
+directive @NonIdentifying on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
+directive @ExactlyOneFieldGiven on INPUT_OBJECT
+directive @MaxValue(upToIncluding: Int) on ARGUMENT_DEFINITION
+
+"""
+DateTime med offset etter ISO8601-standaren. F.eks. '2011-12-03T10:15:30+01:00'.
+
+Er representert som String.
+"""
+scalar ISO8601DateTime
+
+"""
+Dato og lokaltid etter ISO8601-standaren. F.eks. '2001-12-24T10:44:01'.
+Vi tolker tidspunktet som Oslo-tid ('Europe/Oslo').
+"""
+scalar ISO8601LocalDateTime
+
+"""
+Duration ISO8601-standaren. F.eks. 'P2DT3H4M'.
+
+Er representert som String.
+"""
+scalar ISO8601Duration
+
+"""
+Dato etter ISO8601-standaren. F.eks. `2020-01-02`, altså 2. mars 2020.
+"""
+scalar ISO8601Date
+
+"""
+Tilstanden til en oppgave.
+"""
+enum OppgaveTilstand {
+    """
+    En oppgave som kan utføres.
+    """
+    NY
+
+    """
+    En oppgave som allerede er utført.
+    """
+    UTFOERT
+
+    """
+    En oppgave hvor frist har utgått.
+    """
+    UTGAATT
+}
+
+"""
+Dette er roten som alle forespørsler starter fra.
+"""
+type Query {
+    """
+    Egnet for feilsøking. Forteller hvem du er autentisert som.
+    """
+    whoami: String
+
+    """
+    Vi bruker det Connections-patternet for paginering. Se
+    [Connection-standaren](https://relay.dev/graphql/connections.htm) for mer
+    informasjon.
+
+    Dere må gjenta paremetere når dere blar gjennom alle notifikasjonen.
+
+    Hvis verken `merkelapp` eller `merkelapper` er gitt, vil notifikasjoner
+    med alle dine merkelapper være med.
+    """
+    mineNotifikasjoner(
+        "antall notifikasjoner du ønsker å hente"
+        first: Int @Validate @MaxValue(upToIncluding: 10000)
+
+        """Cursor til notifikasjonen du henter fra. Cursor får du fra [NotifikasjonEdge](#notifikasjonedge)."""
+        after: String
+
+        """Filtrer på merkelapp. Kan ikke brukes sammen med `merkelapper`."""
+        merkelapp: String
+
+        """Filtrer på merkelapper. Kan ikke brukes sammen med `merkelapp`."""
+        merkelapper: [String!]
+
+        grupperingsid: String
+    ): MineNotifikasjonerResultat!
+
+    hentNotifikasjon(id: ID!): HentNotifikasjonResultat!
+    hentSak(id: ID!): HentSakResultat!
+    hentSakMedGrupperingsid(grupperingsid: String!, merkelapp: String!): HentSakResultat!
+}
+
+union MineNotifikasjonerResultat =
+    | NotifikasjonConnection
+    | UgyldigMerkelapp
+    | UkjentProdusent
+
+union HentNotifikasjonResultat =
+    | HentetNotifikasjon
+    | UkjentProdusent
+    | UgyldigMerkelapp
+    | NotifikasjonFinnesIkke
+
+type HentetNotifikasjon {
+    notifikasjon: Notifikasjon!
+}
+
+union HentSakResultat =
+    | HentetSak
+    | SakFinnesIkke
+    | UgyldigMerkelapp
+    | UkjentProdusent
+
+
+type HentetSak {
+    sak: Sak!
+}
+
+type Sak {
+    id: ID!
+    grupperingsid: String!
+    virksomhetsnummer: String!
+    tittel: String!
+    lenke: String
+    nesteSteg: String
+    tilleggsinformasjon: String
+    merkelapp: String!
+    sisteStatus: SaksStatus
+}
+
+type Virksomhet {
+    virksomhetsnummer: String!
+    navn: String!
+}
+
+type NotifikasjonConnection {
+    edges: [NotifikasjonEdge!]!
+    pageInfo: PageInfo!
+}
+
+type NotifikasjonEdge {
+    node: Notifikasjon!
+    cursor: String!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    endCursor: String!
+}
+
+union Notifikasjon = Beskjed | Oppgave | Kalenderavtale
+
+type Oppgave {
+    mottaker: Mottaker!
+    mottakere: [Mottaker!]!
+    metadata: Metadata!
+    oppgave: OppgaveData!
+    eksterneVarsler: [EksterntVarsel!]!
+}
+
+type Beskjed {
+    mottaker: Mottaker!
+    mottakere: [Mottaker!]!
+    metadata: Metadata!
+    beskjed: BeskjedData!
+    eksterneVarsler: [EksterntVarsel!]!
+}
+
+type Kalenderavtale {
+    mottakere: [Mottaker!]!
+    metadata: Metadata!
+    kalenderavtale: KalenderavtaleData!
+    eksterneVarsler: [EksterntVarsel!]!
+}
+
+union Mottaker =
+    | AltinnMottaker
+    | NaermesteLederMottaker
+
+type AltinnMottaker {
+    serviceCode: String!
+    serviceEdition: String!
+    virksomhetsnummer: String!
+}
+
+type NaermesteLederMottaker {
+    naermesteLederFnr: String!
+    ansattFnr: String!
+    virksomhetsnummer: String!
+}
+
+type OppgaveData {
+    tilstand: OppgaveTilstand
+
+    """
+    Merkelapp for beskjeden. Er typisk navnet på ytelse eller lignende. Den vises til brukeren.
+    """
+    merkelapp: String!
+
+    """
+    Teksten som vises til brukeren.
+    """
+    tekst: String!
+
+    """
+    Lenken som brukeren føres til hvis de klikker på beskjeden.
+    """
+    lenke: String!
+}
+
+type BeskjedData {
+    """
+    Merkelapp for beskjeden. Er typisk navnet på ytelse eller lignende. Den vises til brukeren.
+    """
+    merkelapp: String!
+
+    """
+    Teksten som vises til brukeren.
+    """
+    tekst: String!
+
+    """
+    Lenken som brukeren føres til hvis de klikker på beskjeden.
+    """
+    lenke: String!
+}
+
+type KalenderavtaleData {
+    """
+    Merkelapp for kalenderavtalen. Er typisk navnet på ytelse eller lignende.
+    """
+    merkelapp: String!
+
+    """
+    Teksten som vises til brukeren.
+    """
+    tekst: String!
+
+    """
+    Lenken som brukeren føres til hvis de klikker på kalenderavtalen.
+    """
+    lenke: String!
+
+    """
+    Når avtalen starter.
+    """
+    startTidspunkt: ISO8601LocalDateTime!
+
+    """
+    Når avtalen slutter.
+    """
+    sluttTidspunkt: ISO8601LocalDateTime
+
+    """
+    Her kan dere oppgi en fysisk adresse som brukeren kan møte opp på dersom dere har det.
+    Denne vil vises til brukeren hvis den er angitt.
+    """
+    lokasjon: Lokasjon
+
+    """
+    Ved å sette dette flagget kan dere vise brukeren at det er mulig å møte digitalt.
+    Det vil vises til brukeren hvis det er satt til true.
+    """
+    digitalt: Boolean!
+
+    """
+    Tilstanden til avtalen. Default er `VENTER_SVAR_FRA_ARBEIDSGIVER`.
+    Denne vises til brukeren.
+    """
+    tilstand: KalenderavtaleTilstand
+}
+
+type Metadata {
+    id: ID!
+
+    """
+    """
+    eksternId: String!
+
+    """
+    """
+    opprettetTidspunkt: ISO8601DateTime
+
+    """
+    """
+    grupperingsid: String
+
+    softDeleted: Boolean!
+
+    softDeletedAt: ISO8601DateTime
+}
+
+type EksterntVarsel {
+    id: ID!
+    status: EksterntVarselStatus!
+}
+
+enum EksterntVarselStatus {
+    NY
+    SENDT
+    FEILET
+    KANSELLERT
+}
+
+union NySakResultat =
+    | NySakVellykket
+    | UgyldigMerkelapp
+    | UgyldigMottaker
+    | DuplikatGrupperingsid
+    | DuplikatGrupperingsidEtterDelete
+    | UkjentProdusent
+    | UkjentRolle
+
+type NySakVellykket {
+    id: ID!
+}
+
+union NyStatusSakResultat =
+    | NyStatusSakVellykket
+    | SakFinnesIkke
+    | Konflikt
+    | UgyldigMerkelapp
+    | UkjentProdusent
+
+type NyStatusSakVellykket {
+    id: ID!
+
+    """Nyeste statusoppdatering er først i listen."""
+    statuser: [StatusOppdatering!]!
+}
+
+union TilleggsinformasjonSakResultat =
+    | TilleggsinformasjonSakVellykket
+    | SakFinnesIkke
+    | Konflikt
+    | UgyldigMerkelapp
+    | UkjentProdusent
+
+union NesteStegSakResultat =
+    | NesteStegSakVellykket
+    | SakFinnesIkke
+    | Konflikt
+    | UgyldigMerkelapp
+    | UkjentProdusent
+
+type TilleggsinformasjonSakVellykket {
+    id: ID!
+}
+
+type NesteStegSakVellykket {
+    id: ID!
+}
+
+"""
+Statusen påvirker bl.a. hvilket ikon som vises og brukes bl.a.
+for å kunne filtrere saksoversikten på min side arbeidsgiver.
+"""
+enum SaksStatus {
+    """
+    Naturlig start-tilstand for en sak.
+
+    Default tekst som vises til bruker: "Mottatt"
+    """
+    MOTTATT
+
+    """
+    Default tekst som vises til bruker: "Under behandling"
+    """
+    UNDER_BEHANDLING
+
+    """
+    Slutt-tilstand for en sak. Når en sak er `FERDIG`, så vil vi
+    nedprioritere visningen av den på min side arbeidsgivere.
+
+    Default tekst som vises til bruker: "Ferdig".
+    """
+    FERDIG
+}
+
+type StatusOppdatering {
+    status: SaksStatus!
+    tidspunkt: ISO8601DateTime!
+    overstyrStatusTekstMed: String
+}
+
+"""
+Dette er roten som alle endringer ("mutations") starter fra. Endringer inkluderer også
+å opprette nye ting.
+"""
+type Mutation {
+    nyKalenderavtale(
+        """
+        Hvilken virksomhet som skal motta kalenderavtalen.
+        """
+        virksomhetsnummer: String!
+
+        """
+        Grupperings-id-en knytter denne kalenderavtalen til en sak med samme grupperings-id og merkelapp.
+        Det vises ikke til brukere.
+        Saksnummer er en naturlig grupperings-id.
+
+        Når dere bruker grupperings-id, så er det mulig for oss å presentere en tidslinje
+        med alle notifikasjonene og status-oppdateringer knyttet til en sak.
+        """
+        grupperingsid: String!
+
+        """
+        Merkelapp for kalenderavtalen. Er typisk navnet på ytelse eller lignende. Den vises ikke til brukeren,
+        men brukes i kombinasjon med grupperingsid for å koble kalenderavtalen til sak.
+
+        Hva du kan oppgi som merkelapp er bestemt av produsent-registeret.
+        """
+        merkelapp: String!
+
+        """
+        Den eksterne id-en brukes for å unikt identifisere en notifikasjon. Den må være unik for merkelappen.
+
+        Hvis dere har en enkel, statisk bruk av notifikasjoner, så kan dere utlede eksternId
+        fra f.eks. et saksnummer, og på den måten kunne referere til notifikasjoner dere har opprettet,
+        uten at dere må lagre ID-ene vi genererer og returnerer til dere.
+        """
+        eksternId: String!
+
+        """
+        Teksten som vises til brukeren.
+        """
+        tekst: String!
+
+        """
+        Lenken som brukeren føres til hvis de klikker på kalenderavtalen. Typisk en side i deres system som viser detaljer om avtalen.
+        """
+        lenke: String!
+
+        """
+        Her bestemmer dere hvem som skal få se kalenderavtalen.
+        """
+        mottakere: [MottakerInput!]! @Validate
+
+        """
+        Når avtalen starter.
+        """
+        startTidspunkt: ISO8601LocalDateTime!
+
+        """
+        Når avtalen slutter.
+        """
+        sluttTidspunkt: ISO8601LocalDateTime
+
+        """
+        Her kan dere oppgi en fysisk adresse som brukeren kan møte opp på dersom dere har det.
+        Denne vil vises til brukeren hvis den er angitt.
+        """
+        lokasjon: LokasjonInput
+
+        """
+        Ved å sette dette flagget kan dere vise brukeren at det er mulig å møte digitalt.
+        Det vil vises til brukeren hvis det er satt til true.
+        """
+        erDigitalt: Boolean
+
+        """
+        Tilstanden til avtalen. Default er `VENTER_SVAR_FRA_ARBEIDSGIVER`.
+        Denne vises til brukeren.
+        """
+        tilstand: KalenderavtaleTilstand
+
+        eksterneVarsler: [EksterntVarselInput!]! = []
+
+        """
+        Her kan du spesifisere en påminnelse for kalenderavtalen.
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        """
+        paaminnelse: PaaminnelseInput
+
+        """
+        Oppgi dersom dere ønsker at hard delete skal skeduleres. Vi
+        tolker relative datoer basert på når vi mottok kallet.
+        """
+        hardDelete: FutureTemporalInput @Validate
+    ): NyKalenderavtaleResultat!
+
+    nySak(
+        """
+        Grupperings-id-en knytter en sak og notifikasjoner sammen.
+        Den skal være unik for saker innenfor merkelappen.
+        Et naturlig valg av grupperingsid er f.eks. et saksnummer.
+        """
+        grupperingsid: String!
+
+        """Merkelapp som saken skal assossieres med."""
+        merkelapp: String!
+
+        """Virksomhetsnummeret til virksomheten som saken omhandler."""
+        virksomhetsnummer: String!
+
+        """
+        Hvem som skal få se saken.
+
+        NB. At en bruker har tilgang til en sak påvirker ikke om de har tilgang
+        til en notifikasjon. De tilgangsstyres hver for seg.
+        """
+        mottakere: [MottakerInput!]! @Validate
+
+        """En tittel på saken, som vises til brukeren."""
+        tittel: String!
+
+        """
+        Dette feltet er frivillig.
+        Tilleggssinformasjon som vises under tittelen på en sak.
+        Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
+        """
+        tilleggsinformasjon: String @Validate @MaxLength(max: 140) @NonIdentifying
+
+        """
+        Her oppgir dere en lenke som brukeren kan klikke på for å komme rett til saken.
+        Dersom lenken ikke oppgis vil saken lenke til en enkel visning av saken i Min side - Arbeidsgiver.
+        """
+        lenke: String
+
+        """
+        """
+        initiellStatus: SaksStatus!
+
+        """
+        Dette feltet er frivillig.
+        Her har dere mulighet til å vise virksomheten hva som er neste steg i saken.
+        F.eks. "Saksbehandlignstiden er lang. Du kan forvente refusjon utbetalt i januar 2025."
+        Dette vises i tidslinjen som en fremtidig handling i saken, over siste oppgave, beskjed eller kalenderavtale.
+        """
+        nesteSteg: String
+
+        """
+        Når endringen skjedde. Det kan godt være i fortiden.
+        Dette feltet er frivillig. Hvis feltet ikke er oppgitt, bruker vi tidspunktet dere gjør
+        kallet på.
+        """
+        tidspunkt: ISO8601DateTime
+
+        """
+        Dette feltet er frivillig. Det lar deg overstyre hvilken tekst vi viser
+        til brukeren. Se `SaksStatus` for default tekster.
+        """
+        overstyrStatustekstMed: String
+
+        """
+        Oppgi dersom dere ønsker at hard delete skal skeduleres. Vi
+        tolker relative datoer basert på `opprettetTidspunkt` (eller
+        når vi mottok kallet hvis dere ikke har oppgitt `opprettetTidspunkt`).
+        """
+        hardDelete: FutureTemporalInput @Validate
+    ): NySakResultat!
+
+    nyStatusSak(
+        idempotencyKey: String
+        id: ID!
+        nyStatus: SaksStatus!
+
+        """
+        Når endringen skjedde. Det kan godt være i fortiden.
+        Dette feltet er frivillig. Hvis feltet ikke er oppgitt, bruker vi tidspunktet dere gjør
+        kallet på.
+        """
+        tidspunkt: ISO8601DateTime
+
+        """
+        Dette feltet er frivillig. Det lar deg overstyre hvilken tekst vi viser
+        til brukeren. Se `SaksStatus` for default tekster.
+        """
+        overstyrStatustekstMed: String
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Her kan dere endre lenken til saken. F.eks hvis saken har gått fra å være en
+        søknad til en kvittering, så kan det være dere har behov for å endre url som brukeren sendes til.
+        Dette feltet er frivillig; er det ikke oppgitt (eller er null), så forblir lenken knyttet til saken uendret.
+        """
+        nyLenkeTilSak: String
+
+    ): NyStatusSakResultat!
+
+    nyStatusSakByGrupperingsid(
+        idempotencyKey: String
+        grupperingsid: String!
+        merkelapp: String!
+
+        nyStatus: SaksStatus!
+
+        """
+        Når endringen skjedde. Det kan godt være i fortiden.
+        Dette feltet er frivillig. Hvis feltet ikke er oppgitt, bruker vi tidspunktet dere gjør
+        kallet på.
+        """
+        tidspunkt: ISO8601DateTime
+
+        """
+        Dette feltet er frivillig. Det lar deg overstyre hvilken tekst vi viser
+        til brukeren. Se `SaksStatus` for default tekster.
+        """
+        overstyrStatustekstMed: String
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Her kan dere endre lenken til saken. F.eks hvis saken har gått fra å være en
+        søknad til en kvittering, så kan det være dere har behov for å endre url som brukeren sendes til.
+        Dette feltet er frivillig; er det ikke oppgitt (eller er null), så forblir lenken knyttet til saken uendret.
+        """
+        nyLenkeTilSak: String
+    ): NyStatusSakResultat!
+
+    tilleggsinformasjonSak(
+        idempotencyKey: String
+        id: ID!
+
+        """
+        Dette feltet er frivillig.
+        Her har dere mulighet til å vise virksomheten mer informasjon om saken.
+        Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
+        """
+        tilleggsinformasjon: String @Validate @MaxLength(max: 140) @NonIdentifying
+    ): TilleggsinformasjonSakResultat!
+
+    tilleggsinformasjonSakByGrupperingsid(
+        idempotencyKey: String
+        grupperingsid: String!
+        merkelapp: String!
+
+        """
+        Dette feltet er frivillig.
+        Her har dere mulighet til å vise virksomheten mer informasjon om saken.
+        Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
+        """
+        tilleggsinformasjon: String @Validate @MaxLength(max: 140) @NonIdentifying
+    ): TilleggsinformasjonSakResultat!
+
+
+    nesteStegSak(
+        idempotencyKey: String
+        id: ID!
+
+        """
+        Dette feltet er frivillig.
+        Her har dere mulighet til å vise virksomheten hva som er neste steg i saken.
+        F.eks. "Saksbehandlignstiden er lang. Du kan forvente refusjon utbetalt i januar 2025."
+        Dette vises i tidslinjen som en fremtidig handling i saken, over siste oppgave, beskjed eller kalenderavtale.
+        Her kan dere oppgi verdien null for å fjerne neste steg.
+        """
+        nesteSteg: String
+    ): NesteStegSakResultat!
+
+    nesteStegSakByGrupperingsid(
+        idempotencyKey: String
+        grupperingsid: String!
+        merkelapp: String!
+
+        """
+        Dette feltet er frivillig.
+        Her har dere mulighet til å vise virksomheten hva som er neste steg i saken.
+        F.eks. "Saksbehandlignstiden er lang. Du kan forvente refusjon utbetalt i januar 2025."
+        Dette vises i tidslinjen som en fremtidig handling i saken, over siste oppgave, beskjed eller kalenderavtale.
+        Her kan dere oppgi verdien null for å fjerne neste steg.
+        """
+        nesteSteg: String
+    ): NesteStegSakResultat!
+
+    """
+    Opprett en ny beskjed.
+    """
+    nyBeskjed(nyBeskjed: NyBeskjedInput! @Validate): NyBeskjedResultat!
+
+    """
+    Opprett en ny oppgave.
+    """
+    nyOppgave(nyOppgave: NyOppgaveInput! @Validate): NyOppgaveResultat!
+
+    """
+    Marker en oppgave (identifisert ved id) som utført. Dersom oppgaven har påminnelse, vil denne og eventuelle eksterne varsler på påminnelsen bli kansellert.
+    """
+    oppgaveUtfoert(
+        """
+        ID-en som oppgaven har. Den du fikk da du opprettet oppgaven med `nyOppgave`.
+        """
+        id: ID!
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Ny lenke som oppgaven peker på: overskriver lenken som ble gitt ved
+        opprettelse av oppgave. F.eks. for å peke på en kvitterings-side.
+
+        Optional: hvis ikke oppgitt/null, så beholdes forrige lenke.
+        """
+        nyLenke: String = null
+
+        """
+        Tidspunkt for når oppgaven ble utført.
+
+        Optional: hvis ikke oppgitt/null, så blir den satt til now().
+        """
+        utfoertTidspunkt: ISO8601DateTime = null
+    ): OppgaveUtfoertResultat!
+
+    """
+    Marker en oppgave (identifisert ved ekstern id) som utført. Dersom oppgaven har påminnelse, vil denne og eventuelle eksterne varsler på påminnelsen bli kansellert.
+    """
+    oppgaveUtfoertByEksternId(
+        """
+        Merkelapp som oppgaven er registrert med.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som *dere ga oss* da dere opprettet oppgaven med `nyOppgave`.
+        """
+        eksternId: ID!
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+    ): OppgaveUtfoertResultat!
+    @deprecated(reason:
+    "Using the type ID for `eksternId` can lead to unexpected behaviour. Use oppgaveUtfoertByEksternId_V2 instead."
+    )
+
+    """
+    Marker en oppgave (identifisert ved ekstern id) som utført. Dersom oppgaven har påminnelse, vil denne og eventuelle eksterne varsler på påminnelsen bli kansellert.
+    """
+    oppgaveUtfoertByEksternId_V2(
+        """
+        Merkelapp som oppgaven er registrert med.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som *dere ga oss* da dere opprettet oppgaven med `nyOppgave`.
+        """
+        eksternId: String!
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Ny lenke som oppgaven peker på: overskriver lenken som ble gitt ved
+        opprettelse av oppgave. F.eks. for å peke på en kvitterings-side.
+
+        Optional: hvis ikke oppgitt/null, så beholdes forrige lenke.
+        """
+        nyLenke: String = null
+
+        """
+        Tidspunkt for når oppgaven ble utført.
+
+        Optional: hvis ikke oppgitt/null, så blir den satt til now().
+        """
+        utfoertTidspunkt: ISO8601DateTime = null
+    ): OppgaveUtfoertResultat!
+
+    """
+    Marker en oppgave (identifisert ved id) som utgått. Dersom oppgaven har påminnelse, vil denne og eventuelle eksterne varsler på påminnelsen bli kansellert.
+    """
+    oppgaveUtgaatt(
+        """
+        ID-en som oppgaven har. Den du fikk da du opprettet oppgaven med `nyOppgave`.
+        """
+        id: ID!
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Ny lenke som oppgaven peker på: overskriver lenken som ble gitt ved
+        opprettelse av oppgave. F.eks. for å peke på en kvitterings-side.
+
+        Optional: hvis ikke oppgitt/null, så beholdes forrige lenke.
+        """
+        nyLenke: String = null
+
+        """
+        Tidspunkt for når oppgaven utgikk.
+
+        Optional: hvis ikke oppgitt/null, så blir den satt til now().
+        """
+        utgaattTidspunkt: ISO8601DateTime = null
+    ): OppgaveUtgaattResultat!
+
+
+    """
+    Marker en oppgave (identifisert ved ekstern id) som utgått. Dersom oppgaven har påminnelse, vil denne og eventuelle eksterne varsler på påminnelsen bli kansellert.
+    """
+    oppgaveUtgaattByEksternId(
+        """
+        Merkelapp som oppgaven er registrert med.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som *dere ga oss* da dere opprettet oppgaven med `nyOppgave`.
+        """
+        eksternId: String!
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Ny lenke som oppgaven peker på: overskriver lenken som ble gitt ved
+        opprettelse av oppgave. F.eks. for å peke på en kvitterings-side.
+
+        Optional: hvis ikke oppgitt/null, så beholdes forrige lenke.
+        """
+        nyLenke: String = null
+
+        """
+        Tidspunkt for når oppgaven utgikk.
+
+        Optional: hvis ikke oppgitt/null, så blir den satt til now().
+        """
+        utgaattTidspunkt: ISO8601DateTime = null
+    ): OppgaveUtgaattResultat!
+
+    """
+    Utsett frist på en oppgave.
+    Dersom oppgaven allerede er utgått så gjenåpnes den og fristen utsettes.
+    Dersom fristen ikke var utgått, og det tidligere var angitt en påminnelse så vil den påminnelsen bli slettet.
+    Dersom dere ønsker at brukeren skal få en påminnelse når fristen nærmer seg må det angis i denne mutasjonen.
+    """
+    oppgaveUtsettFrist(
+        """
+        ID-en som oppgaven har. Den du fikk da du opprettet oppgaven med `nyOppgave`.
+        """
+        id: ID!
+
+        """
+        Her angir du den nye fristen for når oppgaven skal utføres av bruker.
+
+        Fristen vises til bruker i grensesnittet.
+        Oppgaven blir automatisk markert som `UTGAAT` når fristen er forbi.
+        Dere kan kun oppgi frist med dato, og ikke klokkelsett.
+        Fristen regnes som utløpt når dagen er omme (midnatt, norsk tidssone).
+        """
+        nyFrist: ISO8601Date!
+
+        """
+        Her kan du spesifisere en påminnelse for oppgaven.
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        """
+        paaminnelse: PaaminnelseInput
+    ): OppgaveUtsettFristResultat!
+
+
+    """
+    Utsett frist på en oppgave (identifisert ved ekstern id).
+    Dersom oppgaven allerede er utgått så gjenåpnes den og fristen utsettes.
+    Dersom fristen ikke var utgått, og det tidligere var angitt en påminnelse så vil den påminnelsen bli slettet.
+    Dersom dere ønsker at brukeren skal få en påminnelse når fristen nærmer seg må det angis i denne mutasjonen.
+    """
+    oppgaveUtsettFristByEksternId(
+        """
+        Merkelapp som oppgaven er registrert med.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som *dere ga oss* da dere opprettet oppgaven med `nyOppgave`.
+        """
+        eksternId: String!
+
+        """
+        Her angir du den nye fristen for når oppgaven skal utføres av bruker.
+
+        Fristen vises til bruker i grensesnittet.
+        Oppgaven blir automatisk markert som `UTGAAT` når fristen er forbi.
+        Dere kan kun oppgi frist med dato, og ikke klokkelsett.
+        Fristen regnes som utløpt når dagen er omme (midnatt, norsk tidssone).
+        """
+        nyFrist: ISO8601Date!
+
+        """
+        Her kan du spesifisere en påminnelse for oppgaven.
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        """
+        paaminnelse: PaaminnelseInput
+    ): OppgaveUtsettFristResultat!
+
+    """
+    Endre påminnelsen for en oppgave.
+    Dersom oppgaven har en eksisterende påminnelse, vil denne bli overskrevet. Eksterne varsler blir også overskrevet
+    For fjerning av påminnelse, kan man send inn null
+    """
+    oppgaveEndrePaaminnelse(
+        """
+        ID-en som oppgaven har. Den du fikk da du opprettet oppgaven med `nyOppgave`.
+        """
+        id: ID!
+
+        """
+        Dersom dere angir idempotenceKey så vil konsekvente kall med samme idempotenceKey gi samme resultat.
+        Dette kan f.eks være nyttig hvis dere har retry mekanismer i deres system.
+        """
+        idempotencyKey: String
+
+        """
+        Her kan du spesifisere en påminnelse for oppgaven.
+        Dersom eksisterende påminnelse skal fjernes, spesifiser null
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        """
+        paaminnelse: PaaminnelseInput
+    ) : OppgaveEndrePaaminnelseResultat!
+
+    """
+    Endre påminnelsen for en oppgave (identifisert ved ekstern id)
+    Dersom oppgaven har en eksisterende påminnelse, vil denne bli overskrevet. Eksterne varsler blir også overskrevet
+    For fjerning av påminnelse, kan man send inn null
+    """
+    oppgaveEndrePaaminnelseByEksternId(
+        """
+        Merkelapp som oppgaven er registrert med.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som *dere ga oss* da dere opprettet oppgaven med `nyOppgave`.
+        """
+        eksternId: String!
+
+        """
+        Dersom dere angir idempotenceKey så vil konsekvente kall med samme idempotenceKey gi samme resultat.
+        Dette kan f.eks være nyttig hvis dere har retry mekanismer i deres system.
+        """
+        idempotencyKey: String
+
+        """
+        Her kan du spesifisere en påminnelse for oppgaven.
+        Dersom eksisterende påminnelse skal fjernes, spesifiser null
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        """
+        paaminnelse: PaaminnelseInput
+    ) : OppgaveEndrePaaminnelseResultat!
+
+
+    """
+    Oppdater tilstand på en kalenderavtale.
+    Det er ingen regler tilknyttet endring av tilstand. Dere bestemmer her hvilken tilstand avtalen skal ha.
+    Den nye tilstanden vises til brukeren. Dette kallet er ment for å oppdatere tilstand samt gi brukeren mer utfyllende informasjon når det blir kjent.
+    Dette kallet vil anses som vellyket uavhengig av om dataen faktisk er endret. Dvs hvis dere sender inn samme tilstand som allerede er satt, så vil kallet anses som vellykket.
+    Dette gjelder også hvis dere gjør kallet uten å oppgi noen nye verdier.
+    """
+    oppdaterKalenderavtale(
+        """
+        ID-en som kalenderavtalen har. Den du fikk da du opprettet kalenderavtalen med `nyKalenderavtale`.
+        """
+        id: ID!
+
+        """
+        Ny tilstand for kalenderavtalen.
+        Dersom ny tilstand settes til `AVLYST` vil vi stoppe eksterne varslinger som ikke allerede er sendt,
+        og kansellere registrerte påminnelser.
+        """
+        nyTilstand: KalenderavtaleTilstand
+
+        """
+        Teksten som vises til brukeren.
+        """
+        nyTekst: String
+
+        """
+        Lenken som brukeren føres til hvis de klikker på kalenderavtalen. Typisk en side i deres system som viser detaljer om avtalen.
+        """
+        nyLenke: String
+
+        """
+        Her kan dere oppgi en fysisk adresse som brukeren kan møte opp på dersom dere har det.
+        Denne vil vises til brukeren hvis den er angitt.
+        """
+        nyLokasjon: LokasjonInput
+
+        """
+        Ved å sette dette flagget kan dere vise brukeren at det er mulig å møte digitalt.
+        Det vil vises til brukeren hvis det er satt til true.
+        """
+        nyErDigitalt: Boolean
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Dersom dere angir idempotenceKey så vil konsekvente kall med samme idempotenceKey gi samme resultat.
+        Dette kan f.eks være nyttig hvis dere har retry mekanismer i deres system.
+        """
+        idempotencyKey: String
+
+        """
+        Her kan dere oppgi eksterne varsler som skal sendes i forbindelse med oppdateringen.
+        Disse varslene vil erstatte tidligere bestilte varsler som ikke er sendt enda.
+        Vi anbefaler dere å bruke denne i kombinasjon med idempotencyKey for å unngå å sende samme varsel flere ganger.
+        """
+        eksterneVarsler: [EksterntVarselInput!]! = []
+
+        """
+        Her kan du spesifisere en påminnelse for kalenderavtalen.
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        Dersom dere senere oppdaterer kalenderavtalen og setter den til AVLYST, vil vi kansellere registrerte påminnelser.
+        Vi anbefaler dere å bruke denne i kombinasjon med idempotencyKey.
+        """
+        paaminnelse: PaaminnelseInput
+    ): OppdaterKalenderavtaleResultat!
+
+
+    """
+    Oppdater tilstand på en kalenderavtale (identifisert ved ekstern id).
+    Det er ingen regler tilknyttet endring av tilstand. Dere bestemmer her hvilken tilstand avtalen skal ha.
+    Den nye tilstanden vises til brukeren. Dette kallet er ment for å oppdatere tilstand samt gi brukeren mer utfyllende informasjon når det blir kjent.
+    Dette kallet vil anses som vellyket uavhengig av om dataen faktisk er endret. Dvs hvis dere sender inn samme tilstand som allerede er satt, så vil kallet anses som vellykket.
+    Dette gjelder også hvis dere gjør kallet uten å oppgi noen nye verdier.
+    """
+    oppdaterKalenderavtaleByEksternId(
+        """
+        Merkelapp som kalenderavtalen er registrert med.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som *dere ga oss* da dere opprettet kalenderavtalen med `nyKalenderavtale`.
+        """
+        eksternId: String!
+
+        """
+        Ny tilstand for kalenderavtalen.
+        Dersom ny tilstand settes til `AVLYST` vil vi stoppe eksterne varslinger som ikke allerede er sendt,
+        og kansellere registrerte påminnelser.
+        """
+        nyTilstand: KalenderavtaleTilstand
+
+        """
+        Teksten som vises til brukeren.
+        """
+        nyTekst: String
+
+        """
+        Lenken som brukeren føres til hvis de klikker på kalenderavtalen. Typisk en side i deres system som viser detaljer om avtalen.
+        """
+        nyLenke: String
+
+        """
+        Her kan dere oppgi en fysisk adresse som brukeren kan møte opp på dersom dere har det.
+        Denne vil vises til brukeren hvis den er angitt.
+        """
+        nyLokasjon: LokasjonInput
+
+        """
+        Ved å sette dette flagget kan dere vise brukeren at det er mulig å møte digitalt.
+        Det vil vises til brukeren hvis det er satt til true.
+        """
+        nyErDigitalt: Boolean
+
+        """
+        Se: [HardDeleteUpdateInput typen](#harddeleteupdateinput)
+        """
+        hardDelete: HardDeleteUpdateInput
+
+        """
+        Dersom dere angir idempotenceKey så vil konsekvente kall med samme idempotenceKey gi samme resultat.
+        Dette kan f.eks være nyttig hvis dere har retry mekanismer i deres system.
+        """
+        idempotencyKey: String
+
+        """
+        Her kan dere oppgi eksterne varsler som skal sendes i forbindelse med oppdateringen.
+        Disse varslene vil erstatte tidligere bestilte varsler som ikke er sendt enda.
+        Vi anbefaler dere å bruke denn i kombinasjon med idempoencyKey for å unngå å sende samme varsel flere ganger.
+        """
+        eksterneVarsler: [EksterntVarselInput!]! = []
+
+        """
+        Her kan du spesifisere en påminnelse for kalenderavtalen.
+        Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+        Dersom dere senere oppdaterer kalenderavtalen og setter den til AVLYST, vil vi kansellere registrerte påminnelser.
+        Vi anbefaler dere å bruke denne i kombinasjon med idempotencyKey.
+        """
+        paaminnelse: PaaminnelseInput
+    ): OppdaterKalenderavtaleResultat!
+
+    """
+    Markerer en notifikasjon som slettet (soft delete).
+
+    Notifikasjonen vil forsvinne helt for mottakeren: de vil ikke kunne se den på
+    noen som helst måte — som om notifikasjonen aldri eksisterte.
+
+    For dere (produsenter), så kan dere fortsatt se notifikasjonen i listen over deres notifikasjoner.
+
+    Eventuelle eksterne varsler (SMS, e-post) knyttet til notifikasjonen vil bli fortsatt bli sendt.
+
+    Advarsel: det er ikke mulig å angre på denne operasjonen.
+    """
+    softDeleteNotifikasjon(id: ID!): SoftDeleteNotifikasjonResultat!
+
+    """
+    Se dokumentasjon for `softDeleteNotifikasjon(id)`.
+    """
+    softDeleteNotifikasjonByEksternId(
+        """
+        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som dere ga oss da dere opprettet notifikasjonen.
+        """
+        eksternId: ID!
+    ): SoftDeleteNotifikasjonResultat!
+    @deprecated(reason:
+    "Using the type ID for `eksternId` can lead to unexpected behaviour. Use softDeleteNotifikasjonByEksternId_V2 instead."
+    )
+
+    """
+    Se dokumentasjon for `softDeleteNotifikasjon(id)`.
+    """
+    softDeleteNotifikasjonByEksternId_V2(
+        """
+        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
+        """
+        merkelapp: String!,
+
+        """
+        ID-en som dere ga oss da dere opprettet notifikasjonen.
+        """
+        eksternId: String!
+    ): SoftDeleteNotifikasjonResultat!
+
+    """
+    Sletter en notifikasjon og tilhørende data helt fra databasen og kafka.
+    Formålet er å støtte juridiske krav om sletting i henhold til personvern.
+
+    Eventuelle eksterne varsler (SMS, e-post) knyttet til notifikasjonen vil bli fortsatt bli sendt.
+
+    Advarsel: det er ikke mulig å angre på denne operasjonen. All data blir borte for godt.
+    """
+    hardDeleteNotifikasjon(
+        """
+        ID-en som notifikasjolnen har. Den du fikk da du opprettet notifikasjonen.
+        """
+        id: ID!
+    ): HardDeleteNotifikasjonResultat!
+
+    """
+    Se dokumentasjon for `hardDeleteNotifikasjon(id)`.
+    """
+    hardDeleteNotifikasjonByEksternId(
+        """
+        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
+        """
+        merkelapp: String!
+
+        """
+        ID-en som dere ga oss da dere opprettet notifikasjonen.
+        """
+        eksternId: ID!
+    ): HardDeleteNotifikasjonResultat!
+    @deprecated(reason:
+    "Using the type ID for `eksternId` can lead to unexpected behaviour. Use hardDeleteNotifikasjonByEksternId_V2 instead."
+    )
+
+    """
+    Se dokumentasjon for `hardDeleteNotifikasjon(id)`.
+    """
+    hardDeleteNotifikasjonByEksternId_V2(
+        """
+        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
+        """
+        merkelapp: String!
+
+        """
+        ID-en som dere ga oss da dere opprettet notifikasjonen.
+        """
+        eksternId: String!
+    ): HardDeleteNotifikasjonResultat!
+
+    """
+    Markerer en sak som slettet (soft delete).
+
+    Sak vil forsvinne helt for mottakeren: de vil ikke kunne se den på
+    noen som helst måte — som om saken aldri eksisterte.
+
+    Advarsel: det er ikke mulig å angre på denne operasjonen.
+    Advarsel: ingen notifikasjoner blir slettet, selv om de har samme grupperingsid.
+    """
+    softDeleteSak(
+        """
+        ID-en som notifikasjolnen har. Den du fikk da du opprettet notifikasjonen.
+        """
+        id: ID!
+    ): SoftDeleteSakResultat!
+
+    """
+    Se dokumentasjon for `softDeleteSak(id)`.
+    """
+    softDeleteSakByGrupperingsid(
+        """
+        Merkelappen som dere ga oss da dere opprettet saken.
+        """
+        merkelapp: String!
+
+        """
+        ID-en som dere ga oss da dere opprettet saken.
+        """
+        grupperingsid: String!
+    ): SoftDeleteSakResultat!
+
+    """
+    Sletter en sak og tilhørende data helt fra databasen og kafka.
+    Formålet er å støtte juridiske krav om sletting i henhold til personvern.
+
+    Advarsel: det er ikke mulig å angre på denne operasjonen. All data blir borte for godt.
+    Advarsel: notifikasjoner med samme merkelapp og grupperingsid blir slettet.
+    Advarsel: Det vil ikke være mulig å lage en ny sak med samme merkelapp og grupperingsid.
+    """
+    hardDeleteSak(id: ID!): HardDeleteSakResultat!
+
+    """
+    Se dokumentasjon for `hardDeleteSak(id)`.
+    """
+    hardDeleteSakByGrupperingsid(
+        """
+        Merkelappen som dere ga oss da dere opprettet saken.
+        """
+        merkelapp: String!
+
+        """
+        ID-en som dere ga oss da dere opprettet saken.
+        """
+        grupperingsid: String!
+    ): HardDeleteSakResultat!
+
+
+}
+
+union SoftDeleteNotifikasjonResultat =
+    | SoftDeleteNotifikasjonVellykket
+    | UgyldigMerkelapp
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+type SoftDeleteNotifikasjonVellykket {
+    """
+    ID-en til oppgaven du "soft-delete"-et.
+    """
+    id: ID!
+}
+
+union HardDeleteNotifikasjonResultat =
+    | HardDeleteNotifikasjonVellykket
+    | UgyldigMerkelapp
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+type HardDeleteNotifikasjonVellykket {
+    """
+    ID-en til oppgaven du "hard-delete"-et.
+    """
+    id: ID!
+}
+
+union SoftDeleteSakResultat =
+    | SoftDeleteSakVellykket
+    | UgyldigMerkelapp
+    | SakFinnesIkke
+    | UkjentProdusent
+
+type SoftDeleteSakVellykket {
+    """
+    ID-en til saken du "soft-delete"-et.
+    """
+    id: ID!
+}
+
+union HardDeleteSakResultat =
+    | HardDeleteSakVellykket
+    | UgyldigMerkelapp
+    | SakFinnesIkke
+    | UkjentProdusent
+
+type HardDeleteSakVellykket {
+    """
+    ID-en til saken du "hard-delete"-et.
+    """
+    id: ID!
+}
+union OppgaveUtgaattResultat =
+    | OppgaveUtgaattVellykket
+    | UgyldigMerkelapp
+    | OppgavenErAlleredeUtfoert
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+type OppgaveUtgaattVellykket {
+    """
+    ID-en til oppgaven du oppdaterte.
+    """
+    id: ID!
+}
+
+union OppgaveUtfoertResultat =
+    | OppgaveUtfoertVellykket
+    | UgyldigMerkelapp
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+type OppgaveUtfoertVellykket {
+    """
+    ID-en til oppgaven du oppdaterte.
+    """
+    id: ID!
+}
+
+union OppgaveUtsettFristResultat =
+    | OppgaveUtsettFristVellykket
+    | UgyldigMerkelapp
+    | Konflikt
+    | UgyldigPaaminnelseTidspunkt
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+type OppgaveUtsettFristVellykket {
+    """
+    ID-en til oppgaven du oppdaterte.
+    """
+    id: ID!
+}
+
+type OppgaveEndrePaaminnelseVellykket {
+    """
+    ID-en til oppgaven du oppdaterte.
+    """
+    id: ID!
+}
+
+union OppgaveEndrePaaminnelseResultat =
+    | OppgaveEndrePaaminnelseVellykket
+    | UgyldigMerkelapp
+    | UgyldigPaaminnelseTidspunkt
+    | OppgavenErAlleredeUtfoert
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+union OppdaterKalenderavtaleResultat =
+    | OppdaterKalenderavtaleVellykket
+    | UgyldigKalenderavtale
+    | UgyldigMerkelapp
+    | Konflikt
+    | NotifikasjonFinnesIkke
+    | UkjentProdusent
+
+type OppdaterKalenderavtaleVellykket {
+    """
+    ID-en til kalenderavtalen du oppdaterte.
+    """
+    id: ID!
+}
+
+input NyBeskjedInput {
+    """
+    Se dokumentasjonen til `mottakere`-feltet.
+    """
+    mottaker: MottakerInput
+
+    """
+    Her bestemmer dere hvem som skal få se notifikasjonen.
+
+    Hvis dere oppgir en mottaker i `mottaker`-feltet, så tolker vi det som om det var et element
+    i denne listen over mottakere.
+
+    Dere må gi oss minst 1 mottaker.
+    """
+    mottakere: [MottakerInput!]! = []
+
+    notifikasjon: NotifikasjonInput!
+    metadata: MetadataInput!
+    eksterneVarsler: [EksterntVarselInput!]! = []
+}
+
+input NyOppgaveInput {
+    """
+    Se dokumentasjonen til `mottakere`-feltet.
+    """
+    mottaker: MottakerInput
+
+    """
+    Her bestemmer dere hvem som skal få se notifikasjonen.
+
+    Hvis dere oppgir en mottaker i `mottaker`-feltet, så tolker vi det som om det var et element
+    i denne listen over mottakere.
+
+    Dere må gi oss minst 1 mottaker.
+    """
+    mottakere: [MottakerInput!]! = []
+    notifikasjon: NotifikasjonInput!
+
+    """
+    Her kan du spesifisere frist for når oppgaven skal utføres av bruker.
+    Ideen er at etter fristen, så har ikke bruker lov, eller dere sperret for,
+    å gjøre oppgaven.
+
+    Fristen vises til bruker i grensesnittet.
+    Oppgaven blir automatisk markert som `UTGAAT` når fristen er forbi.
+    Dere kan kun oppgi frist med dato, og ikke klokkelsett.
+    Fristen regnes som utløpt når dagen er omme (midnatt, norsk tidssone).
+
+    Hvis dere ikke sender med frist, så viser vi ingen frist for bruker,
+    og oppgaven anses som NY frem til dere markerer oppgaven som `UTFOERT` eller
+    `UTGAATT`.
+    """
+    frist: ISO8601Date
+    metadata: MetadataInput!
+    eksterneVarsler: [EksterntVarselInput!]! = []
+
+    """
+    Her kan du spesifisere en påminnelse for en oppgave.
+    Brukeren vil bli gjort oppmerksom via bjellen og evt ekstern varsling dersom du oppgir det.
+    """
+    paaminnelse: PaaminnelseInput
+}
+
+input PaaminnelseInput {
+    """
+    Tidspunktet for når påminnelsen skal aktiveres.
+    Dersom det er angitt frist må påminnelsen være før dette.
+
+    Hvis du sender `eksterneVarsler`, så vil vi sjekke at vi har
+    mulighet for å sende dem før fristen, ellers får du feil ved
+    opprettelse av oppgaven/kalenderavtalen.
+    """
+    tidspunkt: PaaminnelseTidspunktInput!
+    eksterneVarsler: [PaaminnelseEksterntVarselInput!]! = []
+}
+
+input PaaminnelseTidspunktInput @ExactlyOneFieldGiven {
+    """
+    Konkret tidspunkt
+    """
+    konkret: ISO8601LocalDateTime
+    """
+    Relativ til når oppgaven/kalenderavtalen er angitt som opprettet. Altså X duration etter opprettelse.
+    Ved utsatt frist er den relativ til tidspunktet fristen ble utsatt.
+    """
+    etterOpprettelse: ISO8601Duration
+
+    """
+    Relativ til oppgavens frist, altså X duration før frist. Anses som ugyldig dersom det ikke er en oppgave med frist.
+    """
+    foerFrist: ISO8601Duration
+
+    """
+    Relativ til kalenderavtalens startTidspunkt, altså X duration før startTidspunkt. Anses som ugyldig dersom det ikke er en kalenderavtale.
+    """
+    foerStartTidspunkt: ISO8601Duration
+}
+
+input PaaminnelseEksterntVarselInput @ExactlyOneFieldGiven {
+    sms: PaaminnelseEksterntVarselSmsInput
+    epost: PaaminnelseEksterntVarselEpostInput
+    altinntjeneste: PaaminnelseEksterntVarselAltinntjenesteInput
+}
+
+input PaaminnelseEksterntVarselSmsInput {
+    mottaker: SmsMottakerInput!
+    """
+    Teksten som sendes i SMS-en.
+    OBS: Det er ikke lov med personopplysninger i teksten. SMS er ikke en sikker kanal.
+    """
+    smsTekst: String!
+
+    """
+    Vi sender SMS-en med utgangspunkt i påminnelsestidspunktet, men tar hensyn
+    til sendingsvinduet. Hvis påminnelsestidspunktet er utenfor vinduet, sender vi
+    det ved første mulighet.
+    """
+    sendevindu: Sendevindu!
+}
+
+input PaaminnelseEksterntVarselEpostInput {
+    mottaker: EpostMottakerInput!
+    """
+    Subject/emne til e-posten.
+    OBS: Det er ikke lov med personopplysninger i teksten. E-post er ikke en sikker kanal.
+    """
+    epostTittel: String!
+    """
+    Kroppen til e-posten. Tolkes som HTML.
+    OBS: Det er ikke lov med personopplysninger i teksten. E-post er ikke en sikker kanal.
+    """
+    epostHtmlBody: String!
+
+    """
+    Vi sender eposten med utgangspunkt i påminnelsestidspunktet, men tar hensyn
+    til sendingsvinduet. Hvis påminnelsestidspunktet er utenfor vinduet, sender vi
+    det ved første mulighet.
+    """
+    sendevindu: Sendevindu!
+}
+
+input PaaminnelseEksterntVarselAltinntjenesteInput {
+    mottaker: AltinntjenesteMottakerInput!
+    """
+    Subject/emne til e-posten, eller tekst i sms
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    tittel: String!
+    """
+    Kroppen til e-posten. Dersom det sendes SMS blir dette feltet lagt til i kroppen på sms etter tittel
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    innhold: String!
+
+    """
+    Vi sender eposten med utgangspunkt i påminnelsestidspunktet, men tar hensyn
+    til sendingsvinduet. Hvis påminnelsestidspunktet er utenfor vinduet, sender vi
+    det ved første mulighet.
+    """
+    sendevindu: Sendevindu!
+}
+
+input EksterntVarselInput @ExactlyOneFieldGiven {
+    sms: EksterntVarselSmsInput
+    epost: EksterntVarselEpostInput
+    altinntjeneste: EksterntVarselAltinntjenesteInput
+}
+
+"""
+For SMS, så vil
+[Altinns varslingsvindu](https://altinn.github.io/docs/utviklingsguider/varsling/#varslingsvindu-for-sms)
+også gjelde. Dette burde kun påvirke `LOEPENDE`.
+"""
+enum Sendevindu {
+    """
+    Vi sender varselet slik at mottaker skal ha mulighet for å
+    kontakte NAVs kontaktsenter (NKS) når de mottar varselet. Varsler
+    blir sendt litt før NKS åpner, og vi slutter å sende litt før
+    NKS stenger.
+
+    Vi tar foreløpig ikke hensyn til røde dager eller produksjonshendelser som fører til
+    at NKS er utilgjengelig.
+    """
+    NKS_AAPNINGSTID
+
+
+    """
+    Vi sender varselet på dagtid, mandag til lørdag.
+    Altså sender vi ikke om kvelden og om natten, og ikke i det hele tatt på søndager.
+
+    Vi tar ikke hensyn til røde dager.
+    """
+    DAGTID_IKKE_SOENDAG
+
+    """
+    Vi sender varslet så fort vi kan.
+    """
+    LOEPENDE
+}
+
+"""
+Med denne typen velger du når du ønsker at det eksterne varselet blir sendt.
+Du skal velge en (og kun en) av feltene, ellers blir forespørselen din avvist
+med en feil.
+"""
+input SendetidspunktInput @ExactlyOneFieldGiven {
+    """
+    Hvis du spesifiserer et tidspunkt på formen "YYYY-MM-DDThh:mm", så sender
+    vi notifikasjonen på det tidspunktet. Oppgir du et tidspunkt i fortiden,
+    så sender vi varselet øyeblikkelig.
+
+    Tidspunktet tolker vi som lokal, norsk tid (veggklokke-tid).
+    """
+    tidspunkt: ISO8601LocalDateTime
+
+    sendevindu: Sendevindu
+}
+
+
+input EksterntVarselSmsInput {
+    mottaker: SmsMottakerInput!
+    """
+    Teksten som sendes i SMS-en.
+    OBS: Det er ikke lov med personopplysninger i teksten. SMS er ikke en sikker kanal.
+    """
+    smsTekst: String!
+    sendetidspunkt: SendetidspunktInput!
+}
+
+input EksterntVarselEpostInput {
+    mottaker: EpostMottakerInput!
+    """
+    Subject/emne til e-posten.
+    OBS: Det er ikke lov med personopplysninger i teksten. E-post er ikke en sikker kanal.
+    """
+    epostTittel: String!
+    """
+    Kroppen til e-posten. Tolkes som HTML.
+    OBS: Det er ikke lov med personopplysninger i teksten. E-post er ikke en sikker kanal.
+    """
+    epostHtmlBody: String!
+    sendetidspunkt: SendetidspunktInput!
+}
+
+"""
+Med denne typen vil varsel sendes til virksomheten vha tjenesten i Altinn.
+Dette vil bli sendt med EMAIL_PREFERRED, som betyr at det mest sannsynlig blir sendt som epost, men i enkelte tilfeller
+vil bli sendt sms.
+
+De som har registrert sin kontaktadresse på underenheten (enten uten filter eller hvor filteret stemmer med tjenestekoden som oppgis) vil bli varslet.
+Den offisielle kontaktinformasjonen til overenheten vil bli varslet.
+
+Malen som benyttes er TokenTextOnly og den ser slik ut:
+<pre>
+type   | subject  | notificationText
+SMS    |          | {tittel}{innhold}
+EMAIL  | {tittel} | {innhold}
+</pre>
+"""
+input EksterntVarselAltinntjenesteInput {
+    mottaker: AltinntjenesteMottakerInput!
+    """
+    Subject/emne til e-posten, eller tekst i sms
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    tittel: String!
+    """
+    Kroppen til e-posten. Dersom det sendes SMS blir dette feltet lagt til i kroppen på sms etter tittel
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    innhold: String!
+    sendetidspunkt: SendetidspunktInput!
+}
+
+input SmsMottakerInput @ExactlyOneFieldGiven {
+    kontaktinfo: SmsKontaktInfoInput
+}
+
+input SmsKontaktInfoInput {
+    """deprecated. value is ignored. """
+    fnr: String
+    tlf: String!
+}
+
+input EpostMottakerInput @ExactlyOneFieldGiven {
+    kontaktinfo: EpostKontaktInfoInput
+}
+
+input EpostKontaktInfoInput {
+    """deprecated. value is ignored. """
+    fnr: String
+    epostadresse: String!
+}
+
+input AltinntjenesteMottakerInput {
+    serviceCode: String!
+    serviceEdition: String!
+}
+
+"""
+Hvem som skal se notifikasjonen.
+
+Du kan spesifisere mottaker av notifikasjoner på forskjellige måter. Du skal bruke nøyaktig ett av feltene.
+
+Vi har implementert det på denne måten fordi GraphQL ikke støtter union-typer som input.
+"""
+input MottakerInput @ExactlyOneFieldGiven {
+    altinn: AltinnMottakerInput
+    naermesteLeder: NaermesteLederMottakerInput
+}
+
+"""
+Spesifiser mottaker ved hjelp av tilganger i Altinn. Enhver som har den gitte tilgangen vil
+kunne se notifikasjone.
+
+Tilgangssjekken utføres hver gang en bruker ser på notifikasjoner. Det betyr at hvis en
+bruker mister en Altinn-tilgang, så vil de hverken se historiske eller nye notifikasjone knyttet til den Altinn-tilgangen.
+Og motsatt, hvis en bruker får en Altinn-tilgang, vil de se tidligere notifikasjoner for den Altinn-tilgangen.
+"""
+input AltinnMottakerInput {
+    serviceCode: String!
+    serviceEdition: String!
+}
+
+"""
+Spesifiser mottaker ved hjelp av fødselsnummer. Fødselsnummeret er det til nærmeste leder. Det er kun denne personen
+som potensielt kan se notifikasjonen. Det er videre en sjekk for å se om denne personen fortsatt er nærmeste leder
+for den ansatte notifikasjonen gjelder.
+
+Tilgangssjekken utføres hver gang en bruker ønsker se notifikasjonen.
+"""
+input NaermesteLederMottakerInput {
+    naermesteLederFnr: String!
+    ansattFnr: String!
+}
+
+
+"""
+"""
+input NotifikasjonInput {
+    """
+    Merkelapp for beskjeden. Er typisk navnet på ytelse eller lignende. Den vises til brukeren.
+
+    Hva du kan oppgi som merkelapp er bestemt av produsent-registeret.
+    """
+    merkelapp: String!
+
+    """
+    Teksten som vises til brukeren. Feltet er begrenset til 300 tegn og kan ikke inneholde fødselsnummer.
+    """
+    tekst: String! @MaxLength(max: 300) @NonIdentifying
+
+    """
+    Lenken som brukeren føres til hvis de klikker på beskjeden.
+    """
+    lenke: String!
+}
+
+input MetadataInput {
+    """
+    Hvilken virksomhet som skal motta notifikasjonen.
+    """
+    virksomhetsnummer: String!
+
+    """
+    Den eksterne id-en brukes for å unikt identifisere en notifikasjon. Den må være unik for merkelappen.
+
+    Hvis dere har en enkel, statisk bruk av notifikasjoner, så kan dere utlede eksternId
+    fra f.eks. et saksnummer, og på den måten kunne referere til notifikasjoner dere har opprettet,
+    uten at dere må lagre ID-ene vi genererer og returnerer til dere.
+    """
+    eksternId: String!
+
+    """
+    Hvilken dato vi viser til brukeren. Dersom dere ikke oppgir noen dato, så
+    bruker vi tidspuktet dere gjør kallet på.
+    """
+    opprettetTidspunkt: ISO8601DateTime
+
+    """
+    Grupperings-id-en gjør det mulig å knytte sammen forskjellige oppgaver, beskjed og saker.
+    Det vises ikke til brukere.
+    Saksnummer er en naturlig grupperings-id.
+
+    Når dere bruker grupperings-id, så er det mulig for oss å presentere en tidslinje
+    med alle notifikasjonene og status-oppdateringer knyttet til en sak.
+    """
+    grupperingsid: String
+
+    """
+    Oppgi dersom dere ønsker at hard delete skal skeduleres. Vi
+    tolker relative datoer basert på `opprettetTidspunkt` (eller
+    når vi mottok kallet hvis dere ikke har oppgitt `opprettetTidspunkt`).
+    """
+    hardDelete: FutureTemporalInput
+}
+
+"""
+Med denne kan dere spesifiserer et konkret tidspunkt.
+"""
+input FutureTemporalInput @ExactlyOneFieldGiven {
+    """
+    En konkret dato. I Europe/Oslo-tidssone.
+    """
+    den: ISO8601LocalDateTime
+
+    """
+    Som duration-offset relativt til implisitt dato.  Dere må se
+    på dokumentasjonen til feltet hvor denne datatypen er brukt for
+    å vite hva vi bruker som implisitt dato.
+    """
+    om: ISO8601Duration
+}
+
+"""
+Dersom dere vet at saken/notifikasjonen senere skal slettes helt kan det angis her.
+"""
+input HardDeleteUpdateInput {
+    """
+    Oppgi dersom dere ønsker at hard delete skal skeduleres. Vi
+    tolker relative datoer basert på tidspunkt angitt i kallet eller
+    når vi mottok kallet, hvis dere ikke har oppgitt det eller det
+    ikke er mulig å oppgi.
+    """
+    nyTid: FutureTemporalInput!
+
+    """
+    hvis det finnes fremtidig sletting hvordan skal vi håndtere dette
+    """
+    strategi: NyTidStrategi!
+}
+
+enum NyTidStrategi {
+    """
+    Vi bruker den tiden som er lengst i fremtiden.
+    """
+    FORLENG
+
+    """
+    Vi bruker den nye tiden uansett.
+    """
+    OVERSKRIV
+}
+
+input LokasjonInput {
+    adresse: String!
+    postnummer: String!
+    poststed: String!
+}
+
+"""
+Tilstanden til en kalenderavtale. Disse tilstandene er laget basert på eksisterende behov.
+Har dere behov for flere tilstander, så ta kontakt med oss.
+"""
+enum KalenderavtaleTilstand {
+    """
+    Avtalen venter på at brukeren skal svare. Dette er standardtilstanden.
+    """
+    VENTER_SVAR_FRA_ARBEIDSGIVER
+    """
+    Arbeidsgiver har svart at de ønsker å avlyse
+    """
+    ARBEIDSGIVER_VIL_AVLYSE
+    """
+    Arbeidsgiver har svart at de ønsker å endre tid eller sted
+    """
+    ARBEIDSGIVER_VIL_ENDRE_TID_ELLER_STED
+    """
+    Arbeidsgiver har godtatt avtalen
+    """
+    ARBEIDSGIVER_HAR_GODTATT
+    """
+    Avtalen er avlyst
+    """
+    AVLYST
+}
+
+union NyOppgaveResultat =
+    | NyOppgaveVellykket
+    | UgyldigMerkelapp
+    | UgyldigMottaker
+    | DuplikatEksternIdOgMerkelapp
+    | UkjentProdusent
+    | UkjentRolle
+    | UgyldigPaaminnelseTidspunkt
+
+union NyBeskjedResultat =
+    | NyBeskjedVellykket
+    | UgyldigMerkelapp
+    | UgyldigMottaker
+    | DuplikatEksternIdOgMerkelapp
+    | UkjentProdusent
+    | UkjentRolle
+
+union NyKalenderavtaleResultat =
+    | NyKalenderavtaleVellykket
+    | UgyldigKalenderavtale
+    | UgyldigMerkelapp
+    | UgyldigMottaker
+    | DuplikatEksternIdOgMerkelapp
+    | UkjentProdusent
+    | SakFinnesIkke
+
+type NyBeskjedVellykket {
+    id: ID!
+    eksterneVarsler: [NyEksterntVarselResultat!]!
+}
+
+type NyEksterntVarselResultat {
+    id: ID!
+}
+
+type NyOppgaveVellykket {
+    id: ID!
+    eksterneVarsler: [NyEksterntVarselResultat!]!
+    paaminnelse: PaaminnelseResultat
+}
+
+type NyKalenderavtaleVellykket {
+    id: ID!
+    eksterneVarsler: [NyEksterntVarselResultat!]!
+    paaminnelse: PaaminnelseResultat
+}
+
+type PaaminnelseResultat {
+    eksterneVarsler: [NyEksterntVarselResultat!]!
+}
+
+type Lokasjon {
+    adresse: String!
+    postnummer: String!
+    poststed: String!
+}
+
+"""
+Denne feilen returneres dersom en produsent forsøker å benytte en merkelapp som den ikke har tilgang til.
+"""
+type UgyldigMerkelapp implements Error {
+    feilmelding: String!
+}
+
+"""
+Denne feilen returneres dersom en produsent forsøker å benytte en mottaker som den ikke har tilgang til.
+"""
+type UgyldigMottaker implements Error {
+    feilmelding: String!
+}
+
+"""
+Denne feilen returneres dersom vi ikke greier å finne dere i produsent-registeret vårt.
+"""
+type UkjentProdusent implements Error {
+    feilmelding: String!
+}
+
+"""
+Denne feilen returneres dersom du forsøker å gå fra utført til utgått.
+"""
+type OppgavenErAlleredeUtfoert implements Error {
+    feilmelding: String!
+}
+
+"""
+Denne feilen returneres dersom du prøver å referere til en notifikasjon
+som ikke eksisterer.
+
+Utover at dere kan ha oppgitt feil informasjon, så kan det potensielt være på grunn
+av "eventual consistency" i systemet vårt.
+"""
+type NotifikasjonFinnesIkke implements Error {
+    feilmelding: String!
+}
+
+type SakFinnesIkke implements Error {
+    feilmelding: String!
+}
+
+"""
+Denne feilen returneres dersom du prøver å opprette en notifikasjon med en eksternId og merkelapp som allerede finnes
+"""
+type DuplikatEksternIdOgMerkelapp implements Error {
+    feilmelding: String!
+    idTilEksisterende: ID!
+}
+
+"""
+Denne feilen returneres hvis det allerede eksisterer en sak med denne grupperingsid-en under
+merkelappen.
+"""
+type DuplikatGrupperingsid implements Error {
+    feilmelding: String!
+    idTilEksisterende: ID!
+}
+
+"""
+Denne feilen returneres hvis det tidligere eksisterte en sak med denne grupperingsid-en under
+merkelappen, som har blitt slettet.
+"""
+type DuplikatGrupperingsidEtterDelete implements Error {
+    feilmelding: String!
+}
+
+type UkjentRolle implements Error {
+    feilmelding: String!
+}
+
+"""
+Tidpunkt for påminnelse er ugyldig iht grenseverdier. F.eks før opprettelse eller etter frist, eller i fortid.
+"""
+type UgyldigPaaminnelseTidspunkt implements Error {
+    feilmelding: String!
+}
+
+"""
+Oppgitt informasjon samsvarer ikke med tidligere informasjon som er oppgitt.
+"""
+type Konflikt implements Error {
+    feilmelding: String!
+}
+
+"""
+Kalenderavtalen er ugyldig. Det kan f.eks være at startTidspunkt er etter sluttTidspunkt. Detaljer kommer i feilmelding.
+"""
+type UgyldigKalenderavtale implements Error {
+    feilmelding: String!
+}
+
+interface Error {
+    feilmelding: String!
+}

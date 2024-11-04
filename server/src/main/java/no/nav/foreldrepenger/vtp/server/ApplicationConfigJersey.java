@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 import no.nav.altinn.AltinnRettigheterProxyMock;
 
+import no.nav.fager.FagerMock;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -164,6 +166,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
         classes.add(AltinnRettigheterProxyMock.class);
+        classes.add(FagerMock.class);
 
         // tekniske ting
         classes.add(AzureAdRestTjeneste.class);

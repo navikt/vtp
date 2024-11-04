@@ -28,7 +28,7 @@
 	<logger name="org.apache.zookeeper" level="${log.level.org.apache.zookeeper:-INFO}"/>
 
 
-	<root level="${log.level.root:-WARN}">
+	<root level="${log.level.root:-INFO}">
 		<appender-ref ref="STDOUT" />
 	</root>
 
