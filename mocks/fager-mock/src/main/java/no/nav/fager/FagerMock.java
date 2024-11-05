@@ -57,9 +57,9 @@ public class FagerMock {
                                               @HeaderParam(NAV_CONSUMER_ID) String navConsumerId,
                                               GraphQLRequest request) {
         var operationName = hentOperationName(request);
-        var sanitizedOperationName = operationName.replaceAll("[\\n\\r\\t]", "_");
+        var sanitizedOperationName = sanitizeInput(operationName);
         LOG.info("FAGER: Operation name: {}", sanitizedOperationName);
-        var sanitizedQuery = request.getQuery().replaceAll("[\\n\\r\\t]", "_");
+        var sanitizedQuery = sanitizeInput(request.getQuery());
         LOG.debug("FAGER: Query: {}", sanitizedQuery);
         if ("nySak".equals(operationName)) {
             LOG.info("FAGER: nySak operation");
@@ -91,6 +91,13 @@ public class FagerMock {
             return executionResult.toSpecification();
         }
         throw new NotImplementedException("Operasjon er ikke implementert:" + operationName);
+    }
+
+    private String sanitizeInput(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.replaceAll("[\\n\\r\\t\"'<>\\\\]", "_");
     }
 
     private String hentOperationName(GraphQLRequest request) {
