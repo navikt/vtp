@@ -98,7 +98,7 @@ public class AzureAdRestTjeneste {
 
         return switch (grantType) {
             case "client_credentials" -> {
-                token = azureClientCredentialsToken(UUID.randomUUID().toString().substring(0, 19), ISSUER);
+                token = azureClientCredentialsToken(UUID.randomUUID().toString(), ISSUER);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             case "urn:ietf:params:oauth:grant-type:jwt-bearer" -> {

@@ -51,6 +51,7 @@ public final class AzureOidcTokenGenerator {
 
     public static String azureUserToken(NAVAnsatt bruker, String issuer, String nonce) {
         JwtClaims claims = createCommonClaims(bruker.ident(), issuer);
+        claims.setStringClaim("oid", bruker.oid().toString());
         claims.setStringClaim("NAVident", bruker.ident());
         claims.setStringListClaim("groups", bruker.vtpgrupper().stream().toList());
 
