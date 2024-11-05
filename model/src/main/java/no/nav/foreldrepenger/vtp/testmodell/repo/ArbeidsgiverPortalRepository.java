@@ -1,7 +1,9 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import java.util.List;
 import java.util.UUID;
 
+import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.OppgaveModell;
 import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
 
 public interface ArbeidsgiverPortalRepository {
@@ -28,4 +30,8 @@ public interface ArbeidsgiverPortalRepository {
     UUID tilleggsinformasjonSak(String id, String tilleggsinformasjon);
 
     UUID slettSak(String id);
+
+    List<SakModell> hentSaker();
+
+    OppgaveModell hentOppgaveFor(String grupperingsid);
 }

@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -143,7 +145,6 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
         }
         sak.setOverstyrtTillegsinformasjon(tilleggsinformasjon);
         sak.setEndretTid(LocalDateTime.now());
-
         return sak.id();
     }
 
@@ -161,5 +162,15 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
         saker.remove(sakId);
 
         return sakId;
+    }
+
+    @Override
+    public List<SakModell> hentSaker() {
+        return saker.values().stream().sorted(Comparator.comparing(SakModell::opprettetTid)).toList();
+    }
+
+    @Override
+    public OppgaveModell hentOppgaveFor(String grupperingsId) {
+        return oppgaverGrupperingsId.get(grupperingsId);
     }
 }
