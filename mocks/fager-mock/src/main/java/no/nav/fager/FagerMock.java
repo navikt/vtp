@@ -59,7 +59,8 @@ public class FagerMock {
         var operationName = hentOperationName(request);
         var sanitizedOperationName = operationName.replaceAll("[\\n\\r\\t]", "_");
         LOG.info("FAGER: Operation name: {}", sanitizedOperationName);
-        LOG.debug("FAGER: Query: {}", request.getQuery());
+        var sanitizedQuery = request.getQuery().replaceAll("[\\n\\r\\t]", "_");
+        LOG.debug("FAGER: Query: {}", sanitizedQuery);
         if ("nySak".equals(operationName)) {
             LOG.info("FAGER: nySak operation");
             var executionResult = graphqlTjeneste.sak(request);
