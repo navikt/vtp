@@ -51,8 +51,8 @@ public class IdportenLoginTjeneste {
                 baseUrl + "/jwks",
                 baseUrl + "/access_token",
                 List.of("idporten-loa-high"),
-                List.of("nb")
-                );
+                List.of("nb"),
+                List.of("RS256"));
         return Response.ok(wellKnownResponse).build();
     }
 

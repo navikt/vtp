@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -44,11 +45,14 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         return organisasjonIndeks.getModellForIdent(orgnr);
     }
 
+    @Override
+    public Set<String> hentAlleOrganisasjonsnummer() {
+        return organisasjonIndeks.hentAlleOrganisasjonsnummer();
+    }
 
     protected TestscenarioBuilderRepositoryImpl(BasisdataProvider basisdata) {
         this.basisdata = basisdata;
     }
-
 
     @Override
     public Map<String, Testscenario> getTestscenarios() {

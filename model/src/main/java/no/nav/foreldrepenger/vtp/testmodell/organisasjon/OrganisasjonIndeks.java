@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.organisasjon;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class OrganisasjonIndeks {
@@ -14,5 +15,9 @@ public class OrganisasjonIndeks {
 
     public void leggTil(List<OrganisasjonModell> modeller) {
         modeller.forEach(o -> organisasjoner.put(o.orgnummer(), o));
+    }
+
+    public Set<String> hentAlleOrganisasjonsnummer() {
+        return organisasjoner.keySet();
     }
 }

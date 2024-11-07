@@ -2,6 +2,7 @@ package no.nav.foreldrepenger.vtp.testmodell.repo;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
@@ -35,5 +36,7 @@ public interface TestscenarioBuilderRepository {
     Boolean endreTestscenario(String id, Testscenario testscenario);
 
     void indekserPersonopplysninger(Personopplysninger personopplysninger);
+
+    Set<String> hentAlleOrganisasjonsnummer();
 
 }

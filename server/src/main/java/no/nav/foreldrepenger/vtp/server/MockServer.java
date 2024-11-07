@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.LogManager;
 
+import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
+
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
@@ -102,20 +105,22 @@ public class MockServer {
         var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
         var gsakRepo = new GsakRepo();
         var journalRepository = JournalRepositoryImpl.getInstance();
+        var fagerPortalRepository = ArbeidsgiverPortalRepositoryImpl.getInstance();
 
-        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository);
+        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, fagerPortalRepository);
 
         startServer();
     }
 
-    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository) {
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
         var config = new ApplicationConfigJersey()
                 .setup(testScenarioRepository,
                         instance,
                         gsakRepo,
                         kafkaServer.getLocalProducer(),
                         kafkaServer.getKafkaAdminClient(),
-                        journalRepository);
+                        journalRepository,
+                        fagerPortalRepository);
 
         var context = new ServletContextHandler();
         context.setContextPath(CONTEXT_PATH);

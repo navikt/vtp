@@ -117,6 +117,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>fager-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>testmodell</artifactId>
         </dependency>
         <dependency>

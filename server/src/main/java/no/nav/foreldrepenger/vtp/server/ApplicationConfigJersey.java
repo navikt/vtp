@@ -15,6 +15,12 @@ import java.util.stream.Collectors;
 
 import no.nav.altinn.AltinnRettigheterProxyMock;
 
+import no.nav.fager.FagerMock;
+
+import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
+
+import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -164,6 +170,10 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
         classes.add(AltinnRettigheterProxyMock.class);
+        classes.add(FagerMock.class);
+
+        // Arbeidsgiver portal mock
+        classes.add(FagerPortalRestTjeneste.class);
 
         // tekniske ting
         classes.add(AzureAdRestTjeneste.class);
@@ -202,13 +212,15 @@ public class ApplicationConfigJersey extends ResourceConfig {
                                          GsakRepo gsakRepo,
                                          LocalKafkaProducer localKafkaProducer,
                                          AdminClient kafkaAdminClient,
-                                         JournalRepository journalRepository) {
+                                         JournalRepository journalRepository,
+                                         ArbeidsgiverPortalRepository fagerPortalRepository) {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
                 bind(instance).to(TestscenarioRepository.class);
                 bind(journalRepository).to(JournalRepository.class);
+                bind(fagerPortalRepository).to(ArbeidsgiverPortalRepository.class);
                 bind(gsakRepo).to(GsakRepo.class);
                 bind(localKafkaProducer).to(LocalKafkaProducer.class);
                 bind(kafkaAdminClient).to(AdminClient.class);
