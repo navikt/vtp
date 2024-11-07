@@ -11,9 +11,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.testmodell.repo.BasisdataProvider;
+import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
 /*
  * Tjeneste for å sjekke om person har tilgang til en .
@@ -23,17 +27,17 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 @Tag(name = "altinn-rettigheter")
 @Path("/altinn-rettigheter-proxy")
 public class AltinnRettigheterProxyMock {
-    protected static final Set<String> ALLE_VIRKSOMHETER = BasisdataProviderFileImpl.getInstance()
-            .getVirksomhetIndeks()
-            .getAlleVirksomheter()
-            .keySet();
+
+    @Context
+    private TestscenarioBuilderRepository scenarioRepository;
 
     @GET
     @Path("/ekstern/altinn/api/serviceowner/reportees")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Henter alle virksomheter.")
     public Response hentTilgangerTilVirksomheter() {
-        return Response.ok().entity(mapToResponse()).build();
+        var alleOrgnr = scenarioRepository.hentAlleOrganisasjonsnummer();
+        return Response.ok().entity(mapToResponse(alleOrgnr)).build();
     }
 
     @GET
@@ -44,8 +48,8 @@ public class AltinnRettigheterProxyMock {
         return Response.ok().entity(List.of()).build();
     }
 
-    private List<AltinnReportee> mapToResponse() {
-        return AltinnRettigheterProxyMock.ALLE_VIRKSOMHETER.stream().map(AltinnReportee::new).toList();
+    private List<AltinnReportee> mapToResponse(Set<String> alleOrgnr) {
+        return alleOrgnr.stream().map(AltinnReportee::new).toList();
     }
 
     @JsonNaming(PropertyNamingStrategies.UpperCamelCaseStrategy.class)

@@ -7,5 +7,6 @@ public record WellKnownResponse(String issuer,
                                 String jwks_uri,
                                 String token_endpoint,
                                 List<String> acr_values_supported,
-                                List<String> ui_locales_supported) {
+                                List<String> ui_locales_supported,
+                                List<String> id_token_signing_alg_values_supported) {
 }

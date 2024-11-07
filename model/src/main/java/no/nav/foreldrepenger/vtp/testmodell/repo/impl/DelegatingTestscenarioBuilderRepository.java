@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
@@ -81,5 +82,10 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     @Override
     public void indekserPersonopplysninger(Personopplysninger personopplysninger) {
         delegate.indekserPersonopplysninger(personopplysninger);
+    }
+
+    @Override
+    public Set<String> hentAlleOrganisasjonsnummer() {
+        return delegate.hentAlleOrganisasjonsnummer();
     }
 }
