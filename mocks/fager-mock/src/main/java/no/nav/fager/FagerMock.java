@@ -57,10 +57,12 @@ public class FagerMock {
                                               @HeaderParam(NAV_CONSUMER_ID) String navConsumerId,
                                               GraphQLRequest request) {
         var operationName = hentOperationName(request);
-        var sanitizedOperationName = sanitizeInput(operationName);
-        LOG.info("FAGER: Operation name: {}", sanitizedOperationName);
-        var sanitizedQuery = sanitizeInput(request.getQuery());
-        LOG.debug("FAGER: Query: {}", sanitizedQuery);
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("FAGER: Operation name: {}", sanitizeInput(operationName));
+            LOG.debug("FAGER: Query: {}", sanitizeInput(request.getQuery()));
+        }
+
         if ("nySak".equals(operationName)) {
             LOG.info("FAGER: nySak operation");
             var executionResult = graphqlTjeneste.sak(request);
