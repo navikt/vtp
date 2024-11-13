@@ -13,7 +13,10 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
+
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +44,10 @@ public class JournalpostMock {
     @Context
     JournalRepository journalRepository;
 
+    @Context
+    private LocalKafkaProducer localKafkaProducer;
+
+
     @POST
     @Path("/journalpost")
     @Operation(description = "lag journalpost")
@@ -52,6 +59,16 @@ public class JournalpostMock {
 
         var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId)
                 .orElseThrow();
+
+        if (Mottakskanal.NAV_NO.equals(journalpostModell.getMottakskanal()) &&
+            journalpostModell.getTittel().equals("Inntektsmelding")) {
+
+            // Dette pga sak er satt
+            journalpostModell.setJournalStatus(Journalstatus.MOTTATT);
+
+            var journalforingHendelseSender = new JournalforingHendelseSender(localKafkaProducer);
+            journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(journalpostModell);
+        }
 
         OpprettJournalpostResponse response = tilOpprettJouralpostResponse(journalpostModell);
         return Response.accepted().entity(response).build();

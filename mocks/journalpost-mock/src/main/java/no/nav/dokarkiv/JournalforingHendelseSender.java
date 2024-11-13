@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.server.api.journalforing.hendelse;
+package no.nav.dokarkiv;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -54,6 +54,9 @@ public class JournalforingHendelseSender {
     }
 
     private BehandlingsTema tilBehandlingsTema(JournalpostModell modell) {
+        if (modell.getBehandlingTema() != null) {
+            return BehandlingsTema.fraKode(modell.getBehandlingTema());
+        }
         return switch (modell.getDokumentModellList().isEmpty() ? DokumenttypeId.UDEFINERT : modell.getDokumentModellList().getFirst().getDokumentType()) {
             case SØKNAD_SVANGERSKAPSPENGER -> BehandlingsTema.SVANGERSKAPSPENGER;
             case SØKNAD_FORELDREPENGER_ADOPSJON -> BehandlingsTema.FORELDREPENGER_ADOPSJON;

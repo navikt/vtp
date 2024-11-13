@@ -51,6 +51,7 @@ public class JournalpostMapper {
         modell.setEksternReferanseId(journalpostRequest.getEksternReferanseId());
         modell.setMottakskanal(Mottakskanal.fraKode(journalpostRequest.getKanal()));
         modell.setJournalStatus(erKnyttetTilSak(journalpostRequest.getSak()) ? Journalstatus.JOURNALFØRT : Journalstatus.MOTTATT);
+        modell.setBehandlingTema(journalpostRequest.getBehandlingstema());
         return modell;
     }
 
