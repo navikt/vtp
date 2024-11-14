@@ -65,6 +65,7 @@ public class JournalpostBuilder {
                     new RelevantDato(mottatt, Datotype.DATO_JOURNALFOERT),
                     new RelevantDato(mottatt, Datotype.DATO_REGISTRERT)));
         }
+        journalpost.setBehandlingstema(modell.getBehandlingTema());
        return journalpost;
     }
 

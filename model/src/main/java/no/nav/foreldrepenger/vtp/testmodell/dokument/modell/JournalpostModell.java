@@ -35,6 +35,7 @@ public class JournalpostModell {
     private String journaltilstand;
     private Journalposttyper journalposttype;
     private JournalpostBruker bruker;
+    private String behandlingTema;
 
     public JournalpostModell() {
     }
@@ -54,7 +55,8 @@ public class JournalpostModell {
                              @JsonProperty("arkivtema") Arkivtema arkivtema,
                              @JsonProperty("journaltilstand") String journaltilstand,
                              @JsonProperty("journalposttype") Journalposttyper journalposttype,
-                             @JsonProperty("bruker") JournalpostBruker bruker) {
+                             @JsonProperty("bruker") JournalpostBruker bruker,
+                             @JsonProperty("behandlingTema") String behandlingTema) {
         this.journalpostId = journalpostId;
         this.eksternReferanseId = eksternReferanseId;
         this.tittel = tittel;
@@ -70,6 +72,7 @@ public class JournalpostModell {
         this.journaltilstand = journaltilstand;
         this.journalposttype = journalposttype;
         this.bruker = bruker;
+        this.behandlingTema = behandlingTema;
     }
 
     public String getJournalpostId() {
@@ -194,6 +197,13 @@ public class JournalpostModell {
         this.bruker = bruker;
     }
 
+    public String getBehandlingTema() {
+        return behandlingTema;
+    }
+
+    public void setBehandlingTema(String behandlingTema) {
+        this.behandlingTema = behandlingTema;
+    }
 
     @Override
     public boolean equals(Object o) {
