@@ -1,464 +1,253 @@
 [
-    {
-        "ident": "saksbeh",
-        "oid": "3c3caafb-a943-4255-aa65-6f29345b7541",
-        "displayName": "Sara Saksbehandler",
-        "givenName": "Sara",
-        "surname": "Saksbehandler",
-        "email": "sara.saksbehandler@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler" ]
-    },
-    {
-        "ident": "saksbeh6",
-        "oid": "05801408-feb8-42b2-850a-8d87adb911c7",
-        "displayName": "Sa6a Saksbehandler6",
-        "givenName": "Sa6a",
-        "surname": "Saksbehandler",
-        "email": "sa6a.saksbehandler6@example.com",
-        "streetAddress": "2103",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "df650e66-9590-4c96-8ecb-8efea46f1306",
-                "name": "0000-GA-Strengt_Fortrolig_Adresse"
-            },
-            {
-                "oid": "13e4ed76-6d7f-448f-ba49-41760eed0f30",
-                "name": "0000-GA-GOSYS_KODE6"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler", "kode6" ]
-    },
-    {
-        "ident": "saksbeh7",
-        "oid": "352b0a40-4d13-43e7-8e55-ba6060d6d430",
-        "displayName": "Sa7a Saksbehandler7",
-        "givenName": "Sa7a",
-        "surname": "Saksbehandler",
-        "email": "sa7a.saksbehandler7@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "bc7fde53-c4c3-4fff-9079-c6440ca5ff5e",
-                "name": "0000-GA-Fortrolig_Adresse"
-            },
-            {
-                "oid": "65715e95-86b5-497d-992a-12389b1a8ff9",
-                "name": "0000-GA-GOSYS_KODE7"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler", "kode7" ]
-    },
-    {
-        "ident": "saksbha",
-        "oid": "98f1a0f3-292e-412c-b84a-d729b6169f2b",
-        "displayName": "Ea Saksbehandler",
-        "givenName": "Ea",
-        "surname": "Saksbehandler",
-        "email": "ea.saksbehandler@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "63b3f84f-1ec5-444b-ad33-2ad2d3495da1",
-                "name": "0000-GA-Egne_ansatte"
-            },
-            {
-                "oid": "00b7a94d-99e6-455c-a497-a3f1a70a698b",
-                "name": "0000-GA-GOSYS_UTVIDET"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler", "egenansatt" ]
-    },
-    {
-        "ident": "beslut",
-        "oid": "fb864a55-bc42-4196-aba9-792c78661806",
-        "displayName": "Birger Beslutter",
-        "givenName": "Birger",
-        "surname": "Beslutter",
-        "email": "birger.beslutter@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "803b1fd5-27a0-46a2-b1b3-7152f44128b4",
-                "name": "0000-GA-fpsak-beslutter"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "ff2ab4cd-9ea4-4c51-b4cd-86a7999376a5",
-                "name": "0000-GA-k9-beslutter"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler", "beslutter" ]
-    },
-    {
-        "ident": "oversty",
-        "oid": "d6881997-05d7-4ff2-8ef6-818d8539c434",
-        "displayName": "Ove Overstyrer",
-        "givenName": "Ove",
-        "surname": "Overstyrer",
-        "email": "ove.overstyrer@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "503f0cae-5bcd-484b-949c-a7e92d712858",
-                "name": "0000-GA-fpsak-manuelt-overstyrer"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "e5eccbb1-27bf-4a8f-861d-b54d7ccc8314",
-                "name": "0000-GA-k9-overstyrer"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler", "overstyrer" ]
-    },
-    {
-        "ident": "klageb",
-        "oid": "cf70667f-250e-4565-a365-75f07f87fe29",
-        "displayName": "Klara Klagebehandler",
-        "givenName": "Klara",
-        "surname": "Klagebehandler",
-        "email": "klara.klagebehandler@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "6b7c6d2f-ed3d-4d11-bc6d-82cab825a09f",
-                "name": "0000-GA-PENSJON_KLAGEBEH"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler" ]
-    },
-    {
-        "ident": "veil",
-        "oid": "ba6f0772-b99b-4eb9-857e-7a9e6720d582",
-        "displayName": "Vegard Veileder",
-        "givenName": "Vegard",
-        "surname": "Veileder",
-        "email": "vegard.veileder@example.com",
-        "streetAddress": "1900",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "edfe14fe-9a34-4ecb-8840-536ac2bc2818",
-                "name": "0000-GA-fpsak-veileder"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "79630737-b41d-41eb-93fb-30907e1afed7",
-                "name": "0000-GA-k9-veileder"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "veileder" ]
-    },
-    {
-        "ident": "oppgs",
-        "oid": "4cd710cc-c367-4110-8126-fe495ee11c23",
-        "displayName": "Oline Oppgavestyrer",
-        "givenName": "Oline",
-        "surname": "Oppgavestyrer",
-        "email": "oline.oppgavestyrer@example.com",
-        "streetAddress": "4833",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
-                "oid": "d18989ec-5e07-494b-ad96-0c1f0c76de53",
-                "name": "0000-GA-fpsak-Oppgavestyrer"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
-            },
-            {
-                "oid": "d70927de-0c76-49cb-aaa7-ee67cce70aaa",
-                "name": "0000-GA-k9-oppgavestyrer"
-            },
-            {
-                "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
-                "name": "0000-GA-INNTK_8-30"
-            },
-            {
-                "oid": "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
-                "name": "0000-GA-INNTK_8-28"
-            },
-            {
-                "oid": "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
-                "name": "0000-GA-INNTK_FORELDRE"
-            },
-            {
-                "oid": "8873e633-ac29-4463-9913-184bea045dad",
-                "name": "0000-GA-INNTK_PENSJONSGIVENDE"
-            },
-            {
-                "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
-                "name": "0000-GA-INNTK"
-            }
-        ],
-        "vtpgrupper": [ "saksbehandler", "oppgavestyrer" ]
-    },
-    {
-        "ident": "drift",
-        "oid": "d3b97fcb-8778-4e09-ba7e-f8993d6e26a6",
-        "displayName": "Daniel Drifter",
-        "givenName": "Daniel",
-        "surname": "Drifter",
-        "email": "daniel.drifter@example.com",
-        "streetAddress": "2970",
-        "enheter": [],
-        "groups": [
-            {
-                "oid": "89c71f0c-ca57-4e6f-8545-990f9e24c762",
-                "name": "0000-GA-fpsak-drift"
-            },
-            {
-                "oid": "7ac42b69-14af-479e-9e9c-b2235bea9863",
-                "name": "0000-GA-k9-drift"
-            }
-        ],
-        "vtpgrupper": [ "drift", "veileder" ]
-    },
-    {
-        "ident": "pip",
-        "oid": "3d48bf40-4bfd-48d8-8280-065bf8ced9cd",
-        "displayName": "Policy Information Point",
-        "givenName": "Policy Information",
-        "surname": "Point",
-        "email": "pip@example.com",
-        "streetAddress": "2970",
-        "enheter": [],
-        "groups": [],
-        "vtpgrupper": [ "pip" ]
-    }
+  {
+    "ident": "saksbeh",
+    "oid": "3c3caafb-a943-4255-aa65-6f29345b7541",
+    "displayName": "Sara Saksbehandler",
+    "givenName": "Sara",
+    "surname": "Saksbehandler",
+    "email": "sara.saksbehandler@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler"
+    ]
+  },
+  {
+    "ident": "saksbeh6",
+    "oid": "05801408-feb8-42b2-850a-8d87adb911c7",
+    "displayName": "Sa6a Saksbehandler6",
+    "givenName": "Sa6a",
+    "surname": "Saksbehandler",
+    "email": "sa6a.saksbehandler6@example.com",
+    "streetAddress": "2103",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "df650e66-9590-4c96-8ecb-8efea46f1306",
+      "13e4ed76-6d7f-448f-ba49-41760eed0f30",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler",
+      "kode6"
+    ]
+  },
+  {
+    "ident": "saksbeh7",
+    "oid": "352b0a40-4d13-43e7-8e55-ba6060d6d430",
+    "displayName": "Sa7a Saksbehandler7",
+    "givenName": "Sa7a",
+    "surname": "Saksbehandler",
+    "email": "sa7a.saksbehandler7@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "bc7fde53-c4c3-4fff-9079-c6440ca5ff5e",
+      "65715e95-86b5-497d-992a-12389b1a8ff9",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler",
+      "kode7"
+    ]
+  },
+  {
+    "ident": "saksbha",
+    "oid": "98f1a0f3-292e-412c-b84a-d729b6169f2b",
+    "displayName": "Ea Saksbehandler",
+    "givenName": "Ea",
+    "surname": "Saksbehandler",
+    "email": "ea.saksbehandler@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "63b3f84f-1ec5-444b-ad33-2ad2d3495da1",
+      "00b7a94d-99e6-455c-a497-a3f1a70a698b",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler",
+      "egenansatt"
+    ]
+  },
+  {
+    "ident": "beslut",
+    "oid": "fb864a55-bc42-4196-aba9-792c78661806",
+    "displayName": "Birger Beslutter",
+    "givenName": "Birger",
+    "surname": "Beslutter",
+    "email": "birger.beslutter@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "803b1fd5-27a0-46a2-b1b3-7152f44128b4",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "ff2ab4cd-9ea4-4c51-b4cd-86a7999376a5",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler",
+      "beslutter"
+    ]
+  },
+  {
+    "ident": "oversty",
+    "oid": "d6881997-05d7-4ff2-8ef6-818d8539c434",
+    "displayName": "Ove Overstyrer",
+    "givenName": "Ove",
+    "surname": "Overstyrer",
+    "email": "ove.overstyrer@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "503f0cae-5bcd-484b-949c-a7e92d712858",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "e5eccbb1-27bf-4a8f-861d-b54d7ccc8314",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler",
+      "overstyrer"
+    ]
+  },
+  {
+    "ident": "klageb",
+    "oid": "cf70667f-250e-4565-a365-75f07f87fe29",
+    "displayName": "Klara Klagebehandler",
+    "givenName": "Klara",
+    "surname": "Klagebehandler",
+    "email": "klara.klagebehandler@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "6b7c6d2f-ed3d-4d11-bc6d-82cab825a09f",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler"
+    ]
+  },
+  {
+    "ident": "veil",
+    "oid": "ba6f0772-b99b-4eb9-857e-7a9e6720d582",
+    "displayName": "Vegard Veileder",
+    "givenName": "Vegard",
+    "surname": "Veileder",
+    "email": "vegard.veileder@example.com",
+    "streetAddress": "1900",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "edfe14fe-9a34-4ecb-8840-536ac2bc2818",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "79630737-b41d-41eb-93fb-30907e1afed7",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "veileder"
+    ]
+  },
+  {
+    "ident": "oppgs",
+    "oid": "4cd710cc-c367-4110-8126-fe495ee11c23",
+    "displayName": "Oline Oppgavestyrer",
+    "givenName": "Oline",
+    "surname": "Oppgavestyrer",
+    "email": "oline.oppgavestyrer@example.com",
+    "streetAddress": "4833",
+    "enheter": [],
+    "groups": [
+      "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
+      "d18989ec-5e07-494b-ad96-0c1f0c76de53",
+      "5081d7b2-00df-442b-acb5-48eeaa114e96",
+      "d70927de-0c76-49cb-aaa7-ee67cce70aaa",
+      "99cff4e7-160a-42ba-899a-1cefd605d0e5",
+      "f9ae8c76-3230-4ae0-ba5e-b39922ae86a4",
+      "9698f8bb-96fb-470a-b65d-0b5541a61e9d",
+      "8873e633-ac29-4463-9913-184bea045dad",
+      "39f2f9c8-1631-438a-a82e-8bed14adb672"
+    ],
+    "vtpgrupper": [
+      "saksbehandler",
+      "oppgavestyrer"
+    ]
+  },
+  {
+    "ident": "drift",
+    "oid": "d3b97fcb-8778-4e09-ba7e-f8993d6e26a6",
+    "displayName": "Daniel Drifter",
+    "givenName": "Daniel",
+    "surname": "Drifter",
+    "email": "daniel.drifter@example.com",
+    "streetAddress": "2970",
+    "enheter": [],
+    "groups": [
+      "89c71f0c-ca57-4e6f-8545-990f9e24c762",
+      "7ac42b69-14af-479e-9e9c-b2235bea9863"
+    ],
+    "vtpgrupper": [
+      "drift",
+      "veileder"
+    ]
+  },
+  {
+    "ident": "pip",
+    "oid": "3d48bf40-4bfd-48d8-8280-065bf8ced9cd",
+    "displayName": "Policy Information Point",
+    "givenName": "Policy Information",
+    "surname": "Point",
+    "email": "pip@example.com",
+    "streetAddress": "2970",
+    "enheter": [],
+    "groups": [],
+    "vtpgrupper": [
+      "pip"
+    ]
+  }
 ]
