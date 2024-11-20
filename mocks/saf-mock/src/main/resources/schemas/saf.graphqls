@@ -21,7 +21,7 @@ input BrukerIdInput {
 
 # Indikator på hvilken type id som brukes i spørringen.
 enum BrukerIdType {
-    # NAV aktørid for en person.
+    # Nav aktørid for en person.
     AKTOERID
 
     # Folkeregisterets fødselsnummer eller d-nummer for en person.
@@ -255,18 +255,18 @@ type Journalpost {
     # Landet forsendelsen er mottatt fra eller sendt til. Feltet skal i utgangspunktet kun være populert dersom avsender eller mottaker er en institusjon med adresse i utlandet.
     avsenderMottakerLand: String @deprecated(reason: "Feltet er deprekert og vil bli fjernet i fremtiden. Bruk avsenderMottaker.land i stedet.")
 
-    # NAV-enheten som har journalført forsendelsen. I noen tilfeller brukes journalfEnhet til å rute journalføringsoppgaven til korrekt enhet i NAV. I slike tilfeller vil journalfEnhet være satt også for ikke-journalførte dokumenter.
+    # Nav-enheten som har journalført forsendelsen. I noen tilfeller brukes journalfEnhet til å rute journalføringsoppgaven til korrekt enhet i Nav. I slike tilfeller vil journalfEnhet være satt også for ikke-journalførte dokumenter.
     journalforendeEnhet: String  @deprecated(reason: "Feltet er deprekert og vil bli fjernet i fremtiden. Bruk journalfoerendeEnhet i stedet.")
 
-    # NAV-enheten som har journalført forsendelsen. I noen tilfeller brukes journalfEnhet til å rute journalføringsoppgaven til korrekt enhet i NAV. I slike tilfeller vil journalfEnhet være satt også for ikke-journalførte dokumenter.
+    # Nav-enheten som har journalført forsendelsen. I noen tilfeller brukes journalfEnhet til å rute journalføringsoppgaven til korrekt enhet i Nav. I slike tilfeller vil journalfEnhet være satt også for ikke-journalførte dokumenter.
     journalfoerendeEnhet: String
 
-    # Personen eller systembrukeren i NAV som har journalført forsendelsen.
-    # * Bruken av feltet varierer, og kan inneholde den ansattes navn eller NAV-ident. Dersom forsendelsen er automatisk journalført, kan innholdet være f.eks. en servicebruker eller et batchnavn.
+    # Personen eller systembrukeren i Nav som har journalført forsendelsen.
+    # * Bruken av feltet varierer, og kan inneholde den ansattes navn eller Nav-ident. Dersom forsendelsen er automatisk journalført, kan innholdet være f.eks. en servicebruker eller et batchnavn.
     journalfortAvNavn: String
 
-    # Personen eller systembrukeren i NAV som har opprettet journalposten.
-    # * Bruken av feltet varierer, og kan inneholde den ansattes navn eller NAV-ident. For inngående dokumenter kan innholdet være f.eks. en servicebruker eller et batchnavn.
+    # Personen eller systembrukeren i Nav som har opprettet journalposten.
+    # * Bruken av feltet varierer, og kan inneholde den ansattes navn eller Nav-ident. For inngående dokumenter kan innholdet være f.eks. en servicebruker eller et batchnavn.
     opprettetAvNavn: String
 
     # Kanalen dokumentene ble mottatt i eller sendt ut på f.eks. "SENTRAL_UTSKRIFT" eller "ALTINN".
@@ -285,7 +285,7 @@ type Journalpost {
     # Liste over datoer som kan være relevante for denne journalposten, f.eks. DATO_EKSPEDERT. Hvilke relevante datoer som returneres, avhenger av journalposttypen.
     relevanteDatoer: [RelevantDato]
 
-    # Antall ganger brevet har vært forsøkt sendt til bruker og deretter kommet i retur til NAV. Vil kun være satt for utgående forsendelser.
+    # Antall ganger brevet har vært forsøkt sendt til bruker og deretter kommet i retur til Nav. Vil kun være satt for utgående forsendelser.
     antallRetur: String
 
     # Brukes for sporing og feilsøking på tvers av systemer.
@@ -323,7 +323,7 @@ type RelevantDato {
     datotype: Datotype!
 }
 
-# En sak i NAV har flere saksnumre (fagsaksnummer og arkivsaksnummer).
+# En sak i Nav har flere saksnumre (fagsaksnummer og arkivsaksnummer).
 # * Fagsaken viser til saken slik denne er definert i et fagsystem. Saken identifiseres ved fagsakId + fagsaksystem.
 # * Arkivsaksnummer er "skyggesaken" som man tradisjonelt har journalført mot i Joark. Denne skal nå anses som en intern nøkkel i Joark.
 ##
@@ -356,7 +356,7 @@ type Sak {
     tema: Tema
 }
 
-# Person eller organisasjon som har et forhold til NAV, f.eks. som mottaker av tjenester eller ytelser.
+# Person eller organisasjon som har et forhold til Nav, f.eks. som mottaker av tjenester eller ytelser.
 type Bruker {
     # Brukerens identifikator. For personbrukere returneres personens aktørID eller fødselsnummer. For organisasjonsbrukere returneres et organisasjonsnummer.
     id: String
@@ -483,7 +483,7 @@ type DokumentInfo {
     tittel: String
 
     # Kode som sier noe om dokumentets innhold og oppbygning.
-    # * For inngående skjema er brevkoden normalt en NAV-skjemaID f.eks. *"NAV 14-05.09"*. Enkelte vedlegg har en vedleggskode som sier noe om innholdet.
+    # * For inngående skjema er brevkoden normalt en Nav-skjemaID f.eks. *"Nav 14-05.09"*. Enkelte vedlegg har en vedleggskode som sier noe om innholdet.
     # * For utgående dokumenter sier brevkoden noe om hvilken dokumentmal som er benyttet og hvordan dokumentet skal distribueres.
     brevkode: String
 
@@ -575,7 +575,7 @@ enum Datotype {
     # * Returneres for alle journalposttyper
     DATO_JOURNALFOERT
 
-    # * Tidspunkt dokumentene i journalposten ble registrert i NAV sine systemer.
+    # * Tidspunkt dokumentene i journalposten ble registrert i Nav sine systemer.
     # * Returneres for inngående journalposter
     DATO_REGISTRERT
 
@@ -596,7 +596,7 @@ enum Datotype {
 # Indikerer hvor man kan finne saksparten som dokumentene er journalført mot, samt en peker til selve fagsaken, dersom det finnes en.
 # * For pensjons- og uføresaker vil arkivsaksystemet være PSAK. For alle andre sakstyper er arkivsaksystem GSAK.
 enum Arkivsaksystem {
-    # Arkivsaksystem for alle NAV saker unntatt pensjon og uføre.
+    # Arkivsaksystem for alle Nav saker unntatt pensjon og uføre.
     GSAK
 
     # Arkivsaksystem for pensjon og uføre.
@@ -605,13 +605,13 @@ enum Arkivsaksystem {
 
 # Sier hvorvidt journalposten er et inngående dokument, et utgående dokument eller et notat.
 enum Journalposttype {
-    # **Inngående dokument** - Dokumentasjon som NAV har mottatt fra en ekstern part. De fleste inngående dokumenter er søknader, ettersendelser av dokumentasjon til sak, eller innsendinger fra arbeidsgivere. Meldinger brukere har sendt til "Skriv til NAV" arkiveres også som inngående dokumenter..
+    # **Inngående dokument** - Dokumentasjon som Nav har mottatt fra en ekstern part. De fleste inngående dokumenter er søknader, ettersendelser av dokumentasjon til sak, eller innsendinger fra arbeidsgivere. Meldinger brukere har sendt til "Skriv til Nav" arkiveres også som inngående dokumenter..
     I
 
-    # **Unngående dokument** - Dokumentasjon som NAV har produsert og sendt ut til en ekstern part. De fleste utgående dokumenter er informasjons- eller vedtaksbrev til privatpersoner eller organisasjoner. "Skriv til NAV"-meldinger som saksbehandlere har sendt til brukere arkiveres også som utgående dokumenter.
+    # **Unngående dokument** - Dokumentasjon som Nav har produsert og sendt ut til en ekstern part. De fleste utgående dokumenter er informasjons- eller vedtaksbrev til privatpersoner eller organisasjoner. "Skriv til Nav"-meldinger som saksbehandlere har sendt til brukere arkiveres også som utgående dokumenter.
     U
 
-    # **Notat** - Dokumentasjon som NAV har produsert selv, uten at formålet er å distribuere dette ut av NAV. Eksempler på notater er samtalereferater med veileder på kontaktsenter og interne forvaltningsnotater.
+    # **Notat** - Dokumentasjon som Nav har produsert selv, uten at formålet er å distribuere dette ut av Nav. Eksempler på notater er samtalereferater med veileder på kontaktsenter og interne forvaltningsnotater.
     N
 }
 
@@ -708,7 +708,7 @@ enum Kanal {
     # * Brukes for inngående, utgående journalposter og notater.
     SKAN_NETS
 
-    # Forsendelsen er sendt inn på papir og skannet på NAVs skanningsenter for pensjon og bidrag.
+    # Forsendelsen er sendt inn på papir og skannet på Navs skanningsenter for pensjon og bidrag.
     # * Brukes for inngående journalposter.
     SKAN_PEN
 
@@ -724,7 +724,7 @@ enum Kanal {
     # * Brukes for inngående og utgående journalposter.
     HELSENETTET
 
-    # Forsendelsen skal ikke distribueres ut av NAV.
+    # Forsendelsen skal ikke distribueres ut av Nav.
     # * Brukes for alle notater og noen utgående journalposter
     INGEN_DISTRIBUSJON
 
@@ -732,10 +732,10 @@ enum Kanal {
     # * Brukes for inngående journalposter
     NAV_NO_UINNLOGGET
 
-    # Bruker har fylt ut og sendt inn dokumentet sammen med en NAV-ansatt. Det er den NAV-ansatte som var pålogget innsendingsløsningen.
+    # Bruker har fylt ut og sendt inn dokumentet sammen med en Nav-ansatt. Det er den Nav-ansatte som var pålogget innsendingsløsningen.
     INNSENDT_NAV_ANSATT
 
-    # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i NAV.
+    # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i Nav.
     NAV_NO_CHAT
 
     # Brevet er sendt til virksomhet som Taushetsbelagt Post via Altinn.
@@ -746,7 +746,7 @@ enum Kanal {
     # * Brukes for inngående journalposter.
     E_POST
 
-    # Forsendelsen er mottatt i en av NAVs meldingsbokser i Altinn.
+    # Forsendelsen er mottatt i en av Navs meldingsbokser i Altinn.
     # * Brukes for inngående journalposter.
     ALTINN_INNBOKS
 
@@ -755,7 +755,7 @@ enum Kanal {
 }
 
 # Temaet/Fagområdet som en journalpost og tilhørende sak tilhører, f.eks. **FOR** (foreldrepenger).
-# * I NAV brukes Tema for å klassifisere journalposter i arkivet med tanke på gjenfinning, tilgangsstyring og bevaringstid.
+# * I Nav brukes Tema for å klassifisere journalposter i arkivet med tanke på gjenfinning, tilgangsstyring og bevaringstid.
 enum Tema {
     # Arbeidsavklaringspenger
     AAP

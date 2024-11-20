@@ -133,7 +133,7 @@
             <artifactId>util</artifactId>
         </dependency>
 
-        <!-- NAV biblioteker -->
+        <!-- Nav biblioteker -->
 
         <dependency>
             <groupId>no.nav.teamdokumenthandtering</groupId>

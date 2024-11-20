@@ -44,7 +44,7 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 @Tag(name = "AzureAd")
@@ -120,7 +120,7 @@ public class AzureAdRestTjeneste {
                 if (refreshToken == null) {
                     yield badRequest();
                 }
-                token = createToken(ANSATTE_INDEKS.findByIdent("saksbeh"), nonce);
+                token = createToken(ANSATTE_INDEKS.findByIdent("S123456"), nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             default -> {
@@ -144,13 +144,13 @@ public class AzureAdRestTjeneste {
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)")
-    public Response accessToken(@QueryParam("ident") @DefaultValue("saksbeh") String ident) {
+    public Response accessToken(@QueryParam("ident") @DefaultValue("S123456") String ident) {
         var bruker = Optional.ofNullable(ANSATTE_INDEKS.findByIdent(ident)).orElseThrow();
         var token = createToken(bruker, nonceCache.get(NONCE));
         return ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
-    private String createToken(NAVAnsatt bruker, String nonce) {
+    private String createToken(NavAnsatt bruker, String nonce) {
         return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
     }
 
@@ -217,7 +217,7 @@ public class AzureAdRestTjeneste {
                 .collect(Collectors.joining("\n"));
     }
 
-    private static String leggTilRadITabell(URI location, NAVAnsatt ansatt) {
+    private static String leggTilRadITabell(URI location, NavAnsatt ansatt) {
         var redirectForInnloggingAvAnsatt = fromUri(location).queryParam(CODE, ansatt.ident()).build();
         return String.format("<tr><a href=\"%s\"><h1>%s</h1></a></tr>", redirectForInnloggingAvAnsatt, ansatt.displayName());
     }
