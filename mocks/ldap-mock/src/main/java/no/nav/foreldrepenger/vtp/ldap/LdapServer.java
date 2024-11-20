@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
@@ -85,9 +86,9 @@ public class LdapServer {
 
     }
 
-    private static List<String> tilMemberOf(List<NAVAnsatt.NAVGroup> grupper) {
+    private static List<String> tilMemberOf(List<UUID> grupper) {
         return grupper.stream()
-                .map(gruppe -> String.format("CN=%s,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local", gruppe.name()))
+                .map(gruppe -> String.format("CN=%s,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local", GruppeMapping.gruppenavnFraOid(gruppe)))
                 .toList();
     }
 

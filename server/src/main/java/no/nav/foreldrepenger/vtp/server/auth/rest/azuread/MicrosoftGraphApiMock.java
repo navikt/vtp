@@ -20,6 +20,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.ldap.GruppeMapping;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
@@ -133,8 +134,9 @@ public class MicrosoftGraphApiMock {
         return ansatt.groups().stream().map(MicrosoftGraphApiMock::mapTilGroup).toList();
     }
 
-    private static Group mapTilGroup(NAVAnsatt.NAVGroup group) {
-        return new Group(group.oid(), group.name(), group.name());
+    private static Group mapTilGroup(UUID groupOid) {
+        String navn = GruppeMapping.gruppenavnFraOid(groupOid);
+        return new Group(groupOid, navn, navn);
     }
 
     record UserInfo(String sub, String name, String family_name, String given_name, String givenName, String surname,
