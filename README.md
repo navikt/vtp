@@ -21,7 +21,7 @@ Virtuell Tjeneste Plattform (VTP)
 - Team Foreldrepenger <teamforeldrepenger(at)nav.no>
 - Team Sykdom-i-familien
 
-## For NAV-ansatte
+## For Nav-ansatte
 Interne henvendelser kan sendes via Slack i kanalen #vtp-chatten
 
 ## Teknologi som må installeres

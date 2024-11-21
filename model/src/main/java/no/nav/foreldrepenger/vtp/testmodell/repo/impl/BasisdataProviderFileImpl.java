@@ -7,7 +7,7 @@ import java.util.Comparator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
@@ -109,8 +109,8 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
 
     private void loadAnsatte() {
         try (var is = getClass().getResourceAsStream(ANSATTE)) {
-            var ansatte = Arrays.asList(mapper.readValue(is, NAVAnsatt[].class));
-            ansatte.sort(Comparator.comparing(NAVAnsatt::ident));
+            var ansatte = Arrays.asList(mapper.readValue(is, NavAnsatt[].class));
+            ansatte.sort(Comparator.comparing(NavAnsatt::ident));
             ansatteIndeks.leggTil(ansatte);
         } catch (IOException e) {
             throwIllegaleStateExecption(ANSATTE, e);

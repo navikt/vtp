@@ -15,14 +15,11 @@ import org.jose4j.lang.JoseException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 
 
 public final class AzureOidcTokenGenerator {
 
-    private static final AnsatteIndeks ANSATTE_INDEKS = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     private AzureOidcTokenGenerator() {
     }
 
@@ -49,11 +46,11 @@ public final class AzureOidcTokenGenerator {
         }
     }
 
-    public static String azureUserToken(NAVAnsatt bruker, String issuer, String nonce) {
+    public static String azureUserToken(NavAnsatt bruker, String issuer, String nonce) {
         JwtClaims claims = createCommonClaims(bruker.ident(), issuer);
         claims.setStringClaim("oid", bruker.oid().toString());
         claims.setStringClaim("NAVident", bruker.ident());
-        claims.setStringListClaim("groups", bruker.vtpgrupper().stream().toList());
+        claims.setStringListClaim("groups", bruker.groups().stream().map(group -> group.oid().toString()).toList());
 
         if (Objects.nonNull(nonce) && !nonce.isBlank()) {
             claims.setClaim("nonce", nonce);

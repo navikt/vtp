@@ -391,7 +391,7 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- NAV Avhengigheter – kontrakt -->
+            <!-- Nav Avhengigheter – kontrakt -->
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>fp-ws-proxy-v1</artifactId>
