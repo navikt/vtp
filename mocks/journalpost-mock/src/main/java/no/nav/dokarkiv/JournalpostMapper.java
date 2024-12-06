@@ -56,7 +56,7 @@ public class JournalpostMapper {
     }
 
     private boolean erKnyttetTilSak(Sak sak) {
-        return sak != null & sak.getFagsakId() != null;
+        return sak != null && sak.getFagsakId() != null;
     }
 
     private List<DokumentModell> tilDokumentModeller(List<Dokument> dokumenter) {
