@@ -76,7 +76,7 @@ public class FagerMock {
             LOG.info("FAGER: oppgaveUtfoert operation");
             var executionResult = graphqlTjeneste.oppgave(request);
             return executionResult.toSpecification();
-        } else if ("oppgaveUtgaat".equals(operationName)) {
+        } else if ("oppgaveUtgaatt".equals(operationName)) {
             LOG.info("FAGER: oppgaveUtgaat operation");
             var executionResult = graphqlTjeneste.oppgave(request);
             return executionResult.toSpecification();
