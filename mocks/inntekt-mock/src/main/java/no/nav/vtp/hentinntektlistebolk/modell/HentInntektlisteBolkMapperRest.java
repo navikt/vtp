@@ -29,7 +29,7 @@ public class HentInntektlisteBolkMapperRest {
         arbeidsInntektIdent.setArbeidsInntektMaaned(new ArrayList<>());
 
         YearMonth runningMonth = fom;
-        while (runningMonth.isBefore(tom)) {
+        while (runningMonth.isBefore(tom) || runningMonth.equals(tom)) {
             ArbeidsInntektInformasjon arbeidsInntektInformasjon = makeArbeidsInntektInformasjonForMåned(modell, runningMonth,
                     filter82830);
             ArbeidsInntektMaaned arbeidsInntektMaaned = new ArbeidsInntektMaaned();
