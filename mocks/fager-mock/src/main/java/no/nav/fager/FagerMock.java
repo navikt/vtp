@@ -2,6 +2,7 @@ package no.nav.fager;
 
 import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
+import java.util.Collections;
 import java.util.Map;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
@@ -75,7 +76,7 @@ public class FagerMock {
             LOG.info("FAGER: oppgaveUtfoert operation");
             var executionResult = graphqlTjeneste.oppgave(request);
             return executionResult.toSpecification();
-        } else if ("oppgaveUtgaat".equals(operationName)) {
+        } else if ("oppgaveUtgaatt".equals(operationName)) {
             LOG.info("FAGER: oppgaveUtgaat operation");
             var executionResult = graphqlTjeneste.oppgave(request);
             return executionResult.toSpecification();
@@ -92,7 +93,7 @@ public class FagerMock {
             var executionResult = graphqlTjeneste.sak(request);
             return executionResult.toSpecification();
         }
-        throw new NotImplementedException("Operasjon er ikke implementert:" + operationName);
+        throw new NotImplementedException("Operasjon er ikke implementert :" + operationName);
     }
 
     private String sanitizeInput(String input) {

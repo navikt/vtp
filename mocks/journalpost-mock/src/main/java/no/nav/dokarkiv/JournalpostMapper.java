@@ -51,11 +51,12 @@ public class JournalpostMapper {
         modell.setEksternReferanseId(journalpostRequest.getEksternReferanseId());
         modell.setMottakskanal(Mottakskanal.fraKode(journalpostRequest.getKanal()));
         modell.setJournalStatus(erKnyttetTilSak(journalpostRequest.getSak()) ? Journalstatus.JOURNALFØRT : Journalstatus.MOTTATT);
+        modell.setBehandlingTema(journalpostRequest.getBehandlingstema());
         return modell;
     }
 
     private boolean erKnyttetTilSak(Sak sak) {
-        return sak != null & sak.getFagsakId() != null;
+        return sak != null && sak.getFagsakId() != null;
     }
 
     private List<DokumentModell> tilDokumentModeller(List<Dokument> dokumenter) {

@@ -27,7 +27,7 @@ import com.unboundid.ldif.LDIFChangeRecord;
 import com.unboundid.ldif.LDIFReader;
 
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 public class LdapServer {
@@ -56,16 +56,16 @@ public class LdapServer {
 
         directoryServer = new InMemoryDirectoryServer(cfg);
         readLdifFilesFromClasspath();
-        readNAVAnsatte();
+        readNavAnsatte();
     }
 
-    private void readNAVAnsatte() throws LDAPException {
-        for (NAVAnsatt navAnsatt : ansattIndeks.alleAnsatte()) {
+    private void readNavAnsatte() throws LDAPException {
+        for (NavAnsatt navAnsatt : ansattIndeks.alleAnsatte()) {
             addNavAnsatt(navAnsatt);
         }
     }
 
-    private void addNavAnsatt(NAVAnsatt navAnsatt) throws LDAPException {
+    private void addNavAnsatt(NavAnsatt navAnsatt) throws LDAPException {
         var entry = new Entry(
                 String.format("CN=%s,OU=Users,OU=NAV,OU=BusinessUnits,DC=test,DC=local", navAnsatt.ident()),
                 new Attribute("objectClass", "user", "organizationalPerson", "person", "top"),
@@ -85,7 +85,7 @@ public class LdapServer {
 
     }
 
-    private static List<String> tilMemberOf(List<NAVAnsatt.NAVGroup> grupper) {
+    private static List<String> tilMemberOf(List<NavAnsatt.NavGroup> grupper) {
         return grupper.stream()
                 .map(gruppe -> String.format("CN=%s,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local", gruppe.name()))
                 .toList();

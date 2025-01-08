@@ -1,6 +1,6 @@
 [
     {
-        "ident": "saksbeh",
+        "ident": "S123456",
         "oid": "3c3caafb-a943-4255-aa65-6f29345b7541",
         "displayName": "Sara Saksbehandler",
         "givenName": "Sara",
@@ -37,11 +37,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler" ]
+        ]
     },
     {
-        "ident": "saksbeh6",
+        "ident": "S666666",
         "oid": "05801408-feb8-42b2-850a-8d87adb911c7",
         "displayName": "Sa6a Saksbehandler6",
         "givenName": "Sa6a",
@@ -86,11 +85,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler", "kode6" ]
+        ]
     },
     {
-        "ident": "saksbeh7",
+        "ident": "S777777",
         "oid": "352b0a40-4d13-43e7-8e55-ba6060d6d430",
         "displayName": "Sa7a Saksbehandler7",
         "givenName": "Sa7a",
@@ -135,11 +133,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler", "kode7" ]
+        ]
     },
     {
-        "ident": "saksbha",
+        "ident": "E123456",
         "oid": "98f1a0f3-292e-412c-b84a-d729b6169f2b",
         "displayName": "Ea Saksbehandler",
         "givenName": "Ea",
@@ -184,11 +181,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler", "egenansatt" ]
+        ]
     },
     {
-        "ident": "beslut",
+        "ident": "B123456",
         "oid": "fb864a55-bc42-4196-aba9-792c78661806",
         "displayName": "Birger Beslutter",
         "givenName": "Birger",
@@ -233,11 +229,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler", "beslutter" ]
+        ]
     },
     {
-        "ident": "oversty",
+        "ident": "O123456",
         "oid": "d6881997-05d7-4ff2-8ef6-818d8539c434",
         "displayName": "Ove Overstyrer",
         "givenName": "Ove",
@@ -282,11 +277,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler", "overstyrer" ]
+        ]
     },
     {
-        "ident": "klageb",
+        "ident": "K123456",
         "oid": "cf70667f-250e-4565-a365-75f07f87fe29",
         "displayName": "Klara Klagebehandler",
         "givenName": "Klara",
@@ -327,11 +321,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler" ]
+        ]
     },
     {
-        "ident": "veil",
+        "ident": "V123456",
         "oid": "ba6f0772-b99b-4eb9-857e-7a9e6720d582",
         "displayName": "Vegard Veileder",
         "givenName": "Vegard",
@@ -341,16 +334,8 @@
         "enheter": [],
         "groups": [
             {
-                "oid": "eb211c0d-9ca6-467f-8863-9def2cc06fd3",
-                "name": "0000-GA-fpsak-saksbehandler"
-            },
-            {
                 "oid": "edfe14fe-9a34-4ecb-8840-536ac2bc2818",
                 "name": "0000-GA-fpsak-veileder"
-            },
-            {
-                "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
-                "name": "0000-GA-k9-saksbehandler"
             },
             {
                 "oid": "79630737-b41d-41eb-93fb-30907e1afed7",
@@ -376,16 +361,15 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "veileder" ]
+        ]
     },
     {
-        "ident": "oppgs",
+        "ident": "L123456",
         "oid": "4cd710cc-c367-4110-8126-fe495ee11c23",
-        "displayName": "Oline Oppgavestyrer",
+        "displayName": "Oline Los-Oppgavestyrer",
         "givenName": "Oline",
-        "surname": "Oppgavestyrer",
-        "email": "oline.oppgavestyrer@example.com",
+        "surname": "Los-Oppgavestyrer",
+        "email": "oline.los-oppgavestyrer@example.com",
         "streetAddress": "4833",
         "enheter": [],
         "groups": [
@@ -425,11 +409,10 @@
                 "oid": "39f2f9c8-1631-438a-a82e-8bed14adb672",
                 "name": "0000-GA-INNTK"
             }
-        ],
-        "vtpgrupper": [ "saksbehandler", "oppgavestyrer" ]
+        ]
     },
     {
-        "ident": "drift",
+        "ident": "D123456",
         "oid": "d3b97fcb-8778-4e09-ba7e-f8993d6e26a6",
         "displayName": "Daniel Drifter",
         "givenName": "Daniel",
@@ -446,11 +429,10 @@
                 "oid": "7ac42b69-14af-479e-9e9c-b2235bea9863",
                 "name": "0000-GA-k9-drift"
             }
-        ],
-        "vtpgrupper": [ "drift", "veileder" ]
+        ]
     },
     {
-        "ident": "pip",
+        "ident": "P123456",
         "oid": "3d48bf40-4bfd-48d8-8280-065bf8ced9cd",
         "displayName": "Policy Information Point",
         "givenName": "Policy Information",
@@ -458,7 +440,6 @@
         "email": "pip@example.com",
         "streetAddress": "2970",
         "enheter": [],
-        "groups": [],
-        "vtpgrupper": [ "pip" ]
+        "groups": []
     }
 ]

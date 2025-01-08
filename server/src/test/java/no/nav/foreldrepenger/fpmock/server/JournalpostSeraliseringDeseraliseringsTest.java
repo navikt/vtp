@@ -3,6 +3,8 @@ package no.nav.foreldrepenger.fpmock.server;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BehandlingsTema;
+
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
@@ -47,6 +49,7 @@ public class JournalpostSeraliseringDeseraliseringsTest extends SerializationTes
     public void JournalpostModellSeraliseringDeseraliseringTest() {
         test(new JournalpostModell("123456789", "AR123344566", "Inntekstmelding", List.of(lagDokumentModell()), "test",
                 "sakid", "fagsystemId", Journalstatus.MOTTATT, "kommunikasjonsretning", LocalDateTime.now(), Mottakskanal.ALTINN,
-                Arkivtema.FOR, "journaltilstand", Journalposttyper.INNGAAENDE_DOKUMENT, new JournalpostBruker("12345", BrukerType.FNR)));
+                Arkivtema.FOR, "journaltilstand", Journalposttyper.INNGAAENDE_DOKUMENT, new JournalpostBruker("12345", BrukerType.FNR),
+                BehandlingsTema.FORELDREPENGER.getOffisiellKode()));
     }
 }

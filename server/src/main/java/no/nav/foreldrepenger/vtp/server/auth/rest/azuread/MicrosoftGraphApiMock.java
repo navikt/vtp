@@ -21,7 +21,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NAVAnsatt;
+import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
 @Tag(name = "AzureAd")
@@ -70,7 +70,7 @@ public class MicrosoftGraphApiMock {
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    private static @NotNull MemberOfResponse opprettMemberOfResponse(NAVAnsatt ansatt) {
+    private static @NotNull MemberOfResponse opprettMemberOfResponse(NavAnsatt ansatt) {
         return new MemberOfResponse("https://graph.microsoft.com/v1.0/$metadata#groups(" + ansatt.displayName() + ")", null,
                 mapTilUserGroupsResponse(ansatt));
     }
@@ -82,7 +82,7 @@ public class MicrosoftGraphApiMock {
         var filterBy = filter.split(" eq ");
         var identifikator = filterBy[1].replace("'", "");
 
-        NAVAnsatt ansatt;
+        NavAnsatt ansatt;
         if (filterBy[0].contains("onPremisesSamAccountName")) {
             ansatt = ANSATTE_INDEKS.findByIdent(identifikator);
         } else {
@@ -112,7 +112,7 @@ public class MicrosoftGraphApiMock {
         return Response.noContent().build();
     }
 
-    private NAVAnsatt getAnsatt(String auth) {
+    private NavAnsatt getAnsatt(String auth) {
         if (!auth.startsWith("Bearer ")) {
             throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>",
                     Response.Status.FORBIDDEN);
@@ -129,11 +129,11 @@ public class MicrosoftGraphApiMock {
         }
     }
 
-    private static List<Group> mapTilUserGroupsResponse(NAVAnsatt ansatt) {
+    private static List<Group> mapTilUserGroupsResponse(NavAnsatt ansatt) {
         return ansatt.groups().stream().map(MicrosoftGraphApiMock::mapTilGroup).toList();
     }
 
-    private static Group mapTilGroup(NAVAnsatt.NAVGroup group) {
+    private static Group mapTilGroup(NavAnsatt.NavGroup group) {
         return new Group(group.oid(), group.name(), group.name());
     }
 

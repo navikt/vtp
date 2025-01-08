@@ -713,8 +713,8 @@ type Endring {
     registrertAv: String!
     # Hvilke system endringen har kommet fra (f.eks srvXXX). Denne blir satt til "FREG" for det vi får fra Folkeregisteret.
     systemkilde: String!
-    # Opphavet til informasjonen. I NAV blir dette satt i forbindelse med registrering (f.eks: Sykehuskassan).
-    # Fra Folkeregisteret får vi opphaven til dems opplysning, altså NAV, UDI, Politiet, Skatteetaten o.l.. Fra Folkeregisteret kan det også være tekniske navn som: DSF_MIGRERING, m.m..
+    # Opphavet til informasjonen. I Nav blir dette satt i forbindelse med registrering (f.eks: Sykehuskassan).
+    # Fra Folkeregisteret får vi opphaven til dems opplysning, altså Nav, UDI, Politiet, Skatteetaten o.l.. Fra Folkeregisteret kan det også være tekniske navn som: DSF_MIGRERING, m.m..
     kilde: String!
 
     hendelseId:String!

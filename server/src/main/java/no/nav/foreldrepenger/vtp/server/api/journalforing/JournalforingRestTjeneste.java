@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.server.api.journalforing.hendelse.JournalforingHendelseSender;
+import no.nav.dokarkiv.JournalforingHendelseSender;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalforingResultatDto;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
