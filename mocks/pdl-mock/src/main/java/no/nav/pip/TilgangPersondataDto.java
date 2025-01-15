@@ -25,7 +25,7 @@ public record TilgangPersondataDto(String aktoerId, Person person, Identer ident
 
     public record GeografiskTilknytning(GtType gtType, String gtKommune, String gtBydel, String gtLand, String regel) { }
 
-    public enum Gradering { STRENGT_FORTROLIG_UTLAND, STRENGT_FORTROLIG, FORTROLIG, @JsonEnumDefaultValue UDEFINERT }
+    public enum Gradering { STRENGT_FORTROLIG_UTLAND, STRENGT_FORTROLIG, FORTROLIG, UGRADERT }
 
     public enum IdentGruppe { AKTORID, FOLKEREGISTERIDENT, NPID, @JsonEnumDefaultValue UDEFINERT }
 

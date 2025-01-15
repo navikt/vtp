@@ -138,12 +138,12 @@ public class PdlPipMock {
     private static TilgangPersondataDto.Gradering tilGradering(PersonModell personModell) {
         var diskresjonskodeType = personModell.getDiskresjonskodeType();
         if (diskresjonskodeType == null) {
-            return TilgangPersondataDto.Gradering.UDEFINERT;
+            return TilgangPersondataDto.Gradering.UGRADERT;
         }
         return switch (diskresjonskodeType) {
             case SPSF -> TilgangPersondataDto.Gradering.STRENGT_FORTROLIG;
             case SPFO -> TilgangPersondataDto.Gradering.FORTROLIG;
-            default ->  TilgangPersondataDto.Gradering.UDEFINERT;
+            default ->  TilgangPersondataDto.Gradering.UGRADERT;
         };
     }
 }
