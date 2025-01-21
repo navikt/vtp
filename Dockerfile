@@ -1,19 +1,10 @@
-FROM gcr.io/distroless/java21-debian12:nonroot
-LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
-# Healtcheck lokalt/test
-COPY --from=busybox:stable-musl /bin/wget /usr/bin/wget
+FROM ghcr.io/navikt/fp-baseimages/distroless:21
 
-WORKDIR /app
+LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
 COPY server/kafkasecurity.conf ./
 COPY server/src/main/resources/logback.xml ./
 COPY server/target/app.jar ./
 COPY server/target/lib/*.jar ./lib/
-
-ENV JDK_JAVA_OPTIONS="-XX:MaxRAMPercentage=75.0 \
-    -XX:+PrintCommandLineFlags \
-    -Dfile.encoding=UTF-8 \
-    -Duser.timezone=Europe/Oslo \
-    -Dlogback.configurationFile=/app/logback.xml"
 
 CMD ["app.jar"]
