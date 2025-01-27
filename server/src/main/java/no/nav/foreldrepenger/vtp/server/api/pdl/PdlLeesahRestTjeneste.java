@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -160,7 +161,7 @@ public class PdlLeesahRestTjeneste {
         LOG.info("Publiserer FOEDSELSDATO_V1 på kafka for barn med ident {}, født: {}", barnIdent, fødselshendelseDto.fødselsdato());
         sendHendelsePåKafka(personhendelse.build());
 
-        if (publiserForelderBarnRelasjonMedFoedselshendelser) {
+        if (Objects.equals(publiserForelderBarnRelasjonMedFoedselshendelser, Boolean.TRUE)) {
             produserForelderBarnRelasjon(fødselshendelseDto, barnIdent);
         }
     }
