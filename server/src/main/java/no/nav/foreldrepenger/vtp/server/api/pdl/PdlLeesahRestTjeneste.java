@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -55,9 +56,11 @@ public class PdlLeesahRestTjeneste {
     private static final String ENDRINGSTYPE = "endringstype";
     private static final String TIDLIGERE_HENDELSE_ID = "tidligereHendelseId";
     private static final String TOPICS = Optional.ofNullable(System.getenv("CREATE_TOPICS")).orElse("");
-    private static final String LEESAH_TOPIC =  Arrays.stream((TOPICS).split(","))
-            .map(String::trim).filter(s -> s.toLowerCase().contains("leesah"))
-            .findFirst().orElse("aapen-person-pdl-leesah-v1-vtp");
+    private static final String LEESAH_TOPIC = Arrays.stream((TOPICS).split(","))
+            .map(String::trim)
+            .filter(s -> s.toLowerCase().contains("leesah"))
+            .findFirst()
+            .orElse("aapen-person-pdl-leesah-v1-vtp");
 
     @Context
     private LocalKafkaProducer localKafkaProducer;
@@ -75,14 +78,18 @@ public class PdlLeesahRestTjeneste {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Legg til hendelse")
-    public Response leggTilHendelse(PersonhendelseDto personhendelseDto) {
+    public Response leggTilHendelse(PersonhendelseDto personhendelseDto,
+                                    @QueryParam("publiserForelderBarnRelasjonMedFoedselshendelser") Boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
         try {
             switch (personhendelseDto) {
-                case FødselshendelseDto fødselshendelseDto -> produserFødselshendelse(fødselshendelseDto);
+                case FødselshendelseDto fødselshendelseDto ->
+                        produserFødselshendelse(fødselshendelseDto, publiserForelderBarnRelasjonMedFoedselshendelser);
                 case DødshendelseDto dødshendelseDto -> produserDødshendelse(dødshendelseDto);
                 case DødfødselhendelseDto dødfødselhendelseDto -> produserDødfødselshendelse(dødfødselhendelseDto);
-                case FamilierelasjonHendelseDto familierelasjonHendelseDto -> produserFamilierelasjonHendelse(familierelasjonHendelseDto);
-                case ForelderBarnRelasjonHendelseDto forelderBarnRelasjonHendelseDto -> produserForelderBarnRelasjonHendelse(forelderBarnRelasjonHendelseDto);
+                case FamilierelasjonHendelseDto familierelasjonHendelseDto ->
+                        produserFamilierelasjonHendelse(familierelasjonHendelseDto);
+                case ForelderBarnRelasjonHendelseDto forelderBarnRelasjonHendelseDto ->
+                        produserForelderBarnRelasjonHendelse(forelderBarnRelasjonHendelseDto);
                 case null, default -> {
                     return Response.status(Response.Status.BAD_REQUEST).entity("{\"error\": \"Ukjent hendelsestype\"}").build();
                 }
@@ -121,18 +128,21 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("forelderBarnRelasjon", forelderBarnRelasjon.build());
         }
 
-        LOG.info("Publiserer FORELDERBARNRELASJON_V1 hendelse med minRolle: {}, minFnr: {}, relatertPersonRolle: {}, relatertPersonFnr: {}",
+        LOG.info(
+                "Publiserer FORELDERBARNRELASJON_V1 hendelse med minRolle: {}, minFnr: {}, relatertPersonRolle: {}, relatertPersonFnr: {}",
                 forelderBarnRelasjonHendelseDto.minRolleForPerson(), forelderBarnRelasjonHendelseDto.fnr(),
                 forelderBarnRelasjonHendelseDto.relatertPersonsRolle(), forelderBarnRelasjonHendelseDto.relatertPersonsFnr());
         sendHendelsePåKafka(personhendelse.build());
     }
 
-    private void produserFødselshendelse(FødselshendelseDto fødselshendelseDto) {
+    private void produserFødselshendelse(FødselshendelseDto fødselshendelseDto,
+                                         Boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
         var barnIdent = registererNyttBarnPåForeldre(fødselshendelseDto);
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set(HENDELSE_ID, UUID.randomUUID().toString());
-        personhendelse.set(PERSONIDENTER, List.of(barnIdent, testscenarioRepository.getPersonIndeks().finnByIdent(barnIdent).getAktørIdent()));
+        personhendelse.set(PERSONIDENTER,
+                List.of(barnIdent, testscenarioRepository.getPersonIndeks().finnByIdent(barnIdent).getAktørIdent()));
         personhendelse.set(MASTER_FIELD, "Freg");
         personhendelse.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set(OPPLYSNINGSTYPE, "FOEDSELSDATO_V1");
@@ -150,7 +160,9 @@ public class PdlLeesahRestTjeneste {
         LOG.info("Publiserer FOEDSELSDATO_V1 på kafka for barn med ident {}, født: {}", barnIdent, fødselshendelseDto.fødselsdato());
         sendHendelsePåKafka(personhendelse.build());
 
-        produserForelderBarnRelasjon(fødselshendelseDto, barnIdent);
+        if (publiserForelderBarnRelasjonMedFoedselshendelser) {
+            produserForelderBarnRelasjon(fødselshendelseDto, barnIdent);
+        }
     }
 
     private void produserForelderBarnRelasjon(FødselshendelseDto fødselshendelseDto, String barnIdent) {
@@ -171,7 +183,8 @@ public class PdlLeesahRestTjeneste {
     private void leggTilForelderBarnRelasjon(List<ForelderBarnRelasjonHendelseDto> dtos,
                                              String endringstype,
                                              String forelderFnr,
-                                             String barnFnr, String forelderRolle) {
+                                             String barnFnr,
+                                             String forelderRolle) {
         dtos.add(new ForelderBarnRelasjonHendelseDto(endringstype, forelderFnr, barnFnr, "BARN", "MOR"));
         dtos.add(new ForelderBarnRelasjonHendelseDto(endringstype, barnFnr, forelderFnr, forelderRolle, "BARN"));
     }
@@ -186,7 +199,8 @@ public class PdlLeesahRestTjeneste {
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set(HENDELSE_ID, UUID.randomUUID().toString());
-        personhendelse.set(PERSONIDENTER, List.of(dødshendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(dødshendelseDto.fnr()).getAktørIdent()));
+        personhendelse.set(PERSONIDENTER, List.of(dødshendelseDto.fnr(),
+                testscenarioRepository.getPersonIndeks().finnByIdent(dødshendelseDto.fnr()).getAktørIdent()));
         personhendelse.set(MASTER_FIELD, "Freg");
         personhendelse.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set(OPPLYSNINGSTYPE, "DOEDSFALL_V1");
@@ -201,7 +215,8 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("doedsfall", dødsfall.build());
         }
 
-        LOG.info("Publiserer DOEDSFALL_V1 hendelse på kafka for person med ident {}, dødsdato: {}", dødshendelseDto.fnr(), dødshendelseDto.doedsdato());
+        LOG.info("Publiserer DOEDSFALL_V1 hendelse på kafka for person med ident {}, dødsdato: {}", dødshendelseDto.fnr(),
+                dødshendelseDto.doedsdato());
         sendHendelsePåKafka(personhendelse.build());
     }
 
@@ -210,7 +225,8 @@ public class PdlLeesahRestTjeneste {
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set(HENDELSE_ID, UUID.randomUUID().toString());
-        personhendelse.set(PERSONIDENTER, List.of(dødfødselhendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(dødfødselhendelseDto.fnr()).getAktørIdent()));
+        personhendelse.set(PERSONIDENTER, List.of(dødfødselhendelseDto.fnr(),
+                testscenarioRepository.getPersonIndeks().finnByIdent(dødfødselhendelseDto.fnr()).getAktørIdent()));
         personhendelse.set(MASTER_FIELD, "Freg");
         personhendelse.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set(OPPLYSNINGSTYPE, "DOEDFOEDT_BARN_V1");
@@ -225,7 +241,8 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("doedfoedtBarn", dødfødtBarn.build());
         }
 
-        LOG.info("Publiserer DOEDFOEDT_BARN_V1 hendelse på kafka for barn med ident {}, dødsdato: {}", dødfødselhendelseDto.fnr(), dødfødselhendelseDto.doedfoedselsdato());
+        LOG.info("Publiserer DOEDFOEDT_BARN_V1 hendelse på kafka for barn med ident {}, dødsdato: {}", dødfødselhendelseDto.fnr(),
+                dødfødselhendelseDto.doedfoedselsdato());
         sendHendelsePåKafka(personhendelse.build());
     }
 
@@ -233,7 +250,8 @@ public class PdlLeesahRestTjeneste {
         var personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
         personhendelse.set(HENDELSE_ID, UUID.randomUUID().toString());
-        personhendelse.set(PERSONIDENTER, List.of(familierelasjonHendelseDto.fnr(), testscenarioRepository.getPersonIndeks().finnByIdent(familierelasjonHendelseDto.fnr()).getAktørIdent()));
+        personhendelse.set(PERSONIDENTER, List.of(familierelasjonHendelseDto.fnr(),
+                testscenarioRepository.getPersonIndeks().finnByIdent(familierelasjonHendelseDto.fnr()).getAktørIdent()));
         personhendelse.set(MASTER_FIELD, "Freg");
         personhendelse.set(OPPRETTET, LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond() * 1000);
         personhendelse.set(OPPLYSNINGSTYPE, "FAMILIERELASJON_V1");
@@ -303,7 +321,8 @@ public class PdlLeesahRestTjeneste {
         setDødsdatoForFamilirelasjoner(personopplysninger.getFamilierelasjonerForBarnet(), dødshendelseDto);
     }
 
-    private void setDødsdatoForFamilirelasjoner(Collection<FamilierelasjonModell> familierelasjonModell, DødshendelseDto dødshendelseDto) {
+    private void setDødsdatoForFamilirelasjoner(Collection<FamilierelasjonModell> familierelasjonModell,
+                                                DødshendelseDto dødshendelseDto) {
         familierelasjonModell.stream()
                 .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(dødshendelseDto.fnr()))
                 .map(fr -> (PersonModell) fr.getTil())
