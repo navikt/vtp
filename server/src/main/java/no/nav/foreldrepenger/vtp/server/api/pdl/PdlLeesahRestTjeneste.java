@@ -158,11 +158,11 @@ public class PdlLeesahRestTjeneste {
         if (fødselshendelseDto.fnrMor() != null) {
             // Legg til relasjoner for mor
             leggTilForelderBarnRelasjon(forelderBarnRelasjonHendelseDtos, fødselshendelseDto.endringstype(),
-                    fødselshendelseDto.fnrMor(), barnIdent);
+                    fødselshendelseDto.fnrMor(), barnIdent, "MOR");
         } else if (fødselshendelseDto.fnrFar() != null) {
             // Legg til relasjoner for far
             leggTilForelderBarnRelasjon(forelderBarnRelasjonHendelseDtos, fødselshendelseDto.endringstype(),
-                    fødselshendelseDto.fnrFar(), barnIdent);
+                    fødselshendelseDto.fnrFar(), barnIdent, "FAR");
         }
 
         forelderBarnRelasjonHendelseDtos.forEach(this::produserForelderBarnRelasjonHendelse);
@@ -171,9 +171,9 @@ public class PdlLeesahRestTjeneste {
     private void leggTilForelderBarnRelasjon(List<ForelderBarnRelasjonHendelseDto> dtos,
                                              String endringstype,
                                              String forelderFnr,
-                                             String barnFnr) {
+                                             String barnFnr, String forelderRolle) {
         dtos.add(new ForelderBarnRelasjonHendelseDto(endringstype, forelderFnr, barnFnr, "BARN", "MOR"));
-        dtos.add(new ForelderBarnRelasjonHendelseDto(endringstype, barnFnr, forelderFnr, "MOR", "BARN"));
+        dtos.add(new ForelderBarnRelasjonHendelseDto(endringstype, barnFnr, forelderFnr, forelderRolle, "BARN"));
     }
 
 
