@@ -1,0 +1,11 @@
+/*https://github.com/navikt/pdl/blob/master/libs/contract-pdl-avro/src/main/avro/no/nav/person/pdl/leesah/forelderbarnrelasjon/ForelderBarnRelasjon.avdl*/
+
+@namespace("no.nav.person.pdl.leesah.forelderbarnrelasjon")
+protocol ForelderBarnRelasjonV1 {
+
+	record ForelderBarnRelasjon {
+		union { null, string } relatertPersonsIdent = null;
+		string relatertPersonsRolle;
+		union { null, string } minRolleForPerson = null;
+	}
+}

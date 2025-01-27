@@ -70,7 +70,7 @@ public class HendelseTest {
         assertEquals(4, testscenario.getPersonopplysninger().getFamilierelasjoner().size());
         assertEquals(3, testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size());
 
-        pdlLeesahRestTjeneste.leggTilHendelse(fødselshendelseDto);
+        pdlLeesahRestTjeneste.leggTilHendelse(fødselshendelseDto, false);
 
         // Henter identen
         var barnIdent = hentUtIdentPåDetSisteBarneSomErRegistert(testscenario.getVariabelContainer());
@@ -93,7 +93,7 @@ public class HendelseTest {
 
         var dødshendelse = new DødshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent,dødsdato);
 
-        pdlLeesahRestTjeneste.leggTilHendelse(dødshendelse);
+        pdlLeesahRestTjeneste.leggTilHendelse(dødshendelse, false);
 
         verifiserDødsdatoErSattForFamilierelasjonsmodell(testscenario.getPersonopplysninger().getFamilierelasjoner(), søkerIdent);
         verifiserDødsdatoErSattForFamilierelasjonsmodell(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart(), søkerIdent);
@@ -115,7 +115,7 @@ public class HendelseTest {
         assertEquals(4, testscenario.getPersonopplysninger().getFamilierelasjoner().size());
         assertEquals(3, testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size());
 
-        pdlLeesahRestTjeneste.leggTilHendelse(dødfødselshendelse);
+        pdlLeesahRestTjeneste.leggTilHendelse(dødfødselshendelse, false);
 
         // Verifiserer riktig format på identen til barn
         var barnIdent = hentUtIdentPåDetSisteBarneSomErRegistert(testscenario.getVariabelContainer());

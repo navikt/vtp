@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = FødselshendelseDto.class, name = "fødselshendelse"),
         @JsonSubTypes.Type(value = FamilierelasjonHendelseDto.class, name = "familierelasjonshendelse"),
         @JsonSubTypes.Type(value = DødshendelseDto.class, name = "dødshendelse"),
-        @JsonSubTypes.Type(value = DødfødselhendelseDto.class, name = "dødfødselhendelse")
+        @JsonSubTypes.Type(value = DødfødselhendelseDto.class, name = "dødfødselhendelse"),
+        @JsonSubTypes.Type(value = ForelderBarnRelasjonHendelseDto.class, name = "forelderBarnRelasjonHendelse"),
 })
 public interface PersonhendelseDto {
 
