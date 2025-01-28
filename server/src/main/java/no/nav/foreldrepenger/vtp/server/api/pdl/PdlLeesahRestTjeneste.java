@@ -80,7 +80,7 @@ public class PdlLeesahRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Legg til hendelse")
     public Response leggTilHendelse(PersonhendelseDto personhendelseDto,
-                                    @QueryParam("publiserForelderBarnRelasjonMedFoedselshendelser") Boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
+                                    @QueryParam("publiserForelderBarnRelasjonMedFoedselshendelser") boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
         try {
             switch (personhendelseDto) {
                 case FødselshendelseDto fødselshendelseDto ->
@@ -137,7 +137,7 @@ public class PdlLeesahRestTjeneste {
     }
 
     private void produserFødselshendelse(FødselshendelseDto fødselshendelseDto,
-                                         Boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
+                                         boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
         var barnIdent = registererNyttBarnPåForeldre(fødselshendelseDto);
         GenericRecordBuilder personhendelse = new GenericRecordBuilder(Personhendelse.SCHEMA$);
 
@@ -161,7 +161,7 @@ public class PdlLeesahRestTjeneste {
         LOG.info("Publiserer FOEDSELSDATO_V1 på kafka for barn med ident {}, født: {}", barnIdent, fødselshendelseDto.fødselsdato());
         sendHendelsePåKafka(personhendelse.build());
 
-        if (Objects.equals(publiserForelderBarnRelasjonMedFoedselshendelser, Boolean.TRUE)) {
+        if (publiserForelderBarnRelasjonMedFoedselshendelser) {
             produserForelderBarnRelasjon(fødselshendelseDto, barnIdent);
         }
     }
