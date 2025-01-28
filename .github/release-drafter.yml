@@ -24,7 +24,3 @@ categories:
 template: |
   ## What's Changed
   $CHANGES
-version-resolver:
-  major: 'major'
-  minor: 'minor'
-  patch: 'patch'
