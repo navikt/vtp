@@ -40,24 +40,6 @@
 
 	<build>
 		<plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <parameters>true</parameters>
-                    <encoding>UTF-8</encoding>
-                    <source>${kontrakt.java.version}</source>
-                    <target>${kontrakt.java.version}</target>
-                    <release>${kontrakt.java.version}</release>
-                </configuration>
-            </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>false</skip>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
