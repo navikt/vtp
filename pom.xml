@@ -24,7 +24,6 @@
     </modules>
 
     <properties>
-        <!-- Sonar -->
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.projectName>vtp</sonar.projectName>
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
