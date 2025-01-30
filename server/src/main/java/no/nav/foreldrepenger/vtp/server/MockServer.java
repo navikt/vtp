@@ -1,16 +1,15 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.LogManager;
-
+import no.nav.foreldrepenger.util.KeystoreUtils;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
+import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
-
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
@@ -25,14 +24,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import no.nav.foreldrepenger.util.KeystoreUtils;
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
-import no.nav.foreldrepenger.vtp.ldap.LdapServer;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.LogManager;
 
 
 public class MockServer {
@@ -118,7 +116,6 @@ public class MockServer {
                         instance,
                         gsakRepo,
                         kafkaServer.getLocalProducer(),
-                        kafkaServer.getKafkaAdminClient(),
                         journalRepository,
                         fagerPortalRepository);
 
