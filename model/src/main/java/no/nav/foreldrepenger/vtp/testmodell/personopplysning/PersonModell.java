@@ -1,20 +1,19 @@
 package no.nav.foreldrepenger.vtp.testmodell.personopplysning;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapModell;
+import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapperiodeModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell.Personstatuser;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JacksonInject;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapModell;
-import no.nav.foreldrepenger.vtp.testmodell.medlemskap.MedlemskapperiodeModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonstatusModell.Personstatuser;
 
 public abstract class PersonModell extends BrukerModell {
 
@@ -32,6 +31,9 @@ public abstract class PersonModell extends BrukerModell {
 
     @JsonProperty("diskresjonskode")
     private Diskresjonskoder diskresjonskode;
+
+    @JsonProperty("erSkjermet")
+    private boolean erSkjermet;
 
     @JsonProperty("språk")
     private String språk;
@@ -122,6 +124,10 @@ public abstract class PersonModell extends BrukerModell {
 
     public Diskresjonskoder getDiskresjonskodeType() {
         return diskresjonskode;
+    }
+
+    public boolean getErSkjermet() {
+        return erSkjermet;
     }
 
     public LocalDate getDødsdato() {
@@ -219,6 +225,11 @@ public abstract class PersonModell extends BrukerModell {
 
     public void setDiskresjonskode(Diskresjonskoder diskresjonskode) {
         this.diskresjonskode = diskresjonskode;
+    }
+
+    public PersonModell setErSkjermet(boolean erSkjermet) {
+        this.erSkjermet = erSkjermet;
+        return this;
     }
 
     public void setDødsdato(LocalDate dødsdato) {
