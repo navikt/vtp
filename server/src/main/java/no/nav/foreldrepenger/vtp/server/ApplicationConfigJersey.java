@@ -1,33 +1,5 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import static java.util.logging.Level.FINE;
-import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import no.nav.altinn.AltinnRettigheterProxyMock;
-
-import no.nav.fager.FagerMock;
-
-import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
-
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
-
-import org.apache.kafka.clients.admin.AdminClient;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.logging.LoggingFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +7,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.GenericOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -58,11 +29,13 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
+import no.nav.altinn.AltinnRettigheterProxyMock;
 import no.nav.axsys.AxsysEnhetstilgangMock;
 import no.nav.axsys.AxsysEnhetstilgangV2Mock;
 import no.nav.digdir.DigdirKrrProxyMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
+import no.nav.fager.FagerMock;
 import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
 import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
 import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.FpWsProxyTilbakekrevingMock;
@@ -78,8 +51,10 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
@@ -105,6 +80,24 @@ import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.logging.Level.FINE;
+import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
 public class ApplicationConfigJersey extends ResourceConfig {
@@ -211,7 +204,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
                                          TestscenarioRepository instance,
                                          GsakRepo gsakRepo,
                                          LocalKafkaProducer localKafkaProducer,
-                                         AdminClient kafkaAdminClient,
                                          JournalRepository journalRepository,
                                          ArbeidsgiverPortalRepository fagerPortalRepository) {
         register(new AbstractBinder() {
@@ -223,7 +215,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
                 bind(fagerPortalRepository).to(ArbeidsgiverPortalRepository.class);
                 bind(gsakRepo).to(GsakRepo.class);
                 bind(localKafkaProducer).to(LocalKafkaProducer.class);
-                bind(kafkaAdminClient).to(AdminClient.class);
             }
         });
         return this;

@@ -1,12 +1,11 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
-import java.util.Properties;
-
+import kafka.server.KafkaConfig;
+import kafka.server.KafkaServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kafka.server.KafkaConfig;
-import kafka.server.KafkaServer;
+import java.util.Properties;
 
 
 class KafkaLocal {
@@ -16,11 +15,9 @@ class KafkaLocal {
     private ZooKeeperLocal zookeeper;
 
     KafkaLocal(Properties kafkaProperties, Properties zkProperties) {
-        KafkaConfig kafkaConfig = new KafkaConfig(kafkaProperties);
-
+        var kafkaConfig = new KafkaConfig(kafkaProperties);
         startZookeeper(zkProperties);
         startKafka(kafkaConfig);
-
     }
 
     private void startZookeeper(Properties zkProperties) {
@@ -35,7 +32,6 @@ class KafkaLocal {
                 true);
         LOG.info("starting local kafka broker...");
         kafka.startup();
-
     }
 
     void stop() {
@@ -44,4 +40,7 @@ class KafkaLocal {
         zookeeper.stop();
     }
 
+    public KafkaServer getKafka() {
+        return kafka;
+    }
 }

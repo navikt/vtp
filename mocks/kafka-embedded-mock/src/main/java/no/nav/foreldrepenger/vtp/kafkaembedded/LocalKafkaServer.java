@@ -1,9 +1,6 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
-import java.util.Collection;
-import java.util.Properties;
-import java.util.stream.Collectors;
-
+import no.nav.foreldrepenger.util.KeystoreUtils;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -15,12 +12,13 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.util.KeystoreUtils;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 
 public class LocalKafkaServer {
 
-    final static public String VTP_KAFKA_HOST = null != System.getenv("VTP_KAFKA_HOST") ? System.getenv("VTP_KAFKA_HOST") : "localhost";
     final private static Logger log = LoggerFactory.getLogger(LocalKafkaServer.class);
     private final Collection<String> bootstrapTopics;
     private KafkaLocal kafka;
@@ -77,20 +75,8 @@ public class LocalKafkaServer {
         return zkProperties;
     }
 
-    private static Properties setupKafkaProperties(int zookeeperPort, int kafkaBrokerPort) {
+    private static Properties setupKafkaProperties(int zookeeperPort) {
         Properties kafkaProperties = new Properties();
-/*
-        //TODO: Gjør dette om til kode når POC fungerer i VTP
-        String listeners = "INTERNAL://localhost:"+kafkaBrokerPort;
-        if(null != System.getenv("VTP_KAFKA_HOST")){
-            listeners = listeners + String.format(",EXTERNAL://%s",VTP_KAFKA_HOST);
-            kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL");
-            LOG.info("VTP_KAFKA_HOST satt for miljø. Starter med følgende listeners: {}", listeners);
-        } else {
-            LOG.info("VTP_KAFKA_HOST ikke satt for miljø. Starter med følgende listeners: {}", listeners);
-            kafkaProperties.put("listener.security.protocol.map","INTERNAL:SASL_SSL");
-        }
-*/
         kafkaProperties.put("listener.security.protocol.map", "INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL"); //TODO: Fjern når POC fungerer
         kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
         kafkaProperties.put("offsets.topic.replication.factor", "1");
@@ -128,21 +114,12 @@ public class LocalKafkaServer {
     }
 
     public void start() {
-        final String bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
+        final var bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
 
-        Properties kafkaProperties = setupKafkaProperties(zookeeperPort, kafkaBrokerPort);
-        Properties zkProperties = setupZookeperProperties(zookeeperPort);
+        var kafkaProperties = setupKafkaProperties(zookeeperPort);
+        var zkProperties = setupZookeperProperties(zookeeperPort);
         System.setProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "kafkasecurity.conf");
-        log.info("Kafka startes med Jaas login config param: " + System.getProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM));
-
-
-        try {
-            kafka = new KafkaLocal(kafkaProperties, zkProperties);
-        } catch (Exception e) {
-            log.error("Kunne ikke starte Kafka producer og/eller consumer", e);
-        }
-
-
+        kafka = new KafkaLocal(kafkaProperties, zkProperties);
         kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
