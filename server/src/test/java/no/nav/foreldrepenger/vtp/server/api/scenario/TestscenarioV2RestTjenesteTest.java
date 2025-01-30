@@ -1,15 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
-
-import org.junit.jupiter.api.Test;
-
 import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
@@ -30,6 +21,13 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TestscenarioV2RestTjenesteTest {
 

@@ -1,15 +1,8 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario.mapper;
 
-import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Adressebeskyttelse;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn;
@@ -30,6 +23,7 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AnnenPartModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Diskresjonskoder;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GateadresseModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.GeografiskTilknytningModell;
@@ -42,6 +36,13 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SivilstandModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
 
 public class PersonopplysningModellMapper {
 
@@ -108,7 +109,20 @@ public class PersonopplysningModellMapper {
         personModell.setSivilstand(tilSivilstand(person.sivilstand()));
         personModell.setPersonstatus(tilPersonstatus(person.personstatus()));
         personModell.setAdresser(tilAdresse(person.adresser()));
+        personModell.setDiskresjonskode(tilDiskresjonskode(person.adressebeskyttelse()));
+        personModell.setErSkjermet(person.erSkjermet());
         personModell.setMedlemskap(tilMedlemskap(person.medlemskap()));
+    }
+
+    private static Diskresjonskoder tilDiskresjonskode(Adressebeskyttelse adressebeskyttelse) {
+        if (adressebeskyttelse == null) {
+            return null;
+        }
+        return switch (adressebeskyttelse) {
+            case FORTROLIG -> Diskresjonskoder.SPFO;
+            case STRENGT_FORTROLIG -> Diskresjonskoder.SPSF;
+            case UGRADERT -> null;
+        };
     }
 
     private static List<FamilierelasjonModell> tilRelasjoner(List<FamilierelasjonModellDto> familierelasjoner, Map<UUID, BrukerModell> allePersoner) {

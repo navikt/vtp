@@ -18,12 +18,15 @@ public record PersonDto(UUID id,
                         List<PersonstatusDto> personstatus,
                         List<MedlemskapDto> medlemskap,
                         List<AdresseDto> adresser,
+                        Adressebeskyttelse adressebeskyttelse,
+                        boolean erSkjermet,
                         InntektYtelseModellDto inntektytelse) {
 
 
     private PersonDto(Builder b) {
         this(b.id, b.rolle, b.fødselsdato, b.dødsdato, b.språk, b.kjønn, b.geografiskTilknytning, b.familierelasjoner,
-                b.statsborgerskap, b.sivilstand, b.personstatus, b.medlemskap, b.adresser, b.inntektytelse);
+                b.statsborgerskap, b.sivilstand, b.personstatus, b.medlemskap, b.adresser, b.adressebeskyttelse,
+                b.erSkjermet, b.inntektytelse);
     }
 
     public static Builder builder() {
@@ -44,6 +47,8 @@ public record PersonDto(UUID id,
         private List<PersonstatusDto> personstatus = new ArrayList<>();
         private List<MedlemskapDto> medlemskap = new ArrayList<>();
         private List<AdresseDto> adresser = new ArrayList<>();
+        private Adressebeskyttelse adressebeskyttelse;
+        private boolean erSkjermet;
         private InntektYtelseModellDto inntektytelse;
 
 
@@ -101,6 +106,14 @@ public record PersonDto(UUID id,
 
         public List<AdresseDto> adresser() {
             return adresser;
+        }
+
+        public Adressebeskyttelse adressebeskyttelse() {
+            return adressebeskyttelse;
+        }
+
+        public boolean erSkjermet() {
+            return erSkjermet;
         }
 
         public InntektYtelseModellDto inntektytelse() {
@@ -169,6 +182,16 @@ public record PersonDto(UUID id,
 
         public Builder adresser(List<AdresseDto> adresser) {
             this.adresser = adresser;
+            return this;
+        }
+
+        public Builder addressebeskyttelse(Adressebeskyttelse adressebeskyttelse) {
+            this.adressebeskyttelse = adressebeskyttelse;
+            return this;
+        }
+
+        public Builder erSkjermet(boolean erSkjermet) {
+            this.erSkjermet = erSkjermet;
             return this;
         }
 
