@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.fagerportal;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,10 @@ public class FagerPortalRestTjeneste {
     public Response portalResponse() {
         var saker = arbeidsgiverPortalRepository.hentSaker();
         LOG.info("Det finnes {} saker i fager-mocken.", saker.size());
-        var fagerSaker = saker.stream().map(this::mapTilSakDto).toList();
+        var fagerSaker = saker.stream()
+                .map(this::mapTilSakDto)
+                .sorted(Comparator.comparing(FagerSak::opprettet).reversed())
+                .toList();
         return fagerPortal(fagerSaker);
     }
 
@@ -48,7 +52,10 @@ public class FagerPortalRestTjeneste {
     }
 
     private List<FagerOppgave> maptilOppgaveDto(List<OppgaveModell> oppgaver) {
-        return oppgaver.stream().map(oppgave -> new FagerOppgave(oppgave.tekst(), oppgave.lenke(), oppgave.tilstand().name(), oppgave.opprettetTid(), oppgave.endretTid())).toList();
+        return oppgaver.stream()
+                .map(oppgave -> new FagerOppgave(oppgave.tekst(), oppgave.lenke(), oppgave.tilstand().name(), oppgave.opprettetTid(), oppgave.endretTid()))
+                .sorted(Comparator.comparing(FagerOppgave::opprettet).reversed())
+                .toList();
     }
 
 
@@ -62,6 +69,10 @@ public class FagerPortalRestTjeneste {
                     </head>
                         <body>
                         <div style="text-align:left;width:100%%;">
+                            <div>
+                                <a href="http://localhost:9300/fp-im-dialog/opprett?ytelseType=FORELDREPENGER"><h3>AGI Foreldrepenger</h3></a>
+                                <a href="http://localhost:9300/fp-im-dialog/opprett?ytelseType=SVANGERSKAPSPENGER"><h3>AGI Svangerskapspenger</h3></a>
+                            </div>
                             <caption><h1>Arbeidsgiver Portal saker og oppgaver:</h1></caption>
                             <table>
                                 <tbody>
