@@ -19,10 +19,10 @@ public class BeskjedFagerWiring {
                 .type(MUTATION, typeWiring -> typeWiring.dataFetcher(NyBeskjedMutationRequest.OPERATION_NAME, env -> {
                     try {
 
-                        final var nyOppgave = (Map<String, Object>) env.getArgument("nyBeskjed");
+                        final var nyBeskjed = (Map<String, Object>) env.getArgument("nyBeskjed");
 
-                        final var notifikasjon = (Map<String, String>) nyOppgave.get("notifikasjon");
-                        final var metadata = (Map<String, String>) nyOppgave.get("metadata");
+                        final var notifikasjon = (Map<String, String>) nyBeskjed.get("notifikasjon");
+                        final var metadata = (Map<String, String>) nyBeskjed.get("metadata");
 
                         var grupperingsid = metadata.get("grupperingsid");
                         var virksomhetsnummer = metadata.get("virksomhetsnummer");
