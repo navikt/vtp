@@ -13,6 +13,8 @@ import graphql.execution.SimpleDataFetcherExceptionHandler;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
+import no.nav.fager.beskjed.BeskjedFagerCoordinatorImpl;
+import no.nav.fager.beskjed.BeskjedFagerWiring;
 import no.nav.fager.graphql.GraphQLRequest;
 import no.nav.fager.oppgave.OppgaveFagerCoordinatorImpl;
 import no.nav.fager.oppgave.OppgaveFagerWiring;
@@ -28,6 +30,7 @@ public class FagerGraphqlTjeneste {
 
     private GraphQLSchema sakGraphqlSchema;
     private GraphQLSchema oppgaveGraphqlSchema;
+    private GraphQLSchema beskjedGraphqlSchema;
 
     public static FagerGraphqlTjeneste getInstance(ArbeidsgiverPortalRepository arbeidsgiverPortalRepository) {
         if (instance == null) {
@@ -54,6 +57,9 @@ public class FagerGraphqlTjeneste {
 
         var oppgaveWiring = OppgaveFagerWiring.lagRuntimeWiring(new OppgaveFagerCoordinatorImpl(arbeidsgiverPortalRepository), originalWiring);
         oppgaveGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, oppgaveWiring);
+
+        var beskjedWiring = BeskjedFagerWiring.lagRuntimeWiring(new BeskjedFagerCoordinatorImpl(arbeidsgiverPortalRepository), originalWiring);
+        beskjedGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, beskjedWiring);
     }
 
     ExecutionResult sak(GraphQLRequest request) {
@@ -62,6 +68,10 @@ public class FagerGraphqlTjeneste {
 
     ExecutionResult oppgave(GraphQLRequest request) {
         return byggExecutionResult(request, oppgaveGraphqlSchema);
+    }
+
+    ExecutionResult beskjed(GraphQLRequest request) {
+        return byggExecutionResult(request, beskjedGraphqlSchema);
     }
 
     static ExecutionResult byggExecutionResult(GraphQLRequest request, GraphQLSchema graphQLSchema) {

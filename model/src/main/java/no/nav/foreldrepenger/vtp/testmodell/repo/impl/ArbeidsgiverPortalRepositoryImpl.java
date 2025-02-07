@@ -8,6 +8,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.BeskjedModell;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,7 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
     private ConcurrentMap<String, SakModell> sakerGrupperingsId;
     private ConcurrentMap<UUID, OppgaveModell> oppgaver;
     private ConcurrentMap<String, OppgaveModell> oppgaverGrupperingsId;
+    private ConcurrentMap<String, BeskjedModell> beskjederGrupperingsId;
 
     private static ArbeidsgiverPortalRepository instance;
 
@@ -37,6 +40,7 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
         oppgaver = new ConcurrentHashMap<>();
         sakerGrupperingsId = new ConcurrentHashMap<>();
         oppgaverGrupperingsId = new ConcurrentHashMap<>();
+        beskjederGrupperingsId = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -87,6 +91,20 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
         return uuid;
     }
 
+    @Override
+    public UUID nyBeskjed(String grupperingsid, String merkelapp, String virksomhetsnummer, String tekst, String lenke) {
+        Objects.requireNonNull(grupperingsid, "grupperingsid");
+        if (beskjederGrupperingsId.containsKey(grupperingsid)) {
+            LOG.warn("FAGER repo: beskjeden finnes allerede: {}", grupperingsid);
+            throw new IllegalStateException("DuplikatEksternIdOgMerkelapp");
+        }
+
+        var uuid = UUID.randomUUID();
+        var nyBeskjed = opprettBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tekst, lenke, uuid);
+        beskjederGrupperingsId.put(grupperingsid, nyBeskjed);
+        return uuid;
+    }
+
     private static OppgaveModell opprettOppgave(String grupperingsid,
                                                 String merkelapp,
                                                 String virksomhetsnummer,
@@ -94,6 +112,16 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
                                                 String lenke,
                                                 UUID uuid) {
         return new OppgaveModell(uuid, grupperingsid, merkelapp, uuid.toString(), virksomhetsnummer, tittel, lenke, OppgaveModell.Tilstand.NY,
+                LocalDateTime.now(), null);
+    }
+
+    private static BeskjedModell opprettBeskjed(String grupperingsid,
+                                                String merkelapp,
+                                                String virksomhetsnummer,
+                                                String tittel,
+                                                String lenke,
+                                                UUID uuid) {
+        return new BeskjedModell(uuid, grupperingsid, merkelapp, uuid.toString(), virksomhetsnummer, tittel, lenke,
                 LocalDateTime.now(), null);
     }
 
@@ -170,7 +198,12 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
     }
 
     @Override
-    public OppgaveModell hentOppgaveFor(String grupperingsId) {
+    public OppgaveModell hentOppgavFor(String grupperingsId) {
         return oppgaverGrupperingsId.get(grupperingsId);
+    }
+
+    @Override
+    public BeskjedModell hentBeskjedFor(String grupperingsId) {
+        return beskjederGrupperingsId.get(grupperingsId);
     }
 }

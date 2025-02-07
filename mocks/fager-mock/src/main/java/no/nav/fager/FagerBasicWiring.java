@@ -51,6 +51,19 @@ public class FagerBasicWiring {
                                     }
                                 })
                 )
+                .type("NyBeskjedResultat", typeWriting ->
+                        typeWriting
+                                .typeResolver(env -> {
+                                    var javaObject = env.getObject();
+                                    if (javaObject instanceof NyBeskjedVellykket) {
+                                        return env.getSchema().getObjectType("NyBeskjedVellykket");
+                                    } else if (javaObject instanceof DuplikatEksternIdOgMerkelapp) {
+                                        return env.getSchema().getObjectType("DuplikatEksternIdOgMerkelapp");
+                                    } else {
+                                        throw new RuntimeException("Ikke støttet type");
+                                    }
+                                })
+                )
                 .type("OppgaveUtgaattResultat", typeWriting ->
                         typeWriting
                                 .typeResolver(env -> {
@@ -228,18 +241,6 @@ public class FagerBasicWiring {
                                 })
                 )
                 .type("OppdaterKalenderavtaleResultat", typeWriting ->
-                        typeWriting
-                                .typeResolver(env -> {
-                                    var javaObject = env.getObject();
-                                    if (javaObject instanceof NySakVellykket) {
-                                        return env.getSchema().getObjectType("NySakVellykket");
-                                    } else {
-                                        return env.getSchema().getObjectType("UkjentProdusent");
-                                    }
-                                })
-                )
-
-                .type("NyBeskjedResultat", typeWriting ->
                         typeWriting
                                 .typeResolver(env -> {
                                     var javaObject = env.getObject();
