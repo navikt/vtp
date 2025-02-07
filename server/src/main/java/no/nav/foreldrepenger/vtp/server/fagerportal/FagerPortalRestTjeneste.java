@@ -44,7 +44,7 @@ public class FagerPortalRestTjeneste {
     }
 
     private FagerSak mapTilSakDto(SakModell sak) {
-        var oppgaver = arbeidsgiverPortalRepository.hentOppgavFor(sak.grupperingsid());
+        var oppgaver = arbeidsgiverPortalRepository.hentOppgaveFor(sak.grupperingsid());
         var beskjeder = arbeidsgiverPortalRepository.hentBeskjedFor(sak.grupperingsid());
 
         return new FagerSak(sak.merkelapp(), sak.virksomhetsnummer(), sak.tittel(), sak.lenke(), sak.status().name(),

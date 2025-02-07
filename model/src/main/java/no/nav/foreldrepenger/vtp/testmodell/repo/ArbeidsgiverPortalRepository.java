@@ -40,7 +40,7 @@ public interface ArbeidsgiverPortalRepository {
 
     List<SakModell> hentSaker();
 
-    OppgaveModell hentOppgavFor(String grupperingsid);
+    OppgaveModell hentOppgaveFor(String grupperingsid);
 
     BeskjedModell hentBeskjedFor(String grupperingsid);
 }

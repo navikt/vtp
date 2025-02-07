@@ -198,7 +198,7 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
     }
 
     @Override
-    public OppgaveModell hentOppgavFor(String grupperingsId) {
+    public OppgaveModell hentOppgaveFor(String grupperingsId) {
         return oppgaverGrupperingsId.get(grupperingsId);
     }
 
