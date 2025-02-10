@@ -89,6 +89,10 @@ public class FagerMock {
             LOG.info("FAGER: hardDeleteSak operation");
             var executionResult = graphqlTjeneste.sak(request);
             return executionResult.toSpecification();
+        } else if ("nyBeskjed".equals(operationName)) {
+            LOG.info("FAGER: nyBeskjed operation");
+            var executionResult = graphqlTjeneste.beskjed(request);
+            return executionResult.toSpecification();
         }
         throw new NotImplementedException("Operasjon er ikke implementert :" + operationName);
     }
