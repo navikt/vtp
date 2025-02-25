@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum DokumenttypeId {
 
@@ -13,40 +13,56 @@ public enum DokumenttypeId {
     SØKNAD_ENGANGSSTØNAD_ADOPSJON("I000004", "Søknad om engangsstønad ved adopsjon"),
     SØKNAD_FORELDREPENGER_FØDSEL("I000005", "Søknad om foreldrepenger ved fødsel"),
     FLEKSIBELT_UTTAK_FORELDREPENGER("I000006", "Utsettelse eller gradert uttak av foreldrepenger (fleksibelt uttak)"),
-    INNTEKTSOPPLYSNING_SELVSTENDIG("I000007", "Inntektsopplysninger om selvstendig næringsdrivende og/eller frilansere som skal ha foreldrepenger eller svangerskapspenger"),
-    LEGEERKLÆRING("I000023", "Legeerklæring"),
-    INNTEKTSOPPLYSNINGER("I000026", "Inntektsopplysninger for arbeidstaker som skal ha sykepenger, foreldrepenger, svangerskapspenger, pleie-/opplæringspenger"),
-    KLAGE_DOKUMENT("I000027", "Klage/anke"),
-    DOK_INNLEGGELSE("I000037", "Dokumentasjon av innleggelse i helseinstitusjon"),
-    DOK_MORS_UTDANNING_ARBEID_SYKDOM("I000038", "Dokumentasjon av mors utdanning, arbeid eller sykdom"),
-    DOK_MILITÆR_SIVIL_TJENESTE("I000039", "Dokumentasjon av militær- eller siviltjeneste"),
-    DOK_ASYL_DATO("I000040", "Dokumentasjon av dato for asyl"),
-    DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL("I000041", "Dokumentasjon av termindato, fødsel eller dato for omsorgsovertakelse"),
-    DOKUMENTASJON_AV_OMSORGSOVERTAKELSE("I000042", "Dokumentasjon av dato for overtakelse av omsorg"),
     FORELDREPENGER_ENDRING_SØKNAD("I000050", "Søknad om endring av uttak av foreldrepenger eller overføring av kvote"),
+
+    // Inntektsmelding
     INNTEKTSMELDING("I000067", "Inntektsmelding"),
 
-    // DoksysKoder
-    FPPROD_POSITIVT_VEDTAKSBREV("000048", null),
-    FPPROD_INNHENT_DOKUMENTASJON("000049", null),
-    FPPROD_BEHANDLING_AVBRUTT("000050", null),
-    FPPROD_AVSLAGSBREV("000051", null),
-    FPPROD_UENDRET_UTFALL("000052", null),
-    FPPROD_VEDTAK_OM_AVVIST_KLAGE("000054", null),
-    FPPROD_VEDTAK_OM_STADFESTELSE("000055", null),
-    FPPROD_FORLENGET_SAKSBEHANDLINGSTID("000056", null),
-    FPPROD_FORLENGET_SAKSBEHANDLINGSTID__TIDLIG_SØKNAD("000056", null),
-    FPPROD_VARSEL_OM_REVURDERING("000058", null),
-    FPPROD_VEDTAK_OPPHEVET__SENDT_TIL_NY_BEHANDLING("000059", null),
-    FPPROD_OVERFØRING_TIL_NAV_KLAGEINSTANS("000060", null),
-    FPPROD_INNVILGELSESBREV_FORELDREPENGER("000061", null),
-    FPPROD_SVAR_PÅ_INNSYNSKRAV("000071", null),
-    FPPROD_OPPHØR_BREV("000085", null),
-    FPPROD_AVSLAGSBREV_FORELDREPENGER("000080", null),
-    FPPROD_IKKE_MOTTATT_SØKNAD("000091", null),
-    FPPROD_FRITEKSTBREV("000096", null),
-    FPPROD_VEDTAK_MEDHOLD("000114", null),
-    UDEFINERT("-", null);
+    // Inntekt
+    INNTEKTSOPPLYSNING_SELVSTENDIG("I000007", "Inntektsopplysninger om selvstendig næringsdrivende og/eller frilansere som skal ha foreldrepenger eller svangerskapspenger"),
+    INNTEKTSOPPLYSNINGER("I000026", "Inntektsopplysninger for arbeidstaker som skal ha sykepenger foreldrepenger svangerskapspenger pleie-/opplæringspenger"),
+    INNTEKTSOPPLYSNINGERNY("I000226", "Inntektsopplysninger for arbeidstaker som skal ha sykepenger foreldrepenger svangerskapspenger pleie-/opplæringspenger og omsorgspenger"),
+    INNTEKTSOPPLYSNINGSSKJEMA("I000052", "Inntektsopplysningsskjema"),
+    DOK_INNTEKT("I000016", "Dokumentasjon av inntekt"),
+    RESULTATREGNSKAP("I000032", "Resultatregnskap"),
+
+    // Vedlegg fra brukerdialog og fyllut-sendinn
+    LEGEERKLÆRING("I000023", "Legeerklæring"),
+    DOK_INNLEGGELSE("I000037", "Dokumentasjon av innleggelse i helseinstitusjon"),
+    DOK_MORS_UTDANNING_ARBEID_SYKDOM("I000038", "Dokumentasjon av mors utdanning arbeid eller sykdom"),
+    DOK_MILITÆR_SIVIL_TJENESTE("I000039", "Dokumentasjon av militær- eller siviltjeneste"),
+    DOKUMENTASJON_AV_TERMIN_ELLER_FØDSEL("I000041", "Dokumentasjon av termindato (lev. kun av mor), fødsel eller dato for omsorgsovertakelse"),
+    DOKUMENTASJON_AV_OMSORGSOVERTAKELSE("I000042", "Dokumentasjon av dato for overtakelse av omsorg"),
+    DOK_ETTERLØNN("I000044", "Dokumentasjon av etterlønn/sluttvederlag"),
+    BESKRIVELSE_FUNKSJONSNEDSETTELSE("I000045", "Beskrivelse av funksjonsnedsettelse"),
+    BEKREFTELSE_FRA_STUDIESTED("I000061", "Bekreftelse fra studiested/skole"),
+    BEKREFTELSE_VENTET_FØDSELSDATO("I000062", "Bekreftelse på ventet fødselsdato"),
+    FØDSELSATTEST("I000063", "Fødselsattest"),
+    BEKREFTELSE_FRA_ARBEIDSGIVER("I000065", "Bekreftelse fra arbeidsgiver"),
+    DOKUMENTASJON_ALENEOMSORG("I000110", "Dokumentasjon av aleneomsorg"),
+    BEGRUNNELSE_SØKNAD_ETTERSKUDD("I000111", "Dokumentasjon av begrunnelse for hvorfor man søker tilbake i tid"),
+    DOKUMENTASJON_INTRODUKSJONSPROGRAM("I000112", "Dokumentasjon av deltakelse i introduksjonsprogrammet"),
+    DOKUMENTASJON_FORSVARSTJENESTE("I000116", "Bekreftelse på øvelse eller tjeneste i Forsvaret eller Sivilforsvaret"),
+    DOKUMENTASJON_NAVTILTAK("I000117", "Bekreftelse på tiltak i regi av Arbeids- og velferdsetaten"),
+    SEN_SØKNAD("I000118", "Begrunnelse for sen søknad"),
+    MOR_INNLAGT("I000120", "Dokumentasjon på at mor er innlagt på sykehus"),
+    MOR_SYK("I000121", "Dokumentasjon på at mor er syk"),
+    FAR_INNLAGT("I000122", "Dokumentasjon på at far/medmor er innlagt på sykehus"),
+    FAR_SYK("I000123", "Dokumentasjon på at far/medmor er syk"),
+    BARN_INNLAGT("I000124", "Dokumentasjon på at barnet er innlagt på sykehus"),
+    MOR_ARBEID_STUDIE("I000130", "Dokumentasjon på at mor studerer og arbeider til sammen heltid"),
+    MOR_STUDIE("I000131", "Dokumentasjon på at mor studerer på heltid"),
+    MOR_ARBEID("I000132", "Dokumentasjon på at mor er i arbeid"),
+    MOR_KVALPROG("I000133", "Dokumentasjon av mors deltakelse i kvalifiseringsprogrammet"),
+    SKATTEMELDING("I000140", "Skattemelding"),
+    TERMINBEKREFTELSE("I000141", "Terminbekreftelse"),
+    MEDISINSK_DOK("I000142", "Medisinsk dokumentasjon"),
+    OPPHOLD("I000143", "Dokumentasjon på oppholdstillatelse"),
+    REISE("I000144", "Dokumentasjon på reiser til og fra Norge"),
+    OPPFØLGING("I000145", "Dokumentasjon på oppfølging i svangerskapet"),
+    DOKUMENTASJON_INNTEKT("I000146", "Dokumentasjon på inntekt"),
+
+    UDEFINERT(null, "Ukjent type dokument");
 
     private static final Map<String, DokumenttypeId> BY_OFFIFIELLKODE = new ConcurrentHashMap<>();
 
