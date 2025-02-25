@@ -54,7 +54,7 @@ public class JournalpostModellGenerator {
         dokumentModell.setInnhold("innhold: " + dokumenttypeId);
         dokumentModell.setDokumentTilknyttetJournalpost(DokumentTilknyttetJournalpost.HOVEDDOKUMENT);
         dokumentModell.getDokumentVariantInnholdListe().add(new DokumentVariantInnhold(
-                Arkivfiltype.PDF, Variantformat.ARKIV, new byte[0]
+                Arkivfiltype.PDF, Variantformat.ARKIV, dokumenttypeId.getKode().getBytes()
         ));
         journalpostModell.getDokumentModellList().add(dokumentModell);
         return journalpostModell;
