@@ -18,6 +18,12 @@ public enum DokumenttypeId {
     // Inntektsmelding
     INNTEKTSMELDING("I000067", "Inntektsmelding"),
 
+    // Klage + Tilbakekreving
+    KLAGE_DOKUMENT("I000027", "Klage/anke"),
+    ETTERSENDT_KLAGE("I500027", "Ettersendelse til klage/anke"),
+    TILBAKEKREV_UTTALELSE("I000114", "Uttalelse tilbakekreving"),
+    TILBAKEBETALING_UTTALSELSE("I000119", "Uttalelse om tilbakebetaling"),
+
     // Inntekt
     INNTEKTSOPPLYSNING_SELVSTENDIG("I000007", "Inntektsopplysninger om selvstendig næringsdrivende og/eller frilansere som skal ha foreldrepenger eller svangerskapspenger"),
     INNTEKTSOPPLYSNINGER("I000026", "Inntektsopplysninger for arbeidstaker som skal ha sykepenger foreldrepenger svangerskapspenger pleie-/opplæringspenger"),
