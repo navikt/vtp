@@ -62,7 +62,7 @@ public enum DokumenttypeId {
     OPPFØLGING("I000145", "Dokumentasjon på oppfølging i svangerskapet"),
     DOKUMENTASJON_INNTEKT("I000146", "Dokumentasjon på inntekt"),
 
-    UDEFINERT(null, "Ukjent type dokument");
+    UDEFINERT("-", "Ukjent type dokument");
 
     private static final Map<String, DokumenttypeId> BY_OFFIFIELLKODE = new ConcurrentHashMap<>();
 
