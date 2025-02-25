@@ -45,6 +45,7 @@ public enum DokumenttypeId {
     BEKREFTELSE_VENTET_FØDSELSDATO("I000062", "Bekreftelse på ventet fødselsdato"),
     FØDSELSATTEST("I000063", "Fødselsattest"),
     BEKREFTELSE_FRA_ARBEIDSGIVER("I000065", "Bekreftelse fra arbeidsgiver"),
+    SKJEMA_TILRETTELEGGING_OMPLASSERING("I000109", "Skjema for tilrettelegging og omplassering ved graviditet"),
     DOKUMENTASJON_ALENEOMSORG("I000110", "Dokumentasjon av aleneomsorg"),
     BEGRUNNELSE_SØKNAD_ETTERSKUDD("I000111", "Dokumentasjon av begrunnelse for hvorfor man søker tilbake i tid"),
     DOKUMENTASJON_INTRODUKSJONSPROGRAM("I000112", "Dokumentasjon av deltakelse i introduksjonsprogrammet"),
