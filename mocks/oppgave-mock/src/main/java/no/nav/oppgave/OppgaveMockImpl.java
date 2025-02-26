@@ -95,8 +95,10 @@ public class OppgaveMockImpl {
 
         oppgaver.forEach((id, oppgave) -> {
             AtomicInteger matches = new AtomicInteger();
+            AtomicInteger possibleMatches = new AtomicInteger();
             queries.forEach((queryKey, queryValues) -> {
                 if (oppgave.hasNonNull(queryKey) && !queryValues.isEmpty()) {
+                    possibleMatches.getAndIncrement();
                     JsonNode oppgaveValue = oppgave.get(queryKey);
                     String firstQueryValue = queryValues.get(0);
                     switch (oppgaveValue.getNodeType()) {
@@ -114,7 +116,7 @@ public class OppgaveMockImpl {
                     }
                 }
             });
-            if (matches.get() == queries.size()) matching.add(oppgave);
+            if (matches.get() == possibleMatches.get()) matching.add(oppgave);
         });
 
         return Response.ok()
