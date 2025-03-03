@@ -37,14 +37,21 @@ public class DigdirKrrProxyMockTest {
         var kontaktinformasjon = (Kontaktinformasjoner) response.getEntity();
 
         assertThat(kontaktinformasjon).isNotNull();
-        //assertThat(kontaktinformasjon.getSpraak()).isEqualTo("NB");
+        assertThat(kontaktinformasjon.personer()).hasSize(1);
+        assertThat(kontaktinformasjon.personer().get(søker.getIdent()).spraak()).isEqualTo("NB");
     }
 
 
     @Test
     void hentSpråkFraDigdirKrrProxyNårPersonIkkeFinnesKaster404() {
-        var response = digdirKrrProxyMock.hentKontaktinformasjon(List.of("11111122222"), null);
-        assertThat(response.getStatus()).isEqualTo(404);
+        var identSomIkkeFinnes = "11111122222";
+        var response = digdirKrrProxyMock.hentKontaktinformasjon(List.of(identSomIkkeFinnes), null);
+        var kontaktinformasjon = (Kontaktinformasjoner) response.getEntity();
+
+        assertThat(kontaktinformasjon.personer()).isEmpty();
+        assertThat(kontaktinformasjon.feil()).hasSize(1);
+        assertThat(kontaktinformasjon.feil().get(identSomIkkeFinnes)).isEqualTo(Kontaktinformasjoner.FeilKode.person_ikke_funnet);
+
     }
 
 }
