@@ -1,17 +1,16 @@
 package no.nav.digdir;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Collections;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DigdirKrrProxyMockTest {
 
@@ -33,7 +32,7 @@ public class DigdirKrrProxyMockTest {
 
     @Test
     void hentSpråkFraDigdirKrrProxy() {
-        var response = digdirKrrProxyMock.hentKontaktinformasjon(søker.getIdent(), null);
+        var response = digdirKrrProxyMock.hentKontaktinformasjon(søker.getIdent());
         var kontaktinformasjon = (Kontaktinformasjon) response.getEntity();
 
         assertThat(kontaktinformasjon).isNotNull();
@@ -43,7 +42,7 @@ public class DigdirKrrProxyMockTest {
 
     @Test
     void hentSpråkFraDigdirKrrProxyNårPersonIkkeFinnesKaster404() {
-        var response = digdirKrrProxyMock.hentKontaktinformasjon("11111122222", null);
+        var response = digdirKrrProxyMock.hentKontaktinformasjon("11111122222");
         assertThat(response.getStatus()).isEqualTo(404);
     }
 
