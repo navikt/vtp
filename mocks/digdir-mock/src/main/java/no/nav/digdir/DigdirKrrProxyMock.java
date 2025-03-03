@@ -55,11 +55,10 @@ public class DigdirKrrProxyMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(description = "Henter kontaktinformasjon for person")
-    public Response hentKontaktinformasjon(@Valid List<@NotNull String> personidenter,
-                                           @HeaderParam(HEADER_NAV_PERSONIDENT) @NotNull String fnr) {
+    public Response hentKontaktinformasjon(@Valid @NotNull Personidenter personidenter) {
         var kontatkinformasjonerMap = new HashMap<String, Kontaktinformasjoner.Kontaktinformasjon>();
         var feilMap = new HashMap<String, Kontaktinformasjoner.FeilKode>();
-        for (var personident : personidenter) {
+        for (var personident : personidenter.personidenter()) {
             var spraak = hentUtForetrukketSpråkFraBruker(personident);
             if (spraak != null) {
                 kontatkinformasjonerMap.put(personident, new Kontaktinformasjoner.Kontaktinformasjon(spraak));
@@ -84,5 +83,8 @@ public class DigdirKrrProxyMock {
         } else {
             return null;
         }
+    }
+
+    public record Personidenter(List<@NotNull String> personidenter) {
     }
 }

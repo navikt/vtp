@@ -33,7 +33,7 @@ public class DigdirKrrProxyMockTest {
 
     @Test
     void hentSpråkFraDigdirKrrProxy() {
-        var response = digdirKrrProxyMock.hentKontaktinformasjon(List.of(søker.getIdent()), null);
+        var response = digdirKrrProxyMock.hentKontaktinformasjon(new DigdirKrrProxyMock.Personidenter(List.of(søker.getIdent())));
         var kontaktinformasjon = (Kontaktinformasjoner) response.getEntity();
 
         assertThat(kontaktinformasjon).isNotNull();
@@ -45,7 +45,7 @@ public class DigdirKrrProxyMockTest {
     @Test
     void hentSpråkFraDigdirKrrProxyNårPersonIkkeFinnesKaster404() {
         var identSomIkkeFinnes = "11111122222";
-        var response = digdirKrrProxyMock.hentKontaktinformasjon(List.of(identSomIkkeFinnes), null);
+        var response = digdirKrrProxyMock.hentKontaktinformasjon(new DigdirKrrProxyMock.Personidenter(List.of(identSomIkkeFinnes)));
         var kontaktinformasjon = (Kontaktinformasjoner) response.getEntity();
 
         assertThat(kontaktinformasjon.personer()).isEmpty();
