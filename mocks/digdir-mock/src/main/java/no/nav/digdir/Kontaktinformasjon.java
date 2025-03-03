@@ -2,6 +2,7 @@ package no.nav.digdir;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Deprecated
 public class Kontaktinformasjon {
         @JsonProperty("epostadresse")
         private String epostadresse = "noreply@nav.no";
