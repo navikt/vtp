@@ -10,5 +10,6 @@ public enum YtelseType {
     OMP,
     OLP,
     FRISINN,
+    UNG
     ;
 }
