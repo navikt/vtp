@@ -33,3 +33,8 @@ updates:
       interne-deps:
         patterns:
           - "no.nav.*"
+
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: daily

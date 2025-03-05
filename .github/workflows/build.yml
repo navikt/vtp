@@ -71,7 +71,7 @@ jobs:
         id: build_push
         with:
           context: "."
-          file: "Dockerfile"
+          file: "k9.Dockerfile"
           platforms: "linux/amd64,linux/arm64"
           pull: true
           push: true
