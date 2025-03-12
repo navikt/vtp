@@ -100,19 +100,20 @@ public class OppgaveMockImpl {
                 if (oppgave.hasNonNull(queryKey) && !queryValues.isEmpty()) {
                     possibleMatches.getAndIncrement();
                     JsonNode oppgaveValue = oppgave.get(queryKey);
-                    String firstQueryValue = queryValues.get(0);
-                    switch (oppgaveValue.getNodeType()) {
-                        case STRING:
-                            if (oppgaveValue.asText().equals(firstQueryValue)) matches.getAndIncrement();
-                            break;
-                        case NUMBER:
-                            if (oppgaveValue.asLong() == Long.parseLong(firstQueryValue)) matches.getAndIncrement();
-                            break;
-                        case BOOLEAN:
-                            if (oppgaveValue.asBoolean() == firstQueryValue.equals("true")) matches.getAndIncrement();
-                            break;
-                        default:
-                            throw new IllegalStateException("Ikke støttet NodeType " + oppgaveValue.getNodeType().name());
+                    for (String queryValue : queryValues) {
+                        switch (oppgaveValue.getNodeType()) {
+                            case STRING:
+                                if (oppgaveValue.asText().equals(queryValue)) matches.getAndIncrement();
+                                break;
+                            case NUMBER:
+                                if (oppgaveValue.asLong() == Long.parseLong(queryValue)) matches.getAndIncrement();
+                                break;
+                            case BOOLEAN:
+                                if (oppgaveValue.asBoolean() == queryValue.equals("true")) matches.getAndIncrement();
+                                break;
+                            default:
+                                throw new IllegalStateException("Ikke støttet NodeType " + oppgaveValue.getNodeType().name());
+                        }
                     }
                 }
             });
