@@ -79,8 +79,8 @@ public class FagerPortalRestTjeneste {
                         <body>
                         <div style="text-align:left;width:100%%;">
                             <div>
-                                <a href="http://localhost:9300/fp-im-dialog/opprett?ytelseType=FORELDREPENGER"><h3>AGI Foreldrepenger</h3></a>
-                                <a href="http://localhost:9300/fp-im-dialog/opprett?ytelseType=SVANGERSKAPSPENGER"><h3>AGI Svangerskapspenger</h3></a>
+                                <a href="http://localhost:9300/fp-im-dialog/agi?ytelseType=FORELDREPENGER"><h3>AGI Foreldrepenger</h3></a>
+                                <a href="http://localhost:9300/fp-im-dialog/agi?ytelseType=SVANGERSKAPSPENGER"><h3>AGI Svangerskapspenger</h3></a>
                             </div>
                             <caption><h1>Arbeidsgiver Portal saker og oppgaver:</h1></caption>
                             <table>
