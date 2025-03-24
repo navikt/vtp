@@ -1,44 +1,46 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
-import java.util.Properties;
-
-import org.apache.kafka.common.utils.Time;
+import kafka.server.KafkaConfig;
+import kafka.server.KafkaServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kafka.server.KafkaConfig;
-import kafka.server.KafkaRaftServer;
+import java.util.Properties;
 
 
 class KafkaLocal {
     private Logger LOG = LoggerFactory.getLogger(KafkaLocal.class);
 
-    private KafkaRaftServer kafka;
+    private KafkaServer kafka;
+    private ZooKeeperLocal zookeeper;
 
-    KafkaLocal(Properties kafkaProperties) {
+    KafkaLocal(Properties kafkaProperties, Properties zkProperties) {
         var kafkaConfig = new KafkaConfig(kafkaProperties);
+        startZookeeper(zkProperties);
         startKafka(kafkaConfig);
     }
 
+    private void startZookeeper(Properties zkProperties) {
+        LOG.info("starting local zookeeper...");
+        zookeeper = new ZooKeeperLocal(zkProperties);
+    }
+
     private void startKafka(KafkaConfig kafkaConfig) {
-        LOG.info("Starting Kafka in KRaft mode...");
-        kafka = new KafkaRaftServer(kafkaConfig, Time.SYSTEM);
+        kafka = new KafkaServer(kafkaConfig,
+                KafkaServer.$lessinit$greater$default$2(),
+                KafkaServer.$lessinit$greater$default$3(),
+                true);
+        LOG.info("starting local kafka broker...");
         kafka.startup();
-        LOG.info("Kafka started successfully in KRaft mode");
     }
 
     void stop() {
-        LOG.info("Stopping Kafka...");
-        if (kafka != null) {
-            kafka.shutdown();
-            kafka.awaitShutdown();
-        }
-        // Delete temp directories
-        LOG.info("Kafka stopped");
+        LOG.info("stopping kafka...");
+        kafka.shutdown();
+        zookeeper.stop();
     }
 
-
-    public KafkaRaftServer getKafka() {
+    public KafkaServer getKafka() {
         return kafka;
     }
 }
