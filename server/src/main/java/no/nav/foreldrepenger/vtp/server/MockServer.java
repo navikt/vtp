@@ -67,7 +67,8 @@ public class MockServer {
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
         var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
-        kafkaServer = new LocalKafkaServer(kafkaBrokerPort, getBootstrapTopics());
+        var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
+        kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
     }
 
     public static void main(String[] args) throws Exception {
