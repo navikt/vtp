@@ -12,8 +12,8 @@ import java.util.UUID;
 
 import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
 
-class InntektkomponentMapper {
-    private InntektkomponentMapper() {
+class InntektskomponentMapper {
+    private InntektskomponentMapper() {
         // sonar
     }
 

@@ -67,7 +67,7 @@ public class InntektYtelseModellMapper {
         }
         ArenaModell arena = tilArena(i.arena());
         TRexModell trex = tilTrex(i.infotrygd());
-        InntektskomponentModell inntektskomponenten = InntektkomponentMapper.tilInntektkomponenten(i.inntektskomponent(), allePersoner);
+        InntektskomponentModell inntektskomponenten = InntektskomponentMapper.tilInntektkomponenten(i.inntektskomponent(), allePersoner);
         ArbeidsforholdModell arbeidsforhold = tilArbeidsforholdModell(i.aareg(), allePersoner);
         SigrunModell sigrun = tilSigrun(i.sigrun());
         PesysModell pesysModell = tilPesys(i.pesys());
@@ -124,10 +124,10 @@ public class InntektYtelseModellMapper {
                 a.ansettelsesperiodeFom(),
                 tilArbeidsforholdType(a.arbeidsforholdstype()),
                 null,
-                InntektkomponentMapper.tilOrgnummer(a.arbeidsgiver()),
+                InntektskomponentMapper.tilOrgnummer(a.arbeidsgiver()),
                 null,
                 null,
-                InntektkomponentMapper.tilPrivatArbeidgiver(a.arbeidsgiver(), allePersoner)
+                InntektskomponentMapper.tilPrivatArbeidgiver(a.arbeidsgiver(), allePersoner)
         );
     }
 
