@@ -2,6 +2,9 @@ package no.nav.foreldrepenger.vtp.server.api.scenario;
 
 import com.neovisionaries.i18n.CountryCode;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.AaregDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsforholdstype;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsforholdDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseModellDto;
@@ -13,6 +16,8 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Orgnummer;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Permisjonstype;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
@@ -65,13 +70,15 @@ class TestscenarioV2RestTjenesteTest {
                         new InntektkomponentDto(
                                 List.of(new InntektsperiodeDto(LocalDate.now(), null, 2000,
                                         InntektYtelseType.FASTLØNN, InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new OrganisasjonDto(new Orgnummer("99999999"), null)))),
-                        null,
+                        new AaregDto(List.of(ArbeidsforholdDto.builder()
+                                .arbeidsforholdstype(Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD)
+                                .permisjoner(List.of(new PermisjonDto(30, LocalDate.now(), LocalDate.now(), Permisjonstype.PERMISJON))).build())),
                         null,
                         null))
                 .familierelasjoner(List.of(
                         new FamilierelasjonModellDto(FamilierelasjonModellDto.Relasjon.EKTE, morID),
                         new FamilierelasjonModellDto(FamilierelasjonModellDto.Relasjon.BARN, barnID)
-                        ))
+                ))
                 .id(farID)
                 .build();
         var barn = PersonDto.builder()
