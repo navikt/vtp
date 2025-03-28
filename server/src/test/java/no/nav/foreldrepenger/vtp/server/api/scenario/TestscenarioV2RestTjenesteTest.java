@@ -71,7 +71,7 @@ class TestscenarioV2RestTjenesteTest {
                                         InntektYtelseType.FASTLØNN, InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new OrganisasjonDto(new Orgnummer("99999999"), null)))),
                         new AaregDto(List.of(ArbeidsforholdDto.builder()
                                 .arbeidsforholdstype(Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD)
-                                .permisjoner(List.of(new PermisjonDto(30, LocalDate.now(), LocalDate.now(), Permisjonstype.PERMISJON))).build())),
+                                .permisjoner(List.of(new PermisjonDto(30, LocalDate.of(2025, 1,1), LocalDate.of(2025, 1,30), Permisjonstype.PERMISJON))).build())),
                         null,
                         null))
                 .familierelasjoner(List.of(
