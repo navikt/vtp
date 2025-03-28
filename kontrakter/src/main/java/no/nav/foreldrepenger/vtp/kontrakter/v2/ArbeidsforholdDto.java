@@ -8,10 +8,11 @@ public record ArbeidsforholdDto(List<ArbeidsavtaleDto> arbeidsavtaler,
                                 LocalDate ansettelsesperiodeFom,
                                 LocalDate ansettelsesperiodeTom,
                                 Arbeidsforholdstype arbeidsforholdstype,
-                                Arbeidsgiver arbeidsgiver) {
+                                Arbeidsgiver arbeidsgiver,
+                                List<PermisjonDto> permisjoner) {
 
     private ArbeidsforholdDto(Builder b) {
-        this(b.arbeidsavtaler, b.arbeidsforholdId, b.ansettelsesperiodeFom, b.ansettelsesperiodeTom, b.arbeidsforholdstype, b.arbeidsgiver);
+        this(b.arbeidsavtaler, b.arbeidsforholdId, b.ansettelsesperiodeFom, b.ansettelsesperiodeTom, b.arbeidsforholdstype, b.arbeidsgiver, b.permisjoner);
     }
 
     public static Builder builder() {
@@ -25,6 +26,7 @@ public record ArbeidsforholdDto(List<ArbeidsavtaleDto> arbeidsavtaler,
         private LocalDate ansettelsesperiodeTom;
         private Arbeidsforholdstype arbeidsforholdstype;
         private Arbeidsgiver arbeidsgiver;
+        private List<PermisjonDto> permisjoner;
 
         Builder() {
         }
@@ -58,6 +60,11 @@ public record ArbeidsforholdDto(List<ArbeidsavtaleDto> arbeidsavtaler,
 
         public Builder arbeidsgiver(Arbeidsgiver arbeidsgiver) {
             this.arbeidsgiver = arbeidsgiver;
+            return this;
+        }
+
+        public Builder permisjoner(List<PermisjonDto> permisjoner) {
+            this.permisjoner = permisjoner;
             return this;
         }
 

@@ -11,28 +11,19 @@ import java.util.Map;
 import java.util.UUID;
 
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AaregDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsavtaleDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsforholdDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsforholdstype;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaSakerDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaVedtakDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.GrunnlagDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InfotrygdDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseModellDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektkomponentDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektsperiodeDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PesysDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.SigrunDto;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.PesysModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Avlønningstype;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.*;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaMeldekort;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
@@ -40,11 +31,7 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaVedtak;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.RelatertYtelseTema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.SakStatus;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektFordel;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektYtelseType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Inntektsår;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.Oppføring;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
@@ -62,7 +49,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Tema;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TemaKode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Vedtak;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 
 public class InntektYtelseModellMapper {
 
@@ -73,7 +59,6 @@ public class InntektYtelseModellMapper {
     }
 
     private static final String DUMMY_SAKSNUMMER = "999";
-    private static final String INNTEKTPERIODE_BESKRIVELSE = "fastloenn";
     private static final Arbeidskategori GRUNNLAG_KATEGORI = new Arbeidskategori(ArbeidskategoriKode.K01, "kategori");
 
     public static InntektYtelseModell tilInntektytelseModell(InntektYtelseModellDto i, Map<UUID, BrukerModell> allePersoner) {
@@ -82,7 +67,7 @@ public class InntektYtelseModellMapper {
         }
         ArenaModell arena = tilArena(i.arena());
         TRexModell trex = tilTrex(i.infotrygd());
-        InntektskomponentModell inntektskomponenten = tilInntektkomponenten(i.inntektskomponent(), allePersoner);
+        InntektskomponentModell inntektskomponenten = InntektskomponentMapper.tilInntektkomponenten(i.inntektskomponent(), allePersoner);
         ArbeidsforholdModell arbeidsforhold = tilArbeidsforholdModell(i.aareg(), allePersoner);
         SigrunModell sigrun = tilSigrun(i.sigrun());
         PesysModell pesysModell = tilPesys(i.pesys());
@@ -131,104 +116,33 @@ public class InntektYtelseModellMapper {
 
     private static Arbeidsforhold tilArbeidsforhold(ArbeidsforholdDto a, Map<UUID, BrukerModell> allePersoner) {
         return new Arbeidsforhold(
-                tilArbeidsavtaler(a.arbeidsavtaler()),
-                null,
+                ArbeidsavtaleMapper.tilArbeidsavtaler(a.arbeidsavtaler()),
+                PermisjonMapper.tilPermisjoner(a.permisjoner()),
                 a.arbeidsforholdId(),
                 null,
                 a.ansettelsesperiodeTom(),
                 a.ansettelsesperiodeFom(),
                 tilArbeidsforholdType(a.arbeidsforholdstype()),
                 null,
-                tilOrgnummer(a.arbeidsgiver()),
+                InntektskomponentMapper.tilOrgnummer(a.arbeidsgiver()),
                 null,
                 null,
-                tilPrivatArbeidgiver(a.arbeidsgiver(), allePersoner)
+                InntektskomponentMapper.tilPrivatArbeidgiver(a.arbeidsgiver(), allePersoner)
         );
     }
 
     private static no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype tilArbeidsforholdType(
             Arbeidsforholdstype arbeidsforholdstype) {
         return switch (arbeidsforholdstype) {
-            case ORDINÆRT_ARBEIDSFORHOLD -> no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD;
-            case MARITIMT_ARBEIDSFORHOLD -> no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.MARITIMT_ARBEIDSFORHOLD;
-            case FRILANSER_OPPDRAGSTAKER_MED_MER -> no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER;
-            case FORENKLET_OPPGJØRSORDNING -> no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.FORENKLET_OPPGJØRSORDNING;
+            case ORDINÆRT_ARBEIDSFORHOLD ->
+                    no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD;
+            case MARITIMT_ARBEIDSFORHOLD ->
+                    no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.MARITIMT_ARBEIDSFORHOLD;
+            case FRILANSER_OPPDRAGSTAKER_MED_MER ->
+                    no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER;
+            case FORENKLET_OPPGJØRSORDNING ->
+                    no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype.FORENKLET_OPPGJØRSORDNING;
         };
-    }
-
-    private static List<Arbeidsavtale> tilArbeidsavtaler(List<ArbeidsavtaleDto> arbeidsavtaler) {
-        return safeStream(arbeidsavtaler)
-                .map(InntektYtelseModellMapper::tilArbeidsavtale)
-                .toList();
-    }
-
-    private static Arbeidsavtale tilArbeidsavtale(ArbeidsavtaleDto a) {
-        return new Arbeidsavtale(
-                null,
-                Avlønningstype.FASTLØNN,
-                a.avtaltArbeidstimerPerUke(),
-                a.stillingsprosent(),
-                a.beregnetAntallTimerPerUke(),
-                a.sisteLønnsendringsdato(),
-                a.fomGyldighetsperiode(),
-                a.tomGyldighetsperiode()
-        );
-    }
-
-    private static InntektskomponentModell tilInntektkomponenten(InntektkomponentDto inntektskomponent, Map<UUID, BrukerModell> allePersoner) {
-        if (inntektskomponent == null) {
-            return new InntektskomponentModell();
-        }
-        return new InntektskomponentModell(tilInntektsperioder(inntektskomponent.inntektsperioder(), allePersoner), List.of());
-    }
-
-    private static List<Inntektsperiode> tilInntektsperioder(List<InntektsperiodeDto> inntektsperioder, Map<UUID, BrukerModell> allePersoner) {
-        return safeStream(inntektsperioder)
-                .map(i -> tilInntektsperiode(i, allePersoner))
-                .toList();
-    }
-
-    private static Inntektsperiode tilInntektsperiode(InntektsperiodeDto i, Map<UUID, BrukerModell> allePersoner) {
-        var inntektYtelseType = i.inntektYtelseType() != null ? InntektYtelseType.valueOf(i.inntektYtelseType().name()) : null;
-        return new Inntektsperiode(i.fom(), i.tom(), null, i.beløp(), tilOrgnummer(i.arbeidsgiver()), tilInntektType(i),
-                tilInntektFordel(i.inntektFordel()), INNTEKTPERIODE_BESKRIVELSE, inntektYtelseType, null, null,
-                null,
-                tilPrivatArbeidgiver(i.arbeidsgiver(), allePersoner));
-    }
-
-    private static String tilOrgnummer(Arbeidsgiver arbeidsgiver) {
-        if (arbeidsgiver instanceof OrganisasjonDto org) {
-            return org.orgnummer().value();
-        }
-        return null;
-    }
-
-    private static PersonArbeidsgiver tilPrivatArbeidgiver(Arbeidsgiver arbeidsgiver, Map<UUID, BrukerModell> allePersoner) {
-        if (arbeidsgiver instanceof PrivatArbeidsgiver privatArbeidsgiver) {
-            return (PersonArbeidsgiver) allePersoner.get(privatArbeidsgiver.uuid());
-        }
-        return null;
-    }
-
-    private static InntektFordel tilInntektFordel(InntektsperiodeDto.InntektFordelDto inntektFordelDto) {
-        return switch (inntektFordelDto) {
-            case KONTANTYTELSE -> InntektFordel.KONTANTYTELSE;
-            case UTGIFTSGODTGJØRELSE -> InntektFordel.UTGIFTSGODTGJØRELSE;
-            case NATURALYTELSE -> InntektFordel.NATURALYTELSE;
-        };
-    }
-
-    private static InntektType tilInntektType(InntektsperiodeDto inntektsperiodeDto) {
-        if (inntektsperiodeDto.inntektType() != null) {
-            return switch (inntektsperiodeDto.inntektType()) {
-                case LØNNSINNTEKT -> InntektType.LØNNSINNTEKT;
-                case NÆRINGSINNTEKT -> InntektType.NÆRINGSINNTEKT;
-                case PENSJON_ELLER_TRYGD -> InntektType.PENSJON_ELLER_TRYGD;
-                case YTELSE_FRA_OFFENTLIGE -> InntektType.YTELSE_FRA_OFFENTLIGE;
-            };
-        } else {
-            return InntektType.LØNNSINNTEKT;
-        }
     }
 
     private static TRexModell tilTrex(InfotrygdDto infotrygd) {
