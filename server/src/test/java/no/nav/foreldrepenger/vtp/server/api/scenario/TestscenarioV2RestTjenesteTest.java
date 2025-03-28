@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TestscenarioV2RestTjenesteTest {
 
-    // TODO:
     @Test
     void roundtripTestAvOpprettingAvTestcenario() {
         var testscenarioV2RestTjeneste = new TestscenarioV2RestTjeneste(new DelegatingTestscenarioRepository(
