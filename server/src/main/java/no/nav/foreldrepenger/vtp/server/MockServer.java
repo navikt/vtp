@@ -10,6 +10,8 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepo
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
+
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
@@ -57,6 +59,8 @@ public class MockServer {
     }
 
     public MockServer() throws Exception {
+        // Sletter kafkalogger så det ikke feiler i forsøk på å lage nye topics
+        FileUtils.deleteDirectory(new File("./target/kafka-logs"));
         this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", SERVER_PORT));
 
         // Bør denne settes fra ENV_VAR?
