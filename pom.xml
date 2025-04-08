@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>3.6.6</version>
+        <version>3.6.7</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -33,7 +33,7 @@
 
         <!--    Eksterne avhengigheter    -->
         <swagger-codegen-maven-plugin.version>3.0.68</swagger-codegen-maven-plugin.version>
-        <graphql-java.version>22.3</graphql-java.version>
+        <graphql-java.version>23.0</graphql-java.version>
         <graphql-scalar-java.version>22.0</graphql-scalar-java.version>
         <avro.version>1.12.0</avro.version>
     </properties>
@@ -55,7 +55,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>3.6.6</version>
+                <version>3.6.7</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
