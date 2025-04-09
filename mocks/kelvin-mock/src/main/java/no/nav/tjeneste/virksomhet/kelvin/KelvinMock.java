@@ -31,10 +31,10 @@ public class KelvinMock {
 
     @SuppressWarnings("unused")
     @POST
-    @Path("/grunnlag")
+    @Path("/maksimum")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer sykepenger fra Spøkelse")
+    @Operation(description = "Returnerer arbeidsavklaringspenger fra Kelvin og Arena")
     public ArbeidsavklaringspengerResponse postAAP(PersonRequest personRequest) {
         // TODO: Utvide IAY-modell med Kelvin-AAP og populere response med data fra testscenario
         return new ArbeidsavklaringspengerResponse(List.of());
