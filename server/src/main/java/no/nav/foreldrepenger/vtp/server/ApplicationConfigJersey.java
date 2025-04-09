@@ -1,5 +1,24 @@
 package no.nav.foreldrepenger.vtp.server;
 
+import static java.util.logging.Level.FINE;
+import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.integration.GenericOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -72,6 +92,7 @@ import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
+import no.nav.tjeneste.virksomhet.kelvin.KelvinMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
 import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
@@ -80,24 +101,6 @@ import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.logging.LoggingFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static java.util.logging.Level.FINE;
-import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
 public class ApplicationConfigJersey extends ResourceConfig {
@@ -159,6 +162,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(SkjermetPersonMock.class);
         classes.add(UføreMock.class);
         classes.add(SpøkelseMock.class);
+        classes.add(KelvinMock.class);
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
