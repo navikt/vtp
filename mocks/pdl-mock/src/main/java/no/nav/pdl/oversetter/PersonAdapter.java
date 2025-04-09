@@ -54,7 +54,6 @@ public class PersonAdapter {
         person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
         person.setForeldreansvar(ikkeImplementert());
-        person.setFullmakt(ikkeImplementert());
         person.setIdentitetsgrunnlag(ikkeImplementert());
         person.setKjoenn(tilKjoenn(personModell));
         person.setKontaktinformasjonForDoedsbo(ikkeImplementert());
