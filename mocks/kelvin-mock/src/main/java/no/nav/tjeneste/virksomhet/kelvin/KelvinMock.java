@@ -1,7 +1,6 @@
-package no.nav.tjeneste.virksomhet.spokelse.rest;
+package no.nav.tjeneste.virksomhet.kelvin;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,16 +16,16 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
-@Tag(name = "Spokelsemock")
-@Path("/spokelse")
-public class SpøkelseMock {
+@Tag(name = "Kelvinmock")
+@Path("/kelvin")
+public class KelvinMock {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpøkelseMock.class);
-    private static final String LOG_PREFIX = "Spøkelse Rest kall til {}";
+    private static final Logger LOG = LoggerFactory.getLogger(KelvinMock.class);
+    private static final String LOG_PREFIX = "Kevlin Rest kall til {}";
 
     private final TestscenarioBuilderRepository scenarioRepository;
 
-    public SpøkelseMock(@Context TestscenarioBuilderRepository scenarioRepository) {
+    public KelvinMock(@Context TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
 
@@ -36,12 +35,11 @@ public class SpøkelseMock {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer sykepenger fra Spøkelse")
-    public SykepengeVedtak[] postSykepenger(PersonRequest personRequest) {
-        // TODO: Utvide IAY-modell med Spøkelse-SP og populere response med data fra testscenario
-        List<SykepengeVedtak> tomrespons = new ArrayList<>();
-        return tomrespons.toArray(SykepengeVedtak[]::new);
+    public ArbeidsavklaringspengerResponse postAAP(PersonRequest personRequest) {
+        // TODO: Utvide IAY-modell med Kelvin-AAP og populere response med data fra testscenario
+        return new ArbeidsavklaringspengerResponse(List.of());
     }
 
-    public record PersonRequest(String fodselsnummer, LocalDate fom) { }
+    public record PersonRequest(String personidentifikator, LocalDate fraOgMedDato, LocalDate tilOgMedDato) { }
 
 }
