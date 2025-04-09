@@ -1,5 +1,6 @@
 package no.nav.tjeneste.virksomhet.kelvin;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public record ArbeidsavklaringspengerResponse(List<AAPVedtak> vedtak) {
 
     public record AAPVedtak(Integer barnMedStonad, Integer beregningsgrunnlag, Integer dagsats,
-                            String kildesystem, AAPPeriode periode, String saksnummer,
+                            Kildesystem kildesystem, AAPPeriode periode, String saksnummer,
                             String vedtakId, LocalDateTime vedtaksdato, List<AAPUtbetaling> utbetaling) { }
 
 
@@ -18,7 +19,11 @@ public record ArbeidsavklaringspengerResponse(List<AAPVedtak> vedtak) {
                                 Integer barnetillegg, AAPReduksjon reduksjon, Integer utbetalingsgrad) {
     }
 
-    public record AAPReduksjon(Integer annenReduksjon, Integer timerArbeidet) { }
+    public record AAPReduksjon(BigDecimal annenReduksjon, BigDecimal timerArbeidet) { }
+
+    public enum Kildesystem {
+        ARENA, KELVIN
+    }
 
 }
 

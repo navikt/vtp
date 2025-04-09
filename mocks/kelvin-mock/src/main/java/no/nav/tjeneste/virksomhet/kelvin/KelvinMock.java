@@ -21,7 +21,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 public class KelvinMock {
 
     private static final Logger LOG = LoggerFactory.getLogger(KelvinMock.class);
-    private static final String LOG_PREFIX = "Kevlin Rest kall til {}";
+    private static final String LOG_PREFIX = "Kelvin Rest kall til {}";
 
     private final TestscenarioBuilderRepository scenarioRepository;
 
