@@ -37,6 +37,7 @@ public class SpøkelseMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer sykepenger fra Spøkelse")
     public SykepengeVedtak[] postSykepenger(PersonRequest personRequest) {
+        // TODO: Utvide IAY-modell med Spøkelse-SP og populere response med data fra testscenario
         List<SykepengeVedtak> tomrespons = new ArrayList<>();
         return tomrespons.toArray(SykepengeVedtak[]::new);
     }
