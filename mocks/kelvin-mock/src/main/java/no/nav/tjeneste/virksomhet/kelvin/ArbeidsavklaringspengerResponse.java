@@ -2,14 +2,13 @@ package no.nav.tjeneste.virksomhet.kelvin;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record ArbeidsavklaringspengerResponse(List<AAPVedtak> vedtak) {
 
     public record AAPVedtak(Integer barnMedStonad, Integer beregningsgrunnlag, Integer dagsats,
                             Kildesystem kildesystem, AAPPeriode periode, String saksnummer,
-                            String vedtakId, LocalDateTime vedtaksdato, List<AAPUtbetaling> utbetaling) { }
+                            String vedtakId, LocalDate vedtaksdato, List<AAPUtbetaling> utbetaling) { }
 
 
 
