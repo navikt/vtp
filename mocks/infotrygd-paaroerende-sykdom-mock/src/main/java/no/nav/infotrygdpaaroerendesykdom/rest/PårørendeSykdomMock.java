@@ -8,6 +8,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.GET;
@@ -18,13 +24,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdArbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgrunnlag.InfotrygdPårørendeSykdomBeregningsgrunnlag;
@@ -55,16 +54,13 @@ public class PårørendeSykdomMock {
         this.scenarioRepository = scenarioRepository;
     }
 
-// todo: sjekk Autorization-token
+    // todo: sjekk Autorization-token
 
     @SuppressWarnings("unused")
     @GET
     @Path("/saker")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "hentSak", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation  = SakResult.class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
-    })
+    @Operation(description = "hentSak", responses = {@ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation = SakResult.class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response hentSakUsingGET(@NotNull @Parameter(name = "fnr", required = true) @QueryParam("fnr") String fnr,
                                     @NotNull @Parameter(name = "fom", required = true) @QueryParam("fom") LocalDate fom,
                                     @Parameter(name = "tom") @QueryParam("tom") LocalDate tom) {
@@ -85,10 +81,7 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/saker")
     @Produces({"application/json"})
-    @Operation(description = "hentSak", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller",  content = @Content(schema = @Schema(implementation  = SakResult[].class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
-    })
+    @Operation(description = "hentSak", responses = {@ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation = SakResult[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response hentSakUsingPost(PersonRequest personRequest) {
         var result = personRequest.fnr().stream().flatMap(fnr -> {
             Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
@@ -106,10 +99,7 @@ public class PårørendeSykdomMock {
     @GET
     @Path("/grunnlag")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "paaroerendeSykdom", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation  = PaaroerendeSykdom[].class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
-    })
+    @Operation(description = "paaroerendeSykdom", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = PaaroerendeSykdom[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response paaroerendeSykdomUsingGET1(@NotNull @Parameter(name = "fnr", required = true) @QueryParam("fnr") String fnr,
                                                @NotNull @Parameter(name = "fom", required = true) @QueryParam("fom") LocalDate fom,
                                                @Parameter(name = "tom") @QueryParam("tom") LocalDate tom) {
@@ -118,7 +108,10 @@ public class PårørendeSykdomMock {
             return Response.ok(List.of()).build();
         }
 
-        List<PaaroerendeSykdom> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
+        List<PaaroerendeSykdom> result = inntektYtelseModell.get()
+                .infotrygdModell()
+                .grunnlag()
+                .stream()
                 .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
                 .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it, fnr))
                 .filter(it -> it.getTema().getKode().equals("BS"))
@@ -131,10 +124,7 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/grunnlag")
     @Produces({"application/json"})
-    @Operation(description = "paaroerendeSykdom", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = PaaroerendeSykdom[].class))),
-            @ApiResponse(responseCode = "AUTHORIZATION", description = "Unauthorized")
-    })
+    @Operation(description = "paaroerendeSykdom", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = PaaroerendeSykdom[].class))), @ApiResponse(responseCode = "AUTHORIZATION", description = "Unauthorized")})
     public Response paaroerendeSykdomUsingPost(PersonRequest personRequest) {
         var result = personRequest.fnr().stream().flatMap(fnr -> {
             Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
@@ -142,7 +132,10 @@ public class PårørendeSykdomMock {
                 return Stream.empty();
             }
 
-            return inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
+            return inntektYtelseModell.get()
+                    .infotrygdModell()
+                    .grunnlag()
+                    .stream()
                     .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
                     .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it, fnr))
                     .filter(it -> it.getTema().getKode().equals("BS"));
@@ -156,10 +149,7 @@ public class PårørendeSykdomMock {
     @GET
     @Path("/vedtakForPleietrengende")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = VedtakPleietrengendeDto[].class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
-    })
+    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = VedtakPleietrengendeDto[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response finnVedtakForPleietrengendeUsingGET(@NotNull @Parameter(name = "Pleietrengendes fødselsnummer", required = true) @QueryParam("fnr") String fnr,
                                                         @NotNull @Parameter(name = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.", required = true) @QueryParam("fom") LocalDate fom,
                                                         @Parameter(name = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.") @QueryParam("tom") LocalDate tom) {
@@ -171,25 +161,21 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/vedtakForPleietrengende")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = VedtakPleietrengendeDto[].class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
-    })
+    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = VedtakPleietrengendeDto[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response finnVedtakForPleietrengendeUsingPost(PersonRequest personRequest) {
         var alleVedtak = personRequest.fnr().stream().flatMap(fnr -> {
-                    var vedtakList = new ArrayList<VedtakPleietrengendeDto>();
-                    var personOpplysninger = scenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(fnr);
-                    var søker = personOpplysninger.getSøker();
-                    var annenPart = personOpplysninger.getAnnenPart();
-                    if (søker != null) {
-                        finnVedtak(søker).ifPresent(vedtakList::add);
-                    }
-                    if (annenPart != null) {
-                        finnVedtak(annenPart).ifPresent(vedtakList::add);
-                    }
-                    return vedtakList.stream();
-                }
-        ).collect(Collectors.toList());
+            var vedtakList = new ArrayList<VedtakPleietrengendeDto>();
+            var personOpplysninger = scenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(fnr);
+            var søker = personOpplysninger.getSøker();
+            var annenPart = personOpplysninger.getAnnenPart();
+            if (søker != null) {
+                finnVedtak(søker).ifPresent(vedtakList::add);
+            }
+            if (annenPart != null) {
+                finnVedtak(annenPart).ifPresent(vedtakList::add);
+            }
+            return vedtakList.stream();
+        }).collect(Collectors.toList());
         return Response.ok(alleVedtak).build();
     }
 
@@ -199,32 +185,35 @@ public class PårørendeSykdomMock {
     }
 
 
-    @GET
+    @POST
     @Path("/rammevedtak/omsorgspenger")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "Finner rammevedtak basert på fødselsnummeret til søker.", responses = {
-            @ApiResponse(responseCode = "OK", description = "paaroerendeSykdom",  content = @Content(schema = @Schema(implementation  = RammevedtakDto[].class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")
-    })
-    public Response finnRammevedtakForOmsorgspengerUsingGET(@NotNull @Parameter(name = "Søkers fødselsnummer", required = true) @QueryParam("fnr") String fnr,
-                                                            @NotNull @Parameter(name = "Fra-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.", required = true) @QueryParam("fom") LocalDate fom,
-                                                            @Parameter(name = "Til-dato for søket. Matcher vedtaksperiode eller dato for rammevedtak.") @QueryParam("tom") LocalDate tom) {
-        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
+    @Operation(description = "Finner rammevedtak basert på fødselsnummeret til søker.", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = RammevedtakDto[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
+    public Response finnRammevedtakForOmsorgspenger(@NotNull PersonRequest request) {
+        if (request.fnr.size() != 1){
+            throw new IllegalArgumentException("Forventet nøyaktig ett FNR, fikk " + request.fnr.size());
+        }
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(request.fnr.get(0));
         if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
 
 
-        List<RammevedtakDto> result = inntektYtelseModell.get().infotrygdModell().grunnlag().stream()
+        List<RammevedtakDto> result = inntektYtelseModell.get()
+                .infotrygdModell()
+                .grunnlag()
+                .stream()
                 .filter(it -> it instanceof InfotrygdRammevedtaksGrunnlag)
                 .map(it -> mapGrunnlagToRammevedtak((InfotrygdRammevedtaksGrunnlag) it))
-                .filter(it -> datoOverlapper(fom, tom, it.getFom(), it.getTom()))
+                .filter(it -> datoOverlapper(request.fom, request.tom, it.getFom(), it.getTom()))
                 //Legg til filter på fra og til (TODO)
                 .collect(Collectors.toList());
 
         return Response.ok(result).build();
     }
 
+    record PersonRequest(@NotNull LocalDate fom, LocalDate tom, @NotNull List<String> fnr, Boolean inkluderHistoriskeIdenter) {
+    }
 
     private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
         if (fom1 == null) {
@@ -243,7 +232,9 @@ public class PårørendeSykdomMock {
     }
 
     private VedtakPleietrengendeDto getVedtak(InntektYtelseModell inntektYtelseModell, String søkerFnr) {
-        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell().ytelser().stream()
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell()
+                .ytelser()
+                .stream()
                 .map(this::mapYtelseToSak)
                 .filter(it -> it.getTema().getKode().equals("BS"))
                 .collect(Collectors.toList());
@@ -256,7 +247,9 @@ public class PårørendeSykdomMock {
 
 
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
-        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell().ytelser().stream()
+        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell()
+                .ytelser()
+                .stream()
                 .map(this::mapYtelseToSak)
                 .filter(it -> it.getTema().getKode().equals("BS"))
                 .collect(Collectors.toList());
@@ -311,7 +304,8 @@ public class PårørendeSykdomMock {
 
         r.foedselsnummerSoeker(fnrSøker);
 
-        List<Arbeidsforhold> arbeidsforholdListe = grunnlag.getArbeidsforhold().stream()
+        List<Arbeidsforhold> arbeidsforholdListe = grunnlag.getArbeidsforhold()
+                .stream()
                 .map(this::mapArbeidsforhold)
                 .collect(Collectors.toList());
 
