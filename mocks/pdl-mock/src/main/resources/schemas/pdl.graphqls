@@ -141,11 +141,11 @@ type Person {
     foedsel: [Foedsel!]! @deprecated(reason: "Erstattet av foedselsdato & foedested")
     foedselsdato: [Foedselsdato!]!
     foedested: [Foedested!]!
+    navspersonidentifikator(historikk: Boolean = false): [Navspersonidentifikator!]!
     folkeregisteridentifikator(historikk: Boolean = false): [Folkeregisteridentifikator!]!
     folkeregisterpersonstatus(historikk: Boolean = false): [Folkeregisterpersonstatus!]!
     forelderBarnRelasjon: [ForelderBarnRelasjon!]!
     foreldreansvar(historikk: Boolean = false): [Foreldreansvar!]!
-    fullmakt(historikk: Boolean = false): [Fullmakt!]!
     identitetsgrunnlag(historikk: Boolean = false): [Identitetsgrunnlag!]!
     kjoenn(historikk: Boolean = false): [Kjoenn!]!
     kontaktadresse(historikk: Boolean = false): [Kontaktadresse!]!
@@ -533,25 +533,15 @@ type Tolk {
     spraak: String
 }
 
-enum FullmaktsRolle {
-    FULLMAKTSGIVER,
-    FULLMEKTIG
-}
-
-type Fullmakt {
-    motpartsPersonident: String!
-    motpartsRolle: FullmaktsRolle!
-    omraader: [String!]!
-    gyldigFraOgMed: Date!
-    gyldigTilOgMed: Date!
-    metadata: Metadata!
-}
-
 type Folkeregisteridentifikator {
     identifikasjonsnummer: String!
     status: String!
     type: String!
     folkeregistermetadata: Folkeregistermetadata!
+    metadata: Metadata!
+}
+type Navspersonidentifikator {
+    identifikasjonsnummer: String!
     metadata: Metadata!
 }
 
@@ -713,8 +703,8 @@ type Endring {
     registrertAv: String!
     # Hvilke system endringen har kommet fra (f.eks srvXXX). Denne blir satt til "FREG" for det vi får fra Folkeregisteret.
     systemkilde: String!
-    # Opphavet til informasjonen. I Nav blir dette satt i forbindelse med registrering (f.eks: Sykehuskassan).
-    # Fra Folkeregisteret får vi opphaven til dems opplysning, altså Nav, UDI, Politiet, Skatteetaten o.l.. Fra Folkeregisteret kan det også være tekniske navn som: DSF_MIGRERING, m.m..
+    # Opphavet til informasjonen. I NAV blir dette satt i forbindelse med registrering (f.eks: Sykehuskassan).
+    # Fra Folkeregisteret får vi opphaven til dems opplysning, altså NAV, UDI, Politiet, Skatteetaten o.l.. Fra Folkeregisteret kan det også være tekniske navn som: DSF_MIGRERING, m.m..
     kilde: String!
 
     hendelseId:String!
@@ -745,7 +735,7 @@ input Criterion {
 
 input SearchRule {
     # Sjekker om feltet finnes / at det ikke har en null verdi.
-    exists:String
+    exists:Boolean
     # Filtrerer bort treff hvor felt inneholder input verdi
     notEquals:String
     # Begrenser treff til kun de hvor felt har input verdi
@@ -755,7 +745,7 @@ input SearchRule {
     # Søk som gir treff også for små variasjoner i skrivemåte
     fuzzy:String
     # Søk som gir tilfeldig poengsum til hvert treff (kun ment til generering av testdata)
-    random:String
+    random:Float
     # Bruk "?" som wildcard for enkelt tegn, og "*" som wildcard for 0 eller flere tegn.
     wildcard:String
     # Gir treff når opgitt feltstarter med opgitt verdi.
@@ -784,7 +774,7 @@ input SearchRule {
     toExcluding:String
 
     # [Flag] Kan brukes til å overstyre standard oppførsellen for søk i felter (standard er case insensitive)
-    caseSensitive:Boolean
+    caseSensitive:Boolean @deprecated(reason: "Denne funksjonen ble lite brukt og er deprecated, dette flagget vil ikke lenger ha noe effekt og vil bli fjernet i fremtiden")
     # [Flag] Brukes til å deaktivere fonetisk søk feltene som har dette som standard (Navn)
     disablePhonetic:Boolean
     # Boost brukes til å gi ett søkekriterie høyere eller lavere vektlegging en de andre søke kriteriene.

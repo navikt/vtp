@@ -432,6 +432,22 @@
         ]
     },
     {
+        "ident": "U123456",
+        "oid": "b11926c5-9c6f-4d20-a667-0471c4fae717",
+        "displayName": "Une Ungdomsprogramveileder",
+        "givenName": "Une",
+        "surname": "Ungdomsprogramveileder",
+        "email": "une.ungdomsprogramveileder@example.com",
+        "streetAddress": "4833",
+        "enheter": [],
+        "groups": [
+            {
+                "oid": "c07ba995-a33f-4d0c-b3a8-321e7990cc03",
+                "name": "0000-CA-ung-programveileder"
+            }
+        ]
+    },
+    {
         "ident": "P123456",
         "oid": "3d48bf40-4bfd-48d8-8280-065bf8ced9cd",
         "displayName": "Policy Information Point",
