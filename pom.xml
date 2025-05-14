@@ -29,7 +29,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>9.3.0</fp-kontrakter.version>
+        <fp-kontrakter.version>9.3.1</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
         <swagger-codegen-maven-plugin.version>3.0.68</swagger-codegen-maven-plugin.version>
