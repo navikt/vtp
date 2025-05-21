@@ -102,6 +102,21 @@ public class MicrosoftGraphApiMock {
 
     @GET
     @Produces({"application/json;charset=UTF-8"})
+    @Path("/v1.0/users/{oid}")
+    public Response getUserById(@PathParam("oid") @NotNull UUID id) {
+        // forventer queryparam $select og ev. $count, men ignorerer i vtp-versjonen
+        var ansatt = ANSATTE_INDEKS.findById(id);
+        if (ansatt == null) {
+            return Response.noContent().build();
+        }
+        var user = new User(ansatt.oid(), ansatt.ident(), ansatt.displayName(), ansatt.givenName(), ansatt.surname(),
+                ansatt.streetAddress(),
+                "https://graph.microsoft.com/v1.0/$metadata#users(id,onPremisesSamAccountName,displayName,givenName,surname,streetAddress)/$entity");
+        return Response.ok(user).build();
+    }
+
+    @GET
+    @Produces({"application/json;charset=UTF-8"})
     @Path("/v1.0/users/{oid}/memberOf")
     public Response userMemberOf(@PathParam("oid") @NotNull UUID id) {
         var ansatt = ANSATTE_INDEKS.findById(id);
