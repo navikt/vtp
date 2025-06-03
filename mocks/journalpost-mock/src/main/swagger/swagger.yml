@@ -1395,7 +1395,7 @@ components:
           description: "Fagsystemet som saken behandles i. Lovlige verdier er \n*\
             \ FS38 (Melosys)\n* FS36 (Foreldrepengeløsningen)\n* UFM (Unntak fra medlemskap)\n\
             * AO01 (Arena)\n* AO11 (Grisen)\n* IT01 (Infotrygd)\n* OEBS\n* PP01\n\
-            * PP01\n* K9\n* BISYS\nSkal kun settes dersom sakstype = FAGSAK"
+            * PP01\n* K9\n* BISYS\n* UNG_SAK\nSkal kun settes dersom sakstype = FAGSAK"
           example: FS38
           enum:
             - FS38
