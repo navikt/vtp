@@ -953,6 +953,9 @@ enum Tema {
     # Ukjent
     UKJ
 
+    # Ungdomsprogramytelsen
+    UNG
+
     # Ventelønn
     VEN
 
