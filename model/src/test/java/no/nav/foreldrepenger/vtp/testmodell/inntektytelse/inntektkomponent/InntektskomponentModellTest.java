@@ -21,7 +21,7 @@ class InntektskomponentModellTest {
 
         assertEquals(1, perioder.size(), "Skal ikke splitte full måned");
         assertEquals(LocalDate.of(2023, 10, 1), perioder.get(0).fom(), "FOM skal være 1. oktober");
-        assertEquals(LocalDate.of(2023, 10, 31), perioder.get(0).tom(), "FOM skal være 31. oktober");
+        assertEquals(LocalDate.of(2023, 10, 31), perioder.get(0).tom(), "TOM skal være 31. oktober");
     }
 
     @Test
