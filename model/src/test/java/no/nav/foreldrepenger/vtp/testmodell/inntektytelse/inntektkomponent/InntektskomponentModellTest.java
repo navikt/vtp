@@ -25,6 +25,36 @@ class InntektskomponentModellTest {
     }
 
     @Test
+    void skal_utvide_måned_som_starter_etter_første() {
+
+        var modell = new InntektskomponentModell(
+                List.of(new Inntektsperiode(LocalDate.of(2023, 10, 5), LocalDate.of(2023, 10, 31), null, 1000, "123456789",
+                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
+                List.of());
+
+        var perioder = modell.getInntektsperioderSplittMånedlig();
+
+        assertEquals(1, perioder.size(), "Skal ikke splitte full måned");
+        assertEquals(LocalDate.of(2023, 10, 1), perioder.get(0).fom(), "FOM skal være 1. oktober");
+        assertEquals(LocalDate.of(2023, 10, 31), perioder.get(0).tom(), "TOM skal være 31. oktober");
+    }
+
+    @Test
+    void skal_utvide_måned_som_slutter_før_siste() {
+
+        var modell = new InntektskomponentModell(
+                List.of(new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 20), null, 1000, "123456789",
+                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
+                List.of());
+
+        var perioder = modell.getInntektsperioderSplittMånedlig();
+
+        assertEquals(1, perioder.size(), "Skal ikke splitte full måned");
+        assertEquals(LocalDate.of(2023, 10, 1), perioder.get(0).fom(), "FOM skal være 1. oktober");
+        assertEquals(LocalDate.of(2023, 10, 31), perioder.get(0).tom(), "TOM skal være 31. oktober");
+    }
+
+    @Test
     void skal_splitte_to_måneder_i_samme_periode() {
 
         var modell = new InntektskomponentModell(
