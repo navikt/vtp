@@ -41,7 +41,7 @@ class InntektskomponentModellTest {
         assertEquals(LocalDate.of(2023, 10, 31), perioder.get(0).tom(), "TOM skal være 31. oktober");
         assertEquals(1000, perioder.get(0).beløp(), "Beløp skal være 1000");
 
-        assertEquals(LocalDate.of(2023, 11, 1), perioder.get(1).fom(), "FOM skal være 1. oktober");
+        assertEquals(LocalDate.of(2023, 11, 1), perioder.get(1).fom(), "FOM skal være 1. november");
         assertEquals(LocalDate.of(2023, 11, 30), perioder.get(1).tom(), "TOM skal være 30. november");
         assertEquals(2000, perioder.get(1).beløp(), "Beløp skal være 2000");
     }
