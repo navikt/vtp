@@ -25,7 +25,7 @@ class InntektskomponentModellTest {
     }
 
     @Test
-    void skal_ikke_splitte_to_fulel_måneder_i_ulike_perioder() {
+    void skal_ikke_splitte_to_fulle_måneder_i_ulike_perioder() {
 
         var modell = new InntektskomponentModell(
                 List.of(new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 31), null, 1000, "123456789",
