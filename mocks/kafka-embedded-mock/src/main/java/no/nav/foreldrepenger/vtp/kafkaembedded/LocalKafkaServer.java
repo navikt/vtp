@@ -1,6 +1,9 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
-import no.nav.foreldrepenger.util.KeystoreUtils;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -12,9 +15,7 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
-import java.util.Properties;
-import java.util.stream.Collectors;
+import no.nav.foreldrepenger.util.KeystoreUtils;
 
 
 public class LocalKafkaServer {
@@ -24,11 +25,9 @@ public class LocalKafkaServer {
     private KafkaLocal kafka;
     private LocalKafkaProducer localProducer;
     private AdminClient kafkaAdminClient;
-    private int zookeeperPort;
     private int kafkaBrokerPort;
 
-    public LocalKafkaServer(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
-        this.zookeeperPort = zookeeperPort;
+    public LocalKafkaServer(final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
         this.kafkaBrokerPort = kafkaBrokerPort;
         this.bootstrapTopics = bootstrapTopics;
     }
@@ -55,39 +54,25 @@ public class LocalKafkaServer {
         return props;
     }
 
-    private static Properties setupZookeperProperties(int zookeeperPort) {
-        Properties zkProperties = new Properties();
-        final String zookeeperTempInstanceDataDir = "" + System.currentTimeMillis(); // For å hindre NodeExists-feil på restart p.g.a. at data allerede finnes i katalogen.
-        zkProperties.put("dataDir", "target/zookeeper/" + zookeeperTempInstanceDataDir);
-        zkProperties.put("clientPort", "" + zookeeperPort);
-        zkProperties.put("admin.enableServer", "false");
-        zkProperties.put("jaasLoginRenew", "3600000");
 
-        zkProperties.put("authorizer.class.name", "kafka.security.auth.SimpleAclAuthorizer");
-        zkProperties.put("allow.everyone.if.no.acl.found", "true");
-        zkProperties.put("ssl.client.auth", "required");
 
-        zkProperties.put("ssl.keystore.location", KeystoreUtils.getKeystoreFilePath());
-        zkProperties.put("ssl.keystore.password", KeystoreUtils.getKeyStorePassword());
-        zkProperties.put("ssl.truststore.location", KeystoreUtils.getTruststoreFilePath());
-        zkProperties.put("ssl.truststore.password", KeystoreUtils.getTruststorePassword());
 
-        return zkProperties;
-    }
-
-    private static Properties setupKafkaProperties(int zookeeperPort) {
+    private static Properties setupKafkaProperties() {
         Properties kafkaProperties = new Properties();
-        kafkaProperties.put("listener.security.protocol.map", "INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL"); //TODO: Fjern når POC fungerer
-        kafkaProperties.put("zookeeper.connect", "localhost:" + zookeeperPort);
+        kafkaProperties.put("process.roles", "broker,controller");
+        kafkaProperties.put("node.id", "1001");
+        kafkaProperties.put("controller.quorum.voters", "1001@localhost:9095");
+        kafkaProperties.put("controller.listener.names", "CONTROLLER");
         kafkaProperties.put("offsets.topic.replication.factor", "1");
         kafkaProperties.put("log.dirs", "target/kafka-logs");
         kafkaProperties.put("auto.create.topics.enable", "true");
-        kafkaProperties.put("listeners", "INTERNAL://:9092,EXTERNAL://:9093");
-        kafkaProperties.put("advertised.listeners", "INTERNAL://localhost:9092,EXTERNAL://vtp:9093");
+        kafkaProperties.put("listeners", "INTERNAL://:9092,EXTERNAL://:9093,PLAINTEXT://:9094,CONTROLLER://:9095");
+        kafkaProperties.put("advertised.listeners", "INTERNAL://localhost:9092,EXTERNAL://vtp:9093,PLAINTEXT://localhost:9094,CONTROLLER://localhost:9095");
         kafkaProperties.put("socket.request.max.bytes", "369296130");
         kafkaProperties.put("sasl.enabled.mechanisms", "DIGEST-MD5,PLAIN");
         kafkaProperties.put("sasl.mechanism.inter.broker.protocol", "PLAIN");
         kafkaProperties.put("inter.broker.listener.name", "INTERNAL");
+        kafkaProperties.put("listener.security.protocol.map", "INTERNAL:SASL_SSL,EXTERNAL:SASL_SSL,PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT");
 
         String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
         kafkaProperties.put("SASL_SSL.".toLowerCase() + SaslConfigs.SASL_JAAS_CONFIG, String.format(jaasTemplate, "vtp", "vtp"));
@@ -101,10 +86,6 @@ public class LocalKafkaServer {
         return kafkaProperties;
     }
 
-    public int getZookeperPort() {
-        return zookeeperPort;
-    }
-
     public int getKafkaBrokerPort() {
         return kafkaBrokerPort;
     }
@@ -116,10 +97,9 @@ public class LocalKafkaServer {
     public void start() {
         final var bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
 
-        var kafkaProperties = setupKafkaProperties(zookeeperPort);
-        var zkProperties = setupZookeperProperties(zookeeperPort);
+        var kafkaProperties = setupKafkaProperties();
         System.setProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "kafkasecurity.conf");
-        kafka = new KafkaLocal(kafkaProperties, zkProperties);
+        kafka = new KafkaLocal(kafkaProperties);
         kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
