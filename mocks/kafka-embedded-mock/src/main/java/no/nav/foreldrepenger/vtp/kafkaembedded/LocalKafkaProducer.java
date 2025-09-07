@@ -4,13 +4,14 @@ import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.avro.generic.GenericData;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
+import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,16 +58,9 @@ public class LocalKafkaProducer {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         props.put(ProducerConfig.RETRIES_CONFIG, 15);
-        props.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
+        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
         props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
         return props;
-    }
-
-    public void sendMelding(String topic, String value) {
-        stringProducer.send(new ProducerRecord<>(topic, value), (recordMetadata, e) -> {
-            LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
-        });
-        stringProducer.flush();
     }
 
     public void sendMelding(String topic, String key, String value) {
