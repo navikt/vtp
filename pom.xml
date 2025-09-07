@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>3.6.18</version>
+        <version>4.0.0</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -29,12 +29,12 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>9.3.8</fp-kontrakter.version>
+        <fp-kontrakter.version>9.4.1</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.68</swagger-codegen-maven-plugin.version>
+        <swagger-codegen-maven-plugin.version>3.0.71</swagger-codegen-maven-plugin.version>
         <graphql-java.version>24.1</graphql-java.version>
-        <graphql-scalar-java.version>22.0</graphql-scalar-java.version>
+        <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
         <avro.version>1.12.0</avro.version>
     </properties>
 
@@ -55,7 +55,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>3.6.18</version>
+                <version>4.0.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -237,11 +237,6 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-streams</artifactId>
-                <version>${kafka.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka_2.12</artifactId>
                 <version>${kafka.version}</version>
             </dependency>
@@ -275,7 +270,7 @@
             <dependency>
                 <groupId>com.unboundid</groupId>
                 <artifactId>unboundid-ldapsdk</artifactId>
-                <version>7.0.2</version>
+                <version>7.0.3</version>
             </dependency>
 
             <dependency>
@@ -299,7 +294,7 @@
             <dependency>
                 <groupId>no.nav.teamdokumenthandtering</groupId>
                 <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
-                <version>3aec620a</version>
+                <version>1.1.6</version>
             </dependency>
             <dependency> <!-- abakus -->
                 <groupId>no.nav.tjenester</groupId>
