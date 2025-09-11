@@ -116,7 +116,8 @@ public class LocalKafkaServer {
     }
 
     public void start() {
-        final var bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
+        //final var bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
+        final var bootstrapServers = "kafka:9094";
 
         var kafkaProperties = setupKafkaProperties(zookeeperPort);
         var zkProperties = setupZookeperProperties(zookeeperPort);
