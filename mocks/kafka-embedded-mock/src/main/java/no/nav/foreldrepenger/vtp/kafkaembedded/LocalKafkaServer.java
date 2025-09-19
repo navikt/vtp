@@ -29,10 +29,11 @@ public class LocalKafkaServer {
     private int zookeeperPort;
     private int kafkaBrokerPort;
 
-    public LocalKafkaServer(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
+    public LocalKafkaServer(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics, LocalKafkaProducer producer) {
         this.zookeeperPort = zookeeperPort;
         this.kafkaBrokerPort = kafkaBrokerPort;
         this.bootstrapTopics = bootstrapTopics;
+        this.localProducer = producer;
     }
 
     private static Properties createAdminClientProps(String boostrapServer) {
@@ -115,9 +116,7 @@ public class LocalKafkaServer {
         return kafkaAdminClient;
     }
 
-    public void start() {
-        //final var bootstrapServers = String.format("%s:%s", "localhost", kafkaBrokerPort);
-        final var bootstrapServers = "kafka:9094";
+    public void start(String bootstrapServers) {
 
         var kafkaProperties = setupKafkaProperties(zookeeperPort);
         var zkProperties = setupZookeperProperties(zookeeperPort);
@@ -127,8 +126,6 @@ public class LocalKafkaServer {
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
                         name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
-
-        localProducer = new LocalKafkaProducer(bootstrapServers);
     }
 
     public void stop() {
