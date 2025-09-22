@@ -44,7 +44,7 @@ public class InntektskomponentV2REST {
         }
 
         var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(
-                imodell.get(), request.maanedFom(), request.maanedTom(), request.filter());
+                imodell.get(), request.maanedFom(), request.maanedTom(), request.filter(), request.personident());
 
         return new InntektResponse(inntektsinformasjon);
 
@@ -67,7 +67,7 @@ public class InntektskomponentV2REST {
 
         for (var f : request.filter()) {
             var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(
-                    imodell.get(), request.maanedFom(), request.maanedTom(), f);
+                    imodell.get(), request.maanedFom(), request.maanedTom(), f, request.personident());
             bulkinntekter.add(new InntektBulkResponse.InntektBulk(f, inntektsinformasjon));
         }
 
