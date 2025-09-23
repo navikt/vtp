@@ -53,7 +53,7 @@ public class MockServer {
     private final int port;
     private final LdapServer ldapServer;
     private final LocalKafkaServer kafkaServer;
-    private final String bootstrapServers;
+    private final LocalKafkaProducer KafkaProducer;
     private Server server;
     private String host = HTTP_HOST;
 
@@ -75,10 +75,16 @@ public class MockServer {
         setConnectors(server);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
-        var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9094"));
-        bootstrapServers = String.format("%s:%s", "kafka", kafkaBrokerPort);
-        var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
-        kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics(), new LocalKafkaProducer());
+        if(!skalBrukeNyKafka()) {
+            LOG.info("Starter embedded zookeeper og kafka server.");
+            var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
+            KafkaProducer = new LocalKafkaProducer();
+            kafkaServer = new LocalKafkaServer(zookeeperPort, 9093, getBootstrapTopics(), KafkaProducer);
+        } else {
+            KafkaProducer = new LocalKafkaProducer();
+            kafkaServer = null;
+        }
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -128,7 +134,7 @@ public class MockServer {
                 .setup(testScenarioRepository,
                         instance,
                         gsakRepo,
-                        kafkaServer.getLocalProducer(),
+                        KafkaProducer,
                         journalRepository,
                         fagerPortalRepository);
 

@@ -104,25 +104,13 @@ public class LocalKafkaServer {
         return kafkaProperties;
     }
 
-    public int getZookeperPort() {
-        return zookeeperPort;
-    }
-
-    public int getKafkaBrokerPort() {
-        return kafkaBrokerPort;
-    }
-
-    public AdminClient getKafkaAdminClient() {
-        return kafkaAdminClient;
-    }
-
-    public void start(String bootstrapServers) {
-
+    public void start() {
+        log.info("Starter kafka server med zookeeper port {}, kafka broker port {} og topics: {}", zookeeperPort, kafkaBrokerPort, String.join(", ", bootstrapTopics));
         var kafkaProperties = setupKafkaProperties(zookeeperPort);
         var zkProperties = setupZookeperProperties(zookeeperPort);
         System.setProperty(JaasUtils.JAVA_LOGIN_CONFIG_PARAM, "kafkasecurity.conf");
         kafka = new KafkaLocal(kafkaProperties, zkProperties);
-        kafkaAdminClient = AdminClient.create(createAdminClientProps(bootstrapServers));
+        kafkaAdminClient = AdminClient.create(createAdminClientProps("localhost:9093"));
         kafkaAdminClient.createTopics(
                 bootstrapTopics.stream().map(
                         name -> new NewTopic(name, 1, (short) 1)).collect(Collectors.toList()));
