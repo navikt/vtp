@@ -24,16 +24,14 @@ public class LocalKafkaServer {
     final private static Logger log = LoggerFactory.getLogger(LocalKafkaServer.class);
     private final Collection<String> bootstrapTopics;
     private KafkaLocal kafka;
-    private LocalKafkaProducer localProducer;
     private AdminClient kafkaAdminClient;
     private int zookeeperPort;
     private int kafkaBrokerPort;
 
-    public LocalKafkaServer(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics, LocalKafkaProducer producer) {
+    public LocalKafkaServer(final int zookeeperPort, final int kafkaBrokerPort, Collection<String> bootstrapTopics) {
         this.zookeeperPort = zookeeperPort;
         this.kafkaBrokerPort = kafkaBrokerPort;
         this.bootstrapTopics = bootstrapTopics;
-        this.localProducer = producer;
     }
 
     private static Properties createAdminClientProps(String boostrapServer) {
@@ -122,7 +120,4 @@ public class LocalKafkaServer {
         kafka.stop();
     }
 
-    public LocalKafkaProducer getLocalProducer() {
-        return localProducer;
-    }
 }

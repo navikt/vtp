@@ -52,8 +52,7 @@ public class MockServer {
 
     private final int port;
     private final LdapServer ldapServer;
-    private final LocalKafkaServer kafkaServer;
-    private final LocalKafkaProducer KafkaProducer;
+    private LocalKafkaServer kafkaServer;
     private Server server;
     private String host = HTTP_HOST;
 
@@ -78,11 +77,7 @@ public class MockServer {
         if(!skalBrukeNyKafka()) {
             LOG.info("Starter embedded zookeeper og kafka server.");
             var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
-            KafkaProducer = new LocalKafkaProducer();
-            kafkaServer = new LocalKafkaServer(zookeeperPort, 9093, getBootstrapTopics(), KafkaProducer);
-        } else {
-            KafkaProducer = new LocalKafkaProducer();
-            kafkaServer = null;
+            kafkaServer = new LocalKafkaServer(zookeeperPort, 9093, getBootstrapTopics());
         }
 
     }
@@ -134,7 +129,7 @@ public class MockServer {
                 .setup(testScenarioRepository,
                         instance,
                         gsakRepo,
-                        KafkaProducer,
+                        new LocalKafkaProducer(),
                         journalRepository,
                         fagerPortalRepository);
 
