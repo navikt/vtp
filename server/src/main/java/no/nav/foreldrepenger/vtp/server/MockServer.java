@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.server;
 
+import static no.nav.foreldrepenger.vtp.kafkaembedded.KafkaToggle.skalBrukeNyKafka;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import no.nav.foreldrepenger.util.KeystoreUtils;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
 import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
@@ -49,7 +52,7 @@ public class MockServer {
 
     private final int port;
     private final LdapServer ldapServer;
-    private final LocalKafkaServer kafkaServer;
+    private LocalKafkaServer kafkaServer;
     private Server server;
     private String host = HTTP_HOST;
 
@@ -60,6 +63,7 @@ public class MockServer {
 
     public MockServer() throws Exception {
         // Sletter kafkalogger så det ikke feiler i forsøk på å lage nye topics
+
         FileUtils.deleteDirectory(new File("./target/kafka-logs"));
         this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", SERVER_PORT));
 
@@ -70,9 +74,12 @@ public class MockServer {
         setConnectors(server);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
-        var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
-        var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
-        kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
+        if (!skalBrukeNyKafka()) {
+            LOG.info("Starter embedded zookeeper og kafka server.");
+            var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
+            kafkaServer = new LocalKafkaServer(zookeeperPort, 9093, getBootstrapTopics());
+        }
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -83,7 +90,10 @@ public class MockServer {
 
     public void start() throws Exception {
         startLdapServer();
-        startKafkaServer();
+        if (!skalBrukeNyKafka()) {
+            LOG.info("Starter embedded kafka server.");
+            startKafkaServer();
+        }
         startWebServer();
     }
 
@@ -119,7 +129,7 @@ public class MockServer {
                 .setup(testScenarioRepository,
                         instance,
                         gsakRepo,
-                        kafkaServer.getLocalProducer(),
+                        new LocalKafkaProducer(),
                         journalRepository,
                         fagerPortalRepository);
 
