@@ -74,7 +74,7 @@ public class MockServer {
         setConnectors(server);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
-        if(!skalBrukeNyKafka()) {
+        if (!skalBrukeNyKafka()) {
             LOG.info("Starter embedded zookeeper og kafka server.");
             var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
             kafkaServer = new LocalKafkaServer(zookeeperPort, 9093, getBootstrapTopics());
@@ -90,7 +90,7 @@ public class MockServer {
 
     public void start() throws Exception {
         startLdapServer();
-        if (!skalBrukeNyKafka()){
+        if (!skalBrukeNyKafka()) {
             LOG.info("Starter embedded kafka server.");
             startKafkaServer();
         }

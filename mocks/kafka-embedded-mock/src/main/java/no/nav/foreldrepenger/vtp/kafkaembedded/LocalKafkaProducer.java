@@ -67,7 +67,7 @@ public class LocalKafkaProducer {
             props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
         } else {
             LOG.info("Setter opp producer for ny Kafka");
-            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
+            props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("KAFKA_BROKERS"));
             props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SSL.name);
             props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "");
             props.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, "jks");
