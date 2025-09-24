@@ -1,16 +1,14 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import no.nav.foreldrepenger.util.KeystoreUtils;
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
-import no.nav.foreldrepenger.vtp.ldap.LdapServer;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
+import static no.nav.foreldrepenger.vtp.kafkaembedded.KafkaToggle.skalBrukeNyKafka;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.LogManager;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
@@ -27,15 +25,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.LogManager;
-
-import static no.nav.foreldrepenger.vtp.kafkaembedded.KafkaToggle.skalBrukeNyKafka;
+import no.nav.foreldrepenger.util.KeystoreUtils;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
+import no.nav.foreldrepenger.vtp.ldap.LdapServer;
+import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 
 public class MockServer {

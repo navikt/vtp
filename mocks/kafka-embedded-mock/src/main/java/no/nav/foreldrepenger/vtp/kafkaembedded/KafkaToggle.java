@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
 
-import java.util.Objects;
-
 import static java.lang.System.getenv;
+
+import java.util.Objects;
 
 public class KafkaToggle {
 

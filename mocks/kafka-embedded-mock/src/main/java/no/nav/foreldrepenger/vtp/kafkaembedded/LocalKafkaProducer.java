@@ -1,5 +1,7 @@
 package no.nav.foreldrepenger.vtp.kafkaembedded;
 
+import static no.nav.foreldrepenger.vtp.kafkaembedded.KafkaToggle.skalBrukeNyKafka;
+
 import java.util.Properties;
 import java.util.UUID;
 
@@ -18,8 +20,6 @@ import org.slf4j.LoggerFactory;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import no.nav.foreldrepenger.util.KeystoreUtils;
-
-import static no.nav.foreldrepenger.vtp.kafkaembedded.KafkaToggle.skalBrukeNyKafka;
 
 public class LocalKafkaProducer {
     private static final Logger LOG = LoggerFactory.getLogger(LocalKafkaProducer.class);
