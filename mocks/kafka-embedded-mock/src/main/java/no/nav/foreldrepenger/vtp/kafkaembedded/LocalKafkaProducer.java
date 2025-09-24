@@ -12,7 +12,6 @@ import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +63,7 @@ public class LocalKafkaProducer {
             String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
             props.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(jaasTemplate, "vtp", "vtp"));
             props.put(ProducerConfig.RETRIES_CONFIG, 15);
-            props.put(StreamsConfig.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
+            props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_SSL.name);
             props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
         } else {
             LOG.info("Setter opp producer for ny Kafka");
