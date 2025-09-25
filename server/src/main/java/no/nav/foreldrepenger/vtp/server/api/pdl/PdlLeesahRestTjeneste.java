@@ -56,12 +56,7 @@ public class PdlLeesahRestTjeneste {
     private static final String OPPLYSNINGSTYPE = "opplysningstype";
     private static final String ENDRINGSTYPE = "endringstype";
     private static final String TIDLIGERE_HENDELSE_ID = "tidligereHendelseId";
-    private static final String TOPICS = Optional.ofNullable(System.getenv("CREATE_TOPICS")).orElse("");
-    private static final String LEESAH_TOPIC = Arrays.stream((TOPICS).split(","))
-            .map(String::trim)
-            .filter(s -> s.toLowerCase().contains("leesah"))
-            .findFirst()
-            .orElse("aapen-person-pdl-leesah-v1-vtp");
+    private static final String LEESAH_TOPIC = Optional.ofNullable(System.getenv("KAFKA_PDL_LEESAH_TOPIC")).orElse("aapen-person-pdl-leesah-v1-vtp");
 
     @Context
     private LocalKafkaProducer localKafkaProducer;
