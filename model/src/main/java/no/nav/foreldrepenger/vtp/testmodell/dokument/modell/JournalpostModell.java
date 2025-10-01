@@ -36,6 +36,7 @@ public class JournalpostModell {
     private Journalposttyper journalposttype;
     private JournalpostBruker bruker;
     private String behandlingTema;
+    private List<Object> tilleggsopplysninger = new ArrayList<>();
 
     public JournalpostModell() {
     }
@@ -205,17 +206,25 @@ public class JournalpostModell {
         this.behandlingTema = behandlingTema;
     }
 
+    public List<Object> getTilleggsopplysninger() {
+        return tilleggsopplysninger;
+    }
+
+    public void setTilleggsopplysninger(List<Object> tilleggsopplysninger) {
+        this.tilleggsopplysninger = tilleggsopplysninger;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JournalpostModell that = (JournalpostModell) o;
-        return Objects.equals(journalpostId, that.journalpostId) && Objects.equals(eksternReferanseId, that.eksternReferanseId) && Objects.equals(tittel, that.tittel) && Objects.equals(dokumentModellList, that.dokumentModellList) && Objects.equals(avsenderMottaker, that.avsenderMottaker) && Objects.equals(sakId, that.sakId) && Objects.equals(fagsystemId, that.fagsystemId) && Objects.equals(journalStatus, that.journalStatus) && Objects.equals(kommunikasjonsretning, that.kommunikasjonsretning) && Objects.equals(mottattDato, that.mottattDato) && Objects.equals(mottakskanal, that.mottakskanal) && Objects.equals(arkivtema, that.arkivtema) && Objects.equals(journaltilstand, that.journaltilstand) && Objects.equals(journalposttype, that.journalposttype) && Objects.equals(bruker, that.bruker);
+        return Objects.equals(journalpostId, that.journalpostId) && Objects.equals(eksternReferanseId, that.eksternReferanseId) && Objects.equals(tittel, that.tittel) && Objects.equals(dokumentModellList, that.dokumentModellList) && Objects.equals(avsenderMottaker, that.avsenderMottaker) && Objects.equals(sakId, that.sakId) && Objects.equals(fagsystemId, that.fagsystemId) && Objects.equals(journalStatus, that.journalStatus) && Objects.equals(kommunikasjonsretning, that.kommunikasjonsretning) && Objects.equals(mottattDato, that.mottattDato) && Objects.equals(mottakskanal, that.mottakskanal) && Objects.equals(arkivtema, that.arkivtema) && Objects.equals(journaltilstand, that.journaltilstand) && Objects.equals(journalposttype, that.journalposttype) && Objects.equals(bruker, that.bruker) && Objects.equals(tilleggsopplysninger, that.tilleggsopplysninger);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(journalpostId, eksternReferanseId, tittel, dokumentModellList, avsenderMottaker, sakId, fagsystemId, journalStatus, kommunikasjonsretning, mottattDato, mottakskanal, arkivtema, journaltilstand, journalposttype, bruker);
+        return Objects.hash(journalpostId, eksternReferanseId, tittel, dokumentModellList, avsenderMottaker, sakId, fagsystemId, journalStatus, kommunikasjonsretning, mottattDato, mottakskanal, arkivtema, journaltilstand, journalposttype, bruker, tilleggsopplysninger);
     }
 
     @Override
@@ -233,6 +242,7 @@ public class JournalpostModell {
                 ", arkivtema=" + arkivtema +
                 ", journaltilstand='" + journaltilstand + '\'' +
                 ", journalposttype=" + journalposttype +
+                ", tilleggsopplysninger=" + tilleggsopplysninger +
                 '}';
     }
 
