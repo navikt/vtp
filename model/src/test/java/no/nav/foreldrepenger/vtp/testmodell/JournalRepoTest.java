@@ -87,15 +87,29 @@ public class JournalRepoTest {
     public void testTilleggsopplysningerField() {
         JournalpostModell journalpostModell = new JournalpostModell();
 
+        // Sjekker at felt er initialisert som tom liste
         assertThat(journalpostModell.getTilleggsopplysninger()).isNotNull();
         assertThat(journalpostModell.getTilleggsopplysninger()).isEmpty();
 
+        // Tester setter
         List<Object> testData = List.of("test1", "test2");
         journalpostModell.setTilleggsopplysninger(testData);
         assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(testData);
 
+        // Tester equals funksjonalitet
         JournalpostModell journalpostModell2 = new JournalpostModell();
         journalpostModell2.setTilleggsopplysninger(testData);
         assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(journalpostModell2.getTilleggsopplysninger());
+
+        // Tester hashCode (dekker hashCode linje)
+        assertThat(journalpostModell.hashCode()).isEqualTo(journalpostModell2.hashCode());
+
+        journalpostModell.setAvsenderFnr("12345678901");
+        journalpostModell2.setAvsenderFnr("12345678901");
+
+        // Tester toString (dekker toString linje)
+        String toString = journalpostModell.toString();
+        assertThat(toString).contains("tilleggsopplysninger");
+        assertThat(toString).contains("test1");
     }
 }
