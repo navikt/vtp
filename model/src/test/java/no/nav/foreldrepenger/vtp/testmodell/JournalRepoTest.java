@@ -82,4 +82,20 @@ public class JournalRepoTest {
         assertThat(resultatModell.get().getJournalpostId()).isEqualTo(journalpostId);
 
     }
+
+    @Test
+    public void testTilleggsopplysningerField() {
+        JournalpostModell journalpostModell = new JournalpostModell();
+
+        assertThat(journalpostModell.getTilleggsopplysninger()).isNotNull();
+        assertThat(journalpostModell.getTilleggsopplysninger()).isEmpty();
+
+        List<Object> testData = List.of("test1", "test2");
+        journalpostModell.setTilleggsopplysninger(testData);
+        assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(testData);
+
+        JournalpostModell journalpostModell2 = new JournalpostModell();
+        journalpostModell2.setTilleggsopplysninger(testData);
+        assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(journalpostModell2.getTilleggsopplysninger());
+    }
 }
