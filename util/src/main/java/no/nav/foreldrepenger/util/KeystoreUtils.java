@@ -34,7 +34,7 @@ public class KeystoreUtils {
         if (null != getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD")) {
             return getenv("NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD");
         }
-        return "devillokeystore1234";
+        return "vtpvtp";
     }
 
     public static String getTruststoreFilePath() {
@@ -54,7 +54,7 @@ public class KeystoreUtils {
         if (null != getenv("NAV_TRUSTSTORE_PASSWORD")) {
             return getenv("NAV_TRUSTSTORE_PASSWORD");
         }
-        return "changeit";
+        return "vtpvtp";
     }
 
 }
