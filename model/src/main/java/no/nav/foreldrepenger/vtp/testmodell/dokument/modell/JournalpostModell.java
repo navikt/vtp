@@ -36,7 +36,7 @@ public class JournalpostModell {
     private Journalposttyper journalposttype;
     private JournalpostBruker bruker;
     private String behandlingTema;
-    private List<Object> tilleggsopplysninger = new ArrayList<>();
+    private List<Tilleggsopplysning> tilleggsopplysninger = new ArrayList<>();
 
     public JournalpostModell() {
     }
@@ -206,11 +206,11 @@ public class JournalpostModell {
         this.behandlingTema = behandlingTema;
     }
 
-    public List<Object> getTilleggsopplysninger() {
+    public List<Tilleggsopplysning> getTilleggsopplysninger() {
         return tilleggsopplysninger;
     }
 
-    public void setTilleggsopplysninger(List<Object> tilleggsopplysninger) {
+    public void setTilleggsopplysninger(List<Tilleggsopplysning> tilleggsopplysninger) {
         this.tilleggsopplysninger = tilleggsopplysninger;
     }
 

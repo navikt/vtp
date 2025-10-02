@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.Tilleggsopplysning;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
@@ -92,7 +93,12 @@ public class JournalRepoTest {
         assertThat(journalpostModell.getTilleggsopplysninger()).isEmpty();
 
         // Tester setter
-        List<Object> testData = List.of("test1", "test2");
+        List<Tilleggsopplysning> testData = List.of(
+                new Tilleggsopplysning("k9.kilde", "SKANNING"),
+                new Tilleggsopplysning("k9.type", "SØKNAD")
+
+        );
+
         journalpostModell.setTilleggsopplysninger(testData);
         assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(testData);
 
@@ -110,6 +116,6 @@ public class JournalRepoTest {
         // Tester toString (dekker toString linje)
         String toString = journalpostModell.toString();
         assertThat(toString).contains("tilleggsopplysninger");
-        assertThat(toString).contains("test1");
+        assertThat(toString).contains("k9.kilde");
     }
 }
