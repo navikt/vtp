@@ -8,7 +8,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>kafka-embedded-mock</artifactId>
+    <artifactId>kafka-producer</artifactId>
     <name>VTP ::kafka-embedded-mock</name>
     <packaging>jar</packaging>
 
@@ -16,11 +16,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>util</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.12</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.kafka</groupId>
@@ -33,10 +28,6 @@
         <dependency>
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
         </dependency>
     </dependencies>
 </project>

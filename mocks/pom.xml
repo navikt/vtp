@@ -21,7 +21,7 @@
         <module>infotrygd-mock</module>
         <module>inntekt-mock</module>
         <module>saf-mock</module>
-        <module>kafka-embedded-mock</module>
+        <module>kafka-producer</module>
         <module>ldap-mock</module>
         <module>medl-mock</module>
         <module>norg2-mock</module>

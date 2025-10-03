@@ -73,7 +73,7 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>kafka-embedded-mock</artifactId>
+            <artifactId>kafka-producer</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
