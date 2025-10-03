@@ -2,10 +2,6 @@ package no.nav.foreldrepenger.vtp.server;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.logging.LogManager;
 
 import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
@@ -36,8 +32,6 @@ import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 public class MockServer {
 
-    private static final String HTTP_HOST = "0.0.0.0";
-    private static final String SERVER_PORT = "8060";
     private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
 
     private static final String TRUSTSTORE_PASSW_PROP = "javax.net.ssl.trustStorePassword";
@@ -48,8 +42,7 @@ public class MockServer {
 
     private final int port;
     private final LdapServer ldapServer;
-    private Server server;
-    private String host = HTTP_HOST;
+    private final Server server;
 
     static {
         LogManager.getLogManager().reset();
@@ -59,7 +52,7 @@ public class MockServer {
     public MockServer() throws Exception {
         // Sletter kafkalogger så det ikke feiler i forsøk på å lage nye topics
 
-        this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", SERVER_PORT));
+        this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", "8060"));
 
         // Bør denne settes fra ENV_VAR?
         System.setProperty("server.url", "https://localhost:" + getSslPort());
@@ -82,17 +75,6 @@ public class MockServer {
         startWebServer();
     }
 
-    private Set<String> getBootstrapTopics() {
-        return new HashSet<>(getEnvValueList("CREATE_TOPICS"));
-    }
-
-    private static List<String> getEnvValueList(String envName) {
-        return Arrays.stream((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
-                .map(String::trim)
-                .toList();
-    }
-
-    @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
         var instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
@@ -138,9 +120,9 @@ public class MockServer {
 
         var connectors = new ArrayList<>();
 
-        @SuppressWarnings("resource") var httpConnector = new ServerConnector(server);
+        var httpConnector = new ServerConnector(server);
         httpConnector.setPort(port);
-        httpConnector.setHost(host);
+        httpConnector.setHost("0.0.0.0");
         connectors.add(httpConnector);
 
         var https = new HttpConfiguration();
@@ -168,7 +150,7 @@ public class MockServer {
         System.setProperty(keystoreProp, KeystoreUtils.getKeystoreFilePath());
         System.setProperty(keystorePasswProp, KeystoreUtils.getKeyStorePassword());
 
-        @SuppressWarnings("resource") var sslConnector = new ServerConnector(server, sslConnectionFactory,
+        var sslConnector = new ServerConnector(server, sslConnectionFactory,
                 new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
@@ -177,14 +159,6 @@ public class MockServer {
 
     private Integer getSslPort() {
         return Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getHost() {
-        return host;
     }
 
 }
