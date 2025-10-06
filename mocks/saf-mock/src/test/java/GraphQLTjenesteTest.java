@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import no.nav.saf.SafMock;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -20,7 +22,12 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 class GraphQLTjenesteTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(GraphQLTjenesteTest.class);
 
     private final static String jpId = "12345678";
     private final static String sakId = "sakId";
@@ -33,7 +40,7 @@ class GraphQLTjenesteTest {
         graphQLTjeneste.init();
 
         GraphQLRequest request = GraphQLRequest.builder()
-                .withQuery("query Journalpost($journalpostId: String!) {journalpost(journalpostId: $journalpostId) {journalpostId sak {arkivsaksystem arkivsaksnummer datoOpprettet}}}")
+                .withQuery("query Journalpost($journalpostId: String!) {journalpost(journalpostId: $journalpostId) {journalpostId tilleggsopplysninger {nokkel verdi} sak {arkivsaksystem arkivsaksnummer datoOpprettet}}}")
                 .withVariables(Map.of("journalpostId", jpId))
                 .build();
 
@@ -45,12 +52,19 @@ class GraphQLTjenesteTest {
         Map<String, Object> result = graphQLTjeneste.executeStatement(request, journalRepo)
                 .toSpecification();
 
+        LOG.info("result={}", result.get("data"));
+
         // Assert
         assertThat(result.get("data"))
                 .extracting("journalpost")
                 .extracting("sak")
                 .extracting("arkivsaksnummer")
                 .matches(sakId::equals);
+
+        assertThat(result.get("data"))
+                .extracting("journalpost")
+                .extracting("tilleggsopplysninger")
+                .isInstanceOf(List.class);
     }
 
     @Test
