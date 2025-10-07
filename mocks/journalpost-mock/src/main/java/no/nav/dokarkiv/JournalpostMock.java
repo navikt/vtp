@@ -1,7 +1,6 @@
 package no.nav.dokarkiv;
 
 import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.ws.rs.PATCH;
@@ -70,7 +69,7 @@ public class JournalpostMock {
             journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(journalpostModell);
         }
 
-        OpprettJournalpostResponse response = tilOpprettJouralpostResponse(journalpostModell);
+        OpprettJournalpostResponse response = tilOpprettJouralpostResponse(journalpostModell, forsoekFerdigstill);
         return Response.accepted().entity(response).build();
     }
 
@@ -124,7 +123,7 @@ public class JournalpostMock {
     }
 
 
-    private OpprettJournalpostResponse tilOpprettJouralpostResponse(JournalpostModell journalpostModell) {
+    private OpprettJournalpostResponse tilOpprettJouralpostResponse(JournalpostModell journalpostModell, Boolean forsoekFerdigstill) {
         var dokumentInfos = journalpostModell.getDokumentModellList().stream()
                 .map(it -> {
                     DokumentInfo dokinfo = new DokumentInfo();
@@ -137,7 +136,7 @@ public class JournalpostMock {
         var response = new OpprettJournalpostResponse();
         response.setDokumenter(dokumentInfos);
         response.setJournalpostId(journalpostModell.getJournalpostId());
-        response.setJournalpostferdigstilt(Boolean.TRUE);
+        response.setJournalpostferdigstilt(forsoekFerdigstill != null && forsoekFerdigstill);
         return response;
     }
 }
