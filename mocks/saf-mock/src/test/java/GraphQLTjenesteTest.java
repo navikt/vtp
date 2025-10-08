@@ -22,12 +22,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 class GraphQLTjenesteTest {
-
-    private static final Logger LOG = LoggerFactory.getLogger(GraphQLTjenesteTest.class);
 
     private final static String jpId = "12345678";
     private final static String sakId = "sakId";
@@ -51,8 +46,6 @@ class GraphQLTjenesteTest {
         // Act
         Map<String, Object> result = graphQLTjeneste.executeStatement(request, journalRepo)
                 .toSpecification();
-
-        LOG.info("result={}", result.get("data"));
 
         // Assert
         assertThat(result.get("data"))
