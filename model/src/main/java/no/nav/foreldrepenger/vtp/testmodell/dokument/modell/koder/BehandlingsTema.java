@@ -23,7 +23,7 @@ public enum BehandlingsTema {
     OMS_PLEIE_BARN_NY("OMS_PLEIE_BARN_NY", "ab0320", "Pleiepenger sykt barn ny ordning"),
     OMS_PLEIE_INSTU("OMS_PLEIE_INSTU", "ab0153", "Pleiepenger ved institusjonsopphold"),
 
-    UDEFINERT("-", null, "Ikke definert"),
+    UDEFINERT("-", "-", "Ikke definert"),
     ;
 
     private final String kode;

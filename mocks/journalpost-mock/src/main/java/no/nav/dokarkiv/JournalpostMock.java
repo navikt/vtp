@@ -50,38 +50,49 @@ public class JournalpostMock {
     @POST
     @Path("/journalpost")
     @Operation(description = "lag journalpost")
-    public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest, @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
+    public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest,
+                                   @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
         LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", forsoekFerdigstill);
 
         var modell = journalpostMapper.tilModell(opprettJournalpostRequest);
         var journalpostId = journalRepository.leggTilJournalpost(modell);
 
-        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId)
-                .orElseThrow();
+        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId).orElseThrow();
 
-        if (Mottakskanal.NAV_NO.equals(journalpostModell.getMottakskanal()) &&
-            journalpostModell.getTittel().equals("Inntektsmelding")) {
-
-            // Dette pga sak er satt
-            journalpostModell.setJournalStatus(Journalstatus.MOTTATT);
-
-            var journalforingHendelseSender = new JournalforingHendelseSender(localKafkaProducer);
-            journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(journalpostModell);
+        if (skalSendeJournalføringHendelse(journalpostModell)) {
+            opprettJournalføringsHendelse(journalpostModell, Journalstatus.MOTTATT);
         }
 
         OpprettJournalpostResponse response = tilOpprettJouralpostResponse(journalpostModell, forsoekFerdigstill);
         return Response.accepted().entity(response).build();
     }
 
+    private boolean skalSendeJournalføringHendelse(JournalpostModell journalpostModell) {
+        if (!Mottakskanal.NAV_NO.equals(journalpostModell.getMottakskanal())) {
+            return false;
+        }
+
+        String tittel = journalpostModell.getTittel();
+        return "Inntektsmelding".equals(tittel) || tittel.toLowerCase().contains("ungdomsprogramytelsen");
+    }
+
+    private void opprettJournalføringsHendelse(JournalpostModell journalpostModell, Journalstatus journalStatus) {
+        journalpostModell.setJournalStatus(journalStatus);
+
+        var journalforingHendelseSender = new JournalforingHendelseSender(localKafkaProducer);
+        journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(journalpostModell);
+    }
+
 
     @PUT
     @Path("/journalpost/{journalpostid}")
     @Operation(description = "Oppdater journalpost")
-    public Response oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest, @PathParam("journalpostid") String journalpostId){
+    public Response oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest,
+                                        @PathParam("journalpostid") String journalpostId) {
 
         LOG.info("Kall til oppdater journalpost: {}", journalpostId);
         var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
-        if(journalpostModell.isPresent()) {
+        if (journalpostModell.isPresent()) {
             journalpostMapper.oppdaterJournalpost(oppdaterJournalpostRequest, journalpostModell.get());
         } else {
             LOG.info("Journalpost med journalpostId {} eksistere ikke!", journalpostId);
@@ -94,7 +105,8 @@ public class JournalpostMock {
     @PATCH
     @Path("/journalpost/{journalpostid}/ferdigstill")
     @Operation(description = "Ferdigstill journalpost")
-    public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest, @PathParam("journalpostid") String journalpostId){
+    public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest,
+                                           @PathParam("journalpostid") String journalpostId) {
 
         var journalfoerendeEnhet = ferdigstillJournalpostRequest.getJournalfoerendeEnhet();
         LOG.info("Kall til ferdigstill journalpost på enhet: {}", journalfoerendeEnhet);
@@ -111,7 +123,7 @@ public class JournalpostMock {
     @PUT
     @Path("/journalpost/{journalpostid}/tilknyttVedlegg")
     @Operation(description = "Tilknytt vedlegg")
-    public TilknyttVedleggResponse tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest){
+    public TilknyttVedleggResponse tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest) {
 
         var response = new TilknyttVedleggResponse();
 
@@ -124,14 +136,13 @@ public class JournalpostMock {
 
 
     private OpprettJournalpostResponse tilOpprettJouralpostResponse(JournalpostModell journalpostModell, Boolean forsoekFerdigstill) {
-        var dokumentInfos = journalpostModell.getDokumentModellList().stream()
-                .map(it -> {
-                    DokumentInfo dokinfo = new DokumentInfo();
-                    dokinfo.setBrevkode(it.getBrevkode());
-                    dokinfo.setDokumentInfoId(it.getDokumentId());
-                    dokinfo.setTittel(it.getTittel());
-                    return dokinfo;
-                }).collect(Collectors.toList());
+        var dokumentInfos = journalpostModell.getDokumentModellList().stream().map(it -> {
+            DokumentInfo dokinfo = new DokumentInfo();
+            dokinfo.setBrevkode(it.getBrevkode());
+            dokinfo.setDokumentInfoId(it.getDokumentId());
+            dokinfo.setTittel(it.getTittel());
+            return dokinfo;
+        }).collect(Collectors.toList());
 
         var response = new OpprettJournalpostResponse();
         response.setDokumenter(dokumentInfos);
