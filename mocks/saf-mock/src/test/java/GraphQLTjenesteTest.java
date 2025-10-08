@@ -33,7 +33,7 @@ class GraphQLTjenesteTest {
         graphQLTjeneste.init();
 
         GraphQLRequest request = GraphQLRequest.builder()
-                .withQuery("query Journalpost($journalpostId: String!) {journalpost(journalpostId: $journalpostId) {journalpostId sak {arkivsaksystem arkivsaksnummer datoOpprettet}}}")
+                .withQuery("query Journalpost($journalpostId: String!) {journalpost(journalpostId: $journalpostId) {journalpostId tilleggsopplysninger {nokkel verdi} sak {arkivsaksystem arkivsaksnummer datoOpprettet}}}")
                 .withVariables(Map.of("journalpostId", jpId))
                 .build();
 
@@ -51,6 +51,11 @@ class GraphQLTjenesteTest {
                 .extracting("sak")
                 .extracting("arkivsaksnummer")
                 .matches(sakId::equals);
+
+        assertThat(result.get("data"))
+                .extracting("journalpost")
+                .extracting("tilleggsopplysninger")
+                .isInstanceOf(List.class);
     }
 
     @Test

@@ -104,8 +104,10 @@ public class JournalpostMapper {
 
     private void tilAvsenderMottaker(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
         Optional.ofNullable(journalpostRequest.getAvsenderMottaker()).ifPresent(it -> {
-            var idType = new BrukerType(it.getIdType().toString());
-            modell.setAvsenderMottaker(new JournalpostBruker(it.getId(), idType));
+            if (it.getIdType() != null && it.getId() != null) {
+                var idType = new BrukerType(it.getIdType().toString());
+                modell.setAvsenderMottaker(new JournalpostBruker(it.getId(), idType));
+            }
         });
     }
 
