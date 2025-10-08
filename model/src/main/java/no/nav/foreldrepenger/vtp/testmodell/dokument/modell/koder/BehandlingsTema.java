@@ -25,7 +25,7 @@ public enum BehandlingsTema {
 
     UNGDOMSPROGRAMYTELSEN("UNGDOMSPROGRAMYTELSEN", "ab0564", "Ungdomsprogramytelsen"),
 
-    UDEFINERT("-", "-", "Ikke definert"),
+    UDEFINERT("-", null, "Ikke definert"),
     ;
 
     private final String kode;
