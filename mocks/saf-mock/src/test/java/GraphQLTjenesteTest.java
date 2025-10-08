@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import no.nav.saf.SafMock;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
