@@ -73,7 +73,7 @@ public class JournalpostMock {
         }
 
         String tittel = journalpostModell.getTittel();
-        return "Inntektsmelding".equals(tittel) || tittel.toLowerCase().contains("ungdomsprogramytelsen");
+        return "Inntektsmelding".equals(tittel) || tittel.toLowerCase().contains("ungdomsprogramytelse");
     }
 
     private void opprettJournalføringsHendelse(JournalpostModell journalpostModell, Journalstatus journalStatus) {
