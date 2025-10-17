@@ -32,10 +32,10 @@
         <fp-kontrakter.version>9.4.3</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.74</swagger-codegen-maven-plugin.version>
+        <swagger-codegen-maven-plugin.version>3.0.75</swagger-codegen-maven-plugin.version>
         <graphql-java.version>24.3</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
-        <avro.version>1.12.0</avro.version>
+        <avro.version>1.12.1</avro.version>
     </properties>
 
     <repositories>
@@ -243,7 +243,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>8.0.2</version>
+                <version>8.1.0</version>
             </dependency>
 
             <dependency>
@@ -266,7 +266,7 @@
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
-                <version>3.0.5</version>
+                <version>3.0.6</version>
             </dependency>
 
             <dependency>
