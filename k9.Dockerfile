@@ -1,4 +1,4 @@
-FROM ghcr.io/navikt/sif-baseimages/java-25:2025.10.02.1209Z
+FROM ghcr.io/navikt/sif-baseimages/java-25:2025.10.27.1235Z
 
 LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
