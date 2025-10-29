@@ -25,6 +25,7 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
     private ConcurrentMap<UUID, OppgaveModell> oppgaver;
     private ConcurrentMap<String, OppgaveModell> oppgaverGrupperingsId;
     private ConcurrentMap<String, BeskjedModell> beskjederGrupperingsId;
+    private ConcurrentMap<String, BeskjedModell> beskjederEksternId;
 
     private static ArbeidsgiverPortalRepository instance;
 
@@ -41,6 +42,7 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
         sakerGrupperingsId = new ConcurrentHashMap<>();
         oppgaverGrupperingsId = new ConcurrentHashMap<>();
         beskjederGrupperingsId = new ConcurrentHashMap<>();
+        beskjederEksternId = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -92,16 +94,20 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
     }
 
     @Override
-    public UUID nyBeskjed(String grupperingsid, String merkelapp, String virksomhetsnummer, String tekst, String lenke) {
+    public UUID nyBeskjed(String grupperingsid, String merkelapp, String virksomhetsnummer, String tekst, String lenke,
+                          String eksternId) {
         Objects.requireNonNull(grupperingsid, "grupperingsid");
-        if (beskjederGrupperingsId.containsKey(grupperingsid)) {
+        if (beskjederEksternId.containsKey(eksternId)) {
             LOG.warn("FAGER repo: beskjeden finnes allerede: {}", grupperingsid);
             throw new IllegalStateException("DuplikatEksternIdOgMerkelapp");
         }
 
         var uuid = UUID.randomUUID();
-        var nyBeskjed = opprettBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tekst, lenke, uuid);
+        var nyBeskjed = opprettBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tekst, lenke, uuid, eksternId);
+        // Trengs for å fine igjen alle meldinger i samme gruppe
         beskjederGrupperingsId.put(grupperingsid, nyBeskjed);
+        // Trengs for å validere at samme beskjed ikke sendes flere ganger
+        beskjederEksternId.put(eksternId, nyBeskjed);
         return uuid;
     }
 
@@ -120,8 +126,8 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
                                                 String virksomhetsnummer,
                                                 String tittel,
                                                 String lenke,
-                                                UUID uuid) {
-        return new BeskjedModell(uuid, grupperingsid, merkelapp, uuid.toString(), virksomhetsnummer, tittel, lenke,
+                                                UUID uuid, String eksternId) {
+        return new BeskjedModell(uuid, grupperingsid, merkelapp, eksternId, virksomhetsnummer, tittel, lenke,
                 LocalDateTime.now(), null);
     }
 

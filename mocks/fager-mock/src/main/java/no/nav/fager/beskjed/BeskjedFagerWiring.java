@@ -26,13 +26,14 @@ public class BeskjedFagerWiring {
 
                         var grupperingsid = metadata.get("grupperingsid");
                         var virksomhetsnummer = metadata.get("virksomhetsnummer");
+                        var eksternId = metadata.get("eksternId");
 
                         var merkelapp = notifikasjon.get("merkelapp");
                         var tekst = notifikasjon.get("tekst");
                         var lenke = notifikasjon.get("lenke");
 
                         LOG.info("mutation nyBeskjed for grupperingsid={}, org={}", grupperingsid, virksomhetsnummer);
-                        return oversiktCoordinator.opprettBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tekst, lenke);
+                        return oversiktCoordinator.opprettBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tekst, lenke, eksternId);
                     } catch (FagerFunctionalException e) {
                         return DataFetcherResult.newResult().data(null).error(e).build();
                     }
