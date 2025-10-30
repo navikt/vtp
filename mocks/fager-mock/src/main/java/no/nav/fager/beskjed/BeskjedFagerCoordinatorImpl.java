@@ -23,8 +23,9 @@ public class BeskjedFagerCoordinatorImpl implements BeskjedFagerCoordinator {
                                             String merkelapp,
                                             String virksomhetsnummer,
                                             String tittel,
-                                            String lenke) {
-        var beskjedUuid = arbeidsgiverPortalRepository.nyBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke);
+                                            String lenke,
+                                            String eksternId) {
+        var beskjedUuid = arbeidsgiverPortalRepository.nyBeskjed(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, eksternId);
         LOG.info("FAGER: nyBeskjed med id: {}", beskjedUuid);
         return new NyBeskjedVellykket(beskjedUuid.toString(), emptyList());
     }

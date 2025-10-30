@@ -26,7 +26,8 @@ public interface ArbeidsgiverPortalRepository {
                    String merkelapp,
                    String virksomhetsnummer,
                    String tekst,
-                   String lenke);
+                   String lenke,
+                   String eksternId);
 
     UUID utførOppgave(String id);
 
