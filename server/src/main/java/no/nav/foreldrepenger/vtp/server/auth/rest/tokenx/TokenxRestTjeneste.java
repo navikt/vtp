@@ -3,8 +3,6 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse.EXPIRE_IN_SECONDS;
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
-
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -80,39 +78,16 @@ public class TokenxRestTjeneste {
     @Path("/token")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "TokenX token exchange (form-encoded)")
-    public Response tokenFormEncoded(@Context HttpServletRequest req,
-                                      @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
-                                      @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
-                                      @FormParam("client_assertion") String clientAssertion,
-                                      @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
-                                      @FormParam("subject_token") String subjectToken,
-                                      @FormParam("audience") String audience) throws JoseException {
-        var subject = hentSubjectFraJWT(subjectToken);
-        var token = accessTokenForAudienceOgSubject(req, audience, subject);
-        var cleanAudience = audience.replaceAll("[^A-Za-z0-9:_-]", "");
-        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}] (form-encoded)", subject, cleanAudience);
-        return Response.ok(new TokenExchangeResponse(token)).build();
+    @Operation(description = "TokenX public key set")
+    public Response token(@Context HttpServletRequest req,
+                          @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
+                          @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
+                          @FormParam("client_assertion") String clientAssertion,
+                          @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
+                          @FormParam("subject_token") String subjectToken,
+                          @FormParam("audience") String audience) throws JoseException {
+        return Response.ok(exchangeTokenX(req, subjectToken, audience)).build();
     }
-
-    @POST
-    @Path("/token")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "TokenX token exchange (JSON)")
-    public Response tokenJson(@Context HttpServletRequest req,
-                              TokenExchangeRequest tokenRequest) throws JoseException {
-        if ("azuread".equals(tokenRequest.identity_provider())) {
-            return AzureAdRestTjeneste.processTokenRequest("urn:ietf:params:oauth:grant-type:jwt-bearer", "S123456", tokenRequest.user_token(), null);
-        }
-
-        var subject = hentSubjectFraJWT(tokenRequest.user_token());
-        var token = accessTokenForAudienceOgSubject(req, tokenRequest.target(), subject);
-        var cleanTarget = tokenRequest.target().replaceAll("[^A-Za-z0-9:_-]", "");
-        LOG.info("Henter token for subject [{}] som kan brukes til å kalle target [{}] (JSON)", subject, cleanTarget);
-        return Response.ok(new TokenExchangeResponse(token)).build();
-    }
-
 
     @GET
     @Path("/token")
@@ -127,7 +102,7 @@ public class TokenxRestTjeneste {
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
-    private String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
+    private static String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
         var jwtClaims = new JwtClaims();
         jwtClaims.setIssuer(getIssuer(req));
         jwtClaims.setAudience(audience);
@@ -149,7 +124,7 @@ public class TokenxRestTjeneste {
         return jws.getCompactSerialization();
     }
 
-    private String hentSubjectFraJWT(String subjectToken) {
+    private static String hentSubjectFraJWT(String subjectToken) {
         try {
             var claims = UNVALIDATING_CONSUMER.processToClaims(subjectToken);
             return claims.getSubject();
@@ -158,11 +133,20 @@ public class TokenxRestTjeneste {
         }
     }
 
-    private String getBaseUrl(HttpServletRequest req) {
+    public static Response exchangeTokenX(HttpServletRequest req, String subjectToken, String audience) throws JoseException {
+        var subject = hentSubjectFraJWT(subjectToken);
+        var token = accessTokenForAudienceOgSubject(req, audience, subject);
+        var cleanTarget = audience.replaceAll("[^A-Za-z0-9:_-]", "");
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle target [{}] (JSON)", subject, cleanTarget);
+
+        return Response.ok(new TokenExchangeResponse(token)).build();
+    }
+
+    private static String getBaseUrl(HttpServletRequest req) {
         return req.getScheme() + "://vtp:" + req.getServerPort();
     }
 
-    private String getIssuer(HttpServletRequest req) {
+    private static String getIssuer(HttpServletRequest req) {
         return getBaseUrl(req) + MockServer.CONTEXT_PATH + TJENESTE_PATH;
     }
 
