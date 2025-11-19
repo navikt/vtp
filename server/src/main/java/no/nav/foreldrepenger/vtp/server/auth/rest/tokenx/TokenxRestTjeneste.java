@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -75,21 +76,37 @@ public class TokenxRestTjeneste {
 
     @POST
     @Path("/token")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "TokenX public key set")
-    public Response token(@Context HttpServletRequest req,
-                          @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
-                          @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
-                          @FormParam("client_assertion") String clientAssertion,
-                          @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
-                          @FormParam("subject_token") String subjectToken,
-                          @FormParam("audience") String audience) throws JoseException {
+    @Operation(description = "TokenX token exchange (form-encoded)")
+    public Response tokenFormEncoded(@Context HttpServletRequest req,
+                                      @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
+                                      @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
+                                      @FormParam("client_assertion") String clientAssertion,
+                                      @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
+                                      @FormParam("subject_token") String subjectToken,
+                                      @FormParam("audience") String audience) throws JoseException {
         var subject = hentSubjectFraJWT(subjectToken);
         var token = accessTokenForAudienceOgSubject(req, audience, subject);
-        var cleanaudience = audience.replaceAll("[^A-Za-z0-9:_-]", "");
-        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, cleanaudience);
+        var cleanAudience = audience.replaceAll("[^A-Za-z0-9:_-]", "");
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}] (form-encoded)", subject, cleanAudience);
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
+
+    @POST
+    @Path("/token")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "TokenX token exchange (JSON)")
+    public Response tokenJson(@Context HttpServletRequest req,
+                              TokenExchangeRequest tokenRequest) throws JoseException {
+        var subject = hentSubjectFraJWT(tokenRequest.user_token());
+        var token = accessTokenForAudienceOgSubject(req, tokenRequest.target(), subject);
+        var cleanTarget = tokenRequest.target().replaceAll("[^A-Za-z0-9:_-]", "");
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle target [{}] (JSON)", subject, cleanTarget);
+        return Response.ok(new TokenExchangeResponse(token)).build();
+    }
+
 
     @GET
     @Path("/token")
