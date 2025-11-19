@@ -3,6 +3,8 @@ package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 import static no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse.EXPIRE_IN_SECONDS;
 import static org.jose4j.jws.AlgorithmIdentifiers.RSA_USING_SHA256;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
+
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -100,6 +102,10 @@ public class TokenxRestTjeneste {
     @Operation(description = "TokenX token exchange (JSON)")
     public Response tokenJson(@Context HttpServletRequest req,
                               TokenExchangeRequest tokenRequest) throws JoseException {
+        if ("azuread".equals(tokenRequest.identity_provider())) {
+            return AzureAdRestTjeneste.processTokenRequest("urn:ietf:params:oauth:grant-type:jwt-bearer", "S123456", tokenRequest.user_token(), null);
+        }
+
         var subject = hentSubjectFraJWT(tokenRequest.user_token());
         var token = accessTokenForAudienceOgSubject(req, tokenRequest.target(), subject);
         var cleanTarget = tokenRequest.target().replaceAll("[^A-Za-z0-9:_-]", "");
