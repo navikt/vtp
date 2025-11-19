@@ -91,7 +91,7 @@ public class AzureAdRestTjeneste {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(description = "azureAd/access_token (form-encoded)")
-    public Response accessTokenFormEncoded(@FormParam(GRANT_TYPE) String grantType,
+    public Response accessToken(@FormParam(GRANT_TYPE) String grantType,
                                            @FormParam(CODE) String code,
                                            @FormParam("assertion") String assertion,
                                            @FormParam("refresh_token") @Valid String refreshToken) {
