@@ -86,7 +86,7 @@ public class TokenxRestTjeneste {
                           @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
                           @FormParam("subject_token") String subjectToken,
                           @FormParam("audience") String audience) throws JoseException {
-        return Response.ok(exchangeTokenX(req, subjectToken, audience)).build();
+        return exchangeTokenX(req, subjectToken, audience);
     }
 
     @GET
