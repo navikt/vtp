@@ -56,7 +56,7 @@ class TokenXTjenesteTest {
                 eyJraWQiOiIxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vYWFkYjJjL3YyLjAiLCJleHAiOjE2MzU1MTIxNDMsImp0aSI6IllZNmh1T19reWJPTDFsWmxnZFp3T3ciLCJpYXQiOjE2MzU0OTA1NDMsInN1YiI6IjE3NDk4ODMyODU3IiwiYXVkIjoiT0lEQyIsImFjciI6IkxldmVsNCIsImF6cCI6Ik9JREMifQ.vM6sjTD5uRX25yqtNrUiue3DwWaXA-xkVW52ied3n2MHqfXB-pd76r9LyqDJ-sDZen-AhxihL6GkNLUrXlRm8Ij-FZaJsIQaOnj2CRRHlJfL4Zj-s0i2B81ov0qJclJKtZFhFELwWkqykqu1IB7W2s7_5d2k0C1jAQCs9gnzCoKv6H8EPgrRriWRvMv691DuqzluPLLsqMK7cwQmODkc3fN4gtoW4Wf6FqG2XDdR6Mr-OT-w_exn8i0uB8jPieSOfyby5CG7rXLW_BQT9KovIrDuwYCyEkU7hSCEYksu5CBSoBpupKs-07cUXIksLWouCZcLjGoMWfnG-rHeTq0w-g
                 """;
         var audience = "fpfordel";
-        var response = tokenxRestTjeneste.token(
+        var response = tokenxRestTjeneste.tokenFormEncoded(
                 req,
                 null,
                 null,
