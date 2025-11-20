@@ -29,7 +29,7 @@ public class TexasRestTjeneste {
     protected static final String TJENESTE_PATH = "/texas"; //NOSONAR
 
     @POST
-    @Path("/token")
+    @Path("/token/exchange")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Texas mock for token exchange")
