@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -75,6 +76,7 @@ public class TokenxRestTjeneste {
 
     @POST
     @Path("/token")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "TokenX public key set")
     public Response token(@Context HttpServletRequest req,
@@ -84,11 +86,7 @@ public class TokenxRestTjeneste {
                           @FormParam("subject_token_type") @DefaultValue("urn:ietf:params:oauth:token-type:jwt") String subjectTokenType,
                           @FormParam("subject_token") String subjectToken,
                           @FormParam("audience") String audience) throws JoseException {
-        var subject = hentSubjectFraJWT(subjectToken);
-        var token = accessTokenForAudienceOgSubject(req, audience, subject);
-        var cleanaudience = audience.replaceAll("[^A-Za-z0-9:_-]", "");
-        LOG.info("Henter token for subject [{}] som kan brukes til å kalle audience [{}]", subject, cleanaudience);
-        return Response.ok(new TokenExchangeResponse(token)).build();
+        return exchangeTokenX(req, subjectToken, audience);
     }
 
     @GET
@@ -104,7 +102,7 @@ public class TokenxRestTjeneste {
         return Response.ok(new TokenExchangeResponse(token)).build();
     }
 
-    private String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
+    private static String accessTokenForAudienceOgSubject(HttpServletRequest req, String audience, String subject) throws JoseException {
         var jwtClaims = new JwtClaims();
         jwtClaims.setIssuer(getIssuer(req));
         jwtClaims.setAudience(audience);
@@ -126,7 +124,7 @@ public class TokenxRestTjeneste {
         return jws.getCompactSerialization();
     }
 
-    private String hentSubjectFraJWT(String subjectToken) {
+    private static String hentSubjectFraJWT(String subjectToken) {
         try {
             var claims = UNVALIDATING_CONSUMER.processToClaims(subjectToken);
             return claims.getSubject();
@@ -135,11 +133,20 @@ public class TokenxRestTjeneste {
         }
     }
 
-    private String getBaseUrl(HttpServletRequest req) {
+    public static Response exchangeTokenX(HttpServletRequest req, String subjectToken, String audience) throws JoseException {
+        var subject = hentSubjectFraJWT(subjectToken);
+        var token = accessTokenForAudienceOgSubject(req, audience, subject);
+        var cleanTarget = audience.replaceAll("[^A-Za-z0-9:_-]", "");
+        LOG.info("Henter token for subject [{}] som kan brukes til å kalle target [{}] (JSON)", subject, cleanTarget);
+
+        return Response.ok(new TokenExchangeResponse(token)).build();
+    }
+
+    private static String getBaseUrl(HttpServletRequest req) {
         return req.getScheme() + "://vtp:" + req.getServerPort();
     }
 
-    private String getIssuer(HttpServletRequest req) {
+    private static String getIssuer(HttpServletRequest req) {
         return getBaseUrl(req) + MockServer.CONTEXT_PATH + TJENESTE_PATH;
     }
 
