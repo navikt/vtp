@@ -27,7 +27,6 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 
 
 public class MockServer {
@@ -78,21 +77,19 @@ public class MockServer {
     private void startWebServer() throws Exception {
         var instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
-        var gsakRepo = new GsakRepo();
         var journalRepository = JournalRepositoryImpl.getInstance();
         var fagerPortalRepository = ArbeidsgiverPortalRepositoryImpl.getInstance();
 
-        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, fagerPortalRepository);
+        addRestServices(testScenarioRepository, instance, journalRepository, fagerPortalRepository);
 
         startServer();
     }
 
-    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance,
+                                 JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
         var config = new ApplicationConfigJersey()
                 .setup(testScenarioRepository,
-                        instance,
-                        gsakRepo,
-                        new LocalKafkaProducer(),
+                        instance, new LocalKafkaProducer(),
                         journalRepository,
                         fagerPortalRepository);
 

@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
-
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -72,6 +70,7 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
@@ -96,8 +95,6 @@ import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.kelvin.KelvinMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
-import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
@@ -143,7 +140,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(TestscenarioV2RestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
-        classes.add(SakRestMock.class);
         classes.add(SafMock.class);
         classes.add(PdlLeesahRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
@@ -211,7 +207,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
     public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
                                          TestscenarioRepository instance,
-                                         GsakRepo gsakRepo,
                                          LocalKafkaProducer localKafkaProducer,
                                          JournalRepository journalRepository,
                                          ArbeidsgiverPortalRepository fagerPortalRepository) {
@@ -222,7 +217,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
                 bind(instance).to(TestscenarioRepository.class);
                 bind(journalRepository).to(JournalRepository.class);
                 bind(fagerPortalRepository).to(ArbeidsgiverPortalRepository.class);
-                bind(gsakRepo).to(GsakRepo.class);
                 bind(localKafkaProducer).to(LocalKafkaProducer.class);
             }
         });
