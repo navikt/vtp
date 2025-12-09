@@ -3,6 +3,8 @@ package no.nav.vtp.inntektskomponenten;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.vtp.inntektskomponenten.modell.AbonnementAdministrasjonOpprettApiUt;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +30,6 @@ public class InntektskomponentV2REST {
     public InntektskomponentV2REST() {
         testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
     }
-
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -74,5 +75,18 @@ public class InntektskomponentV2REST {
         return new InntektBulkResponse(bulkinntekter);
 
     }
+
+    @POST
+    @Path("administrasjon/opprett")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
+    public AbonnementAdministrasjonOpprettApiUt opprettAbonnement(Object ignoredRequest) {
+        long randomId = java.util.concurrent.ThreadLocalRandom.current().nextLong();
+        return new AbonnementAdministrasjonOpprettApiUt(randomId);
+
+    }
+
+    // TODO: lag dummy-endepunkter for start og opphoer
+    // TODO: Lag endepunkt for å hente ut hendelser ved å bruke getInntektEndringerFraAktørId
 
 }

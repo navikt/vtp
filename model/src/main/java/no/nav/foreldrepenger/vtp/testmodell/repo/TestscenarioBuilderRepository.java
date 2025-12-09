@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.Set;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.EndretInntektHendelse;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
@@ -18,6 +20,8 @@ public interface TestscenarioBuilderRepository {
     PersonIndeks getPersonIndeks();
 
     Optional<InntektYtelseModell> getInntektYtelseModell(String ident);
+
+    List<EndretInntektHendelse> getInntektEndringerFraAktørId(String ident);
 
     Optional<InntektYtelseModell> getInntektYtelseModellFraAktørId(String aktørId);
 

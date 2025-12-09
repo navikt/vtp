@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.EndretInntektHendelse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,6 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     private PersonIndeks personIndeks = new PersonIndeks();
     private InntektYtelseIndeks inntektYtelseIndeks = new InntektYtelseIndeks();
     private OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
-
     @Override
     public Optional<OrganisasjonModell> getOrganisasjon(String orgnr) {
         return organisasjonIndeks.getModellForIdent(orgnr);
@@ -80,6 +81,7 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
         if (personopplysninger != null) {
             indekserPersonopplysninger(personopplysninger);
             inntektYtelseIndeks.leggTil(personopplysninger.getSøker().getIdent(), testScenario.getSøkerInntektYtelse());
+            testScenario.getEndretInntekt().forEach(it -> inntektYtelseIndeks.leggTilInntektendring(personopplysninger.getSøker().getIdent(), it));
             if (personopplysninger.getAnnenPart() != null) {
                 inntektYtelseIndeks.leggTil(personopplysninger.getAnnenPart().getIdent(), testScenario.getAnnenpartInntektYtelse());
             }
@@ -146,6 +148,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
     @Override
     public Optional<InntektYtelseModell> getInntektYtelseModell(String ident) {
         return inntektYtelseIndeks.getModellForIdent(ident);
+    }
+
+    @Override
+    public List<EndretInntektHendelse> getInntektEndringerFraAktørId(String aktørId) {
+        return inntektYtelseIndeks.getHendelserForIdent(aktørId.substring(aktørId.length() - 11));
     }
 
     @Override

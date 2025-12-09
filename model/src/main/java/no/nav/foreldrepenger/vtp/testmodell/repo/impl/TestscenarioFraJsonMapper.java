@@ -1,9 +1,14 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import java.io.IOException;
+import java.time.YearMonth;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModeller;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AdresseIndeks;
@@ -75,6 +81,26 @@ public class TestscenarioFraJsonMapper {
         if(node.has("inntektytelse-søker")){
             var inntektytelseSøker = node.get("inntektytelse-søker");
             var søkerInntektYtelse = objectMapper.convertValue(inntektytelseSøker, InntektYtelseModell.class);
+            InntektYtelseModell eksisterende = testScenarioRepository.getTestscenario(testscenario.getId()).getSøkerInntektYtelse();
+
+            Map<YearMonth, List<Inntektsperiode>> perioderPrMåned = grupperInntektsperioder(eksisterende);
+            Map<YearMonth, List<Inntektsperiode>> nyePerioderPrMåned = grupperInntektsperioder(søkerInntektYtelse);
+
+            // Ved kall for å oppdatere testscenario vil det finnes inntekter her fra før
+            // Endringer spores for å støtte mock av hendelser fra inntektskomponenten
+            perioderPrMåned.forEach((måned, perioder) -> {
+                if (nyePerioderPrMåned.containsKey(måned)) {
+                    // Sjekker kun for organisasjoner, og støtter kun ett innslag pr orgnr pr måned
+                    List<Inntektsperiode> nyePerioder = nyePerioderPrMåned.get(måned).stream().filter(it -> it.orgnr() != null).sorted(Comparator.comparing(Inntektsperiode::orgnr)).toList();
+                    List<Inntektsperiode> gamlePerioder = perioder.stream().filter(it -> it.orgnr() != null).sorted(Comparator.comparing(Inntektsperiode::orgnr)).toList();
+                    // Enkel sjekk på om sorterte periodelister er like
+                    boolean erEndring = !nyePerioder.equals(gamlePerioder);
+                    if (erEndring) {
+                        testscenario.leggTilEndretInntekt(måned);
+                    }
+                }
+            });
+
             testscenario.setSøkerInntektYtelse(søkerInntektYtelse);
         }
 
@@ -91,6 +117,13 @@ public class TestscenarioFraJsonMapper {
         }
 
         testScenarioRepository.indekser(testscenario);
+    }
+
+    private static Map<YearMonth, List<Inntektsperiode>> grupperInntektsperioder(InntektYtelseModell eksisterende) {
+        return eksisterende.inntektskomponentModell()
+                .getInntektsperioderSplittMånedlig()
+                .stream()
+                .collect(Collectors.groupingBy(it -> YearMonth.of(it.fom().getYear(), it.fom().getMonth())));
     }
 
     private Map<String,String> hentScenariospesifikkeVariabler(ObjectNode node) {

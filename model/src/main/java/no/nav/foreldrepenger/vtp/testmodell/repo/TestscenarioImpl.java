@@ -1,7 +1,9 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -30,6 +32,8 @@ public class TestscenarioImpl implements Testscenario {
     private Personopplysninger personopplysninger;
 
     private InntektYtelseModell søkerInntektYtelse;
+
+    private Set<YearMonth> søkerEndretInntektMåneder = new HashSet<>();
 
     private InntektYtelseModell annenpartInntektYtelse;
 
@@ -116,6 +120,14 @@ public class TestscenarioImpl implements Testscenario {
 
     public void setSøkerInntektYtelse(InntektYtelseModell inntektYtelse) {
         this.søkerInntektYtelse = inntektYtelse;
+    }
+
+    public void leggTilEndretInntekt(YearMonth måned) {
+        this.søkerEndretInntektMåneder.add(måned);
+    }
+
+    public Set<YearMonth> getEndretInntekt() {
+        return this.søkerEndretInntektMåneder;
     }
 
     public void setAnnenpartInntektYtelse(InntektYtelseModell inntektYtelse) {
