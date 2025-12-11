@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.Tilleggsopplysning;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivfiltype;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
@@ -52,7 +53,17 @@ public class JournalpostMapper {
         modell.setMottakskanal(Mottakskanal.fraKode(journalpostRequest.getKanal()));
         modell.setJournalStatus(erKnyttetTilSak(journalpostRequest.getSak()) ? Journalstatus.JOURNALFØRT : Journalstatus.MOTTATT);
         modell.setBehandlingTema(journalpostRequest.getBehandlingstema());
+        modell.setTilleggsopplysninger(mapTilleggsOpplysninger(journalpostRequest.getTilleggsopplysninger()));
         return modell;
+    }
+
+    private List<Tilleggsopplysning> mapTilleggsOpplysninger(List<no.nav.dokarkiv.generated.model.Tilleggsopplysning> tilleggsOpplysninger) {
+        if (tilleggsOpplysninger == null) {
+            return List.of();
+        }
+        return tilleggsOpplysninger.stream()
+                .map(to -> new Tilleggsopplysning(to.getNokkel(), to.getVerdi()))
+                .collect(Collectors.toList());
     }
 
     private boolean erKnyttetTilSak(Sak sak) {
