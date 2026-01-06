@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.Set;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.EndretInntektHendelse;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
@@ -47,6 +49,11 @@ public class DelegatingTestscenarioBuilderRepository implements TestscenarioBuil
     @Override
     public Optional<InntektYtelseModell> getInntektYtelseModell(String ident) {
         return delegate.getInntektYtelseModell(ident);
+    }
+
+    @Override
+    public List<EndretInntektHendelse> getInntektEndringerFraAktørId(String ident) {
+        return delegate.getInntektEndringerFraAktørId(ident);
     }
 
     @Override
