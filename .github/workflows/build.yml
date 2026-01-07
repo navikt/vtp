@@ -9,7 +9,6 @@ on:
       - '**.MD'
       - '.gitignore'
       - '.editorconfig'
-      - '.java-version'
       - '.project'
       - 'LICENSE'
       - 'CODEOWNERS'
