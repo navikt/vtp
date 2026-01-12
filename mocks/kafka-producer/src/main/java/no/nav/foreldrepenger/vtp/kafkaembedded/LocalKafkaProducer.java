@@ -65,14 +65,22 @@ public class LocalKafkaProducer {
 
     public void sendMelding(String topic, String key, String value) {
         stringProducer.send(new ProducerRecord<>(topic, key, value), (recordMetadata, e) -> {
-            LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
+            if (e != null) {
+                LOG.error("Error sending message to topic {}: {}", topic, e.getMessage(), e);
+            } else {
+                LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
+            }
         });
         stringProducer.flush();
     }
 
     public void sendMelding(String topic, GenericData.Record value) {
         avroProducer.send(new ProducerRecord<>(topic, UUID.randomUUID().toString(), value), (recordMetadata, e) -> {
-            LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
+            if (e != null) {
+                LOG.error("Error sending message to topic {}: {}", topic, e.getMessage(), e);
+            } else {
+                LOG.info("Received new metadata: [topic: {} partition: {} offset: {}]", recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset());
+            }
         });
         avroProducer.flush();
     }
