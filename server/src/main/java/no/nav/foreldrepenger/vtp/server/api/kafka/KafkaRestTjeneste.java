@@ -32,11 +32,11 @@ public class KafkaRestTjeneste {
         //Brukes i k9-verdikjede. Naturlig at den flyttes dit nå som ikke vtp har embedded kafka server
         LOG.info("Request: send message to topic [{}]: {}", topic, message);
         localKafkaProducer.sendMelding(topic, key, message);
+        LOG.info("Done sending message to topic [{}]: {}", topic, message);
 
         return Response
                 .status(Response.Status.OK)
                 .type(MediaType.APPLICATION_JSON)
-                .entity(message)
                 .build();
     }
 }
