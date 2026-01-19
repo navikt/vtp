@@ -94,6 +94,7 @@ import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock
 import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.kelvin.KelvinMock;
+import no.nav.tjeneste.virksomhet.dpsak.DagpengerDatadelingMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -163,6 +164,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(UføreMock.class);
         classes.add(SpøkelseMock.class);
         classes.add(KelvinMock.class);
+        classes.add(DagpengerDatadelingMock.class);
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);

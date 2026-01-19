@@ -35,6 +35,7 @@
         <module>pesys-mock</module>
         <module>spokelse-mock</module>
         <module>kelvin-mock</module>
+        <module>dpsak-mock</module>
         <module>fpwsproxy-mock</module>
         <module>altinn-proxy-mock</module>
         <module>fager-mock</module>
