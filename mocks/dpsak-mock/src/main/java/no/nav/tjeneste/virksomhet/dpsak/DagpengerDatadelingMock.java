@@ -44,7 +44,7 @@ public class DagpengerDatadelingMock {
     }
 
     @POST
-    @Path("/beregning")
+    @Path("/beregninger")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer utbetalte dagpenger fra DPsak")
