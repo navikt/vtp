@@ -83,8 +83,28 @@ public class InntektskomponentV2REST {
     public AbonnementAdministrasjonOpprettApiUt opprettAbonnement(Object ignoredRequest) {
         long randomId = java.util.concurrent.ThreadLocalRandom.current().nextLong();
         return new AbonnementAdministrasjonOpprettApiUt(randomId);
-
     }
+
+    @POST
+    @Path("administrasjon/opphoer")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
+    public AbonnementAdministrasjonOpphoerApiUt opphørAbonnement(Object ignoredRequest) {
+        return new AbonnementAdministrasjonOpphoerApiUt();
+    }
+
+    @POST
+    @Path("hendelse/start")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for start av hendelse")
+    public AbonnementHendelseStartApiUt startHendelse(Object ignoredRequest) {
+        testscenarioRepository.getInntektEndringerFraAktørId()
+        return new AbonnementHendelseStartApiUt();
+    }
+
+
+    private record AbonnementAdministrasjonOpphoerApiUt() {}
+    private record AbonnementHendelseStartApiUt(long sekvensnummer) {}
 
     // TODO: lag dummy-endepunkter for start og opphoer
     // TODO: Lag endepunkt for å hente ut hendelser ved å bruke getInntektEndringerFraAktørId
