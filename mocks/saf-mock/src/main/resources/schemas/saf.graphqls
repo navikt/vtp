@@ -283,6 +283,9 @@ type Journalpost {
     # Datoen journalposten ble opprettet i arkivet. Datoen settes automatisk og kan ikke overskrives. Selv om hver journalpost har mange datoer (se `RelevantDato`) er datoOpprettet å anse som "fasit" på journalpostens alder.
     datoOpprettet: DateTime!
 
+    # Brukes for sortering av journalposter og for å få riktig rekkefølge på dokumenter.
+    datoSortering: DateTime!
+
     # Liste over datoer som kan være relevante for denne journalposten, f.eks. DATO_EKSPEDERT. Hvilke relevante datoer som returneres, avhenger av journalposttypen.
     relevanteDatoer: [RelevantDato]
 
@@ -294,12 +297,12 @@ type Journalpost {
     eksternReferanseId: String
 
     # Viser om pålogget bruker i selvbetjeningsløsningen på Nav.no kan se denne journalposten.
-    brukerHarTilgang: Boolean! @deprecated(reason: "Feltet er eksperimentelt og under utvikling. Det har ingen mening i produksjon, og skal ikke brukes uten avtale med Team Dokumentløsninger. Feltet kan plutselig endres og/eller forsvinne.")
+    brukerHarTilgang: Boolean!
 
     # Begrunnelse for hvorfor pålogget bruker i selvbetjeningsløsningen eventuelt nektes tilgang til å se denne journalposten.
     # Hvis brukerHarTilgang er false, inneholder denne en liste med en eller flere grunner til at brukeren ikke har tilgang
     # til å se Journalposten i selvbetjeningsløsningen. Om brukerHarTilgang er true, er denne listen tom.
-    brukerTilgangAvvistBegrunnelser: [TilgangAvvistBegrunnelse!]! @deprecated(reason: "Feltet er eksperimentelt og under utvikling. Det har ingen mening i produksjon, og skal ikke brukes uten avtale med Team Dokumentløsninger. Feltet kan plutselig endres og/eller forsvinne.")
+    brukerTilgangAvvistBegrunnelser: [TilgangAvvistBegrunnelse!]!
 
     # Metadata om distribusjon av utgående journalpost.
     # * Forteller hvilken adresse en utgående forsendelse er distribuert til (digital postkasse eller fysisk post)
@@ -559,12 +562,12 @@ type Dokumentvariant {
     skjerming: SkjermingType
 
     # Viser om pålogget bruker i selvbetjeningsløsningen på Nav.no kan se dokumentet til denne dokumentvarianten.
-    brukerHarTilgang: Boolean! @deprecated(reason: "Feltet er eksperimentelt og under utvikling. Det har ingen mening i produksjon, og skal ikke brukes uten avtale med Team Dokumentløsninger. Feltet kan plutselig endres og/eller forsvinne.")
+    brukerHarTilgang: Boolean!
 
     # Begrunnelse for hvorfor pålogget bruker i selvbetjeningsløsningen eventuelt nektes tilgang til å se dokumentet.
     # Hvis brukerHarTilgang er false, inneholder denne en liste med en eller flere grunner til at brukeren ikke har tilgang
     # til å se dokumentet i selvbetjeningsløsningen. Om brukerHarTilgang er true, er denne listen tom.
-    brukerTilgangAvvistBegrunnelser: [TilgangAvvistBegrunnelse!]!  @deprecated(reason: "Feltet er eksperimentelt og under utvikling. Det har ingen mening i produksjon, og skal ikke brukes uten avtale med Team Dokumentløsninger. Feltet kan plutselig endres og/eller forsvinne.")
+    brukerTilgangAvvistBegrunnelser: [TilgangAvvistBegrunnelse!]!
 }
 
 # Beskriver hvorfor journalposten eller dokumentet er skjermet. Det kan komme flere verdier enn disse i fremtiden.
@@ -756,6 +759,9 @@ enum Kanal {
     # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i NAV.
     NAV_NO_CHAT
 
+    # Presentert direkte på nav.no for innlogget bruker
+    NAV_NO_UTEN_VARSLING
+
     # Brevet er sendt til virksomhet som Taushetsbelagt Post via Altinn.
     # * Brukes for utgående journalposter.
     DPVT
@@ -771,6 +777,10 @@ enum Kanal {
     # Forsendelsen er mottatt i en av NAVs meldingsbokser i Altinn.
     # * Brukes for inngående journalposter.
     ALTINN_INNBOKS
+
+    # Forsendelsen er sendt fra et HR-system med integrasjon mot Nav.
+    # * Brukes for inngående journalposter.
+    HR_SYSTEM_API
 
     # Forsendelsen har ingen kjent kanal.
     UKJENT
@@ -788,6 +798,9 @@ enum Tema {
     # Ajourhold – grunnopplysninger
     AGR
 
+    # Aktivitetsplan med dialoger
+    AKT
+
     # Arbeidsrådgivning – psykologtester
     ARP
 
@@ -796,6 +809,9 @@ enum Tema {
 
     # Barnetrygd
     BAR
+
+    # Barnebortføring
+    BBF
 
     # Bidrag
     BID
@@ -878,6 +894,9 @@ enum Tema {
     # Mobilitetsfremmende stønad
     MOB
 
+    # Oljepionerene
+    OLJ
+
     # Omsorgspenger, pleiepenger og opplæringspenger
     OMS
 
@@ -887,11 +906,17 @@ enum Tema {
     # Oppfølging
     OPP
 
+    # Innsyn
+    PAI
+
     # Pensjon
     PEN
 
     # Permittering og masseoppsigelser
     PER
+
+    # Innsyn etter personopplysningsloven
+    POI
 
     # Rehabiliteringspenger
     REH
