@@ -39,7 +39,7 @@ jobs:
     needs: build-app
     if: github.ref_name == 'master'
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # ratchet:actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # ratchet:actions/checkout@v4
       - name: Setup java and maven
         uses: navikt/fp-gha-workflows/.github/actions/setup-java-and-maven@main # ratchet:exclude
         with:
