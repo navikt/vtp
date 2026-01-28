@@ -44,11 +44,11 @@ public class DagpengerDatadelingMock {
     }
 
     @POST
-    @Path("/utbetaling")
+    @Path("/beregninger")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer utbetalte dagpenger fra DPsak")
-    public DagpengerUtbetalingsdag[] postDagpengerUtbetaling(PersonRequest personRequest) {
+    public DagpengerUtbetalingsdag[] postDagpengerBeregning(PersonRequest personRequest) {
         // TODO: Utvide IAY-modell med Dp-datadeling-Dagpenger og populere response med data fra testscenario
         List<DagpengerUtbetalingsdag> tomrespons = new ArrayList<>();
         return tomrespons.toArray(DagpengerUtbetalingsdag[]::new);
