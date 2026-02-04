@@ -32,7 +32,7 @@
         <fp-kontrakter.version>9.4.26</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.75</swagger-codegen-maven-plugin.version>
+        <swagger-codegen-maven-plugin.version>3.0.76</swagger-codegen-maven-plugin.version>
         <graphql-java.version>25.0</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
         <avro.version>1.12.1</avro.version>
