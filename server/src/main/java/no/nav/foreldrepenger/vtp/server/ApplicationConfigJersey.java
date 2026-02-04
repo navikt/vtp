@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import no.nav.altinn.ArbeidsgiverAltinnTilgangerMock;
+
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -169,6 +171,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
         classes.add(AltinnRettigheterProxyMock.class);
+        classes.add(ArbeidsgiverAltinnTilgangerMock.class);
         classes.add(FagerMock.class);
 
         // Arbeidsgiver portal mock

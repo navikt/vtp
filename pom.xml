@@ -6,7 +6,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-parent-app</artifactId>
-        <version>5.2.1</version>
+        <version>5.2.3</version>
     </parent>
 
     <groupId>no.nav.foreldrepenger.vtp</groupId>
@@ -29,10 +29,10 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>9.4.23</fp-kontrakter.version>
+        <fp-kontrakter.version>9.4.26</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <swagger-codegen-maven-plugin.version>3.0.75</swagger-codegen-maven-plugin.version>
+        <swagger-codegen-maven-plugin.version>3.0.76</swagger-codegen-maven-plugin.version>
         <graphql-java.version>25.0</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
         <avro.version>1.12.1</avro.version>
