@@ -57,10 +57,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>axsys-enhetstilgang-mock</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>organisasjon-mock</artifactId>
         </dependency>
         <dependency>

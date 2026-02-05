@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import no.nav.altinn.ArbeidsgiverAltinnTilgangerMock;
-
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -52,8 +50,7 @@ import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
 import no.nav.altinn.AltinnRettigheterProxyMock;
-import no.nav.axsys.AxsysEnhetstilgangMock;
-import no.nav.axsys.AxsysEnhetstilgangV2Mock;
+import no.nav.altinn.ArbeidsgiverAltinnTilgangerMock;
 import no.nav.digdir.DigdirKrrProxyMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -68,7 +65,6 @@ import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioV2RestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
@@ -94,9 +90,9 @@ import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
+import no.nav.tjeneste.virksomhet.dpsak.DagpengerDatadelingMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.kelvin.KelvinMock;
-import no.nav.tjeneste.virksomhet.dpsak.DagpengerDatadelingMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
 import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
@@ -160,8 +156,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
         classes.add(DigdirKrrProxyMock.class);
-        classes.add(AxsysEnhetstilgangMock.class);
-        classes.add(AxsysEnhetstilgangV2Mock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(UføreMock.class);
         classes.add(SpøkelseMock.class);
@@ -181,7 +175,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(AzureAdRestTjeneste.class);
         classes.add(IdportenLoginTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
-        classes.add(PdpRestTjeneste.class);
         classes.add(TokenxRestTjeneste.class);
         classes.add(TexasRestTjeneste.class);
 
