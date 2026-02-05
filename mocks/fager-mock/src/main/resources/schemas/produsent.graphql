@@ -1,17 +1,9 @@
 # Denne dokumentasjonen er skrev i "du/dere"-form, hvor du/dere er produsenter, og "vi" er
 # notifikasjons-plattformen.
 
-
-directive @Validate on ARGUMENT_DEFINITION
-directive @MaxLength(max: Int) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
-directive @NonIdentifying on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
-directive @ExactlyOneFieldGiven on INPUT_OBJECT
-directive @MaxValue(upToIncluding: Int) on ARGUMENT_DEFINITION
-
 """
-DateTime med offset etter ISO8601-standaren. F.eks. '2011-12-03T10:15:30+01:00'.
-
-Er representert som String.
+DateTime etter ISO8601-standaren. F.eks. '2011-12-03T10:15:30+01:00'.
+Dersom tidssone/offset ikke er oppgitt, så antar vi at tidspunktet er Oslo-tid ('Europe/Oslo').
 """
 scalar ISO8601DateTime
 
@@ -74,7 +66,7 @@ type Query {
     """
     mineNotifikasjoner(
         "antall notifikasjoner du ønsker å hente"
-        first: Int @Validate @MaxValue(upToIncluding: 10000)
+        first: Int
 
         """Cursor til notifikasjonen du henter fra. Cursor får du fra [NotifikasjonEdge](#notifikasjonedge)."""
         after: String
@@ -179,6 +171,7 @@ type Kalenderavtale {
 union Mottaker =
     | AltinnMottaker
     | NaermesteLederMottaker
+    | AltinnRessursMottaker
 
 type AltinnMottaker {
     serviceCode: String!
@@ -190,6 +183,11 @@ type NaermesteLederMottaker {
     naermesteLederFnr: String!
     ansattFnr: String!
     virksomhetsnummer: String!
+}
+
+type AltinnRessursMottaker {
+    virksomhetsnummer: String!
+    ressursId: String!
 }
 
 type OppgaveData {
@@ -247,12 +245,12 @@ type KalenderavtaleData {
     """
     Når avtalen starter.
     """
-    startTidspunkt: ISO8601LocalDateTime!
+    startTidspunkt: ISO8601DateTime!
 
     """
     Når avtalen slutter.
     """
-    sluttTidspunkt: ISO8601LocalDateTime
+    sluttTidspunkt: ISO8601DateTime
 
     """
     Her kan dere oppgi en fysisk adresse som brukeren kan møte opp på dersom dere har det.
@@ -287,10 +285,6 @@ type Metadata {
     """
     """
     grupperingsid: String
-
-    softDeleted: Boolean!
-
-    softDeletedAt: ISO8601DateTime
 }
 
 type EksterntVarsel {
@@ -437,17 +431,17 @@ type Mutation {
         """
         Her bestemmer dere hvem som skal få se kalenderavtalen.
         """
-        mottakere: [MottakerInput!]! @Validate
+        mottakere: [MottakerInput!]!
 
         """
         Når avtalen starter.
         """
-        startTidspunkt: ISO8601LocalDateTime!
+        startTidspunkt: ISO8601DateTime!
 
         """
         Når avtalen slutter.
         """
-        sluttTidspunkt: ISO8601LocalDateTime
+        sluttTidspunkt: ISO8601DateTime
 
         """
         Her kan dere oppgi en fysisk adresse som brukeren kan møte opp på dersom dere har det.
@@ -479,7 +473,7 @@ type Mutation {
         Oppgi dersom dere ønsker at hard delete skal skeduleres. Vi
         tolker relative datoer basert på når vi mottok kallet.
         """
-        hardDelete: FutureTemporalInput @Validate
+        hardDelete: FutureTemporalInput
     ): NyKalenderavtaleResultat!
 
     nySak(
@@ -502,9 +496,12 @@ type Mutation {
         NB. At en bruker har tilgang til en sak påvirker ikke om de har tilgang
         til en notifikasjon. De tilgangsstyres hver for seg.
         """
-        mottakere: [MottakerInput!]! @Validate
+        mottakere: [MottakerInput!]!
 
-        """En tittel på saken, som vises til brukeren."""
+        """
+        En tittel på saken, som vises til brukeren.
+        Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
+        """
         tittel: String!
 
         """
@@ -512,7 +509,7 @@ type Mutation {
         Tilleggssinformasjon som vises under tittelen på en sak.
         Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
         """
-        tilleggsinformasjon: String @Validate @MaxLength(max: 140) @NonIdentifying
+        tilleggsinformasjon: String
 
         """
         Her oppgir dere en lenke som brukeren kan klikke på for å komme rett til saken.
@@ -550,7 +547,7 @@ type Mutation {
         tolker relative datoer basert på `opprettetTidspunkt` (eller
         når vi mottok kallet hvis dere ikke har oppgitt `opprettetTidspunkt`).
         """
-        hardDelete: FutureTemporalInput @Validate
+        hardDelete: FutureTemporalInput
     ): NySakResultat!
 
     nyStatusSak(
@@ -627,7 +624,7 @@ type Mutation {
         Her har dere mulighet til å vise virksomheten mer informasjon om saken.
         Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
         """
-        tilleggsinformasjon: String @Validate @MaxLength(max: 140) @NonIdentifying
+        tilleggsinformasjon: String
     ): TilleggsinformasjonSakResultat!
 
     tilleggsinformasjonSakByGrupperingsid(
@@ -640,7 +637,7 @@ type Mutation {
         Her har dere mulighet til å vise virksomheten mer informasjon om saken.
         Feltet er begrenset til 140 tegn og kan ikke inneholde fødselsnummer.
         """
-        tilleggsinformasjon: String @Validate @MaxLength(max: 140) @NonIdentifying
+        tilleggsinformasjon: String
     ): TilleggsinformasjonSakResultat!
 
 
@@ -676,12 +673,12 @@ type Mutation {
     """
     Opprett en ny beskjed.
     """
-    nyBeskjed(nyBeskjed: NyBeskjedInput! @Validate): NyBeskjedResultat!
+    nyBeskjed(nyBeskjed: NyBeskjedInput!): NyBeskjedResultat!
 
     """
     Opprett en ny oppgave.
     """
-    nyOppgave(nyOppgave: NyOppgaveInput! @Validate): NyOppgaveResultat!
+    nyOppgave(nyOppgave: NyOppgaveInput!): NyOppgaveResultat!
 
     """
     Marker en oppgave (identifisert ved id) som utført. Dersom oppgaven har påminnelse, vil denne og eventuelle eksterne varsler på påminnelsen bli kansellert.
@@ -1101,52 +1098,49 @@ type Mutation {
         paaminnelse: PaaminnelseInput
     ): OppdaterKalenderavtaleResultat!
 
-    """
-    Markerer en notifikasjon som slettet (soft delete).
-
-    Notifikasjonen vil forsvinne helt for mottakeren: de vil ikke kunne se den på
-    noen som helst måte — som om notifikasjonen aldri eksisterte.
-
-    For dere (produsenter), så kan dere fortsatt se notifikasjonen i listen over deres notifikasjoner.
-
-    Eventuelle eksterne varsler (SMS, e-post) knyttet til notifikasjonen vil bli fortsatt bli sendt.
-
-    Advarsel: det er ikke mulig å angre på denne operasjonen.
-    """
     softDeleteNotifikasjon(id: ID!): SoftDeleteNotifikasjonResultat!
+    @deprecated(reason:
+    "All sletting er endret til å medføre hard delete. Denne mutation blir snart fjernet. bruk hardDeleteNotifikasjon(id) i stedet."
+    )
 
-    """
-    Se dokumentasjon for `softDeleteNotifikasjon(id)`.
-    """
     softDeleteNotifikasjonByEksternId(
-        """
-        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
-        """
         merkelapp: String!,
-
-        """
-        ID-en som dere ga oss da dere opprettet notifikasjonen.
-        """
         eksternId: ID!
     ): SoftDeleteNotifikasjonResultat!
     @deprecated(reason:
-    "Using the type ID for `eksternId` can lead to unexpected behaviour. Use softDeleteNotifikasjonByEksternId_V2 instead."
+    "All sletting er endret til å medføre hard delete. Denne mutation blir snart fjernet. bruk hardDeleteNotifikasjonByEksternId_V2(merkelapp, eksternId) i stedet."
     )
 
-    """
-    Se dokumentasjon for `softDeleteNotifikasjon(id)`.
-    """
     softDeleteNotifikasjonByEksternId_V2(
-        """
-        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
-        """
         merkelapp: String!,
-
-        """
-        ID-en som dere ga oss da dere opprettet notifikasjonen.
-        """
         eksternId: String!
     ): SoftDeleteNotifikasjonResultat!
+    @deprecated(reason:
+    "All sletting er endret til å medføre hard delete. Denne mutation blir snart fjernet. bruk hardDeleteNotifikasjonByEksternId_V2(merkelapp, eksternId) i stedet."
+    )
+
+    hardDeleteNotifikasjonByEksternId(
+        merkelapp: String!
+        eksternId: ID!
+    ): HardDeleteNotifikasjonResultat!
+    @deprecated(reason:
+    "Using the type ID for `eksternId` can lead to unexpected behaviour. Use hardDeleteNotifikasjonByEksternId_V2 instead."
+    )
+
+    softDeleteSak(
+        id: ID!
+    ): SoftDeleteSakResultat!
+    @deprecated(reason:
+    "All sletting er endret til å medføre hard delete. Denne mutation blir snart fjernet. bruk hardDeleteSak(id) i stedet."
+    )
+
+    softDeleteSakByGrupperingsid(
+        merkelapp: String!
+        grupperingsid: String!
+    ): SoftDeleteSakResultat!
+    @deprecated(reason:
+    "All sletting er endret til å medføre hard delete. Denne mutation blir snart fjernet. bruk hardDeleteSakByGrupperingsid(merkelapp, grupperingsid) i stedet."
+    )
 
     """
     Sletter en notifikasjon og tilhørende data helt fra databasen og kafka.
@@ -1166,24 +1160,6 @@ type Mutation {
     """
     Se dokumentasjon for `hardDeleteNotifikasjon(id)`.
     """
-    hardDeleteNotifikasjonByEksternId(
-        """
-        Merkelappen som dere ga oss da dere opprettet notifikasjonen.
-        """
-        merkelapp: String!
-
-        """
-        ID-en som dere ga oss da dere opprettet notifikasjonen.
-        """
-        eksternId: ID!
-    ): HardDeleteNotifikasjonResultat!
-    @deprecated(reason:
-    "Using the type ID for `eksternId` can lead to unexpected behaviour. Use hardDeleteNotifikasjonByEksternId_V2 instead."
-    )
-
-    """
-    Se dokumentasjon for `hardDeleteNotifikasjon(id)`.
-    """
     hardDeleteNotifikasjonByEksternId_V2(
         """
         Merkelappen som dere ga oss da dere opprettet notifikasjonen.
@@ -1195,37 +1171,6 @@ type Mutation {
         """
         eksternId: String!
     ): HardDeleteNotifikasjonResultat!
-
-    """
-    Markerer en sak som slettet (soft delete).
-
-    Sak vil forsvinne helt for mottakeren: de vil ikke kunne se den på
-    noen som helst måte — som om saken aldri eksisterte.
-
-    Advarsel: det er ikke mulig å angre på denne operasjonen.
-    Advarsel: ingen notifikasjoner blir slettet, selv om de har samme grupperingsid.
-    """
-    softDeleteSak(
-        """
-        ID-en som notifikasjolnen har. Den du fikk da du opprettet notifikasjonen.
-        """
-        id: ID!
-    ): SoftDeleteSakResultat!
-
-    """
-    Se dokumentasjon for `softDeleteSak(id)`.
-    """
-    softDeleteSakByGrupperingsid(
-        """
-        Merkelappen som dere ga oss da dere opprettet saken.
-        """
-        merkelapp: String!
-
-        """
-        ID-en som dere ga oss da dere opprettet saken.
-        """
-        grupperingsid: String!
-    ): SoftDeleteSakResultat!
 
     """
     Sletter en sak og tilhørende data helt fra databasen og kafka.
@@ -1251,8 +1196,6 @@ type Mutation {
         """
         grupperingsid: String!
     ): HardDeleteSakResultat!
-
-
 }
 
 union SoftDeleteNotifikasjonResultat =
@@ -1454,14 +1397,13 @@ input PaaminnelseInput {
     eksterneVarsler: [PaaminnelseEksterntVarselInput!]! = []
 }
 
-input PaaminnelseTidspunktInput @ExactlyOneFieldGiven {
+input PaaminnelseTidspunktInput {
     """
     Konkret tidspunkt
     """
     konkret: ISO8601LocalDateTime
     """
     Relativ til når oppgaven/kalenderavtalen er angitt som opprettet. Altså X duration etter opprettelse.
-    Ved utsatt frist er den relativ til tidspunktet fristen ble utsatt.
     """
     etterOpprettelse: ISO8601Duration
 
@@ -1476,10 +1418,11 @@ input PaaminnelseTidspunktInput @ExactlyOneFieldGiven {
     foerStartTidspunkt: ISO8601Duration
 }
 
-input PaaminnelseEksterntVarselInput @ExactlyOneFieldGiven {
+input PaaminnelseEksterntVarselInput {
     sms: PaaminnelseEksterntVarselSmsInput
     epost: PaaminnelseEksterntVarselEpostInput
     altinntjeneste: PaaminnelseEksterntVarselAltinntjenesteInput
+    altinnressurs: PaaminnelseEksterntVarselAltinnressursInput
 }
 
 input PaaminnelseEksterntVarselSmsInput {
@@ -1540,10 +1483,40 @@ input PaaminnelseEksterntVarselAltinntjenesteInput {
     sendevindu: Sendevindu!
 }
 
-input EksterntVarselInput @ExactlyOneFieldGiven {
+input PaaminnelseEksterntVarselAltinnressursInput {
+    mottaker: AltinnRessursMottakerInput!
+    """
+    Subject/emne til e-posten
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    epostTittel: String!
+    """
+    Kroppen til e-posten. Kan inneholde HTML.
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    epostHtmlBody: String!
+    """
+    Teksten som sendes i SMS-en.
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    smsTekst: String!
+    """
+    Vi sender eposten med utgangspunkt i påminnelsestidspunktet, men tar hensyn
+    til sendingsvinduet. Hvis påminnelsestidspunktet er utenfor vinduet, sender vi
+    det ved første mulighet.
+    """
+    sendevindu: Sendevindu!
+}
+
+"""
+Input som definerer hvordan et eksternt varsel skal sendes.
+Kun ett av feltene i inputen kan være satt.
+"""
+input EksterntVarselInput {
     sms: EksterntVarselSmsInput
     epost: EksterntVarselEpostInput
     altinntjeneste: EksterntVarselAltinntjenesteInput
+    altinnressurs: EksterntVarselAltinnressursInput
 }
 
 """
@@ -1583,7 +1556,7 @@ Med denne typen velger du når du ønsker at det eksterne varselet blir sendt.
 Du skal velge en (og kun en) av feltene, ellers blir forespørselen din avvist
 med en feil.
 """
-input SendetidspunktInput @ExactlyOneFieldGiven {
+input SendetidspunktInput {
     """
     Hvis du spesifiserer et tidspunkt på formen "YYYY-MM-DDThh:mm", så sender
     vi notifikasjonen på det tidspunktet. Oppgir du et tidspunkt i fortiden,
@@ -1623,7 +1596,9 @@ input EksterntVarselEpostInput {
 }
 
 """
-Med denne typen vil varsel sendes til virksomheten vha tjenesten i Altinn.
+Med denne typen vil varsel sendes til virksomheten vha tjenesten i Altinn 2.
+APIet i Altinn 2 som brukes er <a href="https://altinn.github.io/docs/api/tjenesteeiere/soap/endepunkt-liste/#notificationagencyexternal">NotificationAgencyExternal.SendStandaloneNotiuficationBasic</a>
+
 Dette vil bli sendt med EMAIL_PREFERRED, som betyr at det mest sannsynlig blir sendt som epost, men i enkelte tilfeller
 vil bli sendt sms.
 
@@ -1652,17 +1627,52 @@ input EksterntVarselAltinntjenesteInput {
     sendetidspunkt: SendetidspunktInput!
 }
 
-input SmsMottakerInput @ExactlyOneFieldGiven {
+"""
+Med denne typen vil varsel sendes til virksomheten vha ressursen i Altinn 3.
+APIet i Altinn 3 som brukes er <a href="https://docs.altinn.studio/notifications/reference/api/">Altinn Notifications API</a>
+
+Dette vil bli sendt med EMAIL_PREFERRED, som betyr at det mest sannsynlig blir sendt som epost, men i enkelte tilfeller
+vil bli sendt sms.
+
+De som har registrert sin kontaktadresse på underenheten (enten uten filter eller hvor filteret stemmer med ressursen som oppgis) vil bli varslet.
+Den offisielle kontaktinformasjonen til overenheten vil bli varslet.
+"""
+input EksterntVarselAltinnressursInput {
+    mottaker: AltinnRessursMottakerInput!
+    """
+    Subject/emne til e-posten
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    epostTittel: String!
+    """
+    Kroppen til e-posten. Kan inneholde HTML.
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    epostHtmlBody: String!
+    """
+    Teksten som sendes i SMS-en.
+    OBS: Det er ikke lov med personopplysninger i teksten.
+    """
+    smsTekst: String!
+    sendetidspunkt: SendetidspunktInput!
+}
+
+input SmsMottakerInput {
     kontaktinfo: SmsKontaktInfoInput
 }
 
 input SmsKontaktInfoInput {
     """deprecated. value is ignored. """
     fnr: String
+    """
+    Må være et gyldig norsk mobilnummer. Kan inneholde landkode på format +47 eller 0047.
+    Nummeret må være gyldig iht norske mobilnummer-regler (40000000-49999999, 90000000-99999999)
+    se https://nkom.no/telefoni-og-telefonnummer/telefonnummer-og-den-norske-nummerplan/alle-nummerserier-for-norske-telefonnumre
+    """
     tlf: String!
 }
 
-input EpostMottakerInput @ExactlyOneFieldGiven {
+input EpostMottakerInput {
     kontaktinfo: EpostKontaktInfoInput
 }
 
@@ -1672,6 +1682,11 @@ input EpostKontaktInfoInput {
     epostadresse: String!
 }
 
+"""
+Ekstern varsling på Altinn 2 tjeneste.
+Ekstern varsling på Altinn 3 ressurs er ikke implementert, men er i backloggen.
+Ta kontakt derssom dere ønsker at vi prioriterer dette.
+"""
 input AltinntjenesteMottakerInput {
     serviceCode: String!
     serviceEdition: String!
@@ -1684,22 +1699,39 @@ Du kan spesifisere mottaker av notifikasjoner på forskjellige måter. Du skal b
 
 Vi har implementert det på denne måten fordi GraphQL ikke støtter union-typer som input.
 """
-input MottakerInput @ExactlyOneFieldGiven {
+input MottakerInput {
     altinn: AltinnMottakerInput
+    altinnRessurs: AltinnRessursMottakerInput
     naermesteLeder: NaermesteLederMottakerInput
 }
 
 """
-Spesifiser mottaker ved hjelp av tilganger i Altinn. Enhver som har den gitte tilgangen vil
+Spesifiser mottaker ved hjelp av tilganger i Altinn 2. Enhver som har den gitte tilgangen vil
 kunne se notifikasjone.
 
 Tilgangssjekken utføres hver gang en bruker ser på notifikasjoner. Det betyr at hvis en
-bruker mister en Altinn-tilgang, så vil de hverken se historiske eller nye notifikasjone knyttet til den Altinn-tilgangen.
-Og motsatt, hvis en bruker får en Altinn-tilgang, vil de se tidligere notifikasjoner for den Altinn-tilgangen.
+bruker mister en Altinn 2-tilgang, så vil de hverken se historiske eller nye notifikasjone knyttet til den Altinn 2-tilgangen.
+Og motsatt, hvis en bruker får en Altinn 2-tilgang, vil de se tidligere notifikasjoner for den Altinn2-tilgangen.
+
+Altinn 2 skal avvikles innen juni 2026, og denne mottakeren vil da også forsvinne. Vi anbefaler å migrere til Altinn 3, og ta i bruk
+AltinnRessursMottakerInput. Når dere migrerer til Altinn3 kan vi sørge for at brukere fortsatt får tilgang til gamle saker og notifikasjoner, så lenge vi blir informert
+om hvilke Altinn 3 ressurser som tilsvarer hvilke Altinn 2 tjenester. Ta gjerne kontakt med oss og gi beskjed.
 """
 input AltinnMottakerInput {
     serviceCode: String!
     serviceEdition: String!
+}
+
+"""
+Spesifiser mottaker ved hjelp av tilganger i Altinn 3. Enhver som har den gitte tilgangen vil
+kunne se notifikasjone.
+
+Tilgangssjekken utføres hver gang en bruker ser på notifikasjoner. Det betyr at hvis en
+bruker mister en Altinn 3-tilgang, så vil de hverken se historiske eller nye notifikasjone knyttet til den Altinn 3-tilgangen.
+Og motsatt, hvis en bruker får en Altinn 3-tilgang, vil de se tidligere notifikasjoner for den Altinn2-tilgangen.
+"""
+input AltinnRessursMottakerInput {
+    ressursId: String!
 }
 
 """
@@ -1728,7 +1760,7 @@ input NotifikasjonInput {
     """
     Teksten som vises til brukeren. Feltet er begrenset til 300 tegn og kan ikke inneholde fødselsnummer.
     """
-    tekst: String! @MaxLength(max: 300) @NonIdentifying
+    tekst: String!
 
     """
     Lenken som brukeren føres til hvis de klikker på beskjeden.
@@ -1778,7 +1810,7 @@ input MetadataInput {
 """
 Med denne kan dere spesifiserer et konkret tidspunkt.
 """
-input FutureTemporalInput @ExactlyOneFieldGiven {
+input FutureTemporalInput {
     """
     En konkret dato. I Europe/Oslo-tidssone.
     """
@@ -1853,6 +1885,10 @@ enum KalenderavtaleTilstand {
     Avtalen er avlyst
     """
     AVLYST
+    """
+    Avtalen er avholdt, dette skjer automatisk når starttidspunkt har passert, men kan også settes manuelt
+    """
+    AVHOLDT
 }
 
 union NyOppgaveResultat =
