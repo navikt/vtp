@@ -18,6 +18,10 @@
                 "name": "0000-GA-k9-saksbehandler"
             },
             {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
+            },
+            {
                 "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
                 "name": "0000-GA-INNTK_8-30"
             },
@@ -56,6 +60,10 @@
             {
                 "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
                 "name": "0000-GA-k9-saksbehandler"
+            },
+            {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
             },
             {
                 "oid": "df650e66-9590-4c96-8ecb-8efea46f1306",
@@ -106,6 +114,10 @@
                 "name": "0000-GA-k9-saksbehandler"
             },
             {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
+            },
+            {
                 "oid": "bc7fde53-c4c3-4fff-9079-c6440ca5ff5e",
                 "name": "0000-GA-Fortrolig_Adresse"
             },
@@ -152,6 +164,10 @@
             {
                 "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
                 "name": "0000-GA-k9-saksbehandler"
+            },
+            {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
             },
             {
                 "oid": "63b3f84f-1ec5-444b-ad33-2ad2d3495da1",
@@ -210,6 +226,14 @@
                 "name": "0000-GA-k9-beslutter"
             },
             {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
+            },
+            {
+                "oid": "db408148-cf2b-4711-ad03-0ef93995eb35",
+                "name": "0000-CA-aktivitetspenger-beslutter-del2"
+            },
+            {
                 "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
                 "name": "0000-GA-INNTK_8-30"
             },
@@ -258,6 +282,14 @@
                 "name": "0000-GA-k9-overstyrer"
             },
             {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
+            },
+            {
+                "oid": "2d3d742f-3b00-4c7d-a261-b2084aadd702",
+                "name": "0000-CA-aktivitetspenger-overstyrer-del2"
+            },
+            {
                 "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
                 "name": "0000-GA-INNTK_8-30"
             },
@@ -296,6 +328,10 @@
             {
                 "oid": "5081d7b2-00df-442b-acb5-48eeaa114e96",
                 "name": "0000-GA-k9-saksbehandler"
+            },
+            {
+                "oid": "4b3f571a-44c7-4d2b-9811-c6a1ea2cc9f4",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del2"
             },
             {
                 "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
@@ -340,6 +376,10 @@
             {
                 "oid": "79630737-b41d-41eb-93fb-30907e1afed7",
                 "name": "0000-GA-k9-veileder"
+            },
+            {
+                "oid": "6add4432-bfd1-4952-a8b4-28e746e9592c",
+                "name": "0000-CA-aktivitetspenger-veileder"
             },
             {
                 "oid": "99cff4e7-160a-42ba-899a-1cefd605d0e5",
@@ -428,6 +468,10 @@
             {
                 "oid": "7ac42b69-14af-479e-9e9c-b2235bea9863",
                 "name": "0000-GA-k9-drift"
+            },
+            {
+                "oid": "91b518bd-04ce-4eed-8d93-6fb134e93598",
+                "name": "0000-CA-aktivitetspenger-drift"
             }
         ]
     },
@@ -447,6 +491,43 @@
             }
         ]
     },
+    {
+        "ident": "A111111",
+        "oid": "28db24a8-9973-4092-878a-4a73e9010c71",
+        "displayName": "Aksel Del 1 Saksbehandler",
+        "givenName": "Aksel",
+        "surname": "Saksbehandler",
+        "email": "Aksel.del.1.saksbehandler@example.com",
+        "streetAddress": "4833",
+        "enheter": [],
+        "groups": [
+            {
+                "oid": "e1bd0c68-0c47-4dd0-ba77-c6e1e46f9d30",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del1"
+            }
+        ]
+    },
+    {
+        "ident": "B111111",
+        "oid": "463c5737-4ff1-4c33-a8ad-c81f248eb593",
+        "displayName": "Akhtar Del 1 Beslutter",
+        "givenName": "Akhtar",
+        "surname": "Beslutter",
+        "email": "akhtar.del.1.beslutter@example.com",
+        "streetAddress": "4833",
+        "enheter": [],
+        "groups": [
+            {
+                "oid": "e1bd0c68-0c47-4dd0-ba77-c6e1e46f9d30",
+                "name": "0000-CA-aktivitetspenger-saksbehandler-del1"
+            },
+            {
+                "oid": "4a3cb814-51dc-4587-9215-075e05d29665",
+                "name": "0000-CA-aktivitetspenger-beslutter-del1"
+            }
+        ]
+    },
+
     {
         "ident": "P123456",
         "oid": "3d48bf40-4bfd-48d8-8280-065bf8ced9cd",
