@@ -1,3 +1,4 @@
+# Oppdatert schema kan hentes fra: https://github.com/navikt/arbeidsgiver-notifikasjon-produsent-api/blob/main/app/src/main/resources/produsent.graphql
 # Denne dokumentasjonen er skrev i "du/dere"-form, hvor du/dere er produsenter, og "vi" er
 # notifikasjons-plattformen.
 
