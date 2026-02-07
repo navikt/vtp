@@ -13,13 +13,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DigdirKrrProxyMockTest {
+class DigdirKrrProxyMockTest {
 
     private static DigdirKrrProxyMock digdirKrrProxyMock;
     private static SøkerModell søker;
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();

@@ -29,7 +29,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-public class ScenarioTest {
+class ScenarioTest {
 
     public static final LocalDate NOW = LocalDate.now();
     private static TestscenarioRepository testScenarioRepository;
@@ -37,14 +37,14 @@ public class ScenarioTest {
 
 
     @BeforeAll
-    public static void setup() throws IOException {
+    static void setup() throws IOException {
         testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         testscenarioHenter = TestscenarioHenter.getInstance();
     }
 
     @Test
-    public void testerInstansieringAvScenario() {
+    void testerInstansieringAvScenario() {
         var testscenarioObjekt = testscenarioHenter.hentScenario("1");
         var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());

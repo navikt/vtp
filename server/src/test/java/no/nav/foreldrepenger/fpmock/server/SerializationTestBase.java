@@ -18,7 +18,7 @@ public class SerializationTestBase {
     protected static ObjectMapper mapper;
 
     @BeforeAll
-    public static void beforeAll() {
+    static void beforeAll() {
         mapper = new ApplicationConfigJersey.JacksonConfigResolver().getContext(ObjectMapper.class);
     }
 

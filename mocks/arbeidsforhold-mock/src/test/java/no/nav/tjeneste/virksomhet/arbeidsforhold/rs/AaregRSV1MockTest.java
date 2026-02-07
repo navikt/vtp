@@ -43,7 +43,7 @@ class AaregRSV1MockTest {
 
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();

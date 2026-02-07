@@ -35,7 +35,7 @@ import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 import no.nav.person.pdl.leesah.Endringstype;
 
 @ExtendWith(MockitoExtension.class)
-public class HendelseTest {
+class HendelseTest {
 
     private static TestscenarioRepository testScenarioRepository;
     private static TestscenarioHenter testscenarioHenter;
@@ -44,7 +44,7 @@ public class HendelseTest {
     static PdlLeesahRestTjeneste pdlLeesahRestTjeneste;
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         testscenarioHenter = TestscenarioHenter.getInstance();
@@ -52,12 +52,12 @@ public class HendelseTest {
     }
 
     @BeforeEach
-    public void test() {
+    void test() {
         doNothing().when(pdlLeesahRestTjeneste).sendHendelsePåKafka(Mockito.any());
     }
 
     @Test
-    public void FødselshendelseTest() {
+    void FødselshendelseTest() {
         var testscenarioObjekt = testscenarioHenter.hentScenario("1");
         var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
@@ -84,7 +84,7 @@ public class HendelseTest {
     }
 
     @Test
-    public void DødshendelseTest() {
+    void DødshendelseTest() {
         var testscenarioObjekt = testscenarioHenter.hentScenario("1");
         var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
@@ -102,7 +102,7 @@ public class HendelseTest {
 
 
     @Test
-    public void DødFødselshendelseTest() {
+    void DødFødselshendelseTest() {
         var testscenarioObjekt = testscenarioHenter.hentScenario("1");
         var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
         var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
