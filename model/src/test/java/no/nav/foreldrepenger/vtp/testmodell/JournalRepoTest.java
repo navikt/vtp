@@ -16,10 +16,10 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 
-public class JournalRepoTest {
+class JournalRepoTest {
 
     @Test
-    public void skalFinneJournalposterPåSaksid(){
+    void skalFinneJournalposterPåSaksid(){
 
         String sakId = "12381";
 
@@ -46,7 +46,7 @@ public class JournalRepoTest {
     }
 
     @Test
-    public void skalFinneJournalposterPåAvsenderFnr(){
+    void skalFinneJournalposterPåAvsenderFnr(){
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         String avsenderFnrSøker = "01020304056";
@@ -70,7 +70,7 @@ public class JournalRepoTest {
     }
 
     @Test
-    public void skalSetteJournalpostIdVedLagring() {
+    void skalSetteJournalpostIdVedLagring() {
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         JournalpostModell journalpostModell = new JournalpostModell();
@@ -85,7 +85,7 @@ public class JournalRepoTest {
     }
 
     @Test
-    public void testTilleggsopplysningerField() {
+    void testTilleggsopplysningerField() {
         JournalpostModell journalpostModell = new JournalpostModell();
 
         // Sjekker at felt er initialisert som tom liste

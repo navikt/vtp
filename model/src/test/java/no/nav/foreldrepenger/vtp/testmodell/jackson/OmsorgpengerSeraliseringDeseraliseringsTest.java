@@ -19,46 +19,46 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.Person;
 class OmsorgpengerSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
-    public void PersonSeraliseringDeseraliseringTest() {
+    void PersonSeraliseringDeseraliseringTest() {
         test(lagPerson());
     }
 
     @Test
-    public void KildeSeraliseringDeseraliseringTest() {
+    void KildeSeraliseringDeseraliseringTest() {
         test(lagKilde());
     }
 
     @Test
-    public void AleneOmOmsorgenSeraliseringDeseraliseringTest() {
+    void AleneOmOmsorgenSeraliseringDeseraliseringTest() {
         test(lagAleneOmOmsorgen());
     }
 
     @Test
-    public void OverføringFåttSeraliseringDeseraliseringTest() {
+    void OverføringFåttSeraliseringDeseraliseringTest() {
         test(lagOverføringFått());
     }
 
     @Test
-    public void OverføringGittSeraliseringDeseraliseringTest() {
+    void OverføringGittSeraliseringDeseraliseringTest() {
         test(lagOverføringGitt());
     }
 
     @Test
-    public void KoronaOverføringFåttSeraliseringDeseraliseringTest() {
+    void KoronaOverføringFåttSeraliseringDeseraliseringTest() {
         test(lagKoronaOverføringFått());
     }
 
     @Test
-    public void KoronaOverføringGittSeraliseringDeseraliseringTest() {
+    void KoronaOverføringGittSeraliseringDeseraliseringTest() {
         test(lagKoronaOverføringGitt());
     }
 
     @Test
-    public void OmsorgspengerRammemeldingerModellSeraliseringDeseraliseringTest() {
+    void OmsorgspengerRammemeldingerModellSeraliseringDeseraliseringTest() {
         test(lagOmsorgspengerRammemeldingerModell());
     }
     @Test
-    public void OmsorgspengerModellSeraliseringDeseraliseringTest() {
+    void OmsorgspengerModellSeraliseringDeseraliseringTest() {
         test(lagOmsorgspengerModell());
     }
 

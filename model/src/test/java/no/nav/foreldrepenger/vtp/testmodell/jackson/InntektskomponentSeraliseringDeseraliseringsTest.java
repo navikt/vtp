@@ -33,27 +33,27 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSeria
     }
 
     @Test
-    public void FrilansArbeidsforholdsperiodeSeraliseringDeseraliseringTest() {
+    void FrilansArbeidsforholdsperiodeSeraliseringDeseraliseringTest() {
         test(lagFrilansArbeidsforholdsperiode());
     }
 
     @Test
-    public void InntektFordelSeraliseringDeseraliseringTest() {
+    void InntektFordelSeraliseringDeseraliseringTest() {
         test(InntektFordel.KONTANTYTELSE);
     }
 
     @Test
-    public void InntektTypeSeraliseringDeseraliseringTest() {
+    void InntektTypeSeraliseringDeseraliseringTest() {
         test(InntektType.LØNNSINNTEKT);
     }
 
     @Test
-    public void InntektsperiodeSeraliseringDeseraliseringTest() {
+    void InntektsperiodeSeraliseringDeseraliseringTest() {
         test(lagInntektsperiode());
     }
 
     @Test
-    public void InntektskomponentModellSeraliseringDeseraliseringTest() {
+    void InntektskomponentModellSeraliseringDeseraliseringTest() {
         test(lagInntektskomponentModell());
     }
 

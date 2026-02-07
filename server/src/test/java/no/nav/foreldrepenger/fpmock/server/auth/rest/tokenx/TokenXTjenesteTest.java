@@ -29,12 +29,12 @@ class TokenXTjenesteTest {
     private HttpServletRequest req;
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         tokenxRestTjeneste = new TokenxRestTjeneste();
     }
 
     @Test
-    public void verifiserRiktigWellKnownEndepunkt() {
+    void verifiserRiktigWellKnownEndepunkt() {
         var issuer = "http://vtp:8060/rest/tokenx";
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);

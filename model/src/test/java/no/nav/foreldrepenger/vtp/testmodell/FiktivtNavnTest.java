@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonNavn;
 import no.nav.foreldrepenger.vtp.testmodell.util.FiktivtNavn;
 
-public class FiktivtNavnTest {
+class FiktivtNavnTest {
 
     @Test
-    public void fiktiv_navn_skal_fungere() {
+    void fiktiv_navn_skal_fungere() {
         PersonNavn randomFemalName = FiktivtNavn.getRandomFemaleName();
         assertTrue(randomFemalName.getFornavn().length() > 1);
         assertTrue(randomFemalName.getEtternavn().length() > 1);

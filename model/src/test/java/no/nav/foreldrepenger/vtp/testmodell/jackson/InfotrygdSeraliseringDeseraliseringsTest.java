@@ -20,47 +20,47 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.Infot
 class InfotrygdSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
-    public void InfotrygdTemaSeraliseringDeseraliseringTest() {
+    void InfotrygdTemaSeraliseringDeseraliseringTest() {
         test(InfotrygdTema.FA);
     }
 
     @Test
-    public void InfotrygdBehandlingstemaSeraliseringDeseraliseringTest() {
+    void InfotrygdBehandlingstemaSeraliseringDeseraliseringTest() {
         test(InfotrygdBehandlingstema.SP);
     }
 
     @Test
-    public void InfotrygdSakTypeSeraliseringDeseraliseringTest() {
+    void InfotrygdSakTypeSeraliseringDeseraliseringTest() {
         test(InfotrygdSakType.K);
     }
 
     @Test
-    public void InfotrygdSakStatusSeraliseringDeseraliseringTest() {
+    void InfotrygdSakStatusSeraliseringDeseraliseringTest() {
         test(InfotrygdSakStatus.IP);
     }
 
     @Test
-    public void InfotrygdSakResultatStatusSeraliseringDeseraliseringTest() {
+    void InfotrygdSakResultatStatusSeraliseringDeseraliseringTest() {
         test(InfotrygdSakResultat.I);
     }
 
     @Test
-    public void InfotrygdInntektsperiodeTypeSeraliseringDeseraliseringTest() {
+    void InfotrygdInntektsperiodeTypeSeraliseringDeseraliseringTest() {
         test(InfotrygdInntektsperiodeType.D);
     }
 
     @Test
-    public void InfotrygdYtelseSeraliseringDeseraliseringTest() {
+    void InfotrygdYtelseSeraliseringDeseraliseringTest() {
         test(lagInfotrygdYtelse());
     }
 
     @Test
-    public void InfotrygdVedtakSeraliseringDeseraliseringTest() {
+    void InfotrygdVedtakSeraliseringDeseraliseringTest() {
         test(lagInfotrygdVedtak());
     }
 
     @Test
-    public void InfotrygdModellSeraliseringDeseraliseringTest() {
+    void InfotrygdModellSeraliseringDeseraliseringTest() {
         test(lagInfotrygdModell());
     }
 
