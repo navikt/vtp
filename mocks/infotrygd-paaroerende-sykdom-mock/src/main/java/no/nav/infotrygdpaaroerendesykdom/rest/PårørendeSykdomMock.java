@@ -9,18 +9,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -57,27 +54,6 @@ public class PårørendeSykdomMock {
     // todo: sjekk Autorization-token
 
     @SuppressWarnings("unused")
-    @GET
-    @Path("/saker")
-    @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "hentSak", responses = {@ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation = SakResult.class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
-    public Response hentSakUsingGET(@NotNull @Parameter(name = "fnr", required = true) @QueryParam("fnr") String fnr,
-                                    @NotNull @Parameter(name = "fom", required = true) @QueryParam("fom") LocalDate fom,
-                                    @Parameter(name = "tom") @QueryParam("tom") LocalDate tom) {
-        Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
-
-        if (inntektYtelseModellOptional.isEmpty()) {
-            return Response.ok(new SakDto()).build();
-        }
-
-        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
-
-        SakResult result = getSakResult(inntektYtelseModell);
-
-        return Response.ok(result).build();
-    }
-
-    @SuppressWarnings("unused")
     @POST
     @Path("/saker")
     @Produces({"application/json"})
@@ -91,31 +67,6 @@ public class PårørendeSykdomMock {
             InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
             return Stream.of(getSakResult(inntektYtelseModell));
         }).collect(Collectors.toList());
-
-        return Response.ok(result).build();
-    }
-
-    @SuppressWarnings("unused")
-    @GET
-    @Path("/grunnlag")
-    @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "paaroerendeSykdom", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = PaaroerendeSykdom[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
-    public Response paaroerendeSykdomUsingGET1(@NotNull @Parameter(name = "fnr", required = true) @QueryParam("fnr") String fnr,
-                                               @NotNull @Parameter(name = "fom", required = true) @QueryParam("fom") LocalDate fom,
-                                               @Parameter(name = "tom") @QueryParam("tom") LocalDate tom) {
-        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
-        if (inntektYtelseModell.isEmpty()) {
-            return Response.ok(List.of()).build();
-        }
-
-        List<PaaroerendeSykdom> result = inntektYtelseModell.get()
-                .infotrygdModell()
-                .grunnlag()
-                .stream()
-                .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
-                .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it, fnr))
-                .filter(it -> it.getTema().getKode().equals("BS"))
-                .collect(Collectors.toList());
 
         return Response.ok(result).build();
     }
@@ -142,18 +93,6 @@ public class PårørendeSykdomMock {
         }).collect(Collectors.toList());
 
         return Response.ok(result).build();
-    }
-
-
-    @SuppressWarnings("unused")
-    @GET
-    @Path("/vedtakForPleietrengende")
-    @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = VedtakPleietrengendeDto[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
-    public Response finnVedtakForPleietrengendeUsingGET(@NotNull @Parameter(name = "Pleietrengendes fødselsnummer", required = true) @QueryParam("fnr") String fnr,
-                                                        @NotNull @Parameter(name = "Fra-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.", required = true) @QueryParam("fom") LocalDate fom,
-                                                        @Parameter(name = "Til-dato for søket. Matcher vedtaksperiode for vedtak eller registrertdato for saker.") @QueryParam("tom") LocalDate tom) {
-        return Response.ok(List.of()).build();
     }
 
 
