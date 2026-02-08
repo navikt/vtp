@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Dokumentkategori;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -25,7 +24,6 @@ public class DokumentModell {
     private String innhold;
     private DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost;
     private List<DokumentVariantInnhold> dokumentVariantInnholdListe = new ArrayList<>();
-    private Dokumentkategori dokumentkategori;
 
     public DokumentModell() {
     }
@@ -38,8 +36,7 @@ public class DokumentModell {
                           @JsonProperty("brevkode") String brevkode,
                           @JsonProperty("innhold") String innhold,
                           @JsonProperty("dokumentTilknyttetJournalpost") DokumentTilknyttetJournalpost dokumentTilknyttetJournalpost,
-                          @JsonProperty("dokumentVariantInnholdListe") List<DokumentVariantInnhold> dokumentVariantInnholdListe,
-                          @JsonProperty("dokumentkategori") Dokumentkategori dokumentkategori) {
+                          @JsonProperty("dokumentVariantInnholdListe") List<DokumentVariantInnhold> dokumentVariantInnholdListe) {
         this.dokumentId = dokumentId;
         this.dokumenttypeId = dokumenttypeId;
         this.erSensitiv = erSensitiv;
@@ -48,7 +45,6 @@ public class DokumentModell {
         this.innhold = innhold;
         this.dokumentTilknyttetJournalpost = dokumentTilknyttetJournalpost;
         this.dokumentVariantInnholdListe = dokumentVariantInnholdListe;
-        this.dokumentkategori = dokumentkategori;
     }
 
     public String getDokumentId() {
@@ -107,10 +103,6 @@ public class DokumentModell {
         this.dokumentVariantInnholdListe = dokumentVariantInnholdListe;
     }
 
-    public Dokumentkategori getDokumentkategori() { return dokumentkategori; }
-
-    public void setDokumentkategori(Dokumentkategori dokumentkategori) { this.dokumentkategori = dokumentkategori;}
-
     public String getBrevkode() {
         return brevkode;
     }
@@ -124,12 +116,12 @@ public class DokumentModell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DokumentModell that = (DokumentModell) o;
-        return Objects.equals(dokumentId, that.dokumentId) && Objects.equals(dokumenttypeId, that.dokumenttypeId) && Objects.equals(erSensitiv, that.erSensitiv) && Objects.equals(tittel, that.tittel) && Objects.equals(brevkode, that.brevkode) && Objects.equals(innhold, that.innhold) && Objects.equals(dokumentTilknyttetJournalpost, that.dokumentTilknyttetJournalpost) && Objects.equals(dokumentVariantInnholdListe, that.dokumentVariantInnholdListe) && Objects.equals(dokumentkategori, that.dokumentkategori);
+        return Objects.equals(dokumentId, that.dokumentId) && Objects.equals(dokumenttypeId, that.dokumenttypeId) && Objects.equals(erSensitiv, that.erSensitiv) && Objects.equals(tittel, that.tittel) && Objects.equals(brevkode, that.brevkode) && Objects.equals(innhold, that.innhold) && Objects.equals(dokumentTilknyttetJournalpost, that.dokumentTilknyttetJournalpost) && Objects.equals(dokumentVariantInnholdListe, that.dokumentVariantInnholdListe);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dokumentId, dokumenttypeId, erSensitiv, tittel, brevkode, innhold, dokumentTilknyttetJournalpost, dokumentVariantInnholdListe, dokumentkategori);
+        return Objects.hash(dokumentId, dokumenttypeId, erSensitiv, tittel, brevkode, innhold, dokumentTilknyttetJournalpost, dokumentVariantInnholdListe);
     }
 
     @Override
@@ -143,7 +135,6 @@ public class DokumentModell {
                 ", innhold='" + innhold + '\'' +
                 ", dokumentTilknyttetJournalpost=" + dokumentTilknyttetJournalpost +
                 ", dokumentVariantInnholdListe=" + dokumentVariantInnholdListe +
-                ", dokumentkategori=" + dokumentkategori +
                 '}';
     }
 }
