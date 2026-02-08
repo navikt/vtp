@@ -12,6 +12,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
@@ -25,15 +33,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
 import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
@@ -44,13 +43,11 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapper;
 
 @Tag(name = "Testscenario")
 @Path("/api/testscenarios")
 public class TestscenarioRestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
-    private static final JacksonWrapper mapper = new JacksonWrapper(JacksonObjectMapperTestscenario.getObjectMapper());
 
     private static final String TEMPLATE_KEY = "key";
     private static final String SCENARIO_ID = "id";
@@ -76,7 +73,7 @@ public class TestscenarioRestTjeneste {
         });
 
         return Response.status(Response.Status.OK)
-            .entity(mapper.writeValueAsString(testscenarioList))
+            .entity(JacksonObjectMapperTestscenario.writeValueAsString(testscenarioList))
             .build();
     }
 
@@ -90,7 +87,7 @@ public class TestscenarioRestTjeneste {
         if (testscenarioRepository.getTestscenario(id) != null) {
             Testscenario testscenario = testscenarioRepository.getTestscenario(id);
             return Response.status(Response.Status.OK)
-                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
+                .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
                 .build();
         } else {
             return Response.status(Response.Status.NO_CONTENT).build();
@@ -110,7 +107,7 @@ public class TestscenarioRestTjeneste {
         Testscenario testscenario = testscenarioRepository.oppdaterTestscenario(id, testscenarioJson, userSuppliedVariables);
         logger.info("Oppdaterer testscenario med id {} med ekstern testdatadefinisjon.", testscenario.getId());
         return Response.status(Response.Status.OK)
-                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
+                .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
                 .build();
     }
 
@@ -135,7 +132,7 @@ public class TestscenarioRestTjeneste {
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);
         logger.info("Initialiserer testscenario med ekstern testdatadefinisjon. Opprettet med id: [{}] ", testscenario.getId());
         return Response.status(Response.Status.CREATED)
-            .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
+            .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
             .build();
     }
 
@@ -217,8 +214,8 @@ public class TestscenarioRestTjeneste {
     private static Map<String, String> barnidenter(Testscenario testscenario) {
         return testscenario.getPersonopplysninger().getFamilierelasjoner()
             .stream()
-            .filter(modell -> modell.getTil() instanceof BarnModell)
             .map(FamilierelasjonModell::getTil)
+            .filter(til -> til instanceof BarnModell)
             .sorted(Comparator.comparing(BrukerModell::getIdent))
             .map(p -> Map.entry(p.getIdent(), p.getAktørIdent()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));

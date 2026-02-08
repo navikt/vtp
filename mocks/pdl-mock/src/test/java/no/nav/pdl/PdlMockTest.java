@@ -25,10 +25,10 @@ class PdlMockTest extends PdlTestBase {
     private static Testscenario testscenario;
     private static PdlMock pdlMock;
 
-    private final ObjectReader hentPersonReader = objectMapper.readerFor(HentPersonQueryResponse.class);
-    private final ObjectReader hentGeografiskTilknytningReader = objectMapper.readerFor(HentGeografiskTilknytningQueryResponse.class);
-    private final ObjectReader hentIdenterReader = objectMapper.readerFor(HentIdenterQueryResponse.class);
-    private final ObjectReader hentIdenterBolkReader = objectMapper.readerFor(HentIdenterBolkQueryResponse.class);
+    private final ObjectReader hentPersonReader = JSON_MAPPER.readerFor(HentPersonQueryResponse.class);
+    private final ObjectReader hentGeografiskTilknytningReader = JSON_MAPPER.readerFor(HentGeografiskTilknytningQueryResponse.class);
+    private final ObjectReader hentIdenterReader = JSON_MAPPER.readerFor(HentIdenterQueryResponse.class);
+    private final ObjectReader hentIdenterBolkReader = JSON_MAPPER.readerFor(HentIdenterBolkQueryResponse.class);
 
     @BeforeAll
     static void setup() {
@@ -230,7 +230,6 @@ class PdlMockTest extends PdlTestBase {
                                 .fornavn()
                                 .mellomnavn()
                                 .etternavn()
-                                .forkortetNavn()
                 )
                 .statsborgerskap(
                         new PersonStatsborgerskapParametrizedInput(historikk),

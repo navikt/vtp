@@ -25,11 +25,11 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSeria
     @BeforeAll
     static void utvidObjectmapperMedInjectables() {
         var adresseIndeks = new AdresseIndeks();
-        var jsonMapper = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
+        var mapperExtension = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
-        jsonMapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
-        jsonMapper.addInjectable(AdresseIndeks.class, adresseIndeks);
-        mapper = jsonMapper.lagCopyAvObjectMapperOgUtvideMedVars();
+        mapperExtension.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
+        mapperExtension.addInjectable(AdresseIndeks.class, adresseIndeks);
+        jsonMapper = mapperExtension.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 
     @Test

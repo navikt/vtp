@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
@@ -36,7 +36,7 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private final OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
     private final IdentGenerator identGenerator = new FiktiveFnr();
 
-    private static final ObjectMapper mapper = JacksonObjectMapperTestscenario.getObjectMapper();
+    private static final JsonMapper mapper = JacksonObjectMapperTestscenario.getJsonMapper();
     private static BasisdataProviderFileImpl instance;
 
     private BasisdataProviderFileImpl() {

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
@@ -23,7 +23,7 @@ import no.nav.foreldrepenger.vtp.testmodell.virksomhet.ScenarioVirksomheter;
 public class TestscenarioFraJsonMapper {
 
     private final TestscenarioRepositoryImpl testScenarioRepository;
-    private static final ObjectMapper mapper = JacksonObjectMapperTestscenario.getObjectMapper();
+    private static final JsonMapper JSON_MAPPER = JacksonObjectMapperTestscenario.getJsonMapper();
 
     public TestscenarioFraJsonMapper(TestscenarioRepositoryImpl testScenarioRepository) {
         Objects.requireNonNull(testScenarioRepository, "testScenarioRepository");
@@ -45,7 +45,7 @@ public class TestscenarioFraJsonMapper {
     private ObjectNode hentObjectNodeForTestscenario(String testscenarioJson) {
         ObjectNode node;
         try {
-            node = mapper.readValue(testscenarioJson, ObjectNode.class);
+            node = JSON_MAPPER.readValue(testscenarioJson, ObjectNode.class);
         } catch (IOException e) {
             throw new IllegalArgumentException("Kunne ikke converte JSON streng til ObjectNode", e);
         }
@@ -55,7 +55,7 @@ public class TestscenarioFraJsonMapper {
     private String hentTemplateNavnFraJsonString(ObjectNode node) {
         if (node.has("scenario-navn")) {
             var scenarioNavn = node.get("scenario-navn");
-            return mapper.convertValue(scenarioNavn, String.class);
+            return JSON_MAPPER.convertValue(scenarioNavn, String.class);
         } else {
             return null;
         }
@@ -98,11 +98,11 @@ public class TestscenarioFraJsonMapper {
             return Collections.emptyMap();
         }
         var vars = node.get("vars");
-        return mapper.convertValue(vars, new TypeReference<>(){});
+        return JSON_MAPPER.convertValue(vars, new TypeReference<>(){});
     }
 
 
-    private ObjectMapper lagScenariospesifikkObjectMapper(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars){
+    private JsonMapper lagScenariospesifikkObjectMapper(TestscenarioImpl testscenario, ObjectNode node, Map<String, String> overrideVars){
         var jacksonWrapper = new JacksonObjectMapperTestscenarioUtvider(testscenario.getVariabelContainer());
 
         /* Legger til egendefinerte variabler */

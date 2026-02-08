@@ -9,20 +9,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonStreamContext;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import no.nav.foreldrepenger.vtp.testmodell.repo.TemplateVariable;
@@ -32,21 +30,18 @@ public class FindTemplateVariables {
 
     static final Pattern TEMPLATE_VARIABLE_PATTERN = Pattern.compile("\\$\\{(.+)\\}");
 
-    private final ObjectMapper objectMapper = JacksonObjectMapperTestscenario.lagCopyAvObjectMapper();
-    private final FindTemplateVariableModule module = new FindTemplateVariableModule();
-
-    public FindTemplateVariables() {
-        objectMapper.registerModule(module);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.setInjectableValues(new InjectableValues.Std() {
-            @Override
-            public Object findInjectableValue(Object valueId, DeserializationContext ctxt, BeanProperty forProperty, Object beanInstance)
-                    throws JsonMappingException {
-                // skipper all injection uten å feile
-                return null;
-            }
-        });
-    }
+    private static final FindTemplateVariableModule module = new FindTemplateVariableModule();
+    private static final JsonMapper objectMapper = JacksonObjectMapperTestscenario.getJsonMapper()
+            .rebuild()
+            .addModule(module)
+            .injectableValues(new InjectableValues.Std() {
+                @Override
+                public Object findInjectableValue(DeserializationContext ctxt, Object valueId, BeanProperty forProperty, Object beanInstance, Boolean optional, Boolean useInput) {
+                    // skipper all injection uten å feile
+                    return null;
+                }
+            })
+            .build();
 
     public Set<TemplateVariable> getDiscoveredVariables() {
         return module.getVars();
@@ -96,8 +91,8 @@ public class FindTemplateVariables {
         /** glue-code. */
         @Override
         public void resolve(DeserializationContext ctxt) throws JsonMappingException {
-            if (delegate instanceof ResolvableDeserializer) {
-                ((ResolvableDeserializer) delegate).resolve(ctxt);
+            if (delegate instanceof ResolvableDeserializer resolvableDeserializer) {
+                resolvableDeserializer.resolve(ctxt);
             }
         }
 
@@ -116,7 +111,7 @@ public class FindTemplateVariables {
 
         /** sjekk om inneholder variabel referanse og ta vare på det. */
         @Override
-        public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             if (!p.currentToken().isScalarValue()) {
                 return delegate.deserialize(p, ctxt);
             }
