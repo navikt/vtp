@@ -37,6 +37,7 @@ public class Arkivtema {
     public static Arkivtema FRI = new Arkivtema("FRI");
     public static Arkivtema UNG = new Arkivtema("UNG");
 
+    @JsonValue
     private String kode;
 
     public Arkivtema(String kode){
@@ -46,7 +47,6 @@ public class Arkivtema {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

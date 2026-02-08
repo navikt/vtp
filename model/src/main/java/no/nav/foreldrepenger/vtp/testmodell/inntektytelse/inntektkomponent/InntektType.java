@@ -8,13 +8,13 @@ public enum InntektType {
     PENSJON_ELLER_TRYGD("PensjonEllerTrygd"),
     YTELSE_FRA_OFFENTLIGE("YtelseFraOffentlige");
 
+    @JsonValue
     private final String kode;
 
     InntektType(String kode) {
         this.kode = kode;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

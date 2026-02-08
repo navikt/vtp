@@ -26,6 +26,7 @@ public class Journalstatus {
 
     }
 
+    @JsonValue
     private String kode;
 
     public final static Journalstatus JOURNALFØRT = new Journalstatus("J");
@@ -40,7 +41,6 @@ public class Journalstatus {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

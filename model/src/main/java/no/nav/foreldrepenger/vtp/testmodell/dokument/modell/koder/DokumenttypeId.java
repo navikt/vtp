@@ -1,9 +1,9 @@
 package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum DokumenttypeId {
 
@@ -79,6 +79,7 @@ public enum DokumenttypeId {
         }
     }
 
+    @JsonValue
     private String kode;
     private String termnavn;
 
@@ -91,7 +92,6 @@ public enum DokumenttypeId {
         return BY_OFFIFIELLKODE.get(kode);
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }
