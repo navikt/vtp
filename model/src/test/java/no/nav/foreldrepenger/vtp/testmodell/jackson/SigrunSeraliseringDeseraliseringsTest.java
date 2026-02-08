@@ -11,17 +11,17 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 class SigrunSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
-    public void InntektsårSeraliseringDeseraliseringTest() {
+    void InntektsårSeraliseringDeseraliseringTest() {
         test(lagInntektsår());
     }
 
     @Test
-    public void OppføringSeraliseringDeseraliseringTest() {
+    void OppføringSeraliseringDeseraliseringTest() {
         test(lagOppføring());
     }
 
     @Test
-    public void SigrunModellSeraliseringDeseraliseringTest() {
+    void SigrunModellSeraliseringDeseraliseringTest() {
         test(lagSigrunModell());
     }
 

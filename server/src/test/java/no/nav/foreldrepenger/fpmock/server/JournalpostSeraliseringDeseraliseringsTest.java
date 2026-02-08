@@ -22,10 +22,10 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
-public class JournalpostSeraliseringDeseraliseringsTest extends SerializationTestBase {
+class JournalpostSeraliseringDeseraliseringsTest extends SerializationTestBase {
 
     @Test
-    public void DokumentVariantInnholdSeraliseringDeseraliseringTest() {
+    void DokumentVariantInnholdSeraliseringDeseraliseringTest() {
         test(lagDokumentVariant());
     }
 
@@ -34,7 +34,7 @@ public class JournalpostSeraliseringDeseraliseringsTest extends SerializationTes
     }
 
     @Test
-    public void DokumentModellSeraliseringDeseraliseringTest() {
+    void DokumentModellSeraliseringDeseraliseringTest() {
         test(lagDokumentModell());
     }
 
@@ -46,7 +46,7 @@ public class JournalpostSeraliseringDeseraliseringsTest extends SerializationTes
 
 
     @Test
-    public void JournalpostModellSeraliseringDeseraliseringTest() {
+    void JournalpostModellSeraliseringDeseraliseringTest() {
         test(new JournalpostModell("123456789", "AR123344566", "Inntekstmelding", List.of(lagDokumentModell()), "test",
                 "sakid", "fagsystemId", Journalstatus.MOTTATT, "kommunikasjonsretning", LocalDateTime.now(), Mottakskanal.ALTINN,
                 Arkivtema.FOR, "journaltilstand", Journalposttyper.INNGAAENDE_DOKUMENT, new JournalpostBruker("12345", BrukerType.FNR),

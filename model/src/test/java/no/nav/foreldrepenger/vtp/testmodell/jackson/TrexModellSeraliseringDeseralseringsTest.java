@@ -26,63 +26,63 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Vedtak;
 class TrexModellSeraliseringDeseralseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
-    public void OrgnummerSeraliseringDeseraliseringTest() {
+    void OrgnummerSeraliseringDeseraliseringTest() {
         test(new Orgnummer("90802020"));
     }
 
     @Test
-    public void ProsentSeraliseringDeseraliseringTest() {
+    void ProsentSeraliseringDeseraliseringTest() {
         test(new Prosent(90));
     }
 
     @Test
-    public void StatusSeraliseringDeseraliseringTest() {
+    void StatusSeraliseringDeseraliseringTest() {
         test(new Status(StatusKode.A, "termnavn"));
     }
 
     @Test
-    public void TemaSeraliseringDeseraliseringTest() {
+    void TemaSeraliseringDeseraliseringTest() {
         test(new Tema(TemaKode.FA, "termnavn"));
     }
 
     @Test
-    public void ArbeidskategoriSeraliseringDeseraliseringTest() {
+    void ArbeidskategoriSeraliseringDeseraliseringTest() {
         test(new Arbeidskategori(ArbeidskategoriKode.K02, "termnavn"));
     }
 
     @Test
-    public void InntektsperiodeSeraliseringDeseraliseringTest() {
+    void InntektsperiodeSeraliseringDeseraliseringTest() {
         test(new Inntektsperiode(InntektsperiodeKode.M, "termnavn"));
     }
 
     @Test
-    public void ArbeidsforholdSeraliseringDeseraliseringTest() {
+    void ArbeidsforholdSeraliseringDeseraliseringTest() {
         test(new Arbeidsforhold(new Orgnummer("90807060"), 520_000, new Inntektsperiode(InntektsperiodeKode.M, "termnavn"), false));
     }
 
     @Test
-    public void PeriodeSeraliseringDeseraliseringTest() {
+    void PeriodeSeraliseringDeseraliseringTest() {
         test(new Periode(LocalDate.now(), LocalDate.now().plusDays(5)));
     }
 
     @Test
-    public void BehandlingstemaSeraliseringDeseraliseringTest() {
+    void BehandlingstemaSeraliseringDeseraliseringTest() {
         test(new Behandlingstema(BehandlingstemaKode.AP, "termnavn"));
     }
 
     @Test
-    public void VedtakSeraliseringDeseraliseringTest() {
+    void VedtakSeraliseringDeseraliseringTest() {
         test(new Vedtak(new Periode(LocalDate.now(), LocalDate.now().plusDays(5)), 100, new Orgnummer("90802020"), false, 1000));
     }
 
     @Test
-    public void GrunnlagSeraliseringDeseraliseringTest() {
+    void GrunnlagSeraliseringDeseraliseringTest() {
         test(lagGrunnlag());
     }
 
 
     @Test
-    public void TRexModellSeraliseringDeseraliseringTest() {
+    void TRexModellSeraliseringDeseraliseringTest() {
         test(lagTRexModell());
     }
 

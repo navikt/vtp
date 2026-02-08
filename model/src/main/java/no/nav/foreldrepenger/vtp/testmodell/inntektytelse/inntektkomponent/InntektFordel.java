@@ -7,13 +7,13 @@ public enum InntektFordel {
     UTGIFTSGODTGJØRELSE("utgiftsgodtgjørelse"),
     NATURALYTELSE("naturalytelse");
 
+    @JsonValue
     private final String kode;
 
     InntektFordel(String kode) {
         this.kode = kode;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

@@ -19,47 +19,47 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Yrke;
 class ArbeidsforholdSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
-    public void AntallTimerIPeriodenSeraliseringDeseraliseringTest() {
+    void AntallTimerIPeriodenSeraliseringDeseraliseringTest() {
         test(lagAntallTimerIPerioden());
     }
 
     @Test
-    public void YrkeSeraliseringDeseraliseringTest() {
+    void YrkeSeraliseringDeseraliseringTest() {
         test(lagYrke());
     }
 
     @Test
-    public void AvlønningstypeSeraliseringDeseraliseringTest() {
+    void AvlønningstypeSeraliseringDeseraliseringTest() {
         test(Avlønningstype.FASTLØNN);
     }
 
     @Test
-    public void ArbeidsavtaleSeraliseringDeseraliseringTest() {
+    void ArbeidsavtaleSeraliseringDeseraliseringTest() {
         test(lagArbeidsavtale());
     }
 
     @Test
-    public void PermisjonstypeSeraliseringDeseraliseringTest() {
+    void PermisjonstypeSeraliseringDeseraliseringTest() {
         test(Permisjonstype.PERMISJON_VED_MILITÆRTJENESTE);
     }
 
     @Test
-    public void PermisjonSeraliseringDeseraliseringTest() {
+    void PermisjonSeraliseringDeseraliseringTest() {
         test(lagPermisjon());
     }
 
     @Test
-    public void ArbeidsforholdstypeSeraliseringDeseraliseringTest() {
+    void ArbeidsforholdstypeSeraliseringDeseraliseringTest() {
         test(Arbeidsforholdstype.MARITIMT_ARBEIDSFORHOLD);
     }
 
     @Test
-    public void ArbeidsforholdSeraliseringDeseraliseringTest() {
+    void ArbeidsforholdSeraliseringDeseraliseringTest() {
         test(lagArbeidsforhold());
     }
 
     @Test
-    public void ArbeidsforholdModellSeraliseringDeseraliseringTest() {
+    void ArbeidsforholdModellSeraliseringDeseraliseringTest() {
         test(lagArbeidsforholdModell());
     }
 

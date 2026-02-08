@@ -49,6 +49,7 @@ public class Dokumentkategori {
     public static Dokumentkategori TOLKBART_SKJEMA = new Dokumentkategori("TS");
     public static Dokumentkategori VEDTAKSBREV = new Dokumentkategori("VB");
 
+    @JsonValue
     private String kode;
 
     public Dokumentkategori(String kode){
@@ -58,7 +59,6 @@ public class Dokumentkategori {
         }
     }
 
-    @JsonValue
     public String getKode() { return kode;}
 
     public void setKode(String kode) { this.kode = kode;}

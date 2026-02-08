@@ -36,6 +36,7 @@ public class Mottakskanal {
         VALID_KODE = Collections.unmodifiableList(koder);
     }
 
+    @JsonValue
     private String kode;
 
     public static final Mottakskanal ALTINN = new Mottakskanal("ALTINN");
@@ -70,7 +71,6 @@ public class Mottakskanal {
         return Mottakskanal.UKJENT;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

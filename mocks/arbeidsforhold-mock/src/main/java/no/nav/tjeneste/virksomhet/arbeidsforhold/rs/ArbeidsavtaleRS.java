@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsavtale;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ArbeidsavtaleRS {
 

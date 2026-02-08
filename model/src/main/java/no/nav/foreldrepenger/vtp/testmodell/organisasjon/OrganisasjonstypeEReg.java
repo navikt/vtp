@@ -7,9 +7,10 @@ public enum OrganisasjonstypeEReg {
     VIRKSOMHET("Virksomhet"),
     ORGLEDD("Organisasjonsledd");
 
-    private final String kode;
 
     @JsonValue
+    private final String kode;
+
     public String getKode() {
         return this.kode;
     }

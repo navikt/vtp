@@ -25,4 +25,5 @@ allure-results/*
 *-result.json
 server/src/main/resources/webapps
 resources/ssl-terminator/localhost.*
+.java-version
 

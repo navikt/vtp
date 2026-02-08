@@ -23,6 +23,7 @@ public class Journalposttyper {
         VALID_KODE = Collections.unmodifiableList(koder);
     }
 
+    @JsonValue
     private String kode;
 
     public static Journalposttyper INNGAAENDE_DOKUMENT = new Journalposttyper("I");
@@ -36,7 +37,6 @@ public class Journalposttyper {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

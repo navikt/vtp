@@ -21,6 +21,9 @@ categories:
     labels:
       - 'bump'
       - 'dependencies'
+include-labels:
+  - 'kontrakt'
+  - 'mocks'
 template: |
   ## What's Changed
   $CHANGES

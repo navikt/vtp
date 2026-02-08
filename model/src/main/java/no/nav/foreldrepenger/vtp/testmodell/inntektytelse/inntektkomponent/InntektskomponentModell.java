@@ -53,7 +53,7 @@ public record InntektskomponentModell(List<Inntektsperiode> inntektsperioder,
         List<Inntektsperiode> inntektsperioderPaaMaaned = new ArrayList<>();
         LocalDate tomDato = (ip.tom() != null) ? ip.tom() : LocalDate.now();
         LocalDate dateCounter = ip.fom().withDayOfMonth(1);
-        while (!dateCounter.isEqual(tomDato.withDayOfMonth(1))) {
+        while (!dateCounter.isEqual(tomDato.plusMonths(1).withDayOfMonth(1))) {
             inntektsperioderPaaMaaned.add(new Inntektsperiode(dateCounter.withDayOfMonth(1), dateCounter.withDayOfMonth(dateCounter.lengthOfMonth()),
                     ip.aktorId(), ip.beløp(), ip.orgnr(), ip.inntektType(), ip.inntektFordel(), ip.beskrivelse(),
                     ip.inntektYtelseType(), ip.skatteOgAvgiftsregel(),

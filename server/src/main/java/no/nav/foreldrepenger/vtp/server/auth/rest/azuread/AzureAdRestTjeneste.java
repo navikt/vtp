@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -87,12 +88,17 @@ public class AzureAdRestTjeneste {
 
     @POST
     @Path("/token")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "azureAd/access_token")
+    @Operation(description = "azureAd/access_token (form-encoded)")
     public Response accessToken(@FormParam(GRANT_TYPE) String grantType,
-                                @FormParam(CODE) String code,
-                                @FormParam("assertion") String assertion,
-                                @FormParam("refresh_token") @Valid String refreshToken) {
+                                           @FormParam(CODE) String code,
+                                           @FormParam("assertion") String assertion,
+                                           @FormParam("refresh_token") @Valid String refreshToken) {
+        return processTokenRequest(grantType, code, assertion, refreshToken);
+    }
+
+    public static Response processTokenRequest(String grantType, String code, String assertion, String refreshToken) {
         String token;
         var nonce = nonceCache.get(NONCE);
 
@@ -150,7 +156,7 @@ public class AzureAdRestTjeneste {
         return ok(new Oauth2AccessTokenResponse(token)).build();
     }
 
-    private String createToken(NavAnsatt bruker, String nonce) {
+    private static String createToken(NavAnsatt bruker, String nonce) {
         return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
     }
 

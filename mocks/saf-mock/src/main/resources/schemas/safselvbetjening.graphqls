@@ -92,6 +92,9 @@ type Journalpost {
     # Eksempler på eksternReferanseId kan være sykmeldingsId for sykmeldinger, Altinn ArchiveReference for Altinn-skjema eller SEDid for SED.
     eksternReferanseId: String
 
+    # Brukes for sortering av journalposter og for å få riktig rekkefølge på dokumenter.
+    datoSortering: DateTime!
+
     # Liste over datoer som kan være relevante for denne journalposten, f.eks. DATO_EKSPEDERT. Hvilke relevante datoer som returneres, avhenger av journalposttypen.
     relevanteDatoer: [RelevantDato]!
 
@@ -128,10 +131,10 @@ type RelevantDato {
 type AvsenderMottaker {
     # Identifikatoren til parten som er avsender eller mottaker av dokumentene på journalposten.
     # * Normalt et fødselsnummer eller organisasjonsnummer.
-    id: String!
+    id: String
 
     # Identifikatortypen til parten som er avsender eller mottaker av dokumentene på journalposten.
-    type: AvsenderMottakerIdType!
+    type: AvsenderMottakerIdType
 
     # Navnet til parten som er avsender eller mottaker av dokumentene på journalposten.
     navn: String!
@@ -147,7 +150,7 @@ type DokumentInfo {
     tittel: String
 
     # Kode som sier noe om dokumentets innhold og oppbygning.
-    # * For inngående skjema er brevkoden normalt en Nav-skjemaID f.eks. *"Nav 14-05.09"*. Enkelte vedlegg har en vedleggskode som sier noe om innholdet.
+    # * For inngående skjema er brevkoden normalt en NAV-skjemaID f.eks. *"NAV 14-05.09"*. Enkelte vedlegg har en vedleggskode som sier noe om innholdet.
     # * For utgående dokumenter sier brevkoden noe om hvilken dokumentmal som er benyttet og hvordan dokumentet skal distribueres.
     brevkode: String
 
@@ -185,13 +188,13 @@ type Dokumentvariant {
 
 # Sier hvorvidt journalposten er et inngående dokument, et utgående dokument eller et notat.
 enum Journalposttype {
-    # **Inngående dokument** - Dokumentasjon som Nav har mottatt fra en ekstern part. De fleste inngående dokumenter er søknader, ettersendelser av dokumentasjon til sak, eller innsendinger fra arbeidsgivere. Meldinger brukere har sendt til "Skriv til Nav" arkiveres også som inngående dokumenter..
+    # **Inngående dokument** - Dokumentasjon som NAV har mottatt fra en ekstern part. De fleste inngående dokumenter er søknader, ettersendelser av dokumentasjon til sak, eller innsendinger fra arbeidsgivere. Meldinger brukere har sendt til "Skriv til NAV" arkiveres også som inngående dokumenter..
     I
 
-    # **Unngående dokument** - Dokumentasjon som Nav har produsert og sendt ut til en ekstern part. De fleste utgående dokumenter er informasjons- eller vedtaksbrev til privatpersoner eller organisasjoner. "Skriv til Nav"-meldinger som saksbehandlere har sendt til brukere arkiveres også som utgående dokumenter.
+    # **Unngående dokument** - Dokumentasjon som NAV har produsert og sendt ut til en ekstern part. De fleste utgående dokumenter er informasjons- eller vedtaksbrev til privatpersoner eller organisasjoner. "Skriv til NAV"-meldinger som saksbehandlere har sendt til brukere arkiveres også som utgående dokumenter.
     U
 
-    # **Notat** - Dokumentasjon som Nav har produsert selv, uten at formålet er å distribuere dette ut av Nav. Eksempler på notater er samtalereferater med veileder på kontaktsenter og interne forvaltningsnotater.
+    # **Notat** - Dokumentasjon som NAV har produsert selv, uten at formålet er å distribuere dette ut av NAV. Eksempler på notater er samtalereferater med veileder på kontaktsenter og interne forvaltningsnotater.
     N
 }
 
@@ -210,7 +213,7 @@ enum Journalstatus {
     # * Tilsvarer statusen **JOURNALFOERT** for inngående dokumenter.
     FERDIGSTILT
 
-    # Dokumentet er sendt til bruker. Statusen benyttes også når dokumentet er tilgjengeliggjort for bruker på DittNav, og bruker er varslet.
+    # Dokumentet er sendt til bruker. Statusen benyttes også når dokumentet er tilgjengeliggjort for bruker på DittNAV, og bruker er varslet.
     # * Statusen kan forekomme for utgående dokumenter og notater.
     EKSPEDERT
 
@@ -288,7 +291,7 @@ enum Kanal {
     # * Brukes for inngående, utgående journalposter og notater.
     SKAN_NETS
 
-    # Forsendelsen er sendt inn på papir og skannet på Navs skanningsenter for pensjon og bidrag.
+    # Forsendelsen er sendt inn på papir og skannet på NAVs skanningsenter for pensjon og bidrag.
     # * Brukes for inngående journalposter.
     SKAN_PEN
 
@@ -304,7 +307,7 @@ enum Kanal {
     # * Brukes for inngående og utgående journalposter.
     HELSENETTET
 
-    # Forsendelsen skal ikke distribueres ut av Nav.
+    # Forsendelsen skal ikke distribueres ut av NAV.
     # * Brukes for alle notater og noen utgående journalposter
     INGEN_DISTRIBUSJON
 
@@ -312,11 +315,14 @@ enum Kanal {
     # * Brukes for inngående journalposter
     NAV_NO_UINNLOGGET
 
-    # Bruker har fylt ut og sendt inn dokumentet sammen med en Nav-ansatt. Det er den Nav-ansatte som var pålogget innsendingsløsningen.
+    # Bruker har fylt ut og sendt inn dokumentet sammen med en NAV-ansatt. Det er den NAV-ansatte som var pålogget innsendingsløsningen.
     INNSENDT_NAV_ANSATT
 
-    # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i Nav.
+    # Forsendelsen inneholder en komplett chatdialog (inngående og utgående meldinger) mellom en bruker og en veileder i NAV.
     NAV_NO_CHAT
+
+    # Presentert direkte på nav.no for innlogget bruker
+    NAV_NO_UTEN_VARSLING
 
     # Brevet er sendt til Taushetsbelagt Post via Altinn.
     # * Brukes for utgående journalposter.
@@ -326,9 +332,13 @@ enum Kanal {
     # * Brukes for inngående journalposter.
     E_POST
 
-    # Forsendelsen er mottatt i en av Navs meldingsbokser i Altinn.
+    # Forsendelsen er mottatt i en av NAVs meldingsbokser i Altinn.
     # * Brukes for inngående journalposter.
     ALTINN_INNBOKS
+
+    # Forsendelsen er sendt fra et HR-system med integrasjon mot Nav.
+    # * Brukes for inngående journalposter.
+    HR_SYSTEM_API
 
     # Forsendelsen har ingen kjent kanal.
     UKJENT
@@ -352,7 +362,7 @@ enum Datotype {
     # * Returneres for alle journalposttyper
     DATO_JOURNALFOERT
 
-    # * Tidspunkt dokumentene i journalposten ble registrert i Nav sine systemer.
+    # * Tidspunkt dokumentene i journalposten ble registrert i NAV sine systemer.
     # * Returneres for inngående journalposter
     DATO_REGISTRERT
 
@@ -400,7 +410,7 @@ enum AvsenderMottakerIdType {
 }
 
 # Temaet/Fagområdet som en journalpost og tilhørende sak tilhører, f.eks. **FOR** (foreldrepenger).
-# * I Nav brukes Tema for å klassifisere journalposter i arkivet med tanke på gjenfinning, tilgangsstyring og bevaringstid.
+# * I NAV brukes Tema for å klassifisere journalposter i arkivet med tanke på gjenfinning, tilgangsstyring og bevaringstid.
 enum Tema {
     # Arbeidsavklaringspenger
     AAP
@@ -413,6 +423,9 @@ enum Tema {
 
     # Barnetrygd
     BAR
+
+    # Barnebortføring
+    BBF
 
     # Bidrag
     BID
@@ -476,6 +489,9 @@ enum Tema {
 
     # Mobilitetsfremmende stønad
     MOB
+
+    # Oljepionerene
+    OLJ
 
     # Omsorgspenger, pleiepenger og opplæringspenger
     OMS
@@ -572,6 +588,18 @@ enum Tema {
 
     # Omstillingsstønad
     EYO
+
+    # Aktivitetsplan med dialoger
+    AKT
+
+    # Ungdomsprogramytelsen
+    UNG
+
+    # Innsyn
+    PAI
+
+    # Innsyn etter personopplysningsloven
+    POI
 }
 
 # Sier hvorvidt saken inngår i et fagsystem (FAGSAK) eller ikke (GENERELL_SAK).

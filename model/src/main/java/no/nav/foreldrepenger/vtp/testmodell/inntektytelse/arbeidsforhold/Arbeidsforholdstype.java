@@ -8,13 +8,13 @@ public enum Arbeidsforholdstype {
     FRILANSER_OPPDRAGSTAKER_MED_MER("frilanserOppdragstakerHonorarPersonerMm"),
     FORENKLET_OPPGJØRSORDNING("forenkletOppgjoersordning");
 
+    @JsonValue
     private final String kode;
 
     Arbeidsforholdstype(String kode) {
         this.kode = kode;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

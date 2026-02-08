@@ -41,7 +41,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
         }
 
         @Test
-        public void hent_forelderBarnRelasjon_søker_test() throws JsonProcessingException {
+        void hent_forelderBarnRelasjon_søker_test() throws JsonProcessingException {
             var søker = testscenario.getPersonopplysninger().getSøker();
             var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
             var requestSøker = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", søker.getIdent())).build();
@@ -60,7 +60,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
         }
 
     @Test
-    public void hent_forelderBarnRelasjon_annenpart_test() throws JsonProcessingException {
+    void hent_forelderBarnRelasjon_annenpart_test() throws JsonProcessingException {
         var annenpart = testscenario.getPersonopplysninger().getAnnenPart();
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
         var requestAnnenpart = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", annenpart.getIdent())).build();
@@ -79,7 +79,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
     }
 
     @Test
-    public void hent_forelderBarnRelasjon_barn_test() throws JsonProcessingException {
+    void hent_forelderBarnRelasjon_barn_test() throws JsonProcessingException {
         var barnIdent = testscenario.getPersonopplysninger().getIdenter().getIdent("${barn1}");
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
         var requestBarn = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", barnIdent)).build();

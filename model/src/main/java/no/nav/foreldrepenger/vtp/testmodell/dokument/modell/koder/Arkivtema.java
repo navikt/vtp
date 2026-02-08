@@ -24,6 +24,7 @@ public class Arkivtema {
         koder.add("ENF");
         koder.add("OMS");
         koder.add("FRI");
+        koder.add("UNG");
 
         VALID_KODER = Collections.unmodifiableList(koder);
     }
@@ -34,7 +35,9 @@ public class Arkivtema {
     public static Arkivtema ENF = new Arkivtema("ENF");
     public static Arkivtema OMS = new Arkivtema("OMS");
     public static Arkivtema FRI = new Arkivtema("FRI");
+    public static Arkivtema UNG = new Arkivtema("UNG");
 
+    @JsonValue
     private String kode;
 
     public Arkivtema(String kode){
@@ -44,7 +47,6 @@ public class Arkivtema {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

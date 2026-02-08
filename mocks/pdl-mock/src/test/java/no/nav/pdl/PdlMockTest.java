@@ -18,7 +18,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepo
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.pdl.graphql.GraphQLRequest;
 
-public class PdlMockTest extends PdlTestBase {
+class PdlMockTest extends PdlTestBase {
 
     private static final String SCENARIOID = "1";
 
@@ -31,7 +31,7 @@ public class PdlMockTest extends PdlTestBase {
     private final ObjectReader hentIdenterBolkReader = objectMapper.readerFor(HentIdenterBolkQueryResponse.class);
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         var testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         var testscenarioHenter = TestscenarioHenter.getInstance();
@@ -42,7 +42,7 @@ public class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    public void hent_person() throws JsonProcessingException {
+    void hent_person() throws JsonProcessingException {
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
         var ident = søker.getIdent();
@@ -63,7 +63,7 @@ public class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    public void hent_person_med_historikk() throws JsonProcessingException {
+    void hent_person_med_historikk() throws JsonProcessingException {
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
         var aktørIdent = søker.getAktørIdent();
@@ -86,7 +86,7 @@ public class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    public void hentGeografiskTilknytningTest() throws JsonProcessingException {
+    void hentGeografiskTilknytningTest() throws JsonProcessingException {
 
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
@@ -111,7 +111,7 @@ public class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    public void hent_identer() throws JsonProcessingException {
+    void hent_identer() throws JsonProcessingException {
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
         var ident = søker.getIdent();
@@ -136,7 +136,7 @@ public class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    public void hent_identer_gruppe() throws JsonProcessingException {
+    void hent_identer_gruppe() throws JsonProcessingException {
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
         var ident = søker.getAktørIdent();
@@ -163,7 +163,7 @@ public class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    public void hent_aktørid_for_identliste() throws JsonProcessingException {
+    void hent_aktørid_for_identliste() throws JsonProcessingException {
         // Arrange
         var søker = testscenario.getPersonopplysninger().getSøker();
 

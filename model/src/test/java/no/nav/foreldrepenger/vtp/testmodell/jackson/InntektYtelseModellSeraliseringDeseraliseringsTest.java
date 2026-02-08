@@ -23,7 +23,7 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSer
     private static TrexModellSeraliseringDeseralseringsTest trex;
 
     @BeforeAll
-    public static void instansiererTestKlasser() {
+    static void instansiererTestKlasser() {
         arbeidsforhold = new ArbeidsforholdSeraliseringDeseraliseringsTest();
         arena = new ArenaSeraliseringDeseraliseringsTest();
         infotrygd = new InfotrygdSeraliseringDeseraliseringsTest();
@@ -34,7 +34,7 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSer
     }
 
     @BeforeAll
-    public static void utviderObjectmapperMedInjectables() {
+    static void utviderObjectmapperMedInjectables() {
         var adresseIndeks = new AdresseIndeks();
         var jacksonWrapper = new JacksonObjectMapperTestscenarioUtvider(new VariabelContainer(Map.of("key", "value")));
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
@@ -44,7 +44,7 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSer
     }
 
     @Test
-    public void InntektYtelseModellSeraliseringDeseraliseringTest() {
+    void InntektYtelseModellSeraliseringDeseraliseringTest() {
         test(new InntektYtelseModell(
                 arena.lagArenaModell(),
                 infotrygd.lagInfotrygdModell(),

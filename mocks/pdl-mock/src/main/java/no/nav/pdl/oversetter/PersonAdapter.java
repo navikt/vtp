@@ -21,7 +21,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapMode
 import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
 import no.nav.pdl.Doedsfall;
-import no.nav.pdl.Foedsel;
 import no.nav.pdl.Foedselsdato;
 import no.nav.pdl.Folkeregisteridentifikator;
 import no.nav.pdl.Folkeregistermetadata;
@@ -49,12 +48,10 @@ public class PersonAdapter {
         person.setDoedsfall(tilDoedsfall(personModell));
         person.setDoedfoedtBarn(tilDoedfoedtBarn(personModell.getAktørIdent(), personopplysninger));
         byggForelderBarnRelasjoner(personModell.getAktørIdent(), personopplysninger, person);
-        person.setFoedsel(tilFoedsel(personModell));
         person.setFoedselsdato(tilFoedselsdato(personModell));
         person.setFolkeregisteridentifikator(tilFolkeregisteridentifkkator(personModell));
         person.setFolkeregisterpersonstatus(tilFolkeregisterpersonstatuse(personModell, historikk));
         person.setForeldreansvar(ikkeImplementert());
-        person.setFullmakt(ikkeImplementert());
         person.setIdentitetsgrunnlag(ikkeImplementert());
         person.setKjoenn(tilKjoenn(personModell));
         person.setKontaktinformasjonForDoedsbo(ikkeImplementert());
@@ -108,12 +105,6 @@ public class PersonAdapter {
         ident.setStatus("I_BRUK");
         ident.setType("FNR");
         return List.of(ident);
-    }
-
-    private static List<Foedsel> tilFoedsel(PersonModell personModell) {
-        var fødsel = new Foedsel();
-        fødsel.setFoedselsdato(personModell.getFødselsdato().format(DATO_FORMATTERER));
-        return List.of(fødsel);
     }
 
     private static List<Foedselsdato> tilFoedselsdato(PersonModell personModell) {

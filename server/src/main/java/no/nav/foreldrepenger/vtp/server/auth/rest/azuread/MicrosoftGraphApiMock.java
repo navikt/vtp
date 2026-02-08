@@ -95,9 +95,24 @@ public class MicrosoftGraphApiMock {
                     ansatt.displayName(),
                     ansatt.givenName(), ansatt.surname(), ansatt.streetAddress(),
                     "https://graph.microsoft.com/v1.0/$metadata#users(id," + identifikator + ")/$entity");
-            return Response.ok(user).build();
+            return Response.ok(UserResponse.fraUser(user)).build();
         }
         return Response.noContent().build();
+    }
+
+    @GET
+    @Produces({"application/json;charset=UTF-8"})
+    @Path("/v1.0/users/{oid}")
+    public Response getUserById(@PathParam("oid") @NotNull UUID id) {
+        // forventer queryparam $select og ev. $count, men ignorerer i vtp-versjonen
+        var ansatt = ANSATTE_INDEKS.findById(id);
+        if (ansatt == null) {
+            return Response.noContent().build();
+        }
+        var user = new User(ansatt.oid(), ansatt.ident(), ansatt.displayName(), ansatt.givenName(), ansatt.surname(),
+                ansatt.streetAddress(),
+                "https://graph.microsoft.com/v1.0/$metadata#users(id,onPremisesSamAccountName,displayName,givenName,surname,streetAddress)/$entity");
+        return Response.ok(user).build();
     }
 
     @GET
@@ -145,11 +160,31 @@ public class MicrosoftGraphApiMock {
                 @JsonProperty("@odata.context") String context) {
     }
 
-    record Group(UUID id, String displayName, String onPremisesSamAccountName) {
+    /**
+     * Api'et støtter både liste-respons og single-element respons.
+     * Se <a href="https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=http">dokumentasjon</a>
+     */
+    record UserResponse(
+            UUID id,
+            String onPremisesSamAccountName,
+            String displayName,
+            String givenName,
+            String surname,
+            String streetAddress,
+            @JsonProperty("@odata.context") String context,
+            @JsonProperty("value") List<User> value
+    ) {
+        static UserResponse fraUser(User user) {
+            return new UserResponse(user.id(), user.onPremisesSamAccountName(), user.displayName(), user.givenName(), user.surname(),
+                    user.streetAddress(), user.context(), List.of(user));
+        }
     }
+    record Group(UUID id, String displayName, String onPremisesSamAccountName) {
 
+    }
     record MemberOfResponse(@JsonProperty("@odata.context") String context, @JsonProperty("@odata.nextLink") String nextLink,
                             List<Group> value) {
+
     }
 
 }

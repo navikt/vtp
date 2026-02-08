@@ -47,6 +47,7 @@ public class InfotrygdArbeidskategori {
 
     public static final InfotrygdArbeidskategori ARBEIDSTAKER = new InfotrygdArbeidskategori("01");
 
+    @JsonValue
     private String kode;
 
     public InfotrygdArbeidskategori(String kode) {
@@ -56,7 +57,6 @@ public class InfotrygdArbeidskategori {
         }
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

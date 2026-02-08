@@ -18,7 +18,6 @@ import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class OrganisasjonResponse {
     @JsonProperty("organisasjonsnummer")
