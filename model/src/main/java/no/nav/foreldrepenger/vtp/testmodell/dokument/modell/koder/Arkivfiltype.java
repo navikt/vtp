@@ -36,6 +36,7 @@ public class Arkivfiltype {
     public static final Arkivfiltype PDF = new Arkivfiltype("PDF");
     public static final Arkivfiltype PDFA = new Arkivfiltype("PDFA");
 
+    @JsonValue
     private String kode;
 
     public Arkivfiltype(String kode){
@@ -45,7 +46,6 @@ public class Arkivfiltype {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

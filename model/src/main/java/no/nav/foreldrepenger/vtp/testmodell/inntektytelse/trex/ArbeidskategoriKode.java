@@ -36,9 +36,9 @@ public enum ArbeidskategoriKode {
     @JsonEnumDefaultValue
     K99("99");
 
+    @JsonValue
     private final String kode;
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

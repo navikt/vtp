@@ -28,6 +28,7 @@ public class Dokumentstatus {
     public static Dokumentstatus FERDIGSTILT = new Dokumentstatus("FERDIGSTILT");
     public static Dokumentstatus UNDER_REDIGERING = new Dokumentstatus("UNDER_REDIGERING");
 
+    @JsonValue
     private String kode;
 
     public Dokumentstatus(String kode){
@@ -37,7 +38,6 @@ public class Dokumentstatus {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

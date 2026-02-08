@@ -15,13 +15,13 @@ public enum Permisjonstype {
     ANNEN_PERMISJON_IKKE_LOVFESTET("andreIkkeLovfestedePermisjoner"),
     ANNEN_PERMISJON_LOVFESTET("andreLovfestedePermisjoner");
 
+    @JsonValue
     private final String kode;
 
     Permisjonstype(String kode) {
         this.kode = kode;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

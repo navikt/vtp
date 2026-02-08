@@ -25,6 +25,7 @@ public class Variantformat {
         VALID_KODER = Collections.unmodifiableList(koder);
     }
 
+    @JsonValue
     private String kode;
 
     public static Variantformat ARKIV = new Variantformat("ARKIV");
@@ -38,7 +39,6 @@ public class Variantformat {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

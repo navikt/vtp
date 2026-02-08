@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Avlønningstype {
     FASTLØNN("fastlønn");
 
+    @JsonValue
     private final String kode;
 
     Avlønningstype(String kode) {
         this.kode = kode;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }
