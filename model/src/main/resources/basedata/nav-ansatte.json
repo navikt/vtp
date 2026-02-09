@@ -494,10 +494,10 @@
     {
         "ident": "A111111",
         "oid": "28db24a8-9973-4092-878a-4a73e9010c71",
-        "displayName": "Aksel Del 1 Saksbehandler",
-        "givenName": "Aksel",
+        "displayName": "Akilles Del 1 Saksbehandler",
+        "givenName": "Akilles",
         "surname": "Saksbehandler",
-        "email": "Aksel.del.1.saksbehandler@example.com",
+        "email": "akilles.del.1.saksbehandler@example.com",
         "streetAddress": "4833",
         "enheter": [],
         "groups": [
