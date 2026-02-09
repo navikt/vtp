@@ -15,31 +15,28 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonWrapper;
 
 
 @Tag(name = "Testscenario")
 @Path("/api/testscenarios/v2")
 public class TestscenarioV2RestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioV2RestTjeneste.class);
-    private static final JacksonWrapper mapper = new JacksonWrapper(JacksonObjectMapperTestscenario.getObjectMapper());
 
 
     @Context
@@ -86,7 +83,7 @@ public class TestscenarioV2RestTjeneste {
 
         logger.info("Initialisert testscenario med uuid {}", testscenario.getId());
         return Response.status(Response.Status.OK)
-                .entity(mapper.writeValueAsString(konverterTilTestscenarioDto(testscenario)))
+                .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario)))
                 .build();
     }
 

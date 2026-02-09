@@ -26,7 +26,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
         private static PdlMock pdlMock;
         private static PersonResponseProjection projeksjon;
 
-        private final ObjectReader hentPersonReader = objectMapper.readerFor(HentPersonQueryResponse.class);
+        private final ObjectReader hentPersonReader = JSON_MAPPER.readerFor(HentPersonQueryResponse.class);
 
         @BeforeAll
         public static void setup() {

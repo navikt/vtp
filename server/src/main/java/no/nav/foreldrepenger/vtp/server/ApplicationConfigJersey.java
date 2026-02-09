@@ -19,16 +19,10 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
-import io.swagger.v3.oas.integration.GenericOpenApiContextBuilder;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -41,6 +35,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -78,6 +73,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.mock.pesys.UføreMock;
@@ -115,18 +111,25 @@ public class ApplicationConfigJersey extends ResourceConfig {
     }
 
     private void instanserSwagger() {
-        var oas = new OpenAPI();
         var info = new Info().title("VTP - Virtuell Tjeneste Plattform").version("1.0").description("REST grensesnitt for VTP.");
 
-        oas.info(info).addServersItem(new Server().url("/"));
-        var oasConfig = new SwaggerConfiguration().openAPI(oas)
+        var oas = new OpenAPI().openapi("3.1.1").info(info).addServersItem(new Server().url("/"));
+        var oasConfig = new SwaggerConfiguration().openAPI(oas).id(idFra(this))
                 .prettyPrint(true)
                 .resourceClasses(getClasses().stream().map(Class::getName).collect(Collectors.toSet()));
         try {
-            new GenericOpenApiContextBuilder<>().openApiConfiguration(oasConfig).buildContext(true).read();
+            new JaxrsOpenApiContextBuilder<>()
+                    .ctxId(idFra(this))
+                    .application(this)
+                    .openApiConfiguration(oasConfig)
+                    .buildContext(true).read();
         } catch (OpenApiConfigurationException e) {
             throw new IllegalStateException("OPEN-API", e);
         }
+    }
+
+    private static String idFra(Application application) {
+        return "openapi.context.id.servlet." + application.getClass().getName();
     }
 
     public static Set<Class<?>> registerClasses() {
@@ -224,20 +227,13 @@ public class ApplicationConfigJersey extends ResourceConfig {
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
     public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
-        private final ObjectMapper objectMapper = JsonMapper.builder()
-                .addModules(new Jdk8Module(), new JavaTimeModule())
-                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-                .build();
-
         public JacksonConfigResolver() {
             //CDI
         }
 
         @Override
         public ObjectMapper getContext(Class<?> type) {
-            return objectMapper;
+            return JacksonObjectMapperTestscenario.getJsonMapper();
         }
     }
 

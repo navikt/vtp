@@ -40,7 +40,7 @@ class InntektYtelseModellSeraliseringDeseraliseringsTest extends TestscenarioSer
         var lokalIdentIndeks = new LokalIdentIndeks("12345", new FiktiveFnr());
         jacksonWrapper.addInjectable(LokalIdentIndeks.class, lokalIdentIndeks);
         jacksonWrapper.addInjectable(AdresseIndeks.class, adresseIndeks);
-        mapper = jacksonWrapper.lagCopyAvObjectMapperOgUtvideMedVars();
+        jsonMapper = jacksonWrapper.lagCopyAvObjectMapperOgUtvideMedVars();
     }
 
     @Test

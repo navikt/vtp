@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.InjectableValues;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /** NB - Single-use only. Variable lest/skrevet caches internt i modul. Variable som brukes vil deles på tvers av invokeringer.*/
 public class JacksonObjectMapperTestscenarioUtvider extends JacksonObjectMapperTestscenario {
@@ -17,12 +17,12 @@ public class JacksonObjectMapperTestscenarioUtvider extends JacksonObjectMapperT
         this.vars = vars;
     }
 
-    public ObjectMapper lagCopyAvObjectMapperOgUtvideMedVars() {
-        ObjectMapper objectMapper = lagCopyAvObjectMapper();
-        objectMapper.registerModule(new DeserializerModule(vars));
+    public JsonMapper lagCopyAvObjectMapperOgUtvideMedVars() {
         addInjectable(VariabelContainer.class, vars);
-        objectMapper.setInjectableValues(injectableValues);
-        return objectMapper;
+        return JacksonObjectMapperTestscenario.getJsonMapper().rebuild()
+                .addModule(new DeserializerModule(vars))
+                .injectableValues(injectableValues)
+                .build();
     }
 
     public VariabelContainer getVars() {

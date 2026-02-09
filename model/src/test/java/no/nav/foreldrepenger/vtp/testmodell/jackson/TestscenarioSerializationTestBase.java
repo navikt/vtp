@@ -7,27 +7,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 
 public class TestscenarioSerializationTestBase {
 
     protected static final Logger LOG = LoggerFactory.getLogger(TestscenarioSerializationTestBase.class);
-    protected static ObjectMapper mapper;
+    protected static JsonMapper jsonMapper;
 
     @BeforeAll
     static void beforeAll() {
-        mapper = JacksonObjectMapperTestscenario.getObjectMapper();
+        jsonMapper = JacksonObjectMapperTestscenario.getJsonMapper();
     }
-
     protected static void test(Object obj) {
         test(obj, true);
-    }
-
-    private static String serialize(Object obj) throws JsonProcessingException {
-        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }
 
     private static void test(Object obj, boolean log) {
@@ -35,11 +29,11 @@ public class TestscenarioSerializationTestBase {
             if (log) {
                 LOG.info("{}", obj);
             }
-            String serialized = serialize(obj);
+            String serialized = jsonMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
             if (log) {
                 LOG.info("Serialized as {}", serialized);
             }
-            Object deserialized = mapper.readValue(serialized, obj.getClass());
+            Object deserialized = jsonMapper.readValue(serialized, obj.getClass());
             if (log) {
                 LOG.info("{}", deserialized);
             }
