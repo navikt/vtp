@@ -10,15 +10,16 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.Tilleggsopplysning;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 
-public class JournalRepoTest {
+class JournalRepoTest {
 
     @Test
-    public void skalFinneJournalposterPåSaksid(){
+    void skalFinneJournalposterPåSaksid(){
 
         String sakId = "12381";
 
@@ -45,7 +46,7 @@ public class JournalRepoTest {
     }
 
     @Test
-    public void skalFinneJournalposterPåAvsenderFnr(){
+    void skalFinneJournalposterPåAvsenderFnr(){
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         String avsenderFnrSøker = "01020304056";
@@ -69,7 +70,7 @@ public class JournalRepoTest {
     }
 
     @Test
-    public void skalSetteJournalpostIdVedLagring() {
+    void skalSetteJournalpostIdVedLagring() {
         JournalRepository journalRepository = JournalRepositoryImpl.getInstance();
 
         JournalpostModell journalpostModell = new JournalpostModell();
@@ -81,5 +82,40 @@ public class JournalRepoTest {
         assertThat(resultatModell).isPresent();
         assertThat(resultatModell.get().getJournalpostId()).isEqualTo(journalpostId);
 
+    }
+
+    @Test
+    void testTilleggsopplysningerField() {
+        JournalpostModell journalpostModell = new JournalpostModell();
+
+        // Sjekker at felt er initialisert som tom liste
+        assertThat(journalpostModell.getTilleggsopplysninger()).isNotNull();
+        assertThat(journalpostModell.getTilleggsopplysninger()).isEmpty();
+
+        // Tester setter
+        List<Tilleggsopplysning> testData = List.of(
+                new Tilleggsopplysning("k9.kilde", "SKANNING"),
+                new Tilleggsopplysning("k9.type", "SØKNAD")
+
+        );
+
+        journalpostModell.setTilleggsopplysninger(testData);
+        assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(testData);
+
+        // Tester equals funksjonalitet
+        JournalpostModell journalpostModell2 = new JournalpostModell();
+        journalpostModell2.setTilleggsopplysninger(testData);
+        assertThat(journalpostModell.getTilleggsopplysninger()).isEqualTo(journalpostModell2.getTilleggsopplysninger());
+
+        // Tester hashCode (dekker hashCode linje)
+        assertThat(journalpostModell.hashCode()).isEqualTo(journalpostModell2.hashCode());
+
+        journalpostModell.setAvsenderFnr("12345678901");
+        journalpostModell2.setAvsenderFnr("12345678901");
+
+        // Tester toString (dekker toString linje)
+        String toString = journalpostModell.toString();
+        assertThat(toString).contains("tilleggsopplysninger");
+        assertThat(toString).contains("k9.kilde");
     }
 }

@@ -13,13 +13,13 @@ public enum InfotrygdTema {
     SP("Sykepenger"),
     BS("Barns sykdom");
 
+    @JsonValue
     private final String kode;
 
     InfotrygdTema(String kode) {
         this.kode = kode;
     }
 
-    @JsonValue
     public String getKode() {
         return kode;
     }

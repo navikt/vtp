@@ -127,7 +127,7 @@
         "gyldigFraOgMed": "now() - P9M",
         "gyldigTilOgMed": "now() + P1Y",
         "fra": {
-          "id": "02099541043",
+          "id": "09902500097",
           "type": "Identitetsnummer"
         },
         "lengde": "PT480H",

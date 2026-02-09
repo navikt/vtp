@@ -13,15 +13,13 @@
     <packaging>pom</packaging>
     <modules>
         <module>arbeidsforhold-mock</module>
-        <module>axsys-enhetstilgang-mock</module>
         <module>journalpost-mock</module>
         <module>dokdist-mock</module>
         <module>dummy-mock</module>
-        <module>gsak-mock</module>
         <module>infotrygd-mock</module>
         <module>inntekt-mock</module>
         <module>saf-mock</module>
-        <module>kafka-embedded-mock</module>
+        <module>kafka-producer</module>
         <module>ldap-mock</module>
         <module>medl-mock</module>
         <module>norg2-mock</module>
@@ -36,6 +34,7 @@
         <module>pesys-mock</module>
         <module>spokelse-mock</module>
         <module>kelvin-mock</module>
+        <module>dpsak-mock</module>
         <module>fpwsproxy-mock</module>
         <module>altinn-proxy-mock</module>
         <module>fager-mock</module>

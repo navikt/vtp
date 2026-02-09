@@ -1,7 +1,5 @@
 package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,29 +7,21 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public class DokumentTilknyttetJournalpost {
 
-    private static List<String> VALID_KODER;
+    private static final List<String> VALID_KODER = List.of("HOVEDDOKUMENT", "VEDLEGG");
 
-    static {
-        List<String> koder = new ArrayList<>();
-        koder.add("HOVEDDOKUMENT");
-        koder.add("VEDLEGG");
+    public static final DokumentTilknyttetJournalpost HOVEDDOKUMENT = new DokumentTilknyttetJournalpost("HOVEDDOKUMENT");
+    public static final DokumentTilknyttetJournalpost VEDLEGG = new DokumentTilknyttetJournalpost("VEDLEGG");
 
-        VALID_KODER = Collections.unmodifiableList(koder);
-    }
-
-    public static DokumentTilknyttetJournalpost HOVEDDOKUMENT = new DokumentTilknyttetJournalpost("HOVEDDOKUMENT");
-    public static DokumentTilknyttetJournalpost VEDLEGG = new DokumentTilknyttetJournalpost("VEDLEGG");
-
+    @JsonValue
     private String kode;
 
-    public DokumentTilknyttetJournalpost(String kode){
-        this.kode = kode == null ? this.kode : kode;
+    DokumentTilknyttetJournalpost(String kode){
+        this.kode = kode;
         if(kode != null && !VALID_KODER.contains(kode)){
             throw new IllegalArgumentException("Kode er ikke implementert i Joark dokumentTilknyttetJournalpost: " + kode);
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}
@@ -41,10 +31,8 @@ public class DokumentTilknyttetJournalpost {
     public boolean equals(Object obj) {
         if (obj == this) {
             return true;
-        } else if (obj == null || !obj.getClass().equals(this.getClass())) {
-            return false;
         }
-        return Objects.equals(getKode(), ((DokumentTilknyttetJournalpost) obj).getKode());
+        return obj instanceof DokumentTilknyttetJournalpost dok && Objects.equals(getKode(), dok.getKode());
     }
 
     @Override

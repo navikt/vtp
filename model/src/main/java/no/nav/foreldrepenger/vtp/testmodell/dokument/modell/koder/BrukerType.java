@@ -20,6 +20,7 @@ public class BrukerType {
         VALID_KODE = Collections.unmodifiableList(koder);
     }
 
+    @JsonValue
     private String kode;
 
     public static BrukerType FNR = new BrukerType("FNR");
@@ -34,7 +35,6 @@ public class BrukerType {
         }
     }
 
-    @JsonValue
     public String getKode() {return kode;}
 
     public void setKode(String kode){this.kode = kode;}

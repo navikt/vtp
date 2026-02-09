@@ -19,32 +19,32 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
 class ArenaSeraliseringDeseraliseringsTest extends TestscenarioSerializationTestBase {
 
     @Test
-    public void ArenaMeldekortSeraliseringDeseraliseringTest() {
+    void ArenaMeldekortSeraliseringDeseraliseringTest() {
         test(lagArenaMeldekort());
     }
 
     @Test
-    public void ArenaVedtakSeraliseringDeseraliseringTest() {
+    void ArenaVedtakSeraliseringDeseraliseringTest() {
         test(lagArenaVedtak());
     }
 
     @Test
-    public void ArenaSakSeraliseringDeseraliseringTest() {
+    void ArenaSakSeraliseringDeseraliseringTest() {
         test(lagArenaSak());
     }
 
     @Test
-    public void SakStatusSeraliseringDeseraliseringTest() {
+    void SakStatusSeraliseringDeseraliseringTest() {
         test(SakStatus.AKTIV);
     }
 
     @Test
-    public void VedtakStatusSeraliseringDeseraliseringTest() {
+    void VedtakStatusSeraliseringDeseraliseringTest() {
         test(VedtakStatus.IVERK);
     }
 
     @Test
-    public void ArenaModellSeraliseringDeseraliseringTest() {
+    void ArenaModellSeraliseringDeseraliseringTest() {
         test(lagArenaModell());
     }
 

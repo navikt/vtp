@@ -1,6 +1,7 @@
 package no.nav.dokarkiv;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,10 +16,7 @@ import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord;
 
 public class JournalforingHendelseSender {
 
-    private static final String TOPICS = Optional.ofNullable(System.getenv("CREATE_TOPICS")).orElse("");
-    private static final String JOURNALFØRING_TOPIC =  Arrays.stream((TOPICS).split(",")) // Pattern som for PDL
-            .map(String::trim).filter(s -> s.toLowerCase().contains("teamdokumenthandtering"))
-            .findFirst().orElse("teamdokumenthandtering.aapen-dok-journalfoering-vtp");
+    private static final String JOURNALFØRING_TOPIC = Optional.ofNullable(System.getenv("KAFKA_TOPIC_JOURNAL_HENDELSE")).orElse("teamdokumenthandtering.aapen-dok-journalfoering-q1");
 
     private final LocalKafkaProducer localKafkaProducer;
 

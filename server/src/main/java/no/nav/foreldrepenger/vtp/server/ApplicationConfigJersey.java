@@ -50,8 +50,7 @@ import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
 import no.nav.altinn.AltinnRettigheterProxyMock;
-import no.nav.axsys.AxsysEnhetstilgangMock;
-import no.nav.axsys.AxsysEnhetstilgangV2Mock;
+import no.nav.altinn.ArbeidsgiverAltinnTilgangerMock;
 import no.nav.digdir.DigdirKrrProxyMock;
 import no.nav.dokarkiv.JournalpostMock;
 import no.nav.dokdistfordeling.DokdistfordelingMock;
@@ -66,10 +65,10 @@ import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioV2RestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.abac.PdpRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
@@ -91,16 +90,16 @@ import no.nav.saf.SafMock;
 import no.nav.sigrun.SigrunMock;
 import no.nav.tjeneste.virksomhet.arbeidsfordeling.rest.ArbeidsfordelingRestMock;
 import no.nav.tjeneste.virksomhet.arbeidsforhold.rs.AaregRSV1Mock;
+import no.nav.tjeneste.virksomhet.dpsak.DagpengerDatadelingMock;
 import no.nav.tjeneste.virksomhet.infotrygd.rest.InfotrygdMock;
 import no.nav.tjeneste.virksomhet.kelvin.KelvinMock;
 import no.nav.tjeneste.virksomhet.organisasjon.rs.OrganisasjonRSV1Mock;
-import no.nav.tjeneste.virksomhet.sak.rs.SakRestMock;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
 import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
+import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
 public class ApplicationConfigJersey extends ResourceConfig {
@@ -140,10 +139,10 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(TestscenarioRestTjeneste.class);
         classes.add(TestscenarioV2RestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
-        classes.add(SakRestMock.class);
         classes.add(SafMock.class);
         classes.add(PdlLeesahRestTjeneste.class);
         classes.add(HentInntektlisteBolkREST.class);
+        classes.add(InntektskomponentV2REST.class);
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteFile.class);
         classes.add(DummyRestTjenesteBoolean.class);
@@ -157,16 +156,16 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(PårørendeSykdomMock.class);
         classes.add(DokdistfordelingMock.class);
         classes.add(DigdirKrrProxyMock.class);
-        classes.add(AxsysEnhetstilgangMock.class);
-        classes.add(AxsysEnhetstilgangV2Mock.class);
         classes.add(SkjermetPersonMock.class);
         classes.add(UføreMock.class);
         classes.add(SpøkelseMock.class);
         classes.add(KelvinMock.class);
+        classes.add(DagpengerDatadelingMock.class);
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
         classes.add(AltinnRettigheterProxyMock.class);
+        classes.add(ArbeidsgiverAltinnTilgangerMock.class);
         classes.add(FagerMock.class);
 
         // Arbeidsgiver portal mock
@@ -176,8 +175,8 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(AzureAdRestTjeneste.class);
         classes.add(IdportenLoginTjeneste.class);
         classes.add(MicrosoftGraphApiMock.class);
-        classes.add(PdpRestTjeneste.class);
         classes.add(TokenxRestTjeneste.class);
+        classes.add(TexasRestTjeneste.class);
 
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
@@ -206,7 +205,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
     public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
                                          TestscenarioRepository instance,
-                                         GsakRepo gsakRepo,
                                          LocalKafkaProducer localKafkaProducer,
                                          JournalRepository journalRepository,
                                          ArbeidsgiverPortalRepository fagerPortalRepository) {
@@ -217,7 +215,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
                 bind(instance).to(TestscenarioRepository.class);
                 bind(journalRepository).to(JournalRepository.class);
                 bind(fagerPortalRepository).to(ArbeidsgiverPortalRepository.class);
-                bind(gsakRepo).to(GsakRepo.class);
                 bind(localKafkaProducer).to(LocalKafkaProducer.class);
             }
         });

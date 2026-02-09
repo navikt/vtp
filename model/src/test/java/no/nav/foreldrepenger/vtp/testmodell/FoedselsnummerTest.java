@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 
-public class FoedselsnummerTest {
+class FoedselsnummerTest {
 
     @Test
-    public void fiktiv_vilkaarlig_kjonn_lager_fnr(){
+    void fiktiv_vilkaarlig_kjonn_lager_fnr(){
         var fiktiveFnr = new FiktiveFnr();
         var fnr = fiktiveFnr.tilfeldigFnr();
         assertThat(fnr).isNotEmpty();
@@ -21,7 +21,7 @@ public class FoedselsnummerTest {
     }
 
     @Test
-    public void fiktiv_fnr_kjonn_mann() {
+    void fiktiv_fnr_kjonn_mann() {
         var fiktiveFnr = new FiktiveFnr();
         var fnr = fiktiveFnr.tilfeldigMannFnr();
         assertThat(fnr).hasSize(11);
@@ -30,7 +30,7 @@ public class FoedselsnummerTest {
     }
 
     @Test
-    public void fiktiv_fnr_kjonn_kvinne() {
+    void fiktiv_fnr_kjonn_kvinne() {
         var fiktiveFnr = new FiktiveFnr();
         var fnr = fiktiveFnr.tilfeldigKvinneFnr();
         assertThat(fnr).hasSize(11);
@@ -38,7 +38,7 @@ public class FoedselsnummerTest {
     }
 
     @Test
-    public void fiktiv_dnr() {
+    void fiktiv_dnr() {
         var fiktiveFnr = new FiktiveFnr();
         var fnr = fiktiveFnr.tilfeldigKvinneDnr();
         assertThat(fnr).hasSize(11);
@@ -46,7 +46,7 @@ public class FoedselsnummerTest {
     }
 
     @Test
-    public void fiktiv_fnr_barn(){
+    void fiktiv_fnr_barn(){
         var fiktiveFnr = new FiktiveFnr();
         var fnr = fiktiveFnr.tilfeldigBarnUnderTreAarFnr();
         assertThat(fnr).hasSize(11);

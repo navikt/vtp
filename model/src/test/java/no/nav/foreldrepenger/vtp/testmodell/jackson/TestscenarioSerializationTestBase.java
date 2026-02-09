@@ -18,7 +18,7 @@ public class TestscenarioSerializationTestBase {
     protected static ObjectMapper mapper;
 
     @BeforeAll
-    public static void beforeAll() {
+    static void beforeAll() {
         mapper = JacksonObjectMapperTestscenario.getObjectMapper();
     }
 

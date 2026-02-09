@@ -66,6 +66,16 @@ public class JournalpostBuilder {
                     new RelevantDato(mottatt, Datotype.DATO_REGISTRERT)));
         }
         journalpost.setBehandlingstema(modell.getBehandlingTema());
+
+        List<Tilleggsopplysning> tilleggsopplysninger = new ArrayList<>();
+        if (modell.getTilleggsopplysninger() != null) {
+            for (var t : modell.getTilleggsopplysninger()) {
+                tilleggsopplysninger.add(new Tilleggsopplysning(t.nokkel(), t.verdi()));
+            }
+        }
+
+        journalpost.setTilleggsopplysninger(tilleggsopplysninger);
+
        return journalpost;
     }
 

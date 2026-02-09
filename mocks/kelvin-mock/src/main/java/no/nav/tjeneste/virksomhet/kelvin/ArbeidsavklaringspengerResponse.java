@@ -6,8 +6,9 @@ import java.util.List;
 
 public record ArbeidsavklaringspengerResponse(List<AAPVedtak> vedtak) {
 
-    public record AAPVedtak(Integer barnMedStonad, Integer beregningsgrunnlag, Integer dagsats,
-                            Kildesystem kildesystem, AAPPeriode periode, String saksnummer,
+    public record AAPVedtak(Integer barnMedStonad, Integer barnetillegg, Integer beregningsgrunnlag,
+                            Integer dagsats, Integer dagsatsEtterUføreReduksjon,
+                            Kildesystem kildesystem, AAPPeriode periode, String saksnummer, String status,
                             String vedtakId, LocalDate vedtaksdato, List<AAPUtbetaling> utbetaling) { }
 
 

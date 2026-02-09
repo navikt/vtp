@@ -13,6 +13,7 @@ public class Landkode {
     public static final Landkode SWE = new Landkode("SWE");
     public static final Landkode DEU = new Landkode("DEU");
 
+    @JsonValue
     private String iso3bokstavLandkode = "NOR"; // default til norgeDekningType
 
     public Landkode(String kode) {
@@ -22,7 +23,6 @@ public class Landkode {
         }
     }
 
-    @JsonValue
     public String getKode() {
         return iso3bokstavLandkode;
     }

@@ -1,19 +1,11 @@
 package no.nav.foreldrepenger.vtp.server;
 
-import no.nav.foreldrepenger.util.KeystoreUtils;
-import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaServer;
-import no.nav.foreldrepenger.vtp.ldap.LdapServer;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.tjeneste.virksomhet.sak.v1.GsakRepo;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.logging.LogManager;
 
-import org.apache.commons.io.FileUtils;
-import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
-import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.ee11.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee11.servlet.ServletHolder;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -26,19 +18,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.LogManager;
+import no.nav.foreldrepenger.util.KeystoreUtils;
+import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import no.nav.foreldrepenger.vtp.ldap.LdapServer;
+import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
 
 public class MockServer {
 
-    private static final String HTTP_HOST = "0.0.0.0";
-    private static final String SERVER_PORT = "8060";
     private static final Logger LOG = LoggerFactory.getLogger(MockServer.class);
 
     private static final String TRUSTSTORE_PASSW_PROP = "javax.net.ssl.trustStorePassword";
@@ -49,9 +41,7 @@ public class MockServer {
 
     private final int port;
     private final LdapServer ldapServer;
-    private final LocalKafkaServer kafkaServer;
-    private Server server;
-    private String host = HTTP_HOST;
+    private final Server server;
 
     static {
         LogManager.getLogManager().reset();
@@ -60,8 +50,8 @@ public class MockServer {
 
     public MockServer() throws Exception {
         // Sletter kafkalogger så det ikke feiler i forsøk på å lage nye topics
-        FileUtils.deleteDirectory(new File("./target/kafka-logs"));
-        this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", SERVER_PORT));
+
+        this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", "8060"));
 
         // Bør denne settes fra ENV_VAR?
         System.setProperty("server.url", "https://localhost:" + getSslPort());
@@ -70,9 +60,7 @@ public class MockServer {
         setConnectors(server);
 
         ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
-        var kafkaBrokerPort = Integer.parseInt(System.getProperty("kafkaBrokerPort", "9092"));
-        var zookeeperPort = Integer.parseInt(System.getProperty("zookeeper.port", "2181"));
-        kafkaServer = new LocalKafkaServer(zookeeperPort, kafkaBrokerPort, getBootstrapTopics());
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -83,43 +71,25 @@ public class MockServer {
 
     public void start() throws Exception {
         startLdapServer();
-        startKafkaServer();
         startWebServer();
     }
 
-    private void startKafkaServer() {
-        kafkaServer.start();
-    }
-
-    private Set<String> getBootstrapTopics() {
-        return new HashSet<>(getEnvValueList("CREATE_TOPICS"));
-    }
-
-    private static List<String> getEnvValueList(String envName) {
-        return Arrays.stream((null != System.getenv(envName) ? System.getenv(envName) : "").split(","))
-                .map(String::trim)
-                .toList();
-    }
-
-    @SuppressWarnings("resource")
     private void startWebServer() throws Exception {
         var instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
         var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
-        var gsakRepo = new GsakRepo();
         var journalRepository = JournalRepositoryImpl.getInstance();
         var fagerPortalRepository = ArbeidsgiverPortalRepositoryImpl.getInstance();
 
-        addRestServices(testScenarioRepository, instance, gsakRepo, journalRepository, fagerPortalRepository);
+        addRestServices(testScenarioRepository, instance, journalRepository, fagerPortalRepository);
 
         startServer();
     }
 
-    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance, GsakRepo gsakRepo, JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
+    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance,
+                                 JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
         var config = new ApplicationConfigJersey()
                 .setup(testScenarioRepository,
-                        instance,
-                        gsakRepo,
-                        kafkaServer.getLocalProducer(),
+                        instance, new LocalKafkaProducer(),
                         journalRepository,
                         fagerPortalRepository);
 
@@ -147,9 +117,9 @@ public class MockServer {
 
         var connectors = new ArrayList<>();
 
-        @SuppressWarnings("resource") var httpConnector = new ServerConnector(server);
+        var httpConnector = new ServerConnector(server);
         httpConnector.setPort(port);
-        httpConnector.setHost(host);
+        httpConnector.setHost("0.0.0.0");
         connectors.add(httpConnector);
 
         var https = new HttpConfiguration();
@@ -177,7 +147,7 @@ public class MockServer {
         System.setProperty(keystoreProp, KeystoreUtils.getKeystoreFilePath());
         System.setProperty(keystorePasswProp, KeystoreUtils.getKeyStorePassword());
 
-        @SuppressWarnings("resource") var sslConnector = new ServerConnector(server, sslConnectionFactory,
+        var sslConnector = new ServerConnector(server, sslConnectionFactory,
                 new HttpConnectionFactory(https));
         sslConnector.setPort(getSslPort());
         connectors.add(sslConnector);
@@ -186,14 +156,6 @@ public class MockServer {
 
     private Integer getSslPort() {
         return Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getHost() {
-        return host;
     }
 
 }
