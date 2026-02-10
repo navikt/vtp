@@ -1,8 +1,12 @@
 package no.nav.dokarkiv;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -11,26 +15,17 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-
+import no.nav.dokarkiv.dto.FerdigstillJournalpostRequest;
+import no.nav.dokarkiv.dto.OppdaterJournalpostRequest;
+import no.nav.dokarkiv.dto.OppdaterJournalpostResponse;
+import no.nav.dokarkiv.dto.OpprettJournalpostRequest;
+import no.nav.dokarkiv.dto.OpprettJournalpostResponse;
+import no.nav.dokarkiv.dto.TilknyttVedleggRequest;
+import no.nav.dokarkiv.dto.TilknyttVedleggResponse;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
-
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import no.nav.dokarkiv.generated.model.DokumentInfo;
-import no.nav.dokarkiv.generated.model.FerdigstillJournalpostRequest;
-import no.nav.dokarkiv.generated.model.OppdaterJournalpostRequest;
-import no.nav.dokarkiv.generated.model.OppdaterJournalpostResponse;
-import no.nav.dokarkiv.generated.model.OpprettJournalpostRequest;
-import no.nav.dokarkiv.generated.model.OpprettJournalpostResponse;
-import no.nav.dokarkiv.generated.model.TilknyttVedleggRequest;
-import no.nav.dokarkiv.generated.model.TilknyttVedleggResponse;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 // Ref: https://confluence.adeo.no/display/BOA/Oversikt+over+Joark-+og+dokarkiv-tjenester
@@ -63,7 +58,7 @@ public class JournalpostMock {
             opprettJournalføringsHendelse(journalpostModell, Journalstatus.MOTTATT);
         }
 
-        OpprettJournalpostResponse response = tilOpprettJouralpostResponse(journalpostModell, forsoekFerdigstill);
+        var response = tilOpprettJouralpostResponse(journalpostModell, forsoekFerdigstill);
         return Response.accepted().entity(response).build();
     }
 
@@ -97,8 +92,7 @@ public class JournalpostMock {
         } else {
             LOG.info("Journalpost med journalpostId {} eksistere ikke!", journalpostId);
         }
-        var oppdaterJournalpostResponse = new OppdaterJournalpostResponse();
-        oppdaterJournalpostResponse.setJournalpostId(journalpostId);
+        var oppdaterJournalpostResponse = new OppdaterJournalpostResponse(journalpostId);
         return Response.ok().entity(oppdaterJournalpostResponse).build();
     }
 
@@ -108,14 +102,11 @@ public class JournalpostMock {
     public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest,
                                            @PathParam("journalpostid") String journalpostId) {
 
-        var journalfoerendeEnhet = ferdigstillJournalpostRequest.getJournalfoerendeEnhet();
+        var journalfoerendeEnhet = ferdigstillJournalpostRequest.journalfoerendeEnhet();
         LOG.info("Kall til ferdigstill journalpost på enhet: {}", journalfoerendeEnhet);
 
-        var journalpostModellOpt = journalRepository.finnJournalpostMedJournalpostId(journalpostId);
-        if (journalpostModellOpt.isPresent()) {
-            var journalpostModell = journalpostModellOpt.get();
-            journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
-        }
+        journalRepository.finnJournalpostMedJournalpostId(journalpostId)
+                .ifPresent(j -> j.setJournalStatus(Journalstatus.JOURNALFØRT));
 
         return Response.ok().entity("OK").build();
     }
@@ -125,29 +116,17 @@ public class JournalpostMock {
     @Operation(description = "Tilknytt vedlegg")
     public TilknyttVedleggResponse tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest) {
 
-        var response = new TilknyttVedleggResponse();
+        LOG.info("Kall til tilknyttet vedlegg for dokumenter {}", tilknyttVedleggRequest.dokument());
 
-        response.setFeiledeDokumenter(Collections.emptyList());
-
-        LOG.info("Kall til tilknyttet vedlegg for dokumenter {}", tilknyttVedleggRequest.getDokument());
-
-        return response;
+        return new TilknyttVedleggResponse(List.of());
     }
 
 
     private OpprettJournalpostResponse tilOpprettJouralpostResponse(JournalpostModell journalpostModell, Boolean forsoekFerdigstill) {
-        var dokumentInfos = journalpostModell.getDokumentModellList().stream().map(it -> {
-            DokumentInfo dokinfo = new DokumentInfo();
-            dokinfo.setBrevkode(it.getBrevkode());
-            dokinfo.setDokumentInfoId(it.getDokumentId());
-            dokinfo.setTittel(it.getTittel());
-            return dokinfo;
-        }).collect(Collectors.toList());
-
-        var response = new OpprettJournalpostResponse();
-        response.setDokumenter(dokumentInfos);
-        response.setJournalpostId(journalpostModell.getJournalpostId());
-        response.setJournalpostferdigstilt(forsoekFerdigstill != null && forsoekFerdigstill);
-        return response;
+        var docs = journalpostModell.getDokumentModellList().stream()
+                .map(it -> new OpprettJournalpostResponse.DokumentInfoResponse(it.getDokumentId()))
+                .toList();
+        return new OpprettJournalpostResponse(journalpostModell.getJournalpostId(),
+                forsoekFerdigstill != null && forsoekFerdigstill, docs);
     }
 }

@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 
 /** konverterer lokale identer brukt i testcase til utvalgte fødselsnummer hentet fra syntetisk liste. */
@@ -13,6 +15,7 @@ public class LokalIdentIndeks {
 
     private static final String REGEX_MATCH_PATTERN = "^\\d+$";
 
+    @JsonIgnore
     private final IdentGenerator identGenerator;
     private final Map<String, String> identer = new ConcurrentHashMap<>(); // NOSONAR
     private final String unikScenarioId;

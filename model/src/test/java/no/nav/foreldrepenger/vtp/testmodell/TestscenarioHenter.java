@@ -13,10 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
@@ -30,7 +29,7 @@ public class TestscenarioHenter {
     private static final String ORGANISASJON_JSON_FIL_NAVN = "organisasjon.json";
     private static final String VARS_JSON_FIL_NAVN = "vars.json";
 
-    private static final ObjectMapper MAPPER = JacksonObjectMapperTestscenario.getObjectMapper();
+    private static final JsonMapper MAPPER = JacksonObjectMapperTestscenario.getJsonMapper();
 
     private final Map<String, Object> scenarioObjects = new ConcurrentHashMap<>();
 
@@ -48,11 +47,7 @@ public class TestscenarioHenter {
     }
 
     public String toJson(Object object) {
-        try {
-            return MAPPER.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return JacksonObjectMapperTestscenario.writeValueAsString(object);
     }
 
 
