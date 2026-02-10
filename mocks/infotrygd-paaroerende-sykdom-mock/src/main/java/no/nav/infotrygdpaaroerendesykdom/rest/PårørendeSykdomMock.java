@@ -28,15 +28,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.beregningsgr
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.infotrygd.ytelse.InfotrygdYtelse;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.Arbeidsforhold;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.Kodeverdi;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.PaaroerendeSykdom;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.Periode;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.RammevedtakDto;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.SakDto;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.SakResult;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.Vedtak;
-import no.nav.infotrygdpaaroerendesykdom.generated.model.VedtakPleietrengendeDto;
 
 @Path("/paaroerendeSykdom")
 @RequestScoped
@@ -87,9 +78,9 @@ public class PårørendeSykdomMock {
                     .infotrygdModell()
                     .grunnlag()
                     .stream()
-                    .filter(it -> it instanceof InfotrygdPårørendeSykdomBeregningsgrunnlag)
+                    .filter(InfotrygdPårørendeSykdomBeregningsgrunnlag.class::isInstance)
                     .map(it -> mapGrunnlagToPaaroerendeSykdom((InfotrygdPårørendeSykdomBeregningsgrunnlag) it, fnr))
-                    .filter(it -> it.getTema().getKode().equals("BS"));
+                    .filter(it -> it.tema().kode().equals("BS"));
         }).collect(Collectors.toList());
 
         return Response.ok(result).build();
@@ -132,7 +123,7 @@ public class PårørendeSykdomMock {
         if (request.fnr.size() != 1){
             throw new IllegalArgumentException("Forventet nøyaktig ett FNR, fikk " + request.fnr.size());
         }
-        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(request.fnr.get(0));
+        Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(request.fnr.getFirst());
         if (inntektYtelseModell.isEmpty()) {
             return Response.ok(List.of()).build();
         }
@@ -142,16 +133,16 @@ public class PårørendeSykdomMock {
                 .infotrygdModell()
                 .grunnlag()
                 .stream()
-                .filter(it -> it instanceof InfotrygdRammevedtaksGrunnlag)
+                .filter(InfotrygdRammevedtaksGrunnlag.class::isInstance)
                 .map(it -> mapGrunnlagToRammevedtak((InfotrygdRammevedtaksGrunnlag) it))
-                .filter(it -> datoOverlapper(request.fom, request.tom, it.getFom(), it.getTom()))
+                .filter(it -> datoOverlapper(request.fom, request.tom, it.fom(), it.tom()))
                 //Legg til filter på fra og til (TODO)
                 .collect(Collectors.toList());
 
         return Response.ok(result).build();
     }
 
-    record PersonRequest(@NotNull LocalDate fom, LocalDate tom, @NotNull List<String> fnr, Boolean inkluderHistoriskeIdenter) {
+    public record PersonRequest(@NotNull LocalDate fom, LocalDate tom, @NotNull List<String> fnr, Boolean inkluderHistoriskeIdenter) {
     }
 
     private boolean datoOverlapper(LocalDate fom1, LocalDate tom1, LocalDate fom2, LocalDate tom2) {
@@ -175,150 +166,84 @@ public class PårørendeSykdomMock {
                 .ytelser()
                 .stream()
                 .map(this::mapYtelseToSak)
-                .filter(it -> it.getTema().getKode().equals("BS"))
-                .collect(Collectors.toList());
+                .filter(it -> it.tema().kode().equals("BS"))
+                .toList();
 
-        VedtakPleietrengendeDto result = new VedtakPleietrengendeDto();
-        result.setSoekerFnr(søkerFnr);
-        result.setVedtak(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
-        return result;
+        return new VedtakPleietrengendeDto(søkerFnr,
+                sakerOgVedtak.stream().filter(s -> s.opphoerFom() != null).toList());
     }
 
 
     private SakResult getSakResult(InntektYtelseModell inntektYtelseModell) {
-        List<SakDto> sakerOgVedtak = inntektYtelseModell.infotrygdModell()
+        var sakerOgVedtak = inntektYtelseModell.infotrygdModell()
                 .ytelser()
                 .stream()
                 .map(this::mapYtelseToSak)
-                .filter(it -> it.getTema().getKode().equals("BS"))
-                .collect(Collectors.toList());
+                .filter(it -> it.tema().kode().equals("BS"))
+                .toList();
 
-        SakResult result = new SakResult();
-        result.setSaker(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() == null).collect(Collectors.toList()));
-        result.setVedtak(sakerOgVedtak.stream().filter(s -> s.getOpphoerFom() != null).collect(Collectors.toList()));
-        return result;
+        var saker = sakerOgVedtak.stream().filter(s -> s.opphoerFom() == null).toList();
+        var vedtak = sakerOgVedtak.stream().filter(s -> s.opphoerFom() != null).toList();
+        return new SakResult(saker, vedtak);
     }
 
     private SakDto mapYtelseToSak(InfotrygdYtelse ytelse) {
-        SakDto sak = new SakDto();
+        var tema = kodeverdi(ytelse.behandlingstema().getTema());
+        var behandlingstema = kodeverdi(ytelse.behandlingstema().name());
 
-        Kodeverdi tema = new Kodeverdi();
-        tema.setKode(ytelse.behandlingstema().getTema());
-        tema.setTermnavn("ukjent tema");
-        sak.setTema(tema);
+        var resultat = Optional.ofNullable(ytelse.resultat()).map(k -> kodeverdi(k.getKode())).orElse(null);
+        var sakStatus = Optional.ofNullable(ytelse.sakStatus()).map(k -> kodeverdi(k.name())).orElse(null);
+        var sakType = Optional.ofNullable(ytelse.sakType()).map(st -> kodeverdi(st.getKode())).orElse(null);
 
-        Kodeverdi behandlingstema = new Kodeverdi();
-        behandlingstema.setKode(ytelse.behandlingstema().name());
-        behandlingstema.setTermnavn("ukjent behandlingstema");
-        sak.setBehandlingstema(behandlingstema);
-
-        sak.iverksatt(toLocalDate(ytelse.iverksatt()));
-        sak.setOpphoerFom(toLocalDate(ytelse.opphør()));
-        sak.setRegistrert(toLocalDate(ytelse.registrert()));
-
-        if (ytelse.resultat() != null) {
-            Kodeverdi resultat = new Kodeverdi();
-            resultat.setKode(ytelse.resultat().getKode());
-            resultat.setTermnavn("ukjent resultat");
-            sak.setResultat(resultat);
-        }
-
-        sak.setSakId(ytelse.sakId());
-
-        if (ytelse.sakStatus() != null) {
-            sak.setStatus(kodeverdi(ytelse.sakStatus().name()));
-        }
-
-        if (ytelse.sakType() != null) {
-            sak.setType(kodeverdi(ytelse.sakType().getKode()));
-        }
-
-        sak.setVedtatt(toLocalDate(ytelse.vedtatt()));
-
-        return sak;
+        return new SakDto(behandlingstema, toLocalDate(ytelse.iverksatt()),
+                toLocalDate(ytelse.opphør()),
+                toLocalDate(ytelse.registrert()),
+                resultat,
+                ytelse.sakId(),
+                sakStatus,
+                tema,
+                sakType,
+                toLocalDate(ytelse.vedtatt()));
     }
 
     private PaaroerendeSykdom mapGrunnlagToPaaroerendeSykdom(InfotrygdPårørendeSykdomBeregningsgrunnlag grunnlag, String fnrSøker) {
-        PaaroerendeSykdom r = new PaaroerendeSykdom();
 
-        r.foedselsnummerSoeker(fnrSøker);
+
 
         List<Arbeidsforhold> arbeidsforholdListe = grunnlag.getArbeidsforhold()
                 .stream()
                 .map(this::mapArbeidsforhold)
                 .collect(Collectors.toList());
 
-        r.setArbeidsforhold(arbeidsforholdListe);
+        var arbKat = Optional.ofNullable(grunnlag.getArbeidskategori()).map(k -> kodeverdi(k.getKode())).orElse(null);
+        var behandlingstema = kodeverdi(grunnlag.getBehandlingTema().name());
 
-        if (grunnlag.getArbeidskategori() != null) {
-            r.setArbeidskategori(kodeverdi(grunnlag.getArbeidskategori().getKode()));
-        }
+        var opphørFom = Optional.ofNullable(grunnlag.getTom()).map(t -> t.plusDays(1)).orElse(null);
+        var periode = grunnlag.getFom() != null && grunnlag.getTom() != null ? new Periode(grunnlag.getFom(), grunnlag.getTom()) : null;
+        var tema = kodeverdi(grunnlag.getBehandlingTema().getTema());
+        var vedtakene = grunnlag.getVedtak().stream()
+                .map(vedtak -> new Vedtak(new Periode(vedtak.fom(), vedtak.tom()), vedtak.utbetalingsgrad()))
+                .toList();
 
-        r.setBehandlingstema(kodeverdi(grunnlag.getBehandlingTema().name()));
-        r.setFoedselsdatoPleietrengende(grunnlag.getFødselsdatoPleietrengende());
-
-        // Feltet finnes ikke i modellen. Legges til ved behov
-        // r.setFoedselsnummerPleietrengende();
-
-        r.setIdentdato(grunnlag.getStartdato());
-        r.setIverksatt(grunnlag.getStartdato());
-
-        if (grunnlag.getTom() != null) {
-            r.setOpphoerFom(grunnlag.getTom().plusDays(1));
-        }
-
-        if (grunnlag.getFom() != null && grunnlag.getTom() != null) {
-            Periode periode = new Periode();
-            periode.setFom(grunnlag.getFom());
-            periode.setTom(grunnlag.getTom());
-            r.setPeriode(periode);
-        }
-
-        // Disse feltene finnes ikke i modellen. Legges til ved behov
-        // r.setRegistrert();
-        // r.setSaksbehandlerId();
-        // r.setStatus(); // ingen verdi for PN, men har for de andre ytelsene
-
-        r.setTema(kodeverdi(grunnlag.getBehandlingTema().getTema()));
-
-        r.setVedtak(grunnlag.getVedtak().stream().map(vedtak -> {
-            Vedtak v = new Vedtak();
-            Periode periode = new Periode();
-            periode.setFom(vedtak.fom());
-            periode.setTom(vedtak.tom());
-            v.setPeriode(periode);
-            v.setUtbetalingsgrad(vedtak.utbetalingsgrad());
-            return v;
-        }).collect(Collectors.toList()));
-
-        return r;
+        return new PaaroerendeSykdom(fnrSøker,
+                arbeidsforholdListe, arbKat, behandlingstema,
+                grunnlag.getFødselsdatoPleietrengende(), null,
+                grunnlag.getStartdato(), grunnlag.getStartdato(), opphørFom,
+                periode, null, null, null, tema, vedtakene);
     }
 
     private RammevedtakDto mapGrunnlagToRammevedtak(InfotrygdRammevedtaksGrunnlag it) {
         if (it == null) {
             return null;
         }
-        RammevedtakDto rammevedtak = new RammevedtakDto();
-        rammevedtak.setDate(it.getStartdato());
-        rammevedtak.setFom(it.getFom());
-        rammevedtak.setTom(it.getTom());
-        rammevedtak.setTekst(it.getRammevedtakTekst());
-        return rammevedtak;
-
+        return new RammevedtakDto(it.getStartdato(), it.getRammevedtakTekst(), it.getFom(), it.getTom());
     }
 
     private Arbeidsforhold mapArbeidsforhold(InfotrygdArbeidsforhold arbeidsforhold) {
-        Arbeidsforhold af = new Arbeidsforhold();
-        af.setArbeidsgiverOrgnr(arbeidsforhold.getOrgnr());
-        af.setInntektForPerioden(arbeidsforhold.getBeløp());
-
-        if (arbeidsforhold.getInntektsPeriodeType() != null) {
-            af.setInntektsperiode(kodeverdi(arbeidsforhold.getInntektsPeriodeType().getKode()));
-        }
-
-        af.refusjon(false); // Feltet finnes ikke i modellen. Legges til ved behov
-
-        return af;
+        var ipt = Optional.ofNullable(arbeidsforhold.getInntektsPeriodeType())
+                .map(kode -> kodeverdi(kode.getKode()))
+                .orElse(null);
+        return new Arbeidsforhold(arbeidsforhold.getOrgnr(), arbeidsforhold.getBeløp(), ipt, false);
     }
 
     private LocalDate toLocalDate(LocalDateTime localDateTime) {
@@ -329,9 +254,6 @@ public class PårørendeSykdomMock {
     }
 
     private Kodeverdi kodeverdi(String kode) {
-        Kodeverdi kodeverdi = new Kodeverdi();
-        kodeverdi.setKode(kode);
-        kodeverdi.setTermnavn("ukjent");
-        return kodeverdi;
+        return new Kodeverdi(kode, "ukjent");
     }
 }
