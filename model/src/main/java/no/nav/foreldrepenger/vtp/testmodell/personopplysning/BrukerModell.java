@@ -53,6 +53,11 @@ public abstract class BrukerModell {
 
 
     @JsonIgnore
+    public UUID getId() {
+        return this.id;
+    }
+
+    @JsonIgnore
     public void setId(UUID id) {
         this.id = id;
     }
