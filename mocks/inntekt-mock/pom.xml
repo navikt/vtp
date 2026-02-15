@@ -11,10 +11,4 @@
     <name>VTP ::inntekt-mock</name>
     <packaging>jar</packaging>
 
-	<dependencies>
-        <dependency>
-            <groupId>no.nav.tjenester</groupId>
-            <artifactId>aordningen-inntektsinformasjon-v1</artifactId>
-        </dependency>
-    </dependencies>
 </project>
