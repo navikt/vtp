@@ -94,7 +94,6 @@ import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
-import no.nav.vtp.hentinntektlistebolk.HentInntektlisteBolkREST;
 import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
@@ -144,7 +143,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SafMock.class);
         classes.add(PdlLeesahRestTjeneste.class);
-        classes.add(HentInntektlisteBolkREST.class);
         classes.add(InntektskomponentV2REST.class);
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteFile.class);
