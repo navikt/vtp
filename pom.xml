@@ -29,7 +29,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <fp-kontrakter.version>9.4.26</fp-kontrakter.version>
+        <fp-kontrakter.version>9.4.28</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
         <graphql-java.version>25.0</graphql-java.version>
