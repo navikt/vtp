@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.neovisionaries.i18n.CountryCode;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AaregDto;
@@ -23,13 +24,18 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
+import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioFraJsonMapper;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -91,9 +97,14 @@ class TestscenarioV2RestTjenesteTest {
                 .build();
 
 
-        var response = testscenarioV2RestTjeneste.initialiserTestScenarioFraDto(List.of(mor, far, barn, privatArbeidsgiver));
-        var dto = response.getEntity();
-        assertThat(dto).isNotNull();
+        try (var response = testscenarioV2RestTjeneste.initialiserTestScenarioFraDtoReturnerIdenter(List.of(mor, far, barn, privatArbeidsgiver))) {
+            var dto = response.getEntity();
+            assertThat(dto).isNotNull();
+            @SuppressWarnings("unchecked")
+            var identer = (Set<TilordnetIdentDto>) dto;
+            assertThat(identer).hasSize(4);
+        }
+
     }
 
     private static PersonDto.Builder mor(LocalDate fødselsdato) {
