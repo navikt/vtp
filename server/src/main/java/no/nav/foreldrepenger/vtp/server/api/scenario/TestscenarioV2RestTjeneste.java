@@ -147,10 +147,6 @@ public class TestscenarioV2RestTjeneste {
                 .forEach(f -> leggTilTilordnetDersomfinnesfinnes(identer, f.personArbeidsgiver()));
         Optional.ofNullable(testscenario.getSøkerInntektYtelse())
                 .map(InntektYtelseModell::inntektskomponentModell)
-                .map(InntektskomponentModell::frilansarbeidsforholdperioder).orElseGet(List::of)
-                .forEach(f -> leggTilTilordnetDersomfinnesfinnes(identer, f.arbeidsgiver()));
-        Optional.ofNullable(testscenario.getSøkerInntektYtelse())
-                .map(InntektYtelseModell::inntektskomponentModell)
                 .map(InntektskomponentModell::inntektsperioder).orElseGet(List::of)
                 .forEach(f -> leggTilTilordnetDersomfinnesfinnes(identer, f.arbeidsgiver()));
 
@@ -186,14 +182,6 @@ public class TestscenarioV2RestTjeneste {
                         hentUtIdenter(testscenarioidenter, a.personArbeidsgiver());
                         Optional.ofNullable(a.arbeidsgiverAktorId()).ifPresent(testscenarioidenter::add);
                         Optional.ofNullable(a.arbeidsgiverOrgnr()).ifPresent(testscenarioidenter::add);
-                    });
-            Optional.ofNullable(ts.getSøkerInntektYtelse())
-                    .map(InntektYtelseModell::inntektskomponentModell)
-                    .map(InntektskomponentModell::frilansarbeidsforholdperioder).orElseGet(List::of)
-                    .forEach(a -> {
-                        hentUtIdenter(testscenarioidenter, a.arbeidsgiver());
-                        Optional.ofNullable(a.aktorId()).ifPresent(testscenarioidenter::add);
-                        Optional.ofNullable(a.orgnr()).ifPresent(testscenarioidenter::add);
                     });
             Optional.ofNullable(ts.getSøkerInntektYtelse())
                     .map(InntektYtelseModell::inntektskomponentModell)

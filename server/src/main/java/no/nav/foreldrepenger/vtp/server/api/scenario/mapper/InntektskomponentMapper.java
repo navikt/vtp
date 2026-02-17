@@ -1,16 +1,23 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario.mapper;
 
-import no.nav.foreldrepenger.vtp.kontrakter.v2.*;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.*;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektYtelseType;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
+import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsgiver;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektkomponentDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektsperiodeDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektFordel;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektYtelseType;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.Inntektsperiode;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 
 class InntektskomponentMapper {
     private InntektskomponentMapper() {
@@ -23,7 +30,7 @@ class InntektskomponentMapper {
         if (inntektskomponent == null) {
             return new InntektskomponentModell();
         }
-        return new InntektskomponentModell(tilInntektsperioder(inntektskomponent.inntektsperioder(), allePersoner), List.of());
+        return new InntektskomponentModell(tilInntektsperioder(inntektskomponent.inntektsperioder(), allePersoner));
     }
 
     private static List<Inntektsperiode> tilInntektsperioder(List<InntektsperiodeDto> inntektsperioder, Map<UUID, BrukerModell> allePersoner) {
