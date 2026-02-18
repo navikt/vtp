@@ -125,14 +125,6 @@ public class TestscenarioV2RestTjeneste {
                     });
             Optional.ofNullable(ts.getSøkerInntektYtelse())
                     .map(InntektYtelseModell::inntektskomponentModell)
-                    .map(InntektskomponentModell::frilansarbeidsforholdperioder).orElseGet(List::of)
-                    .forEach(a -> {
-                        hentUtIdenter(testscenarioidenter, a.arbeidsgiver());
-                        Optional.ofNullable(a.aktorId()).ifPresent(testscenarioidenter::add);
-                        Optional.ofNullable(a.orgnr()).ifPresent(testscenarioidenter::add);
-                    });
-            Optional.ofNullable(ts.getSøkerInntektYtelse())
-                    .map(InntektYtelseModell::inntektskomponentModell)
                     .map(InntektskomponentModell::inntektsperioder).orElseGet(List::of)
                     .forEach(a -> {
                         hentUtIdenter(testscenarioidenter, a.arbeidsgiver());

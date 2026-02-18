@@ -1,11 +1,11 @@
 package no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class InntektskomponentModellTest {
 
@@ -14,8 +14,7 @@ class InntektskomponentModellTest {
 
         var modell = new InntektskomponentModell(
                 List.of(new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 31), null, 1000, "123456789",
-                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
-                List.of());
+                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)));
 
         var perioder = modell.getInntektsperioderSplittMånedlig();
 
@@ -31,8 +30,7 @@ class InntektskomponentModellTest {
                 List.of(new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 31), null, 1000, "123456789",
                         InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null),
                         new Inntektsperiode(LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 30), null, 2000, "123456789",
-                                InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
-                List.of());
+                                InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)));
 
         var perioder = modell.getInntektsperioderSplittMånedlig();
 
@@ -51,8 +49,7 @@ class InntektskomponentModellTest {
 
         var modell = new InntektskomponentModell(
                 List.of(new Inntektsperiode(LocalDate.of(2023, 10, 5), LocalDate.of(2023, 10, 31), null, 1000, "123456789",
-                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
-                List.of());
+                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)));
 
         var perioder = modell.getInntektsperioderSplittMånedlig();
 
@@ -66,8 +63,7 @@ class InntektskomponentModellTest {
 
         var modell = new InntektskomponentModell(
                 List.of(new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 20), null, 1000, "123456789",
-                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
-                List.of());
+                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)));
 
         var perioder = modell.getInntektsperioderSplittMånedlig();
 
@@ -81,8 +77,7 @@ class InntektskomponentModellTest {
 
         var modell = new InntektskomponentModell(
                 List.of(new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 11, 15), null, 1000, "123456789",
-                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
-                List.of());
+                        InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)));
 
         var perioder = modell.getInntektsperioderSplittMånedlig();
 
@@ -101,8 +96,7 @@ class InntektskomponentModellTest {
                 List.of(new Inntektsperiode(LocalDate.of(2023, 8, 1), LocalDate.of(2023, 9, 20), null, 1000, "123456789",
                                 InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null),
                         new Inntektsperiode(LocalDate.of(2023, 10, 1), LocalDate.of(2023, 11, 15), null, 1000, "123456789",
-                                InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)),
-                List.of());
+                                InntektType.LØNNSINNTEKT, InntektFordel.KONTANTYTELSE, "beskrivelse", null, null, true, true, null)));
 
         var perioder = modell.getInntektsperioderSplittMånedlig();
 

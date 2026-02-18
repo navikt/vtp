@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.LokalIdentIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.FrilansArbeidsforholdsperiode;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektFordel;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektType;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektYtelseType;
@@ -33,11 +32,6 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSeria
     }
 
     @Test
-    void FrilansArbeidsforholdsperiodeSeraliseringDeseraliseringTest() {
-        test(lagFrilansArbeidsforholdsperiode());
-    }
-
-    @Test
     void InntektFordelSeraliseringDeseraliseringTest() {
         test(InntektFordel.KONTANTYTELSE);
     }
@@ -58,12 +52,7 @@ class InntektskomponentSeraliseringDeseraliseringsTest extends TestscenarioSeria
     }
 
     protected InntektskomponentModell lagInntektskomponentModell() {
-        return new InntektskomponentModell(List.of(lagInntektsperiode()), List.of(lagFrilansArbeidsforholdsperiode()));
-    }
-
-    private FrilansArbeidsforholdsperiode lagFrilansArbeidsforholdsperiode() {
-        return new FrilansArbeidsforholdsperiode(LocalDate.now(), LocalDate.now(), "90807060", 100,
-                "1233456789", new PersonArbeidsgiver("987654321"));
+        return new InntektskomponentModell(List.of(lagInntektsperiode()));
     }
 
     private Inntektsperiode lagInntektsperiode() {

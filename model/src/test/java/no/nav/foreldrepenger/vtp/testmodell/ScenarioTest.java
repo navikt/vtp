@@ -79,7 +79,6 @@ class ScenarioTest {
         assertFalse(søkerInntektYtelse.trexModell().sykepenger().isEmpty());
         assertTrue(søkerInntektYtelse.trexModell().barnsykdom().isEmpty());
         assertTrue(søkerInntektYtelse.inntektskomponentModell().inntektsperioder().isEmpty());
-        assertTrue(søkerInntektYtelse.inntektskomponentModell().frilansarbeidsforholdperioder().isEmpty());
         assertTrue(søkerInntektYtelse.arbeidsforholdModell().arbeidsforhold().isEmpty());
         assertTrue(søkerInntektYtelse.sigrunModell().inntektsår().isEmpty());
         assertTrue(søkerInntektYtelse.omsorgspengerModell().rammemeldinger().aleneOmOmsorgen().isEmpty());
@@ -94,7 +93,6 @@ class ScenarioTest {
         assertTrue(annenpartInntektYtelse.trexModell().sykepenger().isEmpty());
         assertTrue(annenpartInntektYtelse.trexModell().barnsykdom().isEmpty());
         assertFalse(annenpartInntektYtelse.inntektskomponentModell().inntektsperioder().isEmpty());
-        assertFalse(annenpartInntektYtelse.inntektskomponentModell().frilansarbeidsforholdperioder().isEmpty());
         assertFalse(annenpartInntektYtelse.arbeidsforholdModell().arbeidsforhold().isEmpty());
         assertFalse(annenpartInntektYtelse.sigrunModell().inntektsår().isEmpty());
         assertTrue(annenpartInntektYtelse.omsorgspengerModell().rammemeldinger().aleneOmOmsorgen().isEmpty());
