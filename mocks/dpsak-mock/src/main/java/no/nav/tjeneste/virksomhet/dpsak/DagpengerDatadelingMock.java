@@ -37,9 +37,9 @@ public class DagpengerDatadelingMock {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer perioder med dagpenger fra DPsak og Arena")
-    public DagpengerRettighetsperioder postDagpengerPerioder(PersonRequest personRequest) {
+    public DagpengerPerioderDto postDagpengerPerioder(PersonRequest personRequest) {
         // TODO: Utvide IAY-modell med Dp-datadeling-Dagpenger og populere response med data fra testscenario
-        var tomRespons = new DagpengerRettighetsperioder(personRequest.personIdent(), List.of());
+        var tomRespons = new DagpengerPerioderDto(personRequest.personIdent(), List.of());
         return tomRespons;
     }
 
@@ -48,10 +48,10 @@ public class DagpengerDatadelingMock {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer utbetalte dagpenger fra DPsak")
-    public DagpengerUtbetalingsdag[] postDagpengerBeregning(PersonRequest personRequest) {
+    public DagpengerBeregningerDto[] postDagpengerBeregning(PersonRequest personRequest) {
         // TODO: Utvide IAY-modell med Dp-datadeling-Dagpenger og populere response med data fra testscenario
-        List<DagpengerUtbetalingsdag> tomrespons = new ArrayList<>();
-        return tomrespons.toArray(DagpengerUtbetalingsdag[]::new);
+        List<DagpengerBeregningerDto> tomrespons = new ArrayList<>();
+        return tomrespons.toArray(DagpengerBeregningerDto[]::new);
     }
 
 
