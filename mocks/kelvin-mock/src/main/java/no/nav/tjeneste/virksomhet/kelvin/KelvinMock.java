@@ -29,7 +29,6 @@ public class KelvinMock {
         this.scenarioRepository = scenarioRepository;
     }
 
-    @SuppressWarnings("unused")
     @POST
     @Path("/maksimum")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -37,6 +36,17 @@ public class KelvinMock {
     @Operation(description = "Returnerer arbeidsavklaringspenger fra Kelvin og Arena")
     public ArbeidsavklaringspengerResponse postAAP(PersonRequest personRequest) {
         // TODO: Utvide IAY-modell med Kelvin-AAP og populere response med data fra testscenario
+        return new ArbeidsavklaringspengerResponse(List.of());
+    }
+
+
+    @POST
+    @Path("/kelvin/maksimumUtenUtbetaling")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Returnerer arbeidsavklaringspenger fra Kelvin og Arena")
+    public ArbeidsavklaringspengerResponse postKelvinVedtakUtenUtbetaling(PersonRequest personRequest) {
+        // Beholdes tom - finnes for samhandlingsformål.
         return new ArbeidsavklaringspengerResponse(List.of());
     }
 
