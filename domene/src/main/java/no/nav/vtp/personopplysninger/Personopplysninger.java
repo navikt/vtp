@@ -3,7 +3,9 @@ package no.nav.vtp.personopplysninger;
 import java.time.LocalDate;
 import java.util.List;
 
-public record Personopplysninger(String identifikator,
+import no.nav.vtp.ident.Identifikator;
+
+public record Personopplysninger(Identifikator identifikator,
                                  LocalDate fødselsdato,
                                  LocalDate dødsdato,
                                  String språk,
@@ -16,7 +18,4 @@ public record Personopplysninger(String identifikator,
                                  List<Medlemskap> medlemskap,
                                  Adresser adresser,
                                  boolean erSkjermet) {
-    public String aktørId() {
-        return "99" + identifikator;
-    }
 }

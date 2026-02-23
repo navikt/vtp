@@ -5,17 +5,16 @@ import java.time.LocalDate;
 public record Sivilstand(Sivilstander sivilstand, LocalDate fom, LocalDate tom){
 
     public enum Sivilstander {
-        ENKE,
+        UOPPGITT,
+        UGIFT,
         GIFT,
-        GJPA,
-        GLAD,
-        REPA,
-        SAMB,
-        SEPA,
-        SEPR,
-        SKIL,
-        SKPA,
-        UGIF;
+        ENKE_ELLER_ENKEMANN,
+        SKILT,
+        SEPARERT,
+        REGISTRERT_PARTNER,
+        SEPARERT_PARTNER,
+        SKILT_PARTNER,
+        GJENLEVENDE_PARTNER,
     }
 
 }
