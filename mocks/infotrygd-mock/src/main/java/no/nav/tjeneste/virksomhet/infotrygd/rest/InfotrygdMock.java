@@ -1,6 +1,5 @@
 package no.nav.tjeneste.virksomhet.infotrygd.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,50 +9,39 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Grunnlag;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.person.PersonRepository;
 
 @Path("/infotrygd")
 public class InfotrygdMock {
-
     private static final Logger LOG = LoggerFactory.getLogger(InfotrygdMock.class);
-    private static final String LOG_PREFIX = "Infotrygd Rest kall til {}";
 
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private final PersonRepository personRepository;
 
-    public InfotrygdMock(@Context TestscenarioBuilderRepository scenarioRepository) {
-        this.scenarioRepository = scenarioRepository;
+    public InfotrygdMock(@Context PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
-
 
     @SuppressWarnings("unused")
     @POST
     @Path("/grunnlag/sykepenger")
     @Produces({"application/json"})
-    public Grunnlag[] getSykepenger(PersonRequest personRequest) {
+    public List<GrunnlagDto> getSykepenger(PersonRequest personRequest) {
+        LOG.info("Infotrygd Rest kall til sykepenger");
         return personRequest.fnr().stream().flatMap(fnr -> {
-            LOG.info(LOG_PREFIX, "sykepenger");
-            List<Grunnlag> tomresponse = new ArrayList<>();
-            return scenarioRepository.getInntektYtelseModell(fnr)
-                    .map(InntektYtelseModell::trexModell)
-                    .map(TRexModell::sykepenger).orElse(tomresponse).stream();
-        }).toArray(Grunnlag[]::new);
+            var person = personRepository.hentPerson(fnr);
+            return PersonTilGrunnlagMapper.tilSykepengerGrunnlag(person).stream();
+        }).toList();
     }
 
     @SuppressWarnings("unused")
     @POST
     @Path("/grunnlag/paaroerende-sykdom")
     @Produces({"application/json"})
-    public Grunnlag[] paaroerendeSykdomUsingPost(PersonRequest personRequest) {
+    public List<GrunnlagDto> paaroerendeSykdomUsingPost(PersonRequest personRequest) {
+        LOG.info("Infotrygd Rest kall til pårørendesykdom");
         return personRequest.fnr().stream().flatMap(fnr -> {
-            LOG.info(LOG_PREFIX, "pårørendesykdom");
-            List<Grunnlag> tomresponse = new ArrayList<>();
-            return scenarioRepository.getInntektYtelseModell(fnr)
-                    .map(InntektYtelseModell::trexModell)
-                    .map(TRexModell::barnsykdom).orElse(tomresponse).stream();
-        }).toArray(Grunnlag[]::new);
+            var person = personRepository.hentPerson(fnr);
+            return PersonTilGrunnlagMapper.tilBarnsykdomGrunnlag(person).stream();
+        }).toList();
     }
-
 }

@@ -30,5 +30,4 @@ public record Medlemskapsunntak(Long unntakId,
     record Sporingsinformasjon( LocalDate besluttet, String kilde) { }
 
     record Studieinformasjon(String studieland) { }
-
 }

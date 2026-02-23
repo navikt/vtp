@@ -14,7 +14,6 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.graphql.GraphQLRequest;
 import no.nav.pdl.hentGeografiskTilknytning.HentGeografiskTilknytningCoordinatorFunction;
 import no.nav.pdl.hentGeografiskTilknytning.HentGeografiskTilknytningWiring;
@@ -24,13 +23,14 @@ import no.nav.pdl.hentIdenterBolk.HentIdenterBolkWiring;
 import no.nav.pdl.hentperson.HentPersonCoordinatorFunction;
 import no.nav.pdl.hentperson.HentPersonWiring;
 import no.nav.pdl.hentpersonBolk.HentPersonBolkWiring;
+import no.nav.vtp.person.PersonRepository;
 
 public class PdlGraphqlTjeneste {
 
     private static final String SCHEME_PATH = "schemas/pdl.graphqls";
 
     private static PdlGraphqlTjeneste instance;
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private final PersonRepository personRepository;
 
     private GraphQLSchema hentPersonGraphqlSchema;
     private GraphQLSchema hentPersonBolkGraphqlSchema;
@@ -38,15 +38,15 @@ public class PdlGraphqlTjeneste {
     private GraphQLSchema hentIdenterGraphqlSchema;
     private GraphQLSchema hentIdenterBolkGraphqlSchema;
 
-    public static synchronized PdlGraphqlTjeneste getInstance(TestscenarioBuilderRepository scenarioRepository){
+    public static synchronized PdlGraphqlTjeneste getInstance(PersonRepository personRepository){
         if(instance == null){
-            instance = new PdlGraphqlTjeneste(scenarioRepository);
+            instance = new PdlGraphqlTjeneste(personRepository);
         }
         return instance;
     }
 
-    private PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
-        this.scenarioRepository = scenarioRepository;
+    private PdlGraphqlTjeneste(PersonRepository personRepository) {
+        this.personRepository = personRepository;
         init();
     }
 
@@ -59,18 +59,18 @@ public class PdlGraphqlTjeneste {
         TypeDefinitionRegistry typeDefinition = schemaParser.parse(streamReader);
 
         // Opprette koordinatere og binde til GraphQL-skjema
-        var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(personRepository);
         var hentPersonWiring = HentPersonWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonWiring);
 
         var hentPersonBolkWiring = HentPersonBolkWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonBolkGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonBolkWiring);
 
-        var hentGeografiskTilknytningCoordinator = HentGeografiskTilknytningCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentGeografiskTilknytningCoordinator = HentGeografiskTilknytningCoordinatorFunction.opprettCoordinator(personRepository);
         var hentGeografiskTilknyningWiring = HentGeografiskTilknytningWiring.lagRuntimeWiring(hentGeografiskTilknytningCoordinator);
         hentGeografiskTilknytningGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentGeografiskTilknyningWiring);
 
-        var hentIdenterCoordinator = HentIdenterCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentIdenterCoordinator = HentIdenterCoordinatorFunction.opprettCoordinator(personRepository);
         var hentIdenterWiring = HentIdenterWiring.lagRuntimeWiring(hentIdenterCoordinator);
         hentIdenterGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentIdenterWiring);
 

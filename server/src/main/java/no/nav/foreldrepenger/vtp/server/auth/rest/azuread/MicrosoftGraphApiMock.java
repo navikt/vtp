@@ -18,9 +18,8 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.vtp.ansatt.AnsatteIndeks;
+import no.nav.vtp.ansatt.NavAnsatt;
 
 @Path("/MicrosoftGraphApi")
 public class MicrosoftGraphApiMock {
@@ -29,7 +28,6 @@ public class MicrosoftGraphApiMock {
             .setSkipSignatureVerification()
             .build();
 
-    private static final AnsatteIndeks ANSATTE_INDEKS = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     protected static final String AUTHORIZATION = "Authorization";
 
     @GET
@@ -80,9 +78,9 @@ public class MicrosoftGraphApiMock {
 
         NavAnsatt ansatt;
         if (filterBy[0].contains("onPremisesSamAccountName")) {
-            ansatt = ANSATTE_INDEKS.findByIdent(identifikator);
+            ansatt = AnsatteIndeks.findByIdent(identifikator);
         } else {
-            ansatt = ANSATTE_INDEKS.findById(UUID.fromString(identifikator));
+            ansatt = AnsatteIndeks.findById(UUID.fromString(identifikator));
         }
 
         if (ansatt != null) {
@@ -101,7 +99,7 @@ public class MicrosoftGraphApiMock {
     @Path("/v1.0/users/{oid}")
     public Response getUserById(@PathParam("oid") @NotNull UUID id) {
         // forventer queryparam $select og ev. $count, men ignorerer i vtp-versjonen
-        var ansatt = ANSATTE_INDEKS.findById(id);
+        var ansatt = AnsatteIndeks.findById(id);
         if (ansatt == null) {
             return Response.noContent().build();
         }
@@ -115,7 +113,7 @@ public class MicrosoftGraphApiMock {
     @Produces({"application/json;charset=UTF-8"})
     @Path("/v1.0/users/{oid}/memberOf")
     public Response userMemberOf(@PathParam("oid") @NotNull UUID id) {
-        var ansatt = ANSATTE_INDEKS.findById(id);
+        var ansatt = AnsatteIndeks.findById(id);
         if (ansatt != null) {
             var response = opprettMemberOfResponse(ansatt);
             return Response.ok(response).build();
@@ -132,7 +130,7 @@ public class MicrosoftGraphApiMock {
                 var assertion = auth.substring("Bearer ".length());
                 var claims = unvalidatingConsumer.processToClaims(assertion);
                 var ident = claims.getClaimValue("NAVident", String.class);
-                return ANSATTE_INDEKS.findByIdent(ident);
+                return AnsatteIndeks.findByIdent(ident);
             } catch (Exception e) {
                 throw new WebApplicationException("Bad mock access token; must be on format Bearer access:<userid>",
                         Response.Status.FORBIDDEN);

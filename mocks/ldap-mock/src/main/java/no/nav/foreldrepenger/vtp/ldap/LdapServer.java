@@ -26,9 +26,8 @@ import com.unboundid.ldif.LDIFAddChangeRecord;
 import com.unboundid.ldif.LDIFChangeRecord;
 import com.unboundid.ldif.LDIFReader;
 
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.vtp.ansatt.AnsatteIndeks;
+import no.nav.vtp.ansatt.NavAnsatt;
 
 public class LdapServer {
     private static final Logger LOG = LoggerFactory.getLogger(LdapServer.class);
@@ -36,7 +35,6 @@ public class LdapServer {
     private static final int LDAPS_PORT = 8636; // 636 er default port for LDAPS
     private static final int LDAP_PORT = 8389;  // 389 er default port for LDAP
 
-    private static final AnsatteIndeks ansattIndeks = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
     private final InMemoryDirectoryServer directoryServer;
 
     public LdapServer(File keystoreFile, char[] password) throws Exception {
@@ -60,7 +58,7 @@ public class LdapServer {
     }
 
     private void readNavAnsatte() throws LDAPException {
-        for (NavAnsatt navAnsatt : ansattIndeks.alleAnsatte()) {
+        for (NavAnsatt navAnsatt : AnsatteIndeks.alleAnsatte()) {
             addNavAnsatt(navAnsatt);
         }
     }

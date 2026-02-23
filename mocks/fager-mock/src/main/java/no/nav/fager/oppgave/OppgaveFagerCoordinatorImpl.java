@@ -5,8 +5,8 @@ import no.nav.fager.NyOppgaveVellykket;
 import no.nav.fager.OppgaveUtfoertVellykket;
 import no.nav.fager.OppgaveUtgaattVellykket;
 
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.OppgaveModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.OppgaveModell;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

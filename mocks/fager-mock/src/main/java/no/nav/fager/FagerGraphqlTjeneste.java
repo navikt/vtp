@@ -20,7 +20,7 @@ import no.nav.fager.oppgave.OppgaveFagerCoordinatorImpl;
 import no.nav.fager.oppgave.OppgaveFagerWiring;
 import no.nav.fager.sak.SakFagerCoordinatorImpl;
 import no.nav.fager.sak.SakFagerWiring;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 
 public class FagerGraphqlTjeneste {
     private static final String SCHEME_PATH = "schemas/produsent.graphql";

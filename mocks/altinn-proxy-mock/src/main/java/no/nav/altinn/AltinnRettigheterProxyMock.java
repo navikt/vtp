@@ -2,6 +2,7 @@ package no.nav.altinn;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -12,7 +13,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.arbeidsforhold.Organisasjon;
+import no.nav.vtp.person.ident.Orgnummer;
 
 /*
  * Tjeneste for å sjekke om person har tilgang til en .
@@ -23,13 +26,16 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 public class AltinnRettigheterProxyMock {
 
     @Context
-    private TestscenarioBuilderRepository scenarioRepository;
+    private PersonRepository personRepository;
 
     @GET
     @Path("/ekstern/altinn/api/serviceowner/reportees")
     @Produces(MediaType.APPLICATION_JSON)
     public Response hentTilgangerTilVirksomheter() {
-        var alleOrgnr = scenarioRepository.hentAlleOrganisasjonsnummer();
+        var alleOrgnr = personRepository.alleRegistrerteOrganisasjoner().stream()
+                .map(Organisasjon::orgnummer)
+                .map(Orgnummer::value)
+                .collect(Collectors.toSet());
         return Response.ok().entity(mapToResponse(alleOrgnr)).build();
     }
 

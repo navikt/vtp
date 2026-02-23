@@ -15,7 +15,7 @@ import org.jose4j.lang.JoseException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
+import no.nav.vtp.ansatt.NavAnsatt;
 
 
 public final class AzureOidcTokenGenerator {

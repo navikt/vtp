@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import no.nav.fager.graphql.GraphQLRequest;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.SakModell;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 
 @ExtendWith(MockitoExtension.class)
 class FagerGraphqlTjenesteTest {

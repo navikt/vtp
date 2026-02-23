@@ -21,12 +21,9 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import no.nav.foreldrepenger.util.KeystoreUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepositoryImpl;
+import no.nav.vtp.journalpost.JournalRepositoryImpl;
 
 
 public class MockServer {
@@ -75,21 +72,17 @@ public class MockServer {
     }
 
     private void startWebServer() throws Exception {
-        var instance = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-        var testScenarioRepository = new DelegatingTestscenarioRepository(instance);
         var journalRepository = JournalRepositoryImpl.getInstance();
         var fagerPortalRepository = ArbeidsgiverPortalRepositoryImpl.getInstance();
 
-        addRestServices(testScenarioRepository, instance, journalRepository, fagerPortalRepository);
+        addRestServices(journalRepository, fagerPortalRepository);
 
         startServer();
     }
 
-    private void addRestServices(DelegatingTestscenarioRepository testScenarioRepository, TestscenarioRepositoryImpl instance,
-                                 JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
+    private void addRestServices(JournalRepositoryImpl journalRepository, ArbeidsgiverPortalRepository fagerPortalRepository) {
         var config = new ApplicationConfigJersey()
-                .setup(testScenarioRepository,
-                        instance, new LocalKafkaProducer(),
+                .setup(new LocalKafkaProducer(),
                         journalRepository,
                         fagerPortalRepository);
 

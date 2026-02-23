@@ -1,23 +1,17 @@
 package no.nav.pdl.hentGeografiskTilknytning;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.pdl.oversetter.GeografiskTilknytningAdapter;
+import no.nav.pdl.mapper.GeografiskTilknytningMapper;
+import no.nav.vtp.person.PersonRepository;
 
 public class HentGeografiskTilknytningCoordinatorFunction {
 
     private HentGeografiskTilknytningCoordinatorFunction() {
     }
 
-    public static HentGeografiskTilknytningCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
+    public static HentGeografiskTilknytningCoordinator opprettCoordinator(PersonRepository personRepository) {
         return ident -> {
-            PersonModell person;
-            try {
-                person = scenarioRepo.getPersonIndeks().finnByIdent(ident);
-            } catch (IllegalArgumentException e) {
-                return null;
-            }
-            return GeografiskTilknytningAdapter.tilGeografiskTilknytning(person);
+            var person = personRepository.hentPerson(ident);
+            return GeografiskTilknytningMapper.tilGeografiskTilknytning(person);
         };
     }
 }

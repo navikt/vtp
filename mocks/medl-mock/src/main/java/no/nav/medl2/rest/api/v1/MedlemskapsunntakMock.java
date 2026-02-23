@@ -11,7 +11,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.person.PersonRepository;
 
 @Path("medl2/api/v1")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,16 +19,18 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 public class MedlemskapsunntakMock {
 
     @Context
-    private TestscenarioBuilderRepository scenarioRepository;
+    private PersonRepository personRepository;
 
     @POST
     @Path("/periode/soek")
     public List<Medlemskapsunntak> hentMedlemsperioder(@NotNull MedlemRequest request) {
-        return new MedlemskapsunntakAdapter(scenarioRepository).finnMedlemsunntak(request.personident());
+        if (request.personident() == null) {
+            return List.of();
+        }
+        var person = personRepository.hentPerson(request.personident());
+        return MedlemskapsunntakMapper.tilMedlemskapsunntak(person);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record MedlemRequest(@NotNull String personident) { }
-
 }
-
