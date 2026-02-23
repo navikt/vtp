@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLResult;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
+import no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario;
 
 public abstract class PdlTestBase {
 

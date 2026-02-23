@@ -1,10 +1,12 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
+import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.ArbeidsforholdMapper.tilArbeidsforholdtypeAareg;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +19,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforholdstype;
 
 @Path("aareg-services/api/v1/arbeidstaker")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,10 +35,10 @@ public class AaregRSV1Mock {
     protected static final String ARBEIDSFORHOLDTYPE = "arbeidsforholdtype";
     protected static final String REGELVERK = "regelverk";
 
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private final PersonRepository personRepository;
 
-    public AaregRSV1Mock(@Context TestscenarioBuilderRepository scenarioRepository) {
-        this.scenarioRepository = scenarioRepository;
+    public AaregRSV1Mock(@Context PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @SuppressWarnings("unused")
@@ -53,36 +54,35 @@ public class AaregRSV1Mock {
         final LocalDate tom = qryparams.getFirst(QPRM_TOM) != null ?
                 LocalDate.parse(qryparams.getFirst(QPRM_TOM)) : null;
 
-        if (ident == null || fom == null)
+        if (ident == null || fom == null) {
             throw new IllegalArgumentException("Request uten ident eller fom");
-        var inntektYtelseModell = scenarioRepository.getInntektYtelseModellFraAktørId(ident)
-                .orElseGet(() -> scenarioRepository.getInntektYtelseModell(ident).orElse(null));
-        if (inntektYtelseModell == null || inntektYtelseModell.arbeidsforholdModell() == null) {
-            LOG.warn("AAREG REST finnArbeidsforholdPrArbeidstaker kunne ikke finne etterspurt bruker");
-            return List.of();
         }
 
         LOG.info("AAREG REST {}", ident);
-        return inntektYtelseModell.arbeidsforholdModell().arbeidsforhold().stream()
-                .filter(a -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, a))
-                .filter(a -> erOverlapp(fom, tom, a))
-                .map(ArbeidsforholdRS::new)
-                .collect(Collectors.toList());
+        return Optional.ofNullable(personRepository.hentPerson(ident))
+                .map(person -> person
+                    .arbeidsforhold()
+                    .stream()
+                    .filter(arbeidsforhold -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, arbeidsforhold))
+                    .filter(arbeidsforhold -> erOverlapp(fom, tom, arbeidsforhold))
+                    .map(ArbeidsforholdMapper::tilArbeidsforholdRS)
+                    .toList())
+                .orElse(List.of());
     }
 
-    private boolean erOverlapp(LocalDate requestFom, LocalDate requestTom, Arbeidsforhold arbeidsforhold) {
+    private boolean erOverlapp(LocalDate fom, LocalDate tom, no.nav.vtp.person.arbeidsforhold.Arbeidsforhold arbeidsforhold) {
         var ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
         var ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
 
-        return (ansettelsesperiodeTom == null || !requestFom.isAfter(ansettelsesperiodeTom)) &&
-                (requestTom == null || !requestTom.isBefore(ansettelsesperiodeFom));
+        return (ansettelsesperiodeTom == null || !fom.isAfter(ansettelsesperiodeTom)) &&
+                (tom == null || !tom.isBefore(ansettelsesperiodeFom));
     }
 
-    private boolean filterForArbeidsforholdType(List<String> arbeidsforholdtyper, Arbeidsforhold arbeidsforhold) {
-        if (arbeidsforholdtyper.isEmpty()) {
-            return !arbeidsforhold.arbeidsforholdstype().getKode().equalsIgnoreCase(Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.getKode());
+    private boolean filterForArbeidsforholdType(List<String> filtrerArbeidsforholdtyper, no.nav.vtp.person.arbeidsforhold.Arbeidsforhold a) {
+        if (filtrerArbeidsforholdtyper.isEmpty()) {
+            return !Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.equals(a.arbeidsforholdstype());
         } else {
-            return arbeidsforholdtyper.contains(arbeidsforhold.arbeidsforholdstype().getKode());
+            return filtrerArbeidsforholdtyper.contains(tilArbeidsforholdtypeAareg(a.arbeidsforholdstype()));
         }
     }
 }

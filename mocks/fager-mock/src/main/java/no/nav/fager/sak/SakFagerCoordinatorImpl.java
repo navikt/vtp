@@ -11,8 +11,8 @@ import no.nav.fager.NySakResultat;
 import no.nav.fager.NySakVellykket;
 import no.nav.fager.NyStatusSakVellykket;
 import no.nav.fager.TilleggsinformasjonSakVellykket;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.SakModell;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 
 public class SakFagerCoordinatorImpl implements SakFagerCoordinator {
     private static final Logger LOG = LoggerFactory.getLogger(SakFagerCoordinatorImpl.class);
