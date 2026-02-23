@@ -3,7 +3,9 @@ package no.nav.vtp.inntekt;
 
 import java.time.LocalDate;
 
-public record Inntektsperiode(String identifikator,  // Arbeidsgiver identifiator (privat og orgnummer)
+import no.nav.vtp.ident.Identifikator;
+
+public record Inntektsperiode(Identifikator identifikator,
                               LocalDate fom,
                               LocalDate tom,
                               Integer beløp,

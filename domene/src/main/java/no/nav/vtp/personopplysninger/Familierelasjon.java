@@ -1,8 +1,8 @@
 package no.nav.vtp.personopplysninger;
 
-import java.util.UUID;
+import no.nav.vtp.ident.PersonIdent;
 
-public record Familierelasjon(Relasjon relasjon, UUID relatertTilId) {
+public record Familierelasjon(Relasjon relasjon, PersonIdent relatertTilId) {
 
     public enum Relasjon {
         EKTE,

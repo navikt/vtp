@@ -3,7 +3,9 @@ package no.nav.vtp.arbeidsforhold;
 import java.time.LocalDate;
 import java.util.List;
 
-public record Arbeidsforhold(String identifikator,  // Arbeidsgiver identifiator (privat og orgnummer)
+import no.nav.vtp.ident.Identifikator;
+
+public record Arbeidsforhold(Identifikator identifikator,
                              String arbeidsforholdId,
                              LocalDate ansettelsesperiodeFom,
                              LocalDate ansettelsesperiodeTom,
