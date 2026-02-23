@@ -3,11 +3,11 @@ package no.nav.vtp.inntekt;
 
 import java.time.LocalDate;
 
-public record Inntektsperiode(LocalDate fom,
+public record Inntektsperiode(String identifikator,  // Arbeidsgiver identifiator (privat og orgnummer)
+                              LocalDate fom,
                               LocalDate tom,
                               Integer beløp,
                               Type inntektType,
-                              // Arbeidsgiver identifiator (privat og orgnummer)
                               YtelseType ytelseType,
                               FordelType inntektFordel) {
 
