@@ -21,6 +21,7 @@
         <module>mocks</module>
         <module>server</module>
         <module>util</module>
+        <module>domene</module>
     </modules>
 
     <properties>
