@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.UUID;
 
 public record PersonDto(UUID id,
+                        String ident,
                         Rolle rolle,
                         LocalDate fødselsdato,
                         LocalDate dødsdato,
-                        String språk,
+                        Språk språk,
                         Kjønn kjønn,
                         GeografiskTilknytningDto geografiskTilknytning,
                         List<FamilierelasjonModellDto> familierelasjoner,
@@ -24,7 +25,7 @@ public record PersonDto(UUID id,
 
 
     private PersonDto(Builder b) {
-        this(b.id, b.rolle, b.fødselsdato, b.dødsdato, b.språk, b.kjønn, b.geografiskTilknytning, b.familierelasjoner,
+        this(b.id, b.ident(), b.rolle, b.fødselsdato, b.dødsdato, b.språk, b.kjønn, b.geografiskTilknytning, b.familierelasjoner,
                 b.statsborgerskap, b.sivilstand, b.personstatus, b.medlemskap, b.adresser, b.adressebeskyttelse,
                 b.erSkjermet, b.inntektytelse);
     }
@@ -35,10 +36,11 @@ public record PersonDto(UUID id,
 
     public static class Builder {
         private UUID id;
+        private String ident;
         private Rolle rolle;
         private LocalDate fødselsdato;
         private LocalDate dødsdato;
-        private String språk;
+        private Språk språk;
         private Kjønn kjønn;
         private GeografiskTilknytningDto geografiskTilknytning;
         private List<FamilierelasjonModellDto> familierelasjoner = new ArrayList<>();
@@ -60,6 +62,10 @@ public record PersonDto(UUID id,
             return id;
         }
 
+        public String ident() {
+            return ident;
+        }
+
         public Rolle rolle() {
             return rolle;
         }
@@ -72,7 +78,7 @@ public record PersonDto(UUID id,
             return dødsdato;
         }
 
-        public String språk() {
+        public Språk språk() {
             return språk;
         }
 
@@ -140,7 +146,7 @@ public record PersonDto(UUID id,
             return this;
         }
 
-        public Builder språk(String språk) {
+        public Builder språk(Språk språk) {
             this.språk = språk;
             return this;
         }

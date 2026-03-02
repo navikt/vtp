@@ -20,6 +20,7 @@ import jakarta.ws.rs.core.UriInfo;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.PersonRepository;
 
 @Path("aareg-services/api/v1/arbeidstaker")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,10 +35,12 @@ public class AaregRSV1Mock {
     protected static final String ARBEIDSFORHOLDTYPE = "arbeidsforholdtype";
     protected static final String REGELVERK = "regelverk";
 
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private TestscenarioBuilderRepository scenarioRepository;
+    private PersonRepository personRepository;
 
-    public AaregRSV1Mock(@Context TestscenarioBuilderRepository scenarioRepository) {
+    public AaregRSV1Mock(@Context TestscenarioBuilderRepository scenarioRepository, @Context PersonRepository personRepository) {
         this.scenarioRepository = scenarioRepository;
+        this.personRepository = personRepository;
     }
 
     @SuppressWarnings("unused")
@@ -63,11 +66,27 @@ public class AaregRSV1Mock {
         }
 
         LOG.info("AAREG REST {}", ident);
-        return inntektYtelseModell.arbeidsforholdModell().arbeidsforhold().stream()
+        var responsFraGammelModell = inntektYtelseModell.arbeidsforholdModell()
+                .arbeidsforhold()
+                .stream()
                 .filter(a -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, a))
                 .filter(a -> erOverlapp(fom, tom, a))
                 .map(ArbeidsforholdRS::new)
                 .collect(Collectors.toList());
+
+//        var respponseFraNyModell = personRepository.hentPerson(ident)
+//                .arbeidsforhold()
+//                .stream()
+//                .map(a -> a) // TODO: Mapping
+//                .toList();
+//
+//
+//        if (responsFraGammelModell.equals(respponseFraNyModell)) {
+//            LOG.info("Feil i mappen fra ny modell til gammel modell for ident {}. "
+//                    + "Gammel modell returnerer {} arbeidsforhold, mens ny modell returnerer {}", ident, responsFraGammelModell.size(), respponseFraNyModell.size());
+//        }
+
+        return responsFraGammelModell;
     }
 
     private boolean erOverlapp(LocalDate requestFom, LocalDate requestTom, Arbeidsforhold arbeidsforhold) {

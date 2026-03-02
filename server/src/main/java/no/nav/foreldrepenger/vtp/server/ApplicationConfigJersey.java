@@ -85,6 +85,7 @@ import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
+import no.nav.vtp.PersonRepository;
 import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
@@ -179,6 +180,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
+                bind(new PersonRepository()).to(PersonRepository.class); // TODO
                 bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
                 bind(instance).to(TestscenarioRepository.class);
                 bind(journalRepository).to(JournalRepository.class);

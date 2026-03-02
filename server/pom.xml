@@ -193,6 +193,12 @@
             <groupId>com.neovisionaries</groupId>
             <artifactId>nv-i18n</artifactId>
         </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>domene</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Testavhengigheter -->
     </dependencies>

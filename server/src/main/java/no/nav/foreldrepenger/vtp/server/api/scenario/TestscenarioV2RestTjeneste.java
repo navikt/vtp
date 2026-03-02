@@ -30,12 +30,14 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
+import no.nav.foreldrepenger.vtp.server.api.scenario.mapper.ny.PersonMappen;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.vtp.PersonRepository;
 
 
 @Path("/api/testscenarios/v2")
@@ -46,12 +48,16 @@ public class TestscenarioV2RestTjeneste {
     @Context
     private TestscenarioRepository testscenarioRepository;
 
+    @Context
+    private PersonRepository personRepository;
+
     public TestscenarioV2RestTjeneste() {
         //CDI
     }
 
-    public TestscenarioV2RestTjeneste(TestscenarioRepository testscenarioRepository) {
+    public TestscenarioV2RestTjeneste(TestscenarioRepository testscenarioRepository, PersonRepository personRepository) {
         this.testscenarioRepository = testscenarioRepository;
+        this.personRepository = personRepository;
     }
 
     @POST
@@ -86,6 +92,11 @@ public class TestscenarioV2RestTjeneste {
                         organisasjonsmodeller, (PersonArbeidsgiver) mappedePersoner.get(p.id())))
                 .orElseGet(() -> testscenarioRepository.opprettTestscenario(personopplysninger, inntektytelseSøker, inntektytelseAnnenpart,
                         organisasjonsmodeller));
+
+        var personerMapped = personer.stream()
+                .map(PersonMappen::tilPerson)
+                .toList();
+        personRepository.leggTilPersoner(personerMapped);
 
         var nyidenter = mappedePersoner.entrySet().stream()
                 .map(e -> new TilordnetIdentDto(e.getKey(), e.getValue().getIdent(), e.getValue().getAktørIdent()))

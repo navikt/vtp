@@ -8,6 +8,7 @@ import no.nav.vtp.inntekt.Inntektsperiode;
 import no.nav.vtp.personopplysninger.Personopplysninger;
 import no.nav.vtp.ytelse.Ytelse;
 
+// Første utkast av ny modell
 public record Person(Personopplysninger personopplysninger,
                      List<Arbeidsforhold> arbeidsforhold,
                      List<Inntektsperiode> inntekt,
