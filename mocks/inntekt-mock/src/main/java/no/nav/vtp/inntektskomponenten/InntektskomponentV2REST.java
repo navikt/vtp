@@ -79,7 +79,7 @@ public class InntektskomponentV2REST {
 
 
     @POST
-    @Path("abonnement/administrasjon/opprett")
+    @Path("/abonnement/administrasjon/opprett")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
     public AbonnementAdministrasjonOpprettApiUt opprettAbonnement(Object ignoredRequest) {
@@ -88,7 +88,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("abonnement/administrasjon/opphoer")
+    @Path("/abonnement/administrasjon/opphoer")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
     public AbonnementAdministrasjonOpphoerApiUt opphørAbonnement(Object ignoredRequest) {
@@ -96,7 +96,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("abonnement/hendelse/start")
+    @Path("/abonnement/hendelse/start")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for start av hendelse")
     public AbonnementHendelseStartApiUt startHendelse(Object ignoredRequest) {
@@ -104,7 +104,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("abonnement/hendelse")
+    @Path("/abonnement/hendelse")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for henting av hendelse")
     public AbonnementHendelseApiUt hendelse(Object ignoredRequest) {
