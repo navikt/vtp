@@ -5,10 +5,13 @@ import java.util.List;
 
 import no.nav.vtp.ident.Identifikator;
 
+/*
+   Forenklet modell av PDL + medlemskap
+ */
 public record Personopplysninger(Identifikator identifikator,
                                  LocalDate fødselsdato,
                                  LocalDate dødsdato,
-                                 String språk,
+                                 Språk språk,
                                  Kjønn kjønn,
                                  GeografiskTilknytning geografiskTilknytning,
                                  List<Familierelasjon> familierelasjoner,

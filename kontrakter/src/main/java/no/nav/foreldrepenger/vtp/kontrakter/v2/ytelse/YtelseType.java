@@ -1,4 +1,4 @@
-package no.nav.vtp.ytelse;
+package no.nav.foreldrepenger.vtp.kontrakter.v2.ytelse;
 
 public enum YtelseType {
     FORELDREPENGER,
@@ -8,6 +8,5 @@ public enum YtelseType {
     SYKEPENGER,
     ARBEIDSAVKLARINGSPENGER,
     OMSORGSPENGER,
-    OPPLÆRINGSPENGER,
-    UFØREPENSJON,
+    OPPLÆRINGSPENGER
 }

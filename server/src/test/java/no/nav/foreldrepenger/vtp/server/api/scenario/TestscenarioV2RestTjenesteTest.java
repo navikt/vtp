@@ -1,11 +1,20 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import org.junit.jupiter.api.Test;
+
 import com.neovisionaries.i18n.CountryCode;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
+
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AaregDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsforholdstype;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsforholdDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsforholdstype;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseModellDto;
@@ -16,36 +25,28 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Orgnummer;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Permisjonstype;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Språk;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioFraJsonMapper;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
-
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import no.nav.vtp.PersonRepository;
 
 class TestscenarioV2RestTjenesteTest {
 
     @Test
     void roundtripTestAvOpprettingAvTestcenario() {
+        var personRepository = new PersonRepository();
         var testscenarioV2RestTjeneste = new TestscenarioV2RestTjeneste(new DelegatingTestscenarioRepository(
-                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance())));
+                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance())), personRepository);
 
         var morID = UUID.randomUUID();
         var farID = UUID.randomUUID();
@@ -89,10 +90,12 @@ class TestscenarioV2RestTjenesteTest {
         var barn = PersonDto.builder()
                 .id(barnID)
                 .rolle(Rolle.BARN)
+                .språk(Språk.NB)
                 .fødselsdato(LocalDate.now())
                 .build();
         var privatArbeidsgiver = PersonDto.builder()
                 .id(privateAG)
+                .språk(Språk.NB)
                 .rolle(Rolle.PRIVATE_ARBEIDSGIVER)
                 .build();
 
@@ -112,7 +115,7 @@ class TestscenarioV2RestTjenesteTest {
                 .rolle(Rolle.MOR)
                 .kjønn(Kjønn.K)
                 .fødselsdato(fødselsdato)
-                .språk("NB")
+                .språk(Språk.NB)
                 .geografiskTilknytning(GeografiskTilknytningDto.norsk())
                 .adresser(norskAdresse())
                 .personstatus(bosattFra(fødselsdato))
@@ -127,7 +130,7 @@ class TestscenarioV2RestTjenesteTest {
                 .rolle(Rolle.FAR)
                 .kjønn(Kjønn.M)
                 .fødselsdato(fødselsdato)
-                .språk("NB")
+                .språk(Språk.NB)
                 .geografiskTilknytning(GeografiskTilknytningDto.norsk())
                 .adresser(norskAdresse())
                 .personstatus(bosattFra(fødselsdato))

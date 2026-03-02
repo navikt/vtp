@@ -11,21 +11,21 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.Map;
 
-import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.MultivaluedHashMap;
-import jakarta.ws.rs.core.UriInfo;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.UriInfo;
 import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
 import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.vtp.PersonRepository;
 
 @ExtendWith(MockitoExtension.class)
 class AaregRSV1MockTest {
@@ -50,7 +50,7 @@ class AaregRSV1MockTest {
         var testscenarioObjekt = testscenarioHenter.hentScenario(SCENARIOID);
         var testscenarioJson = testscenarioHenter.toJson(testscenarioObjekt);
         testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-        aaregRSV1Mock = new AaregRSV1Mock(testScenarioRepository);
+        aaregRSV1Mock = new AaregRSV1Mock(testScenarioRepository, new PersonRepository());
     }
 
     @Test
