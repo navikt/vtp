@@ -19,8 +19,8 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl
 import no.nav.vtp.inntektskomponenten.modell.InntektModellMapper;
 
 
-@Tag(name = "/inntektskomponenten/v2/inntekt")
-@Path("/inntektskomponenten/v2/inntekt")
+@Tag(name = "/inntektskomponenten/v2")
+@Path("/inntektskomponenten/v2")
 public class InntektskomponentV2REST {
     private static final Logger LOG = LoggerFactory.getLogger(InntektskomponentV2REST.class);
 
@@ -33,6 +33,7 @@ public class InntektskomponentV2REST {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/inntekt")
     @Operation(description = "Returnerer inntektliste fra Inntektskomponenten")
     public InntektResponse hentInntektlisteBolk(InntektRequest request) {
 
@@ -52,7 +53,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("/bulk")
+    @Path("/inntekt/bulk")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Returnerer inntektliste fra Inntektskomponenten")
     public InntektBulkResponse hentInntektlisteBolk(InntektBulkRequest request) {
@@ -78,7 +79,7 @@ public class InntektskomponentV2REST {
 
 
     @POST
-    @Path("administrasjon/opprett")
+    @Path("abonnement/administrasjon/opprett")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
     public AbonnementAdministrasjonOpprettApiUt opprettAbonnement(Object ignoredRequest) {
@@ -87,7 +88,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("administrasjon/opphoer")
+    @Path("abonnement/administrasjon/opphoer")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
     public AbonnementAdministrasjonOpphoerApiUt opphørAbonnement(Object ignoredRequest) {
@@ -95,7 +96,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("hendelse/start")
+    @Path("abonnement/hendelse/start")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for start av hendelse")
     public AbonnementHendelseStartApiUt startHendelse(Object ignoredRequest) {
@@ -103,7 +104,7 @@ public class InntektskomponentV2REST {
     }
 
     @POST
-    @Path("hendelse")
+    @Path("abonnement/hendelse")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Dummy endepunkt for henting av hendelse")
     public AbonnementHendelseApiUt hendelse(Object ignoredRequest) {
