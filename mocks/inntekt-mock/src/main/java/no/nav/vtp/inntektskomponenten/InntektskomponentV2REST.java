@@ -1,6 +1,7 @@
 package no.nav.vtp.inntektskomponenten;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -43,8 +44,8 @@ public class InntektskomponentV2REST {
             return new InntektResponse(List.of());
         }
 
-        var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(
-                imodell.get(), request.maanedFom(), request.maanedTom(), request.filter(), request.personident());
+        var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(imodell.get(), request.maanedFom(), request.maanedTom(),
+                request.filter(), request.personident());
 
         return new InntektResponse(inntektsinformasjon);
 
@@ -66,13 +67,47 @@ public class InntektskomponentV2REST {
         }
 
         for (var f : request.filter()) {
-            var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(
-                    imodell.get(), request.maanedFom(), request.maanedTom(), f, request.personident());
+            var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(imodell.get(), request.maanedFom(),
+                    request.maanedTom(), f, request.personident());
             bulkinntekter.add(new InntektBulkResponse.InntektBulk(f, inntektsinformasjon));
         }
 
         return new InntektBulkResponse(bulkinntekter);
 
+    }
+
+
+    @POST
+    @Path("administrasjon/opprett")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
+    public AbonnementAdministrasjonOpprettApiUt opprettAbonnement(Object ignoredRequest) {
+        long randomId = java.util.concurrent.ThreadLocalRandom.current().nextLong();
+        return new AbonnementAdministrasjonOpprettApiUt(randomId);
+    }
+
+    @POST
+    @Path("administrasjon/opphoer")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for opprettelse av abonnement")
+    public AbonnementAdministrasjonOpphoerApiUt opphørAbonnement(Object ignoredRequest) {
+        return new AbonnementAdministrasjonOpphoerApiUt();
+    }
+
+    @POST
+    @Path("hendelse/start")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for start av hendelse")
+    public AbonnementHendelseStartApiUt startHendelse(Object ignoredRequest) {
+        return new AbonnementHendelseStartApiUt(1L);
+    }
+
+    @POST
+    @Path("hendelse")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Dummy endepunkt for henting av hendelse")
+    public AbonnementHendelseApiUt hendelse(Object ignoredRequest) {
+        return new AbonnementHendelseApiUt(Collections.emptyList());
     }
 
 }
