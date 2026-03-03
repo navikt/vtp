@@ -71,22 +71,40 @@ public class AaregRSV1Mock {
                 .stream()
                 .filter(a -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, a))
                 .filter(a -> erOverlapp(fom, tom, a))
-                .map(ArbeidsforholdRS::new)
+                .map(ArbeidsforholdRS::fra)
                 .collect(Collectors.toList());
 
-//        var respponseFraNyModell = personRepository.hentPerson(ident)
-//                .arbeidsforhold()
-//                .stream()
-//                .map(a -> a) // TODO: Mapping
-//                .toList();
-//
-//
-//        if (responsFraGammelModell.equals(respponseFraNyModell)) {
-//            LOG.info("Feil i mappen fra ny modell til gammel modell for ident {}. "
-//                    + "Gammel modell returnerer {} arbeidsforhold, mens ny modell returnerer {}", ident, responsFraGammelModell.size(), respponseFraNyModell.size());
-//        }
+        var respponseFraNyModell = personRepository.hentPerson(ident)
+                .arbeidsforhold()
+                .stream()
+                .filter(arbeidsforhold -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, arbeidsforhold))
+                .filter(arbeidsforhold -> erOverlapp(fom, tom, arbeidsforhold))
+                .map(ArbeidsforholdMapper::tilArbeidsforholdRS)
+                .toList();
+
+
+        if (!responsFraGammelModell.equals(respponseFraNyModell)) {
+            LOG.info("Feil i mappen fra ny modell til gammel modell for ident {}. "
+                    + "Gammel modell returnerer {} arbeidsforhold, mens ny modell returnerer {}", ident, responsFraGammelModell.size(), respponseFraNyModell.size());
+        }
 
         return responsFraGammelModell;
+    }
+
+    private boolean erOverlapp(LocalDate fom, LocalDate tom, no.nav.vtp.arbeidsforhold.Arbeidsforhold arbeidsforhold) {
+        var ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
+        var ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
+
+        return (ansettelsesperiodeTom == null || !fom.isAfter(ansettelsesperiodeTom)) &&
+                (tom == null || !tom.isBefore(ansettelsesperiodeFom));
+    }
+
+    private boolean filterForArbeidsforholdType(List<String> filtrerArbeidsforholdtyper, no.nav.vtp.arbeidsforhold.Arbeidsforhold a) {
+        if (filtrerArbeidsforholdtyper.isEmpty()) {
+            return !a.arbeidsforholdstype().getKode().equalsIgnoreCase(Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.getKode());
+        } else {
+            return filtrerArbeidsforholdtyper.contains(a.arbeidsforholdstype().getKode());
+        }
     }
 
     private boolean erOverlapp(LocalDate requestFom, LocalDate requestTom, Arbeidsforhold arbeidsforhold) {
