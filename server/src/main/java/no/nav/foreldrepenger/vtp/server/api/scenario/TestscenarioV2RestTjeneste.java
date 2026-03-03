@@ -99,14 +99,14 @@ public class TestscenarioV2RestTjeneste {
                 .orElseGet(() -> testscenarioRepository.opprettTestscenario(personopplysninger, inntektytelseSøker, inntektytelseAnnenpart,
                         organisasjonsmodeller));
 
-        var personerMapped = personer.stream()
-                .map(PersonMappen::tilPerson)
-                .toList();
-        personRepository.leggTilPersoner(personerMapped);
-
         var nyidenter = mappedePersoner.entrySet().stream()
                 .map(e -> new TilordnetIdentDto(e.getKey(), e.getValue().getIdent(), e.getValue().getAktørIdent()))
                 .collect(Collectors.toSet());
+
+        var personerMapped = personer.stream()
+                .map(p -> PersonMappen.tilPerson(p, nyidenter))
+                .toList();
+        personRepository.leggTilPersoner(personerMapped);
 
         logger.info("Initialisert testscenario med uuid {}", testscenario.getId());
         return Response.status(Response.Status.OK)
