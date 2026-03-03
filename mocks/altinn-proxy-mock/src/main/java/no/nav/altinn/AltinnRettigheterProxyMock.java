@@ -31,6 +31,8 @@ public class AltinnRettigheterProxyMock {
     @Context
     private TestscenarioBuilderRepository scenarioRepository;
 
+
+
     @GET
     @Path("/ekstern/altinn/api/serviceowner/reportees")
     @Produces(MediaType.APPLICATION_JSON)
