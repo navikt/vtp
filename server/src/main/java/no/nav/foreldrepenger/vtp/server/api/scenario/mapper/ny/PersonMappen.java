@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsforholdDto;
@@ -11,6 +12,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektsperiodeDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Språk;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
 import no.nav.vtp.Person;
@@ -41,17 +43,21 @@ public class PersonMappen {
         /* This utility class should not be instantiated */
     }
 
-    public static Person tilPerson(PersonDto p) {
-        var personopplysninger = tilPersonopplysninger(p);
+    public static Person tilPerson(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
+        var personopplysninger = tilPersonopplysninger(p, nyidenter);
         var arbeidsforhold = tilArbeidsforhold(p);
         var inntekt = tilInntekt(p);
         var ytelser = tilYtelser(p);
         return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser);
     }
 
-    private static Personopplysninger tilPersonopplysninger(PersonDto p) {
+    private static Personopplysninger tilPersonopplysninger(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
+        var indent = nyidenter.stream()
+                .filter(tilordnetIdentDto -> tilordnetIdentDto.id().equals(p.id()))
+                .findFirst()
+                .orElseThrow();
         return new Personopplysninger(
-                new PersonIdent(identGenerator.tilfeldigFnr()), // TODO: Barn kan bli fort gamle her. Skal vi heller generer det i forkant? Eget kall?
+                new PersonIdent(indent.fnr()), // TODO: Barn kan bli fort gamle her. Skal vi heller generer det i forkant? Eget kall?
                 p.fødselsdato(),
                 p.dødsdato(),
                 tilSpråk(p.språk()),
