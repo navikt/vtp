@@ -2,109 +2,112 @@ package no.nav.foreldrepenger.fpwsproxy.arena;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
-import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaMeldekort;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaSak;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.ArenaVedtak;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.RelatertYtelseTema;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.SakStatus;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arena.VedtakStatus;
-import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.vtp.Person;
+import no.nav.vtp.PersonBuilder;
+import no.nav.vtp.PersonRepository;
+import no.nav.vtp.ytelse.Ytelse;
+import no.nav.vtp.ytelse.YtelseType;
 
 class ArenaMockTest {
 
-    private static Testscenario testscenario;
+    private FpWsProxyArenaMock fpWsProxyArenaMock;
+    private PersonRepository personRepository;
+    private static final LocalDate now = LocalDate.now();
 
-
-    @BeforeAll
-    static void setup() {
-        var testScenarioRepository = new DelegatingTestscenarioRepository(TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        var testscenarioHenter = TestscenarioHenter.getInstance();
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-
-
+    @BeforeEach
+    void setup() {
+        personRepository = new PersonRepository();
+        fpWsProxyArenaMock = new FpWsProxyArenaMock(personRepository);
     }
 
     @Test
-    void testerAtMappingAvScenarioMedAAPProdusereRiktigAntallMeldekort() {
-        var arenaReqeustDto = new ArenaRequestDto(testscenario.getPersonopplysninger().getSøker().getIdent(), LocalDate.now().minusYears(3), LocalDate.now().plusYears(3));
-        var meldekortUtbetalingsgrunnlagSakDtos = ArenaSakerTilMeldekortMapper.tilMeldekortUtbetalingsgrunnlagSakDto(arenaReqeustDto, testscenario.getSøkerInntektYtelse().arenaModell().saker());
-        assertThat(meldekortUtbetalingsgrunnlagSakDtos)
-                .hasSameSizeAs(testscenario.getSøkerInntektYtelse().arenaModell().saker())
-                .hasSize(1);
-    }
+    void henterDagpengerOgAAP_bareDAGPENGER() {
+        // Arrange
+        var personBase = PersonBuilder.lagSøker();
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, now.minusYears(1), now.plusYears(1), 1000, 5000, List.of());
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger));
+        personRepository.leggTilPerson(person);
 
+        // Act
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
-    @Test
-    void toVedtakPåSammeSakMappesTilToMeldekort () {
-        var arenaReqeustDto = new ArenaRequestDto("12345678910", LocalDate.now().minusYears(3), LocalDate.now().plusYears(3));
-        var arenaSaker = List.of(
-                new ArenaSak("123456789", RelatertYtelseTema.DAG, SakStatus.AKTIV, List.of(lagArenaVedtak(), lagArenaVedtak()))
-        );
-        var meldekortUtbetalingsgrunnlagSakDtos = ArenaSakerTilMeldekortMapper.tilMeldekortUtbetalingsgrunnlagSakDto(arenaReqeustDto, arenaSaker);
-        assertThat(meldekortUtbetalingsgrunnlagSakDtos).hasSize(2);
+        // Assert
+        assertThat(meldekort).hasSize(1);
+        assertThat(meldekort.getFirst().type()).isNotNull();
     }
 
     @Test
-    void toArenaSakerMenBareEnErAAPEllerDAG() {
-        var arenaReqeustDto = new ArenaRequestDto("12345678910", LocalDate.now().minusYears(3), LocalDate.now().plusYears(3));
-        var arenaSaker = List.of(
-                new ArenaSak("123456789", RelatertYtelseTema.FA, SakStatus.AKTIV, List.of(lagArenaVedtak())),
-                new ArenaSak("123456789", RelatertYtelseTema.DAG, SakStatus.AKTIV, List.of(lagArenaVedtak()))
-        );
-        var meldekortUtbetalingsgrunnlagSakDtos = ArenaSakerTilMeldekortMapper.tilMeldekortUtbetalingsgrunnlagSakDto(arenaReqeustDto, arenaSaker);
-        assertThat(meldekortUtbetalingsgrunnlagSakDtos).hasSize(1);
-    }
+    void henterDagpengerOgAAP_bareAAP() {
+        // Arrange
+        var personBase = PersonBuilder.lagSøker();
+        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, now.minusYears(1), now.plusYears(1), 1500, 7000, List.of());
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap));
+        personRepository.leggTilPerson(person);
 
+        // Act
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
-    @Test
-    void ingenVedtakPåSakGirTomListeOgSkalIkkeFeile() {
-        var arenaReqeustDto = new ArenaRequestDto("12345678910", LocalDate.now().minusYears(3), LocalDate.now().plusYears(3));
-        var arenaSaker = List.of(
-                new ArenaSak("123456789", RelatertYtelseTema.DAG, SakStatus.AKTIV, null)
-        );
-        var meldekortUtbetalingsgrunnlagSakDtos = ArenaSakerTilMeldekortMapper.tilMeldekortUtbetalingsgrunnlagSakDto(arenaReqeustDto, arenaSaker);
-        assertThat(meldekortUtbetalingsgrunnlagSakDtos).isEmpty();
+        // Assert
+        assertThat(meldekort).hasSize(1);
+        assertThat(meldekort.getFirst().type()).isNotNull();
     }
 
     @Test
-    void ingenMeldekortPåVedtakReturereMeldekortUtenMeldekortperiode() {
-        var arenaReqeustDto = new ArenaRequestDto("12345678910", LocalDate.now().minusYears(3), LocalDate.now().plusYears(3));
-        var arenaSaker = List.of(
-                new ArenaSak("123456789", RelatertYtelseTema.DAG, SakStatus.AKTIV, List.of(lagArenaVedtakUtenMeldekort()))
-        );
-        var meldekortUtbetalingsgrunnlagSakDtos = ArenaSakerTilMeldekortMapper.tilMeldekortUtbetalingsgrunnlagSakDto(arenaReqeustDto, arenaSaker);
-        assertThat(meldekortUtbetalingsgrunnlagSakDtos).hasSize(1);
-        assertThat(meldekortUtbetalingsgrunnlagSakDtos.get(0).meldekortene()).isEmpty();
+    void henterDagpengerOgAAP_bådeDAGPENGERogAAP() {
+        // Arrange
+        var personBase = PersonBuilder.lagSøker();
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, now.minusYears(1), now.plusYears(1), 1000, 5000, List.of());
+        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, now, now.plusYears(2), 1500, 7000, List.of());
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger, aap));
+        personRepository.leggTilPerson(person);
+
+        // Act
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
+
+        // Assert
+        assertThat(meldekort).hasSize(2);
     }
 
+    @Test
+    void henterDagpengerOgAAP_ingenYtelser() {
+        // Arrange
+        var personBase = PersonBuilder.lagSøker();
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of());
+        personRepository.leggTilPerson(person);
 
-    private static ArenaVedtak lagArenaVedtakUtenMeldekort() {
-        var now = LocalDate.now();
-        return new ArenaVedtak(now, now, now.plusYears(3), now, VedtakStatus.GODKJ, BigDecimal.TEN, null);
+        // Act
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
+
+        // Assert
+        assertThat(meldekort).isEmpty();
     }
 
-    private static ArenaVedtak lagArenaVedtak() {
-        var now = LocalDate.now();
-        return new ArenaVedtak(now, now, now.plusYears(3), now, VedtakStatus.GODKJ, BigDecimal.TEN, List.of(lagMeldekort()));
-    }
+    @Test
+    void lager_bare_meldekort_for_dagpenger_og_fjern_ytelser_som_ikke_er_relevante_eller_utenfor_requested_periode() {
+        // Arrange
+        var personBase = PersonBuilder.lagSøker();
+        var dagpengerInnen = new Ytelse(YtelseType.DAGPENGER, now.minusYears(1), now.plusYears(1), 1000, 5000, List.of());
+        var foreldrepenger = new Ytelse(YtelseType.FORELDREPENGER, now.minusYears(1), now.plusYears(1), 2000, 8000, List.of());
+        var dagpengerUtenfor = new Ytelse(YtelseType.DAGPENGER, now.plusYears(2), now.plusYears(3), 1000, 5000, List.of());
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpengerInnen, dagpengerUtenfor, foreldrepenger));
+        personRepository.leggTilPerson(person);
 
-    private static ArenaMeldekort lagMeldekort() {
-        var now = LocalDate.now();
-        return new ArenaMeldekort(now, now.plusYears(3), BigDecimal.ONE, BigDecimal.TEN, BigDecimal.valueOf(100));
+        // Act
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
+
+        // Assert
+        assertThat(meldekort).hasSize(1);
     }
 }
