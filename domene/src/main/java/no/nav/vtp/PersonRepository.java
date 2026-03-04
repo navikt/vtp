@@ -20,6 +20,10 @@ public class PersonRepository {
         return personer.get(ident);
     }
 
+    public List<Person> allePersoner() {
+        return List.copyOf(personer.values());
+    }
+
     public void endrePerson(Person person) {
         leggTilPerson(person);
     }
