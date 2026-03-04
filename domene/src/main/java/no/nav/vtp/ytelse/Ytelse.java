@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record Ytelse(YtelseType ytelse,
-                     LocalDate fra,
-                     LocalDate til,
+                     LocalDate fom,
+                     LocalDate tom,
                      Integer dagsats,
                      Integer utbetalt,
                      List<Beregningsgrunnlag> beregningsgrunnlag) {

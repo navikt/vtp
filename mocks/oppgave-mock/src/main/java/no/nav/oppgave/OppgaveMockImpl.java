@@ -8,21 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.MultivaluedMap;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +21,19 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -54,7 +52,7 @@ public class OppgaveMockImpl {
         @Parameter(name = "Authorization", required = true, in = ParameterIn.QUERY)
     })
     public Response opprettOppgave(
-            @Valid @Parameter(name = "Oppgaven som opprettes", required = true) ObjectNode oppgave,
+            @Parameter(name = "Oppgaven som opprettes", required = true) ObjectNode oppgave,
             @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -156,7 +154,7 @@ public class OppgaveMockImpl {
             @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Ukjent feilsituasjon har oppstått i Oppgave")
             } )
     @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY)
-    public Response patchOppgave(@Valid @Parameter(description = "Oppgaven som endres", required = true) ObjectNode patch,
+    public Response patchOppgave(@Parameter(description = "Oppgaven som endres", required = true) ObjectNode patch,
                                  @PathParam("id") Long id,
                                  @Context UriInfo uriInfo,
                                  @Context HttpHeaders httpHeaders) {
