@@ -2,6 +2,7 @@ package no.nav.vtp.inntekt;
 
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import no.nav.vtp.arbeidsforhold.Arbeidsgiver;
 
@@ -9,7 +10,7 @@ public record Inntektsperiode(Arbeidsgiver arbeidsgiver,
                               LocalDate fom,
                               LocalDate tom,
                               Integer beløp,
-                              Type inntektType,
+                              Type inntektType, // TODO: Vurder å fjerne inntekttype, kan ligge i ytelsetype?
                               YtelseType ytelseType,
                               FordelType inntektFordel) {
 

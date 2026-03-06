@@ -1,6 +1,5 @@
 package no.nav.vtp.inntektskomponenten;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,66 +9,49 @@ import org.slf4j.LoggerFactory;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.vtp.inntektskomponenten.modell.InntektModellMapper;
+import no.nav.vtp.PersonRepository;
+import no.nav.vtp.inntektskomponenten.modell.InntektMapper;
 
 
 @Path("/inntektskomponenten/v2")
 public class InntektskomponentV2REST {
     private static final Logger LOG = LoggerFactory.getLogger(InntektskomponentV2REST.class);
 
-    private final TestscenarioRepositoryImpl testscenarioRepository;
+    private final PersonRepository personRepository;
 
-    public InntektskomponentV2REST() {
-        testscenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+    public InntektskomponentV2REST(@Context PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
-
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/inntekt")
     public InntektResponse hentInntektlisteBolk(InntektRequest request) {
-
         LOG.info("Henter inntekter for: {}", request.personident());
-
-        var imodell = testscenarioRepository.getInntektYtelseModellFraAktørId(request.personident())
-                .map(InntektYtelseModell::inntektskomponentModell);
-        if (imodell.isEmpty()) {
+        var person = personRepository.hentPerson(request.personident()).inntekt();
+        if (person == null) {
             return new InntektResponse(List.of());
         }
 
-        var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(imodell.get(), request.maanedFom(), request.maanedTom(),
-                request.filter(), request.personident());
-
+        var inntektsinformasjon = InntektMapper.makeInntektsinformasjon(person, request.maanedFom(), request.maanedTom(), request.filter(), request.personident());
         return new InntektResponse(inntektsinformasjon);
-
     }
 
     @POST
     @Path("/inntekt/bulk")
     @Produces(MediaType.APPLICATION_JSON)
     public InntektBulkResponse hentInntektlisteBolk(InntektBulkRequest request) {
-
         LOG.info("Henter inntekter for: {}", request.personident());
-
-        List<InntektBulkResponse.InntektBulk> bulkinntekter = new ArrayList<>();
-        var imodell = testscenarioRepository.getInntektYtelseModellFraAktørId(request.personident())
-                .map(InntektYtelseModell::inntektskomponentModell);
-        if (imodell.isEmpty()) {
+        var person = personRepository.hentPerson(request.personident()).inntekt();
+        if (person == null) {
             return new InntektBulkResponse(List.of());
         }
 
-        for (var f : request.filter()) {
-            var inntektsinformasjon = InntektModellMapper.makeInntektsinformasjon(imodell.get(), request.maanedFom(),
-                    request.maanedTom(), f, request.personident());
-            bulkinntekter.add(new InntektBulkResponse.InntektBulk(f, inntektsinformasjon));
-        }
-
-        return new InntektBulkResponse(bulkinntekter);
-
+        return new InntektBulkResponse(request.filter().stream()
+                .map(f -> new InntektBulkResponse.InntektBulk(f, InntektMapper.makeInntektsinformasjon(person, request.maanedFom(), request.maanedTom(), f, request.personident())))
+                .toList());
     }
 
 
