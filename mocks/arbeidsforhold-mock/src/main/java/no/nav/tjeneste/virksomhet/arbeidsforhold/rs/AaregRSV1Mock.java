@@ -1,5 +1,7 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
+import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.ArbeidsforholdMapper.tilArbeidsforholdtypeAareg;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,8 +25,6 @@ import jakarta.ws.rs.core.UriInfo;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
 import no.nav.vtp.PersonRepository;
 
-import static no.nav.tjeneste.virksomhet.arbeidsforhold.rs.ArbeidsforholdMapper.tilArbeidsforholdtypeAareg;
-
 @Path("aareg-services/api/v1/arbeidstaker")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,7 +39,7 @@ public class AaregRSV1Mock {
     protected static final String ARBEIDSFORHOLDTYPE = "arbeidsforholdtype";
     protected static final String REGELVERK = "regelverk";
 
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public AaregRSV1Mock(@Context PersonRepository personRepository) {
         this.personRepository = personRepository;

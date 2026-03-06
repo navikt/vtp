@@ -1,7 +1,5 @@
 package no.nav.altinn;
 
-import static no.nav.altinn.AltinnRettigheterProxyMock.hentAlleOrgnummre;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +19,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.vtp.PersonRepository;
+import no.nav.vtp.arbeidsforhold.Organisasjon;
+import no.nav.vtp.ident.Orgnummer;
 
 /*
  * Tjeneste for å sjekke om person har tilgang til en .
@@ -40,7 +40,10 @@ public class ArbeidsgiverAltinnTilgangerMock {
     @Operation(description = "Henter alle tilganger en bruker har for de angitte i requesten ressurser.")
     public Response hentTilganger(ArbeidsgiverAltinnTilgangerRequest request) {
         var resurser = hentRessurser(request.filter());
-        var alleOrgnr = hentAlleOrgnummre(personRepository.allePersoner());
+        var alleOrgnr = personRepository.alleRegistrerteOrganisasjoner().stream()
+                .map(Organisasjon::orgnummer)
+                .map(Orgnummer::value)
+                .collect(Collectors.toSet());
         return Response.ok().entity(lagPositivRespons(resurser, alleOrgnr)).build();
     }
 

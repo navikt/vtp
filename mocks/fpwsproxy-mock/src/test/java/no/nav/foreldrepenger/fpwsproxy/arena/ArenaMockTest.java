@@ -36,7 +36,7 @@ class ArenaMockTest {
         personRepository.leggTilPerson(person);
 
         // Act
-        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().value(), now.minusMonths(6), now.plusMonths(6));
         var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
         // Assert
@@ -53,7 +53,7 @@ class ArenaMockTest {
         personRepository.leggTilPerson(person);
 
         // Act
-        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().value(), now.minusMonths(6), now.plusMonths(6));
         var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
         // Assert
@@ -71,7 +71,7 @@ class ArenaMockTest {
         personRepository.leggTilPerson(person);
 
         // Act
-        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().value(), now.minusMonths(6), now.plusMonths(6));
         var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
         // Assert
@@ -86,7 +86,7 @@ class ArenaMockTest {
         personRepository.leggTilPerson(person);
 
         // Act
-        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().value(), now.minusMonths(6), now.plusMonths(6));
         var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
         // Assert
@@ -104,7 +104,7 @@ class ArenaMockTest {
         personRepository.leggTilPerson(person);
 
         // Act
-        var request = new ArenaRequestDto(person.personopplysninger().identifikator().ident(), now.minusMonths(6), now.plusMonths(6));
+        var request = new ArenaRequestDto(person.personopplysninger().identifikator().value(), now.minusMonths(6), now.plusMonths(6));
         var meldekort = fpWsProxyArenaMock.hentMeldekort(request);
 
         // Assert

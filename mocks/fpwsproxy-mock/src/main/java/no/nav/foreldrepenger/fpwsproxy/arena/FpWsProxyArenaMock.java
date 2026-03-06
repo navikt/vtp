@@ -27,7 +27,7 @@ import no.nav.vtp.ytelse.YtelseType;
 public class FpWsProxyArenaMock {
     private static final Logger LOG = LoggerFactory.getLogger(FpWsProxyArenaMock.class);
 
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
 
     public FpWsProxyArenaMock(@Context PersonRepository personRepository) {
         this.personRepository = personRepository;

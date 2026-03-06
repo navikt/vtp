@@ -3,9 +3,9 @@ package no.nav.vtp.inntekt;
 
 import java.time.LocalDate;
 
-import no.nav.vtp.ident.Identifikator;
+import no.nav.vtp.arbeidsforhold.Arbeidsgiver;
 
-public record Inntektsperiode(Identifikator identifikator,
+public record Inntektsperiode(Arbeidsgiver arbeidsgiver,
                               LocalDate fom,
                               LocalDate tom,
                               Integer beløp,

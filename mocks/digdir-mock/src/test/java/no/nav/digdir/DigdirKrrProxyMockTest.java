@@ -25,7 +25,7 @@ class DigdirKrrProxyMockTest {
 
     @Test
     void hentSpråkFraDigdirKrrProxy() {
-        var ident = person.personopplysninger().identifikator().ident();
+        var ident = person.personopplysninger().identifikator().value();
         var response = digdirKrrProxyMock.hentKontaktinformasjon(new DigdirKrrProxyMock.Personidenter(List.of(ident)));
         var kontaktinformasjon = (Kontaktinformasjoner) response.getEntity();
 
