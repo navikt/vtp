@@ -5,26 +5,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Map;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.AuthorizationDetails;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasIntrospectRequest;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasTokenRequest;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+
+import jakarta.ws.rs.core.Response;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.AuthorizationDetails;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasIntrospectRequest;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasTokenRequest;
 
 class TexasRestTjenesteTest {
 
@@ -34,7 +30,6 @@ class TexasRestTjenesteTest {
             .setSkipSignatureVerification()
             .build();
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private TexasRestTjeneste tjeneste;
 
@@ -198,7 +193,7 @@ class TexasRestTjenesteTest {
     }
 
     @Test
-    void shouldVerifyAuthorizationDetailsClaimInToken() throws Exception {
+    void shouldVerifyAuthorizationDetailsClaimInToken() {
         var authDetails = List.of(
                 new AuthorizationDetails(
                         "urn:altinn:resource",
@@ -214,21 +209,20 @@ class TexasRestTjenesteTest {
 
         JwtClaims claims = parseToken(tokenResponse.accessToken());
 
-        // Verify authorization_details is serialized as JSON
-        String authDetailsJson = (String) claims.getClaimValue("authorization_details");
-        assertThat(authDetailsJson).isNotNull();
+        // authorization_details is a proper JSON array — assert directly on the map entries
+        @SuppressWarnings("unchecked")
+        var rawList = (List<Map<String, Object>>) claims.getClaimValue("authorization_details");
+        assertThat(rawList).hasSize(1);
 
-        // Parse back to verify structure
-        List<AuthorizationDetails> parsedDetails = OBJECT_MAPPER.readValue(
-                authDetailsJson,
-                new TypeReference<>() {}
-        );
-        assertThat(parsedDetails).hasSize(1);
-        assertThat(parsedDetails.getFirst().type()).isEqualTo("urn:altinn:resource");
-        assertThat(parsedDetails.getFirst().system_id()).isEqualTo("ske_kravogbetalinger");
-        assertThat(parsedDetails.getFirst().systemuser_id()).containsExactly("urn:altinn:systemuser:12345");
-        assertThat(parsedDetails.getFirst().systemuser_org().authority()).isEqualTo("iso6523-actorid-upis");
-        assertThat(parsedDetails.getFirst().systemuser_org().id()).isEqualTo("0192:111111111");
+        var entry = rawList.getFirst();
+        assertThat(entry.get("type")).isEqualTo("urn:altinn:resource");
+        assertThat(entry.get("system_id")).isEqualTo("ske_kravogbetalinger");
+        assertThat(entry.get("systemuser_id")).isEqualTo(List.of("urn:altinn:systemuser:12345"));
+
+        @SuppressWarnings("unchecked")
+        var org = (Map<String, Object>) entry.get("systemuser_org");
+        assertThat(org.get("authority")).isEqualTo("iso6523-actorid-upis");
+        assertThat(org.get("ID")).isEqualTo("0192:111111111");
     }
 
     @Test
