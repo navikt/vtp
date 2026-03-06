@@ -35,7 +35,7 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
-import no.nav.foreldrepenger.vtp.server.api.scenario.mapper.ny.PersonMappen;
+import no.nav.foreldrepenger.vtp.server.api.scenario.mapper.ny.PersonMapper;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
@@ -104,7 +104,7 @@ public class TestscenarioV2RestTjeneste {
                 .collect(Collectors.toSet());
 
         var personerMapped = personer.stream()
-                .map(p -> PersonMappen.tilPerson(p, nyidenter))
+                .map(p -> PersonMapper.tilPerson(p, nyidenter))
                 .toList();
         personRepository.leggTilPersoner(personerMapped);
 
