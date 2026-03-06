@@ -9,12 +9,12 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public final class MaskinportenOidcTokenGenerator {
@@ -40,16 +40,11 @@ public final class MaskinportenOidcTokenGenerator {
         claims.setAudience("vtp");
         claims.setStringClaim("scope", scope);
         claims.setStringClaim("client_id", "vtp-maskinporten-client");
-        claims.setStringClaim("consumer", "{\"authority\":\"iso6523-actorid-upis\",\"ID\":\"0192:999999999\"}");
+        claims.setClaim("consumer", Map.of("authority", "iso6523-actorid-upis", "ID", "0192:999999999"));
         Optional.ofNullable(resource).ifPresent(r -> claims.setClaim("resource", r));
-        Optional.ofNullable(authorizationDetails).ifPresent(authDetails -> {
-            try {
-                String authDetailsJson = OBJECT_MAPPER.writeValueAsString(authDetails);
-                claims.setStringClaim("authorization_details", authDetailsJson);
-            } catch (JsonProcessingException e) {
-                throw new IllegalStateException("Failed to serialize authorization_details to JSON", e);
-            }
-        });
+        Optional.ofNullable(authorizationDetails).ifPresent(authDetails ->
+            claims.setClaim("authorization_details", OBJECT_MAPPER.convertValue(authDetails, List.class))
+        );
         return claims;
     }
 
