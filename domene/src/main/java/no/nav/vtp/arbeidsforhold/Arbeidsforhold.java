@@ -3,10 +3,7 @@ package no.nav.vtp.arbeidsforhold;
 import java.time.LocalDate;
 import java.util.List;
 
-import no.nav.vtp.ident.Identifikator;
-
-public record Arbeidsforhold(Identifikator identifikator,
-                             String arbeidsforholdId,
+public record Arbeidsforhold(Arbeidsgiver arbeidsgiver,
                              LocalDate ansettelsesperiodeFom,
                              LocalDate ansettelsesperiodeTom,
                              Arbeidsforholdstype arbeidsforholdstype,

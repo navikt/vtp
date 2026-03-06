@@ -72,7 +72,7 @@ public class DigdirKrrProxyMock {
         if (personopplysninger == null) {
             return null;
         }
-        if (personopplysninger.identifikator() != null && personopplysninger.identifikator().ident().equals(fnr)) {
+        if (personopplysninger.identifikator() != null && personopplysninger.identifikator().value().equals(fnr)) {
             var språk = personopplysninger.språk();
             return språk != null ? språk.name() : null;
         }

@@ -1,17 +1,38 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario.mapper.ny;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Adressebeskyttelse;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsavtaleDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsforholdDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsgiver;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaMeldekort;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaSakerDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaVedtakDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.GrunnlagDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.InfotrygdDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseType;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektsperiodeDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.Permisjonstype;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Språk;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
@@ -19,7 +40,9 @@ import no.nav.vtp.Person;
 import no.nav.vtp.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.arbeidsforhold.Arbeidsforhold;
 import no.nav.vtp.arbeidsforhold.Arbeidsforholdstype;
+import no.nav.vtp.arbeidsforhold.Organisasjon;
 import no.nav.vtp.arbeidsforhold.Permisjon;
+import no.nav.vtp.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.vtp.ident.Identifikator;
 import no.nav.vtp.ident.Orgnummer;
 import no.nav.vtp.ident.PersonIdent;
@@ -27,6 +50,7 @@ import no.nav.vtp.inntekt.Inntektsperiode;
 import no.nav.vtp.personopplysninger.Adresser;
 import no.nav.vtp.personopplysninger.Familierelasjon;
 import no.nav.vtp.personopplysninger.GeografiskTilknytning;
+import no.nav.vtp.personopplysninger.Kjønn;
 import no.nav.vtp.personopplysninger.Medlemskap;
 import no.nav.vtp.personopplysninger.Personopplysninger;
 import no.nav.vtp.personopplysninger.Personstatus;
@@ -45,8 +69,8 @@ public class PersonMappen {
 
     public static Person tilPerson(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
         var personopplysninger = tilPersonopplysninger(p, nyidenter);
-        var arbeidsforhold = tilArbeidsforhold(p);
-        var inntekt = tilInntekt(p);
+        var arbeidsforhold = tilArbeidsforhold(p, nyidenter);
+        var inntekt = tilInntekt(p, nyidenter);
         var ytelser = tilYtelser(p);
         return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser);
     }
@@ -73,7 +97,7 @@ public class PersonMappen {
         );
     }
 
-    private static List<Arbeidsforhold> tilArbeidsforhold(PersonDto p) {
+    private static List<Arbeidsforhold> tilArbeidsforhold(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
         if (p.inntektytelse() == null || p.inntektytelse().aareg() == null) {
             return Collections.emptyList();
         }
@@ -81,14 +105,13 @@ public class PersonMappen {
         return Optional.ofNullable(p.inntektytelse().aareg().arbeidsforhold())
                 .orElse(Collections.emptyList())
                 .stream()
-                .map(PersonMappen::tilArbeidsforhold)
-                .collect(Collectors.toList());
+                .map(dto -> tilArbeidsforhold(dto, nyidenter))
+                .toList();
     }
 
-    private static Arbeidsforhold tilArbeidsforhold(ArbeidsforholdDto dto) {
+    private static Arbeidsforhold tilArbeidsforhold(ArbeidsforholdDto dto, Set<TilordnetIdentDto> nyidenter) {
         return new Arbeidsforhold(
-                tilIdentifikator(dto.arbeidsgiver()),
-                dto.arbeidsforholdId(),
+                tilArbeidsgiver(dto.arbeidsgiver(), dto.arbeidsforholdId(), nyidenter),
                 dto.ansettelsesperiodeFom(),
                 dto.ansettelsesperiodeTom(),
                 tilArbeidsforholdstype(dto.arbeidsforholdstype()),
@@ -97,7 +120,20 @@ public class PersonMappen {
         );
     }
 
-    private static List<Inntektsperiode> tilInntekt(PersonDto p) {
+    private static no.nav.vtp.arbeidsforhold.Arbeidsgiver tilArbeidsgiver(Arbeidsgiver arbeidsgiver, String arbeidsforholdId, Set<TilordnetIdentDto> nyidenter) {
+        if (arbeidsgiver instanceof OrganisasjonDto(no.nav.foreldrepenger.vtp.kontrakter.v2.Orgnummer orgnummer, OrganisasjonDto.OrganisasjonsdetaljerDto organisasjonsdetaljer)) {
+            var detaljer = new Organisasjon.Detaljer(organisasjonsdetaljer.navn(), organisasjonsdetaljer.registreringsdato());
+            return new Organisasjon(new Orgnummer(orgnummer.value()), arbeidsforholdId, detaljer);
+        }
+        var ident = nyidenter.stream()
+                .filter(t -> t.id().equals(((no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver) arbeidsgiver).uuid()))
+                .findFirst()
+                .orElseThrow();
+
+        return new PrivatArbeidsgiver(new PersonIdent(ident.fnr()));
+    }
+
+    private static List<Inntektsperiode> tilInntekt(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
         if (p.inntektytelse() == null || p.inntektytelse().inntektskomponent() == null) {
             return Collections.emptyList();
         }
@@ -105,13 +141,13 @@ public class PersonMappen {
         return Optional.ofNullable(p.inntektytelse().inntektskomponent().inntektsperioder())
                 .orElse(Collections.emptyList())
                 .stream()
-                .map(PersonMappen::tilInntektsperiode)
-                .collect(Collectors.toList());
+                .map(dto -> tilInntektsperiode(dto, nyidenter))
+                .toList();
     }
 
-    private static Inntektsperiode tilInntektsperiode(InntektsperiodeDto dto) {
+    private static Inntektsperiode tilInntektsperiode(InntektsperiodeDto dto, Set<TilordnetIdentDto> nyidenter) {
         return new Inntektsperiode(
-                tilIdentifikator(dto.arbeidsgiver()),
+                tilArbeidsgiver(dto.arbeidsgiver(), null, nyidenter),
                 dto.fom(),
                 dto.tom(),
                 dto.beløp(),
@@ -126,7 +162,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
 
-        var ytelser = new java.util.ArrayList<Ytelse>();
+        var ytelser = new ArrayList<Ytelse>();
 
         // Map Arena ytelser
         if (p.inntektytelse().arena() != null && p.inntektytelse().arena().saker() != null) {
@@ -146,22 +182,22 @@ public class PersonMappen {
         return ytelser;
     }
 
-    private static List<Ytelse> tilYtelserFraArena(no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaDto arena) {
+    private static List<Ytelse> tilYtelserFraArena(ArenaDto arena) {
         return arena.saker().stream()
                 .map(sak -> tilYtelseFraArenaVedtak(sak.tema(), sak.vedtak().getFirst()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    private static Ytelse tilYtelseFraArenaVedtak(no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaSakerDto.YtelseTema tema,
-                                                   no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaVedtakDto vedtak) {
+    private static Ytelse tilYtelseFraArenaVedtak(ArenaSakerDto.YtelseTema tema,
+                                                  ArenaVedtakDto vedtak) {
         var ytelseType = tilYtelseTypeFraArenaTema(tema);
 
         // Calculate total utbetalt from meldekort
         Integer totalUtbetalt = null;
         if (vedtak.meldekort() != null && !vedtak.meldekort().isEmpty()) {
             totalUtbetalt = vedtak.meldekort().stream()
-                    .map(no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaMeldekort::beløp)
-                    .filter(java.util.Objects::nonNull)
+                    .map(ArenaMeldekort::beløp)
+                    .filter(Objects::nonNull)
                     .reduce(0, Integer::sum);
         }
 
@@ -175,29 +211,29 @@ public class PersonMappen {
         );
     }
 
-    private static no.nav.vtp.ytelse.YtelseType tilYtelseTypeFraArenaTema(no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaSakerDto.YtelseTema tema) {
+    private static YtelseType tilYtelseTypeFraArenaTema(ArenaSakerDto.YtelseTema tema) {
         return switch (tema) {
-            case AAP -> no.nav.vtp.ytelse.YtelseType.ARBEIDSAVKLARINGSPENGER;
-            case DAG -> no.nav.vtp.ytelse.YtelseType.DAGPENGER;
+            case AAP -> YtelseType.ARBEIDSAVKLARINGSPENGER;
+            case DAG -> YtelseType.DAGPENGER;
             default -> throw new IllegalStateException("Ikke støttet ytelse i arena!");
         };
     }
 
-    private static List<Ytelse> tilYtelserFraInfotrygd(no.nav.foreldrepenger.vtp.kontrakter.v2.InfotrygdDto infotrygd) {
+    private static List<Ytelse> tilYtelserFraInfotrygd(InfotrygdDto infotrygd) {
         return infotrygd.ytelser().stream()
                 .map(PersonMappen::tilYtelseFraInfotrygdGrunnlag)
                 .collect(Collectors.toList());
     }
 
-    private static Ytelse tilYtelseFraInfotrygdGrunnlag(no.nav.foreldrepenger.vtp.kontrakter.v2.GrunnlagDto grunnlag) {
+    private static Ytelse tilYtelseFraInfotrygdGrunnlag(GrunnlagDto grunnlag) {
         var ytelseType = tilYtelseTypeFraInfotrygdYtelse(grunnlag.ytelse());
 
         // Calculate total utbetalingsgrad from vedtak
         Integer totalUtbetalingsgrad = null;
         if (grunnlag.vedtak() != null && !grunnlag.vedtak().isEmpty()) {
             var avgUtbetalingsgrad = grunnlag.vedtak().stream()
-                    .map(no.nav.foreldrepenger.vtp.kontrakter.v2.GrunnlagDto.Vedtak::utbetalingsgrad)
-                    .filter(java.util.Objects::nonNull)
+                    .map(GrunnlagDto.Vedtak::utbetalingsgrad)
+                    .filter(Objects::nonNull)
                     .mapToInt(Integer::intValue)
                     .average();
             totalUtbetalingsgrad = avgUtbetalingsgrad.isPresent() ? (int) avgUtbetalingsgrad.getAsDouble() : null;
@@ -213,7 +249,7 @@ public class PersonMappen {
         );
     }
 
-    private static no.nav.vtp.ytelse.YtelseType tilYtelseTypeFraInfotrygdYtelse(no.nav.foreldrepenger.vtp.kontrakter.v2.GrunnlagDto.Ytelse ytelse) {
+    private static YtelseType tilYtelseTypeFraInfotrygdYtelse(GrunnlagDto.Ytelse ytelse) {
         return switch (ytelse) {
             case SP -> YtelseType.SYKEPENGER;
             default -> throw new IllegalStateException("Ikke støttet ytelse!");
@@ -235,17 +271,17 @@ public class PersonMappen {
         };
     }
 
-    private static no.nav.vtp.personopplysninger.Kjønn tilKjønn(no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn kjønn) {
+    private static Kjønn tilKjønn(no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn kjønn) {
         if (kjønn == null) {
             return null;
         }
         return switch (kjønn) {
-            case M -> no.nav.vtp.personopplysninger.Kjønn.M;
-            case K -> no.nav.vtp.personopplysninger.Kjønn.K;
+            case M -> Kjønn.M;
+            case K -> Kjønn.K;
         };
     }
 
-    private static GeografiskTilknytning tilGeografiskTilknytning(no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto dto) {
+    private static GeografiskTilknytning tilGeografiskTilknytning(GeografiskTilknytningDto dto) {
         if (dto == null) {
             return null;
         }
@@ -256,7 +292,7 @@ public class PersonMappen {
     }
 
     private static GeografiskTilknytning.GeografiskTilknytningType tilGeografiskTilknytningType(
-            no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto.GeografiskTilknytningType type) {
+            GeografiskTilknytningDto.GeografiskTilknytningType type) {
         if (type == null) {
             return null;
         }
@@ -267,7 +303,7 @@ public class PersonMappen {
         };
     }
 
-    private static List<Familierelasjon> tilFamilierelasjoner(List<no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto> dtos) {
+    private static List<Familierelasjon> tilFamilierelasjoner(List<FamilierelasjonModellDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -276,14 +312,14 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static Familierelasjon tilFamilierelasjon(no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto dto) {
+    private static Familierelasjon tilFamilierelasjon(FamilierelasjonModellDto dto) {
         return new Familierelasjon(
                 tilRelasjon(dto.relasjon()),
                 new PersonIdent(dto.relatertTilId().toString())
         );
     }
 
-    private static Familierelasjon.Relasjon tilRelasjon(no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto.Relasjon relasjon) {
+    private static Familierelasjon.Relasjon tilRelasjon(FamilierelasjonModellDto.Relasjon relasjon) {
         if (relasjon == null) {
             return null;
         }
@@ -297,7 +333,7 @@ public class PersonMappen {
         };
     }
 
-    private static List<Statsborgerskap> tilStatsborgerskap(List<no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto> dtos) {
+    private static List<Statsborgerskap> tilStatsborgerskap(List<StatsborgerskapDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -306,7 +342,7 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static List<Sivilstand> tilSivilstand(List<no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto> dtos) {
+    private static List<Sivilstand> tilSivilstand(List<SivilstandDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -315,7 +351,7 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static Sivilstand tilSivilstand(no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto dto) {
+    private static Sivilstand tilSivilstand(SivilstandDto dto) {
         return new Sivilstand(
                 tilSivilstander(dto.sivilstand()),
                 dto.fom(),
@@ -323,7 +359,7 @@ public class PersonMappen {
         );
     }
 
-    private static Sivilstand.Sivilstander tilSivilstander(no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto.Sivilstander sivilstand) {
+    private static Sivilstand.Sivilstander tilSivilstander(SivilstandDto.Sivilstander sivilstand) {
         if (sivilstand == null) {
             return null;
         }
@@ -342,7 +378,7 @@ public class PersonMappen {
         };
     }
 
-    private static List<Personstatus> tilPersonstatus(List<no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto> dtos) {
+    private static List<Personstatus> tilPersonstatus(List<PersonstatusDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -351,7 +387,7 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static Personstatus tilPersonstatus(no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto dto) {
+    private static Personstatus tilPersonstatus(PersonstatusDto dto) {
         return new Personstatus(
                 tilPersonstatuser(dto.personstatus()),
                 dto.fom(),
@@ -359,7 +395,7 @@ public class PersonMappen {
         );
     }
 
-    private static Personstatus.Personstatuser tilPersonstatuser(no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto.Personstatuser status) {
+    private static Personstatus.Personstatuser tilPersonstatuser(PersonstatusDto.Personstatuser status) {
         if (status == null) {
             return null;
         }
@@ -378,7 +414,7 @@ public class PersonMappen {
         };
     }
 
-    private static List<Medlemskap> tilMedlemskap(List<no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto> dtos) {
+    private static List<Medlemskap> tilMedlemskap(List<MedlemskapDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -387,7 +423,7 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static Medlemskap tilMedlemskap(no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto dto) {
+    private static Medlemskap tilMedlemskap(MedlemskapDto dto) {
         return new Medlemskap(
                 dto.fom(),
                 dto.tom(),
@@ -396,7 +432,7 @@ public class PersonMappen {
         );
     }
 
-    private static Medlemskap.DekningsType tilDekningsType(no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto.DekningsType type) {
+    private static Medlemskap.DekningsType tilDekningsType(MedlemskapDto.DekningsType type) {
         if (type == null) {
             return null;
         }
@@ -406,15 +442,15 @@ public class PersonMappen {
         };
     }
 
-    private static Adresser tilAdresser(List<no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto> dtos,
-                                        no.nav.foreldrepenger.vtp.kontrakter.v2.Adressebeskyttelse adressebeskyttelse) {
+    private static Adresser tilAdresser(List<AdresseDto> dtos,
+                                        Adressebeskyttelse adressebeskyttelse) {
         // TODO: Implement full Adresse mapping
         // For now, return empty adresser
         return new Adresser(Collections.emptyList(), tilAdressebeskyttelse(adressebeskyttelse));
     }
 
     private static no.nav.vtp.personopplysninger.Adressebeskyttelse tilAdressebeskyttelse(
-            no.nav.foreldrepenger.vtp.kontrakter.v2.Adressebeskyttelse beskyttelse) {
+            Adressebeskyttelse beskyttelse) {
         if (beskyttelse == null) {
             return null;
         }
@@ -425,7 +461,7 @@ public class PersonMappen {
         };
     }
 
-    private static Identifikator tilIdentifikator(no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsgiver arbeidsgiver) {
+    private static Identifikator tilIdentifikator(Arbeidsgiver arbeidsgiver) {
         if (arbeidsgiver == null) {
             return null;
         }
@@ -448,7 +484,7 @@ public class PersonMappen {
         };
     }
 
-    private static List<Arbeidsavtale> tilArbeidsavtaler(List<no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsavtaleDto> dtos) {
+    private static List<Arbeidsavtale> tilArbeidsavtaler(List<ArbeidsavtaleDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -457,7 +493,7 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static Arbeidsavtale tilArbeidsavtale(no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsavtaleDto dto) {
+    private static Arbeidsavtale tilArbeidsavtale(ArbeidsavtaleDto dto) {
         return new Arbeidsavtale(
                 dto.avtaltArbeidstimerPerUke(),
                 dto.stillingsprosent(),
@@ -468,7 +504,7 @@ public class PersonMappen {
         );
     }
 
-    private static List<Permisjon> tilPermisjoner(List<no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto> dtos) {
+    private static List<Permisjon> tilPermisjoner(List<PermisjonDto> dtos) {
         if (dtos == null) {
             return Collections.emptyList();
         }
@@ -477,7 +513,7 @@ public class PersonMappen {
                 .collect(Collectors.toList());
     }
 
-    private static Permisjon tilPermisjon(no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto dto) {
+    private static Permisjon tilPermisjon(PermisjonDto dto) {
         return new Permisjon(
                 dto.fomGyldighetsperiode(),
                 dto.tomGyldighetsperiode(),
@@ -486,7 +522,7 @@ public class PersonMappen {
         );
     }
 
-    private static Permisjon.Permisjonstype tilPermisjonstype(no.nav.foreldrepenger.vtp.kontrakter.v2.Permisjonstype type) {
+    private static Permisjon.Permisjonstype tilPermisjonstype(Permisjonstype type) {
         if (type == null) {
             return null;
         }
@@ -516,7 +552,7 @@ public class PersonMappen {
         };
     }
 
-    private static Inntektsperiode.YtelseType tilYtelseType(no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseType type) {
+    private static Inntektsperiode.YtelseType tilYtelseType(InntektYtelseType type) {
         if (type == null) {
             return null;
         }

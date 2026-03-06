@@ -1,19 +1,31 @@
 package no.nav.vtp;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.neovisionaries.i18n.CountryCode;
+
 import no.nav.vtp.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.arbeidsforhold.Arbeidsforhold;
 import no.nav.vtp.arbeidsforhold.Arbeidsforholdstype;
+import no.nav.vtp.arbeidsforhold.Organisasjon;
 import no.nav.vtp.ident.Orgnummer;
 import no.nav.vtp.ident.PersonIdent;
 import no.nav.vtp.inntekt.Inntektsperiode;
-import no.nav.vtp.personopplysninger.*;
+import no.nav.vtp.personopplysninger.Adresse;
+import no.nav.vtp.personopplysninger.Adressebeskyttelse;
+import no.nav.vtp.personopplysninger.Adresser;
+import no.nav.vtp.personopplysninger.Familierelasjon;
+import no.nav.vtp.personopplysninger.GeografiskTilknytning;
+import no.nav.vtp.personopplysninger.Kjønn;
+import no.nav.vtp.personopplysninger.Personopplysninger;
+import no.nav.vtp.personopplysninger.Personstatus;
+import no.nav.vtp.personopplysninger.Sivilstand;
+import no.nav.vtp.personopplysninger.Språk;
+import no.nav.vtp.personopplysninger.Statsborgerskap;
 import no.nav.vtp.ytelse.Beregningsgrunnlag;
 import no.nav.vtp.ytelse.Ytelse;
 import no.nav.vtp.ytelse.YtelseType;
-
-import java.time.LocalDate;
-import java.util.List;
 
 public class PersonBuilder {
 
@@ -123,8 +135,7 @@ public class PersonBuilder {
     private static List<Arbeidsforhold> lagArbeidsforhold() {
         // ARB001-001 – ordinært, aktiv, fom now()-P4Y
         var arb1 = new Arbeidsforhold(
-                new Orgnummer(ORGNR_ARBEIDSGIVER),
-                "ARB001-001",
+                new Organisasjon(new Orgnummer(ORGNR_ARBEIDSGIVER), "ARB001-001", null),
                 LocalDate.now().minusYears(4),
                 null,
                 Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD,
@@ -134,8 +145,7 @@ public class PersonBuilder {
 
         // ARB001-002 – ordinært, avsluttet, fom now()-P4Y tom now()-P2Y
         var arb2 = new Arbeidsforhold(
-                new Orgnummer(ORGNR_ARBEIDSGIVER),
-                "ARB001-002",
+                new Organisasjon(new Orgnummer(ORGNR_ARBEIDSGIVER), "ARB001-002", null),
                 LocalDate.now().minusYears(4),
                 LocalDate.now().minusYears(2),
                 Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD,
@@ -145,8 +155,7 @@ public class PersonBuilder {
 
         // ARB001-003 – frilanser, avsluttet, fom now()-P4Y tom now()-P2Y
         var arb3 = new Arbeidsforhold(
-                new Orgnummer(ORGNR_FRILANS),
-                "ARB001-003",
+                new Organisasjon(new Orgnummer(ORGNR_FRILANS), "ARB001-003", null),
                 LocalDate.now().minusYears(4),
                 LocalDate.now().minusYears(2),
                 Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER,
@@ -162,7 +171,7 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static List<Inntektsperiode> lagInntekt() {
         return List.of(new Inntektsperiode(
-                new Orgnummer(ORGNR_FRILANS),
+                new Organisasjon(new Orgnummer(ORGNR_FRILANS), "ARB001-003", null),
                 LocalDate.now().minusYears(2),
                 LocalDate.now(),
                 45_000,

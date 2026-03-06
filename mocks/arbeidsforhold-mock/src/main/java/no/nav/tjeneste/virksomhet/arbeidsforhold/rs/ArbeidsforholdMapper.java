@@ -1,21 +1,21 @@
 package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
+import java.util.List;
+
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdIdNav;
 import no.nav.vtp.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.arbeidsforhold.Arbeidsforhold;
 import no.nav.vtp.arbeidsforhold.Arbeidsforholdstype;
+import no.nav.vtp.arbeidsforhold.Organisasjon;
 import no.nav.vtp.arbeidsforhold.Permisjon;
-import no.nav.vtp.ident.Orgnummer;
-import no.nav.vtp.ident.PersonIdent;
-
-import java.util.List;
+import no.nav.vtp.arbeidsforhold.PrivatArbeidsgiver;
 
 public class ArbeidsforholdMapper {
     private ArbeidsforholdMapper() {}
 
     public static ArbeidsforholdRS tilArbeidsforholdRS(Arbeidsforhold arbeidsforhold) {
         return new ArbeidsforholdRS(
-                arbeidsforhold.arbeidsforholdId(),
+                arbeidsforhold.arbeidsgiver() instanceof Organisasjon organisasjon ? organisasjon.arbeidsforholdId() : null,
                 ArbeidsforholdIdNav.next(),
                 opplysningspliktFra(arbeidsforhold),
                 new AnsettelsesperiodeRS(new PeriodeRS(arbeidsforhold.ansettelsesperiodeFom(), arbeidsforhold.ansettelsesperiodeTom())),
@@ -78,11 +78,11 @@ public class ArbeidsforholdMapper {
     }
 
     private static OpplysningspliktigArbeidsgiverRS opplysningspliktFra(Arbeidsforhold arbeidsforhold) {
-        if (arbeidsforhold.identifikator() instanceof Orgnummer(String ident)) {
-            return new OpplysningspliktigArbeidsgiverRS(OpplysningspliktigArbeidsgiverRS.Type.Organisasjon, ident, null, null);
+        if (arbeidsforhold.arbeidsgiver() instanceof Organisasjon organisasjon) {
+            return new OpplysningspliktigArbeidsgiverRS(OpplysningspliktigArbeidsgiverRS.Type.Organisasjon, organisasjon.orgnummer().value(), null, null);
         }
-        var personIdent = (PersonIdent) arbeidsforhold.identifikator();
-        return new OpplysningspliktigArbeidsgiverRS(OpplysningspliktigArbeidsgiverRS.Type.Person, null, personIdent.aktørId(),
-                personIdent.ident());
+        var privatArbeidsgiver = (PrivatArbeidsgiver) arbeidsforhold.arbeidsgiver();
+        return new OpplysningspliktigArbeidsgiverRS(OpplysningspliktigArbeidsgiverRS.Type.Person, null, privatArbeidsgiver.ident().aktørId(),
+                privatArbeidsgiver.ident().fnr());
     }
 }
