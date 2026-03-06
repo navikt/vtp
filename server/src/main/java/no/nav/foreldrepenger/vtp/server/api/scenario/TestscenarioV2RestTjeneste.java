@@ -35,12 +35,14 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
+import no.nav.foreldrepenger.vtp.server.api.scenario.mapper.ny.PersonMappen;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.inntektkomponent.InntektskomponentModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.vtp.PersonRepository;
 
 
 @Tag(name = "Testscenario")
@@ -52,12 +54,16 @@ public class TestscenarioV2RestTjeneste {
     @Context
     private TestscenarioRepository testscenarioRepository;
 
+    @Context
+    private PersonRepository personRepository;
+
     public TestscenarioV2RestTjeneste() {
         //CDI
     }
 
-    public TestscenarioV2RestTjeneste(TestscenarioRepository testscenarioRepository) {
+    public TestscenarioV2RestTjeneste(TestscenarioRepository testscenarioRepository, PersonRepository personRepository) {
         this.testscenarioRepository = testscenarioRepository;
+        this.personRepository = personRepository;
     }
 
     @POST
@@ -96,6 +102,11 @@ public class TestscenarioV2RestTjeneste {
         var nyidenter = mappedePersoner.entrySet().stream()
                 .map(e -> new TilordnetIdentDto(e.getKey(), e.getValue().getIdent(), e.getValue().getAktørIdent()))
                 .collect(Collectors.toSet());
+
+        var personerMapped = personer.stream()
+                .map(p -> PersonMappen.tilPerson(p, nyidenter))
+                .toList();
+        personRepository.leggTilPersoner(personerMapped);
 
         logger.info("Initialisert testscenario med uuid {}", testscenario.getId());
         return Response.status(Response.Status.OK)

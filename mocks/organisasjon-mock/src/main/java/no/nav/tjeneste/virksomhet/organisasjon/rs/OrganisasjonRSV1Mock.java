@@ -1,7 +1,16 @@
 package no.nav.tjeneste.virksomhet.organisasjon.rs;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -11,17 +20,10 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
+import no.nav.vtp.PersonRepository;
+import no.nav.vtp.arbeidsforhold.Organisasjon;
+import no.nav.vtp.ident.Orgnummer;
 
 @Path("ereg/api/v1/organisasjon")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,59 +33,85 @@ public class OrganisasjonRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonRSV1Mock.class);
 
-
     @Context
-    private TestscenarioBuilderRepository scenarioRepository;
+    private PersonRepository personRepository;
 
 
-    @SuppressWarnings("unused")
     @GET
     @Path("/{orgnummer}")
     @Operation(description = "Henter adresse informasjon for et organisasjonsnummer")
-    @Parameters({
-            @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY),
-            @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
-    })
+    @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY)
+    @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
     public OrganisasjonResponse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
                                                         @Context HttpHeaders httpHeaders,
                                                         @Context UriInfo uriInfo) {
-        if (orgnummer != null) {
-            LOG.info("EREG REST {}", orgnummer);
-            Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
-            if (organisasjonModell.isPresent()) {
-                OrganisasjonModell modell = organisasjonModell.get();
-                return new OrganisasjonResponse(modell);
-            } else {
-                return null;
-            }
-        } else {
+        if (orgnummer == null) {
             throw new IllegalArgumentException("Orgnummer ikke angitt");
         }
+
+        LOG.info("EREG REST {}", orgnummer);
+        return personRepository.hentInformasjonOmArbeidsforhold(new Orgnummer(orgnummer))
+                .map(OrganisasjonRSV1Mock::tilOrganisasjonRespons)
+                .orElse(null);
     }
 
-    @SuppressWarnings("unused")
     @GET
     @Path("/{orgnummer}/noekkelinfo")
     @Operation(description = "Henter noekkelinformasjon for et organisasjonsnummer")
-    @Parameters({
-            @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY),
-            @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
-    })
+    @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY)
+    @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
     public OrganisasjonNoekkelinfo hentOrganisasjonNoekkelinfo(@PathParam("orgnummer") String orgnummer,
                                                                @Context HttpHeaders httpHeaders,
                                                                @Context UriInfo uriInfo) {
-        if (orgnummer != null) {
-            LOG.info("EREG REST noekkelinfo {}", orgnummer);
-            Optional<OrganisasjonModell> organisasjonModell = scenarioRepository.getOrganisasjon(orgnummer);
-            if (organisasjonModell.isPresent()) {
-                OrganisasjonModell modell = organisasjonModell.get();
-                return new OrganisasjonNoekkelinfo(modell);
-            } else {
-                return null;
-            }
-        } else {
+        if (orgnummer == null) {
             throw new IllegalArgumentException("Orgnummer ikke angitt");
         }
+
+        LOG.info("EREG REST noekkelinfo {}", orgnummer);
+        return personRepository.hentInformasjonOmArbeidsforhold(new Orgnummer(orgnummer))
+                .map(OrganisasjonRSV1Mock::tilNøkkelinfo)
+                .orElse(null);
+    }
+
+
+    private static OrganisasjonResponse tilOrganisasjonRespons(Organisasjon organisasjon) {
+        var info = organisasjon.informasjon();
+        var organisasjonDetaljer = new OrganisasjonResponse.OrganisasjonDetaljer(
+                Optional.ofNullable(info.registreringsdato())
+                        .map(LocalDate::atStartOfDay)
+                        .orElse(LocalDateTime.now().minusYears(1)),
+                null,
+                null,
+                null
+        );
+        return new OrganisasjonResponse(
+                organisasjon.identifikator(),
+                OrganisasjonstypeEReg.VIRKSOMHET,
+                tilNavn(organisasjon.informasjon().navn()),
+                organisasjonDetaljer
+        );
+    }
+
+    private static OrganisasjonResponse.Navn tilNavn(String navn) {
+        return new OrganisasjonResponse.Navn(
+                navn,
+                navn,
+                null,
+                null,
+                null,
+                null
+        );
+    }
+
+    private static OrganisasjonNoekkelinfo tilNøkkelinfo(Organisasjon organisasjon) {
+        var info = organisasjon.informasjon();
+        return new OrganisasjonNoekkelinfo(
+                null,
+                organisasjon.identifikator(),
+                OrganisasjonstypeEReg.VIRKSOMHET.getKode(),
+                tilNavn(info.navn()),
+                null
+        );
     }
 }
 

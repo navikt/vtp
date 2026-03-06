@@ -1,6 +1,14 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario.mapper;
 
+import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import com.neovisionaries.i18n.CountryCode;
+
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Adressebeskyttelse;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
@@ -36,13 +44,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SivilstandModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.StatsborgerskapModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.UstrukturertAdresseModell;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static no.nav.foreldrepenger.fpwsproxy.UtilKlasse.safeStream;
 
 public class PersonopplysningModellMapper {
 
@@ -102,7 +103,7 @@ public class PersonopplysningModellMapper {
         personModell.setId(person.id());
         personModell.setFødselsdato(person.fødselsdato());
         personModell.setDødsdato(person.dødsdato());
-        personModell.setSpråk(person.språk());
+        personModell.setSpråk(person.språk() != null ? person.språk().name() : "NB");
         personModell.setKjønn(tilKjønn(person.kjønn()));
         personModell.setGeografiskTilknytning(tilGeografiskTilknytningModell(person.geografiskTilknytning()));
         personModell.setStatsborgerskap(tilStatsborgerskap(person.statsborgerskap()));

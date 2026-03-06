@@ -10,11 +10,10 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.vtp.PersonRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,10 +26,10 @@ public class DigdirKrrProxyMock {
 
     public static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
 
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private final PersonRepository personRepository;
 
-    public DigdirKrrProxyMock() {
-        scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+
+    public DigdirKrrProxyMock(@Context PersonRepository personRepository) {this.personRepository = personRepository;
     }
 
     @Deprecated(forRemoval = true)
@@ -70,19 +69,19 @@ public class DigdirKrrProxyMock {
     }
 
     private String hentUtForetrukketSpråkFraBruker(String fnr) {
-        var personIndeks = scenarioRepository.getPersonIndeks();
-        var personopplysninger = personIndeks.finnPersonopplysningerByIdent(fnr);
-
+        var person = personRepository.hentPerson(fnr);
+        if (person == null) {
+            return null;
+        }
+        var personopplysninger = person.personopplysninger();
         if (personopplysninger == null) {
             return null;
         }
-        if (personopplysninger.getSøker() != null && personopplysninger.getSøker().getIdent().equals(fnr)) {
-            return personopplysninger.getSøker().getSpråk2Bokstaver();
-        } else if (personopplysninger.getAnnenPart() != null && personopplysninger.getAnnenPart().getIdent().equals(fnr)) {
-            return personopplysninger.getAnnenPart().getSpråk2Bokstaver();
-        } else {
-            return null;
+        if (personopplysninger.identifikator() != null && personopplysninger.identifikator().value().equals(fnr)) {
+            var språk = personopplysninger.språk();
+            return språk != null ? språk.name() : null;
         }
+        return null;
     }
 
     public record Personidenter(List<@NotNull String> personidenter) {
