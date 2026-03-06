@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
+import no.nav.foreldrepenger.vtp.server.auth.rest.JwtUtil;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureOidcTokenGenerator;
@@ -28,6 +29,9 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 public class TexasRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TexasRestTjeneste.class);
 
+    private static final String APP = "app";
+    private static final String IDTYP = "idtyp";
+
     protected static final String TJENESTE_PATH = "/texas"; //NOSONAR
 
     @POST
@@ -35,15 +39,14 @@ public class TexasRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response token(TexasTokenRequest tokenRequest) {
+        Objects.requireNonNull(tokenRequest.identity_provider(), "provider must be provided");
         if (Boolean.TRUE.equals(tokenRequest.skip_cache())) {
             LOG.debug("skip_cache is accepted but ignored by Texas mock /api/v1/token");
         }
 
-        Objects.requireNonNull(tokenRequest.identity_provider(), "provider must be provided");
-
         return switch (tokenRequest.identity_provider()) {
             case Issuers.ENTRA_ID -> {
-                String token = AzureOidcTokenGenerator.azureClientCredentialsToken(
+                var token = AzureOidcTokenGenerator.azureClientCredentialsToken(
                         randomUUID().toString(), Issuers.ENTRA_ID.getIssuer()
                 );
                 yield Response.ok(new Oauth2AccessTokenResponse(null, null, token, 3600, "Bearer")).build();
@@ -65,6 +68,11 @@ public class TexasRestTjeneste {
                                   TexasExchangeRequest tokenRequest) throws JoseException {
         return switch (tokenRequest.identity_provider()) {
             case Issuers.ENTRA_ID: {
+                var claims = JwtUtil.getClaims(tokenRequest.user_token());
+                if (isAzureClientCredentials(claims)) {
+                    LOG.debug("Token exchange for Azure client credentials token");
+                    yield AzureAdRestTjeneste.processTokenRequest("client_credentials", null, tokenRequest.user_token(), null);
+                }
                 yield AzureAdRestTjeneste.processTokenRequest("urn:ietf:params:oauth:grant-type:jwt-bearer", null, tokenRequest.user_token(), null);
             }
             case Issuers.TOKENX: {
@@ -72,6 +80,10 @@ public class TexasRestTjeneste {
             }
             case Issuers.IDPORTEN, Issuers.MASKINPORTEN: throw new NotImplementedException();
         };
+    }
+
+    private boolean isAzureClientCredentials(JwtClaims claims) {
+        return Objects.equals(APP, JwtUtil.getStringClaim(claims, IDTYP));
     }
 
     /**
@@ -89,5 +101,76 @@ public class TexasRestTjeneste {
     public Response hentToken(@Context HttpServletRequest req,
                               TexasExchangeRequest tokenRequest) throws JoseException {
         return tokenExchange(req, tokenRequest);
+    }
+
+    @POST
+    @Path("/api/v1/introspect")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Texas mock for token introspection")
+    public Response introspect(TexasIntrospectRequest request) {
+        Objects.requireNonNull(request.identity_provider(), "identity_provider must be provided");
+        Objects.requireNonNull(request.token(), "token must be provided");
+
+        JwtClaims claims;
+        try {
+            claims = JwtUtil.getClaims(request.token());
+        } catch (Exception e) {
+            LOG.debug("Failed to parse JWT token", e);
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: malformed JWT")).build();
+        }
+
+        try {
+            return validateAndBuildResponse(claims, request.identity_provider());
+        } catch (MalformedClaimException e) {
+            LOG.debug("Malformed claim in JWT token", e);
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: malformed claims")).build();
+        }
+    }
+
+    private Response validateAndBuildResponse(JwtClaims claims, Issuers identityProvider) throws MalformedClaimException {
+        // Validate iss
+        var issuer = claims.getIssuer();
+        if (issuer == null || issuer.isBlank()) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: missing iss claim")).build();
+        }
+        if (!issuer.contains(identityProvider.getIssuer())) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: issuer mismatch")).build();
+        }
+
+        // Validate iat - must exist and be in the past
+        var iat = claims.getIssuedAt();
+        if (iat == null) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: missing iat claim")).build();
+        }
+        if (iat.isAfter(NumericDate.now())) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: iat is in the future")).build();
+        }
+
+        // Validate exp - must exist and be in the future
+        var exp = claims.getExpirationTime();
+        if (exp == null) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: missing exp claim")).build();
+        }
+        if (exp.isBefore(NumericDate.now())) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: ExpiredSignature")).build();
+        }
+
+        // Validate aud - must be present for all providers except Maskinporten
+        if (identityProvider != Issuers.MASKINPORTEN) {
+            var audience = claims.getAudience();
+            if (audience == null || audience.isEmpty()) {
+                return Response.ok(TexasIntrospectResponse.inactive("invalid token: missing aud claim")).build();
+            }
+        }
+
+        // Validate nbf - if present, must be in the past
+        var nbf = claims.getNotBefore();
+        if (nbf != null && nbf.isAfter(NumericDate.now())) {
+            return Response.ok(TexasIntrospectResponse.inactive("invalid token: token not yet valid (nbf)")).build();
+        }
+
+        // Token is valid, build the response with all original claims
+        return Response.ok(TexasIntrospectResponse.active(claims)).build();
     }
 }
