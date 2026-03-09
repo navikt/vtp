@@ -119,7 +119,8 @@ public class AdresseAdapter {
                     }
                     if (a instanceof PostboksadresseModell postboksadresseModell) {
                         var postboksadresse = fraPostbokadresse(postboksadresseModell);
-                        var kontaktadresse = new Kontaktadresse.Builder().setPostboksadresse(postboksadresse).build();
+                        var kontaktadresse = new Kontaktadresse.Builder()
+                                .setPostboksadresse(postboksadresse).build();
                         pers.setKontaktadresse(List.of(kontaktadresse));
                         break;
                     }

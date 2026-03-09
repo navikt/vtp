@@ -12,11 +12,11 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.pdl.graphql.GraphQLRequest;
+import no.nav.vtp.PersonRepository;
 
 @Path("/api/pdl")
 public class PdlMock {
@@ -25,17 +25,8 @@ public class PdlMock {
     private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
     private final PdlGraphqlTjeneste graphqlTjeneste;
 
-    public PdlMock() {
-        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(buildTestscenarioRepository());
-    }
-
-    // Kun for test
-    PdlMock(TestscenarioBuilderRepository scenarioBuilderRepository) {
-        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(scenarioBuilderRepository);
-    }
-
-    private TestscenarioBuilderRepository buildTestscenarioRepository() {
-        return TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+    public PdlMock(@Context TestscenarioBuilderRepository scenarioBuilderRepository, @Context PersonRepository personRepository) {
+        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(scenarioBuilderRepository, personRepository);
     }
 
     @POST

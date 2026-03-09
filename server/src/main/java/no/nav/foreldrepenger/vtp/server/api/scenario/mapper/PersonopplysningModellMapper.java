@@ -196,8 +196,6 @@ public class PersonopplysningModellMapper {
         var type = switch (a.adresseType()) {
             case BOSTEDSADRESSE -> AdresseType.BOSTEDSADRESSE;
             case POSTADRESSE -> AdresseType.POSTADRESSE;
-            case MIDLERTIDIG_POSTADRESSE -> AdresseType.MIDLERTIDIG_POSTADRESSE;
-            case UKJENT_ADRESSE -> AdresseType.UKJENT_ADRESSE;
         };
         if (a.land().equals(CountryCode.NO)) {
             return norskGateAdresse(a, type);
