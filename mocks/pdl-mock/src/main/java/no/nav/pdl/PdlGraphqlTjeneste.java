@@ -24,6 +24,7 @@ import no.nav.pdl.hentIdenterBolk.HentIdenterBolkWiring;
 import no.nav.pdl.hentperson.HentPersonCoordinatorFunction;
 import no.nav.pdl.hentperson.HentPersonWiring;
 import no.nav.pdl.hentpersonBolk.HentPersonBolkWiring;
+import no.nav.vtp.PersonRepository;
 
 public class PdlGraphqlTjeneste {
 
@@ -31,6 +32,7 @@ public class PdlGraphqlTjeneste {
 
     private static PdlGraphqlTjeneste instance;
     private final TestscenarioBuilderRepository scenarioRepository;
+    private final PersonRepository personRepository;
 
     private GraphQLSchema hentPersonGraphqlSchema;
     private GraphQLSchema hentPersonBolkGraphqlSchema;
@@ -38,15 +40,16 @@ public class PdlGraphqlTjeneste {
     private GraphQLSchema hentIdenterGraphqlSchema;
     private GraphQLSchema hentIdenterBolkGraphqlSchema;
 
-    public static synchronized PdlGraphqlTjeneste getInstance(TestscenarioBuilderRepository scenarioRepository){
+    public static synchronized PdlGraphqlTjeneste getInstance(TestscenarioBuilderRepository scenarioRepository, PersonRepository personRepository){
         if(instance == null){
-            instance = new PdlGraphqlTjeneste(scenarioRepository);
+            instance = new PdlGraphqlTjeneste(scenarioRepository, personRepository);
         }
         return instance;
     }
 
-    private PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository) {
+    private PdlGraphqlTjeneste(TestscenarioBuilderRepository scenarioRepository, PersonRepository personRepository) {
         this.scenarioRepository = scenarioRepository;
+        this.personRepository = personRepository;
         init();
     }
 
@@ -59,7 +62,7 @@ public class PdlGraphqlTjeneste {
         TypeDefinitionRegistry typeDefinition = schemaParser.parse(streamReader);
 
         // Opprette koordinatere og binde til GraphQL-skjema
-        var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(scenarioRepository, personRepository);
         var hentPersonWiring = HentPersonWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonWiring);
 

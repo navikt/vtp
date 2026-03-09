@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
@@ -36,6 +37,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.TilordnetIdentDto;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
 import no.nav.foreldrepenger.vtp.testmodell.identer.IdentGenerator;
+import no.nav.foreldrepenger.vtp.testmodell.util.FiktivtNavn;
 import no.nav.vtp.Person;
 import no.nav.vtp.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.arbeidsforhold.Arbeidsforhold;
@@ -47,17 +49,21 @@ import no.nav.vtp.ident.Identifikator;
 import no.nav.vtp.ident.Orgnummer;
 import no.nav.vtp.ident.PersonIdent;
 import no.nav.vtp.inntekt.Inntektsperiode;
+import no.nav.vtp.personopplysninger.Adresse;
 import no.nav.vtp.personopplysninger.Adresser;
 import no.nav.vtp.personopplysninger.Familierelasjon;
 import no.nav.vtp.personopplysninger.GeografiskTilknytning;
 import no.nav.vtp.personopplysninger.Kjønn;
 import no.nav.vtp.personopplysninger.Medlemskap;
+import no.nav.vtp.personopplysninger.Navn;
 import no.nav.vtp.personopplysninger.Personopplysninger;
 import no.nav.vtp.personopplysninger.Personstatus;
 import no.nav.vtp.personopplysninger.Sivilstand;
 import no.nav.vtp.personopplysninger.Statsborgerskap;
 import no.nav.vtp.ytelse.Ytelse;
 import no.nav.vtp.ytelse.YtelseType;
+
+import org.jspecify.annotations.NonNull;
 
 public class PersonMapper {
 
@@ -76,18 +82,16 @@ public class PersonMapper {
     }
 
     private static Personopplysninger tilPersonopplysninger(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
-        var indent = nyidenter.stream()
-                .filter(tilordnetIdentDto -> tilordnetIdentDto.id().equals(p.id()))
-                .findFirst()
-                .orElseThrow();
+        var indent = finnIdent(p.id(), nyidenter);
         return new Personopplysninger(
-                new PersonIdent(indent.fnr()), // TODO: Barn kan bli fort gamle her. Skal vi heller generer det i forkant? Eget kall?
+                indent, // TODO: Barn kan bli fort gamle her. Skal vi heller generer det i forkant? Eget kall?
+                generertTilfeldigNavn(p.kjønn()),
                 p.fødselsdato(),
                 p.dødsdato(),
                 tilSpråk(p.språk()),
                 tilKjønn(p.kjønn()),
                 tilGeografiskTilknytning(p.geografiskTilknytning()),
-                tilFamilierelasjoner(p.familierelasjoner()),
+                tilFamilierelasjoner(p.familierelasjoner(), nyidenter),
                 tilStatsborgerskap(p.statsborgerskap()),
                 tilSivilstand(p.sivilstand()),
                 tilPersonstatus(p.personstatus()),
@@ -95,6 +99,20 @@ public class PersonMapper {
                 tilAdresser(p.adresser(), p.adressebeskyttelse()),
                 p.erSkjermet()
         );
+    }
+
+    private static PersonIdent finnIdent(UUID uuid, Set<TilordnetIdentDto> nyidenter) {
+        var fnr = nyidenter.stream()
+                .filter(tilordnetIdentDto -> tilordnetIdentDto.id().equals(uuid))
+                .findFirst()
+                .orElseThrow()
+                .fnr();
+        return new PersonIdent(fnr);
+    }
+
+    private static Navn generertTilfeldigNavn(no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn kjønn) {
+        var generetNavn = no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn.M.equals(kjønn) ? FiktivtNavn.getRandomMaleName() : FiktivtNavn.getRandomFemaleName();
+        return new Navn(generetNavn.getFornavn(), null, generetNavn.getEtternavn());
     }
 
     private static List<Arbeidsforhold> tilArbeidsforhold(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
@@ -125,12 +143,8 @@ public class PersonMapper {
             var detaljer = new Organisasjon.Detaljer(organisasjonsdetaljer.navn(), organisasjonsdetaljer.registreringsdato());
             return new Organisasjon(new Orgnummer(orgnummer.value()), arbeidsforholdId, detaljer);
         }
-        var ident = nyidenter.stream()
-                .filter(t -> t.id().equals(((no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver) arbeidsgiver).uuid()))
-                .findFirst()
-                .orElseThrow();
-
-        return new PrivatArbeidsgiver(new PersonIdent(ident.fnr()));
+        var ident = finnIdent(((no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver) arbeidsgiver).uuid(), nyidenter);
+        return new PrivatArbeidsgiver(ident);
     }
 
     private static List<Inntektsperiode> tilInntekt(PersonDto p, Set<TilordnetIdentDto> nyidenter) {
@@ -303,20 +317,17 @@ public class PersonMapper {
         };
     }
 
-    private static List<Familierelasjon> tilFamilierelasjoner(List<FamilierelasjonModellDto> dtos) {
+    private static List<Familierelasjon> tilFamilierelasjoner(List<FamilierelasjonModellDto> dtos, Set<TilordnetIdentDto> identer) {
         if (dtos == null) {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMapper::tilFamilierelasjon)
+                .map(dto -> tilFamilierelasjon(dto, identer))
                 .collect(Collectors.toList());
     }
 
-    private static Familierelasjon tilFamilierelasjon(FamilierelasjonModellDto dto) {
-        return new Familierelasjon(
-                tilRelasjon(dto.relasjon()),
-                new PersonIdent(dto.relatertTilId().toString())
-        );
+    private static Familierelasjon tilFamilierelasjon(FamilierelasjonModellDto dto, Set<TilordnetIdentDto> identer) {
+        return new Familierelasjon(tilRelasjon(dto.relasjon()), finnIdent(dto.relatertTilId(), identer));
     }
 
     private static Familierelasjon.Relasjon tilRelasjon(FamilierelasjonModellDto.Relasjon relasjon) {
@@ -442,11 +453,30 @@ public class PersonMapper {
         };
     }
 
-    private static Adresser tilAdresser(List<AdresseDto> dtos,
-                                        Adressebeskyttelse adressebeskyttelse) {
-        // TODO: Implement full Adresse mapping
-        // For now, return empty adresser
-        return new Adresser(Collections.emptyList(), tilAdressebeskyttelse(adressebeskyttelse));
+    private static Adresser tilAdresser(List<AdresseDto> adresser, Adressebeskyttelse adressebeskyttelse) {
+        return new Adresser(tilAdresser(adresser), tilAdressebeskyttelse(adressebeskyttelse));
+    }
+
+    private static List<Adresse> tilAdresser(List<AdresseDto> adresser) {
+        return adresser.stream()
+                .map(PersonMapper::tilAdresse)
+                .toList();
+    }
+
+    private static Adresse tilAdresse(AdresseDto adresseDto) {
+        return new Adresse(
+                tilAdresseType(adresseDto.adresseType()),
+                adresseDto.land(),
+                adresseDto.fom(),
+                adresseDto.tom()
+        );
+    }
+
+    private static Adresse.AdresseType tilAdresseType(AdresseDto.AdresseType adresseType) {
+        return switch (adresseType) {
+            case BOSTEDSADRESSE -> Adresse.AdresseType.BOSTEDSADRESSE;
+            case POSTADRESSE -> Adresse.AdresseType.POSTADRESSE;
+        };
     }
 
     private static no.nav.vtp.personopplysninger.Adressebeskyttelse tilAdressebeskyttelse(

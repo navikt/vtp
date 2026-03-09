@@ -36,7 +36,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
             var testscenarioObjekt = testscenarioHenter.hentScenario(SCENARIOID);
             var testscenarioJson = testscenarioHenter.toJson(testscenarioObjekt);
             testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-            pdlMock = new PdlMock(testScenarioRepository);
+            pdlMock = new PdlMock(testScenarioRepository, null);
             projeksjon = getPersonForelderBarnRelasjonResponseProjection();
         }
 

@@ -12,8 +12,5 @@ public record AdresseDto(AdresseType adresseType,
 
     public enum AdresseType {
         BOSTEDSADRESSE,
-        POSTADRESSE,
-        MIDLERTIDIG_POSTADRESSE,
-        UKJENT_ADRESSE;
-    }
+        POSTADRESSE,}
 }
