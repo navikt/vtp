@@ -69,22 +69,21 @@ class TestscenarioV2RestTjenesteTest {
                         null))
                 .id(morID)
                 .build();
+        var arbeidsgiver = new OrganisasjonDto(new Orgnummer("99999999"),
+                new OrganisasjonDto.OrganisasjonsdetaljerDto("Test AS", LocalDate.now().minusYears(2), null));
         var far = far(LocalDate.now().minusYears(23))
                 .inntektytelse(new InntektYtelseModellDto(
                         null,
                         null,
                         new InntektkomponentDto(
                                 List.of(new InntektsperiodeDto(LocalDate.now(), null, 2000,
-                                        InntektYtelseType.FASTLØNN, InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, new OrganisasjonDto(new Orgnummer("99999999"), null)))),
+                                        InntektYtelseType.FASTLØNN, InntektsperiodeDto.InntektFordelDto.KONTANTYTELSE, arbeidsgiver))),
                         new AaregDto(List.of(ArbeidsforholdDto.builder()
                                 .arbeidsforholdstype(Arbeidsforholdstype.ORDINÆRT_ARBEIDSFORHOLD)
+                                .arbeidsgiver(arbeidsgiver)
                                 .permisjoner(List.of(new PermisjonDto(30, LocalDate.of(2025, 1,1), LocalDate.of(2025, 1,30), Permisjonstype.PERMISJON))).build())),
                         null,
                         null))
-                .familierelasjoner(List.of(
-                        new FamilierelasjonModellDto(FamilierelasjonModellDto.Relasjon.EKTE, morID),
-                        new FamilierelasjonModellDto(FamilierelasjonModellDto.Relasjon.BARN, barnID)
-                ))
                 .id(farID)
                 .build();
         var barn = PersonDto.builder()
@@ -95,6 +94,7 @@ class TestscenarioV2RestTjenesteTest {
                 .build();
         var privatArbeidsgiver = PersonDto.builder()
                 .id(privateAG)
+
                 .språk(Språk.NB)
                 .rolle(Rolle.PRIVATE_ARBEIDSGIVER)
                 .build();
