@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import no.nav.vtp.arbeidsforhold.Organisasjon;
 import no.nav.vtp.ident.Orgnummer;
 import no.nav.vtp.inntekt.Inntektsperiode;
 import no.nav.vtp.inntektskomponenten.Inntektsinformasjon;
@@ -53,7 +54,7 @@ public class InntektMapper {
                     : current.atEndOfMonth();
 
             månedlige.add(new Inntektsperiode(
-                    inntektsperiode.identifikator(),
+                    inntektsperiode.arbeidsgiver(),
                     maanedFom,
                     maanedTom,
                     inntektsperiode.beløp(),
@@ -71,9 +72,7 @@ public class InntektMapper {
     }
 
     private static Inntektsinformasjon tilInntektsinformasjon(Inntektsperiode periode, YearMonth måned, String brukerIdent) {
-        var underenhet = periode.identifikator() instanceof Orgnummer orgnummer
-                ? orgnummer.ident()
-                : periode.identifikator().ident();
+        var underenhet = periode.arbeidsgiver().identifikator();
 
         var inntekt = new Inntektsinformasjon.Inntekt(
                 fraInntektType(periode.inntektType()),

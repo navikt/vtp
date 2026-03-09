@@ -59,11 +59,11 @@ import no.nav.vtp.personopplysninger.Statsborgerskap;
 import no.nav.vtp.ytelse.Ytelse;
 import no.nav.vtp.ytelse.YtelseType;
 
-public class PersonMappen {
+public class PersonMapper {
 
     private static final IdentGenerator identGenerator = new FiktiveFnr();
 
-    private PersonMappen() {
+    private PersonMapper() {
         /* This utility class should not be instantiated */
     }
 
@@ -221,7 +221,7 @@ public class PersonMappen {
 
     private static List<Ytelse> tilYtelserFraInfotrygd(InfotrygdDto infotrygd) {
         return infotrygd.ytelser().stream()
-                .map(PersonMappen::tilYtelseFraInfotrygdGrunnlag)
+                .map(PersonMapper::tilYtelseFraInfotrygdGrunnlag)
                 .collect(Collectors.toList());
     }
 
@@ -308,7 +308,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMappen::tilFamilierelasjon)
+                .map(PersonMapper::tilFamilierelasjon)
                 .collect(Collectors.toList());
     }
 
@@ -347,7 +347,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMappen::tilSivilstand)
+                .map(PersonMapper::tilSivilstand)
                 .collect(Collectors.toList());
     }
 
@@ -383,7 +383,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMappen::tilPersonstatus)
+                .map(PersonMapper::tilPersonstatus)
                 .collect(Collectors.toList());
     }
 
@@ -419,7 +419,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMappen::tilMedlemskap)
+                .map(PersonMapper::tilMedlemskap)
                 .collect(Collectors.toList());
     }
 
@@ -489,7 +489,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMappen::tilArbeidsavtale)
+                .map(PersonMapper::tilArbeidsavtale)
                 .collect(Collectors.toList());
     }
 
@@ -509,7 +509,7 @@ public class PersonMappen {
             return Collections.emptyList();
         }
         return dtos.stream()
-                .map(PersonMappen::tilPermisjon)
+                .map(PersonMapper::tilPermisjon)
                 .collect(Collectors.toList());
     }
 
