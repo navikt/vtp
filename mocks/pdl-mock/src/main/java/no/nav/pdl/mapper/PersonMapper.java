@@ -1,7 +1,9 @@
 package no.nav.pdl.mapper;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import no.nav.pdl.Adressebeskyttelse;
@@ -34,7 +36,7 @@ import no.nav.vtp.personopplysninger.Kjønn;
 public class PersonMapper {
 
     private static final DateTimeFormatter DATO_FORMATTERER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    
+
     private PersonMapper() {
     }
 
@@ -162,7 +164,6 @@ public class PersonMapper {
                 .build());
         return kontaktadresse;
     }
-}
 
     private static List<Adressebeskyttelse> tilAdressebeskyttelse(Person person) {
         var adresser = person.personopplysninger().adresser();
