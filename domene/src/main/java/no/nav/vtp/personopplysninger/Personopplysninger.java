@@ -9,6 +9,7 @@ import no.nav.vtp.ident.Identifikator;
    Forenklet modell av PDL + medlemskap
  */
 public record Personopplysninger(Identifikator identifikator,
+                                 Rolle rolle,
                                  Navn navn,
                                  LocalDate fødselsdato,
                                  LocalDate dødsdato,

@@ -69,7 +69,7 @@ public class PdlGraphqlTjeneste {
         var hentPersonBolkWiring = HentPersonBolkWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonBolkGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonBolkWiring);
 
-        var hentGeografiskTilknytningCoordinator = HentGeografiskTilknytningCoordinatorFunction.opprettCoordinator(scenarioRepository);
+        var hentGeografiskTilknytningCoordinator = HentGeografiskTilknytningCoordinatorFunction.opprettCoordinator(scenarioRepository, personRepository);
         var hentGeografiskTilknyningWiring = HentGeografiskTilknytningWiring.lagRuntimeWiring(hentGeografiskTilknytningCoordinator);
         hentGeografiskTilknytningGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentGeografiskTilknyningWiring);
 

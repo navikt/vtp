@@ -45,8 +45,8 @@ public class DoedfoedtBarnAdapter {
                     var fødselsdato = barnModell.getFødselsdato();
                     if (fødselsdato != null && erFdatNummer(barnModell.getIdent())) {
                         doedfoedtBarn.setDato(fødselsdato.format(DATO_FORMATTERER));
+                        doedfoedtBarnList.add(doedfoedtBarn);
                     }
-                    doedfoedtBarnList.add(doedfoedtBarn);
                 }
             }
         }

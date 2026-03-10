@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.vtp.arbeidsforhold.Organisasjon;
-import no.nav.vtp.ident.Orgnummer;
 import no.nav.vtp.inntekt.Inntektsperiode;
 import no.nav.vtp.inntektskomponenten.Inntektsinformasjon;
 
@@ -58,7 +56,6 @@ public class InntektMapper {
                     maanedFom,
                     maanedTom,
                     inntektsperiode.beløp(),
-                    inntektsperiode.inntektType(),
                     inntektsperiode.ytelseType(),
                     inntektsperiode.inntektFordel()
             ));
@@ -75,7 +72,7 @@ public class InntektMapper {
         var underenhet = periode.arbeidsgiver().identifikator();
 
         var inntekt = new Inntektsinformasjon.Inntekt(
-                fraInntektType(periode.inntektType()),
+                fraInntektType(tilInntektstype(periode.ytelseType())),
                 new BigDecimal(periode.beløp()),
                 "fastloenn",
                 null,
@@ -113,24 +110,51 @@ public class InntektMapper {
                 Inntektsperiode.YtelseType.FERIEPENGER,
                 Inntektsperiode.YtelseType.KOMMUNAL_OMSORGSLØNN_MM
         );
-        return Inntektsperiode.Type.LØNNSINNTEKT.equals(p.inntektType()) &&
+        return Inntektstype.LØNNSINNTEKT.equals(tilInntektstype(p.ytelseType())) &&
                 ytelsestyperSomRegnesSomLønn.contains(p.ytelseType());
     }
 
     private static boolean erPensjonEllerTrygd(Inntektsperiode p) {
-        return Inntektsperiode.Type.PENSJON_ELLER_TRYGD.equals(p.inntektType());
+        return Inntektstype.PENSJON_ELLER_TRYGD.equals(tilInntektstype(p.ytelseType()));
     }
 
     private static boolean erNæringsinntekt(Inntektsperiode p) {
-        return Inntektsperiode.Type.NÆRINGSINNTEKT.equals(p.inntektType());
+        return Inntektstype.NÆRINGSINNTEKT.equals(tilInntektstype(p.ytelseType()));
     }
 
-    private static String fraInntektType(Inntektsperiode.Type type) {
+    private static String fraInntektType(Inntektstype type) {
         return switch (type) {
             case LØNNSINNTEKT -> "Loennsinntekt";
             case NÆRINGSINNTEKT -> "Naeringsinntekt";
             case PENSJON_ELLER_TRYGD -> "PensjonEllerTrygd";
             case YTELSE_FRA_OFFENTLIGE -> "YtelseFraOffentlige";
         };
+    }
+
+    private static Inntektstype tilInntektstype(Inntektsperiode.YtelseType ytelseType) {
+        return switch (ytelseType) {
+            case FASTLØNN, FERIEPENGER, KOMMUNAL_OMSORGSLØNN_MM -> Inntektstype.LØNNSINNTEKT;
+            case KVALIFISERINGSSTØNAD -> Inntektstype.PENSJON_ELLER_TRYGD;
+            case AAP, DAGPENGER, DAGPENGER_FISKER_HYRE, FORELDREPENGER, SVANGERSKAPSPENGER, SYKEPENGER,
+                 SYKEPENGER_FISKER_HYRE, OMSORGSPENGER, OPPLÆRINGSPENGER, PLEIEPENGER, OVERGANGSSTØNAD_ENSLIG,
+                 VENTELØNN, FERIEPENGER_FORELDREPENGER, FERIEPENGER_SVANGERSKAPSPENGER, FERIEPENGER_OMSORGSPENGER,
+                 FERIEPENGER_OPPLÆRINGSPENGER, FERIEPENGER_PLEIEPENGER, FERIEPENGER_SYKEPENGER,
+                 FERIEPENGER_SYKEPENGER_FISKER_HYRE, FERIETILLEGG_DAGPENGER, FERIETILLEGG_DAGPENGER_FISKER_HYRE -> Inntektstype.YTELSE_FRA_OFFENTLIGE;
+            case FORELDREPENGER_NÆRING, FORELDREPENGER_NÆRING_DAGMAMMA, FORELDREPENGER_NÆRING_FISKER,
+                 FORELDREPENGER_NÆRING_JORDBRUK, SVANGERSKAPSPENGER_NÆRING, SYKEPENGER_NÆRING,
+                 SYKEPENGER_NÆRING_DAGMAMMA, SYKEPENGER_NÆRING_FISKER, SYKEPENGER_NÆRING_JORDBRUK,
+                 OMSORGSPENGER_NÆRING, OMSORGSPENGER_NÆRING_DAGMAMMA, OMSORGSPENGER_NÆRING_FISKER,
+                 OMSORGSPENGER_NÆRING_JORDBRUK, OPPLÆRINGSPENGER_NÆRING, PLEIEPENGER_NÆRING,
+                 PLEIEPENGER_NÆRING_DAGMAMMA, PLEIEPENGER_NÆRING_FISKER, PLEIEPENGER_NÆRING_JORDBRUK,
+                 DAGPENGER_NÆRING, DAGPENGER_NÆRING_FISKER, ANNET, VEDERLAG, VEDERLAG_DAGMAMMA,
+                 LOTT_KUN_TRYGDEAVGIFT, KOMPENSASJON_FOR_TAPT_PERSONINNTEKT -> Inntektstype.NÆRINGSINNTEKT;
+        };
+    }
+
+    private enum Inntektstype {
+        LØNNSINNTEKT,
+        NÆRINGSINNTEKT,
+        PENSJON_ELLER_TRYGD,
+        YTELSE_FRA_OFFENTLIGE
     }
 }

@@ -58,12 +58,11 @@ import no.nav.vtp.personopplysninger.Medlemskap;
 import no.nav.vtp.personopplysninger.Navn;
 import no.nav.vtp.personopplysninger.Personopplysninger;
 import no.nav.vtp.personopplysninger.Personstatus;
+import no.nav.vtp.personopplysninger.Rolle;
 import no.nav.vtp.personopplysninger.Sivilstand;
 import no.nav.vtp.personopplysninger.Statsborgerskap;
 import no.nav.vtp.ytelse.Ytelse;
 import no.nav.vtp.ytelse.YtelseType;
-
-import org.jspecify.annotations.NonNull;
 
 public class PersonMapper {
 
@@ -85,6 +84,7 @@ public class PersonMapper {
         var indent = finnIdent(p.id(), nyidenter);
         return new Personopplysninger(
                 indent, // TODO: Barn kan bli fort gamle her. Skal vi heller generer det i forkant? Eget kall?
+                tilRolle(p.rolle()),
                 generertTilfeldigNavn(p.kjønn()),
                 p.fødselsdato(),
                 p.dødsdato(),
@@ -99,6 +99,17 @@ public class PersonMapper {
                 tilAdresser(p.adresser(), p.adressebeskyttelse()),
                 p.erSkjermet()
         );
+    }
+
+    private static Rolle tilRolle(no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle rolle) {
+        return switch (rolle) {
+            case MOR -> Rolle.MOR;
+            case FAR -> Rolle.FAR;
+            case MEDMOR -> Rolle.MEDMOR;
+            case MEDFAR -> Rolle.MEDFAR;
+            case BARN -> Rolle.BARN;
+            case PRIVATE_ARBEIDSGIVER -> Rolle.PRIVATE_ARBEIDSGIVER;
+        };
     }
 
     private static PersonIdent finnIdent(UUID uuid, Set<TilordnetIdentDto> nyidenter) {
@@ -165,7 +176,6 @@ public class PersonMapper {
                 dto.fom(),
                 dto.tom(),
                 dto.beløp(),
-                tilInntektType(dto.inntektType()),
                 tilYtelseType(dto.inntektYtelseType()),
                 tilInntektFordel(dto.inntektFordel())
         );
@@ -466,6 +476,7 @@ public class PersonMapper {
     private static Adresse tilAdresse(AdresseDto adresseDto) {
         return new Adresse(
                 tilAdresseType(adresseDto.adresseType()),
+                adresseDto.matrikkelId(),
                 adresseDto.land(),
                 adresseDto.fom(),
                 adresseDto.tom()
@@ -567,18 +578,6 @@ public class PersonMapper {
             case VELFERDSPERMISJON -> Permisjon.Permisjonstype.VELFERDSPERMISJON;
             case ANNEN_PERMISJON_IKKE_LOVFESTET -> Permisjon.Permisjonstype.ANNEN_PERMISJON_IKKE_LOVFESTET;
             case ANNEN_PERMISJON_LOVFESTET -> Permisjon.Permisjonstype.ANNEN_PERMISJON_LOVFESTET;
-        };
-    }
-
-    private static Inntektsperiode.Type tilInntektType(InntektsperiodeDto.InntektTypeDto type) {
-        if (type == null) {
-            return null;
-        }
-        return switch (type) {
-            case LØNNSINNTEKT -> Inntektsperiode.Type.LØNNSINNTEKT;
-            case NÆRINGSINNTEKT -> Inntektsperiode.Type.NÆRINGSINNTEKT;
-            case PENSJON_ELLER_TRYGD -> Inntektsperiode.Type.PENSJON_ELLER_TRYGD;
-            case YTELSE_FRA_OFFENTLIGE -> Inntektsperiode.Type.YTELSE_FRA_OFFENTLIGE;
         };
     }
 
