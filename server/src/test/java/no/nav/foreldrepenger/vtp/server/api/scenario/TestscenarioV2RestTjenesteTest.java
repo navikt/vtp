@@ -94,7 +94,6 @@ class TestscenarioV2RestTjenesteTest {
                 .build();
         var privatArbeidsgiver = PersonDto.builder()
                 .id(privateAG)
-
                 .språk(Språk.NB)
                 .rolle(Rolle.PRIVATE_ARBEIDSGIVER)
                 .build();
