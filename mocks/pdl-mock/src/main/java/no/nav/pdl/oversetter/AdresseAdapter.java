@@ -131,6 +131,7 @@ public class AdresseAdapter {
                     // MidlertidigPostadresse midlertidig = tilMidlertidigPostadresse(a);
                     // bruker.setMidlertidigPostadresse(midlertidig);
                     break;
+                // TODO: BRUKES IKKE!
                 case POSTADRESSE:
                     // TODO: Hvordan skal denne oversettes med PDL?
                     var kontaktadresse = tilPostadresse((UstrukturertAdresseModell) a);

@@ -2,7 +2,6 @@ package no.nav.vtp.inntekt;
 
 
 import java.time.LocalDate;
-import java.util.Set;
 
 import no.nav.vtp.arbeidsforhold.Arbeidsgiver;
 
@@ -10,16 +9,8 @@ public record Inntektsperiode(Arbeidsgiver arbeidsgiver,
                               LocalDate fom,
                               LocalDate tom,
                               Integer beløp,
-                              Type inntektType, // TODO: Vurder å fjerne inntekttype, kan ligge i ytelsetype?
                               YtelseType ytelseType,
                               FordelType inntektFordel) {
-
-    public enum Type {
-        LØNNSINNTEKT,
-        NÆRINGSINNTEKT,
-        PENSJON_ELLER_TRYGD,
-        YTELSE_FRA_OFFENTLIGE
-    }
 
     public enum FordelType {
         KONTANTYTELSE,
@@ -47,7 +38,6 @@ public record Inntektsperiode(Arbeidsgiver arbeidsgiver,
         PLEIEPENGER,
         OVERGANGSSTØNAD_ENSLIG,
         VENTELØNN,
-
         FERIEPENGER_FORELDREPENGER,
         FERIEPENGER_SVANGERSKAPSPENGER,
         FERIEPENGER_OMSORGSPENGER,
@@ -87,7 +77,32 @@ public record Inntektsperiode(Arbeidsgiver arbeidsgiver,
         ANNET,
         VEDERLAG, VEDERLAG_DAGMAMMA,
         LOTT_KUN_TRYGDEAVGIFT,
-        KOMPENSASJON_FOR_TAPT_PERSONINNTEKT
-        ;
+        KOMPENSASJON_FOR_TAPT_PERSONINNTEKT;
+
+        public Type inntektType() {
+            return switch (this) {
+                case FASTLØNN, FERIEPENGER, KOMMUNAL_OMSORGSLØNN_MM -> Type.LØNNSINNTEKT;
+                case KVALIFISERINGSSTØNAD -> Type.PENSJON_ELLER_TRYGD;
+                case AAP, DAGPENGER, DAGPENGER_FISKER_HYRE, FORELDREPENGER, SVANGERSKAPSPENGER, SYKEPENGER,
+                     SYKEPENGER_FISKER_HYRE, OMSORGSPENGER, OPPLÆRINGSPENGER, PLEIEPENGER, OVERGANGSSTØNAD_ENSLIG,
+                     VENTELØNN, FERIEPENGER_FORELDREPENGER, FERIEPENGER_SVANGERSKAPSPENGER, FERIEPENGER_OMSORGSPENGER,
+                     FERIEPENGER_OPPLÆRINGSPENGER, FERIEPENGER_PLEIEPENGER, FERIEPENGER_SYKEPENGER,
+                     FERIEPENGER_SYKEPENGER_FISKER_HYRE, FERIETILLEGG_DAGPENGER, FERIETILLEGG_DAGPENGER_FISKER_HYRE -> Type.YTELSE_FRA_OFFENTLIGE;
+                case FORELDREPENGER_NÆRING, FORELDREPENGER_NÆRING_DAGMAMMA, FORELDREPENGER_NÆRING_FISKER,
+                     FORELDREPENGER_NÆRING_JORDBRUK, SVANGERSKAPSPENGER_NÆRING, SYKEPENGER_NÆRING,
+                     SYKEPENGER_NÆRING_DAGMAMMA, SYKEPENGER_NÆRING_FISKER, SYKEPENGER_NÆRING_JORDBRUK,
+                     OMSORGSPENGER_NÆRING, OMSORGSPENGER_NÆRING_DAGMAMMA, OMSORGSPENGER_NÆRING_FISKER,
+                     OMSORGSPENGER_NÆRING_JORDBRUK, OPPLÆRINGSPENGER_NÆRING, PLEIEPENGER_NÆRING,
+                     PLEIEPENGER_NÆRING_DAGMAMMA, PLEIEPENGER_NÆRING_FISKER, PLEIEPENGER_NÆRING_JORDBRUK,
+                     DAGPENGER_NÆRING, DAGPENGER_NÆRING_FISKER, ANNET, VEDERLAG, VEDERLAG_DAGMAMMA,
+                     LOTT_KUN_TRYGDEAVGIFT, KOMPENSASJON_FOR_TAPT_PERSONINNTEKT -> Type.NÆRINGSINNTEKT;
+            };
+        }
+        public enum Type {
+            LØNNSINNTEKT,
+            NÆRINGSINNTEKT,
+            PENSJON_ELLER_TRYGD,
+            YTELSE_FRA_OFFENTLIGE
+        }
     }
 }

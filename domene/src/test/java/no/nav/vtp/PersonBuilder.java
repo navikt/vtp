@@ -18,8 +18,10 @@ import no.nav.vtp.personopplysninger.Adresser;
 import no.nav.vtp.personopplysninger.Familierelasjon;
 import no.nav.vtp.personopplysninger.GeografiskTilknytning;
 import no.nav.vtp.personopplysninger.Kjønn;
+import no.nav.vtp.personopplysninger.Navn;
 import no.nav.vtp.personopplysninger.Personopplysninger;
 import no.nav.vtp.personopplysninger.Personstatus;
+import no.nav.vtp.personopplysninger.Rolle;
 import no.nav.vtp.personopplysninger.Sivilstand;
 import no.nav.vtp.personopplysninger.Språk;
 import no.nav.vtp.personopplysninger.Statsborgerskap;
@@ -70,14 +72,16 @@ public class PersonBuilder {
     // Personopplysninger søker
     // ---------------------------------------------------------------------------
     private static Personopplysninger lagSøkerPersonopplysninger() {
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
                 LocalDate.now().minusYears(1), null);
-        var postadresse = new Adresse(Adresse.AdresseType.POSTADRESSE, CountryCode.NL,
+        var postadresse = new Adresse(Adresse.AdresseType.POSTADRESSE, "0000001", CountryCode.NL,
                 LocalDate.now().minusYears(4), LocalDate.now().minusYears(1));
         var adresser = new Adresser(List.of(bostedsadresse, postadresse), Adressebeskyttelse.UGRADERT);
 
         return new Personopplysninger(
                 new PersonIdent(SØKER_IDENT),
+                Rolle.MOR,
+                new Navn("Dolly", null,"Duck"),
                 LocalDate.now().minusYears(50),
                 null,
                 Språk.NB,
@@ -104,12 +108,14 @@ public class PersonBuilder {
     // Personopplysninger annen part
     // ---------------------------------------------------------------------------
     private static Personopplysninger lagAnnenPartPersonopplysninger() {
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
                 LocalDate.now().minusYears(1), null);
         var adresser = new Adresser(List.of(bostedsadresse), Adressebeskyttelse.UGRADERT);
 
         return new Personopplysninger(
                 new PersonIdent(ANNEN_PART_IDENT),
+                Rolle.FAR,
+                new Navn("Donald", null,"Duck"),
                 LocalDate.now().minusYears(50),
                 null,
                 Språk.NB,
@@ -175,7 +181,6 @@ public class PersonBuilder {
                 LocalDate.now().minusYears(2),
                 LocalDate.now(),
                 45_000,
-                Inntektsperiode.Type.LØNNSINNTEKT,
                 Inntektsperiode.YtelseType.FASTLØNN,
                 Inntektsperiode.FordelType.KONTANTYTELSE
         ));

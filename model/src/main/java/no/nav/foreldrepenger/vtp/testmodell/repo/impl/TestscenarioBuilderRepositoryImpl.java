@@ -108,11 +108,11 @@ public abstract class TestscenarioBuilderRepositoryImpl implements TestscenarioB
             PersonNavn annenPartNavn = TestdataUtil.getAnnenPartName(søker, annenPart);
             annenPart.setFornavn(annenPartNavn.getFornavn());
             annenPart.setEtternavn(annenPartNavn.getEtternavn());
-            leggTilAdresseHvisIkkeSatt(søker, annenPart);
+            leggTilAdresseHvisIkkeSatt(søker, annenPart); // TODO: Hack for å sette adresse på annenpart hvis ikke satt... Dette gjør vi i autotest, hvis dette er intensjonen..
             personIndeks.leggTil(annenPart);
         }
 
-        leggTilAdresseHvisIkkeSatt(søker, personopplysninger.getFamilierelasjoner());
+        leggTilAdresseHvisIkkeSatt(søker, personopplysninger.getFamilierelasjoner()); // TODO: Hack for å sette adresse på barn hvis ikke satt... Dette gjør vi i autotest, hvis dette er intensjonen..
         personIndeks.indekserFamilierelasjonBrukere(personopplysninger.getFamilierelasjoner());
 
         personIndeks.indekserPersonopplysningerByIdent(personopplysninger);

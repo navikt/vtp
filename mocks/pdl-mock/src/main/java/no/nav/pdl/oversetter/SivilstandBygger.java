@@ -4,6 +4,7 @@ import java.util.List;
 
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
+import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
 import no.nav.pdl.Person;
 import no.nav.pdl.Sivilstand;
 import no.nav.pdl.Sivilstandstype;
@@ -20,9 +21,10 @@ public class SivilstandBygger {
         var sivilstandPDL = new Sivilstand();
         sivilstandPDL.setType(Sivilstandstype.valueOf(SivilstandKode.valueOf(sivilstandtypeTPS).getSivilstandPDL()));
 
-        if (personopplysningerModell != null && personopplysningerModell.getAnnenPart() != null
-                && !List.of(Sivilstandstype.UGIFT, Sivilstandstype.UOPPGITT).contains(sivilstandPDL.getType())) {
-            sivilstandPDL.setRelatertVedSivilstand(personopplysningerModell.getAnnenPart().getIdent());
+        var annenpart = personModell instanceof SøkerModell ? personopplysningerModell.getAnnenPart() : personopplysningerModell.getSøker();
+
+        if (annenpart != null && !List.of(Sivilstandstype.UGIFT, Sivilstandstype.UOPPGITT).contains(sivilstandPDL.getType())) {
+            sivilstandPDL.setRelatertVedSivilstand(annenpart.getIdent());
         }
         personPdl.setSivilstand(List.of(sivilstandPDL));
     }

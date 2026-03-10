@@ -23,7 +23,6 @@ public enum InntektYtelseType {
     PLEIEPENGER(InntektType.YTELSE_FRA_OFFENTLIGE, "pleiepenger"),
     OVERGANGSSTØNAD_ENSLIG(InntektType.YTELSE_FRA_OFFENTLIGE, "overgangsstoenadTilEnsligMorEllerFarSomBegynteAaLoepe1April2014EllerSenere"),
     VENTELØNN(InntektType.YTELSE_FRA_OFFENTLIGE, "venteloenn"),
-
     FERIEPENGER_FORELDREPENGER(InntektType.YTELSE_FRA_OFFENTLIGE, "feriepengerForeldrepenger"),
     FERIEPENGER_SVANGERSKAPSPENGER(InntektType.YTELSE_FRA_OFFENTLIGE, "feriepengerSvangerskapspenger"),
     FERIEPENGER_OMSORGSPENGER(InntektType.YTELSE_FRA_OFFENTLIGE, "feriepengerOmsorgspenger"),
