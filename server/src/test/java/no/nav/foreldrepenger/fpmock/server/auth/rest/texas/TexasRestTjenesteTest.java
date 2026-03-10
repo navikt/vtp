@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
@@ -26,8 +25,7 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasTokenRequest;
 @Disabled("Requires keystore to be configured for signature verification - not suitable for CI environment")
 class TexasRestTjenesteTest {
 
-    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder()
-            .setSkipAllValidators()
+    private static final JwtConsumer UNVALIDATING_CONSUMER = new JwtConsumerBuilder().setSkipAllValidators()
             .setDisableRequireSignature()
             .setSkipSignatureVerification()
             .build();
@@ -78,14 +76,9 @@ class TexasRestTjenesteTest {
 
     @Test
     void shouldAcceptAuthorizationDetails() {
-        var authDetails = List.of(
-                new AuthorizationDetails(
-                        "urn:altinn:resource",
-                        new AuthorizationDetails.Consumer("iso6523-actorid-upis", "0192:111111111"),
-                        List.of("urn:altinn:systemuser:12345"),
-                        "ske_kravogbetalinger"
-                )
-        );
+        var authDetails = List.of(new AuthorizationDetails("urn:altinn:resource",
+                new AuthorizationDetails.Consumer("iso6523-actorid-upis", "0192:111111111"), List.of("urn:altinn:systemuser:12345"),
+                "ske_kravogbetalinger"));
         var request = new TexasTokenRequest(Issuers.MASKINPORTEN, "nav:some/scope", null, authDetails, false);
 
         Response response = tjeneste.token(request);
@@ -97,21 +90,10 @@ class TexasRestTjenesteTest {
 
     @Test
     void shouldAcceptBothResourceAndAuthorizationDetails() {
-        var authDetails = List.of(
-                new AuthorizationDetails(
-                        "urn:altinn:resource",
-                        new AuthorizationDetails.Consumer("iso6523-actorid-upis", "0192:111111111"),
-                        List.of("urn:altinn:systemuser:12345"),
-                        "ske_kravogbetalinger"
-                )
-        );
-        var request = new TexasTokenRequest(
-                Issuers.MASKINPORTEN,
-                "nav:some/scope",
-                "https://example.com/api",
-                authDetails,
-                false
-        );
+        var authDetails = List.of(new AuthorizationDetails("urn:altinn:resource",
+                new AuthorizationDetails.Consumer("iso6523-actorid-upis", "0192:111111111"), List.of("urn:altinn:systemuser:12345"),
+                "ske_kravogbetalinger"));
+        var request = new TexasTokenRequest(Issuers.MASKINPORTEN, "nav:some/scope", "https://example.com/api", authDetails, false);
 
         Response response = tjeneste.token(request);
 
@@ -183,7 +165,7 @@ class TexasRestTjenesteTest {
     }
 
     @Test
-    void shouldVerifyResourceClaimInToken() throws Exception {
+    void shouldVerifyResourceClaimInToken() {
         var request = new TexasTokenRequest(Issuers.MASKINPORTEN, "nav:some/scope", "https://example.com/api", null, false);
 
         Response response = tjeneste.token(request);
@@ -195,14 +177,9 @@ class TexasRestTjenesteTest {
 
     @Test
     void shouldVerifyAuthorizationDetailsClaimInToken() {
-        var authDetails = List.of(
-                new AuthorizationDetails(
-                        "urn:altinn:resource",
-                        new AuthorizationDetails.Consumer("iso6523-actorid-upis", "0192:111111111"),
-                        List.of("urn:altinn:systemuser:12345"),
-                        "ske_kravogbetalinger"
-                )
-        );
+        var authDetails = List.of(new AuthorizationDetails("urn:altinn:resource",
+                new AuthorizationDetails.Consumer("iso6523-actorid-upis", "0192:111111111"), List.of("urn:altinn:systemuser:12345"),
+                "ske_kravogbetalinger"));
         var request = new TexasTokenRequest(Issuers.MASKINPORTEN, "nav:some/scope", null, authDetails, false);
 
         Response response = tjeneste.token(request);
@@ -211,19 +188,16 @@ class TexasRestTjenesteTest {
         JwtClaims claims = parseToken(tokenResponse.accessToken());
 
         // authorization_details is a proper JSON array — assert directly on the map entries
-        @SuppressWarnings("unchecked")
-        var rawList = (List<Map<String, Object>>) claims.getClaimValue("authorization_details");
+        @SuppressWarnings("unchecked") var rawList = (List<Map<String, Object>>) claims.getClaimValue("authorization_details");
         assertThat(rawList).hasSize(1);
 
         var entry = rawList.getFirst();
-        assertThat(entry.get("type")).isEqualTo("urn:altinn:resource");
-        assertThat(entry.get("system_id")).isEqualTo("ske_kravogbetalinger");
-        assertThat(entry.get("systemuser_id")).isEqualTo(List.of("urn:altinn:systemuser:12345"));
+        assertThat(entry).containsEntry("type", "urn:altinn:resource")
+                .containsEntry("system_id", "ske_kravogbetalinger")
+                .containsEntry("systemuser_id", List.of("urn:altinn:systemuser:12345"));
 
-        @SuppressWarnings("unchecked")
-        var org = (Map<String, Object>) entry.get("systemuser_org");
-        assertThat(org.get("authority")).isEqualTo("iso6523-actorid-upis");
-        assertThat(org.get("ID")).isEqualTo("0192:111111111");
+        @SuppressWarnings("unchecked") var org = (Map<String, Object>) entry.get("systemuser_org");
+        assertThat(org).containsEntry("authority", "iso6523-actorid-upis").containsEntry("ID", "0192:111111111");
     }
 
     @Test
@@ -272,14 +246,11 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(true);
-        assertThat(introspectResponse).doesNotContainKey("error");
-        assertThat((String) introspectResponse.get("iss")).contains(Issuers.ENTRA_ID.getIssuer());
-        assertThat(introspectResponse.get("sub")).isNotNull();
-        assertThat(introspectResponse.get("exp")).isNotNull();
-        assertThat(introspectResponse.get("iat")).isNotNull();
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", true)
+                .doesNotContainKey("error")
+                .containsEntry("iss", Issuers.ENTRA_ID.getIssuer())
+                .containsKeys("sub", "exp", "iat");
     }
 
     @Test
@@ -291,10 +262,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(true);
-        assertThat((String) introspectResponse.get("iss")).contains(Issuers.MASKINPORTEN.getIssuer());
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", true).containsEntry("iss", Issuers.MASKINPORTEN.getIssuer());
     }
 
     @Test
@@ -303,10 +272,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: malformed JWT");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: malformed JWT");
     }
 
     @Test
@@ -319,10 +286,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: issuer mismatch");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: issuer mismatch");
     }
 
     @Test
@@ -341,10 +306,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: ExpiredSignature");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: ExpiredSignature");
     }
 
     @Test
@@ -361,10 +324,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: missing iss claim");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: missing iss claim");
     }
 
     @Test
@@ -381,10 +342,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: missing iat claim");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: missing iat claim");
     }
 
     @Test
@@ -401,10 +360,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: missing exp claim");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: missing exp claim");
     }
 
     @Test
@@ -421,10 +378,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: missing aud claim");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: missing aud claim");
     }
 
     @Test
@@ -442,9 +397,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(true);
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", true);
     }
 
     @Test
@@ -463,10 +417,10 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: token not yet valid (nbf)");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+
+        assertThat(introspectResponse).containsEntry("active", false)
+                .containsEntry("error", "invalid token: token not yet valid (nbf)");
     }
 
     @Test
@@ -477,15 +431,15 @@ class TexasRestTjenesteTest {
         var introspectRequest = new TexasIntrospectRequest(Issuers.ENTRA_ID, tokenResponse.accessToken());
         Response response = tjeneste.introspect(introspectRequest);
 
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(true);
-        assertThat(introspectResponse.get("iss")).isNotNull();
-        assertThat(introspectResponse.get("sub")).isNotNull();
-        assertThat(introspectResponse.get("aud")).isNotNull();
-        assertThat(introspectResponse.get("exp")).isNotNull();
-        assertThat(introspectResponse.get("iat")).isNotNull();
-        assertThat(introspectResponse.get("jti")).isNotNull();
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+
+        assertThat(introspectResponse).containsEntry("active", true)
+                .containsKey("iss")
+                .containsKey("sub")
+                .containsKey("aud")
+                .containsKey("exp")
+                .containsKey("iat")
+                .containsKey("jti");
 
         // Verify iat is in the past and exp is in the future
         assertThat(((Number) introspectResponse.get("iat")).longValue()).isLessThanOrEqualTo(NumericDate.now().getValue());
@@ -501,13 +455,12 @@ class TexasRestTjenesteTest {
         var introspectRequest = new TexasIntrospectRequest(Issuers.ENTRA_ID, tokenResponse.accessToken());
         Response response = tjeneste.introspect(introspectRequest);
 
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(true);
-        // Azure-specific claims should be preserved
-        assertThat(introspectResponse.get("oid")).isNotNull();
-        assertThat(introspectResponse.get("idtyp")).isEqualTo("app");
-        assertThat(introspectResponse.get("roles")).isNotNull();
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+
+        assertThat(introspectResponse).containsEntry("active", true)
+                .containsEntry("idtyp", "app")
+                .containsKey("oid")
+                .containsKey("roles");
     }
 
     @Test
@@ -518,13 +471,11 @@ class TexasRestTjenesteTest {
         var introspectRequest = new TexasIntrospectRequest(Issuers.MASKINPORTEN, tokenResponse.accessToken());
         Response response = tjeneste.introspect(introspectRequest);
 
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(true);
-        // Maskinporten-specific claims should be preserved
-        assertThat(introspectResponse.get("scope")).isEqualTo("nav:some/scope");
-        assertThat(introspectResponse.get("client_id")).isEqualTo("vtp-maskinporten-client");
-        assertThat(introspectResponse.get("consumer")).isNotNull();
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", true)
+                .containsEntry("scope", "nav:some/scope")
+                .containsEntry("client_id", "vtp-maskinporten-client")
+                .containsKey("consumer");
     }
 
     @Test
@@ -542,10 +493,8 @@ class TexasRestTjenesteTest {
         Response response = tjeneste.introspect(introspectRequest);
 
         assertThat(response.getStatus()).isEqualTo(200);
-        @SuppressWarnings("unchecked")
-        var introspectResponse = (Map<String, Object>) response.getEntity();
-        assertThat(introspectResponse.get("active")).isEqualTo(false);
-        assertThat(introspectResponse.get("error")).isEqualTo("invalid token: iat is in the future");
+        @SuppressWarnings("unchecked") var introspectResponse = (Map<String, Object>) response.getEntity();
+        assertThat(introspectResponse).containsEntry("active", false).containsEntry("error", "invalid token: iat is in the future");
     }
 
     /**
@@ -553,10 +502,8 @@ class TexasRestTjenesteTest {
      */
     private String createUnsignedToken(JwtClaims claims) {
         // Format: base64url(header).base64url(payload).
-        String header = java.util.Base64.getUrlEncoder().withoutPadding()
-                .encodeToString("{\"alg\":\"none\"}".getBytes());
-        String payload = java.util.Base64.getUrlEncoder().withoutPadding()
-                .encodeToString(claims.toJson().getBytes());
+        String header = java.util.Base64.getUrlEncoder().withoutPadding().encodeToString("{\"alg\":\"none\"}".getBytes());
+        String payload = java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(claims.toJson().getBytes());
         return header + "." + payload + ".";
     }
 
