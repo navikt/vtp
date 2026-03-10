@@ -59,5 +59,21 @@
          "status": "AKTIV",
          "type": "YTA",
          "tema": "UNG"
+     },
+     {
+         "diskresjonskode": "NORMAL-AKT",
+         "navn": "Nav arbeid og ytelser Trondheim",
+         "enhetId": "4416",
+         "status": "AKTIV",
+         "type": "YTA",
+         "tema": "UNG"
+     },
+     {
+         "diskresjonskode": "NORMAL-AKT",
+         "navn": "Nav Falkenborg",
+         "enhetId": "5701",
+         "status": "AKTIV",
+         "type": "LOKAL",
+         "tema": "UNG"
      }
  ]
