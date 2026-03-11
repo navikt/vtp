@@ -17,6 +17,12 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>kafka-producer</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger.core.v3</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
