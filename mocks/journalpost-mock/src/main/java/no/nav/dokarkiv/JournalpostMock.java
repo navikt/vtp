@@ -15,7 +15,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import no.nav.dokarkiv.dto.AvsluttSakRequest;
 import no.nav.dokarkiv.dto.FerdigstillJournalpostRequest;
+import no.nav.dokarkiv.dto.GjenaapneSakRequest;
 import no.nav.dokarkiv.dto.OppdaterJournalpostRequest;
 import no.nav.dokarkiv.dto.OppdaterJournalpostResponse;
 import no.nav.dokarkiv.dto.OpprettJournalpostRequest;
@@ -26,6 +28,7 @@ import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 // Ref: https://confluence.adeo.no/display/BOA/Oversikt+over+Joark-+og+dokarkiv-tjenester
@@ -105,8 +108,7 @@ public class JournalpostMock {
         var journalfoerendeEnhet = ferdigstillJournalpostRequest.journalfoerendeEnhet();
         LOG.info("Kall til ferdigstill journalpost på enhet: {}", journalfoerendeEnhet);
 
-        journalRepository.finnJournalpostMedJournalpostId(journalpostId)
-                .ifPresent(j -> j.setJournalStatus(Journalstatus.JOURNALFØRT));
+        journalRepository.finnJournalpostMedJournalpostId(journalpostId).ifPresent(j -> j.setJournalStatus(Journalstatus.JOURNALFØRT));
 
         return Response.ok().entity("OK").build();
     }
@@ -121,12 +123,39 @@ public class JournalpostMock {
         return new TilknyttVedleggResponse(List.of());
     }
 
+    @PATCH
+    @Path("/sak/avsluttsak")
+    @Operation(description = "Avslutt sak")
+    public Response avsluttSak(AvsluttSakRequest avsluttSakRequest) {
+
+        String fagsakId = avsluttSakRequest.fagsakId();
+        LOG.info("Kall til avslutt sak for sak: {}", fagsakId);
+
+        journalRepository.finnJournalposterMedSakId(fagsakId).forEach(j -> j.setSakstatus(Sakstatus.AVSLUTTET));
+
+        return Response.ok().entity("OK").build();
+    }
+
+    @PATCH
+    @Path("/sak/gjenaapnesak")
+    @Operation(description = "Gjenaapne sak")
+    public Response gjenaapneSak(GjenaapneSakRequest gjenaapneSakRequest) {
+
+        String fagsakId = gjenaapneSakRequest.fagsakId();
+        LOG.info("Kall til gjenaapne sak for sak: {}", fagsakId);
+
+        journalRepository.finnJournalposterMedSakId(fagsakId).forEach(j -> j.setSakstatus(Sakstatus.AAPEN));
+
+        return Response.ok().entity("OK").build();
+    }
+
 
     private OpprettJournalpostResponse tilOpprettJouralpostResponse(JournalpostModell journalpostModell, Boolean forsoekFerdigstill) {
-        var docs = journalpostModell.getDokumentModellList().stream()
+        var docs = journalpostModell.getDokumentModellList()
+                .stream()
                 .map(it -> new OpprettJournalpostResponse.DokumentInfoResponse(it.getDokumentId()))
                 .toList();
-        return new OpprettJournalpostResponse(journalpostModell.getJournalpostId(),
-                forsoekFerdigstill != null && forsoekFerdigstill, docs);
+        return new OpprettJournalpostResponse(journalpostModell.getJournalpostId(), forsoekFerdigstill != null && forsoekFerdigstill,
+                docs);
     }
 }

@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.ANY, fieldVisibility = JsonAutoDetect.Visibility.ANY)
@@ -27,6 +28,7 @@ public class JournalpostModell {
     private JournalpostBruker avsenderMottaker;
     private String sakId;
     private String fagsystemId;
+    private Sakstatus sakstatus;
     private Journalstatus journalStatus;
     private String kommunikasjonsretning;
     private LocalDateTime mottattDato;
@@ -49,6 +51,7 @@ public class JournalpostModell {
                              @JsonProperty("avsenderFnr") String avsenderFnr,
                              @JsonProperty("sakId") String sakId,
                              @JsonProperty("fagsystemId") String fagsystemId,
+                             @JsonProperty("sakstatus") Sakstatus sakstatus,
                              @JsonProperty("journalStatus") Journalstatus journalStatus,
                              @JsonProperty("kommunikasjonsretning") String kommunikasjonsretning,
                              @JsonProperty("mottattDato") LocalDateTime mottattDato,
@@ -65,6 +68,7 @@ public class JournalpostModell {
         this.avsenderMottaker = avsenderFnr != null ? new JournalpostBruker(avsenderFnr, BrukerType.FNR) : null;
         this.sakId = sakId;
         this.fagsystemId = fagsystemId;
+        this.sakstatus = sakstatus != null ? sakstatus : Sakstatus.AAPEN;
         this.journalStatus = journalStatus;
         this.kommunikasjonsretning = kommunikasjonsretning;
         this.mottattDato = mottattDato;
@@ -132,6 +136,14 @@ public class JournalpostModell {
 
     public void setFagsystemId(String fagsystemId) {
         this.fagsystemId = fagsystemId;
+    }
+
+    public Sakstatus getSakstatus() {
+        return sakstatus;
+    }
+
+    public void setSakstatus(Sakstatus sakstatus) {
+        this.sakstatus = sakstatus;
     }
 
     public Journalstatus getJournalStatus() {
@@ -219,12 +231,12 @@ public class JournalpostModell {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JournalpostModell that = (JournalpostModell) o;
-        return Objects.equals(journalpostId, that.journalpostId) && Objects.equals(eksternReferanseId, that.eksternReferanseId) && Objects.equals(tittel, that.tittel) && Objects.equals(dokumentModellList, that.dokumentModellList) && Objects.equals(avsenderMottaker, that.avsenderMottaker) && Objects.equals(sakId, that.sakId) && Objects.equals(fagsystemId, that.fagsystemId) && Objects.equals(journalStatus, that.journalStatus) && Objects.equals(kommunikasjonsretning, that.kommunikasjonsretning) && Objects.equals(mottattDato, that.mottattDato) && Objects.equals(mottakskanal, that.mottakskanal) && Objects.equals(arkivtema, that.arkivtema) && Objects.equals(journaltilstand, that.journaltilstand) && Objects.equals(journalposttype, that.journalposttype) && Objects.equals(bruker, that.bruker) && Objects.equals(tilleggsopplysninger, that.tilleggsopplysninger);
+        return Objects.equals(journalpostId, that.journalpostId) && Objects.equals(eksternReferanseId, that.eksternReferanseId) && Objects.equals(tittel, that.tittel) && Objects.equals(dokumentModellList, that.dokumentModellList) && Objects.equals(avsenderMottaker, that.avsenderMottaker) && Objects.equals(sakId, that.sakId) && Objects.equals(fagsystemId, that.fagsystemId) && Objects.equals(sakstatus, that.sakstatus) && Objects.equals(journalStatus, that.journalStatus) && Objects.equals(kommunikasjonsretning, that.kommunikasjonsretning) && Objects.equals(mottattDato, that.mottattDato) && Objects.equals(mottakskanal, that.mottakskanal) && Objects.equals(arkivtema, that.arkivtema) && Objects.equals(journaltilstand, that.journaltilstand) && Objects.equals(journalposttype, that.journalposttype) && Objects.equals(bruker, that.bruker) && Objects.equals(tilleggsopplysninger, that.tilleggsopplysninger);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(journalpostId, eksternReferanseId, tittel, dokumentModellList, avsenderMottaker, sakId, fagsystemId, journalStatus, kommunikasjonsretning, mottattDato, mottakskanal, arkivtema, journaltilstand, journalposttype, bruker, tilleggsopplysninger);
+        return Objects.hash(journalpostId, eksternReferanseId, tittel, dokumentModellList, avsenderMottaker, sakId, fagsystemId, sakstatus, journalStatus, kommunikasjonsretning, mottattDato, mottakskanal, arkivtema, journaltilstand, journalposttype, bruker, tilleggsopplysninger);
     }
 
     @Override
@@ -235,6 +247,7 @@ public class JournalpostModell {
                 ", avsenderMottaker='" + avsenderMottaker.getIdent() + '\'' +
                 ", sakId='" + sakId + '\'' +
                 ", fagsystemId='" + fagsystemId + '\'' +
+                ", sakstatus=" + sakstatus +
                 ", journalStatus=" + journalStatus +
                 ", kommunikasjonsretning='" + kommunikasjonsretning + '\'' +
                 ", mottattDato=" + mottattDato +
