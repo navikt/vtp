@@ -9,6 +9,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
 public class JournalpostModellGenerator {
@@ -23,6 +24,7 @@ public class JournalpostModellGenerator {
 
     public static JournalpostModell lagJournalpostStrukturertDokument(String innhold, String fnr, DokumenttypeId dokumenttypeId, Mottakskanal mottakskanal, Arkivfiltype arkivfiltype, String brevkode) {
         JournalpostModell journalpostModell = new JournalpostModell();
+        journalpostModell.setSakstatus(Sakstatus.AAPEN);
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
         journalpostModell.setJournalposttype(Journalposttyper.INNGAAENDE_DOKUMENT);
@@ -46,6 +48,7 @@ public class JournalpostModellGenerator {
 
     public static JournalpostModell lagJournalpostUstrukturertDokument(String fnr, DokumenttypeId dokumenttypeId) {
         JournalpostModell journalpostModell = new JournalpostModell();
+        journalpostModell.setSakstatus(Sakstatus.AAPEN);
         journalpostModell.setJournalStatus(Journalstatus.JOURNALFØRT);
         journalpostModell.setAvsenderFnr(fnr);
 
@@ -59,6 +62,4 @@ public class JournalpostModellGenerator {
         journalpostModell.getDokumentModellList().add(dokumentModell);
         return journalpostModell;
     }
-
-
 }

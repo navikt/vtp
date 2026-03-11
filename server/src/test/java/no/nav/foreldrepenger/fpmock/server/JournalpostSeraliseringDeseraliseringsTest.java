@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 
 class JournalpostSeraliseringDeseraliseringsTest extends SerializationTestBase {
@@ -46,7 +47,7 @@ class JournalpostSeraliseringDeseraliseringsTest extends SerializationTestBase {
     @Test
     void JournalpostModellSeraliseringDeseraliseringTest() {
         test(new JournalpostModell("123456789", "AR123344566", "Inntekstmelding", List.of(lagDokumentModell()), "test",
-                "sakid", "fagsystemId", Journalstatus.MOTTATT, "kommunikasjonsretning", LocalDateTime.now(), Mottakskanal.ALTINN,
+                "sakid", "fagsystemId", Sakstatus.AAPEN, Journalstatus.MOTTATT, "kommunikasjonsretning", LocalDateTime.now(), Mottakskanal.ALTINN,
                 Arkivtema.FOR, "journaltilstand", Journalposttyper.INNGAAENDE_DOKUMENT, new JournalpostBruker("12345", BrukerType.FNR),
                 BehandlingsTema.FORELDREPENGER.getOffisiellKode()));
     }
