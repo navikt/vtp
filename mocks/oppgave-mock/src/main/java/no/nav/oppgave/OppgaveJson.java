@@ -11,10 +11,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import no.nav.oppgave.infrastruktur.validering.AtMostOneOf;
 import no.nav.oppgave.infrastruktur.validering.AtleastOneOf;
 import no.nav.oppgave.infrastruktur.validering.Organisasjonsnummer;
@@ -160,7 +158,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("id")
-    @Schema(description = "Syntetisk id", example = "5436732")
     public Long getId() {
         return id;
     }
@@ -170,7 +167,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("tildeltEnhetsnr")
-    @Schema(description = "Enheten oppgaven er tildelt", example = "0100")
     public String getTildeltEnhetsnr() {
         return tildeltEnhetsnr;
     }
@@ -180,7 +176,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("endretAvEnhetsnr")
-    @Schema(description = "Enheten som endret oppgaven", example = "0101")
     public String getEndretAvEnhetsnr() {
         return endretAvEnhetsnr;
     }
@@ -190,13 +185,11 @@ public class OppgaveJson {
     }
 
     @JsonProperty("opprettetAvEnhetsnr")
-    @Schema(description = "Hvilken enhet som har opprettet oppgaven", example = "0200")
     public String getOpprettetAvEnhetsnr() {
         return opprettetAvEnhetsnr;
     }
 
     @JsonProperty("journalpostId")
-    @Schema(description = "Id for en journalpostreferanse", example = "84938201")
     public String getJournalpostId() {
         return journalpostId;
     }
@@ -206,7 +199,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("journalpostkilde")
-    @Schema(description = "Hvilken applikasjon journalposten kommer fra, applikasjonskoder finnes i felles kodeverk", example = "AS36")
     public String getJournalpostkilde() {
         return journalpostkilde;
     }
@@ -216,7 +208,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("behandlesAvApplikasjon")
-    @Schema(description = "Hvilken applikasjon oppgaven skal behandles i, applikasjonskoder finnes i felles kodeverk", example = "FS22")
     public String getBehandlesAvApplikasjon() {
         return behandlesAvApplikasjon;
     }
@@ -226,7 +217,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("saksreferanse")
-    @Schema(description = "Id for en saksreferanse", example = "84942299")
     public String getSaksreferanse() {
         return saksreferanse;
     }
@@ -236,31 +226,26 @@ public class OppgaveJson {
     }
 
     @JsonProperty("aktoerId")
-    @Schema(description = "Syntetisk id for en person, kan hentes fra TPS", example = "123456789")
     public String getAktoerId() {
         return aktoerId;
     }
 
     @JsonProperty("orgnr")
-    @Schema(description = "Organisasjonsnummer", example = "979312059")
     public String getOrgnr() {
         return orgnr;
     }
 
     @JsonProperty("bnr")
-    @Schema(description = "Bostnummer", example = "11250199559")
     public String getBnr() {
         return bnr;
     }
 
     @JsonProperty("samhandlernr")
-    @Schema(description = "Samnhandlernummer", example = "80000999999")
     public String getSamhandlernr() {
         return samhandlernr;
     }
 
     @JsonProperty("tilordnetRessurs")
-    @Schema(description = "Ressurssen som er tilordnet oppgaven, gjerne en saksbehandler", example = "Z998323")
     public String getTilordnetRessurs() {
         return tilordnetRessurs;
     }
@@ -270,7 +255,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("beskrivelse")
-    @Schema(description = "Beskrivelse av oppgaven")
     public String getBeskrivelse() {
         return beskrivelse;
     }
@@ -280,7 +264,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("temagruppe")
-    @Schema(description = "Temagruppe slik den er definert i felles kodeverk", example = "ANSOS")
     public String getTemagruppe() {
         return temagruppe;
     }
@@ -290,7 +273,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("tema")
-    @Schema(description = "Tema slik den er definert i felles kodeverk", example = "AAP")
     public String getTema() {
         return tema;
     }
@@ -300,7 +282,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("behandlingstema")
-    @Schema(description = "Behandlingstema slik den er definert i felles kodeverk", example = "ab0203")
     public String getBehandlingstema() {
         return behandlingstema;
     }
@@ -310,7 +291,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("oppgavetype")
-    @Schema(description = "Oppgavetype slik den er definert i felles kodeverk", example = "HAST_BANK_OPPLYS")
     public String getOppgavetype() {
         return oppgavetype;
     }
@@ -320,7 +300,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("behandlingstype")
-    @Schema(description = "Behandlingstype slik den er definert i felles kodeverk", example = "ae0001")
     public String getBehandlingstype() {
         return behandlingstype;
     }
@@ -330,12 +309,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("versjon")
-    @Schema(description = "Brukes for å håndtere optimistisk låsing, hvor to brukere har skrevet på samme oppgave. " +
-        "Hver gang det gjøres endring på en oppgave, økes verdien av VERSJON med 1. Når en klient skal lagre endring på " +
-        "en oppgave, sendes verdien av VERSJON oppgaven hadde da informasjon om oppgaven som nå er endret ble hentet ut. " +
-        "Dersom verdien av VERSJON er endret, har noen andre lagret oppgaven i mellomtiden, og oppgaven kan ikke lagres. " +
-        "409 Conflict vil returneres fra tjenesten. Under oppretting av oppgave trenger man ikke å spesifisere noen verdi for dette feltet, " +
-        "oppgaven vil starte på versjon 1", example = "1")
     public Integer getVersjon() {
         return versjon;
     }
@@ -345,7 +318,6 @@ public class OppgaveJson {
     }
 
     @JsonProperty("mappeId")
-    @Schema(description = "Mapper styres av Oppgave. En oversikt kan hentes fra endepunktet for mapper", example = "848")
     public Long getMappeId() {
         return mappeId;
     }
@@ -356,7 +328,6 @@ public class OppgaveJson {
 
     @JsonProperty("fristFerdigstillelse")
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @Schema(description = "Oppgavens frist for ferdigstillelse.", example = "2018-03-24")
     public String getFristFerdigstillelse() {
         return fristFerdigstillelse != null ? DateTimeFormatter.ISO_LOCAL_DATE.format(fristFerdigstillelse) : null;
     }
@@ -367,8 +338,6 @@ public class OppgaveJson {
 
     @JsonProperty("aktivDato")
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @Schema(description = "Brukes av saksbehandlere for å planlegge arbeidsdagene sine, aktivDato forteller noe " +
-        "om når saksbehandler selv ønsker å begynne å jobbe på oppgaven", example = "2018-03-10")
     public String getAktivDato() {
         return DateTimeFormatter.ISO_LOCAL_DATE.format(aktivDato);
     }
@@ -378,26 +347,22 @@ public class OppgaveJson {
     }
 
     @JsonProperty("opprettetTidspunkt")
-    @Schema(description = "Opprettet tidspunkt iht. ISO-8601")
     public String getOpprettetTidspunkt() {
         return ZonedDateTime.of(opprettetTidspunkt, ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     }
 
     @JsonProperty("opprettetAv")
-    @Schema(description = "Hvilken bruker eller system som opprettet oppgaven")
     public String getOpprettetAv() {
         return opprettetAv;
     }
 
     @JsonProperty("endretAv")
-    @Schema(description = "Hvilken bruker eller system som endret oppgaven sist")
     public String getEndretAv() {
         return endretAv;
     }
 
 
     @JsonProperty("status")
-    @Schema(description = "Hvilken status oppgaven har", example = "UNDER_BEHANDLING")
     public Oppgavestatus getStatus() {
         return status;
     }
@@ -407,21 +372,16 @@ public class OppgaveJson {
     }
 
     @JsonProperty("ferdigstiltTidspunkt")
-    @Schema(description = "Tidspunktet oppgaven ble ferdigstilt iht. ISO-8601")
     public String getFerdigstiltTidspunkt() {
         return ferdigstiltTidspunkt != null ? ZonedDateTime.of(ferdigstiltTidspunkt, ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) : null;
     }
 
     @JsonProperty("endretTidspunkt")
-    @Schema(description = "Endret tidspunkt iht. ISO-8601")
     public String getEndretTidspunkt() {
         return endretTidspunkt != null ? ZonedDateTime.of(endretTidspunkt, ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) : null;
     }
 
     @JsonProperty("metadata")
-    @Schema(description = "Metadata for oppgaven. Dette er en JSON-Objekt struktur (key value pair/hash map) som kan brukes for informasjon som ikke passer " +
-        "direkte inn i hovedmodellen til oppgave, men som fortsatt er nødvendig for en konsument. På dette feltet vil det komme noen restriksjoner " +
-        "så vennligst ta kontakt med oss om deres applikasjon har behov for å ta dette i bruk")
     public Map<MetadataKey, String> getMetadata() {
         return metadata;
     }

@@ -8,6 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -23,23 +29,9 @@ import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Oppgave Mock")
 @Path("oppgave/api/v1/oppgaver")
 public class OppgaveMockImpl {
 
@@ -49,12 +41,8 @@ public class OppgaveMockImpl {
     private static final Map<Long, ObjectNode> oppgaver = new ConcurrentHashMap<>();
 
     @POST
-    @Operation(description = "Opprett oppgave", parameters = {
-        @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY),
-        @Parameter(name = "Authorization", required = true, in = ParameterIn.QUERY)
-    })
     public Response opprettOppgave(
-            @Valid @Parameter(name = "Oppgaven som opprettes", required = true) ObjectNode oppgave,
+            @Valid ObjectNode oppgave,
             @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -74,15 +62,6 @@ public class OppgaveMockImpl {
     }
 
     @GET
-    @Operation(description = "Hent oppgaver", parameters = {
-        @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY),
-        @Parameter(name = "Authorization", required = true, in = ParameterIn.QUERY),
-        @Parameter(name = "tema", in = ParameterIn.QUERY),
-        @Parameter(name = "oppgavetype", in = ParameterIn.QUERY),
-        @Parameter(name = "journalpostId", in = ParameterIn.QUERY),
-        @Parameter(name = "aktoerId", in = ParameterIn.QUERY)
-    })
-
     public Response hentOppgaver(@Context HttpHeaders httpHeaders, @Context UriInfo uriInfo) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -128,15 +107,6 @@ public class OppgaveMockImpl {
     @SuppressWarnings("resource")
     @GET
     @Path("/{id}")
-    @Operation(description = "Henter oppgave for en gitt id", responses = {
-            @ApiResponse(responseCode = "OK", description = "Hentet oppgave", content = @Content(schema = @Schema(implementation  = OppgaveJson.class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Konsument mangler gyldig token"),
-            @ApiResponse(responseCode = "FORBIDDEN", description = "Bruker er ikke autorisert for denne operasjonen"),
-            @ApiResponse(responseCode = "NOT_FOUND", description = "Det finnes ingen oppgave for angitt id"),
-            @ApiResponse(responseCode = "CONFLICT", description = "Konflikt"),
-            @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Ukjent feilsituasjon har oppstått i Oppgave")
-    })
-    @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY)
     public Response hentOppgave(@PathParam("id") Long id, @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
@@ -148,15 +118,7 @@ public class OppgaveMockImpl {
 
     @PATCH
     @Path("/{id}")
-    @Operation(description = "Endrer en eksisterende oppgave", responses = {
-            @ApiResponse(responseCode = "OK", description = "Oppgave patchet", content = @Content(schema = @Schema(implementation  = OppgaveJson.class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "Konsument mangler gyldig token"),
-            @ApiResponse(responseCode = "FORBIDDEN", description = "Bruker er ikke autorisert for denne operasjonen"),
-            @ApiResponse(responseCode = "CONFLICT", description = "Konflikt"),
-            @ApiResponse(responseCode = "INTERNAL_SERVER_ERROR", description = "Ukjent feilsituasjon har oppstått i Oppgave")
-            } )
-    @Parameter(name = "X-Correlation-ID", required = true,  in = ParameterIn.QUERY)
-    public Response patchOppgave(@Valid @Parameter(description = "Oppgaven som endres", required = true) ObjectNode patch,
+    public Response patchOppgave(@Valid ObjectNode patch,
                                  @PathParam("id") Long id,
                                  @Context UriInfo uriInfo,
                                  @Context HttpHeaders httpHeaders) {

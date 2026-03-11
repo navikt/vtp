@@ -8,8 +8,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -24,7 +22,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.SigrunModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 
-@Tag(name = "Sigrun/beregnetskatt")
 @Path("/api")
 public class SigrunMock {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
@@ -39,7 +36,6 @@ public class SigrunMock {
     @Path("/v1/pensjonsgivendeinntektforfolketrygden")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer pensjonsgivende inntekt for folketrygden fra Sigrun (POST)")
     public Response postPgiFolketrygden(PensjonsgivendeInntektForFolketrygdenRequest request) {
 
         String brukerFnr = request != null ? request.personident() : null;

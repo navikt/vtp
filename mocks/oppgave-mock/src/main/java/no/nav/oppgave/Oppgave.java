@@ -1,14 +1,12 @@
 package no.nav.oppgave;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class Oppgave {
 
@@ -448,12 +446,17 @@ public class Oppgave {
         }
 
         public Oppgave build() {
-            Validate.validState(!StringUtils.isAllBlank(temagruppe, tema), "temagruppe eller tema må være angitt");
-            Validate.notNull(versjon, "versjon må være angitt");
-            Validate.notNull(aktivDato, "aktivDato må være angitt");
-            Validate.notNull(status, "status må være angitt");
-            Validate.notNull(prioritet, "prioritet må være angitt");
-            Validate.notBlank(oppgavetype, "oppgavetype må være angitt");
+            if ((temagruppe == null || temagruppe.isBlank()) && (tema == null || tema.isBlank())) {
+                throw new IllegalStateException("temagruppe eller tema må være angitt");
+            }
+            Objects.requireNonNull(versjon, "versjon må være angitt");
+            Objects.requireNonNull(aktivDato, "aktivDato må være angitt");
+            Objects.requireNonNull(status, "status må være angitt");
+            Objects.requireNonNull(prioritet, "prioritet må være angitt");
+            if (oppgavetype == null || oppgavetype.isBlank()) {
+                throw new IllegalArgumentException("oppgavetype må være angitt");
+            }
+
 
             return new Oppgave(this);
         }

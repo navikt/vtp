@@ -8,11 +8,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.POST;
@@ -31,7 +26,6 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Path("/paaroerendeSykdom")
 @RequestScoped
-@Tag(name = "the paaroerendeSykdom API")
 public class PårørendeSykdomMock {
     private TestscenarioBuilderRepository scenarioRepository;
 
@@ -48,7 +42,6 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/saker")
     @Produces({"application/json"})
-    @Operation(description = "hentSak", responses = {@ApiResponse(responseCode = "OK", description = "paaroerende-sykdom-controller", content = @Content(schema = @Schema(implementation = SakResult[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response hentSakUsingPost(PersonRequest personRequest) {
         var result = personRequest.fnr().stream().flatMap(fnr -> {
             Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(fnr);
@@ -66,7 +59,6 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/grunnlag")
     @Produces({"application/json"})
-    @Operation(description = "paaroerendeSykdom", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = PaaroerendeSykdom[].class))), @ApiResponse(responseCode = "AUTHORIZATION", description = "Unauthorized")})
     public Response paaroerendeSykdomUsingPost(PersonRequest personRequest) {
         var result = personRequest.fnr().stream().flatMap(fnr -> {
             Optional<InntektYtelseModell> inntektYtelseModell = scenarioRepository.getInntektYtelseModell(fnr);
@@ -91,7 +83,6 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/vedtakForPleietrengende")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "Finner vedtak basert på fødselsnummeret til pleietrengende.", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = VedtakPleietrengendeDto[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response finnVedtakForPleietrengendeUsingPost(PersonRequest personRequest) {
         var alleVedtak = personRequest.fnr().stream().flatMap(fnr -> {
             var vedtakList = new ArrayList<VedtakPleietrengendeDto>();
@@ -118,7 +109,6 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/rammevedtak/omsorgspenger")
     @Produces({(MediaType.APPLICATION_JSON)})
-    @Operation(description = "Finner rammevedtak basert på fødselsnummeret til søker.", responses = {@ApiResponse(responseCode = "OK", description = "paaroerendeSykdom", content = @Content(schema = @Schema(implementation = RammevedtakDto[].class))), @ApiResponse(responseCode = "UNAUTHORIZED", description = "Unauthorized")})
     public Response finnRammevedtakForOmsorgspenger(@NotNull PersonRequest request) {
         if (request.fnr.size() != 1){
             throw new IllegalArgumentException("Forventet nøyaktig ett FNR, fikk " + request.fnr.size());

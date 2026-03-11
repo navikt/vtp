@@ -13,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.GET;
@@ -29,7 +27,6 @@ import no.nav.foreldrepenger.vtp.server.MockServer;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 
-@Tag(name = "ID-Porten")
 @Path(IdportenLoginTjeneste.TJENESTE_PATH)
 public class IdportenLoginTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(IdportenLoginTjeneste.class);
@@ -41,7 +38,6 @@ public class IdportenLoginTjeneste {
     @GET
     @Path("/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Idporten Discovery url")
     public Response wellKnown(@SuppressWarnings("unused") @Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
@@ -67,7 +63,6 @@ public class IdportenLoginTjeneste {
     @GET
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "idporten/discovery/keys")
     public Response authorize() {
         String jwks = JsonWebKeyHelper.getJwks();
         return Response.ok(jwks).build();
@@ -116,7 +111,6 @@ public class IdportenLoginTjeneste {
     @POST
     @Path("/access_token")
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "idporten/access_token")
     @SuppressWarnings("unused")
     public Response tokenEndpoint(@Context HttpServletRequest req,
                                 @FormParam("code") String code,
@@ -132,7 +126,6 @@ public class IdportenLoginTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "idporten/access_token - brukes primært av autotest til å logge inn en bruker programmatisk (uten interaksjon med GUI)")
     public Response accessToken(@QueryParam("fnr") String fnr) {
         var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER, null);
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();

@@ -5,8 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -32,7 +30,6 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 
 // Ref: https://confluence.adeo.no/display/BOA/Oversikt+over+Joark-+og+dokarkiv-tjenester
-@Tag(name = "Dokarkiv")
 @Path("/dokarkiv/rest/journalpostapi/v1")
 public class JournalpostMock {
     private static final Logger LOG = LoggerFactory.getLogger(JournalpostMock.class);
@@ -47,7 +44,6 @@ public class JournalpostMock {
 
     @POST
     @Path("/journalpost")
-    @Operation(description = "lag journalpost")
     public Response lagJournalpost(OpprettJournalpostRequest opprettJournalpostRequest,
                                    @QueryParam("forsoekFerdigstill") Boolean forsoekFerdigstill) {
         LOG.info("Dokarkiv. Lag journalpost. foersoekFerdigstill: {}", forsoekFerdigstill);
@@ -84,7 +80,6 @@ public class JournalpostMock {
 
     @PUT
     @Path("/journalpost/{journalpostid}")
-    @Operation(description = "Oppdater journalpost")
     public Response oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest,
                                         @PathParam("journalpostid") String journalpostId) {
 
@@ -101,7 +96,6 @@ public class JournalpostMock {
 
     @PATCH
     @Path("/journalpost/{journalpostid}/ferdigstill")
-    @Operation(description = "Ferdigstill journalpost")
     public Response ferdigstillJournalpost(FerdigstillJournalpostRequest ferdigstillJournalpostRequest,
                                            @PathParam("journalpostid") String journalpostId) {
 
@@ -115,7 +109,6 @@ public class JournalpostMock {
 
     @PUT
     @Path("/journalpost/{journalpostid}/tilknyttVedlegg")
-    @Operation(description = "Tilknytt vedlegg")
     public TilknyttVedleggResponse tilknyttVedlegg(TilknyttVedleggRequest tilknyttVedleggRequest) {
 
         LOG.info("Kall til tilknyttet vedlegg for dokumenter {}", tilknyttVedleggRequest.dokument());
@@ -125,7 +118,6 @@ public class JournalpostMock {
 
     @PATCH
     @Path("/sak/avsluttsak")
-    @Operation(description = "Avslutt sak")
     public Response avsluttSak(AvsluttSakRequest avsluttSakRequest) {
 
         String fagsakId = avsluttSakRequest.fagsakId();
@@ -138,7 +130,6 @@ public class JournalpostMock {
 
     @PATCH
     @Path("/sak/gjenaapnesak")
-    @Operation(description = "Gjenaapne sak")
     public Response gjenaapneSak(GjenaapneSakRequest gjenaapneSakRequest) {
 
         String fagsakId = gjenaapneSakRequest.fagsakId();

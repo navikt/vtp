@@ -1,7 +1,9 @@
 package no.nav.nom;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -11,16 +13,11 @@ import jakarta.ws.rs.core.MediaType;
 import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 /*
  * Tjeneste for å sjekke om person er skjermet.
  * Grensesnitt https://skjermede-personer-pip.<intern-standard-dev-uri>/swagger-ui/index.html#/
  */
 
-@Tag(name = "nom")
 @Path("/api/nom")
 public class SkjermetPersonMock {
 
@@ -34,7 +31,6 @@ public class SkjermetPersonMock {
     @Path("/skjermet")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Person skjermet")
     public Boolean personErSkjermet(SkjermetRequestDto request) {
         return erPersonSkjermet(request.personident());
     }

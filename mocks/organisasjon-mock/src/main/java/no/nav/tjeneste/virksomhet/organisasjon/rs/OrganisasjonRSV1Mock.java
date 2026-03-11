@@ -2,6 +2,9 @@ package no.nav.tjeneste.virksomhet.organisasjon.rs;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -11,22 +14,12 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Path("ereg/api/v1/organisasjon")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Enhetsregister Rest")
 public class OrganisasjonRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonRSV1Mock.class);
@@ -39,11 +32,6 @@ public class OrganisasjonRSV1Mock {
     @SuppressWarnings("unused")
     @GET
     @Path("/{orgnummer}")
-    @Operation(description = "Henter adresse informasjon for et organisasjonsnummer")
-    @Parameters({
-            @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY),
-            @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
-    })
     public OrganisasjonResponse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
                                                         @Context HttpHeaders httpHeaders,
                                                         @Context UriInfo uriInfo) {
@@ -64,11 +52,6 @@ public class OrganisasjonRSV1Mock {
     @SuppressWarnings("unused")
     @GET
     @Path("/{orgnummer}/noekkelinfo")
-    @Operation(description = "Henter noekkelinformasjon for et organisasjonsnummer")
-    @Parameters({
-            @Parameter(name = "inkluderHierarki",  in = ParameterIn.QUERY),
-            @Parameter(name = "inkluderHistorikk",  in = ParameterIn.QUERY)
-    })
     public OrganisasjonNoekkelinfo hentOrganisasjonNoekkelinfo(@PathParam("orgnummer") String orgnummer,
                                                                @Context HttpHeaders httpHeaders,
                                                                @Context UriInfo uriInfo) {
