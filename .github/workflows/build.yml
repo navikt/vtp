@@ -26,7 +26,6 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      sonar-scan: true
       use-reader: true
     secrets: inherit
 
