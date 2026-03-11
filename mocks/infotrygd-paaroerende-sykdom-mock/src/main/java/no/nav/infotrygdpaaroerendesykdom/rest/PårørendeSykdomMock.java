@@ -109,6 +109,7 @@ public class PårørendeSykdomMock {
     @POST
     @Path("/rammevedtak/omsorgspenger")
     @Produces({(MediaType.APPLICATION_JSON)})
+    // Finner rammevedtak basert på fødselsnummeret til søker.
     public Response finnRammevedtakForOmsorgspenger(@NotNull PersonRequest request) {
         if (request.fnr.size() != 1){
             throw new IllegalArgumentException("Forventet nøyaktig ett FNR, fikk " + request.fnr.size());

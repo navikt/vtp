@@ -106,6 +106,7 @@ public class TestscenarioRestTjeneste {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
+    // Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet
     public Response initialiserTestScenario(String testscenarioJson, @Context UriInfo uriInfo) {
         Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
         Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);

@@ -86,6 +86,7 @@ public class TokenxRestTjeneste {
     @GET
     @Path("/token")
     @Produces(MediaType.APPLICATION_JSON)
+    // Tokenx i kontekst av riktig bruker – brukes primært av autotest til å logge inn en bruker programmatisk uten å måtte kalle idporten og deretter tokenx
     public Response token(@Context HttpServletRequest req,
                           @QueryParam("fnr") String fnr,
                           @QueryParam("audience") String audience) throws JoseException {

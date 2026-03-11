@@ -36,6 +36,7 @@ public class AltinnRettigheterProxyMock {
     @GET
     @Path("/ekstern/altinn/api/serviceowner/reportees/empty")
     @Produces(MediaType.APPLICATION_JSON)
+    // Henter ingen virksomheter. Brukes for tingangsnekt testing.
     public Response hentIngenTilganger() {
         return Response.ok().entity(List.of()).build();
     }

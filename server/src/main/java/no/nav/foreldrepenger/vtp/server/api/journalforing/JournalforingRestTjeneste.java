@@ -44,6 +44,7 @@ public class JournalforingRestTjeneste {
     @Path("/journalfor")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    // Journalfører journalpost og send en journalføringhendelse på topic
     public JournalforingResultatDto journalførJournalpost(JournalpostModell journalpostModell){
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
         LOG.info("Oppretter journalpost for bruker: {}, JournalpostId: {}", journalpostModell.getAvsenderFnr(), journalpostId);
@@ -60,6 +61,7 @@ public class JournalforingRestTjeneste {
     @POST
     @Path("/journalfor/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     @Produces(MediaType.APPLICATION_JSON)
+    // Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body.
     public JournalforingResultatDto journalførDokument(String content, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId){
         var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(content, fnr, DokumenttypeId.valueOfKode(dokumenttypeId));
         journalpostModell.setMottattDato(LocalDateTime.now());

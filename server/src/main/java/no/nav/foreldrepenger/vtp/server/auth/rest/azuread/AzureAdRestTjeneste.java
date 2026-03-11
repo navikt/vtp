@@ -143,6 +143,7 @@ public class AzureAdRestTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
+    // azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)
     public Response accessToken(@QueryParam("ident") @DefaultValue("S123456") String ident) {
         var bruker = Optional.ofNullable(ANSATTE_INDEKS.findByIdent(ident)).orElseThrow();
         var token = createToken(bruker, nonceCache.get(NONCE));

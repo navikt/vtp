@@ -126,6 +126,7 @@ public class IdportenLoginTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
+    // idporten/access_token - brukes primært av autotest til å logge inn en bruker programmatisk (uten interaksjon med GUI)
     public Response accessToken(@QueryParam("fnr") String fnr) {
         var token = IdportenOidcTokenGenerator.idportenUserToken(fnr, ISSUER, null);
         return Response.ok(new Oauth2AccessTokenResponse(token)).build();
