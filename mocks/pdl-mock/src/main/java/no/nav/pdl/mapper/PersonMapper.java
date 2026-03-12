@@ -225,7 +225,7 @@ public class PersonMapper {
     }
 
     private static Folkeregisterpersonstatus tilPersonstatus(Personstatus ps) {
-        var pdlStatus = no.nav.pdl.oversetter.Personstatus.valueOf(ps.personstatus().name());
+        var pdlStatus = no.nav.pdl.mapper.Personstatus.valueOf(ps.personstatus().name());
         return Folkeregisterpersonstatus.builder()
                 .setStatus(pdlStatus.getStatus())
                 .setForenkletStatus(pdlStatus.getForenkletStatus())

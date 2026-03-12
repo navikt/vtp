@@ -1,4 +1,4 @@
-package no.nav.pdl.oversetter;
+package no.nav.pdl.mapper;
 
 public enum Personstatus {
     BOSA("bosattEtterFolkeregisterloven", "bosatt"),

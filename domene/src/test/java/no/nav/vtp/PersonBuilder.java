@@ -12,6 +12,7 @@ import no.nav.vtp.arbeidsforhold.Organisasjon;
 import no.nav.vtp.ident.Orgnummer;
 import no.nav.vtp.ident.PersonIdent;
 import no.nav.vtp.inntekt.Inntektsperiode;
+import no.nav.vtp.skatt.Skatteopplysning;
 import no.nav.vtp.personopplysninger.Adresse;
 import no.nav.vtp.personopplysninger.Adressebeskyttelse;
 import no.nav.vtp.personopplysninger.Adresser;
@@ -52,7 +53,8 @@ public class PersonBuilder {
                 lagSøkerPersonopplysninger(),
                 lagArbeidsforhold(),
                 lagInntekt(),
-                lagSøkerYtelser()
+                lagSøkerYtelser(),
+                lagSkatteopplysninger()
         );
     }
 
@@ -64,6 +66,7 @@ public class PersonBuilder {
                 lagAnnenPartPersonopplysninger(),
                 lagArbeidsforhold(),   // samme aareg-data iflg. inntektytelse-annenpart.json
                 lagInntekt(),          // samme inntektsdata
+                List.of(),
                 List.of()
         );
     }
@@ -198,5 +201,16 @@ public class PersonBuilder {
                 10_000,
                 List.of(new Beregningsgrunnlag(Beregningsgrunnlag.Kategori.ARBEIDSTAKER, null))
         ));
+    }
+
+    // ---------------------------------------------------------------------------
+    // Skatteopplysninger søker (fra sigrun)
+    // ---------------------------------------------------------------------------
+    private static List<Skatteopplysning> lagSkatteopplysninger() {
+        return List.of(
+                new Skatteopplysning(LocalDate.now().getYear() - 1, 550_000),
+                new Skatteopplysning(LocalDate.now().getYear() - 2, 500_000),
+                new Skatteopplysning(LocalDate.now().getYear() - 3, 480_000)
+        );
     }
 }

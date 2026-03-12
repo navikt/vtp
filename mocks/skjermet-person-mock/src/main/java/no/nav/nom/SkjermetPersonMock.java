@@ -10,8 +10,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.PersonRepository;
 
 /*
  * Tjeneste for å sjekke om person er skjermet.
@@ -21,10 +20,10 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 @Path("/api/nom")
 public class SkjermetPersonMock {
 
-    private final TestscenarioBuilderRepository scenarioRepository;
+    private final PersonRepository personRepository;
 
-    public SkjermetPersonMock(@Context TestscenarioBuilderRepository scenarioRepository) {
-        this.scenarioRepository = scenarioRepository;
+    public SkjermetPersonMock(@Context PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @POST
@@ -46,11 +45,7 @@ public class SkjermetPersonMock {
     }
 
     private boolean erPersonSkjermet(String personident) {
-        var brukerModell = scenarioRepository.getPersonIndeks().finnByIdent(personident);
-        if (brukerModell instanceof PersonModell personModell) {
-            return personModell.getErSkjermet();
-        }
-        return false;
+        return personRepository.hentPerson(personident).personopplysninger().erSkjermet();
     }
 
     record SkjermetRequestDto(String personident) { }

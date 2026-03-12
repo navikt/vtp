@@ -14,7 +14,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.graphql.GraphQLRequest;
 import no.nav.vtp.PersonRepository;
 
@@ -25,8 +24,8 @@ public class PdlMock {
     private static final String NAV_CONSUMER_ID = "Nav-Consumer-Id";
     private final PdlGraphqlTjeneste graphqlTjeneste;
 
-    public PdlMock(@Context TestscenarioBuilderRepository scenarioBuilderRepository, @Context PersonRepository personRepository) {
-        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(scenarioBuilderRepository, personRepository);
+    public PdlMock(@Context PersonRepository personRepository) {
+        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(personRepository);
     }
 
     @POST

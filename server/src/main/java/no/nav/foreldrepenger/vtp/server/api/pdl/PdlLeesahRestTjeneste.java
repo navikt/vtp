@@ -38,6 +38,7 @@ import no.nav.person.pdl.leesah.foedselsdato.Foedselsdato;
 import no.nav.person.pdl.leesah.forelderbarnrelasjon.ForelderBarnRelasjon;
 import no.nav.vtp.Person;
 import no.nav.vtp.PersonRepository;
+import no.nav.vtp.ident.Identifikator;
 import no.nav.vtp.ident.PersonIdent;
 import no.nav.vtp.personopplysninger.Kjønn;
 import no.nav.vtp.personopplysninger.Navn;
@@ -277,9 +278,7 @@ public class PdlLeesahRestTjeneste {
 
     private void leggTilBarnRelasjonFor(Person person, PersonIdent identifikasjonBarn) {
         var familierelasjoner = new ArrayList<>(person.personopplysninger().familierelasjoner());
-        familierelasjoner.add(new no.nav.vtp.personopplysninger.Familierelasjon(
-                no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.BARN, identifikasjonBarn
-        ));
+        familierelasjoner.add(tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.BARN, identifikasjonBarn));
         var personopplysnignerFar = person.personopplysninger().tilBuilder()
                 .medFamilierelasjoner(familierelasjoner)
                 .build();
@@ -309,11 +308,11 @@ public class PdlLeesahRestTjeneste {
                 ? dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001"
                 : new FiktiveFnr().tilfeldigBarnUnderTreAarFnr();
         var relasjoner = new ArrayList<no.nav.vtp.personopplysninger.Familierelasjon>();
-        relasjoner.add(new no.nav.vtp.personopplysninger.Familierelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.MOR,
-                (PersonIdent) mor.personopplysninger().identifikator()));
-        Optional.ofNullable(far).ifPresent(f -> relasjoner.add(
-                new no.nav.vtp.personopplysninger.Familierelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.FAR,
-                        (PersonIdent) f.personopplysninger().identifikator())));
+        relasjoner.add(tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.MOR,
+                mor.personopplysninger().identifikator()));
+        Optional.ofNullable(far).ifPresent(f ->
+                relasjoner.add(tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.FAR,
+                        f.personopplysninger().identifikator())));
         var personopplysnigner = new no.nav.vtp.personopplysninger.Personopplysninger(
                 new PersonIdent(ident),
                 Rolle.BARN,
@@ -331,7 +330,11 @@ public class PdlLeesahRestTjeneste {
                 mor.personopplysninger().adresser(),
                 mor.personopplysninger().erSkjermet()
         );
-        return new Person(personopplysnigner, List.of(), List.of(), List.of());
+        return new Person(personopplysnigner, List.of(), List.of(), List.of(), List.of());
+    }
+
+    private static no.nav.vtp.personopplysninger.Familierelasjon tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon relasjon, Identifikator ident) {
+        return new no.nav.vtp.personopplysninger.Familierelasjon(relasjon, (PersonIdent) ident);
     }
 
     private void registrerDødshendelse(DødshendelseDto dødshendelseDto) {
