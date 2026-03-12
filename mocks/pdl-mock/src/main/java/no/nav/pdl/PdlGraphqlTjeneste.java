@@ -62,7 +62,7 @@ public class PdlGraphqlTjeneste {
         TypeDefinitionRegistry typeDefinition = schemaParser.parse(streamReader);
 
         // Opprette koordinatere og binde til GraphQL-skjema
-        var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(scenarioRepository, personRepository);
+        var hentPersonCoordinator = HentPersonCoordinatorFunction.opprettCoordinator(personRepository);
         var hentPersonWiring = HentPersonWiring.lagRuntimeWiring(hentPersonCoordinator);
         hentPersonGraphqlSchema = schemaGenerator.makeExecutableSchema(typeDefinition, hentPersonWiring);
 

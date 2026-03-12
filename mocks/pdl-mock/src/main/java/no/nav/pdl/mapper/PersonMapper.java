@@ -37,7 +37,6 @@ import no.nav.vtp.Person;
 import no.nav.vtp.ident.PersonIdent;
 import no.nav.vtp.personopplysninger.Adresse;
 import no.nav.vtp.personopplysninger.Familierelasjon;
-import no.nav.vtp.personopplysninger.Kjønn;
 import no.nav.vtp.personopplysninger.Personstatus;
 import no.nav.vtp.personopplysninger.Rolle;
 
@@ -48,7 +47,8 @@ public class PersonMapper {
     private PersonMapper() {
     }
 
-    public static no.nav.pdl.Person tilPerson(Person person, no.nav.vtp.personopplysninger.Navn navn, List<Person> barnaTilPerson) {
+    public static no.nav.pdl.Person tilPerson(Person person, List<Person> barnaTilPerson, boolean historikk) {
+        // TODO: historikk?
         var pdlPerson = new no.nav.pdl.Person();
 
         pdlPerson.setAdressebeskyttelse(tilAdressebeskyttelse(person));
@@ -61,7 +61,7 @@ public class PersonMapper {
         pdlPerson.setStatsborgerskap(tilStatsborgerskap(person));
         pdlPerson.setForelderBarnRelasjon(tilForelderBarnRelasjon(person));
 
-        pdlPerson.setNavn(tilNavn(person, navn));
+        pdlPerson.setNavn(tilNavn(person));
         pdlPerson.setBostedsadresse(tilBostedsadresser(person.personopplysninger().adresser().adresser()));
         pdlPerson.setKontaktadresse(tilKontaktadresse(person.personopplysninger().adresser().adresser()));
         pdlPerson.setDoedfoedtBarn(tilDødfødtBarn(barnaTilPerson));
@@ -102,8 +102,8 @@ public class PersonMapper {
         return doedfoedtBarn;
     }
 
-    private static List<Navn> tilNavn(Person person, no.nav.vtp.personopplysninger.Navn navn) {
-        //var navn = person.personopplysninger().navn(); // TODO: Fjern navn
+    private static List<Navn> tilNavn(Person person) {
+        var navn = person.personopplysninger().navn();
         return List.of(no.nav.pdl.Navn.builder()
                 .setFornavn(navn.fornavn().toUpperCase())
                 .setEtternavn(navn.etternavn().toUpperCase())
@@ -128,7 +128,7 @@ public class PersonMapper {
     private static Bostedsadresse tilBostedsadresse(Adresse adresse) {
         var bostedsadresseBuilder = Bostedsadresse.builder()
             .setAngittFlyttedato(LocalDate.now().format(DATO_FORMATTERER))
-            .setGyldigFraOgMed(toDate(adresse.fom()))
+            .setGyldigFraOgMed(adresse.fom() == null ?  toDate(LocalDate.of(2000, 1, 1)) : toDate(adresse.fom()))
             .setGyldigTilOgMed(adresse.tom() == null ? toDate(LocalDate.of(2050, 1, 1)) : toDate(adresse.tom()))
             .setCoAdressenavn(null)
             .setVegadresse(Vegadresse.builder()
@@ -230,8 +230,8 @@ public class PersonMapper {
                 .setStatus(pdlStatus.getStatus())
                 .setForenkletStatus(pdlStatus.getForenkletStatus())
                 .setFolkeregistermetadata(Folkeregistermetadata.builder()
-                        .setAjourholdstidspunkt(toDate(ps.fom()))
-                        .setGyldighetstidspunkt(toDate(ps.fom()))
+                        .setAjourholdstidspunkt(ps.fom() != null ? toDate(ps.fom()) : null)
+                        .setGyldighetstidspunkt(ps.fom() != null ? toDate(ps.fom()) : null)
                         .setOpphoerstidspunkt(ps.tom() != null ? toDate(ps.tom()) : null)
                         .build())
                 .build();
@@ -240,8 +240,12 @@ public class PersonMapper {
     private static List<Kjoenn> tilKjoenn(Person person) {
         var kjønn = person.personopplysninger().kjønn();
         var kjoenn = new Kjoenn();
-        kjoenn.setKjoenn(kjønn == null ? KjoennType.UKJENT
-                : kjønn == Kjønn.K ? KjoennType.KVINNE : KjoennType.MANN);
+        var kjoenntype = switch (kjønn) {
+            case K -> KjoennType.KVINNE;
+            case M -> KjoennType.MANN;
+            case null -> KjoennType.UKJENT;
+        };
+        kjoenn.setKjoenn(kjoenntype);
         return List.of(kjoenn);
     }
 
@@ -254,11 +258,11 @@ public class PersonMapper {
                     var annenpartOpt = person.personopplysninger().familierelasjoner().stream()
                             .filter(f -> Set.of(Familierelasjon.Relasjon.EKTE, Familierelasjon.Relasjon.SAMBOER).contains(f.relasjon()))
                             .findFirst();
-                    if (annenpartOpt.isPresent() && Set.of(no.nav.vtp.personopplysninger.Sivilstand.Sivilstander.GIFT,
-                            no.nav.vtp.personopplysninger.Sivilstand.Sivilstander.REGISTRERT_PARTNER,
-                            no.nav.vtp.personopplysninger.Sivilstand.Sivilstander.SEPARERT_PARTNER,
-                            no.nav.vtp.personopplysninger.Sivilstand.Sivilstander.SKILT_PARTNER,
-                            no.nav.vtp.personopplysninger.Sivilstand.Sivilstander.GJENLEVENDE_PARTNER)
+                    if (annenpartOpt.isPresent() && Set.of(no.nav.vtp.personopplysninger.Sivilstand.Type.GIFT,
+                            no.nav.vtp.personopplysninger.Sivilstand.Type.REGISTRERT_PARTNER,
+                            no.nav.vtp.personopplysninger.Sivilstand.Type.SEPARERT_PARTNER,
+                            no.nav.vtp.personopplysninger.Sivilstand.Type.SKILT_PARTNER,
+                            no.nav.vtp.personopplysninger.Sivilstand.Type.GJENLEVENDE_PARTNER)
                             .contains(s.sivilstand())) {
                         sivilstand.setRelatertVedSivilstand(annenpartOpt.get().relatertTilId().value());
                     }

@@ -74,7 +74,7 @@ public class ArbeidsforholdMapper {
         return new ArbeidsavtaleRS(a.stillingsprosent() != null ? a.stillingsprosent().doubleValue() : null,
                 a.avtaltArbeidstimerPerUke() != null ? a.avtaltArbeidstimerPerUke().doubleValue() : null,
                 a.beregnetAntallTimerPerUke() != null ? a.beregnetAntallTimerPerUke().doubleValue() : null, a.sisteLønnsendringsdato(),
-                new PeriodeRS(a.fomGyldighetsperiode(), a.tomGyldighetsperiode()), "8269102");
+                new PeriodeRS(a.fom(), a.tom()), "8269102");
     }
 
     private static OpplysningspliktigArbeidsgiverRS opplysningspliktFra(Arbeidsforhold arbeidsforhold) {

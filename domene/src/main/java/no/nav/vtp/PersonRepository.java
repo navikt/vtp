@@ -58,7 +58,7 @@ public class PersonRepository {
     }
 
     public void endrePerson(Person person) {
-        leggTilPerson(person);
+        personer.replace(person.personopplysninger().identifikator().value(), person);
     }
 
 }
