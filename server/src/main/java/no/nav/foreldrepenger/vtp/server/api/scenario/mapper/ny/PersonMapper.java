@@ -380,22 +380,22 @@ public class PersonMapper {
         );
     }
 
-    private static Sivilstand.Sivilstander tilSivilstander(SivilstandDto.Sivilstander sivilstand) {
+    private static Sivilstand.Type tilSivilstander(SivilstandDto.Sivilstander sivilstand) {
         if (sivilstand == null) {
             return null;
         }
         return switch (sivilstand) {
-            case ENKE -> Sivilstand.Sivilstander.ENKE_ELLER_ENKEMANN;
-            case GIFT -> Sivilstand.Sivilstander.GIFT;
-            case GJPA -> Sivilstand.Sivilstander.GJENLEVENDE_PARTNER;
-            case GLAD -> Sivilstand.Sivilstander.GIFT;  // GLAD (Giftet, lever adskilt) maps to GIFT
-            case REPA -> Sivilstand.Sivilstander.REGISTRERT_PARTNER;
-            case SAMB -> Sivilstand.Sivilstander.UGIFT;  // SAMB is not directly mapped, use UGIFT
-            case SEPA -> Sivilstand.Sivilstander.SEPARERT_PARTNER;
-            case SEPR -> Sivilstand.Sivilstander.SEPARERT;
-            case SKIL -> Sivilstand.Sivilstander.SKILT;
-            case SKPA -> Sivilstand.Sivilstander.SKILT_PARTNER;
-            case UGIF -> Sivilstand.Sivilstander.UGIFT;
+            case ENKE -> Sivilstand.Type.ENKE_ELLER_ENKEMANN;
+            case GIFT -> Sivilstand.Type.GIFT;
+            case GJPA -> Sivilstand.Type.GJENLEVENDE_PARTNER;
+            case GLAD -> Sivilstand.Type.GIFT;  // GLAD (Giftet, lever adskilt) maps to GIFT
+            case REPA -> Sivilstand.Type.REGISTRERT_PARTNER;
+            case SAMB -> Sivilstand.Type.UGIFT;  // SAMB is not directly mapped, use UGIFT
+            case SEPA -> Sivilstand.Type.SEPARERT_PARTNER;
+            case SEPR -> Sivilstand.Type.SEPARERT;
+            case SKIL -> Sivilstand.Type.SKILT;
+            case SKPA -> Sivilstand.Type.SKILT_PARTNER;
+            case UGIF -> Sivilstand.Type.UGIFT;
         };
     }
 
@@ -416,22 +416,22 @@ public class PersonMapper {
         );
     }
 
-    private static Personstatus.Personstatuser tilPersonstatuser(PersonstatusDto.Personstatuser status) {
+    private static Personstatus.Type tilPersonstatuser(PersonstatusDto.Personstatuser status) {
         if (status == null) {
             return null;
         }
         return switch (status) {
-            case ABNR -> Personstatus.Personstatuser.ABNR;
-            case ADNR -> Personstatus.Personstatuser.ADNR;
-            case BOSA -> Personstatus.Personstatuser.BOSA;
-            case DØD -> Personstatus.Personstatuser.DØD;
-            case FOSV -> Personstatus.Personstatuser.FOSV;
-            case FØDR -> Personstatus.Personstatuser.FØDR;
-            case UFUL -> Personstatus.Personstatuser.UFUL;
-            case UREG -> Personstatus.Personstatuser.UREG;
-            case UTAN -> Personstatus.Personstatuser.UTAN;
-            case UTPE -> Personstatus.Personstatuser.UTPE;
-            case UTVA -> Personstatus.Personstatuser.UTVA;
+            case ABNR -> Personstatus.Type.ABNR;
+            case ADNR -> Personstatus.Type.ADNR;
+            case BOSA -> Personstatus.Type.BOSA;
+            case DØD -> Personstatus.Type.DØD;
+            case FOSV -> Personstatus.Type.FOSV;
+            case FØDR -> Personstatus.Type.FØDR;
+            case UFUL -> Personstatus.Type.UFUL;
+            case UREG -> Personstatus.Type.UREG;
+            case UTAN -> Personstatus.Type.UTAN;
+            case UTPE -> Personstatus.Type.UTPE;
+            case UTVA -> Personstatus.Type.UTVA;
         };
     }
 

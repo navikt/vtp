@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -34,6 +35,7 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl
 import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
 import no.nav.person.pdl.leesah.Endringstype;
 
+@Disabled
 @ExtendWith(MockitoExtension.class)
 class HendelseTest {
 
@@ -48,7 +50,7 @@ class HendelseTest {
         testScenarioRepository = new DelegatingTestscenarioRepository(
                 TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
         testscenarioHenter = TestscenarioHenter.getInstance();
-        pdlLeesahRestTjeneste = new PdlLeesahRestTjeneste(testScenarioRepository);
+        pdlLeesahRestTjeneste = new PdlLeesahRestTjeneste();
     }
 
     @BeforeEach

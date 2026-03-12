@@ -6,6 +6,6 @@ public record Arbeidsavtale(Integer avtaltArbeidstimerPerUke,
                             Integer stillingsprosent,
                             Integer beregnetAntallTimerPerUke,
                             LocalDate sisteLønnsendringsdato,
-                            LocalDate fomGyldighetsperiode,
-                            LocalDate tomGyldighetsperiode) {
+                            LocalDate fom,
+                            LocalDate tom) {
 }

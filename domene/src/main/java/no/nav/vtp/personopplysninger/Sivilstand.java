@@ -2,9 +2,9 @@ package no.nav.vtp.personopplysninger;
 
 import java.time.LocalDate;
 
-public record Sivilstand(Sivilstander sivilstand, LocalDate fom, LocalDate tom){
+public record Sivilstand(Type sivilstand, LocalDate fom, LocalDate tom){
 
-    public enum Sivilstander {
+    public enum Type {
         UOPPGITT,
         UGIFT,
         GIFT,

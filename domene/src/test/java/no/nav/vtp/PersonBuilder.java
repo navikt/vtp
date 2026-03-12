@@ -93,10 +93,10 @@ public class PersonBuilder {
                         new Familierelasjon(Familierelasjon.Relasjon.EKTE, new PersonIdent(ANNEN_PART_IDENT))
                 ),
                 List.of(new Statsborgerskap(CountryCode.NO), new Statsborgerskap(CountryCode.SE)),
-                List.of(new Sivilstand(Sivilstand.Sivilstander.ENKE_ELLER_ENKEMANN, null, null)),
+                List.of(new Sivilstand(Sivilstand.Type.ENKE_ELLER_ENKEMANN, null, null)),
                 List.of(
-                        new Personstatus(Personstatus.Personstatuser.BOSA, LocalDate.now().minusDays(6), null),
-                        new Personstatus(Personstatus.Personstatuser.UREG, LocalDate.now().minusYears(50), LocalDate.now().minusDays(7))
+                        new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusDays(6), null),
+                        new Personstatus(Personstatus.Type.UREG, LocalDate.now().minusYears(50), LocalDate.now().minusDays(7))
                 ),
                 List.of(),
                 adresser,
@@ -127,8 +127,8 @@ public class PersonBuilder {
                         new Familierelasjon(Familierelasjon.Relasjon.EKTE, new PersonIdent(SØKER_IDENT))
                 ),
                 List.of(new Statsborgerskap(CountryCode.NO)),
-                List.of(new Sivilstand(Sivilstand.Sivilstander.GIFT, null, null)),
-                List.of(new Personstatus(Personstatus.Personstatuser.BOSA, LocalDate.now().minusYears(50), null)),
+                List.of(new Sivilstand(Sivilstand.Type.GIFT, null, null)),
+                List.of(new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusYears(50), null)),
                 List.of(),
                 adresser,
                 false
