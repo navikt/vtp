@@ -48,7 +48,7 @@ public class JournalpostMapper {
         modell.setDokumentModellList(tilDokumentModeller(journalpostRequest.dokumenter()));
         modell.setTittel(journalpostRequest.tittel());
         modell.setEksternReferanseId(journalpostRequest.eksternReferanseId());
-        modell.setMottakskanal(Mottakskanal.valueOf(journalpostRequest.kanal()));
+        modell.setMottakskanal(journalpostRequest.kanal());
         modell.setJournalStatus(erKnyttetTilSak(journalpostRequest.sak()) ? Journalstatus.JOURNALFØRT : Journalstatus.MOTTATT);
         modell.setBehandlingTema(journalpostRequest.behandlingstema());
         modell.setTilleggsopplysninger(mapTilleggsOpplysninger(journalpostRequest.tilleggsopplysninger()));

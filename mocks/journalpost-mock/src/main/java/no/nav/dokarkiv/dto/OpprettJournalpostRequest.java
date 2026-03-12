@@ -23,6 +23,12 @@ public record OpprettJournalpostRequest(JournalpostType journalpostType,
                                         String datoDokument, // Bør være LocalDateTime, men kan være LocalDate eller eldre format
                                         String overstyrInnsynsregler) {
 
+    public OpprettJournalpostRequest {
+        if (kanal == null) {
+            kanal = Mottakskanal.UKJENT;
+        }
+    }
+
     public record DokumentInfoOpprett(String tittel, String brevkode, Integer rekkefoelge, List<Dokumentvariant> dokumentvarianter) {
 
     }
