@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record OpprettJournalpostRequest(JournalpostType journalpostType,
                                         String tittel,
                                         AvsenderMottaker avsenderMottaker,
-                                        String kanal,
+                                        Mottakskanal kanal,
                                         Bruker bruker,
                                         String tema,
                                         String behandlingstema,

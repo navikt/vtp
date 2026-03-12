@@ -4,6 +4,8 @@ package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
     reelt en kopi av no.nav.saf.Kanal
 */
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+
 public enum Mottakskanal {
     ALTINN,
     EESSI,
@@ -28,5 +30,5 @@ public enum Mottakskanal {
     E_POST,
     ALTINN_INNBOKS,
     HR_SYSTEM_API,
-    UKJENT
+    @JsonEnumDefaultValue UKJENT
 }
