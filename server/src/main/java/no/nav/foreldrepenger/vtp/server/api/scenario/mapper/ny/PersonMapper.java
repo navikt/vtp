@@ -84,7 +84,7 @@ public class PersonMapper {
     }
 
     private static List<Skatteopplysning> tilSkatteopplysnigner(PersonDto person) {
-        if (person.inntektytelse().sigrun() == null || person.inntektytelse().sigrun().inntektår() == null) {
+        if (person.inntektytelse() == null || person.inntektytelse().sigrun() == null || person.inntektytelse().sigrun().inntektår() == null) {
             return List.of();
         }
         return person.inntektytelse().sigrun().inntektår().stream()
