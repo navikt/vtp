@@ -46,14 +46,14 @@ public final class JournalpostSelvbetjeningBuilder {
 
         builder.setEksternReferanseId(modell.getEksternReferanseId());
         builder.setTittel(modell.getTittel());
-        builder.setTema(modell.getArkivtema().getKode());
+        builder.setTema(modell.getArkivtema().name());
         var sak = Sak.builder()
                      .setFagsakId(modell.getSakId())
                      .setFagsaksystem("FS36") // foreldrepenger
                      .setSakstype(Sakstype.FAGSAK)
                      .build();
         builder.setSak(sak);
-        builder.setKanal(Kanal.valueOf(modell.getMottakskanal().getKode()));
+        builder.setKanal(Kanal.valueOf(modell.getMottakskanal().name()));
         builder.setRelevanteDatoer(List.of(new RelevantDato(Timestamp.valueOf(modell.getMottattDato()), Datotype.DATO_OPPRETTET)));
 
         var dokumentListe = modell.getDokumentModellList().stream()
