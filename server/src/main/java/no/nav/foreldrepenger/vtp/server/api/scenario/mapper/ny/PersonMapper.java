@@ -31,6 +31,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Permisjonstype;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.SigrunDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Språk;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
@@ -61,6 +62,7 @@ import no.nav.vtp.personopplysninger.Personstatus;
 import no.nav.vtp.personopplysninger.Rolle;
 import no.nav.vtp.personopplysninger.Sivilstand;
 import no.nav.vtp.personopplysninger.Statsborgerskap;
+import no.nav.vtp.skatt.Skatteopplysning;
 import no.nav.vtp.ytelse.Ytelse;
 import no.nav.vtp.ytelse.YtelseType;
 
@@ -77,7 +79,21 @@ public class PersonMapper {
         var arbeidsforhold = tilArbeidsforhold(p, nyidenter);
         var inntekt = tilInntekt(p, nyidenter);
         var ytelser = tilYtelser(p);
-        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser);
+        var skatteopplysninger = tilSkatteopplysnigner(p);
+        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger);
+    }
+
+    private static List<Skatteopplysning> tilSkatteopplysnigner(PersonDto person) {
+        if (person.inntektytelse().sigrun() == null || person.inntektytelse().sigrun().inntektår() == null) {
+            return List.of();
+        }
+        return person.inntektytelse().sigrun().inntektår().stream()
+                .map(PersonMapper::tilSkatteopplysning)
+                .toList();
+    }
+
+    private static Skatteopplysning tilSkatteopplysning(SigrunDto.InntektsårDto inntektsår) {
+        return new Skatteopplysning(inntektsår.år(), inntektsår.beløp());
     }
 
     private static Personopplysninger tilPersonopplysninger(PersonDto p, Set<TilordnetIdentDto> nyidenter) {

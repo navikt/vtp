@@ -2,38 +2,31 @@ package no.nav.pdl.hentIdenter;
 
 import java.util.ArrayList;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.pdl.IdentGruppe;
 import no.nav.pdl.IdentInformasjon;
 import no.nav.pdl.Identliste;
+import no.nav.vtp.PersonRepository;
+import no.nav.vtp.ident.PersonIdent;
 
 public class HentIdenterCoordinatorFunction {
 
     private HentIdenterCoordinatorFunction() {
     }
 
-    public static HentIdenterCoordinator opprettCoordinator(TestscenarioBuilderRepository scenarioRepo) {
-        // Skal oversette fra ident til Identliste?
+    public static HentIdenterCoordinator opprettCoordinator(PersonRepository personRepository) {
         return (ident, grupper)  -> {
-            try {
-                BrukerModell brukerModell = scenarioRepo.getPersonIndeks().finnByIdent(ident);
+            var person = personRepository.hentPerson(ident);
 
-                ArrayList<IdentInformasjon> identInformasjonsliste = new ArrayList<>();
-
-                if (grupper == null || grupper.contains(IdentGruppe.FOLKEREGISTERIDENT.name())) {
-                    identInformasjonsliste.add(new IdentInformasjon(brukerModell.getIdent(), IdentGruppe.FOLKEREGISTERIDENT, false));
-                }
-
-                if (grupper == null || grupper.contains(IdentGruppe.AKTORID.name())) {
-                    identInformasjonsliste.add(new IdentInformasjon(brukerModell.getAktørIdent(), IdentGruppe.AKTORID, false));
-                }
-
-                return new Identliste(identInformasjonsliste);
-
-            } catch (IllegalArgumentException e) {
-                return null;
+            var identInformasjonsliste = new ArrayList<IdentInformasjon>();
+            if (grupper == null || grupper.contains(IdentGruppe.FOLKEREGISTERIDENT.name())) {
+                identInformasjonsliste.add(new IdentInformasjon(person.personopplysninger().identifikator().value(), IdentGruppe.FOLKEREGISTERIDENT, false));
             }
+            if (grupper == null || grupper.contains(IdentGruppe.AKTORID.name())) {
+                identInformasjonsliste.add(new IdentInformasjon(((PersonIdent) person.personopplysninger().identifikator()).aktørId(), IdentGruppe.AKTORID, false));
+            }
+
+            return new Identliste(identInformasjonsliste);
+
         };
     }
 }

@@ -38,7 +38,7 @@ class PdlMockTest extends PdlTestBase {
         var testscenarioObjekt = testscenarioHenter.hentScenario(SCENARIOID);
         var testscenarioJson = testscenarioHenter.toJson(testscenarioObjekt);
         testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-        pdlMock = new PdlMock(testScenarioRepository, null);
+        pdlMock = new PdlMock(null);
     }
 
     @Test
