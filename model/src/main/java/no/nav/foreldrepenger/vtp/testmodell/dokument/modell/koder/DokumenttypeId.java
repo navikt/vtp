@@ -3,6 +3,7 @@ package no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum DokumenttypeId {
