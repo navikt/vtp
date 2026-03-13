@@ -5,6 +5,7 @@ import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnho
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
 
 import java.time.Instant;
@@ -24,13 +25,13 @@ public class JournalpostBuilder {
     private static String BREVKODE_IM = "4936";
 
     public static Journalpost buildFrom(JournalpostModell modell) {
-        var tema = Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().getKode() : "UKJ");
+        var tema = Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().name() : "UKJ");
         Journalpost journalpost = new Journalpost();
         journalpost.setJournalpostId(modell.getJournalpostId());
         journalpost.setTittel(modell.getTittel());
         journalpost.setTema(tema);
         journalpost.setJournalstatus(tilJournalstatus(modell));
-        journalpost.setKanal(Kanal.valueOf(modell.getMottakskanal() != null ? modell.getMottakskanal().getKode() : "UKJENT"));
+        journalpost.setKanal(Kanal.valueOf(modell.getMottakskanal() != null ? modell.getMottakskanal().name() : "UKJENT"));
         journalpost.setBruker(modell.getBruker() != null ? tilBruker(modell.getBruker()) : null);
         journalpost.setDatoOpprettet(new Date());
         journalpost.setEksternReferanseId(modell.getEksternReferanseId() != null ?
@@ -39,7 +40,7 @@ public class JournalpostBuilder {
         var avsenderMottaker = new AvsenderMottaker("12345678901", AvsenderMottakerIdType.FNR, "Navn", "Norge", Boolean.FALSE);
         Optional.ofNullable(modell.getAvsenderMottaker()).ifPresent(am -> {
             avsenderMottaker.setId(am.getIdent());
-            avsenderMottaker.setType(AvsenderMottakerIdType.valueOf(am.getBrukerType().getKode()));
+            avsenderMottaker.setType(AvsenderMottakerIdType.valueOf(am.getBrukerType().name()));
         });
         journalpost.setAvsenderMottaker(avsenderMottaker);
 
@@ -80,11 +81,15 @@ public class JournalpostBuilder {
     }
 
     private static Optional<DokumentModell> finnHoveddokumentFraJournalpost(JournalpostModell journalpostModell){
-        return journalpostModell.getDokumentModellList().stream().filter(t -> t.getDokumentTilknyttetJournalpost().getKode().equals("HOVEDDOKUMENT")).findFirst();
+        return journalpostModell.getDokumentModellList().stream()
+                .filter(t -> t.getDokumentTilknyttetJournalpost() == DokumentTilknyttetJournalpost.HOVEDDOKUMENT)
+                .findFirst();
     }
 
     private static List<DokumentModell> finnVedleggFraJournalpost(JournalpostModell journalpostModell){
-        return journalpostModell.getDokumentModellList().stream().filter(t -> t.getDokumentTilknyttetJournalpost().getKode().equals("VEDLEGG")).collect(Collectors.toList());
+        return journalpostModell.getDokumentModellList().stream()
+                .filter(t -> t.getDokumentTilknyttetJournalpost() == DokumentTilknyttetJournalpost.VEDLEGG)
+                .collect(Collectors.toList());
     }
 
     private static DokumentInfo lagDetaljertDokumentinformasjon(DokumentModell dokModell) {
@@ -102,10 +107,10 @@ public class JournalpostBuilder {
         List<Dokumentvariant> dokumentvarianter = new ArrayList<>();
         for (DokumentVariantInnhold innhold : dokModell.getDokumentVariantInnholdListe()) {
             Dokumentvariant dokVariant = new Dokumentvariant();
-            dokVariant.setFiltype(innhold.getFilType().getKode());
+            dokVariant.setFiltype(innhold.getFilType().name());
             dokVariant.setVariantformat(
                     Optional.ofNullable(innhold.getVariantFormat())
-                    .map(formatKode -> Variantformat.valueOf(formatKode.getKode()))
+                    .map(formatKode -> Variantformat.valueOf(formatKode.name()))
                     .orElse(Variantformat.ARKIV)); // Default
             dokVariant.setSaksbehandlerHarTilgang(true); // må settes til true for å bli synlig i k9-sak
             dokVariant.setFilnavn("filnavn");

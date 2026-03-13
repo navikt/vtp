@@ -22,6 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
 import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
 import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
 import no.nav.saf.graphql.GraphQLRequest;
@@ -68,12 +69,12 @@ public class SafMock {
     @Produces(MediaType.APPLICATION_JSON)
     public Response hentDokument(@PathParam("journalpostId") String journalpostId,
                                  @PathParam("dokumentInfoId") String dokumentInfoId,
-                                 @PathParam("variantFormat") String variantFormat ) {
+                                 @PathParam("variantFormat") Variantformat variantFormat ) {
         Optional<DokumentModell> dokumentModell = journalRepository.finnDokumentMedDokumentId(dokumentInfoId);
         if (dokumentModell.isPresent()) {
             LOG.info("Henter dokument på følgende dokumentId: {}", dokumentModell.get().getDokumentId());
             var dokumentinnhold = dokumentModell.get().getDokumentVariantInnholdListe().stream()
-                    .filter(innhold -> innhold.getVariantFormat().getKode().equalsIgnoreCase(variantFormat))
+                    .filter(innhold -> innhold.getVariantFormat() == variantFormat)
                     .map(DokumentVariantInnhold::getDokumentInnhold)
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Fant ikke dokument som matchet variantformat: " + variantFormat));

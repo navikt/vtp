@@ -45,12 +45,10 @@ public class JournalforingRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     // Journalfører journalpost og send en journalføringhendelse på topic
-    public JournalforingResultatDto journalførJournalpost(JournalpostModell journalpostModell){
+    public JournalforingResultatDto journalførJournalpost(JournalpostModell journalpostModell) {
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
         LOG.info("Oppretter journalpost for bruker: {}, JournalpostId: {}", journalpostModell.getAvsenderFnr(), journalpostId);
-        var instansiertJournalpostModell = journalRepository
-                .finnJournalpostMedJournalpostId(journalpostId)
-                .orElseThrow();
+        var instansiertJournalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId).orElseThrow();
 
         var journalforingHendelseSender = new JournalforingHendelseSender(localKafkaProducer);
         journalforingHendelseSender.leggTilJournalføringHendelsePåKafka(instansiertJournalpostModell);
@@ -62,8 +60,11 @@ public class JournalforingRestTjeneste {
     @Path("/journalfor/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
     @Produces(MediaType.APPLICATION_JSON)
     // Lager en journalpost av type DokumenttypeId (se kilde for gyldige verdier, e.g. I000003). Innhold i journalpost legges ved som body.
-    public JournalforingResultatDto journalførDokument(String content, @PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId){
-        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(content, fnr, DokumenttypeId.valueOfKode(dokumenttypeId));
+    public JournalforingResultatDto journalførDokument(String content,
+                                                       @PathParam(AKTORID_KEY) String fnr,
+                                                       @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeId) {
+        var journalpostModell = JournalpostModellGenerator.lagJournalpostStrukturertDokument(content, fnr,
+                DokumenttypeId.valueOfKode(dokumenttypeId));
         journalpostModell.setMottattDato(LocalDateTime.now());
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
 
@@ -74,11 +75,13 @@ public class JournalforingRestTjeneste {
 
     @POST
     @Path("/ustrukturertjournalpost/fnr/{fnr}/dokumenttypeid/{dokumenttypeid}")
-    public JournalforingResultatDto lagUstrukturertJournalpost(@PathParam(AKTORID_KEY) String fnr, @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeid, @QueryParam(JOURNALSTATUS) String journalstatus){
-        var journalpostModell = JournalpostModellGenerator.lagJournalpostUstrukturertDokument(fnr,DokumenttypeId.valueOfKode(dokumenttypeid));
-        if(journalstatus != null && journalstatus.length() > 0){
-            var status = new Journalstatus(journalstatus);
-            journalpostModell.setJournalStatus(status);
+    public JournalforingResultatDto lagUstrukturertJournalpost(@PathParam(AKTORID_KEY) String fnr,
+                                                               @PathParam(DOKUMENTTYYPEID_KEY) String dokumenttypeid,
+                                                               @QueryParam(JOURNALSTATUS) Journalstatus journalstatus) {
+        var journalpostModell = JournalpostModellGenerator.lagJournalpostUstrukturertDokument(fnr,
+                DokumenttypeId.valueOfKode(dokumenttypeid));
+        if (journalstatus != null) {
+            journalpostModell.setJournalStatus(journalstatus);
         }
 
         var journalpostId = journalRepository.leggTilJournalpost(journalpostModell);
@@ -91,14 +94,15 @@ public class JournalforingRestTjeneste {
 
     @POST
     @Path("/knyttsaktiljournalpost/journalpostid/{journalpostid}/saksnummer/{saksnummer}")
-    public JournalforingResultatDto knyttSakTilJournalpost(@PathParam(JOURNALPOST_ID) String journalpostId, @PathParam(SAKSNUMMER) String saksnummer ){
+    public JournalforingResultatDto knyttSakTilJournalpost(@PathParam(JOURNALPOST_ID) String journalpostId,
+                                                           @PathParam(SAKSNUMMER) String saksnummer) {
 
         LOG.info("Knytter sak: {} til journalpost: {}", saksnummer, journalpostId);
 
-        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId).orElseThrow(()-> new NotFoundException("Kunne ikke finne journalpost"));
+        var journalpostModell = journalRepository.finnJournalpostMedJournalpostId(journalpostId)
+                .orElseThrow(() -> new NotFoundException("Kunne ikke finne journalpost"));
         journalpostModell.setSakId(saksnummer);
 
         return new JournalforingResultatDto(journalpostId);
     }
-
 }
