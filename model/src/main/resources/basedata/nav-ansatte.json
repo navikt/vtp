@@ -470,6 +470,10 @@
                 "name": "0000-GA-k9-drift"
             },
             {
+                "oid": "0d0da462-c300-43d9-8364-38a0a8cf2401",
+                "name": "0000-CA-ung-drift"
+            },
+            {
                 "oid": "91b518bd-04ce-4eed-8d93-6fb134e93598",
                 "name": "0000-CA-aktivitetspenger-drift"
             }
