@@ -8,8 +8,6 @@ import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.GET;
@@ -24,7 +22,6 @@ import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
-@Tag(name = "AzureAd")
 @Path("/MicrosoftGraphApi")
 public class MicrosoftGraphApiMock {
     private static final JwtConsumer unvalidatingConsumer = new JwtConsumerBuilder().setSkipAllValidators()
@@ -61,7 +58,6 @@ public class MicrosoftGraphApiMock {
     @GET
     @Path("/v1.0/me/memberOf")
     @Produces({"application/json;charset=UTF-8"})
-    @Operation(description = "hent informasjon om innlogget bruker.")
     public Response meMemberOf(@Context HttpServletRequest req) {
         var navAnsatt = getAnsatt(req.getHeader(AUTHORIZATION));
         if (navAnsatt != null) {

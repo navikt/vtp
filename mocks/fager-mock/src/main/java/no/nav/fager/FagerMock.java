@@ -9,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
@@ -21,7 +19,6 @@ import no.nav.fager.graphql.GraphQLRequest;
 import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
 
-@Tag(name = "fager")
 @Path("/api/fager")
 public class FagerMock {
     private static final Logger LOG = LoggerFactory.getLogger(FagerMock.class);
@@ -48,7 +45,6 @@ public class FagerMock {
     @Path("/graphql")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Manipulerer saker og oppgaver til Arbeidsgivere")
     public Map<String, Object> graphQLRequest(@HeaderParam(AUTHORIZATION) String authorizationHeader,
                                               @HeaderParam(X_CORRELATION_ID) String xCorrelationId,
                                               @HeaderParam(NAV_CALLID) String navCallid,

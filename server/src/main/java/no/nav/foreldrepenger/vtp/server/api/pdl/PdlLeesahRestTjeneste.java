@@ -4,10 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,8 +14,6 @@ import org.apache.avro.generic.GenericRecordBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -45,7 +41,6 @@ import no.nav.person.pdl.leesah.familierelasjon.Familierelasjon;
 import no.nav.person.pdl.leesah.foedselsdato.Foedselsdato;
 import no.nav.person.pdl.leesah.forelderbarnrelasjon.ForelderBarnRelasjon;
 
-@Tag(name = "Legge hendelser på PDL topic")
 @Path("/api/pdl/leesah")
 public class PdlLeesahRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(PdlLeesahRestTjeneste.class);
@@ -73,7 +68,6 @@ public class PdlLeesahRestTjeneste {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Legg til hendelse")
     public Response leggTilHendelse(PersonhendelseDto personhendelseDto,
                                     @QueryParam("publiserForelderBarnRelasjonMedFoedselshendelser") boolean publiserForelderBarnRelasjonMedFoedselshendelser) {
         try {

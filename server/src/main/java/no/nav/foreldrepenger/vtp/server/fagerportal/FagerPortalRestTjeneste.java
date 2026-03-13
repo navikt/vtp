@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -23,7 +22,6 @@ import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.OppgaveModell;
 import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
 
-@Tag(name = "ArbeidsgiverPorlalMock")
 @Path("/api/fager")
 public class FagerPortalRestTjeneste {
 

@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -21,13 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
-import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
-import io.swagger.v3.oas.integration.OpenApiConfigurationException;
-import io.swagger.v3.oas.integration.SwaggerConfiguration;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.servers.Server;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.NotFoundException;
@@ -35,7 +27,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
-import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -106,29 +97,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         packages("no.nav", "com.fasterxml.jackson.jaxrs.json");
         register(new LoggingFeature(java.util.logging.Logger.getLogger(getClass().getName()), FINE, PAYLOAD_ANY, 10000));
         registerClasses(registerClasses());
-        instanserSwagger();
-    }
-
-    private void instanserSwagger() {
-        var info = new Info().title("VTP - Virtuell Tjeneste Plattform").version("1.0").description("REST grensesnitt for VTP.");
-
-        var oas = new OpenAPI().openapi("3.1.1").info(info).addServersItem(new Server().url("/"));
-        var oasConfig = new SwaggerConfiguration().openAPI(oas).id(idFra(this))
-                .prettyPrint(true)
-                .resourceClasses(getClasses().stream().map(Class::getName).collect(Collectors.toSet()));
-        try {
-            new JaxrsOpenApiContextBuilder<>()
-                    .ctxId(idFra(this))
-                    .application(this)
-                    .openApiConfiguration(oasConfig)
-                    .buildContext(true).read();
-        } catch (OpenApiConfigurationException e) {
-            throw new IllegalStateException("OPEN-API", e);
-        }
-    }
-
-    private static String idFra(Application application) {
-        return "openapi.context.id.servlet." + application.getClass().getName();
     }
 
     public static Set<Class<?>> registerClasses() {
@@ -188,7 +156,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         classes.add(LocalDateStringConverterProvider.class);
         classes.add(TilbakekrevingKonsistensTjeneste.class);
-        classes.add(OpenApiResource.class);
 
         return classes;
     }

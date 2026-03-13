@@ -6,11 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -20,7 +15,6 @@ import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.Grunnlag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.trex.TRexModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
-@Tag(name = "Infotrygdmock")
 @Path("/infotrygd")
 public class InfotrygdMock {
 
@@ -32,16 +26,12 @@ public class InfotrygdMock {
     public InfotrygdMock(@Context TestscenarioBuilderRepository scenarioRepository) {
         this.scenarioRepository = scenarioRepository;
     }
-    
+
 
     @SuppressWarnings("unused")
     @POST
     @Path("/grunnlag/sykepenger")
     @Produces({"application/json"})
-    @Operation(description = "foreldrepenger", responses = {
-            @ApiResponse(responseCode = "OK", description = "OK", content =@Content(schema = @Schema(implementation  = Grunnlag.class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "UNAUTHORIZED")
-    })
     public Grunnlag[] getSykepenger(PersonRequest personRequest) {
         return personRequest.fnr().stream().flatMap(fnr -> {
             LOG.info(LOG_PREFIX, "sykepenger");
@@ -56,10 +46,6 @@ public class InfotrygdMock {
     @POST
     @Path("/grunnlag/paaroerende-sykdom")
     @Produces({"application/json"})
-    @Operation(description = "foreldrepenger", responses = {
-            @ApiResponse(responseCode = "OK", description = "OK", content =@Content(schema = @Schema(implementation  = Grunnlag.class))),
-            @ApiResponse(responseCode = "UNAUTHORIZED", description = "UNAUTHORIZED")
-    })
     public Grunnlag[] paaroerendeSykdomUsingPost(PersonRequest personRequest) {
         return personRequest.fnr().stream().flatMap(fnr -> {
             LOG.info(LOG_PREFIX, "pårørendesykdom");

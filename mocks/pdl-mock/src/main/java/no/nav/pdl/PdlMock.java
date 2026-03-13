@@ -4,24 +4,20 @@ import static jakarta.ws.rs.core.HttpHeaders.AUTHORIZATION;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.StringUtils;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.pdl.graphql.GraphQLRequest;
 
-@Tag(name = "pdl")
 @Path("/api/pdl")
 public class PdlMock {
     private static final String X_CORRELATION_ID = "X-Correlation-ID";
@@ -46,7 +42,6 @@ public class PdlMock {
     @Path("/graphql")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Henter journalpost")
     public Map<String, Object> graphQLRequest(@HeaderParam(AUTHORIZATION) String authorizationHeader,
                                               @HeaderParam(X_CORRELATION_ID) String xCorrelationId,
                                               @HeaderParam(NAV_CALLID) String navCallid,

@@ -19,11 +19,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -43,7 +38,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonArbeidsgiver;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
 
 
-@Tag(name = "Testscenario")
 @Path("/api/testscenarios/v2")
 public class TestscenarioV2RestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioV2RestTjeneste.class);
@@ -107,9 +101,6 @@ public class TestscenarioV2RestTjeneste {
     @GET
     @Path("/alleidenter")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Henter alle testcaser som er initiert i minnet til VTP", responses = {
-            @ApiResponse(responseCode = "OK", content = @Content(schema = @Schema(implementation  = String[].class))),
-    })
     public Response hentInitialiserteCaser() {
         Set<String> testscenarioidenter = new HashSet<>();
         testscenarioRepository.getTestscenarios().forEach((key, ts) -> {

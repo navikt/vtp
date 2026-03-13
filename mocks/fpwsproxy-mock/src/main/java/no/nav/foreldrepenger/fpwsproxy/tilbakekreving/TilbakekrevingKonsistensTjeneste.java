@@ -6,16 +6,12 @@ import java.util.Random;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
 
 /**
  * Tjenesten tar vare på siste saksnummer og henvisning (behandlingId) fra Autotest,
  * slik at de kan sendes tilbake i genererte kravgrunnlag som da vil være konsistente med siste kjente sak.
  */
-@Tag(name = "Tilbakekreving")
 @Path("/api/tilbakekreving")
 public class TilbakekrevingKonsistensTjeneste {
 
@@ -26,7 +22,7 @@ public class TilbakekrevingKonsistensTjeneste {
 
     @POST
     @Path("/konsistens")
-    @Operation(description = "Sørger for at kravgrunnlag som returneres av mock har riktig saksnummer og henvisning")
+    // Sørger for at kravgrunnlag som returneres av mock har riktig saksnummer og henvisning
     public static Response oppdaterKonsistens(TilbakekrevingKonsistensDto request) {
         sisteSaksnummer = Integer.parseInt(request.saksnummer());
         sisteHenvisning = request.behandlingId();
