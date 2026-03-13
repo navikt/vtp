@@ -63,6 +63,7 @@ public final class AzureOidcTokenGenerator {
         JwtClaims claims = createCommonClaims(sub, issuer);
         claims.setClaim("oid", sub); // Konvensjon - på vei mot idtyp - men behold til ca 2030.
         claims.setClaim("idtyp", "app"); // Optional claim som settes for app-only = CC flow
+        claims.setStringListClaim("roles", "access_as_application");
         return createToken(claims);
     }
 
@@ -79,7 +80,6 @@ public final class AzureOidcTokenGenerator {
         claims.setStringClaim("azp_name", "vtp:teamforeldrepenger:vtp");
         claims.setStringClaim("azp", "vtp");
         claims.setStringClaim("scp", "api://vtp.teamforeldrepenger.vtp/.default");
-        claims.setStringListClaim("roles", "access_as_application");
         return claims;
     }
 

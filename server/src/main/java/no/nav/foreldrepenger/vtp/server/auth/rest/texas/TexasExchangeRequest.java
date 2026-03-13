@@ -1,10 +1,12 @@
-package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
+package no.nav.foreldrepenger.vtp.server.auth.rest.texas;
+
+import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
 
 /**
  * Use this data type to exchange a user token for a machine token.
  */
-public record TokenExchangeRequest(
-        String identity_provider,
+public record TexasExchangeRequest(
+        Issuers identity_provider,
         /*
           Force renewal of token. Defaults to false if omitted.
          */
