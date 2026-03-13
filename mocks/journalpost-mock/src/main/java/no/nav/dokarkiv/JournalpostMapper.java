@@ -48,7 +48,7 @@ public class JournalpostMapper {
         modell.setDokumentModellList(tilDokumentModeller(journalpostRequest.dokumenter()));
         modell.setTittel(journalpostRequest.tittel());
         modell.setEksternReferanseId(journalpostRequest.eksternReferanseId());
-        modell.setMottakskanal(Mottakskanal.fraKode(journalpostRequest.kanal()));
+        modell.setMottakskanal(journalpostRequest.kanal());
         modell.setJournalStatus(erKnyttetTilSak(journalpostRequest.sak()) ? Journalstatus.JOURNALFØRT : Journalstatus.MOTTATT);
         modell.setBehandlingTema(journalpostRequest.behandlingstema());
         modell.setTilleggsopplysninger(mapTilleggsOpplysninger(journalpostRequest.tilleggsopplysninger()));
@@ -104,8 +104,8 @@ public class JournalpostMapper {
 
     private static DokumentVariantInnhold tilDokumentVariant(Dokumentvariant dokumentVariant) {
         return new DokumentVariantInnhold(
-                new Arkivfiltype(dokumentVariant.filtype()),
-                new Variantformat(dokumentVariant.variantformat()),
+                Arkivfiltype.valueOf(dokumentVariant.filtype()),
+                Variantformat.valueOf(dokumentVariant.variantformat()),
                 dokumentVariant.fysiskDokument()
         );
     }
@@ -113,7 +113,7 @@ public class JournalpostMapper {
     private void tilAvsenderMottaker(OpprettJournalpostRequest journalpostRequest, JournalpostModell modell) {
         Optional.ofNullable(journalpostRequest.avsenderMottaker()).ifPresent(it -> {
             if (it.idType() != null && it.id() != null) {
-                var idType = new BrukerType(it.idType().name());
+                var idType = BrukerType.valueOf(it.idType().name());
                 modell.setAvsenderMottaker(new JournalpostBruker(it.id(), idType));
             }
         });
@@ -152,7 +152,7 @@ public class JournalpostMapper {
     // Utvid etter behov (https://confluence.adeo.no/display/BOA/oppdaterJournalpost)
     public void oppdaterJournalpost(OppdaterJournalpostRequest oppdaterJournalpostRequest, JournalpostModell modell) {
         Optional.ofNullable(oppdaterJournalpostRequest.avsenderMottaker()).ifPresent(am -> {
-            var brukerType = new BrukerType(!am.id().equals(" ") ? am.idType().name() : null);
+            var brukerType = !am.id().equals(" ") ? BrukerType.valueOf(am.idType().name()) : null;
             var journalpostBruker = new JournalpostBruker(!am.id().equals(" ") ? am.id() : null, brukerType);
             modell.setAvsenderMottaker(journalpostBruker);
         });
@@ -174,7 +174,7 @@ public class JournalpostMapper {
 
 
     private Arkivtema mapArkivtema(String tema) {
-        return new Arkivtema(tema);
+        return Arkivtema.valueOf(tema);
     }
 
     private Journalposttyper mapJournalposttype(JournalpostType type) {
