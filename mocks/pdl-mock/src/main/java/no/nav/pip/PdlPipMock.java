@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
@@ -21,7 +19,6 @@ import no.nav.foreldrepenger.vtp.testmodell.personopplysning.Personopplysninger;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 
-@Tag(name = "pdl")
 @Path("/api/pdl-pip-api")
 public class PdlPipMock {
     private static final String IDENT_HEADER_NAME = "ident";
@@ -37,7 +34,6 @@ public class PdlPipMock {
     @Path("/api/v1/person")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Enkelt oppslag pdl pip ")
     public TilgangPersondataDto personData(@HeaderParam(IDENT_HEADER_NAME) String ident) {
         return tilTilgangPersondataDto(ident);
     }
@@ -46,7 +42,6 @@ public class PdlPipMock {
     @Path("/api/v1/personBolk")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Enkelt oppslag pdl pip ")
     public Map<String, TilgangPersondataDto> persondataBolk(List<String> identer) {
         var persondataMap = new HashMap<String , TilgangPersondataDto>();
         for (var ident : identer) {

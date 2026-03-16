@@ -13,8 +13,6 @@ import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
@@ -30,7 +28,6 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.MockServer;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
-@Tag(name = "TokenX")
 @Path(TokenxRestTjeneste.TJENESTE_PATH)
 public class TokenxRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(TokenxRestTjeneste.class);
@@ -53,7 +50,6 @@ public class TokenxRestTjeneste {
     @GET
     @Path("/.well-known/oauth-authorization-server")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "TokenX Discovery url")
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         var issuer = getIssuer(req);
@@ -66,7 +62,6 @@ public class TokenxRestTjeneste {
     @GET
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "TokenX public key set")
     public Response jwks(@Context HttpServletRequest req) {
         LOG.info("Kall på /tokenx/jwks");
         var jwks = JsonWebKeyHelper.getJwks();
@@ -78,7 +73,6 @@ public class TokenxRestTjeneste {
     @Path("/token")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "TokenX public key set")
     public Response token(@Context HttpServletRequest req,
                           @FormParam("grant_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String grantType,
                           @FormParam("client_assertion_type") @DefaultValue("urn:ietf:params:oauth:grant-type:token-exchange") String clientAssertionType,
@@ -92,7 +86,7 @@ public class TokenxRestTjeneste {
     @GET
     @Path("/token")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Tokenx i kontekst av riktig bruker – brukes primært av autotest til å logge inn en bruker programmatisk uten å måtte kalle idporten og deretter tokenx")
+    // Tokenx i kontekst av riktig bruker – brukes primært av autotest til å logge inn en bruker programmatisk uten å måtte kalle idporten og deretter tokenx
     public Response token(@Context HttpServletRequest req,
                           @QueryParam("fnr") String fnr,
                           @QueryParam("audience") String audience) throws JoseException {

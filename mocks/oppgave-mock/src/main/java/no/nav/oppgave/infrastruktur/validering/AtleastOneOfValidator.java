@@ -1,7 +1,5 @@
 package no.nav.oppgave.infrastruktur.validering;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -16,6 +14,6 @@ public class AtleastOneOfValidator implements ConstraintValidator<AtleastOneOf, 
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        return CountFieldsMatching.count(o, fields) >= NumberUtils.LONG_ONE;
+        return CountFieldsMatching.count(o, fields) >= 1L;
     }
 }

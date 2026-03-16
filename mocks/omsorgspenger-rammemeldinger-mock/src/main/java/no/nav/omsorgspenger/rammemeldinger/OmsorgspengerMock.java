@@ -9,15 +9,11 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.AleneOmOmsorgen;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerRammemeldingerModell;
 import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
-@Tag(name = "Omsorgspenger/AleneOmOmsorgen")
 @Path("/omsorgspenger-rammemeldinger")
 public class OmsorgspengerMock {
     private final TestscenarioBuilderRepository scenarioRepository;
@@ -31,7 +27,6 @@ public class OmsorgspengerMock {
     @Path("/hentAleneOmOmsorgen")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer rammemeldinger / AleneOmOmsorgen")
     public AleneOmOmsorgenResponse aleneOmOmsorgen(RammemeldingRequest request) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
         if(inntektYtelseModellOptional.isEmpty()) {
@@ -49,7 +44,6 @@ public class OmsorgspengerMock {
     @Path("/hentOverfoeringer")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer overføringer om omsorgspenger")
     public OverføringerResponse overføringer(RammemeldingRequest request) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
         if(inntektYtelseModellOptional.isEmpty()) {
@@ -70,7 +64,6 @@ public class OmsorgspengerMock {
     @Path("/hent-korona-overforinger")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "Returnerer koronaoverføringer om omsorgspenger")
     public KoronaOverføringerResponse koronaOverføringer(RammemeldingRequest request) {
         Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
         if(inntektYtelseModellOptional.isEmpty()) {

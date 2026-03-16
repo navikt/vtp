@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -48,7 +46,6 @@ import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 
-@Tag(name = "AzureAd")
 @Path(AzureAdRestTjeneste.TJENESTE_PATH)
 public class AzureAdRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AzureAdRestTjeneste.class);
@@ -69,7 +66,6 @@ public class AzureAdRestTjeneste {
     @GET
     @Path("/.well-known/openid-configuration")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Azure AD Discovery url")
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
@@ -80,7 +76,6 @@ public class AzureAdRestTjeneste {
     @GET
     @Path("/jwks")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "azureAd/discovery/keys")
     public Response authorize() {
         String jwks = JsonWebKeyHelper.getJwks();
         return ok(jwks).build();
@@ -90,7 +85,6 @@ public class AzureAdRestTjeneste {
     @Path("/token")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "azureAd/access_token (form-encoded)")
     public Response accessToken(@FormParam(GRANT_TYPE) String grantType,
                                            @FormParam(CODE) String code,
                                            @FormParam("assertion") String assertion,
@@ -149,7 +143,7 @@ public class AzureAdRestTjeneste {
     @GET
     @Path("/bruker")
     @Produces({MediaType.APPLICATION_JSON})
-    @Operation(description = "azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)")
+    // azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)
     public Response accessToken(@QueryParam("ident") @DefaultValue("S123456") String ident) {
         var bruker = Optional.ofNullable(ANSATTE_INDEKS.findByIdent(ident)).orElseThrow();
         var token = createToken(bruker, nonceCache.get(NONCE));
@@ -167,7 +161,6 @@ public class AzureAdRestTjeneste {
     @GET
     @Path("/authorize")
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
-    @Operation(description = "AzureAD/v2.0/authorize")
     @SuppressWarnings("unused")
     public Response authorize(@QueryParam("response_type") @DefaultValue(CODE) String responseType,
                               @QueryParam(SCOPE) @DefaultValue("openid") String scope,

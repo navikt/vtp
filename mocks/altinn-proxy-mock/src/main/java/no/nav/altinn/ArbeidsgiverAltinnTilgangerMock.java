@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -25,7 +23,6 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
  * https://arbeidsgiver-altinn-tilganger.intern.dev.nav.no/swagger-ui#/altinn-tilganger
  */
 
-@Tag(name = "altinn-rettigheter")
 @Path("/arbeidsgiver-altinn-tilganger")
 public class ArbeidsgiverAltinnTilgangerMock {
 
@@ -35,7 +32,6 @@ public class ArbeidsgiverAltinnTilgangerMock {
     @POST
     @Path("/altinn-tilganger")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Henter alle tilganger en bruker har for de angitte i requesten ressurser.")
     public Response hentTilganger(ArbeidsgiverAltinnTilgangerRequest request) {
         var resurser = hentRessurser(request.filter());
         var alleOrgnr = scenarioRepository.hentAlleOrganisasjonsnummer();
@@ -45,7 +41,6 @@ public class ArbeidsgiverAltinnTilgangerMock {
     @POST
     @Path("/altinn-tilganger/empty")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Leverer et svar uten noen tilganger.")
     public Response hentIngenTilganger(ArbeidsgiverAltinnTilgangerRequest request) {
         return Response.ok().entity(lagNegativRespons()).build();
     }

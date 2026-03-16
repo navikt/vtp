@@ -1,11 +1,10 @@
 package no.nav.oppgave.infrastruktur.validering;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @SuppressWarnings("WeakerAccess")
 public class IsoDateTimeValidator implements ConstraintValidator<IsoDateTime, String> {
@@ -17,7 +16,7 @@ public class IsoDateTimeValidator implements ConstraintValidator<IsoDateTime, St
 
     @Override
     public boolean isValid(String dateTime, ConstraintValidatorContext constraintValidatorContext) {
-        if (isNotEmpty(dateTime)) {
+        if (dateTime != null && !dateTime.isEmpty()) {
             try {
                 LocalDate.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             } catch (Exception e) {

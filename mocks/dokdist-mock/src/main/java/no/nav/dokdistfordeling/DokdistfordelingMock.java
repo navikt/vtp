@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -17,7 +15,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Tag(name = "Dokdist")
 @Path("dokdist/v1/distribuerjournalpost")
 public class DokdistfordelingMock {
     private static final Logger LOG = LoggerFactory.getLogger(DokdistfordelingMock.class);
@@ -25,7 +22,6 @@ public class DokdistfordelingMock {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(description = "distribuer journalpost")
     public Response distribuerjournalpost(DistribuerJournalpostRequest request) {
         LOG.info("Distribuer journalpost med jouralpostId {} for fagsystem {}", request.journalpostId(), request.bestillendeFagsystem());
 
