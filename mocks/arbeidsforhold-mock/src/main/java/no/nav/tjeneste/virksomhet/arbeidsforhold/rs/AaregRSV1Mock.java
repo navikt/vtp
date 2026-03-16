@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,13 +59,15 @@ public class AaregRSV1Mock {
         }
 
         LOG.info("AAREG REST {}", ident);
-        return personRepository.hentPerson(ident)
-                .arbeidsforhold()
-                .stream()
-                .filter(arbeidsforhold -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, arbeidsforhold))
-                .filter(arbeidsforhold -> erOverlapp(fom, tom, arbeidsforhold))
-                .map(ArbeidsforholdMapper::tilArbeidsforholdRS)
-                .toList();
+        return Optional.ofNullable(personRepository.hentPerson(ident))
+                .map(person -> person
+                    .arbeidsforhold()
+                    .stream()
+                    .filter(arbeidsforhold -> filterForArbeidsforholdType(filtrerArbeidsforholdtyper, arbeidsforhold))
+                    .filter(arbeidsforhold -> erOverlapp(fom, tom, arbeidsforhold))
+                    .map(ArbeidsforholdMapper::tilArbeidsforholdRS)
+                    .toList())
+                .orElse(List.of());
     }
 
     private boolean erOverlapp(LocalDate fom, LocalDate tom, no.nav.vtp.arbeidsforhold.Arbeidsforhold arbeidsforhold) {
