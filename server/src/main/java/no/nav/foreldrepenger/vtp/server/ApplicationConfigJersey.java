@@ -12,6 +12,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.jakarta.rs.base.JsonMappingExceptionMapper;
+import com.fasterxml.jackson.jakarta.rs.base.JsonParseExceptionMapper;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
+
+import jakarta.ws.rs.core.Configuration;
+import jakarta.ws.rs.core.Feature;
+import jakarta.ws.rs.core.FeatureContext;
+import jakarta.ws.rs.ext.MessageBodyReader;
+import jakarta.ws.rs.ext.MessageBodyWriter;
+
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -149,7 +159,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
-        classes.add(JacksonConfigResolver.class);
+        classes.add(VtpJacksonFeature.class);
         classes.add(MyExceptionMapper.class);
         classes.add(CorsFilter.class); // todo legg på en sjekk på om man kjører på localhost, fjern hvis man er deployed
         classes.add(KafkaRestTjeneste.class);
@@ -187,6 +197,26 @@ public class ApplicationConfigJersey extends ResourceConfig {
             }
         });
         return this;
+    }
+
+    public static class VtpJacksonFeature implements Feature {
+
+        @Override
+        public boolean configure(final FeatureContext context) {
+            final Configuration config = context.getConfiguration();
+
+            // Register Jackson.
+            if (!config.isRegistered(JacksonJsonProvider.class)) {
+
+                context.register(JsonMappingExceptionMapper.class);
+                context.register(JsonParseExceptionMapper.class);
+
+                context.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
+                context.register(JacksonConfigResolver.class);
+            }
+
+            return true;
+        }
     }
 
     @Provider
