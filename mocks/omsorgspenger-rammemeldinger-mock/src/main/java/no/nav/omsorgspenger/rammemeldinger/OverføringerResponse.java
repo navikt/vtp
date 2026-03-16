@@ -1,32 +1,27 @@
 package no.nav.omsorgspenger.rammemeldinger;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringFått;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringGitt;
-
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 
-public class OverføringerResponse {
-    @JsonProperty("gitt")
-    private List<OverføringGitt> gitt = new ArrayList<>();
+import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OverføringGitt;
 
-    @JsonProperty("fått")
-    private List<OverføringFått> fått = new ArrayList<>();
+public record OverføringerResponse(List<OverføringGitt> gitt, List<OverføringFåttRammemelding> fått) {
 
-    public List<OverføringGitt> getGitt() {
-        return gitt;
-    }
+    public record OverføringFåttRammemelding(LocalDate gjennomført,
+                                             LocalDate gyldigFraOgMed,
+                                             LocalDate gyldigTilOgMed,
+                                             Duration lengde,
+                                             Person fra,
+                                             List<Kilde> kilder) {
 
-    public void setGitt(List<OverføringGitt> gitt) {
-        this.gitt = gitt;
-    }
 
-    public List<OverføringFått> getFått() {
-        return fått;
-    }
+        public record Kilde(String id, String type) {
+        }
 
-    public void setFått(List<OverføringFått> fått) {
-        this.fått = fått;
+        public record Person(String id,
+                             String type,
+                             LocalDate fødselsdato) {
+        }
     }
 }
