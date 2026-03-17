@@ -5,21 +5,21 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivfiltype;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BehandlingsTema;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
+import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
+import no.nav.vtp.journalpost.dokument.modell.DokumentVariantInnhold;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostBruker;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.vtp.journalpost.dokument.modell.koder.Arkivfiltype;
+import no.nav.vtp.journalpost.dokument.modell.koder.Arkivtema;
+import no.nav.vtp.journalpost.dokument.modell.koder.BehandlingsTema;
+import no.nav.vtp.journalpost.dokument.modell.koder.BrukerType;
+import no.nav.vtp.journalpost.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.vtp.journalpost.dokument.modell.koder.DokumenttypeId;
+import no.nav.vtp.journalpost.dokument.modell.koder.Journalposttyper;
+import no.nav.vtp.journalpost.dokument.modell.koder.Journalstatus;
+import no.nav.vtp.journalpost.dokument.modell.koder.Mottakskanal;
+import no.nav.vtp.journalpost.dokument.modell.koder.Sakstatus;
+import no.nav.vtp.journalpost.dokument.modell.koder.Variantformat;
 
 class JournalpostSeraliseringDeseraliseringsTest extends SerializationTestBase {
 

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import no.nav.foreldrepenger.vtp.testmodell.medlemskap.LovvalgType;
-import no.nav.vtp.Person;
-import no.nav.vtp.personopplysninger.Medlemskap;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.personopplysninger.Medlemskap;
 
 public class MedlemskapsunntakMapper {
 

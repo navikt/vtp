@@ -1,215 +1,98 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
-import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioDto;
-import no.nav.foreldrepenger.vtp.kontrakter.TestscenarioPersonopplysningDto;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
+import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsgiver;
+import no.nav.vtp.person.arbeidsforhold.Organisasjon;
+import no.nav.vtp.person.arbeidsforhold.PrivatArbeidsgiver;
+import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.inntekt.Inntektsperiode;
 
-@Path("/api/testscenarios")
+
+@Path("/api/testscenarios/v2")
 public class TestscenarioRestTjeneste {
     private static final Logger logger = LoggerFactory.getLogger(TestscenarioRestTjeneste.class);
 
-    private static final String TEMPLATE_KEY = "key";
-    private static final String SCENARIO_ID = "id";
-
     @Context
-    private TestscenarioRepository testscenarioRepository;
+    private PersonRepository personRepository;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response hentInitialiserteCaser() {
-        Map<String, Testscenario> testscenarios = testscenarioRepository.getTestscenarios();
-        List<TestscenarioDto> testscenarioList = new ArrayList<>();
-
-        testscenarios.forEach((key, testscenario) -> {
-            if (testscenario.getTemplateNavn() != null) {
-                testscenarioList.add(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn()));
-            } else {
-                testscenarioList.add(konverterTilTestscenarioDto(testscenario));
-            }
-        });
-
-        return Response.status(Response.Status.OK)
-            .entity(JacksonObjectMapperTestscenario.writeValueAsString(testscenarioList))
-            .build();
+    public TestscenarioRestTjeneste() {
+        //CDI
     }
 
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response hentScenario(@PathParam(SCENARIO_ID) String id) {
-        if (testscenarioRepository.getTestscenario(id) != null) {
-            Testscenario testscenario = testscenarioRepository.getTestscenario(id);
-            return Response.status(Response.Status.OK)
-                .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
-                .build();
-        } else {
-            return Response.status(Response.Status.NO_CONTENT).build();
-        }
-
-    }
-
-    @SuppressWarnings("unused")
-    @PUT
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response oppdaterHeleScenario(@PathParam(SCENARIO_ID) String id, String testscenarioJson, @Context UriInfo uriInfo) {
-        Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
-        Testscenario testscenario = testscenarioRepository.oppdaterTestscenario(id, testscenarioJson, userSuppliedVariables);
-        logger.info("Oppdaterer testscenario med id {} med ekstern testdatadefinisjon.", testscenario.getId());
-        return Response.status(Response.Status.OK)
-                .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
-                .build();
-    }
-
-    @SuppressWarnings("unused")
-    @PATCH
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response endreScenario(@PathParam(SCENARIO_ID) String id, String patchArray) {
-        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    public TestscenarioRestTjeneste(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @POST
+    @Path("/opprett")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    // Initialiserer et testscenario basert på angitt json streng og returnerer det initialiserte objektet
-    public Response initialiserTestScenario(String testscenarioJson, @Context UriInfo uriInfo) {
-        Map<String, String> userSuppliedVariables = getUserSuppliedVariables(uriInfo.getQueryParameters(), TEMPLATE_KEY);
-        Testscenario testscenario = testscenarioRepository.opprettTestscenario(testscenarioJson, userSuppliedVariables);
-        logger.info("Initialiserer testscenario med ekstern testdatadefinisjon. Opprettet med id: [{}] ", testscenario.getId());
-        return Response.status(Response.Status.CREATED)
-            .entity(JacksonObjectMapperTestscenario.writeValueAsString(konverterTilTestscenarioDto(testscenario, testscenario.getTemplateNavn())))
-            .build();
+    public Response initialiserTestScenarioFraDtoReturnerIdenter(List<PersonDto> personer) {
+        var personerMapped = personer.stream()
+                .map(PersonMapper::tilPerson)
+                .toList();
+        personRepository.leggTilPersoner(personerMapped);
+        return Response.status(Response.Status.OK).build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response slettScenario(@PathParam(SCENARIO_ID) String id) {
-        logger.info("Sletter testscenario med id: [{}]", id);
-        if (Boolean.TRUE.equals(testscenarioRepository.slettScenario(id))) {
-            return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+    @GET
+    @Path("/alleidenter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response hentInitialiserteCaser() {
+        var alleIdenter = personRepository.allePersoner().stream()
+                .flatMap(p -> alleIdenterRegistertPåPerson(p).stream())
+                .collect(Collectors.toSet());
+        return Response.status(Response.Status.OK)
+                .entity(alleIdenter)
+                .build();
     }
 
-    public static TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario) {
-        return konverterTilTestscenarioDto(testscenario, null, null);
+    private static Set<String> alleIdenterRegistertPåPerson(Person person) {
+        var personidenter = identerFraPersonIdent((PersonIdent) person.personopplysninger().identifikator());
+        var arbeidsgivere = person.arbeidsforhold().stream()
+                .map(Arbeidsforhold::arbeidsgiver)
+                .flatMap(TestscenarioRestTjeneste::identFraArbeidsgiver)
+                .collect(Collectors.toSet());
+        var arbeidsgivereFraInntektsperioder = person.inntekt().stream()
+                .map(Inntektsperiode::arbeidsgiver)
+                .flatMap(TestscenarioRestTjeneste::identFraArbeidsgiver)
+                .collect(Collectors.toSet());
+        var set = new HashSet<String>();
+        set.addAll(personidenter);
+        set.addAll(arbeidsgivere);
+        set.addAll(arbeidsgivereFraInntektsperioder);
+        return set;
     }
 
-    private static TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateNavn) {
-        String templateKey = null;
-        if (templateNavn != null) {
-            templateKey = templateNavn.replaceFirst("[-_].+$", "");
-        }
-        return konverterTilTestscenarioDto(testscenario, templateKey, templateNavn);
+    private static Stream<String> identFraArbeidsgiver(Arbeidsgiver a) {
+        return switch (a) {
+            case PrivatArbeidsgiver pa -> identerFraPersonIdent(pa.ident()).stream();
+            case Organisasjon oa -> Set.of(oa.identifikator()).stream();
+            default -> throw new IllegalStateException("Unexpected value: " + a);
+        };
     }
 
-    private static TestscenarioDto konverterTilTestscenarioDto(Testscenario testscenario, String templateKey, String templateName) {
-        String fnrSøker = testscenario.getPersonopplysninger().getSøker().getIdent();
-        String fnrAnnenPart = null;
-        String aktørIdAnnenPart = null;
-        BrukerModell.Kjønn kjønnAnnenpart = null;
-        if (testscenario.getPersonopplysninger().getAnnenPart() != null) {
-            fnrAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
-            aktørIdAnnenPart = testscenario.getPersonopplysninger().getAnnenPart().getAktørIdent();
-            kjønnAnnenpart = testscenario.getPersonopplysninger().getAnnenPart().getKjønn();
-        }
-        String aktørIdSøker = testscenario.getPersonopplysninger().getSøker().getAktørIdent();
-        Optional<LocalDate> fødselsdato = fødselsdatoBarn(testscenario);
-        var barnIdentTilAktørId = barnidenter(testscenario);
-
-        // TODO: fjern fnrBarn, bruk bare barnIdentTilAktørId
-        List<String> fnrBarn = List.copyOf(barnIdentTilAktørId.keySet());
-
-        TestscenarioPersonopplysningDto scenarioPersonopplysninger = new TestscenarioPersonopplysningDto(
-            fnrSøker,
-            aktørIdSøker,
-            testscenario.getPersonopplysninger().getSøker().getKjønn(),
-            fnrAnnenPart,
-            aktørIdAnnenPart,
-            kjønnAnnenpart,
-            fødselsdato.orElse(null),
-            fnrBarn,
-            barnIdentTilAktørId);
-
-        InntektYtelseModell søkerInntektYtelse = testscenario.getSøkerInntektYtelse();
-        InntektYtelseModell annenpartInntektYtelse = testscenario.getAnnenpartInntektYtelse();
-
-        return new TestscenarioDto(
-            templateKey,
-            templateName,
-            testscenario.getId(),
-            testscenario.getVariabelContainer().getVars(),
-            scenarioPersonopplysninger,
-            søkerInntektYtelse,
-            annenpartInntektYtelse);
+    private static Set<String> identerFraPersonIdent(PersonIdent personIdent) {
+        return Set.of(personIdent.fnr(), personIdent.aktørId());
     }
-
-    private static Optional<LocalDate> fødselsdatoBarn(Testscenario testscenario) {
-        Optional<BarnModell> barnModell = testscenario.getPersonopplysninger().getFamilierelasjoner()
-            .stream()
-            .filter(modell -> modell.getTil() instanceof BarnModell)
-            .map(modell -> ((BarnModell) modell.getTil()))
-            .findFirst();
-
-        return barnModell.map(PersonModell::getFødselsdato);
-    }
-
-    private static Map<String, String> barnidenter(Testscenario testscenario) {
-        return testscenario.getPersonopplysninger().getFamilierelasjoner()
-            .stream()
-            .map(FamilierelasjonModell::getTil)
-            .filter(til -> til instanceof BarnModell)
-            .sorted(Comparator.comparing(BrukerModell::getIdent))
-            .map(p -> Map.entry(p.getIdent(), p.getAktørIdent()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-    }
-
-    private Map<String, String> getUserSuppliedVariables(MultivaluedMap<String, String> queryParameters, String... skipKeys) {
-        Set<String> skipTheseKeys = new HashSet<>(Arrays.asList(skipKeys));
-        Map<String, String> result = new LinkedHashMap<>();
-        for (Map.Entry<String, List<String>> e : queryParameters.entrySet()) {
-            if (skipTheseKeys.contains(e.getKey()) || e.getValue().size() != 1) {
-                continue; // tar inn som egen nøkkel, skipper her OG støtter ikke multi-value eller tomme
-            }
-            result.put(e.getKey(), e.getValue().get(0));
-        }
-        return result;
-    }
-
 }

@@ -16,8 +16,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.fager.graphql.GraphQLRequest;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.ArbeidsgiverPortalRepositoryImpl;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepositoryImpl;
 
 @Path("/api/fager")
 public class FagerMock {

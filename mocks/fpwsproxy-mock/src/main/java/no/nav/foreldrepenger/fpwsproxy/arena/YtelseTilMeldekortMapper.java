@@ -9,8 +9,8 @@ import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetal
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.YtelseStatusDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.YtelseTypeDto;
-import no.nav.vtp.ytelse.Ytelse;
-import no.nav.vtp.ytelse.YtelseType;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 public class YtelseTilMeldekortMapper {
 

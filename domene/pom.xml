@@ -22,6 +22,10 @@
             <groupId>com.neovisionaries</groupId>
             <artifactId>nv-i18n</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

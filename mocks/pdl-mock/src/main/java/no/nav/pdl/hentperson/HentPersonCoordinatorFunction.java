@@ -1,8 +1,8 @@
 package no.nav.pdl.hentperson;
 
 import no.nav.pdl.mapper.PersonMapper;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.personopplysninger.Familierelasjon;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.personopplysninger.Familierelasjon;
 
 public class HentPersonCoordinatorFunction {
 

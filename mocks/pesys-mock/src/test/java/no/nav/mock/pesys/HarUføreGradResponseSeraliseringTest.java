@@ -34,7 +34,7 @@ class HarUføreGradResponseSeraliseringTest {
     @BeforeEach
     void PesysMockInit() {
         when(testscenarioRepository.getPersonIndeks()).thenReturn(personIndeks);
-        uføreMock = new UføreMock(testscenarioRepository);
+        uføreMock = new UføreMock(); // TODO: Fiks test
     }
 
     @Test

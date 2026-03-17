@@ -3,12 +3,12 @@ package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 import java.util.List;
 
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdIdNav;
-import no.nav.vtp.arbeidsforhold.Arbeidsavtale;
-import no.nav.vtp.arbeidsforhold.Arbeidsforhold;
-import no.nav.vtp.arbeidsforhold.Arbeidsforholdstype;
-import no.nav.vtp.arbeidsforhold.Organisasjon;
-import no.nav.vtp.arbeidsforhold.Permisjon;
-import no.nav.vtp.arbeidsforhold.PrivatArbeidsgiver;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsavtale;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforholdstype;
+import no.nav.vtp.person.arbeidsforhold.Organisasjon;
+import no.nav.vtp.person.arbeidsforhold.Permisjon;
+import no.nav.vtp.person.arbeidsforhold.PrivatArbeidsgiver;
 
 public class ArbeidsforholdMapper {
     private ArbeidsforholdMapper() {}

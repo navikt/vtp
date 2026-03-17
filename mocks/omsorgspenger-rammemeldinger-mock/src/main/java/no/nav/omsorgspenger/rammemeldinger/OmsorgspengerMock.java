@@ -9,9 +9,9 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.ytelse.Ytelse;
-import no.nav.vtp.ytelse.YtelseType;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 @Path("/omsorgspenger-rammemeldinger")
 public class OmsorgspengerMock {

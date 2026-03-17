@@ -17,9 +17,9 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
 import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.arbeidsforhold.Organisasjon;
-import no.nav.vtp.ident.Orgnummer;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.arbeidsforhold.Organisasjon;
+import no.nav.vtp.person.ident.Orgnummer;
 
 @Path("ereg/api/v1/organisasjon")
 @Produces(MediaType.APPLICATION_JSON)

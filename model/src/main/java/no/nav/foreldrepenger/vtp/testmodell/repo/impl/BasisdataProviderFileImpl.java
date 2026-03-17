@@ -2,12 +2,9 @@ package no.nav.foreldrepenger.vtp.testmodell.repo.impl;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Comparator;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.EnheterIndeks;
 import no.nav.foreldrepenger.vtp.testmodell.enheter.Norg2Modell;
 import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
@@ -26,13 +23,11 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     private static final String ADRESSE_MALER = BASEDATA_RESOURCE_FOLDER_PATH + "adresse-maler.json";
     private static final String ENHETER = BASEDATA_RESOURCE_FOLDER_PATH + "enheter.json";
     private static final String VIRKSOMHETER = BASEDATA_RESOURCE_FOLDER_PATH + "virksomheter.json";
-    private static final String ANSATTE = BASEDATA_RESOURCE_FOLDER_PATH + "nav-ansatte.json";
     private static final String ORGANISASJON = BASEDATA_RESOURCE_FOLDER_PATH + "organisasjon.json";
 
     private final VirksomhetIndeks virksomhetIndeks = new VirksomhetIndeks();
     private final EnheterIndeks enheterIndeks = new EnheterIndeks();
     private final AdresseIndeks adresseIndeks = new AdresseIndeks();
-    private final AnsatteIndeks ansatteIndeks = new AnsatteIndeks();
     private final OrganisasjonIndeks organisasjonIndeks = new OrganisasjonIndeks();
     private final IdentGenerator identGenerator = new FiktiveFnr();
 
@@ -43,7 +38,6 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         loadAdresser();
         loadEnheter();
         loadVirksomheter();
-        loadAnsatte();
         loadOrganisasjoner();
     }
 
@@ -68,11 +62,6 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
     @Override
     public AdresseIndeks getAdresseIndeks() {
         return adresseIndeks;
-    }
-
-    @Override
-    public AnsatteIndeks getAnsatteIndeks() {
-        return ansatteIndeks;
     }
 
     @Override
@@ -107,15 +96,6 @@ public class BasisdataProviderFileImpl implements BasisdataProvider {
         }
     }
 
-    private void loadAnsatte() {
-        try (var is = getClass().getResourceAsStream(ANSATTE)) {
-            var ansatte = Arrays.asList(mapper.readValue(is, NavAnsatt[].class));
-            ansatte.sort(Comparator.comparing(NavAnsatt::ident));
-            ansatteIndeks.leggTil(ansatte);
-        } catch (IOException e) {
-            throwIllegaleStateExecption(ANSATTE, e);
-        }
-    }
 
     private void loadOrganisasjoner() {
         try (var is = getClass().getResourceAsStream(ORGANISASJON)) {

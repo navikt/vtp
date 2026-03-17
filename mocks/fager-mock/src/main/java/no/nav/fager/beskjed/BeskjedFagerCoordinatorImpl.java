@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.fager.NyBeskjedResultat;
 import no.nav.fager.NyBeskjedVellykket;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 
 public class BeskjedFagerCoordinatorImpl implements BeskjedFagerCoordinator {
     private static final Logger LOG = LoggerFactory.getLogger(BeskjedFagerCoordinatorImpl.class);

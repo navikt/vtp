@@ -14,12 +14,12 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.vtp.Person;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.ident.PersonIdent;
-import no.nav.vtp.personopplysninger.Adresser;
-import no.nav.vtp.personopplysninger.Familierelasjon;
-import no.nav.vtp.personopplysninger.GeografiskTilknytning;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.personopplysninger.Adresser;
+import no.nav.vtp.person.personopplysninger.Familierelasjon;
+import no.nav.vtp.person.personopplysninger.GeografiskTilknytning;
 
 
 @Path("/api/pdl-pip-api")

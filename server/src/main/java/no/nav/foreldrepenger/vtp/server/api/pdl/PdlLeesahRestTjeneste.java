@@ -36,14 +36,14 @@ import no.nav.person.pdl.leesah.doedsfall.Doedsfall;
 import no.nav.person.pdl.leesah.familierelasjon.Familierelasjon;
 import no.nav.person.pdl.leesah.foedselsdato.Foedselsdato;
 import no.nav.person.pdl.leesah.forelderbarnrelasjon.ForelderBarnRelasjon;
-import no.nav.vtp.Person;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.ident.Identifikator;
-import no.nav.vtp.ident.PersonIdent;
-import no.nav.vtp.personopplysninger.Kjønn;
-import no.nav.vtp.personopplysninger.Navn;
-import no.nav.vtp.personopplysninger.Rolle;
-import no.nav.vtp.personopplysninger.Språk;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ident.Identifikator;
+import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.personopplysninger.Kjønn;
+import no.nav.vtp.person.personopplysninger.Navn;
+import no.nav.vtp.person.personopplysninger.Rolle;
+import no.nav.vtp.person.personopplysninger.Språk;
 
 @Path("/api/pdl/leesah")
 public class PdlLeesahRestTjeneste {
@@ -146,7 +146,7 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("foedselsdato", fødselsdato.build());
         }
 
-        LOG.info("Publiserer FOEDSELSDATO_V1 på kafka for barn med ident {}, født: {}", barnIdent.fnr(), fødselshendelseDto.fødselsdato());
+        LOG.info("Publiserer FOEDSELSDATO_V1 på kafka for barn med fnr {}, født: {}", barnIdent.fnr(), fødselshendelseDto.fødselsdato());
         sendHendelsePåKafka(personhendelse.build());
 
         if (publiserForelderBarnRelasjonMedFoedselshendelser) {
@@ -204,7 +204,7 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("doedsfall", dødsfall.build());
         }
 
-        LOG.info("Publiserer DOEDSFALL_V1 hendelse på kafka for person med ident {}, dødsdato: {}", dødshendelseDto.fnr(),
+        LOG.info("Publiserer DOEDSFALL_V1 hendelse på kafka for person med fnr {}, dødsdato: {}", dødshendelseDto.fnr(),
                 dødshendelseDto.doedsdato());
         sendHendelsePåKafka(personhendelse.build());
     }
@@ -230,7 +230,7 @@ public class PdlLeesahRestTjeneste {
             personhendelse.set("doedfoedtBarn", dødfødtBarn.build());
         }
 
-        LOG.info("Publiserer DOEDFOEDT_BARN_V1 hendelse på kafka for barn med ident {}, dødsdato: {}", dødfødselhendelseDto.fnr(),
+        LOG.info("Publiserer DOEDFOEDT_BARN_V1 hendelse på kafka for barn med fnr {}, dødsdato: {}", dødfødselhendelseDto.fnr(),
                 dødfødselhendelseDto.doedfoedselsdato());
         sendHendelsePåKafka(personhendelse.build());
     }
@@ -278,7 +278,7 @@ public class PdlLeesahRestTjeneste {
 
     private void leggTilBarnRelasjonFor(Person person, PersonIdent identifikasjonBarn) {
         var familierelasjoner = new ArrayList<>(person.personopplysninger().familierelasjoner());
-        familierelasjoner.add(tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.BARN, identifikasjonBarn));
+        familierelasjoner.add(tilRelasjon(no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon.BARN, identifikasjonBarn));
         var personopplysnignerFar = person.personopplysninger().tilBuilder()
                 .medFamilierelasjoner(familierelasjoner)
                 .build();
@@ -291,7 +291,7 @@ public class PdlLeesahRestTjeneste {
     private void registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
         var mor = personRepository.hentPerson(dødfødselhendelseDto.fnr());
         var annenForelder = mor.personopplysninger().familierelasjoner().stream()
-                .filter(fr -> no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.EKTE.equals(fr.relasjon()))
+                .filter(fr -> no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon.EKTE.equals(fr.relasjon()))
                 .findFirst()
                 .map(fr -> personRepository.hentPerson(fr.relatertTilId().fnr()));
 
@@ -307,13 +307,13 @@ public class PdlLeesahRestTjeneste {
         var ident = dødsdato != null
                 ? dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001"
                 : new FiktiveFnr().tilfeldigBarnUnderTreAarFnr();
-        var relasjoner = new ArrayList<no.nav.vtp.personopplysninger.Familierelasjon>();
-        relasjoner.add(tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.MOR,
+        var relasjoner = new ArrayList<no.nav.vtp.person.personopplysninger.Familierelasjon>();
+        relasjoner.add(tilRelasjon(no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon.MOR,
                 mor.personopplysninger().identifikator()));
         Optional.ofNullable(far).ifPresent(f ->
-                relasjoner.add(tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon.FAR,
+                relasjoner.add(tilRelasjon(no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon.FAR,
                         f.personopplysninger().identifikator())));
-        var personopplysnigner = new no.nav.vtp.personopplysninger.Personopplysninger(
+        var personopplysnigner = new no.nav.vtp.person.personopplysninger.Personopplysninger(
                 new PersonIdent(ident),
                 Rolle.BARN,
                 new Navn("Baby",  null, "Fødsel Navnesen"),
@@ -333,8 +333,8 @@ public class PdlLeesahRestTjeneste {
         return new Person(personopplysnigner, List.of(), List.of(), List.of(), List.of());
     }
 
-    private static no.nav.vtp.personopplysninger.Familierelasjon tilRelasjon(no.nav.vtp.personopplysninger.Familierelasjon.Relasjon relasjon, Identifikator ident) {
-        return new no.nav.vtp.personopplysninger.Familierelasjon(relasjon, (PersonIdent) ident);
+    private static no.nav.vtp.person.personopplysninger.Familierelasjon tilRelasjon(no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon relasjon, Identifikator ident) {
+        return new no.nav.vtp.person.personopplysninger.Familierelasjon(relasjon, (PersonIdent) ident);
     }
 
     private void registrerDødshendelse(DødshendelseDto dødshendelseDto) {

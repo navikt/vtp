@@ -20,11 +20,11 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Variantformat;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.JournalRepositoryImpl;
+import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
+import no.nav.vtp.journalpost.dokument.modell.DokumentVariantInnhold;
+import no.nav.vtp.journalpost.dokument.modell.koder.Variantformat;
+import no.nav.vtp.journalpost.JournalRepository;
+import no.nav.vtp.journalpost.JournalRepositoryImpl;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;
 

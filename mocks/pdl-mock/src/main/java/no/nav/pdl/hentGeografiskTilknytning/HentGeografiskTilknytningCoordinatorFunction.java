@@ -1,7 +1,7 @@
 package no.nav.pdl.hentGeografiskTilknytning;
 
 import no.nav.pdl.mapper.GeografiskTilknytningMapper;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 public class HentGeografiskTilknytningCoordinatorFunction {
 

@@ -1,7 +1,5 @@
 package no.nav.dokarkiv;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,9 +7,9 @@ import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
 
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BehandlingsTema;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.vtp.journalpost.dokument.modell.koder.BehandlingsTema;
+import no.nav.vtp.journalpost.dokument.modell.koder.DokumenttypeId;
 import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord;
 
 public class JournalforingHendelseSender {

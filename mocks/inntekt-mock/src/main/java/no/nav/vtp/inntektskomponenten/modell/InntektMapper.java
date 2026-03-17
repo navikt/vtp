@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.vtp.inntekt.Inntektsperiode;
+import no.nav.vtp.person.inntekt.Inntektsperiode;
 import no.nav.vtp.inntektskomponenten.Inntektsinformasjon;
 
 public class InntektMapper {

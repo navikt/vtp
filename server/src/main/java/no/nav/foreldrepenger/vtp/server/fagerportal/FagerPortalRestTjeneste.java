@@ -17,10 +17,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.BeskjedModell;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.OppgaveModell;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
+import no.nav.vtp.arbeidsgiverportal.BeskjedModell;
+import no.nav.vtp.arbeidsgiverportal.OppgaveModell;
+import no.nav.vtp.arbeidsgiverportal.SakModell;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 
 @Path("/api/fager")
 public class FagerPortalRestTjeneste {

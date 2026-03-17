@@ -1,8 +1,6 @@
 package no.nav.foreldrepenger.vtp.kontrakter.v2;
 
-import java.util.UUID;
-
-public record FamilierelasjonModellDto(Relasjon relasjon, UUID relatertTilId) {
+public record FamilierelasjonModellDto(Relasjon relasjon, String relatertTilId) {
 
     public enum Relasjon {
         EKTE,

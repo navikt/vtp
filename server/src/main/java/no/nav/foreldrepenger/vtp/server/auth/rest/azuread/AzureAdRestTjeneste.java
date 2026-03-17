@@ -42,9 +42,8 @@ import no.nav.foreldrepenger.vtp.server.MockServer;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.AnsatteIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.ansatt.NavAnsatt;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
+import no.nav.vtp.ansatt.AnsatteIndeks;
+import no.nav.vtp.ansatt.NavAnsatt;
 
 @Path(AzureAdRestTjeneste.TJENESTE_PATH)
 public class AzureAdRestTjeneste {
@@ -52,8 +51,6 @@ public class AzureAdRestTjeneste {
     protected static final String TJENESTE_PATH = "/azuread"; //NOSONAR
     private static final String ISSUER = "http://vtp/rest/AzureAd";
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
-
-    private static final AnsatteIndeks ANSATTE_INDEKS = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
 
     @GET
     @Path("/isAlive")
@@ -105,13 +102,13 @@ public class AzureAdRestTjeneste {
                 Objects.requireNonNull(assertion);
                 var claimsAssertion = AzureOidcTokenGenerator.getClaimsFromAssertion(assertion);
                 var ansattId = Optional.ofNullable(claimsAssertion).map(AzureOidcTokenGenerator::getNavIdent).orElse(null);
-                var ansattIdent = Optional.ofNullable(ansattId).map(ANSATTE_INDEKS::findByIdent).orElseThrow();
+                var ansattIdent = Optional.ofNullable(ansattId).map(AnsatteIndeks::findByIdent).orElseThrow();
                 token = createToken(ansattIdent, nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             case "authorization_code" -> {
                 var ansattIdent = Optional.ofNullable(code)
-                        .map(ANSATTE_INDEKS::findByIdent)
+                        .map(AnsatteIndeks::findByIdent)
                         .orElseThrow(() -> new WebApplicationException("Bad code", Response.Status.BAD_REQUEST));
                 token = createToken(ansattIdent, nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
@@ -120,7 +117,7 @@ public class AzureAdRestTjeneste {
                 if (refreshToken == null) {
                     yield badRequest();
                 }
-                token = createToken(ANSATTE_INDEKS.findByIdent("S123456"), nonce);
+                token = createToken(AnsatteIndeks.findByIdent("S123456"), nonce);
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             default -> {
@@ -145,7 +142,7 @@ public class AzureAdRestTjeneste {
     @Produces({MediaType.APPLICATION_JSON})
     // azureAd/access_token - brukes primært av autotest til å logge inn en saksbehandler programmatisk (uten interaksjon med GUI)
     public Response accessToken(@QueryParam("ident") @DefaultValue("S123456") String ident) {
-        var bruker = Optional.ofNullable(ANSATTE_INDEKS.findByIdent(ident)).orElseThrow();
+        var bruker = Optional.ofNullable(AnsatteIndeks.findByIdent(ident)).orElseThrow();
         var token = createToken(bruker, nonceCache.get(NONCE));
         return ok(new Oauth2AccessTokenResponse(token)).build();
     }
@@ -211,7 +208,7 @@ public class AzureAdRestTjeneste {
     }
 
     private static String leggTilRaderITabellMedRedirectTilInnloggingAvSamtligeAnsatte(UriBuilder location) {
-        return ANSATTE_INDEKS.alleAnsatte().stream()
+        return AnsatteIndeks.alleAnsatte().stream()
                 .map(ansatt -> leggTilRadITabell(location.build(), ansatt))
                 .collect(Collectors.joining("\n"));
     }

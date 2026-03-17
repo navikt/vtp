@@ -10,13 +10,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Arkivtema;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalposttyper;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostBruker;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.vtp.journalpost.dokument.modell.koder.Arkivtema;
+import no.nav.vtp.journalpost.dokument.modell.koder.BrukerType;
+import no.nav.vtp.journalpost.dokument.modell.koder.Journalposttyper;
+import no.nav.vtp.journalpost.dokument.modell.koder.Mottakskanal;
+import no.nav.vtp.journalpost.JournalRepository;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;
 

@@ -9,11 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
-import no.nav.vtp.Person;
+import no.nav.vtp.person.Person;
 import no.nav.vtp.PersonBuilder;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.ytelse.Ytelse;
-import no.nav.vtp.ytelse.YtelseType;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 class ArenaMockTest {
 
@@ -32,7 +32,7 @@ class ArenaMockTest {
         // Arrange
         var personBase = PersonBuilder.lagSøker();
         var dagpenger = new Ytelse(YtelseType.DAGPENGER, now.minusYears(1), now.plusYears(1), 1000, 5000, List.of());
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger));
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
         personRepository.leggTilPerson(person);
 
         // Act
@@ -49,7 +49,7 @@ class ArenaMockTest {
         // Arrange
         var personBase = PersonBuilder.lagSøker();
         var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, now.minusYears(1), now.plusYears(1), 1500, 7000, List.of());
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap));
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap), List.of());
         personRepository.leggTilPerson(person);
 
         // Act
@@ -67,7 +67,7 @@ class ArenaMockTest {
         var personBase = PersonBuilder.lagSøker();
         var dagpenger = new Ytelse(YtelseType.DAGPENGER, now.minusYears(1), now.plusYears(1), 1000, 5000, List.of());
         var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, now, now.plusYears(2), 1500, 7000, List.of());
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger, aap));
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger, aap), List.of());
         personRepository.leggTilPerson(person);
 
         // Act
@@ -82,7 +82,7 @@ class ArenaMockTest {
     void henterDagpengerOgAAP_ingenYtelser() {
         // Arrange
         var personBase = PersonBuilder.lagSøker();
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of());
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(), List.of());
         personRepository.leggTilPerson(person);
 
         // Act
@@ -100,7 +100,7 @@ class ArenaMockTest {
         var dagpengerInnen = new Ytelse(YtelseType.DAGPENGER, now.minusYears(1), now.plusYears(1), 1000, 5000, List.of());
         var foreldrepenger = new Ytelse(YtelseType.FORELDREPENGER, now.minusYears(1), now.plusYears(1), 2000, 8000, List.of());
         var dagpengerUtenfor = new Ytelse(YtelseType.DAGPENGER, now.plusYears(2), now.plusYears(3), 1000, 5000, List.of());
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpengerInnen, dagpengerUtenfor, foreldrepenger));
+        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpengerInnen, dagpengerUtenfor, foreldrepenger), List.of());
         personRepository.leggTilPerson(person);
 
         // Act

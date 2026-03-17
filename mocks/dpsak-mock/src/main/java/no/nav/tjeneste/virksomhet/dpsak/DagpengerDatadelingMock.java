@@ -10,7 +10,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 
 @Path("/dagpenger/datadeling/v1")

@@ -19,9 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.UriInfo;
-import no.nav.vtp.Person;
+import no.nav.vtp.person.Person;
 import no.nav.vtp.PersonBuilder;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 @ExtendWith(MockitoExtension.class)
 class AaregRSV1MockTest {

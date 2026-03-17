@@ -33,12 +33,12 @@ import no.nav.pdl.Sivilstandstype;
 import no.nav.pdl.Statsborgerskap;
 import no.nav.pdl.UtenlandskAdresse;
 import no.nav.pdl.Vegadresse;
-import no.nav.vtp.Person;
-import no.nav.vtp.ident.PersonIdent;
-import no.nav.vtp.personopplysninger.Adresse;
-import no.nav.vtp.personopplysninger.Familierelasjon;
-import no.nav.vtp.personopplysninger.Personstatus;
-import no.nav.vtp.personopplysninger.Rolle;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.personopplysninger.Adresse;
+import no.nav.vtp.person.personopplysninger.Familierelasjon;
+import no.nav.vtp.person.personopplysninger.Personstatus;
+import no.nav.vtp.person.personopplysninger.Rolle;
 
 public class PersonMapper {
 
@@ -258,11 +258,11 @@ public class PersonMapper {
                     var annenpartOpt = person.personopplysninger().familierelasjoner().stream()
                             .filter(f -> Set.of(Familierelasjon.Relasjon.EKTE, Familierelasjon.Relasjon.SAMBOER).contains(f.relasjon()))
                             .findFirst();
-                    if (annenpartOpt.isPresent() && Set.of(no.nav.vtp.personopplysninger.Sivilstand.Type.GIFT,
-                            no.nav.vtp.personopplysninger.Sivilstand.Type.REGISTRERT_PARTNER,
-                            no.nav.vtp.personopplysninger.Sivilstand.Type.SEPARERT_PARTNER,
-                            no.nav.vtp.personopplysninger.Sivilstand.Type.SKILT_PARTNER,
-                            no.nav.vtp.personopplysninger.Sivilstand.Type.GJENLEVENDE_PARTNER)
+                    if (annenpartOpt.isPresent() && Set.of(no.nav.vtp.person.personopplysninger.Sivilstand.Type.GIFT,
+                                                           no.nav.vtp.person.personopplysninger.Sivilstand.Type.REGISTRERT_PARTNER,
+                                                           no.nav.vtp.person.personopplysninger.Sivilstand.Type.SEPARERT_PARTNER,
+                                                           no.nav.vtp.person.personopplysninger.Sivilstand.Type.SKILT_PARTNER,
+                                                           no.nav.vtp.person.personopplysninger.Sivilstand.Type.GJENLEVENDE_PARTNER)
                             .contains(s.sivilstand())) {
                         sivilstand.setRelatertVedSivilstand(annenpartOpt.get().relatertTilId().value());
                     }

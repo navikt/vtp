@@ -1,12 +1,12 @@
 package no.nav.saf;
 
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentVariantInnhold;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostBruker;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.BrukerType;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumentTilknyttetJournalpost;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
+import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
+import no.nav.vtp.journalpost.dokument.modell.DokumentVariantInnhold;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostBruker;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.vtp.journalpost.dokument.modell.koder.BrukerType;
+import no.nav.vtp.journalpost.dokument.modell.koder.DokumentTilknyttetJournalpost;
+import no.nav.vtp.journalpost.dokument.modell.koder.DokumenttypeId;
 
 import java.time.Instant;
 import java.time.ZoneId;

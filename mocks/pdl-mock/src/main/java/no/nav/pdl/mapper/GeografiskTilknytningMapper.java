@@ -2,7 +2,7 @@ package no.nav.pdl.mapper;
 
 import no.nav.pdl.GeografiskTilknytning;
 import no.nav.pdl.GtType;
-import no.nav.vtp.Person;
+import no.nav.vtp.person.Person;
 
 public class GeografiskTilknytningMapper {
 

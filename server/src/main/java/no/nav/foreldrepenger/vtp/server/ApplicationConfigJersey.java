@@ -50,7 +50,6 @@ import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjene
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioV2RestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
@@ -59,11 +58,8 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.ArbeidsgiverPortalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioBuilderRepository;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
+import no.nav.vtp.journalpost.JournalRepository;
 import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
@@ -85,7 +81,7 @@ import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
@@ -108,7 +104,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(InfotrygdMock.class);
         classes.add(ArbeidsfordelingRestMock.class);
         classes.add(TestscenarioRestTjeneste.class);
-        classes.add(TestscenarioV2RestTjeneste.class);
         classes.add(JournalforingRestTjeneste.class);
         classes.add(SafMock.class);
         classes.add(PdlLeesahRestTjeneste.class);
@@ -172,17 +167,13 @@ public class ApplicationConfigJersey extends ResourceConfig {
         }
     }
 
-    public ApplicationConfigJersey setup(DelegatingTestscenarioBuilderRepository testScenarioRepository,
-                                         TestscenarioRepository instance,
-                                         LocalKafkaProducer localKafkaProducer,
+    public ApplicationConfigJersey setup(LocalKafkaProducer localKafkaProducer,
                                          JournalRepository journalRepository,
                                          ArbeidsgiverPortalRepository fagerPortalRepository) {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(new PersonRepository()).to(PersonRepository.class); // TODO
-                bind(testScenarioRepository).to(TestscenarioBuilderRepository.class);
-                bind(instance).to(TestscenarioRepository.class);
                 bind(journalRepository).to(JournalRepository.class);
                 bind(fagerPortalRepository).to(ArbeidsgiverPortalRepository.class);
                 bind(localKafkaProducer).to(LocalKafkaProducer.class);

@@ -16,9 +16,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.arbeidsforhold.Organisasjon;
-import no.nav.vtp.ident.Orgnummer;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.arbeidsforhold.Organisasjon;
+import no.nav.vtp.person.ident.Orgnummer;
 
 /*
  * Tjeneste for å sjekke om person har tilgang til en .

@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
 import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 @Path("aareg-services/api/v1/arbeidstaker")
 @Produces(MediaType.APPLICATION_JSON)
@@ -70,7 +70,7 @@ public class AaregRSV1Mock {
                 .orElse(List.of());
     }
 
-    private boolean erOverlapp(LocalDate fom, LocalDate tom, no.nav.vtp.arbeidsforhold.Arbeidsforhold arbeidsforhold) {
+    private boolean erOverlapp(LocalDate fom, LocalDate tom, no.nav.vtp.person.arbeidsforhold.Arbeidsforhold arbeidsforhold) {
         var ansettelsesperiodeFom = arbeidsforhold.ansettelsesperiodeFom();
         var ansettelsesperiodeTom = arbeidsforhold.ansettelsesperiodeTom();
 
@@ -78,7 +78,7 @@ public class AaregRSV1Mock {
                 (tom == null || !tom.isBefore(ansettelsesperiodeFom));
     }
 
-    private boolean filterForArbeidsforholdType(List<String> filtrerArbeidsforholdtyper, no.nav.vtp.arbeidsforhold.Arbeidsforhold a) {
+    private boolean filterForArbeidsforholdType(List<String> filtrerArbeidsforholdtyper, no.nav.vtp.person.arbeidsforhold.Arbeidsforhold a) {
         if (filtrerArbeidsforholdtyper.isEmpty()) {
             return !Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.getKode().equalsIgnoreCase(tilArbeidsforholdtypeAareg(a.arbeidsforholdstype()));
         } else {

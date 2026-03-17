@@ -3,10 +3,8 @@ package no.nav.foreldrepenger.vtp.kontrakter.v2;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public record PersonDto(UUID id,
-                        String ident,
+public record PersonDto(String fnr,
                         Rolle rolle,
                         LocalDate fødselsdato,
                         LocalDate dødsdato,
@@ -25,7 +23,7 @@ public record PersonDto(UUID id,
 
 
     private PersonDto(Builder b) {
-        this(b.id, b.ident(), b.rolle, b.fødselsdato, b.dødsdato, b.språk, b.kjønn, b.geografiskTilknytning, b.familierelasjoner,
+        this(b.fnr, b.rolle, b.fødselsdato, b.dødsdato, b.språk, b.kjønn, b.geografiskTilknytning, b.familierelasjoner,
                 b.statsborgerskap, b.sivilstand, b.personstatus, b.medlemskap, b.adresser, b.adressebeskyttelse,
                 b.erSkjermet, b.inntektytelse);
     }
@@ -35,8 +33,7 @@ public record PersonDto(UUID id,
     }
 
     public static class Builder {
-        private UUID id;
-        private String ident;
+        private String fnr;
         private Rolle rolle;
         private LocalDate fødselsdato;
         private LocalDate dødsdato;
@@ -55,15 +52,10 @@ public record PersonDto(UUID id,
 
 
         Builder() {
-            this.id = UUID.randomUUID();
-        }
-
-        public UUID id() {
-            return id;
         }
 
         public String ident() {
-            return ident;
+            return fnr;
         }
 
         public Rolle rolle() {
@@ -126,8 +118,8 @@ public record PersonDto(UUID id,
             return inntektytelse;
         }
 
-        public Builder id(UUID id) {
-            this.id = id;
+        public Builder ident(String ident) {
+            this.fnr = ident;
             return this;
         }
 

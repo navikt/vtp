@@ -5,30 +5,31 @@ import java.util.List;
 
 import com.neovisionaries.i18n.CountryCode;
 
-import no.nav.vtp.arbeidsforhold.Arbeidsavtale;
-import no.nav.vtp.arbeidsforhold.Arbeidsforhold;
-import no.nav.vtp.arbeidsforhold.Arbeidsforholdstype;
-import no.nav.vtp.arbeidsforhold.Organisasjon;
-import no.nav.vtp.ident.Orgnummer;
-import no.nav.vtp.ident.PersonIdent;
-import no.nav.vtp.inntekt.Inntektsperiode;
-import no.nav.vtp.skatt.Skatteopplysning;
-import no.nav.vtp.personopplysninger.Adresse;
-import no.nav.vtp.personopplysninger.Adressebeskyttelse;
-import no.nav.vtp.personopplysninger.Adresser;
-import no.nav.vtp.personopplysninger.Familierelasjon;
-import no.nav.vtp.personopplysninger.GeografiskTilknytning;
-import no.nav.vtp.personopplysninger.Kjønn;
-import no.nav.vtp.personopplysninger.Navn;
-import no.nav.vtp.personopplysninger.Personopplysninger;
-import no.nav.vtp.personopplysninger.Personstatus;
-import no.nav.vtp.personopplysninger.Rolle;
-import no.nav.vtp.personopplysninger.Sivilstand;
-import no.nav.vtp.personopplysninger.Språk;
-import no.nav.vtp.personopplysninger.Statsborgerskap;
-import no.nav.vtp.ytelse.Beregningsgrunnlag;
-import no.nav.vtp.ytelse.Ytelse;
-import no.nav.vtp.ytelse.YtelseType;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsavtale;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforholdstype;
+import no.nav.vtp.person.arbeidsforhold.Organisasjon;
+import no.nav.vtp.person.ident.Orgnummer;
+import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.inntekt.Inntektsperiode;
+import no.nav.vtp.person.skatt.Skatteopplysning;
+import no.nav.vtp.person.personopplysninger.Adresse;
+import no.nav.vtp.person.personopplysninger.Adressebeskyttelse;
+import no.nav.vtp.person.personopplysninger.Adresser;
+import no.nav.vtp.person.personopplysninger.Familierelasjon;
+import no.nav.vtp.person.personopplysninger.GeografiskTilknytning;
+import no.nav.vtp.person.personopplysninger.Kjønn;
+import no.nav.vtp.person.personopplysninger.Navn;
+import no.nav.vtp.person.personopplysninger.Personopplysninger;
+import no.nav.vtp.person.personopplysninger.Personstatus;
+import no.nav.vtp.person.personopplysninger.Rolle;
+import no.nav.vtp.person.personopplysninger.Sivilstand;
+import no.nav.vtp.person.personopplysninger.Språk;
+import no.nav.vtp.person.personopplysninger.Statsborgerskap;
+import no.nav.vtp.person.ytelse.Beregningsgrunnlag;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 public class PersonBuilder {
 

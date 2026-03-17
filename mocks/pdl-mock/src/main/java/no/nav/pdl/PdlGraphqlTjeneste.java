@@ -23,7 +23,7 @@ import no.nav.pdl.hentIdenterBolk.HentIdenterBolkWiring;
 import no.nav.pdl.hentperson.HentPersonCoordinatorFunction;
 import no.nav.pdl.hentperson.HentPersonWiring;
 import no.nav.pdl.hentpersonBolk.HentPersonBolkWiring;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 public class PdlGraphqlTjeneste {
 

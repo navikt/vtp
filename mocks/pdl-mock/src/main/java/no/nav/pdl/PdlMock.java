@@ -15,7 +15,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.pdl.graphql.GraphQLRequest;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 @Path("/api/pdl")
 public class PdlMock {

@@ -16,9 +16,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.ytelse.Ytelse;
-import no.nav.vtp.ytelse.YtelseType;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 @Path("/api/fpwsproxy/arena")
 public class FpWsProxyArenaMock {

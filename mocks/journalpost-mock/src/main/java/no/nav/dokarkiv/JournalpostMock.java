@@ -23,11 +23,11 @@ import no.nav.dokarkiv.dto.OpprettJournalpostResponse;
 import no.nav.dokarkiv.dto.TilknyttVedleggRequest;
 import no.nav.dokarkiv.dto.TilknyttVedleggResponse;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Mottakskanal;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Sakstatus;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.vtp.journalpost.dokument.modell.koder.Journalstatus;
+import no.nav.vtp.journalpost.dokument.modell.koder.Mottakskanal;
+import no.nav.vtp.journalpost.dokument.modell.koder.Sakstatus;
+import no.nav.vtp.journalpost.JournalRepository;
 
 // Ref: https://confluence.adeo.no/display/BOA/Oversikt+over+Joark-+og+dokarkiv-tjenester
 @Path("/dokarkiv/rest/journalpostapi/v1")

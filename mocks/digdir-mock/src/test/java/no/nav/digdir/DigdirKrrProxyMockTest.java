@@ -1,8 +1,8 @@
 package no.nav.digdir;
 
-import no.nav.vtp.Person;
+import no.nav.vtp.person.Person;
 import no.nav.vtp.PersonBuilder;
-import no.nav.vtp.PersonRepository;
+import no.nav.vtp.person.PersonRepository;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

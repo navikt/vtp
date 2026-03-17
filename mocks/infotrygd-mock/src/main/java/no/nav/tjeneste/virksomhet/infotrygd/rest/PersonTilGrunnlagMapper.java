@@ -2,10 +2,10 @@ package no.nav.tjeneste.virksomhet.infotrygd.rest;
 
 import java.util.List;
 
-import no.nav.vtp.Person;
-import no.nav.vtp.ytelse.Beregningsgrunnlag;
-import no.nav.vtp.ytelse.Ytelse;
-import no.nav.vtp.ytelse.YtelseType;
+import no.nav.vtp.person.Person;
+import no.nav.vtp.person.ytelse.Beregningsgrunnlag;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 public class PersonTilGrunnlagMapper {
 

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import no.nav.pdl.IdentGruppe;
 import no.nav.pdl.IdentInformasjon;
 import no.nav.pdl.Identliste;
-import no.nav.vtp.PersonRepository;
-import no.nav.vtp.ident.PersonIdent;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ident.PersonIdent;
 
 public class HentIdenterCoordinatorFunction {
 
