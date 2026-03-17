@@ -6,10 +6,6 @@ import static org.mockito.Mockito.doNothing;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,32 +20,23 @@ import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
-import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BarnModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.FamilierelasjonModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
-import no.nav.foreldrepenger.vtp.testmodell.util.VariabelContainer;
+import no.nav.vtp.PersonBuilder;
+import no.nav.vtp.person.PersonRepository;
 import no.nav.person.pdl.leesah.Endringstype;
 
 @Disabled
 @ExtendWith(MockitoExtension.class)
 class HendelseTest {
 
-    private static TestscenarioRepository testScenarioRepository;
-    private static TestscenarioHenter testscenarioHenter;
+    private static PersonRepository personRepository;
 
     @Spy
     static PdlLeesahRestTjeneste pdlLeesahRestTjeneste;
 
     @BeforeAll
     static void setup() {
-        testScenarioRepository = new DelegatingTestscenarioRepository(
-                TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-        testscenarioHenter = TestscenarioHenter.getInstance();
+        personRepository = new PersonRepository();
+        personRepository.leggTilPersoner(PersonBuilder.lagPersoner());
         pdlLeesahRestTjeneste = new PdlLeesahRestTjeneste();
     }
 
@@ -60,95 +47,63 @@ class HendelseTest {
 
     @Test
     void FødselshendelseTest() {
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-        var søkerIdent = testscenario.getPersonopplysninger().getSøker().getIdent();
-        var annenpartIdent = testscenario.getPersonopplysninger().getAnnenPart().getIdent();
+        var søkerIdent = PersonBuilder.SØKER_IDENT;
+        var annenpartIdent = PersonBuilder.ANNEN_PART_IDENT;
         var fødselsdato = LocalDate.now().plusDays(14);
+
+        var søkerFør = personRepository.hentPerson(søkerIdent);
+        var annenpartFør = personRepository.hentPerson(annenpartIdent);
+
+        var barnRelasjonerSøkerFør = søkerFør.personopplysninger().familierelasjoner().size();
+        var barnRelasjonerAnnenpartFør = annenpartFør.personopplysninger().familierelasjoner().size();
 
         var fødselshendelseDto = new FødselshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent,
                 annenpartIdent, null, fødselsdato);
-        assertEquals(4, testscenario.getPersonopplysninger().getFamilierelasjoner().size());
-        assertEquals(3, testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size());
 
         pdlLeesahRestTjeneste.leggTilHendelse(fødselshendelseDto, false);
 
-        // Henter identen
-        var barnIdent = hentUtIdentPåDetSisteBarneSomErRegistert(testscenario.getVariabelContainer());
+        var søkerEtter = personRepository.hentPerson(søkerIdent);
+        var annenpartEtter = personRepository.hentPerson(annenpartIdent);
 
-        var personopplysninger = testScenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(barnIdent);
-        var brukerModell = (BarnModell) testScenarioRepository.getPersonIndeks().finnByIdent(barnIdent);
-        assertNotNull(personopplysninger);
-        assertEquals(brukerModell.getFødselsdato(), fødselsdato);
-        assertEquals(5, personopplysninger.getFamilierelasjoner().size());
-        assertEquals(4, personopplysninger.getFamilierelasjonerForAnnenPart().size());
+        assertEquals(barnRelasjonerSøkerFør + 1, søkerEtter.personopplysninger().familierelasjoner().size());
+        assertEquals(barnRelasjonerAnnenpartFør + 1, annenpartEtter.personopplysninger().familierelasjoner().size());
     }
 
     @Test
     void DødshendelseTest() {
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-        var søkerIdent = testscenario.getPersonopplysninger().getSøker().getIdent();
+        var søkerIdent = PersonBuilder.SØKER_IDENT;
         var dødsdato = LocalDate.now().minusDays(1);
 
-        var dødshendelse = new DødshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent,dødsdato);
+        var dødshendelse = new DødshendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent, dødsdato);
 
         pdlLeesahRestTjeneste.leggTilHendelse(dødshendelse, false);
 
-        verifiserDødsdatoErSattForFamilierelasjonsmodell(testscenario.getPersonopplysninger().getFamilierelasjoner(), søkerIdent);
-        verifiserDødsdatoErSattForFamilierelasjonsmodell(testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart(), søkerIdent);
-        verifiserDødsdatoErSattForFamilierelasjonsmodell(testscenario.getPersonopplysninger().getFamilierelasjonerForBarnet(), søkerIdent);
+        var person = personRepository.hentPerson(søkerIdent);
+        assertNotNull(person.personopplysninger().dødsdato());
+        assertEquals(dødsdato, person.personopplysninger().dødsdato());
     }
 
 
     @Test
     void DødFødselshendelseTest() {
-        var testscenarioObjekt = testscenarioHenter.hentScenario("1");
-        var testscenarioJson = testscenarioObjekt == null ? "{}" : testscenarioHenter.toJson(testscenarioObjekt);
-        var testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-        var søkerIdent = testscenario.getPersonopplysninger().getSøker().getIdent();
+        var søkerIdent = PersonBuilder.SØKER_IDENT;
         var dødsdato = LocalDate.now().minusDays(3);
+
+        var søkerFør = personRepository.hentPerson(søkerIdent);
+        var barnRelasjonerFør = søkerFør.personopplysninger().familierelasjoner().size();
 
         var dødfødselshendelse =
                 new DødfødselhendelseDto(Endringstype.OPPRETTET.name(), null, søkerIdent, dødsdato);
 
-        assertEquals(4, testscenario.getPersonopplysninger().getFamilierelasjoner().size());
-        assertEquals(3, testscenario.getPersonopplysninger().getFamilierelasjonerForAnnenPart().size());
-
         pdlLeesahRestTjeneste.leggTilHendelse(dødfødselshendelse, false);
 
-        // Verifiserer riktig format på identen til barn
-        var barnIdent = hentUtIdentPåDetSisteBarneSomErRegistert(testscenario.getVariabelContainer());
-        assertEquals(barnIdent, dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001");
+        var søkerEtter = personRepository.hentPerson(søkerIdent);
+        assertEquals(barnRelasjonerFør + 1, søkerEtter.personopplysninger().familierelasjoner().size());
 
-        var personopplysninger = testScenarioRepository.getPersonIndeks().finnPersonopplysningerByIdent(barnIdent);
-        var brukerModell = (BarnModell) testScenarioRepository.getPersonIndeks().finnByIdent(barnIdent);
-        assertNotNull(personopplysninger);
-        assertEquals(brukerModell.getFødselsdato(), dødsdato);
-        assertEquals(5, personopplysninger.getFamilierelasjoner().size());
-        assertEquals(4, personopplysninger.getFamilierelasjonerForAnnenPart().size());
-    }
-
-
-    private void verifiserDødsdatoErSattForFamilierelasjonsmodell(Collection<FamilierelasjonModell> familierelasjonModell,
-                                                              String fnr) {
-        List<PersonModell> personmodeller = familierelasjonModell.stream()
-                .filter(fr -> fr.getTil().getIdent().equalsIgnoreCase(fnr))
-                .map(fr -> (PersonModell) fr.getTil())
-                .collect(Collectors.toList());
-
-        for (PersonModell personModell: personmodeller) {
-            assertNotNull(personModell.getDødsdato());
-        }
-    }
-
-    private String hentUtIdentPåDetSisteBarneSomErRegistert(VariabelContainer variabelContainer) {
-        var i = 0;
-        while (variabelContainer.getVar("barn" + (i + 1)) != null) {
-            i++;
-        }
-        return variabelContainer.getVar("barn" + i);
+        // Verifiserer riktig format på identen til barnet
+        var barnIdent = dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001";
+        var barnet = personRepository.hentPerson(barnIdent);
+        assertNotNull(barnet);
+        assertEquals(dødsdato, barnet.personopplysninger().fødselsdato());
     }
 }

@@ -2,7 +2,6 @@ package no.nav.pdl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -11,18 +10,13 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
 
-import no.nav.foreldrepenger.vtp.testmodell.TestscenarioHenter;
-import no.nav.foreldrepenger.vtp.testmodell.repo.Testscenario;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.DelegatingTestscenarioRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.pdl.graphql.GraphQLRequest;
+import no.nav.vtp.PersonBuilder;
+import no.nav.vtp.person.PersonRepository;
 
 class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
-        private static final String SCENARIOID = "1";
-
-        private static Testscenario testscenario;
+        private static PersonRepository personRepository;
         private static PdlMock pdlMock;
         private static PersonResponseProjection projeksjon;
 
@@ -30,21 +24,16 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
         @BeforeAll
         public static void setup() {
-            var testScenarioRepository = new DelegatingTestscenarioRepository(
-                    TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance()));
-            var testscenarioHenter = TestscenarioHenter.getInstance();
-            var testscenarioObjekt = testscenarioHenter.hentScenario(SCENARIOID);
-            var testscenarioJson = testscenarioHenter.toJson(testscenarioObjekt);
-            testscenario = testScenarioRepository.opprettTestscenario(testscenarioJson, Collections.emptyMap());
-            pdlMock = new PdlMock(null);
+            personRepository = new PersonRepository();
+            personRepository.leggTilPersoner(PersonBuilder.lagPersoner());
+            pdlMock = new PdlMock(personRepository);
             projeksjon = getPersonForelderBarnRelasjonResponseProjection();
         }
 
         @Test
         void hent_forelderBarnRelasjon_søker_test() throws JsonProcessingException {
-            var søker = testscenario.getPersonopplysninger().getSøker();
             var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
-            var requestSøker = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", søker.getIdent())).build();
+            var requestSøker = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", PersonBuilder.SØKER_IDENT)).build();
 
             // Act
             var rawResponseSøker = pdlMock.graphQLRequest(null, null, null, null, requestSøker);
@@ -61,9 +50,8 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
     @Test
     void hent_forelderBarnRelasjon_annenpart_test() throws JsonProcessingException {
-        var annenpart = testscenario.getPersonopplysninger().getAnnenPart();
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
-        var requestAnnenpart = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", annenpart.getIdent())).build();
+        var requestAnnenpart = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", PersonBuilder.ANNEN_PART_IDENT)).build();
 
         // Act
         var rawResponseAnnenpart = pdlMock.graphQLRequest(null, null, null, null, requestAnnenpart);
@@ -80,7 +68,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
     @Test
     void hent_forelderBarnRelasjon_barn_test() throws JsonProcessingException {
-        var barnIdent = testscenario.getPersonopplysninger().getIdenter().getIdent("${barn1}");
+        var barnIdent = PersonBuilder.BARN1_IDENT;
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
         var requestBarn = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", barnIdent)).build();
 
@@ -96,6 +84,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
         assertThat(personBarn.getForelderBarnRelasjon().get(1).getMinRolleForPerson()).isEqualTo(ForelderBarnRelasjonRolle.BARN);
         assertThat(personBarn.getForelderBarnRelasjon().get(1).getRelatertPersonsRolle()).isEqualTo(ForelderBarnRelasjonRolle.FAR);
     }
+
 
 
     private static PersonResponseProjection getPersonForelderBarnRelasjonResponseProjection() {

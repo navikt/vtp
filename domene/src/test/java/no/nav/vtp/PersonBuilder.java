@@ -41,9 +41,9 @@ public class PersonBuilder {
     public static final String ORGNR_ARBEIDSGIVER = "994884174";
     public static final String ORGNR_FRILANS      = "973861778";
 
-    /** Returnerer begge personene: [0] = søker, [1] = annen part */
+    /** Returnerer alle personene: [0] = søker, [1] = annen part, [2] = barn1, [3] = barn2 */
     public static List<Person> lagPersoner() {
-        return List.of(lagSøker(), lagAnnenPart());
+        return List.of(lagSøker(), lagAnnenPart(), lagBarn1(), lagBarn2());
     }
 
     // ---------------------------------------------------------------------------
@@ -133,6 +133,62 @@ public class PersonBuilder {
                 List.of(new Statsborgerskap(CountryCode.NO)),
                 List.of(new Sivilstand(Sivilstand.Type.GIFT, null, null)),
                 List.of(new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusYears(50), null)),
+                List.of(),
+                adresser,
+                false
+        );
+    }
+
+    // ---------------------------------------------------------------------------
+    // Barn 1
+    // ---------------------------------------------------------------------------
+    public static Person lagBarn1() {
+        return new Person(
+                lagBarnPersonopplysninger(BARN1_IDENT, LocalDate.now().minusYears(3)),
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of()
+        );
+    }
+
+    // ---------------------------------------------------------------------------
+    // Barn 2
+    // ---------------------------------------------------------------------------
+    public static Person lagBarn2() {
+        return new Person(
+                lagBarnPersonopplysninger(BARN2_IDENT, LocalDate.now().minusYears(1)),
+                List.of(),
+                List.of(),
+                List.of(),
+                List.of()
+        );
+    }
+
+    // ---------------------------------------------------------------------------
+    // Personopplysninger barn
+    // ---------------------------------------------------------------------------
+    private static Personopplysninger lagBarnPersonopplysninger(String ident, LocalDate fødselsdato) {
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
+                fødselsdato, null);
+        var adresser = new Adresser(List.of(bostedsadresse), Adressebeskyttelse.UGRADERT);
+
+        return new Personopplysninger(
+                new PersonIdent(ident),
+                Rolle.BARN,
+                new Navn("Lille", null, "Duck"),
+                fødselsdato,
+                null,
+                Språk.NB,
+                Kjønn.K,
+                new GeografiskTilknytning(CountryCode.NO, GeografiskTilknytning.GeografiskTilknytningType.LAND),
+                List.of(
+                        new Familierelasjon(Familierelasjon.Relasjon.MOR, new PersonIdent(SØKER_IDENT)),
+                        new Familierelasjon(Familierelasjon.Relasjon.FAR, new PersonIdent(ANNEN_PART_IDENT))
+                ),
+                List.of(new Statsborgerskap(CountryCode.NO)),
+                List.of(),
+                List.of(new Personstatus(Personstatus.Type.BOSA, fødselsdato, null)),
                 List.of(),
                 adresser,
                 false

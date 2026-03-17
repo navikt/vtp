@@ -2,53 +2,65 @@ package no.nav.mock.pesys;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.AnnenPartModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.BrukerModell;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.PersonIndeks;
-import no.nav.foreldrepenger.vtp.testmodell.personopplysning.SøkerModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioRepository;
+import no.nav.vtp.PersonBuilder;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
-@ExtendWith(MockitoExtension.class)
 class HarUføreGradResponseSeraliseringTest {
-    private static final String FNR = "22222233333";
 
-    @Mock
-    private TestscenarioRepository testscenarioRepository;
-    @Mock
-    private PersonIndeks personIndeks;
-
+    private PersonRepository personRepository;
     private UføreMock uføreMock;
 
-
     @BeforeEach
-    void PesysMockInit() {
-        when(testscenarioRepository.getPersonIndeks()).thenReturn(personIndeks);
-        uføreMock = new UføreMock(); // TODO: Fiks test
+    void setup() {
+        personRepository = new PersonRepository();
+        uføreMock = new UføreMock();
     }
 
     @Test
     void sjekkEnPeriodeNårHarUføretrygTrue() {
-        var søkerModell = new SøkerModell(FNR, "Tester", LocalDate.now().minusYears(25), true, BrukerModell.Kjønn.M);
-        when(personIndeks.finnByIdent(any())).thenReturn(søkerModell);
-        assertThat(uføreMock.harUføreGrad(FNR).harUforegrad()).isTrue();
-        assertThat(uføreMock.harUføreGrad(FNR).datoUfor()).isBefore(LocalDate.now());
+        var søker = PersonBuilder.lagSøker();
+        var søkerMedUføre = søker.tilBuilder()
+                .medYtelser(List.of(new Ytelse(
+                        YtelseType.UFØREPENSJON,
+                        LocalDate.now().minusYears(1),
+                        LocalDate.now().plusYears(1),
+                        0, 0, List.of()
+                )))
+                .build();
+        personRepository.leggTilPerson(søkerMedUføre);
+        setPersonRepositoryOnMock();
+
+        var ident = søkerMedUføre.personopplysninger().identifikator().value();
+        assertThat(uføreMock.harUføreGrad(ident).harUforegrad()).isTrue();
+        assertThat(uføreMock.harUføreGrad(ident).datoUfor()).isBefore(LocalDate.now());
     }
 
     @Test
     void sjekkTomPeriodeNårHarUføretrygFalse() {
-        var annenPartModell = new AnnenPartModell(FNR, "Tester", LocalDate.now().minusYears(25), false, BrukerModell.Kjønn.M);
-        when(personIndeks.finnByIdent(any())).thenReturn(annenPartModell);
-        assertThat(uføreMock.harUføreGrad(FNR).harUforegrad()).isFalse();
+        var annenPart = PersonBuilder.lagAnnenPart();
+        personRepository.leggTilPerson(annenPart);
+        setPersonRepositoryOnMock();
+
+        var ident = annenPart.personopplysninger().identifikator().value();
+        assertThat(uføreMock.harUføreGrad(ident).harUforegrad()).isFalse();
+    }
+
+    private void setPersonRepositoryOnMock() {
+        try {
+            var field = UføreMock.class.getDeclaredField("personRepository");
+            field.setAccessible(true);
+            field.set(uføreMock, personRepository);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
