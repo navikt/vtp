@@ -13,7 +13,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.sigrun.PgiFolketrygdenResponse;
 import no.nav.vtp.person.PersonRepository;
 
 @Path("/api")

@@ -3,7 +3,6 @@ package no.nav.medl2.rest.api.v1;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import no.nav.foreldrepenger.vtp.testmodell.medlemskap.LovvalgType;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.personopplysninger.Medlemskap;
 
@@ -32,7 +31,7 @@ public class MedlemskapsunntakMapper {
                 medlemskap.tom(),
                 tilDekningstype(medlemskap),
                 null,
-                LovvalgType.ENDL.name(),
+                "ENDL",
                 medlemskap.land().getAlpha3(),
                 null,
                 true,

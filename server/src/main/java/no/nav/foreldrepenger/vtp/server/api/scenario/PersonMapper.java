@@ -33,7 +33,6 @@ import no.nav.foreldrepenger.vtp.kontrakter.v2.SigrunDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.Språk;
 import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
-import no.nav.foreldrepenger.vtp.testmodell.util.FiktivtNavn;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;

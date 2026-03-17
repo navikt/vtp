@@ -17,7 +17,6 @@
 
     <modules>
         <module>kontrakter</module>
-        <module>model</module>
         <module>mocks</module>
         <module>server</module>
         <module>util</module>
@@ -62,18 +61,6 @@
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>util</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>testmodell</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>testmodell</artifactId>
-                <version>${project.version}</version>
-                <type>test-jar</type>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>

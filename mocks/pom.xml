@@ -76,15 +76,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>testmodell</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>testmodell</artifactId>
-            <type>test-jar</type>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>domene</artifactId>
             <scope>compile</scope>
         </dependency>
@@ -94,8 +85,6 @@
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
     <build>

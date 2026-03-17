@@ -16,7 +16,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.arbeidsforhold.Organisasjon;
 import no.nav.vtp.person.ident.Orgnummer;

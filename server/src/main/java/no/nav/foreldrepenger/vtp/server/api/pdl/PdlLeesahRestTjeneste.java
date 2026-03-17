@@ -28,7 +28,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.FamilierelasjonHendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.ForelderBarnRelasjonHendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
-import no.nav.foreldrepenger.vtp.testmodell.identer.FiktiveFnr;
+import no.nav.foreldrepenger.vtp.server.api.scenario.FoedselsnummerGenerator;
 import no.nav.person.pdl.leesah.Endringstype;
 import no.nav.person.pdl.leesah.Personhendelse;
 import no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn;
@@ -306,7 +306,9 @@ public class PdlLeesahRestTjeneste {
     private static Person nyttBarn(LocalDate fødsesldato, LocalDate dødsdato, Person mor, Person far) {
         var ident = dødsdato != null
                 ? dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001"
-                : new FiktiveFnr().tilfeldigBarnUnderTreAarFnr();
+                : new FoedselsnummerGenerator.Builder()
+                .fodselsdato(fødsesldato)
+                .buildAndGenerate();
         var relasjoner = new ArrayList<no.nav.vtp.person.personopplysninger.Familierelasjon>();
         relasjoner.add(tilRelasjon(no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon.MOR,
                 mor.personopplysninger().identifikator()));

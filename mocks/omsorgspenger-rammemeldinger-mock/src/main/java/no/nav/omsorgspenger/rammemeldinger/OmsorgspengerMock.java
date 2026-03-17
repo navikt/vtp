@@ -28,7 +28,7 @@ public class OmsorgspengerMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public AleneOmOmsorgenResponse aleneOmOmsorgen(RammemeldingRequest request) {
-        return new AleneOmOmsorgenResponse();
+        return new AleneOmOmsorgenResponse(List.of());
     }
 
     @SuppressWarnings("unused")
@@ -50,8 +50,8 @@ public class OmsorgspengerMock {
                 omsorgspenger.fom(),
                 omsorgspenger.tom(),
                 Duration.ofDays(20),
-                new OverføringerResponse.OverføringFåttRammemelding.Person("02499541043", "Identitetsnummer", null),
-                List.of(new OverføringerResponse.OverføringFåttRammemelding.Kilde("2", "OmsorgspengerRammemeldinger"))
+                new OverføringerResponse.Person("02499541043", "Identitetsnummer", null),
+                List.of(new OverføringerResponse.Kilde("2", "OmsorgspengerRammemeldinger"))
         ));
     }
 
@@ -61,6 +61,6 @@ public class OmsorgspengerMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public KoronaOverføringerResponse koronaOverføringer(RammemeldingRequest request) {
-        return new KoronaOverføringerResponse();
+        return new KoronaOverføringerResponse(List.of(), List.of());
     }
 }

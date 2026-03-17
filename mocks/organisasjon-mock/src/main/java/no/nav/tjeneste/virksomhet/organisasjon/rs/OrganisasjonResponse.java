@@ -6,9 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.AdresseEReg;
-import no.nav.foreldrepenger.vtp.testmodell.organisasjon.OrganisasjonstypeEReg;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record OrganisasjonResponse(String organisasjonsnummer,
                                    OrganisasjonstypeEReg type,

@@ -60,7 +60,6 @@ import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
 import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 import no.nav.vtp.journalpost.JournalRepository;
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.mock.pesys.UføreMock;
@@ -191,7 +190,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
         @Override
         public ObjectMapper getContext(Class<?> type) {
-            return JacksonObjectMapperTestscenario.getJsonMapper();
+            return no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario.getJsonMapper();
         }
     }
 

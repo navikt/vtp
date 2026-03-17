@@ -19,8 +19,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.UriInfo;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.Arbeidsforholdstype;
 import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.arbeidsforhold.Arbeidsforholdstype;
 
 @Path("aareg-services/api/v1/arbeidstaker")
 @Produces(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ public class AaregRSV1Mock {
 
     private boolean filterForArbeidsforholdType(List<String> filtrerArbeidsforholdtyper, no.nav.vtp.person.arbeidsforhold.Arbeidsforhold a) {
         if (filtrerArbeidsforholdtyper.isEmpty()) {
-            return !Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.getKode().equalsIgnoreCase(tilArbeidsforholdtypeAareg(a.arbeidsforholdstype()));
+            return !Arbeidsforholdstype.FRILANSER_OPPDRAGSTAKER_MED_MER.equals(a.arbeidsforholdstype());
         } else {
             return filtrerArbeidsforholdtyper.contains(tilArbeidsforholdtypeAareg(a.arbeidsforholdstype()));
         }

@@ -2,7 +2,6 @@ package no.nav.tjeneste.virksomhet.arbeidsforhold.rs;
 
 import java.util.List;
 
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.arbeidsforhold.ArbeidsforholdIdNav;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsforholdstype;
