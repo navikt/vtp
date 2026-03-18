@@ -5,6 +5,9 @@ import static java.util.UUID.randomUUID;
 import java.util.Objects;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +110,6 @@ public class TexasRestTjeneste {
     @Path("/api/v1/introspect")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Texas mock for token introspection")
     public Response introspect(TexasIntrospectRequest request) {
         Objects.requireNonNull(request.identity_provider(), "identity_provider must be provided");
         Objects.requireNonNull(request.token(), "token must be provided");
