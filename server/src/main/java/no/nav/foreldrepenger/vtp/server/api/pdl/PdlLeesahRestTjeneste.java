@@ -22,13 +22,13 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.FamilierelasjonHendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.ForelderBarnRelasjonHendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.PersonhendelseDto;
-import no.nav.foreldrepenger.vtp.server.api.scenario.FoedselsnummerGenerator;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.DødfødselhendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.DødshendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.FamilierelasjonHendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.ForelderBarnRelasjonHendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.FødselshendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.PersonhendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.FødselsnummerGenerator;
 import no.nav.person.pdl.leesah.Endringstype;
 import no.nav.person.pdl.leesah.Personhendelse;
 import no.nav.person.pdl.leesah.doedfoedtbarn.DoedfoedtBarn;
@@ -306,7 +306,8 @@ public class PdlLeesahRestTjeneste {
     private static Person nyttBarn(LocalDate fødsesldato, LocalDate dødsdato, Person mor, Person far) {
         var ident = dødsdato != null
                 ? dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001"
-                : new FoedselsnummerGenerator.Builder()
+                : new FødselsnummerGenerator.Builder()
+                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
                 .fodselsdato(fødsesldato)
                 .buildAndGenerate();
         var relasjoner = new ArrayList<no.nav.vtp.person.personopplysninger.Familierelasjon>();
@@ -322,7 +323,7 @@ public class PdlLeesahRestTjeneste {
                 fødsesldato,
                 dødsdato,
                 Språk.NB,
-                Kjønn.M, // TODO: Hardkodet, mulig fnr ikke matcher mtp kjønn identifikator
+                Kjønn.M,
                 mor.personopplysninger().geografiskTilknytning(),
                 relasjoner.stream().toList(),
                 mor.personopplysninger().statsborgerskap(),

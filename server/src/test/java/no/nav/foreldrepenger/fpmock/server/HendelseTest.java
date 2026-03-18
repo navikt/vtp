@@ -16,9 +16,9 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.foreldrepenger.vtp.kontrakter.DødfødselhendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.DødshendelseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.FødselshendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.DødfødselhendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.DødshendelseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.hendelser.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.PersonRepository;

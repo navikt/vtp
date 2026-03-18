@@ -7,9 +7,9 @@ import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecordBuilder;
 
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
-import no.nav.vtp.journalpost.dokument.modell.koder.BehandlingsTema;
-import no.nav.vtp.journalpost.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.BehandlingsTema;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.DokumenttypeId;
 import no.nav.joarkjournalfoeringhendelser.JournalfoeringHendelseRecord;
 
 public class JournalforingHendelseSender {

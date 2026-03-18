@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import no.nav.vtp.journalpost.dokument.modell.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Mottakskanal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record OpprettJournalpostRequest(JournalpostType journalpostType,

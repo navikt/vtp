@@ -56,6 +56,9 @@ public class PdlPipMock {
 
     private TilgangPersondataDto tilTilgangPersondataDto(String ident) {
         var person = personRepository.hentPerson(ident);
+        if (person == null) {
+            return null;
+        }
         return new TilgangPersondataDto(
                 ((PersonIdent) person.personopplysninger().identifikator()).aktørId(),
                 tilPerson(person),

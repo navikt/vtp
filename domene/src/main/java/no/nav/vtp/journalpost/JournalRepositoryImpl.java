@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.DokumentModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
 
 public class JournalRepositoryImpl implements JournalRepository {
 

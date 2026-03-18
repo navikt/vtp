@@ -10,12 +10,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import no.nav.vtp.journalpost.dokument.modell.JournalpostBruker;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
-import no.nav.vtp.journalpost.dokument.modell.koder.Arkivtema;
-import no.nav.vtp.journalpost.dokument.modell.koder.BrukerType;
-import no.nav.vtp.journalpost.dokument.modell.koder.Journalposttyper;
-import no.nav.vtp.journalpost.dokument.modell.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostBruker;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Arkivtema;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.BrukerType;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalposttyper;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Mottakskanal;
 import no.nav.vtp.journalpost.JournalRepository;
 import no.nav.saf.graphql.GraphQLRequest;
 import no.nav.saf.graphql.GraphQLTjeneste;

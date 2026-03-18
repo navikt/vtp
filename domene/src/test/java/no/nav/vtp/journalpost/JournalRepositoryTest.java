@@ -7,11 +7,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
-import no.nav.vtp.journalpost.dokument.modell.Tilleggsopplysning;
-import no.nav.vtp.journalpost.dokument.modell.koder.DokumentTilknyttetJournalpost;
-import no.nav.vtp.journalpost.dokument.modell.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.DokumentModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.Tilleggsopplysning;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.DokumenttypeId;
 
 class JournalRepoTest {
 

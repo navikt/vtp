@@ -76,6 +76,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>kontrakter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>domene</artifactId>
             <scope>compile</scope>
         </dependency>

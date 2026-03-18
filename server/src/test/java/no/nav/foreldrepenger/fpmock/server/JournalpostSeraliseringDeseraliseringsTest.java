@@ -5,21 +5,21 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
-import no.nav.vtp.journalpost.dokument.modell.DokumentVariantInnhold;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostBruker;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
-import no.nav.vtp.journalpost.dokument.modell.koder.Arkivfiltype;
-import no.nav.vtp.journalpost.dokument.modell.koder.Arkivtema;
-import no.nav.vtp.journalpost.dokument.modell.koder.BehandlingsTema;
-import no.nav.vtp.journalpost.dokument.modell.koder.BrukerType;
-import no.nav.vtp.journalpost.dokument.modell.koder.DokumentTilknyttetJournalpost;
-import no.nav.vtp.journalpost.dokument.modell.koder.DokumenttypeId;
-import no.nav.vtp.journalpost.dokument.modell.koder.Journalposttyper;
-import no.nav.vtp.journalpost.dokument.modell.koder.Journalstatus;
-import no.nav.vtp.journalpost.dokument.modell.koder.Mottakskanal;
-import no.nav.vtp.journalpost.dokument.modell.koder.Sakstatus;
-import no.nav.vtp.journalpost.dokument.modell.koder.Variantformat;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.DokumentModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.DokumentVariantInnhold;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostBruker;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Arkivfiltype;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Arkivtema;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.BehandlingsTema;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.BrukerType;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.DokumentTilknyttetJournalpost;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalposttyper;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Mottakskanal;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Sakstatus;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Variantformat;
 
 class JournalpostSeraliseringDeseraliseringsTest extends SerializationTestBase {
 

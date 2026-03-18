@@ -17,7 +17,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;

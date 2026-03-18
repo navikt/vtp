@@ -8,31 +8,31 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.vtp.kontrakter.v2.AdresseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.Adressebeskyttelse;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsavtaleDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArbeidsforholdDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsgiver;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaMeldekort;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaSakerDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.ArenaVedtakDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.FamilierelasjonModellDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.GeografiskTilknytningDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.GrunnlagDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.InfotrygdDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektYtelseType;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.InntektsperiodeDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.MedlemskapDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.OrganisasjonDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.PermisjonDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.Permisjonstype;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.PersonstatusDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.SigrunDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.SivilstandDto;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.Språk;
-import no.nav.foreldrepenger.vtp.kontrakter.v2.StatsborgerskapDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.AdresseDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.Adressebeskyttelse;
+import no.nav.foreldrepenger.vtp.kontrakter.person.ArbeidsavtaleDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.ArbeidsforholdDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.Arbeidsgiver;
+import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaMeldekort;
+import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaSakerDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaVedtakDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.FamilierelasjonModellDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.GeografiskTilknytningDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.GrunnlagDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.InfotrygdDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.InntektYtelseType;
+import no.nav.foreldrepenger.vtp.kontrakter.person.InntektsperiodeDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.MedlemskapDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.OrganisasjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.PermisjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.Permisjonstype;
+import no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.PersonstatusDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.SigrunDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.SivilstandDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.Språk;
+import no.nav.foreldrepenger.vtp.kontrakter.person.StatsborgerskapDto;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsavtale;
 import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;
@@ -107,7 +107,7 @@ public class PersonMapper {
         );
     }
 
-    private static Rolle tilRolle(no.nav.foreldrepenger.vtp.kontrakter.v2.Rolle rolle) {
+    private static Rolle tilRolle(no.nav.foreldrepenger.vtp.kontrakter.person.Rolle rolle) {
         return switch (rolle) {
             case MOR -> Rolle.MOR;
             case FAR -> Rolle.FAR;
@@ -118,8 +118,8 @@ public class PersonMapper {
         };
     }
 
-    private static Navn generertTilfeldigNavn(no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn kjønn) {
-        var generetNavn = no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn.M.equals(kjønn) ? FiktivtNavn.getRandomMaleName() : FiktivtNavn.getRandomFemaleName();
+    private static Navn generertTilfeldigNavn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn kjønn) {
+        var generetNavn = no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M.equals(kjønn) ? FiktivtNavn.getRandomMaleName() : FiktivtNavn.getRandomFemaleName();
         return new Navn(generetNavn.getFornavn(), null, generetNavn.getEtternavn());
     }
 
@@ -147,11 +147,11 @@ public class PersonMapper {
     }
 
     private static no.nav.vtp.person.arbeidsforhold.Arbeidsgiver tilArbeidsgiver(Arbeidsgiver arbeidsgiver, String arbeidsforholdId) {
-        if (arbeidsgiver instanceof OrganisasjonDto(no.nav.foreldrepenger.vtp.kontrakter.v2.Orgnummer orgnummer, OrganisasjonDto.OrganisasjonsdetaljerDto organisasjonsdetaljer)) {
+        if (arbeidsgiver instanceof OrganisasjonDto(no.nav.foreldrepenger.vtp.kontrakter.person.Orgnummer orgnummer, OrganisasjonDto.OrganisasjonsdetaljerDto organisasjonsdetaljer)) {
             var detaljer = new Organisasjon.Detaljer(organisasjonsdetaljer.navn(), organisasjonsdetaljer.registreringsdato());
             return new Organisasjon(new Orgnummer(orgnummer.value()), arbeidsforholdId, detaljer);
         }
-        var ident = new PersonIdent(((no.nav.foreldrepenger.vtp.kontrakter.v2.PrivatArbeidsgiver) arbeidsgiver).fnr());
+        var ident = new PersonIdent(((no.nav.foreldrepenger.vtp.kontrakter.person.PrivatArbeidsgiver) arbeidsgiver).fnr());
         return new PrivatArbeidsgiver(ident);
     }
 
@@ -292,7 +292,7 @@ public class PersonMapper {
         };
     }
 
-    private static Kjønn tilKjønn(no.nav.foreldrepenger.vtp.kontrakter.v2.Kjønn kjønn) {
+    private static Kjønn tilKjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn kjønn) {
         if (kjønn == null) {
             return null;
         }
@@ -499,7 +499,7 @@ public class PersonMapper {
         };
     }
 
-    private static Arbeidsforholdstype tilArbeidsforholdstype(no.nav.foreldrepenger.vtp.kontrakter.v2.Arbeidsforholdstype type) {
+    private static Arbeidsforholdstype tilArbeidsforholdstype(no.nav.foreldrepenger.vtp.kontrakter.person.Arbeidsforholdstype type) {
         if (type == null) {
             return null;
         }

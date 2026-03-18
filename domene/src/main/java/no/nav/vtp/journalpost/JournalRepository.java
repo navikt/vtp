@@ -3,8 +3,8 @@ package no.nav.vtp.journalpost;
 import java.util.List;
 import java.util.Optional;
 
-import no.nav.vtp.journalpost.dokument.modell.DokumentModell;
-import no.nav.vtp.journalpost.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.DokumentModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
 
 public interface JournalRepository {
     Optional<DokumentModell> finnDokumentMedDokumentId(String dokumentId);
