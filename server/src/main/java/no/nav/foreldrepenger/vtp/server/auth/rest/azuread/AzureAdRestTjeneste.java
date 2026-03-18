@@ -19,6 +19,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +52,6 @@ import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
 public class AzureAdRestTjeneste {
     private static final Logger LOG = LoggerFactory.getLogger(AzureAdRestTjeneste.class);
     protected static final String TJENESTE_PATH = "/azuread"; //NOSONAR
-    private static final String ISSUER = "http://vtp/rest/AzureAd";
     private static final Map<String, String> nonceCache = new ConcurrentHashMap<>();
 
     private static final AnsatteIndeks ANSATTE_INDEKS = BasisdataProviderFileImpl.getInstance().getAnsatteIndeks();
@@ -69,7 +70,7 @@ public class AzureAdRestTjeneste {
     public Response wellKnown(@Context HttpServletRequest req) {
         LOG.info("Kall på well-known endepunkt");
         String baseUrl = getBaseUrl(req);
-        var wellKnownResponse = new WellKnownResponse(ISSUER, baseUrl + "/authorize", baseUrl + "/jwks", baseUrl + "/token");
+        var wellKnownResponse = new WellKnownResponse(Issuers.ENTRA_ID.getIssuer(), baseUrl + "/authorize", baseUrl + "/jwks", baseUrl + "/token");
         return ok(wellKnownResponse).build();
     }
 
@@ -98,7 +99,7 @@ public class AzureAdRestTjeneste {
 
         return switch (grantType) {
             case "client_credentials" -> {
-                token = azureClientCredentialsToken(UUID.randomUUID().toString(), ISSUER);
+                token = azureClientCredentialsToken(UUID.randomUUID().toString(), Issuers.ENTRA_ID.getIssuer());
                 yield ok(new Oauth2AccessTokenResponse(token)).build();
             }
             case "urn:ietf:params:oauth:grant-type:jwt-bearer" -> {
@@ -151,7 +152,7 @@ public class AzureAdRestTjeneste {
     }
 
     private static String createToken(NavAnsatt bruker, String nonce) {
-        return AzureOidcTokenGenerator.azureUserToken(bruker, ISSUER, nonce);
+        return AzureOidcTokenGenerator.azureUserToken(bruker, Issuers.ENTRA_ID.getIssuer(), nonce);
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
