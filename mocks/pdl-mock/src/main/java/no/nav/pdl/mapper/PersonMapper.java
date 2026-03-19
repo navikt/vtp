@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.neovisionaries.i18n.CountryCode;
 
@@ -59,7 +60,7 @@ public class PersonMapper {
         pdlPerson.setKjoenn(tilKjoenn(person));
         pdlPerson.setSivilstand(tilSivilstand(person));
         pdlPerson.setStatsborgerskap(tilStatsborgerskap(person));
-        pdlPerson.setForelderBarnRelasjon(tilForelderBarnRelasjon(person));
+        pdlPerson.setForelderBarnRelasjon(tilForelderBarnRelasjon(person, barnaTilPerson));
 
         pdlPerson.setNavn(tilNavn(person));
         pdlPerson.setBostedsadresse(tilBostedsadresser(person.personopplysninger().adresser().adresser()));
@@ -210,9 +211,11 @@ public class PersonMapper {
 
     private static List<Folkeregisteridentifikator> tilFolkeregisteridentifikator(Person person) {
         var identifikator = person.personopplysninger().identifikator();
-        if (!(identifikator instanceof PersonIdent personIdent)) return List.of();
+        if (!(identifikator instanceof PersonIdent(String fnr))) {
+            return List.of();
+        }
         var ident = new Folkeregisteridentifikator();
-        ident.setIdentifikasjonsnummer(personIdent.fnr());
+        ident.setIdentifikasjonsnummer(fnr);
         ident.setStatus("I_BRUK");
         ident.setType("FNR");
         return List.of(ident);
@@ -271,8 +274,6 @@ public class PersonMapper {
                 .toList();
     }
 
-
-
     private static List<Statsborgerskap> tilStatsborgerskap(Person person) {
         return person.personopplysninger().statsborgerskap().stream()
                 .map(s -> {
@@ -283,9 +284,10 @@ public class PersonMapper {
                 .toList();
     }
 
-    private static List<ForelderBarnRelasjon> tilForelderBarnRelasjon(Person person) {
+    private static List<ForelderBarnRelasjon> tilForelderBarnRelasjon(Person person, List<Person> barnaTilPerson) {
         return person.personopplysninger().familierelasjoner().stream()
                 .filter(f -> erForelderBarnRelasjon(f.relasjon()))
+                .filter(f -> !erBarnetDødfødt(f, barnaTilPerson))
                 .map(f -> {
                     var relasjon = new ForelderBarnRelasjon();
                     relasjon.setRelatertPersonsIdent(f.relatertTilId().value());
@@ -294,6 +296,14 @@ public class PersonMapper {
                     return relasjon;
                 })
                 .toList();
+    }
+
+    private static boolean erBarnetDødfødt(Familierelasjon f, List<Person> barnaTilPerson) {
+        var dødfødte = barnaTilPerson.stream()
+                .filter(PersonMapper::erDødsfødtBarn)
+                .map(b -> b.personopplysninger().identifikator().value())
+                .collect(Collectors.toSet());
+        return dødfødte.contains(f.relatertTilId().value());
     }
 
     private static boolean erForelderBarnRelasjon(Familierelasjon.Relasjon relasjon) {
@@ -313,7 +323,6 @@ public class PersonMapper {
         };
     }
 
-    // TODO: Bruk samme enum som over?
     private static ForelderBarnRelasjonRolle tilForelderBarnRolle(Rolle rolle) {
         return switch (rolle) {
             case MOR -> ForelderBarnRelasjonRolle.MOR;
@@ -327,8 +336,6 @@ public class PersonMapper {
     private static Date toDate(LocalDate dateTime) {
         return Date.from(dateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
-
-
 }
 
 

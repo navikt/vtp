@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
@@ -40,9 +39,7 @@ public class OppgaveMockImpl {
     private static final Map<Long, ObjectNode> oppgaver = new ConcurrentHashMap<>();
 
     @POST
-    public Response opprettOppgave(
-            @Valid ObjectNode oppgave,
-            @Context HttpHeaders httpHeaders) {
+    public Response opprettOppgave(ObjectNode oppgave, @Context HttpHeaders httpHeaders) {
         Optional<Response> validert = validerIkkeFunksjonelt(httpHeaders);
         if (validert.isPresent()) {
             return validert.get();
@@ -117,7 +114,7 @@ public class OppgaveMockImpl {
 
     @PATCH
     @Path("/{id}")
-    public Response patchOppgave(@Valid ObjectNode patch,
+    public Response patchOppgave(ObjectNode patch,
                                  @PathParam("id") Long id,
                                  @Context UriInfo uriInfo,
                                  @Context HttpHeaders httpHeaders) {
