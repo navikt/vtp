@@ -4,6 +4,8 @@ import static java.util.UUID.randomUUID;
 
 import java.util.Objects;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenOidcTokenGenerator;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -59,7 +61,8 @@ public class TexasRestTjeneste {
                         tokenRequest.resource(), tokenRequest.authorization_details());
                 yield Response.ok(new Oauth2AccessTokenResponse(null, null, token, 600, "Bearer")).build();
             }
-            case Issuers.IDPORTEN, Issuers.TOKENX -> throw new NotImplementedException();
+            case Issuers.IDPORTEN -> Response.ok(IdportenOidcTokenGenerator.idportenUserToken(randomUUID().toString(), Issuers.IDPORTEN.getIssuer(), null)).build();
+            case Issuers.TOKENX -> throw new NotImplementedException();
         };
     }
 
