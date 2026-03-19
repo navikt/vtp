@@ -48,7 +48,7 @@ public class TexasRestTjeneste {
         }
 
         return switch (tokenRequest.identity_provider()) {
-            case Issuers.ENTRA_ID -> {
+            case Issuers.ENTRA_ID, Issuers.AZUREAD -> {
                 var token = AzureOidcTokenGenerator.azureClientCredentialsToken(
                         randomUUID().toString(), Issuers.ENTRA_ID.getIssuer()
                 );
@@ -70,7 +70,7 @@ public class TexasRestTjeneste {
     public Response tokenExchange(@Context HttpServletRequest req,
                                   TexasExchangeRequest tokenRequest) throws JoseException {
         return switch (tokenRequest.identity_provider()) {
-            case Issuers.ENTRA_ID: {
+            case Issuers.ENTRA_ID, Issuers.AZUREAD: {
                 var claims = JwtUtil.getClaims(tokenRequest.user_token());
                 if (isAzureClientCredentials(claims)) {
                     LOG.debug("Token exchange for Azure client credentials token");
