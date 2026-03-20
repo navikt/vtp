@@ -13,6 +13,48 @@ public record InntektsperiodeDto(ArbeidsgiverDto arbeidsgiver,
                                  YtelseType ytelseType,
                                  FordelType inntektFordel) {
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static Builder builder(InntektsperiodeDto existing) {
+        return new Builder(existing);
+    }
+
+    public static class Builder {
+        private ArbeidsgiverDto arbeidsgiver;
+        private LocalDate fom;
+        private LocalDate tom;
+        private Integer beløp;
+        private Type inntektType;
+        private YtelseType ytelseType;
+        private FordelType inntektFordel;
+
+        public Builder() {}
+
+        public Builder(InntektsperiodeDto existing) {
+            this.arbeidsgiver = existing.arbeidsgiver();
+            this.fom = existing.fom();
+            this.tom = existing.tom();
+            this.beløp = existing.beløp();
+            this.inntektType = existing.inntektType();
+            this.ytelseType = existing.ytelseType();
+            this.inntektFordel = existing.inntektFordel();
+        }
+
+        public Builder medArbeidsgiver(ArbeidsgiverDto arbeidsgiver) { this.arbeidsgiver = arbeidsgiver; return this; }
+        public Builder medFom(LocalDate fom) { this.fom = fom; return this; }
+        public Builder medTom(LocalDate tom) { this.tom = tom; return this; }
+        public Builder medBeløp(Integer beløp) { this.beløp = beløp; return this; }
+        public Builder medInntektType(Type inntektType) { this.inntektType = inntektType; return this; }
+        public Builder medYtelseType(YtelseType ytelseType) { this.ytelseType = ytelseType; return this; }
+        public Builder medInntektFordel(FordelType inntektFordel) { this.inntektFordel = inntektFordel; return this; }
+
+        public InntektsperiodeDto build() {
+            return new InntektsperiodeDto(arbeidsgiver, fom, tom, beløp, inntektType, ytelseType, inntektFordel);
+        }
+    }
+
 
     public enum Type {
         LØNNSINNTEKT,

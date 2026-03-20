@@ -3,9 +3,11 @@ package no.nav.foreldrepenger.vtp.server.api.scenario;
 import java.util.List;
 
 import no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.ArbeidsavtaleDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.ArbeidsforholdDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.ArbeidsgiverDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.OrganisasjonDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.PermisjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.PrivatArbeidsgiverDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.inntekt.InntektsperiodeDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.personopplysninger.AdresseDto;
@@ -268,22 +270,22 @@ public class PersonMapper {
         return Arbeidsforholdstype.valueOf(type.name());
     }
 
-    private static List<Arbeidsavtale> tilArbeidsavtaler(List<no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.Arbeidsavtale> dtos) {
+    private static List<Arbeidsavtale> tilArbeidsavtaler(List<ArbeidsavtaleDto> dtos) {
         if (dtos == null) return List.of();
         return dtos.stream().map(PersonMapper::tilArbeidsavtale).toList();
     }
 
-    private static Arbeidsavtale tilArbeidsavtale(no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.Arbeidsavtale dto) {
+    private static Arbeidsavtale tilArbeidsavtale(ArbeidsavtaleDto dto) {
         return new Arbeidsavtale(dto.avtaltArbeidstimerPerUke(), dto.stillingsprosent(), dto.beregnetAntallTimerPerUke(),
                 dto.sisteLønnsendringsdato(), dto.fomGyldighetsperiode(), dto.tomGyldighetsperiode());
     }
 
-    private static List<Permisjon> tilPermisjoner(List<no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.Permisjon> dtos) {
+    private static List<Permisjon> tilPermisjoner(List<PermisjonDto> dtos) {
         if (dtos == null) return List.of();
         return dtos.stream().map(PersonMapper::tilPermisjon).toList();
     }
 
-    private static Permisjon tilPermisjon(no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.Permisjon dto) {
+    private static Permisjon tilPermisjon(PermisjonDto dto) {
         return new Permisjon(dto.fom(), dto.tom(), dto.stillingsprosent(),
                 dto.permisjonstype() == null ? null : Permisjon.Permisjonstype.valueOf(dto.permisjonstype().name()));
     }

@@ -2,10 +2,10 @@ package no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold;
 
 import java.time.LocalDate;
 
-public record Permisjon(LocalDate fom,
-                        LocalDate tom,
-                        Integer stillingsprosent,
-                        Permisjonstype permisjonstype) {
+public record PermisjonDto(LocalDate fom,
+                           LocalDate tom,
+                           Integer stillingsprosent,
+                           Permisjonstype permisjonstype) {
 
     public enum Permisjonstype {
         PERMISJON,
