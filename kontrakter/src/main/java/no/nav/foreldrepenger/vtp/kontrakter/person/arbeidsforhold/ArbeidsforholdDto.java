@@ -3,8 +3,7 @@ package no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold;
 import java.time.LocalDate;
 import java.util.List;
 
-
-public record ArbeidsforholdDto(String identifikator,
+public record ArbeidsforholdDto(ArbeidsgiverDto arbeidsgiver,
                                 String arbeidsforholdId,
                                 LocalDate ansettelsesperiodeFom,
                                 LocalDate ansettelsesperiodeTom,

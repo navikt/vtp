@@ -3,13 +3,16 @@ package no.nav.foreldrepenger.vtp.kontrakter.person.inntekt;
 
 import java.time.LocalDate;
 
-public record InntektsperiodeDto(String identifikator,
+import no.nav.foreldrepenger.vtp.kontrakter.person.arbeidsforhold.ArbeidsgiverDto;
+
+public record InntektsperiodeDto(ArbeidsgiverDto arbeidsgiver,
                                  LocalDate fom,
                                  LocalDate tom,
                                  Integer beløp,
                                  Type inntektType,
                                  YtelseType ytelseType,
                                  FordelType inntektFordel) {
+
 
     public enum Type {
         LØNNSINNTEKT,
@@ -86,5 +89,6 @@ public record InntektsperiodeDto(String identifikator,
         LOTT_KUN_TRYGDEAVGIFT,
         KOMPENSASJON_FOR_TAPT_PERSONINNTEKT
         ;
+
     }
 }

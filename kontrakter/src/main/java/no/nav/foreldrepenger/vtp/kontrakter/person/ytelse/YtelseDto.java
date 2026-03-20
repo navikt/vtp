@@ -1,4 +1,3 @@
-
 package no.nav.foreldrepenger.vtp.kontrakter.person.ytelse;
 
 import java.time.LocalDate;

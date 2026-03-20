@@ -7,7 +7,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn;
+import no.nav.foreldrepenger.vtp.kontrakter.person.personopplysninger.Kjønn;
 
 public class FødselsnummerGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(FødselsnummerGenerator.class);
