@@ -285,7 +285,7 @@ public class PdlLeesahRestTjeneste {
         var oppdatertFar = person.tilBuilder()
                 .medPersonopplysninger(personopplysnignerFar)
                 .build();
-        personRepository.endrePerson(oppdatertFar);
+        personRepository.leggTilPerson(oppdatertFar);
     }
 
     private void registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
@@ -318,6 +318,7 @@ public class PdlLeesahRestTjeneste {
                         f.personopplysninger().identifikator())));
         var personopplysnigner = new no.nav.vtp.person.personopplysninger.Personopplysninger(
                 new PersonIdent(ident),
+                UUID.randomUUID(),
                 Rolle.BARN,
                 new Navn("Baby",  null, "Fødsel Navnesen"),
                 fødsesldato,
@@ -345,6 +346,6 @@ public class PdlLeesahRestTjeneste {
         var oppdatertPerson = personen.tilBuilder()
                 .medPersonopplysninger(personen.personopplysninger().tilBuilder().medDødsdato(dødshendelseDto.doedsdato()).build())
                 .build();
-        personRepository.endrePerson(oppdatertPerson);
+        personRepository.leggTilPerson(oppdatertPerson);
     }
 }

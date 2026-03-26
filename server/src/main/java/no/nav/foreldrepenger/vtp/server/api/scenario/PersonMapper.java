@@ -92,6 +92,7 @@ public class PersonMapper {
     private static Personopplysninger tilPersonopplysninger(PersonDto p, Map<UUID, PersonIdent> identer) {
         return new Personopplysninger(
                 identer.get(p.uuid()),
+                p.uuid(),
                 tilRolle(p.rolle()),
                 generertTilfeldigNavn(p.kjønn()),
                 p.fødselsdato(),
