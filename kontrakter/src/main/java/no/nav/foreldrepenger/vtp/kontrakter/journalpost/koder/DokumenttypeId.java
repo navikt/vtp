@@ -80,8 +80,8 @@ public enum DokumenttypeId {
     }
 
     @JsonValue
-    private String kode;
-    private String termnavn;
+    private final String kode;
+    private final String termnavn;
 
     DokumenttypeId(String kode, String termnavn) {
         this.kode = kode;

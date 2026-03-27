@@ -22,7 +22,7 @@ public class JournalpostBuilder {
         throw new IllegalStateException("Utility class");
     }
 
-    private static String BREVKODE_IM = "4936";
+    private static final String BREVKODE_IM = "4936";
 
     public static Journalpost buildFrom(JournalpostModell modell) {
         var tema = Tema.valueOf(modell.getArkivtema() != null ? modell.getArkivtema().name() : "UKJ");
