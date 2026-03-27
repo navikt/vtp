@@ -40,7 +40,7 @@ public class SafMock {
     @Context
     private JournalRepository journalRepository;
 
-    private GraphQLTjeneste graphQLTjeneste;
+    private final GraphQLTjeneste graphQLTjeneste;
 
 
     public SafMock() {

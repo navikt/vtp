@@ -15,9 +15,9 @@ public class FiktivtNavn {
         SINGLETON;
 
         private static final Random RANDOM = new Random();
-        private List<String> etternavn = loadNames("/basedata/etternavn.txt");
-        private List<String> fornavnKvinner = loadNames("/basedata/fornavn-kvinner.txt");
-        private List<String> fornavnMenn = loadNames("/basedata/fornavn-menn.txt");
+        private final List<String> etternavn = loadNames("/basedata/etternavn.txt");
+        private final List<String> fornavnKvinner = loadNames("/basedata/fornavn-kvinner.txt");
+        private final List<String> fornavnMenn = loadNames("/basedata/fornavn-menn.txt");
 
         String getRandomFornavnMann() {
             return getRandom(fornavnMenn);

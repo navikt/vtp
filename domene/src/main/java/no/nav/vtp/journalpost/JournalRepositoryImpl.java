@@ -14,12 +14,12 @@ import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
 
 public class JournalRepositoryImpl implements JournalRepository {
 
-    private ConcurrentMap<String, JournalpostModell> journalposter;
-    private ConcurrentMap<String, DokumentModell> dokumenter;
+    private final ConcurrentMap<String, JournalpostModell> journalposter;
+    private final ConcurrentMap<String, DokumentModell> dokumenter;
 
-    private AtomicInteger journalpostId;
-    private AtomicInteger dokumentId;
-    private AtomicInteger eksternReferanseId;
+    private final AtomicInteger journalpostId;
+    private final AtomicInteger dokumentId;
+    private final AtomicInteger eksternReferanseId;
 
     private static JournalRepositoryImpl instance;
 

@@ -16,7 +16,7 @@ public enum Journalstatus {
     AVBRUTT("A");
 
     @JsonValue
-    private String kode;
+    private final String kode;
 
     Journalstatus(String kode) {
         this.kode = kode;

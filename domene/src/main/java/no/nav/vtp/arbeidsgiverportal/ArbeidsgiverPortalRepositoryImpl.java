@@ -16,12 +16,12 @@ import org.slf4j.LoggerFactory;
 public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepository {
     private static final Logger LOG = LoggerFactory.getLogger(ArbeidsgiverPortalRepositoryImpl.class);
 
-    private ConcurrentMap<UUID, SakModell> saker;
-    private ConcurrentMap<String, SakModell> sakerGrupperingsId;
-    private ConcurrentMap<UUID, OppgaveModell> oppgaver;
-    private ConcurrentMap<String, OppgaveModell> oppgaverGrupperingsId;
-    private ConcurrentMap<String, BeskjedModell> beskjederGrupperingsId;
-    private ConcurrentMap<String, BeskjedModell> beskjederEksternId;
+    private final ConcurrentMap<UUID, SakModell> saker;
+    private final ConcurrentMap<String, SakModell> sakerGrupperingsId;
+    private final ConcurrentMap<UUID, OppgaveModell> oppgaver;
+    private final ConcurrentMap<String, OppgaveModell> oppgaverGrupperingsId;
+    private final ConcurrentMap<String, BeskjedModell> beskjederGrupperingsId;
+    private final ConcurrentMap<String, BeskjedModell> beskjederEksternId;
 
     private static ArbeidsgiverPortalRepository instance;
 

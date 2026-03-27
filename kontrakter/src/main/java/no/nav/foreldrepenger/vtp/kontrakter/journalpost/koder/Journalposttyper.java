@@ -12,7 +12,7 @@ public enum Journalposttyper {
     UTGAAENDE_DOKUMENT("U");
 
     @JsonValue
-    private String kode;
+    private final String kode;
 
     Journalposttyper(String kode) {
         this.kode = kode;
