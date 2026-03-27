@@ -126,7 +126,7 @@ public class PersonMapper {
 
     private static Navn generertTilfeldigNavn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn kjønn) {
         var generetNavn = no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M.equals(kjønn) ? FiktivtNavn.getRandomMaleName() : FiktivtNavn.getRandomFemaleName();
-        return new Navn(generetNavn.getFornavn(), null, generetNavn.getEtternavn());
+        return new Navn(generetNavn.fornavn(), null, generetNavn.etternavn());
     }
 
     private static List<Arbeidsforhold> tilArbeidsforhold(PersonDto p, Map<UUID, PersonIdent> identer) {
