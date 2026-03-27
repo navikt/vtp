@@ -3,67 +3,46 @@ package no.nav.foreldrepenger.vtp.server.api.scenario;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import no.nav.vtp.person.personopplysninger.Kjønn;
 
 public class FiktivtNavn {
 
-    private enum Navnelager {
-        SINGLETON;
+    private static final List<String> ETTERNAVN = loadNames("/basedata/etternavn.txt");
+    private static final List<String> FORNAVN_KVINNER = loadNames("/basedata/fornavn-kvinner.txt");
+    private static final List<String> FORNAVN_MENN = loadNames("/basedata/fornavn-menn.txt");
 
-        private static final Random RANDOM = new Random();
-        private final List<String> etternavn = loadNames("/basedata/etternavn.txt");
-        private final List<String> fornavnKvinner = loadNames("/basedata/fornavn-kvinner.txt");
-        private final List<String> fornavnMenn = loadNames("/basedata/fornavn-menn.txt");
-
-        String getRandomFornavnMann() {
-            return getRandom(fornavnMenn);
-        }
-
-        String getRandomFornavnKvinne() {
-            return getRandom(fornavnKvinner);
-        }
-
-        String getRandomEtternavn() {
-            return getRandom(etternavn);
-        }
-
-        private static synchronized String getRandom(List<String> liste) {
-            return liste.get(RANDOM.nextInt(liste.size()));
-        }
-
-        private static List<String> loadNames(String resourceName) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(FiktivtNavn.class.getResourceAsStream(resourceName)))) {
-                final List<String> resultat = new ArrayList<>();
-                String strLine;
-                while ((strLine = br.readLine()) != null) {
-                    String capitalizedName = strLine.substring(0, 1).toUpperCase() + strLine.substring(1);
-                    resultat.add(capitalizedName);
-                }
-                return resultat;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+    private FiktivtNavn() {}
 
     public static PersonNavn getRandomFemaleName() {
-        return getRandomFemaleName(Navnelager.SINGLETON.getRandomEtternavn());
+        return getRandomFemaleName(getRandom(ETTERNAVN));
     }
 
     public static PersonNavn getRandomFemaleName(String lastName) {
-        return new PersonNavn(Navnelager.SINGLETON.getRandomFornavnKvinne(), lastName, Kjønn.K);
+        return new PersonNavn(getRandom(FORNAVN_KVINNER), lastName, Kjønn.K);
     }
 
     public static PersonNavn getRandomMaleName() {
-        return getRandomMaleName(Navnelager.SINGLETON.getRandomEtternavn());
+        return getRandomMaleName(getRandom(ETTERNAVN));
     }
 
     public static PersonNavn getRandomMaleName(String lastName) {
-        return new PersonNavn(Navnelager.SINGLETON.getRandomFornavnMann(), lastName, Kjønn.M);
+        return new PersonNavn(getRandom(FORNAVN_MENN), lastName, Kjønn.M);
     }
 
+    private static String getRandom(List<String> liste) {
+        return liste.get(ThreadLocalRandom.current().nextInt(liste.size()));
+    }
+
+    private static List<String> loadNames(String resourceName) {
+        try (var br = new BufferedReader(new InputStreamReader(FiktivtNavn.class.getResourceAsStream(resourceName)))) {
+            return br.lines()
+                    .map(s -> Character.toUpperCase(s.charAt(0)) + s.substring(1))
+                    .toList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
