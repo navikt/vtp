@@ -67,8 +67,8 @@ public class PersonMapper {
         /* This utility class should not be instantiated */
     }
 
-    public static Person tilPerson(PersonDto p, Map<UUID, PersonIdent> identer) {
-        var personopplysninger = tilPersonopplysninger(p, identer);
+    public static Person tilPerson(PersonDto p, Map<UUID, PersonIdent> identer, Optional<Person> eksisterende) {
+        var personopplysninger = tilPersonopplysninger(p, identer, eksisterende);
         var arbeidsforhold = tilArbeidsforhold(p, identer);
         var inntekt = tilInntekt(p, identer);
         var ytelser = tilYtelser(p);
@@ -89,12 +89,15 @@ public class PersonMapper {
         return new Skatteopplysning(inntektsår.år(), inntektsår.beløp());
     }
 
-    private static Personopplysninger tilPersonopplysninger(PersonDto p, Map<UUID, PersonIdent> identer) {
+    private static Personopplysninger tilPersonopplysninger(PersonDto p, Map<UUID, PersonIdent> identer, Optional<Person> eksisterende) {
+        var navn = eksisterende
+                .map(e -> e.personopplysninger().navn())
+                .orElseGet(() -> generertTilfeldigNavn(p.kjønn()));
         return new Personopplysninger(
                 identer.get(p.uuid()),
                 p.uuid(),
                 tilRolle(p.rolle()),
-                generertTilfeldigNavn(p.kjønn()),
+                navn,
                 p.fødselsdato(),
                 p.dødsdato(),
                 tilSpråk(p.språk()),
