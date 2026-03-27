@@ -16,19 +16,19 @@ public class PersonRepository {
 
     private static final Map<String, Person> PERSONER = new ConcurrentHashMap<>();
 
-    public Set<String> alleIdenter() {
+    public static Set<String> alleIdenter() {
         return PERSONER.keySet();
     }
 
-    public void leggTilPerson(Person person) {
+    public static void leggTilPerson(Person person) {
         PERSONER.put(person.personopplysninger().identifikator().value(), person);
     }
 
-    public void leggTilPersoner(List<Person> personer) {
-        personer.forEach(this::leggTilPerson);
+    public static void leggTilPersoner(List<Person> personer) {
+        personer.forEach(PersonRepository::leggTilPerson);
     }
 
-    public Person hentPerson(String ident) {
+    public static Person hentPerson(String ident) {
         if (ident.length() == 13) { // Aktørid
             var fnr = ident.replaceFirst("99", "");
             return PERSONER.get(fnr);
@@ -36,18 +36,18 @@ public class PersonRepository {
         return PERSONER.get(ident);
     }
 
-    public Optional<Person> hentPerson(UUID uuid) {
+    public static Optional<Person> hentPerson(UUID uuid) {
         return PERSONER.values().stream().filter(p -> p.personopplysninger().uuid().equals(uuid)).findFirst();
     }
 
-    public Optional<Organisasjon> hentInformasjonOmArbeidsforhold(Orgnummer orgnummer) {
+    public static Optional<Organisasjon> hentInformasjonOmArbeidsforhold(Orgnummer orgnummer) {
         return alleRegistrerteOrganisasjoner().stream()
                 .filter(o -> o.orgnummer().equals(orgnummer))
                 .findFirst();
     }
 
     // TODO: Flytt ut?
-    public Set<Organisasjon> alleRegistrerteOrganisasjoner() {
+    public static Set<Organisasjon> alleRegistrerteOrganisasjoner() {
         var alleOrgnummereFraRegistrerteArbeidsforhold = PERSONER.values().stream()
                 .flatMap(p -> p.arbeidsforhold().stream())
                 .filter(a -> a.arbeidsgiver() instanceof Organisasjon)

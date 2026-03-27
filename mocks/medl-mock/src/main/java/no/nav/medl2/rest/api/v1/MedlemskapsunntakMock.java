@@ -9,7 +9,6 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.vtp.person.PersonRepository;
 
@@ -18,16 +17,13 @@ import no.nav.vtp.person.PersonRepository;
 @Consumes(MediaType.APPLICATION_JSON)
 public class MedlemskapsunntakMock {
 
-    @Context
-    private PersonRepository personRepository;
-
     @POST
     @Path("/periode/soek")
     public List<Medlemskapsunntak> hentMedlemsperioder(@NotNull MedlemRequest request) {
         if (request.personident() == null) {
             return List.of();
         }
-        var person = personRepository.hentPerson(request.personident());
+        var person = PersonRepository.hentPerson(request.personident());
         return MedlemskapsunntakMapper.tilMedlemskapsunntak(person);
     }
 

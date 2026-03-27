@@ -9,15 +9,15 @@ public class HentPersonCoordinatorFunction {
     private HentPersonCoordinatorFunction() {
     }
 
-    public static HentPersonCoordinator opprettCoordinator(PersonRepository personRepository) {
+    public static HentPersonCoordinator opprettCoordinator() {
         return (ident, historikk) -> {
-            var personen = personRepository.hentPerson(ident);
+            var personen = PersonRepository.hentPerson(ident);
             if (personen == null) {
                 return null;
             }
             var barneneTilPersonen = personen.personopplysninger().familierelasjoner().stream()
                     .filter(barnerelasjon -> Familierelasjon.Relasjon.BARN.equals(barnerelasjon.relasjon()))
-                    .map(barnerelasjon -> personRepository.hentPerson(barnerelasjon.relatertTilId().fnr()))
+                    .map(barnerelasjon -> PersonRepository.hentPerson(barnerelasjon.relatertTilId().fnr()))
                     .toList();
             return PersonMapper.tilPerson(personen, barneneTilPersonen, historikk);
         };

@@ -1,10 +1,8 @@
 package no.nav.digdir;
 
-import no.nav.vtp.person.Person;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.PersonRepository;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -13,18 +11,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DigdirKrrProxyMockTest {
 
-    private static DigdirKrrProxyMock digdirKrrProxyMock;
-    private static final PersonRepository personRepository = new PersonRepository();
-    private static final Person person = PersonBuilder.lagAnnenPart();
-
-    @BeforeAll
-    static void setup() {
-        personRepository.leggTilPerson(person);
-        digdirKrrProxyMock = new DigdirKrrProxyMock(personRepository);
-    }
+    private final DigdirKrrProxyMock digdirKrrProxyMock = new DigdirKrrProxyMock();
 
     @Test
     void hentSpråkFraDigdirKrrProxy() {
+        var person = PersonBuilder.lagAnnenPart();
+        PersonRepository.leggTilPerson(person);
         var ident = person.personopplysninger().identifikator().value();
         var response = digdirKrrProxyMock.hentKontaktinformasjon(new DigdirKrrProxyMock.Personidenter(List.of(ident)));
         var kontaktinformasjon = (Kontaktinformasjoner) response.getEntity();

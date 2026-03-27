@@ -7,7 +7,6 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.ytelse.Ytelse;
@@ -15,12 +14,6 @@ import no.nav.vtp.person.ytelse.YtelseType;
 
 @Path("/omsorgspenger-rammemeldinger")
 public class OmsorgspengerMock {
-    private final PersonRepository personRepository;
-
-    public OmsorgspengerMock(@Context PersonRepository personRepository) {
-        this.personRepository = personRepository;
-
-    }
 
     @SuppressWarnings("unused")
     @POST
@@ -37,7 +30,7 @@ public class OmsorgspengerMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public OverføringerResponse overføringer(RammemeldingRequest request) {
-        var person = personRepository.hentPerson(request.getIdentitetsnummer());
+        var person = PersonRepository.hentPerson(request.getIdentitetsnummer());
         var omsorgspengerYtelse = person.ytelser().stream()
                 .filter(ytelse -> YtelseType.OMSORGSPENGER.equals(ytelse.ytelse()))
                 .findFirst();

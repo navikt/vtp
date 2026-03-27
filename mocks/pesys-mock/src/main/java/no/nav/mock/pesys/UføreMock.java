@@ -5,7 +5,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.mock.pesys.dto.HarUføreGrad;
 import no.nav.vtp.person.PersonRepository;
@@ -16,14 +15,11 @@ public class UføreMock {
 
     private static final String HEADER_FNR = "fnr";
 
-    @Context
-    private PersonRepository personRepository;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public HarUføreGrad harUføreGrad(@HeaderParam(HEADER_FNR) String fnr) {
-        var person = personRepository.hentPerson(fnr);
+        var person = PersonRepository.hentPerson(fnr);
         var erUføreOpt = person.ytelser().stream().filter(y -> YtelseType.UFØREPENSJON.equals(y.ytelse())).findFirst();
         if (erUføreOpt.isPresent()) {
             var uføre = erUføreOpt.get();

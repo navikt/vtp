@@ -12,7 +12,6 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.PersonRepository;
@@ -25,13 +24,6 @@ import no.nav.vtp.person.personopplysninger.GeografiskTilknytning;
 @Path("/api/pdl-pip-api")
 public class PdlPipMock {
     private static final String IDENT_HEADER_NAME = "ident";
-
-    private final PersonRepository personRepository;
-
-    public PdlPipMock(@Context PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-
 
     @GET
     @Path("/api/v1/person")
@@ -55,7 +47,7 @@ public class PdlPipMock {
     }
 
     private TilgangPersondataDto tilTilgangPersondataDto(String ident) {
-        var person = personRepository.hentPerson(ident);
+        var person = PersonRepository.hentPerson(ident);
         if (person == null) {
             return null;
         }

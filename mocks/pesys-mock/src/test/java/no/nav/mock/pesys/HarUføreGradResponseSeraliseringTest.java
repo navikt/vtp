@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import no.nav.vtp.PersonBuilder;
@@ -16,14 +15,7 @@ import no.nav.vtp.person.ytelse.YtelseType;
 
 class HarUføreGradResponseSeraliseringTest {
 
-    private PersonRepository personRepository;
-    private UføreMock uføreMock;
-
-    @BeforeEach
-    void setup() {
-        personRepository = new PersonRepository();
-        uføreMock = new UføreMock();
-    }
+    private final UføreMock uføreMock = new UføreMock();
 
     @Test
     void sjekkEnPeriodeNårHarUføretrygTrue() {
@@ -36,8 +28,7 @@ class HarUføreGradResponseSeraliseringTest {
                         0, 0, List.of()
                 )))
                 .build();
-        personRepository.leggTilPerson(søkerMedUføre);
-        setPersonRepositoryOnMock();
+        PersonRepository.leggTilPerson(søkerMedUføre);
 
         var ident = søkerMedUføre.personopplysninger().identifikator().value();
         assertThat(uføreMock.harUføreGrad(ident).harUforegrad()).isTrue();
@@ -47,20 +38,9 @@ class HarUføreGradResponseSeraliseringTest {
     @Test
     void sjekkTomPeriodeNårHarUføretrygFalse() {
         var annenPart = PersonBuilder.lagAnnenPart();
-        personRepository.leggTilPerson(annenPart);
-        setPersonRepositoryOnMock();
+        PersonRepository.leggTilPerson(annenPart);
 
         var ident = annenPart.personopplysninger().identifikator().value();
         assertThat(uføreMock.harUføreGrad(ident).harUforegrad()).isFalse();
-    }
-
-    private void setPersonRepositoryOnMock() {
-        try {
-            var field = UføreMock.class.getDeclaredField("personRepository");
-            field.setAccessible(true);
-            field.set(uføreMock, personRepository);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

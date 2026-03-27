@@ -11,7 +11,6 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
@@ -24,12 +23,6 @@ import no.nav.vtp.person.ytelse.YtelseType;
 public class FpWsProxyArenaMock {
     private static final Logger LOG = LoggerFactory.getLogger(FpWsProxyArenaMock.class);
 
-    private final PersonRepository personRepository;
-
-    public FpWsProxyArenaMock(@Context PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -41,7 +34,7 @@ public class FpWsProxyArenaMock {
     }
 
     public List<MeldekortUtbetalingsgrunnlagSakDto> hentMeldekort(ArenaRequestDto arenaRequestDto) {
-        var person = personRepository.hentPerson(arenaRequestDto.ident());
+        var person = PersonRepository.hentPerson(arenaRequestDto.ident());
         return person.ytelser().stream()
                 .filter(ytelse -> Set.of(YtelseType.DAGPENGER, YtelseType.ARBEIDSAVKLARINGSPENGER).contains(ytelse.ytelse()))
                 .filter(ytelse -> overlapperMedPeriode(arenaRequestDto, ytelse))

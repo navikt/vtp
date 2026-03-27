@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.vtp.person.PersonRepository;
@@ -25,14 +24,11 @@ import no.nav.vtp.person.ident.Orgnummer;
 @Path("/altinn-rettigheter-proxy")
 public class AltinnRettigheterProxyMock {
 
-    @Context
-    private PersonRepository personRepository;
-
     @GET
     @Path("/ekstern/altinn/api/serviceowner/reportees")
     @Produces(MediaType.APPLICATION_JSON)
     public Response hentTilgangerTilVirksomheter() {
-        var alleOrgnr = personRepository.alleRegistrerteOrganisasjoner().stream()
+        var alleOrgnr = PersonRepository.alleRegistrerteOrganisasjoner().stream()
                 .map(Organisasjon::orgnummer)
                 .map(Orgnummer::value)
                 .collect(Collectors.toSet());

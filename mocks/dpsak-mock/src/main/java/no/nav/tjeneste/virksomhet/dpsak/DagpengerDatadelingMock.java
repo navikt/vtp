@@ -8,16 +8,11 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.vtp.person.PersonRepository;
 
 
 @Path("/dagpenger/datadeling/v1")
 public class DagpengerDatadelingMock {
-
-    @Context
-    private PersonRepository personRepository;
 
     @SuppressWarnings("unused")
     @POST
