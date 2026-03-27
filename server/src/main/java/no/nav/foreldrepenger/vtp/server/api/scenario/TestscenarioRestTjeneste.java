@@ -39,12 +39,14 @@ public class TestscenarioRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response initialiserTestScenarioFraDtoReturnerIdenter(List<PersonDto> personer) {
-        var identer = personer.stream().collect(Collectors.toMap(PersonDto::uuid, p -> {
-            var eksisterende = personRepository.hentPerson(p.uuid());
-            return eksisterende.map(e -> new PersonIdent(e.personopplysninger().identifikator().value()))
-                    .orElseGet(() -> genererUnikFødselsnummer(p));
-        }));
-        var personerMapped = personer.stream().map(p -> PersonMapper.tilPerson(p, identer))
+        var eksisterendePersoner = personer.stream()
+                .collect(Collectors.toMap(PersonDto::uuid, p -> personRepository.hentPerson(p.uuid())));
+        var identer = personer.stream().collect(Collectors.toMap(PersonDto::uuid, p ->
+                eksisterendePersoner.get(p.uuid())
+                        .map(e -> new PersonIdent(e.personopplysninger().identifikator().value()))
+                        .orElseGet(() -> genererUnikFødselsnummer(p))
+        ));
+        var personerMapped = personer.stream().map(p -> PersonMapper.tilPerson(p, identer, eksisterendePersoner.get(p.uuid())))
                 .toList();
         personRepository.leggTilPersoner(personerMapped);
 
