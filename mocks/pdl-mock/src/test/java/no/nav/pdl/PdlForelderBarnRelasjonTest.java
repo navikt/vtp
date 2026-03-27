@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,24 +15,17 @@ import no.nav.vtp.person.PersonRepository;
 
 class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
-        private static PersonRepository personRepository;
-        private static PdlMock pdlMock;
-        private static PersonResponseProjection projeksjon;
+        private final PdlMock pdlMock = new PdlMock();
+        private static final PersonResponseProjection projeksjon = getPersonForelderBarnRelasjonResponseProjection();
 
         private final ObjectReader hentPersonReader = JSON_MAPPER.readerFor(HentPersonQueryResponse.class);
 
-        @BeforeAll
-        public static void setup() {
-            personRepository = new PersonRepository();
-            personRepository.leggTilPersoner(PersonBuilder.lagPersoner());
-            pdlMock = new PdlMock(personRepository);
-            projeksjon = getPersonForelderBarnRelasjonResponseProjection();
-        }
-
         @Test
         void hent_forelderBarnRelasjon_søker_test() throws JsonProcessingException {
+            var scenario = PersonBuilder.lagPersoner();
+            PersonRepository.leggTilPersoner(scenario.allePersoner());
             var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
-            var requestSøker = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", PersonBuilder.SØKER_IDENT)).build();
+            var requestSøker = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", scenario.søkerIdent())).build();
 
             // Act
             var rawResponseSøker = pdlMock.graphQLRequest(null, null, null, null, requestSøker);
@@ -50,8 +42,10 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
     @Test
     void hent_forelderBarnRelasjon_annenpart_test() throws JsonProcessingException {
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
-        var requestAnnenpart = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", PersonBuilder.ANNEN_PART_IDENT)).build();
+        var requestAnnenpart = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", scenario.annenPartIdent())).build();
 
         // Act
         var rawResponseAnnenpart = pdlMock.graphQLRequest(null, null, null, null, requestAnnenpart);
@@ -68,7 +62,9 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
     @Test
     void hent_forelderBarnRelasjon_barn_test() throws JsonProcessingException {
-        var barnIdent = PersonBuilder.BARN1_IDENT;
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var barnIdent = scenario.barn1Ident();
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
         var requestBarn = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", barnIdent)).build();
 

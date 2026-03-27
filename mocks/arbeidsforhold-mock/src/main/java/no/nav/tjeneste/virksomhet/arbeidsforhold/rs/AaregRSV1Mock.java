@@ -35,12 +35,6 @@ public class AaregRSV1Mock {
     protected static final String ARBEIDSFORHOLDTYPE = "arbeidsforholdtype";
     protected static final String REGELVERK = "regelverk";
 
-    private final PersonRepository personRepository;
-
-    public AaregRSV1Mock(@Context PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-
     @SuppressWarnings("unused")
     @GET
     @Path("/arbeidsforhold")
@@ -59,7 +53,7 @@ public class AaregRSV1Mock {
         }
 
         LOG.info("AAREG REST {}", ident);
-        return Optional.ofNullable(personRepository.hentPerson(ident))
+        return Optional.ofNullable(PersonRepository.hentPerson(ident))
                 .map(person -> person
                     .arbeidsforhold()
                     .stream()

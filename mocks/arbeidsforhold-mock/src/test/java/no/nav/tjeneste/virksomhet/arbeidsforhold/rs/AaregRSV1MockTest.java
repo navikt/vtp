@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -19,16 +18,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.UriInfo;
-import no.nav.vtp.person.Person;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.PersonRepository;
 
 @ExtendWith(MockitoExtension.class)
 class AaregRSV1MockTest {
 
-    private static AaregRSV1Mock aaregRSV1Mock;
-    private static final PersonRepository personRepository = new PersonRepository();
-    private static final Person person = PersonBuilder.lagAnnenPart();
+    private final AaregRSV1Mock aaregRSV1Mock = new AaregRSV1Mock();
 
     @Mock
     private HttpHeaders headers;
@@ -36,14 +32,10 @@ class AaregRSV1MockTest {
     @Mock
     private UriInfo uriInfo;
 
-    @BeforeAll
-    static void setup() {
-        personRepository.leggTilPerson(person);
-        aaregRSV1Mock = new AaregRSV1Mock(personRepository);
-    }
-
     @Test
     void hentFremtidigArbeidsforholdTest() {
+        var person = PersonBuilder.lagAnnenPart();
+        PersonRepository.leggTilPerson(person);
         when(headers.getHeaderString(HEADER_NAV_PERSONIDENT))
                 .thenReturn(person.personopplysninger().identifikator().value());
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>(Map.of(
@@ -55,6 +47,8 @@ class AaregRSV1MockTest {
 
     @Test
     void hentFremtidigArbeidsforholdTest2() {
+        var person = PersonBuilder.lagAnnenPart();
+        PersonRepository.leggTilPerson(person);
         when(headers.getHeaderString(HEADER_NAV_PERSONIDENT))
                 .thenReturn(person.personopplysninger().identifikator().value());
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>(Map.of(
@@ -66,6 +60,8 @@ class AaregRSV1MockTest {
 
     @Test
     void hentArbeidsforholdMedTomOgFomTest() {
+        var person = PersonBuilder.lagAnnenPart();
+        PersonRepository.leggTilPerson(person);
         when(headers.getHeaderString(HEADER_NAV_PERSONIDENT))
                 .thenReturn(person.personopplysninger().identifikator().value());
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>(Map.of(
@@ -78,6 +74,8 @@ class AaregRSV1MockTest {
 
     @Test
     void hentArbeidsforholdMedTomOgFomTest2() {
+        var person = PersonBuilder.lagAnnenPart();
+        PersonRepository.leggTilPerson(person);
         when(headers.getHeaderString(HEADER_NAV_PERSONIDENT))
                 .thenReturn(person.personopplysninger().identifikator().value());
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>(Map.of(
@@ -90,6 +88,8 @@ class AaregRSV1MockTest {
 
     @Test
     void hentArbeidsforholdMedArbeidsforholdtype() {
+        var person = PersonBuilder.lagAnnenPart();
+        PersonRepository.leggTilPerson(person);
         when(headers.getHeaderString(HEADER_NAV_PERSONIDENT))
                 .thenReturn(person.personopplysninger().identifikator().value());
         when(uriInfo.getQueryParameters()).thenReturn(new MultivaluedHashMap<>(Map.of(

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.inntektskomponenten.modell.InntektMapper;
@@ -19,18 +18,12 @@ import no.nav.vtp.inntektskomponenten.modell.InntektMapper;
 public class InntektskomponentV2REST {
     private static final Logger LOG = LoggerFactory.getLogger(InntektskomponentV2REST.class);
 
-    private final PersonRepository personRepository;
-
-    public InntektskomponentV2REST(@Context PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
-
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/inntekt")
     public InntektResponse hentInntektlisteBolk(InntektRequest request) {
         LOG.info("Henter inntekter for: {}", request.personident());
-        var person = personRepository.hentPerson(request.personident()).inntekt();
+        var person = PersonRepository.hentPerson(request.personident()).inntekt();
         if (person == null) {
             return new InntektResponse(List.of());
         }
@@ -44,7 +37,7 @@ public class InntektskomponentV2REST {
     @Produces(MediaType.APPLICATION_JSON)
     public InntektBulkResponse hentInntektlisteBolk(InntektBulkRequest request) {
         LOG.info("Henter inntekter for: {}", request.personident());
-        var person = personRepository.hentPerson(request.personident()).inntekt();
+        var person = PersonRepository.hentPerson(request.personident()).inntekt();
         if (person == null) {
             return new InntektBulkResponse(List.of());
         }

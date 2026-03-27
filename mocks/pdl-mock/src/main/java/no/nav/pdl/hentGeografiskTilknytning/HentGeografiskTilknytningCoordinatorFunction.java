@@ -8,9 +8,9 @@ public class HentGeografiskTilknytningCoordinatorFunction {
     private HentGeografiskTilknytningCoordinatorFunction() {
     }
 
-    public static HentGeografiskTilknytningCoordinator opprettCoordinator(PersonRepository personRepository) {
+    public static HentGeografiskTilknytningCoordinator opprettCoordinator() {
         return ident -> {
-            var person = personRepository.hentPerson(ident);
+            var person = PersonRepository.hentPerson(ident);
             return GeografiskTilknytningMapper.tilGeografiskTilknytning(person);
         };
     }

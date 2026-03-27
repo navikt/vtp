@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.vtp.person.PersonRepository;
@@ -28,15 +27,12 @@ import no.nav.vtp.person.ident.Orgnummer;
 @Path("/arbeidsgiver-altinn-tilganger")
 public class ArbeidsgiverAltinnTilgangerMock {
 
-    @Context
-    private PersonRepository personRepository;
-
     @POST
     @Path("/altinn-tilganger")
     @Produces(MediaType.APPLICATION_JSON)
     public Response hentTilganger(ArbeidsgiverAltinnTilgangerRequest request) {
         var resurser = hentRessurser(request.filter());
-        var alleOrgnr = personRepository.alleRegistrerteOrganisasjoner().stream()
+        var alleOrgnr = PersonRepository.alleRegistrerteOrganisasjoner().stream()
                 .map(Organisasjon::orgnummer)
                 .map(Orgnummer::value)
                 .collect(Collectors.toSet());

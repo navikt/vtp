@@ -13,9 +13,9 @@ public class HentIdenterCoordinatorFunction {
     private HentIdenterCoordinatorFunction() {
     }
 
-    public static HentIdenterCoordinator opprettCoordinator(PersonRepository personRepository) {
+    public static HentIdenterCoordinator opprettCoordinator() {
         return (ident, grupper)  -> {
-            var person = personRepository.hentPerson(ident);
+            var person = PersonRepository.hentPerson(ident);
 
             var identInformasjonsliste = new ArrayList<IdentInformasjon>();
             if (grupper == null || grupper.contains(IdentGruppe.FOLKEREGISTERIDENT.name())) {

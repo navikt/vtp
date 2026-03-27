@@ -60,9 +60,6 @@ public class PdlLeesahRestTjeneste {
     @Context
     private LocalKafkaProducer localKafkaProducer;
 
-    @Context
-    private PersonRepository personRepository;
-
     public PdlLeesahRestTjeneste() {
     }
 
@@ -266,13 +263,13 @@ public class PdlLeesahRestTjeneste {
     }
 
     private PersonIdent opprettNyttBarnOgOppdaterFamilierelasjoner(FødselshendelseDto fødselshendelseDto) {
-        var mor = Optional.ofNullable(personRepository.hentPerson(fødselshendelseDto.fnrMor()));
-        var far = Optional.ofNullable(personRepository.hentPerson(fødselshendelseDto.fnrFar()));
+        var mor = Optional.ofNullable(PersonRepository.hentPerson(fødselshendelseDto.fnrMor()));
+        var far = Optional.ofNullable(PersonRepository.hentPerson(fødselshendelseDto.fnrFar()));
         var barnet = nyttBarn(fødselshendelseDto.fødselsdato(), null, mor.orElse(null), far.orElse(null));
         var identifikasjonBarn = (PersonIdent) barnet.personopplysninger().identifikator();
         mor.ifPresent(person -> leggTilBarnRelasjonFor(person, identifikasjonBarn));
         far.ifPresent(person -> leggTilBarnRelasjonFor(person, identifikasjonBarn));
-        personRepository.leggTilPerson(barnet);
+        PersonRepository.leggTilPerson(barnet);
         return identifikasjonBarn;
     }
 
@@ -285,18 +282,18 @@ public class PdlLeesahRestTjeneste {
         var oppdatertFar = person.tilBuilder()
                 .medPersonopplysninger(personopplysnignerFar)
                 .build();
-        personRepository.leggTilPerson(oppdatertFar);
+        PersonRepository.leggTilPerson(oppdatertFar);
     }
 
     private void registererDødfødselsHendelse(DødfødselhendelseDto dødfødselhendelseDto) {
-        var mor = personRepository.hentPerson(dødfødselhendelseDto.fnr());
+        var mor = PersonRepository.hentPerson(dødfødselhendelseDto.fnr());
         var annenForelder = mor.personopplysninger().familierelasjoner().stream()
                 .filter(fr -> no.nav.vtp.person.personopplysninger.Familierelasjon.Relasjon.EKTE.equals(fr.relasjon()))
                 .findFirst()
-                .map(fr -> personRepository.hentPerson(fr.relatertTilId().fnr()));
+                .map(fr -> PersonRepository.hentPerson(fr.relatertTilId().fnr()));
 
         var barnet = nyttBarn(dødfødselhendelseDto.doedfoedselsdato(), dødfødselhendelseDto.doedfoedselsdato(), mor, annenForelder.orElse(null));
-        personRepository.leggTilPerson(barnet);
+        PersonRepository.leggTilPerson(barnet);
 
         var identifikatorBarn = (PersonIdent) barnet.personopplysninger().identifikator();
         leggTilBarnRelasjonFor(mor, identifikatorBarn);
@@ -342,10 +339,10 @@ public class PdlLeesahRestTjeneste {
     }
 
     private void registrerDødshendelse(DødshendelseDto dødshendelseDto) {
-        var personen = personRepository.hentPerson(dødshendelseDto.fnr());
+        var personen = PersonRepository.hentPerson(dødshendelseDto.fnr());
         var oppdatertPerson = personen.tilBuilder()
                 .medPersonopplysninger(personen.personopplysninger().tilBuilder().medDødsdato(dødshendelseDto.doedsdato()).build())
                 .build();
-        personRepository.leggTilPerson(oppdatertPerson);
+        PersonRepository.leggTilPerson(oppdatertPerson);
     }
 }

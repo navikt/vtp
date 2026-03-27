@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,25 +16,19 @@ import no.nav.vtp.person.ident.PersonIdent;
 
 class PdlMockTest extends PdlTestBase {
 
-    private static PersonRepository personRepository;
-    private static PdlMock pdlMock;
+    private final PdlMock pdlMock = new PdlMock();
 
     private final ObjectReader hentPersonReader = JSON_MAPPER.readerFor(HentPersonQueryResponse.class);
     private final ObjectReader hentGeografiskTilknytningReader = JSON_MAPPER.readerFor(HentGeografiskTilknytningQueryResponse.class);
     private final ObjectReader hentIdenterReader = JSON_MAPPER.readerFor(HentIdenterQueryResponse.class);
     private final ObjectReader hentIdenterBolkReader = JSON_MAPPER.readerFor(HentIdenterBolkQueryResponse.class);
 
-    @BeforeAll
-    static void setup() {
-        personRepository = new PersonRepository();
-        personRepository.leggTilPersoner(PersonBuilder.lagPersoner());
-        pdlMock = new PdlMock(personRepository);
-    }
-
     @Test
     void hent_person() throws JsonProcessingException {
         // Arrange
-        var ident = PersonBuilder.SØKER_IDENT;
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var ident = scenario.søkerIdent();
         var projection = byggProjectionPersonResponse(false);
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projection);
         var request = GraphQLRequest.builder().withQuery(query).withVariables(Map.of("ident", ident)).build();
@@ -55,7 +48,9 @@ class PdlMockTest extends PdlTestBase {
     @Test
     void hent_person_med_historikk() throws JsonProcessingException {
         // Arrange
-        var aktørIdent = new PersonIdent(PersonBuilder.SØKER_IDENT).aktørId();
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var aktørIdent = new PersonIdent(scenario.søkerIdent()).aktørId();
         var projection = byggProjectionPersonResponse(true);
         var query = String.format("query { hentPerson(ident: \"%s\") %s }", aktørIdent, projection);
         var request = GraphQLRequest.builder().withQuery(query).build();
@@ -78,7 +73,9 @@ class PdlMockTest extends PdlTestBase {
     void hentGeografiskTilknytningTest() throws JsonProcessingException {
 
         // Arrange
-        var aktørIdent = new PersonIdent(PersonBuilder.SØKER_IDENT).aktørId();
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var aktørIdent = new PersonIdent(scenario.søkerIdent()).aktørId();
         var projection = new GeografiskTilknytningResponseProjection()
                 .gtType()
                 .gtLand()
@@ -101,7 +98,9 @@ class PdlMockTest extends PdlTestBase {
     @Test
     void hent_identer() throws JsonProcessingException {
         // Arrange
-        var ident = PersonBuilder.SØKER_IDENT;
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var ident = scenario.søkerIdent();
         var projection = new IdentlisteResponseProjection()
                 .identer(new IdentInformasjonResponseProjection()
                         .ident()
@@ -125,7 +124,9 @@ class PdlMockTest extends PdlTestBase {
     @Test
     void hent_identer_gruppe() throws JsonProcessingException {
         // Arrange
-        var aktørIdent = new PersonIdent(PersonBuilder.SØKER_IDENT).aktørId();
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var aktørIdent = new PersonIdent(scenario.søkerIdent()).aktørId();
         var projection = new IdentlisteResponseProjection()
                 .identer(new IdentInformasjonResponseProjection()
                         .ident()
@@ -151,8 +152,10 @@ class PdlMockTest extends PdlTestBase {
     @Test
     void hent_aktørid_for_identliste() throws JsonProcessingException {
         // Arrange
-        var folkeregisterId = PersonBuilder.SØKER_IDENT;
-        var aktørIdent = new PersonIdent(PersonBuilder.SØKER_IDENT).aktørId();
+        var scenario = PersonBuilder.lagPersoner();
+        PersonRepository.leggTilPersoner(scenario.allePersoner());
+        var folkeregisterId = scenario.søkerIdent();
+        var aktørIdent = new PersonIdent(scenario.søkerIdent()).aktørId();
 
         var projection = new HentIdenterBolkResultResponseProjection()
                 .ident()

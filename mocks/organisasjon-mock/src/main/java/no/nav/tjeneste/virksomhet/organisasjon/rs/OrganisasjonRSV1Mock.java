@@ -27,10 +27,6 @@ public class OrganisasjonRSV1Mock {
 
     private static final Logger LOG = LoggerFactory.getLogger(OrganisasjonRSV1Mock.class);
 
-    @Context
-    private PersonRepository personRepository;
-
-
     @GET
     @Path("/{orgnummer}")
     public OrganisasjonResponse hentOrganisasjonAdresse(@PathParam("orgnummer") String orgnummer,
@@ -41,7 +37,7 @@ public class OrganisasjonRSV1Mock {
         }
 
         LOG.info("EREG REST {}", orgnummer);
-        return personRepository.hentInformasjonOmArbeidsforhold(new Orgnummer(orgnummer))
+        return PersonRepository.hentInformasjonOmArbeidsforhold(new Orgnummer(orgnummer))
                 .map(OrganisasjonRSV1Mock::tilOrganisasjonRespons)
                 .orElse(null);
     }
@@ -56,7 +52,7 @@ public class OrganisasjonRSV1Mock {
         }
 
         LOG.info("EREG REST noekkelinfo {}", orgnummer);
-        return personRepository.hentInformasjonOmArbeidsforhold(new Orgnummer(orgnummer))
+        return PersonRepository.hentInformasjonOmArbeidsforhold(new Orgnummer(orgnummer))
                 .map(OrganisasjonRSV1Mock::tilNøkkelinfo)
                 .orElse(null);
     }

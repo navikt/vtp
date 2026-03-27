@@ -9,7 +9,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselsnummerGenerator;
@@ -23,15 +22,8 @@ import no.nav.vtp.person.ident.PersonIdent;
 @Path("/api/testscenarios/v2")
 public class TestscenarioRestTjeneste {
 
-    @Context
-    private PersonRepository personRepository;
-
     public TestscenarioRestTjeneste() {
         //CDI
-    }
-
-    public TestscenarioRestTjeneste(PersonRepository personRepository) {
-        this.personRepository = personRepository;
     }
 
     @POST
@@ -40,7 +32,7 @@ public class TestscenarioRestTjeneste {
     @Produces(MediaType.APPLICATION_JSON)
     public Response initialiserTestScenarioFraDtoReturnerIdenter(List<PersonDto> personer) {
         var eksisterendePersoner = personer.stream()
-                .collect(Collectors.toMap(PersonDto::uuid, p -> personRepository.hentPerson(p.uuid())));
+                .collect(Collectors.toMap(PersonDto::uuid, p -> PersonRepository.hentPerson(p.uuid())));
         var identer = personer.stream().collect(Collectors.toMap(PersonDto::uuid, p ->
                 eksisterendePersoner.get(p.uuid())
                         .map(e -> new PersonIdent(e.personopplysninger().identifikator().value()))
@@ -48,7 +40,7 @@ public class TestscenarioRestTjeneste {
         ));
         var personerMapped = personer.stream().map(p -> PersonMapper.tilPerson(p, identer, eksisterendePersoner.get(p.uuid())))
                 .toList();
-        personRepository.leggTilPersoner(personerMapped);
+        PersonRepository.leggTilPersoner(personerMapped);
 
         // Sikrer at identer er unike, så fremt VTP ikke kjøres opp og ned mellom sesjoner.
         var tilordnedeIdenter = identer.entrySet().stream()
@@ -61,7 +53,7 @@ public class TestscenarioRestTjeneste {
     @Path("/alleidenter")
     @Produces(MediaType.APPLICATION_JSON)
     public Response hentInitialiserteCaser() {
-        var alleIdenter = personRepository.alleIdenter();
+        var alleIdenter = PersonRepository.alleIdenter();
         return Response.status(Response.Status.OK)
                 .entity(alleIdenter)
                 .build();

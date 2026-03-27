@@ -13,7 +13,6 @@ import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.vtp.person.PersonRepository;
@@ -22,12 +21,6 @@ import no.nav.vtp.person.PersonRepository;
 public class DigdirKrrProxyMock {
 
     public static final String HEADER_NAV_PERSONIDENT = "Nav-Personident";
-
-    private final PersonRepository personRepository;
-
-
-    public DigdirKrrProxyMock(@Context PersonRepository personRepository) {this.personRepository = personRepository;
-    }
 
     @Deprecated(forRemoval = true)
     @GET
@@ -64,7 +57,7 @@ public class DigdirKrrProxyMock {
     }
 
     private String hentUtForetrukketSpråkFraBruker(String fnr) {
-        var person = personRepository.hentPerson(fnr);
+        var person = PersonRepository.hentPerson(fnr);
         if (person == null) {
             return null;
         }

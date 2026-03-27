@@ -10,7 +10,6 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.vtp.person.PersonRepository;
@@ -18,9 +17,6 @@ import no.nav.vtp.person.PersonRepository;
 @Path("/api")
 public class SigrunMock {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunMock.class);
-
-    @Context
-    private PersonRepository personRepository;
 
     @POST
     @Path("/v1/pensjonsgivendeinntektforfolketrygden")
@@ -42,7 +38,7 @@ public class SigrunMock {
         }
 
         var inntektsÅrInt = Integer.parseInt(inntektsAar);
-        var skatteopplysninger = personRepository.hentPerson(brukerFnr).skatteopplysninger();
+        var skatteopplysninger = PersonRepository.hentPerson(brukerFnr).skatteopplysninger();
         var næringsBeløp = skatteopplysninger.stream()
                 .filter(s -> s.år().equals(inntektsÅrInt))
                 .map(s -> s.beløp().longValue())
