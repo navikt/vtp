@@ -9,7 +9,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: navikt/fp-gha-workflows/.github/workflows/release-feature.yml@main
+    uses: navikt/fp-gha-workflows/.github/workflows/release-feature.yml@main # ratchet:exclude
     with:
       release-version: ${{ github.event.release.tag_name }}
       mvn-projects: '-am -pl model,kontrakter'
