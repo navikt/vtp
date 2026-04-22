@@ -70,7 +70,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: type=raw,value=latest,enable={{is_default_branch}}
       - name: Bygg og push docker image
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # ratchet:docker/build-push-action@v4
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # ratchet:docker/build-push-action@v4
         id: build_push
         with:
           context: "."
