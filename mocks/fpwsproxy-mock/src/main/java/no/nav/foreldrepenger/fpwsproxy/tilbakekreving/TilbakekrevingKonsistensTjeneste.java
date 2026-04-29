@@ -6,7 +6,7 @@ import java.util.Random;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-import no.nav.foreldrepenger.vtp.kontrakter.TilbakekrevingKonsistensDto;
+import no.nav.foreldrepenger.vtp.kontrakter.tilbakekreving.TilbakekrevingKonsistensDto;
 
 /**
  * Tjenesten tar vare på siste saksnummer og henvisning (behandlingId) fra Autotest,

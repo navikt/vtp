@@ -17,10 +17,10 @@
 
     <modules>
         <module>kontrakter</module>
-        <module>model</module>
         <module>mocks</module>
         <module>server</module>
         <module>util</module>
+        <module>domene</module>
     </modules>
 
     <properties>
@@ -64,14 +64,14 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>testmodell</artifactId>
+                <artifactId>domene</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>testmodell</artifactId>
+                <artifactId>domene</artifactId>
                 <version>${project.version}</version>
-                <type>test-jar</type>
+                <classifier>tests</classifier>
                 <scope>test</scope>
             </dependency>
             <dependency>

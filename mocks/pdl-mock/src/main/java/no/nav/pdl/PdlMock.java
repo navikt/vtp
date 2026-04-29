@@ -13,9 +13,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
 import no.nav.pdl.graphql.GraphQLRequest;
 
 @Path("/api/pdl")
@@ -26,16 +23,7 @@ public class PdlMock {
     private final PdlGraphqlTjeneste graphqlTjeneste;
 
     public PdlMock() {
-        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(buildTestscenarioRepository());
-    }
-
-    // Kun for test
-    PdlMock(TestscenarioBuilderRepository scenarioBuilderRepository) {
-        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance(scenarioBuilderRepository);
-    }
-
-    private TestscenarioBuilderRepository buildTestscenarioRepository() {
-        return TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
+        this.graphqlTjeneste = PdlGraphqlTjeneste.getInstance();
     }
 
     @POST

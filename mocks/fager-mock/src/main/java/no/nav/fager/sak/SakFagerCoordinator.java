@@ -4,7 +4,7 @@ import no.nav.fager.HardDeleteSakVellykket;
 import no.nav.fager.NySakResultat;
 import no.nav.fager.NyStatusSakVellykket;
 import no.nav.fager.TilleggsinformasjonSakVellykket;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
+import no.nav.vtp.arbeidsgiverportal.SakModell;
 
 public interface SakFagerCoordinator {
 

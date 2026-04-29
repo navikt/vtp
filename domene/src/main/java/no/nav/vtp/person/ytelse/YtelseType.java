@@ -1,0 +1,13 @@
+package no.nav.vtp.person.ytelse;
+
+public enum YtelseType {
+    FORELDREPENGER,
+    SVANGERSKAPSPENGER,
+    PLEIEPENGER,
+    DAGPENGER,
+    SYKEPENGER,
+    ARBEIDSAVKLARINGSPENGER,
+    OMSORGSPENGER,
+    OPPLÆRINGSPENGER,
+    UFØREPENSJON,
+}

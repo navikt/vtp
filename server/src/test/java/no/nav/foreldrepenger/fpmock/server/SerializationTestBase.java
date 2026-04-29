@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.testmodell.util.JacksonObjectMapperTestscenario;
+import no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario;
 
 public class SerializationTestBase {
 

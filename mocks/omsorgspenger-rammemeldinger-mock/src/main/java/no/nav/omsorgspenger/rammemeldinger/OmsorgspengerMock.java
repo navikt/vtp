@@ -1,26 +1,19 @@
 package no.nav.omsorgspenger.rammemeldinger;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.InntektYtelseModell;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.AleneOmOmsorgen;
-import no.nav.foreldrepenger.vtp.testmodell.inntektytelse.omsorgspenger.OmsorgspengerRammemeldingerModell;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 @Path("/omsorgspenger-rammemeldinger")
 public class OmsorgspengerMock {
-    private final TestscenarioBuilderRepository scenarioRepository;
-
-    public OmsorgspengerMock(@Context TestscenarioBuilderRepository scenarioRepository) {
-        this.scenarioRepository = scenarioRepository;
-    }
 
     @SuppressWarnings("unused")
     @POST
@@ -28,15 +21,7 @@ public class OmsorgspengerMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public AleneOmOmsorgenResponse aleneOmOmsorgen(RammemeldingRequest request) {
-        Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
-        if(inntektYtelseModellOptional.isEmpty()) {
-            return new AleneOmOmsorgenResponse();
-        }
-        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
-        List<AleneOmOmsorgen> aleneOmOmsorgen = inntektYtelseModell.omsorgspengerModell().rammemeldinger().aleneOmOmsorgen();
-        AleneOmOmsorgenResponse response = new AleneOmOmsorgenResponse();
-        response.setAleneOmOmsorgen(aleneOmOmsorgen);
-        return response;
+        return new AleneOmOmsorgenResponse(List.of());
     }
 
     @SuppressWarnings("unused")
@@ -45,18 +30,22 @@ public class OmsorgspengerMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public OverføringerResponse overføringer(RammemeldingRequest request) {
-        Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
-        if(inntektYtelseModellOptional.isEmpty()) {
-            return new OverføringerResponse();
-        }
-        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
+        var person = PersonRepository.hentPerson(request.getIdentitetsnummer());
+        var omsorgspengerYtelse = person.ytelser().stream()
+                .filter(ytelse -> YtelseType.OMSORGSPENGER.equals(ytelse.ytelse()))
+                .findFirst();
+        return new OverføringerResponse(List.of(), omsorgspengerYtelse.map(OmsorgspengerMock::tilOverføringFått).orElse(List.of()));
+    }
 
-        OmsorgspengerRammemeldingerModell rammemeldinger = inntektYtelseModell.omsorgspengerModell().rammemeldinger();
-
-        OverføringerResponse response = new OverføringerResponse();
-        response.setGitt(rammemeldinger.overføringerGitt());
-        response.setFått(rammemeldinger.overføringerFått());
-        return response;
+    private static List<OverføringerResponse.OverføringFåttRammemelding> tilOverføringFått(Ytelse omsorgspenger) {
+        return List.of(new OverføringerResponse.OverføringFåttRammemelding(
+                omsorgspenger.fom(),
+                omsorgspenger.fom(),
+                omsorgspenger.tom(),
+                Duration.ofDays(20),
+                new OverføringerResponse.Person("02499541043", "Identitetsnummer", null),
+                List.of(new OverføringerResponse.Kilde("2", "OmsorgspengerRammemeldinger"))
+        ));
     }
 
     @SuppressWarnings("unused")
@@ -65,17 +54,6 @@ public class OmsorgspengerMock {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public KoronaOverføringerResponse koronaOverføringer(RammemeldingRequest request) {
-        Optional<InntektYtelseModell> inntektYtelseModellOptional = scenarioRepository.getInntektYtelseModell(request.getIdentitetsnummer());
-        if(inntektYtelseModellOptional.isEmpty()) {
-            return new KoronaOverføringerResponse();
-        }
-        InntektYtelseModell inntektYtelseModell = inntektYtelseModellOptional.get();
-
-        OmsorgspengerRammemeldingerModell rammemeldinger = inntektYtelseModell.omsorgspengerModell().rammemeldinger();
-
-        KoronaOverføringerResponse response = new KoronaOverføringerResponse();
-        response.setGitt(rammemeldinger.koronaOverføringerGitt());
-        response.setFått(rammemeldinger.koronaOverføringerFått());
-        return response;
+        return new KoronaOverføringerResponse(List.of(), List.of());
     }
 }
