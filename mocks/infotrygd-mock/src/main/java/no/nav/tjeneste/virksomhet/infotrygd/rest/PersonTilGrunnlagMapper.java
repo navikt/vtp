@@ -72,7 +72,7 @@ public class PersonTilGrunnlagMapper {
         return switch (kategori) {
             case ARBEIDSTAKER -> ArbeidskategoriKode.K01;
             case DAGPENGER -> ArbeidskategoriKode.K06;
-            default ->  throw new IllegalArgumentException("Ukjent : " + kategori);
+            default -> throw new IllegalArgumentException("Ukjent : " + kategori);
         };
     }
 
@@ -93,7 +93,8 @@ public class PersonTilGrunnlagMapper {
         return switch (temakode) {
             case FA -> BehandlingstemaKode.FP;
             case SP -> BehandlingstemaKode.SP;
-            case BS, UKJENT -> BehandlingstemaKode.UKJENT;
+            case BS -> BehandlingstemaKode.PN;
+            case UKJENT -> BehandlingstemaKode.UKJENT;
         };
     }
 }

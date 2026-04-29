@@ -15,7 +15,7 @@ public class ArbeidsforholdMapper {
     public static ArbeidsforholdRS tilArbeidsforholdRS(Arbeidsforhold arbeidsforhold) {
         return new ArbeidsforholdRS(
                 arbeidsforhold.arbeidsgiver() instanceof Organisasjon organisasjon ? organisasjon.arbeidsforholdId() : null,
-                ArbeidsforholdIdNav.next(),
+                arbeidsforhold.navArbeidsforholdId(),
                 opplysningspliktFra(arbeidsforhold),
                 new AnsettelsesperiodeRS(new PeriodeRS(arbeidsforhold.ansettelsesperiodeFom(), arbeidsforhold.ansettelsesperiodeTom())),
                 tilArbeidsavtaler(arbeidsforhold), tilPermisjoner(arbeidsforhold),
