@@ -21,15 +21,15 @@ public class ArbeidsfordelingRestMock {
 
     // Kopi av enheter.json
     private final Map<String, Norg2Modell> ENHETER = Map.ofEntries(
-            Map.entry("UFB", new Norg2Modell("1900", "NAV Troms", "KONTAKT", "AKTIV", "UFB", null)),
-            Map.entry("SPFO", new Norg2Modell("1001", "NAV Kristiansand", "KONTAKT", "AKTIV", "SPFO", null)),
-            Map.entry("SPSF", new Norg2Modell("2103", "NAV Viken", "KO", "AKTIV", "SPSF", null)),
-            Map.entry("NORMAL-FOR", new Norg2Modell("4833", "NAV Familie og Pensjonsytelser Oslo", "FPY", "AKTIV", "NORMAL-FOR", "FOR")),
-            Map.entry("NORMAL-OMS", new Norg2Modell("4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "NORMAL-OMS", "OMS")),
-            Map.entry("NORMAL-SYK", new Norg2Modell("4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "NORMAL-SYK", "SYK")),
-            Map.entry("NORMAL-FRI", new Norg2Modell("4863", "NAV Familie- og pensjonsytelser midlertidig enhet", "KO", "AKTIV", "NORMAL-FRI", "FRI")),
-            Map.entry("NORMAL-UNG", new Norg2Modell("4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "NORMAL-UNG", "UNG"))
-    );
+            Map.entry("UFB", new Norg2Modell("UFB", "1900", "NAV Troms", "KONTAKT", "AKTIV", null)),
+            Map.entry("SPFO", new Norg2Modell("SPFO", "1001", "NAV Kristiansand", "KONTAKT", "AKTIV", null)),
+            Map.entry("SPSF", new Norg2Modell("SPSF", "2103", "NAV Viken", "KO", "AKTIV", null)), Map.entry("NORMAL-FOR",
+                    new Norg2Modell("NORMAL-FOR", "4833", "NAV Familie og Pensjonsytelser Oslo", "FPY", "AKTIV", "FOR")),
+            Map.entry("NORMAL-OMS", new Norg2Modell("NORMAL-OMS", "4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "OMS")),
+            Map.entry("NORMAL-SYK", new Norg2Modell("NORMAL-SYK", "4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "SYK")),
+            Map.entry("NORMAL-FRI",
+                    new Norg2Modell("NORMAL-FRI", "4863", "NAV Familie- og pensjonsytelser midlertidig enhet", "KO", "AKTIV", "FRI")),
+            Map.entry("NORMAL-UNG", new Norg2Modell("NORMAL-UNG", "4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "UNG")));
 
     @POST
     @Path("/enheter")

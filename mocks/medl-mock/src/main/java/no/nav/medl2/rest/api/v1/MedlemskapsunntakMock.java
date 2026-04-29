@@ -20,10 +20,10 @@ public class MedlemskapsunntakMock {
     @POST
     @Path("/periode/soek")
     public List<Medlemskapsunntak> hentMedlemsperioder(@NotNull MedlemRequest request) {
-        if (request.personident() == null) {
+        var person = PersonRepository.hentPerson(request.personident());
+        if (person == null) {
             return List.of();
         }
-        var person = PersonRepository.hentPerson(request.personident());
         return MedlemskapsunntakMapper.tilMedlemskapsunntak(person);
     }
 

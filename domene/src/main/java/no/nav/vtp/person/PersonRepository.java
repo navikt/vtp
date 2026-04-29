@@ -29,6 +29,9 @@ public class PersonRepository {
     }
 
     public static Person hentPerson(String ident) {
+        if (ident == null) {
+            return null;
+        }
         if (ident.length() == 13) { // Aktørid
             var fnr = ident.replaceFirst("99", "");
             return PERSONER.get(fnr);

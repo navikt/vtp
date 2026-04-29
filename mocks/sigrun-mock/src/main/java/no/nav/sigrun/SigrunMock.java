@@ -38,7 +38,16 @@ public class SigrunMock {
         }
 
         var inntektsÅrInt = Integer.parseInt(inntektsAar);
-        var skatteopplysninger = PersonRepository.hentPerson(brukerFnr).skatteopplysninger();
+        var person = PersonRepository.hentPerson(brukerFnr);
+        if (person == null) {
+            LOG.info("Fant ikke person med fnr i PersonRepository");
+            return Response.status(404, "Kunne ikke finne person").build();
+        }
+        var skatteopplysninger = person.skatteopplysninger();
+        if (skatteopplysninger == null) {
+            LOG.info("Person har ingen skatteopplysninger");
+            return Response.status(404, "Kunne ikke finne inntektsår").build();
+        }
         var næringsBeløp = skatteopplysninger.stream()
                 .filter(s -> s.år().equals(inntektsÅrInt))
                 .map(s -> s.beløp().longValue())

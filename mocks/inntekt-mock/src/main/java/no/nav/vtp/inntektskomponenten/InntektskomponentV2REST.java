@@ -2,6 +2,7 @@ package no.nav.vtp.inntektskomponenten;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +24,11 @@ public class InntektskomponentV2REST {
     @Path("/inntekt")
     public InntektResponse hentInntektlisteBolk(InntektRequest request) {
         LOG.info("Henter inntekter for: {}", request.personident());
-        var person = PersonRepository.hentPerson(request.personident()).inntekt();
-        if (person == null) {
-            return new InntektResponse(List.of());
-        }
-
-        var inntektsinformasjon = InntektMapper.makeInntektsinformasjon(person, request.maanedFom(), request.maanedTom(), request.filter(), request.personident());
+        var inntektsinformasjon = Optional.ofNullable(PersonRepository.hentPerson(request.personident()))
+                .map(person -> person.inntekt())
+                .map(inntekt -> InntektMapper.makeInntektsinformasjon(inntekt, request.maanedFom(), request.maanedTom(),
+                        request.filter(), request.personident()))
+                .orElse(List.of());
         return new InntektResponse(inntektsinformasjon);
     }
 
@@ -37,14 +37,15 @@ public class InntektskomponentV2REST {
     @Produces(MediaType.APPLICATION_JSON)
     public InntektBulkResponse hentInntektlisteBolk(InntektBulkRequest request) {
         LOG.info("Henter inntekter for: {}", request.personident());
-        var person = PersonRepository.hentPerson(request.personident()).inntekt();
-        if (person == null) {
-            return new InntektBulkResponse(List.of());
-        }
-
-        return new InntektBulkResponse(request.filter().stream()
-                .map(f -> new InntektBulkResponse.InntektBulk(f, InntektMapper.makeInntektsinformasjon(person, request.maanedFom(), request.maanedTom(), f, request.personident())))
-                .toList());
+        return Optional.ofNullable(PersonRepository.hentPerson(request.personident()))
+                .map(person -> person.inntekt())
+                .map(inntekt -> new InntektBulkResponse(request.filter()
+                        .stream()
+                        .map(f -> new InntektBulkResponse.InntektBulk(f,
+                                InntektMapper.makeInntektsinformasjon(inntekt, request.maanedFom(), request.maanedTom(), f,
+                                        request.personident())))
+                        .toList()))
+                .orElse(new InntektBulkResponse(List.of()));
     }
 
 

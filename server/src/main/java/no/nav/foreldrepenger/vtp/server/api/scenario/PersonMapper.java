@@ -16,7 +16,6 @@ import no.nav.foreldrepenger.vtp.kontrakter.person.ArbeidsavtaleDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArbeidsforholdDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.Arbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaDto;
-import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaMeldekort;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaSakerDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaVedtakDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.FamilierelasjonModellDto;
@@ -211,32 +210,22 @@ public class PersonMapper {
     }
 
     private static List<Ytelse> tilYtelserFraArena(ArenaDto arena) {
-        return arena.saker().stream()
-                .map(sak -> tilYtelseFraArenaVedtak(sak.tema(), sak.vedtak().getFirst()))
-                .toList();
+        var arenaYtelser = new ArrayList<Ytelse>();
+        arena.saker().forEach(sak -> arenaYtelser.addAll(tilYtelseFraArenaVedtak(sak.tema(), sak.vedtak().getFirst())));
+        return arenaYtelser;
     }
 
-    private static Ytelse tilYtelseFraArenaVedtak(ArenaSakerDto.YtelseTema tema,
-                                                  ArenaVedtakDto vedtak) {
+    private static List<Ytelse> tilYtelseFraArenaVedtak(ArenaSakerDto.YtelseTema tema, ArenaVedtakDto vedtak) {
         var ytelseType = tilYtelseTypeFraArenaTema(tema);
 
-        // Calculate total utbetalt from meldekort
-        Integer totalUtbetalt = null;
         if (vedtak.meldekort() != null && !vedtak.meldekort().isEmpty()) {
-            totalUtbetalt = vedtak.meldekort().stream()
-                    .map(ArenaMeldekort::beløp)
-                    .filter(Objects::nonNull)
-                    .reduce(0, Integer::sum);
+            // Bruk meldekort fom/tom direkte som Ytelse fom/tom
+            return vedtak.meldekort().stream()
+                    .map(mk -> new Ytelse(ytelseType, mk.fom(), mk.tom(), mk.dagsats(), mk.beløp(), Collections.emptyList()))
+                    .toList();
         }
 
-        return new Ytelse(
-                ytelseType,
-                vedtak.fom(),
-                vedtak.tom(),
-                vedtak.dagsats(),
-                totalUtbetalt,
-                Collections.emptyList() // Arena doesn't have beregningsgrunnlag in the DTO
-        );
+        return List.of(new Ytelse(ytelseType, vedtak.fom(), vedtak.tom(), vedtak.dagsats(), 0, Collections.emptyList()));
     }
 
     private static YtelseType tilYtelseTypeFraArenaTema(ArenaSakerDto.YtelseTema tema) {
@@ -280,7 +269,7 @@ public class PersonMapper {
     private static YtelseType tilYtelseTypeFraInfotrygdYtelse(GrunnlagDto.Ytelse ytelse) {
         return switch (ytelse) {
             case SP -> YtelseType.SYKEPENGER;
-            default -> throw new IllegalStateException("Ikke støttet ytelse!");
+            case BS -> YtelseType.PLEIEPENGER;
         };
     }
 

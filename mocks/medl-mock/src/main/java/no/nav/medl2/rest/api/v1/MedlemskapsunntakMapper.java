@@ -1,14 +1,11 @@
 package no.nav.medl2.rest.api.v1;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.personopplysninger.Medlemskap;
 
 public class MedlemskapsunntakMapper {
-
-    private static final AtomicLong ID_GENERATOR = new AtomicLong(100000000);
 
     private MedlemskapsunntakMapper() {
         /* This utility class should not be instantiated */
@@ -26,7 +23,7 @@ public class MedlemskapsunntakMapper {
 
     private static Medlemskapsunntak tilMedlemsperiode(Medlemskap medlemskap) {
         return new Medlemskapsunntak(
-                ID_GENERATOR.getAndIncrement(),
+                genererId(medlemskap),
                 medlemskap.fom(),
                 medlemskap.tom(),
                 tilDekningstype(medlemskap),
@@ -44,6 +41,11 @@ public class MedlemskapsunntakMapper {
             case IHT_AVTALE -> "IHT_Avtale";
             case FULL -> "Full";
         };
+    }
+
+    private static long genererId(Medlemskap medlemskap) {
+        var key = "" + medlemskap.fom() + medlemskap.tom() + medlemskap.land();
+        return 100000000L + Math.abs(key.hashCode() % 100_000_000L);
     }
 
 }
