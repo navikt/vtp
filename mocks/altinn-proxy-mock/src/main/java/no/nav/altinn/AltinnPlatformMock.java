@@ -23,7 +23,6 @@ public class AltinnPlatformMock {
     @Path("/authentication/api/v1/exchange/maskinporten")
     @Produces(MediaType.APPLICATION_JSON)
     public Response exchangeMaskinportenToken() {
-        LOG.info("er dette den siste");
         LOG.info("Altinn mock: Veksler maskinporten-token til altinn-token");
         return Response.ok("\"vtp-altinn-mock-token\"").build();
     }
