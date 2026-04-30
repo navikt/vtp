@@ -45,6 +45,7 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.ParamConverter;
 import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
+import no.nav.altinn.AltinnPlatformMock;
 import no.nav.altinn.AltinnRettigheterProxyMock;
 import no.nav.altinn.ArbeidsgiverAltinnTilgangerMock;
 import no.nav.digdir.DigdirKrrProxyMock;
@@ -145,6 +146,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxyTilbakekrevingMock.class);
         classes.add(AltinnRettigheterProxyMock.class);
         classes.add(ArbeidsgiverAltinnTilgangerMock.class);
+        classes.add(AltinnPlatformMock.class);
         classes.add(FagerMock.class);
 
         // Arbeidsgiver portal mock
