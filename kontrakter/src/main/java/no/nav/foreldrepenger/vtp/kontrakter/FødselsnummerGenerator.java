@@ -2,9 +2,9 @@ package no.nav.foreldrepenger.vtp.kontrakter;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,56 +16,56 @@ public class FødselsnummerGenerator {
 
     private static final Logger LOG = LoggerFactory.getLogger(FødselsnummerGenerator.class);
     private static final Integer NAV_SYNTETISK_IDENT_OFFSET_MND = 40;
-    private static final Random random = new Random();
     private static final int MAX_GENERATE_ATTEMPTS = 1000;
 
-    private final Kjønn kjonn;
-    private final LocalDate fodselsdato;
+    private final Kjønn kjønn;
+    private final LocalDate fødselsdato;
 
-    private FødselsnummerGenerator(Builder fgb){
-        this.kjonn = Objects.requireNonNullElseGet(fgb.kjonn, FødselsnummerGenerator::randomKjonn);
-        this.fodselsdato = Objects.requireNonNullElseGet(fgb.fodselsdato, FødselsnummerGenerator::generateRandomPlausibleBirtdayParent);
+    private FødselsnummerGenerator(Builder fgb) {
+        this.kjønn = Objects.requireNonNullElseGet(fgb.kjønn, FødselsnummerGenerator::randomKjønn);
+        this.fødselsdato = Objects.requireNonNullElseGet(fgb.fødselsdato,
+                FødselsnummerGenerator::generateRandomPlausibleBirthdayParent);
     }
 
-    private static Kjønn randomKjonn() {
-        return random.nextBoolean() ? Kjønn.K : Kjønn.M;
+    private static Kjønn randomKjønn() {
+        return ThreadLocalRandom.current().nextBoolean() ? Kjønn.K : Kjønn.M;
     }
 
     private static int getDigit(String text, int index) {
-        return Integer.parseInt(text.substring(index,index + 1));
+        return Integer.parseInt(text.substring(index, index + 1));
     }
 
-    private static boolean betweenExclusive(int x, int min, int max) {
-        return x>min && x<max;
+    private static boolean betweenInclusive(int x, int min, int max) {
+        return x >= min && x <= max;
     }
 
 
-    private String generate(){
-        var day = String.format("%02d",this.fodselsdato.getDayOfMonth());
-        var month = String.format("%02d",this.fodselsdato.getMonthValue() + NAV_SYNTETISK_IDENT_OFFSET_MND);
-        var year = Integer.toString(this.fodselsdato.getYear()).substring(2);
-        int fullYear = this.fodselsdato.getYear();
+    private String generate() {
+        var day = String.format("%02d", this.fødselsdato.getDayOfMonth());
+        var month = String.format("%02d", this.fødselsdato.getMonthValue() + NAV_SYNTETISK_IDENT_OFFSET_MND);
+        var year = Integer.toString(this.fødselsdato.getYear()).substring(2);
+        int fullYear = this.fødselsdato.getYear();
 
         for (int attempt = 0; attempt < MAX_GENERATE_ATTEMPTS; attempt++) {
             int birthNumber;
-            if (this.kjonn == Kjønn.K) {
-                birthNumber = 100+ random.nextInt(900/2) *2;
-            } else if(this.kjonn == Kjønn.M) {
-                birthNumber = 100+ random.nextInt(900/2) *2 + 1;
+            if (this.kjønn == Kjønn.K) {
+                birthNumber = 100 + ThreadLocalRandom.current().nextInt(900 / 2) * 2;
+            } else if (this.kjønn == Kjønn.M) {
+                birthNumber = 100 + ThreadLocalRandom.current().nextInt(900 / 2) * 2 + 1;
             } else {
                 birthNumber = 999;
             }
 
             boolean validRange;
-            if (betweenExclusive(fullYear, 1854, 1899)) {
-                validRange = betweenExclusive(birthNumber, 500, 749);
-            } else if (betweenExclusive(fullYear, 1940, 1999)) {
+            if (betweenInclusive(fullYear, 1854, 1899)) {
+                validRange = betweenInclusive(birthNumber, 500, 749);
+            } else if (betweenInclusive(fullYear, 1940, 1999)) {
                 // NB: 1940-1999 må sjekkes før 1900-1999 pga overlapp
-                validRange = betweenExclusive(birthNumber, 0, 499) || betweenExclusive(birthNumber, 900, 999);
-            } else if (betweenExclusive(fullYear, 1900, 1999)) {
-                validRange = betweenExclusive(birthNumber, 0, 499);
-            } else if (betweenExclusive(fullYear, 2000, 2039)) {
-                validRange = betweenExclusive(birthNumber, 500, 999);
+                validRange = betweenInclusive(birthNumber, 0, 499) || betweenInclusive(birthNumber, 900, 999);
+            } else if (betweenInclusive(fullYear, 1900, 1999)) {
+                validRange = betweenInclusive(birthNumber, 0, 499);
+            } else if (betweenInclusive(fullYear, 2000, 2039)) {
+                validRange = betweenInclusive(birthNumber, 500, 999);
             } else {
                 LOG.info("Kunne ikke identifisere fødselsnummerserie");
                 validRange = true;
@@ -100,34 +100,31 @@ public class FødselsnummerGenerator {
             return withoutControlDigits + control1 + control2;
         }
         throw new IllegalStateException(
-                "Klarte ikke generere gyldig fødselsnummer etter " + MAX_GENERATE_ATTEMPTS + " forsøk for dato " + fodselsdato);
+                "Klarte ikke generere gyldig fødselsnummer etter " + MAX_GENERATE_ATTEMPTS + " forsøk for dato " + fødselsdato);
     }
 
 
     public static class Builder {
-        private Kjønn kjonn;
-        private LocalDate fodselsdato;
+        private Kjønn kjønn;
+        private LocalDate fødselsdato;
 
-        public void Builder() {}
-
-        public Builder kjonn(Kjønn k){
-            this.kjonn = k;
+        public Builder kjønn(Kjønn k) {
+            this.kjønn = k;
             return this;
         }
 
-        public Builder fodselsdato(LocalDate lt) {
-            this.fodselsdato = lt;
+        public Builder fødselsdato(LocalDate lt) {
+            this.fødselsdato = lt;
             return this;
         }
 
         public String buildAndGenerate() {
             for (int attempt = 0; attempt < MAX_GENERATE_ATTEMPTS; attempt++) {
                 var nyttFnr = new FødselsnummerGenerator(this).generate();
-                if (BRUKTE_FØDSELSNUMMER.contains(nyttFnr)) {
+                if (!BRUKTE_FØDSELSNUMMER.add(nyttFnr)) {
                     LOG.warn("FØDSELSNUMMER FINNES, GENERER NYTT (forsøk {})", attempt + 1);
                     continue;
                 }
-                BRUKTE_FØDSELSNUMMER.add(nyttFnr);
                 return nyttFnr;
             }
             throw new IllegalStateException(
@@ -137,14 +134,14 @@ public class FødselsnummerGenerator {
 
     }
 
-    private static LocalDate generateRandomPlausibleBirtdayParent() {
+    private static LocalDate generateRandomPlausibleBirthdayParent() {
         var startRange = LocalDate.of(1960, 1, 1);
         var endRange = LocalDate.of(2000, 1, 1);
 
         var startEpoch = startRange.toEpochDay();
         var endEpoch = endRange.toEpochDay();
 
-        var randomEpochDay = startEpoch + random.nextLong(endEpoch - startEpoch);
+        var randomEpochDay = startEpoch + ThreadLocalRandom.current().nextLong(endEpoch - startEpoch);
 
         return LocalDate.ofEpochDay(randomEpochDay);
     }

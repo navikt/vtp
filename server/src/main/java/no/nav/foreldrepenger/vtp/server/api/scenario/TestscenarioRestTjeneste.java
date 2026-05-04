@@ -1,7 +1,6 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.ws.rs.Consumes;
@@ -14,7 +13,6 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselsnummerGenerator;
 import no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.TilordnetIdentDto;
-import no.nav.vtp.person.Person;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.ident.PersonIdent;
 
@@ -61,6 +59,8 @@ public class TestscenarioRestTjeneste {
 
 
     private static PersonIdent genererUnikFødselsnummer(PersonDto p) {
-        return new PersonIdent(new FødselsnummerGenerator.Builder().fodselsdato(p.fødselsdato()).buildAndGenerate());
+        return new PersonIdent(new FødselsnummerGenerator.Builder()
+                .kjønn(p.kjønn())
+                .fødselsdato(p.fødselsdato()).buildAndGenerate());
     }
 }

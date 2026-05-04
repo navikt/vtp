@@ -44,20 +44,20 @@ public class PersonBuilder {
      */
     public static TestScenario lagPersoner() {
         var søkerIdent = new FødselsnummerGenerator.Builder()
-                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
-                .fodselsdato(LocalDate.now().minusYears(50))
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
         var annenPartIdent = new FødselsnummerGenerator.Builder()
-                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
-                .fodselsdato(LocalDate.now().minusYears(50))
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
+                .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
         var barn1Ident = new FødselsnummerGenerator.Builder()
-                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
-                .fodselsdato(LocalDate.now().minusYears(3))
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .fødselsdato(LocalDate.now().minusYears(3))
                 .buildAndGenerate();
         var barn2Ident = new FødselsnummerGenerator.Builder()
-                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
-                .fodselsdato(LocalDate.now().minusYears(1))
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .fødselsdato(LocalDate.now().minusYears(1))
                 .buildAndGenerate();
 
         var søker = new Person(
@@ -96,8 +96,8 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     public static Person lagSøker() {
         var ident = new FødselsnummerGenerator.Builder()
-                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
-                .fodselsdato(LocalDate.now().minusYears(50))
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
         var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
                 LocalDate.now().minusYears(1), null);
@@ -121,8 +121,8 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     public static Person lagAnnenPart() {
         var ident = new FødselsnummerGenerator.Builder()
-                .kjonn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
-                .fodselsdato(LocalDate.now().minusYears(50))
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
+                .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
         var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
                 LocalDate.now().minusYears(1), null);
