@@ -145,6 +145,7 @@ public class OppgaveMockImpl {
         // Caliderer at correlation id er satt
         String correlationId = httpHeaders.getHeaderString("X-Correlation-ID");
         if (correlationId == null || correlationId.isBlank()) {
+            LOG.error("Ugyldig/manglende X-Correlation-ID header");
             return Optional.of(Response.status(Response.Status.BAD_GATEWAY).build());
         }
 
