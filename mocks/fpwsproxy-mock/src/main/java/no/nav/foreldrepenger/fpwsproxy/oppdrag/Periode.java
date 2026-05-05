@@ -8,12 +8,12 @@ import no.nav.foreldrepenger.kontrakter.fpwsproxy.simulering.request.SatsDto;
 
 public class Periode implements Comparable<Periode>{
 
-    private LocalDate fom;
+    private final LocalDate fom;
     private LocalDate tom;
-    private SatsDto sats;
+    private final SatsDto sats;
     private SatsDto oldSats;
     private PeriodeType periodeType;
-    private KodeKlassifik kodeKlassifik;
+    private final KodeKlassifik kodeKlassifik;
 
 
     Periode(LocalDate fom, LocalDate tom, SatsDto sats, KodeKlassifik kodeKlassifik){

@@ -16,12 +16,11 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import no.nav.dokarkiv.JournalforingHendelseSender;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.JournalpostModellGenerator;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalforingResultatDto;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.DokumenttypeId;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus;
-import no.nav.foreldrepenger.vtp.testmodell.repo.JournalRepository;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalforingResultatDto;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.DokumenttypeId;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus;
+import no.nav.vtp.journalpost.JournalRepository;
 
 @Path("/api/journalforing")
 public class JournalforingRestTjeneste {

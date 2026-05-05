@@ -10,7 +10,7 @@ import no.nav.fager.NySakMutationRequest;
 import no.nav.fager.NyStatusSakMutationRequest;
 import no.nav.fager.TilleggsinformasjonSakMutationRequest;
 import no.nav.fager.exceptions.FagerFunctionalException;
-import no.nav.foreldrepenger.vtp.testmodell.arbeidsgiver.SakModell;
+import no.nav.vtp.arbeidsgiverportal.SakModell;
 
 public class SakFagerWiring {
     protected static final String MUTATION = "Mutation";

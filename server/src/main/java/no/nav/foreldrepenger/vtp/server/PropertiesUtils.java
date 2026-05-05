@@ -14,8 +14,8 @@ public class PropertiesUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
 
-    private static String DEV_FILNAVN = "application.properties";
-    private static String DEV_FILNAVN_LOCAL = "application-local.properties";
+    private static final String DEV_FILNAVN = "application.properties";
+    private static final String DEV_FILNAVN_LOCAL = "application-local.properties";
 
     //Brukes av applikasjoner som kjører på root dir
     public static void initProperties() {

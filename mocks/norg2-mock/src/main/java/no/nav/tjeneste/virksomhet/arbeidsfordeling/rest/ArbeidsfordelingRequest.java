@@ -74,7 +74,7 @@ public class ArbeidsfordelingRequest {
     }
 
     public static class Builder {
-        private ArbeidsfordelingRequest arbeidsfordelingRequest;
+        private final ArbeidsfordelingRequest arbeidsfordelingRequest;
 
         public Builder() {
             this.arbeidsfordelingRequest = new ArbeidsfordelingRequest();

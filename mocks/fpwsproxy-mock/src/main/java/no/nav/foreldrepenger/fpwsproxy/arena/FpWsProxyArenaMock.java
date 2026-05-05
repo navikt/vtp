@@ -1,5 +1,8 @@
 package no.nav.foreldrepenger.fpwsproxy.arena;
 
+import java.util.List;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,51 +14,43 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
-import no.nav.foreldrepenger.vtp.testmodell.Feilkode;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.BasisdataProviderFileImpl;
-import no.nav.foreldrepenger.vtp.testmodell.repo.impl.TestscenarioRepositoryImpl;
+import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
+import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.Ytelse;
+import no.nav.vtp.person.ytelse.YtelseType;
 
 @Path("/api/fpwsproxy/arena")
 public class FpWsProxyArenaMock {
     private static final Logger LOG = LoggerFactory.getLogger(FpWsProxyArenaMock.class);
 
-    private final TestscenarioBuilderRepository scenarioRepository;
-
-    public FpWsProxyArenaMock() {
-        scenarioRepository = TestscenarioRepositoryImpl.getInstance(BasisdataProviderFileImpl.getInstance());
-    }
-
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response henterDagpengerOgAAP(@Valid ArenaRequestDto arenaRequestDto) {
-        var ident = arenaRequestDto.ident();
-        LOG.info("Henter meldekort for {} for perioden {} til {}", ident, arenaRequestDto.fom(), arenaRequestDto.tom());
-        var iyIndeksOpt = scenarioRepository.getInntektYtelseModell(ident);
-
-        if (iyIndeksOpt.isEmpty()) {
-            return Response.noContent().build(); // Håndteres 204 no content?
-        }
-
-        var arenaModell = iyIndeksOpt.get().arenaModell();
-        var feilkode = arenaModell.feilkode();
-        if (feilkode != null) {
-            return haandterExceptions(feilkode, ident);
-        }
-
-        var meldekort = ArenaSakerTilMeldekortMapper.tilMeldekortUtbetalingsgrunnlagSakDto(arenaRequestDto, arenaModell.saker());
-        LOG.info("Hentet {} meldekort for {} i oppgitt periode", meldekort.size(), ident);
-
+        LOG.info("Henter meldekort for {} for perioden {} til {}", arenaRequestDto.ident(), arenaRequestDto.fom(), arenaRequestDto.tom());
+        var meldekort = hentMeldekort(arenaRequestDto);
+        LOG.info("Hentet {} meldekort for {} i oppgitt periode", meldekort.size(), arenaRequestDto.ident());
         return Response.ok(meldekort).build();
     }
 
-    private Response haandterExceptions(Feilkode feilkode, String ident) {
-        return switch (feilkode) {
-            case UGYLDIG_INPUT -> Response.status(Response.Status.BAD_REQUEST).build();
-            case PERSON_IKKE_FUNNET -> Response.status(Response.Status.NOT_FOUND).entity("Fant ikke person " + ident).build();
-            case SIKKERHET_BEGRENSNING -> Response.status(Response.Status.FORBIDDEN).build();
-        };
+    public List<MeldekortUtbetalingsgrunnlagSakDto> hentMeldekort(ArenaRequestDto arenaRequestDto) {
+        var person = PersonRepository.hentPerson(arenaRequestDto.ident());
+        return person.ytelser().stream()
+                .filter(ytelse -> Set.of(YtelseType.DAGPENGER, YtelseType.ARBEIDSAVKLARINGSPENGER).contains(ytelse.ytelse()))
+                .filter(ytelse -> overlapperMedPeriode(arenaRequestDto, ytelse))
+                .map(YtelseTilMeldekortMapper::tilMeldekort)
+                .toList();
     }
 
+    public boolean overlapperMedPeriode(ArenaRequestDto arenaRequestDto, Ytelse ytelse) {
+        var requestFom = arenaRequestDto.fom();
+        var requestTom = arenaRequestDto.tom();
+        if (requestFom == null && requestTom == null) {
+            return true;
+        }
+
+        var starterEtterRequest = requestTom != null && ytelse.fom().isAfter(requestTom);
+        var slutterFørRequest = requestFom != null && ytelse.tom() != null && ytelse.tom().isBefore(requestFom);
+        return !(starterEtterRequest || slutterFørRequest);
+    }
 }

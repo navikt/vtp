@@ -4,28 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import no.nav.foreldrepenger.vtp.testmodell.repo.TestscenarioBuilderRepository;
 
 @Path("/spokelse")
 public class SpøkelseMock {
-
-    private static final Logger LOG = LoggerFactory.getLogger(SpøkelseMock.class);
-    private static final String LOG_PREFIX = "Spøkelse Rest kall til {}";
-
-    private final TestscenarioBuilderRepository scenarioRepository;
-
-    public SpøkelseMock(@Context TestscenarioBuilderRepository scenarioRepository) {
-        this.scenarioRepository = scenarioRepository;
-    }
 
     @SuppressWarnings("unused")
     @POST

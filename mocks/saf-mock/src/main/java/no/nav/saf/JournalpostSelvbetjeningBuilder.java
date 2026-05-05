@@ -7,8 +7,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.DokumentModell;
-import no.nav.foreldrepenger.vtp.testmodell.dokument.modell.JournalpostModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.DokumentModell;
+import no.nav.foreldrepenger.vtp.kontrakter.journalpost.JournalpostModell;
 import no.nav.saf.selvbetjening.AvsenderMottaker;
 import no.nav.saf.selvbetjening.AvsenderMottakerIdType;
 import no.nav.saf.selvbetjening.Datotype;
@@ -63,11 +63,11 @@ public final class JournalpostSelvbetjeningBuilder {
         return builder.build();
     }
 
-    private static Journalstatus tilJournalStatus(no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus journalStatus) {
-        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.JOURNALFØRT.equals(journalStatus)) return Journalstatus.JOURNALFOERT;
-        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.MOTTATT.equals(journalStatus)) return Journalstatus.MOTTATT;
-        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.AVBRUTT.equals(journalStatus)) return Journalstatus.AVBRUTT;
-        if (no.nav.foreldrepenger.vtp.testmodell.dokument.modell.koder.Journalstatus.MIDLERTIDIG_JOURNALFØRT.equals(journalStatus)) {
+    private static Journalstatus tilJournalStatus(no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus journalStatus) {
+        if (no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus.JOURNALFØRT.equals(journalStatus)) return Journalstatus.JOURNALFOERT;
+        if (no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus.MOTTATT.equals(journalStatus)) return Journalstatus.MOTTATT;
+        if (no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus.AVBRUTT.equals(journalStatus)) return Journalstatus.AVBRUTT;
+        if (no.nav.foreldrepenger.vtp.kontrakter.journalpost.koder.Journalstatus.MIDLERTIDIG_JOURNALFØRT.equals(journalStatus)) {
             return Journalstatus.MOTTATT;
         } else {
             LOG.info("Ukjent journalstatus på journalpost '{}'", journalStatus);
