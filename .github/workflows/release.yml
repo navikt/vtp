@@ -12,5 +12,5 @@ jobs:
     uses: navikt/fp-gha-workflows/.github/workflows/release-feature.yml@main # ratchet:exclude
     with:
       release-version: ${{ github.event.release.tag_name }}
-      mvn-projects: '-am -pl model,kontrakter'
+      mvn-projects: '-am -pl kontrakter'
     secrets: inherit

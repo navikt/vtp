@@ -195,10 +195,6 @@
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>domene</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.vtp</groupId>
-            <artifactId>domene</artifactId>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
