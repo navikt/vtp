@@ -19,6 +19,10 @@
 
     <dependencies>
         <dependency>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <groupId>jakarta.annotation</groupId>
+        </dependency>
+        <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
         </dependency>
@@ -32,8 +36,8 @@
             <artifactId>graphql-java-extended-scalars</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.kobylynskyi</groupId>
-            <artifactId>graphql-java-codegen</artifactId>
+            <groupId>no.nav.foreldrepenger.graphql</groupId>
+            <artifactId>graphql-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -54,8 +58,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>io.github.kobylynskyi</groupId>
-                <artifactId>graphql-codegen-maven-plugin</artifactId>
+                <groupId>no.nav.foreldrepenger.graphql</groupId>
+                <artifactId>graphql-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
@@ -68,20 +72,8 @@
                             <packageName>no.nav.pdl</packageName>
                             <customTypesMapping>
                                 <DateTime>java.util.Date</DateTime>
-                                <!-- <Price.amount>java.math.BigDecimal</Price.amount> -->
                             </customTypesMapping>
-                            <customAnnotationsMapping>
-                                <EpochMillis>
-                                    <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
-                                </EpochMillis>
-                            </customAnnotationsMapping>
-                            <generateClient>true</generateClient>
-                            <!--<generateClient>true</generateClient>
-                            <generateApis>false</generateApis>
-                            <generateBuilder>false</generateBuilder>
-                            <generateToString>true</generateToString>-->
-                            <generateParameterizedFieldsResolvers>false</generateParameterizedFieldsResolvers>
-                            <modelValidationAnnotation>@jakarta.validation.constraints.NotNull</modelValidationAnnotation>
+                            <generateBuilder>true</generateBuilder>
                         </configuration>
                     </execution>
                 </executions>
