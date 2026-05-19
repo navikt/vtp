@@ -19,6 +19,14 @@
 
     <dependencies>
         <dependency>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <groupId>jakarta.annotation</groupId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.graphql</groupId>
+            <artifactId>graphql-runtime</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
         </dependency>
@@ -36,8 +44,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>io.github.kobylynskyi</groupId>
-                <artifactId>graphql-codegen-maven-plugin</artifactId>
+                <groupId>no.nav.foreldrepenger.graphql</groupId>
+                <artifactId>graphql-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>saf</id>
@@ -46,20 +54,13 @@
                         </goals>
                         <configuration>
                             <!-- source repo:saf:app/src/main/resources/schemas/saf.graphqls -->
-                            <graphqlSchemaPaths>
-                                <graphqlSchemaPath>${project.basedir}/src/main/resources/schemas/saf.graphqls</graphqlSchemaPath>
-                            </graphqlSchemaPaths>
+                            <graphqlSchemaPaths>${project.basedir}/src/main/resources/schemas/saf.graphqls</graphqlSchemaPaths>
                             <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
                             <packageName>no.nav.saf</packageName>
                             <customTypesMapping>
                                 <DateTime>java.util.Date</DateTime>
                             </customTypesMapping>
-                            <customAnnotationsMapping>
-                                <EpochMillis>
-                                    <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
-                                </EpochMillis>
-                            </customAnnotationsMapping>
-                            <modelValidationAnnotation>@jakarta.validation.constraints.NotNull</modelValidationAnnotation>
+                            <generateBuilder>true</generateBuilder>
                         </configuration>
                     </execution>
                     <execution>
@@ -77,12 +78,7 @@
                             <customTypesMapping>
                                 <DateTime>java.util.Date</DateTime>
                             </customTypesMapping>
-                            <customAnnotationsMapping>
-                                <EpochMillis>
-                                    <annotation>com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)</annotation>
-                                </EpochMillis>
-                            </customAnnotationsMapping>
-                            <modelValidationAnnotation>@jakarta.validation.constraints.NotNull</modelValidationAnnotation>
+                            <generateBuilder>true</generateBuilder>
                         </configuration>
                     </execution>
                 </executions>
