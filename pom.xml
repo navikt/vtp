@@ -48,6 +48,12 @@
             <url>https://packages.confluent.io/maven/</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>github</id> <!-- OBS: Brukes også av fp-gha-workflows for action/setup-java -->
+            <url>https://maven.pkg.github.com/navikt/fp-graphql</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencyManagement>
         <dependencies>

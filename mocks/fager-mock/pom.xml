@@ -36,8 +36,8 @@
             <artifactId>graphql-java-extended-scalars</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.kobylynskyi</groupId>
-            <artifactId>graphql-java-codegen</artifactId>
+            <groupId>no.nav.foreldrepenger.graphql</groupId>
+            <artifactId>graphql-runtime</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -57,8 +57,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>io.github.kobylynskyi</groupId>
-                <artifactId>graphql-codegen-maven-plugin</artifactId>
+                <groupId>no.nav.foreldrepenger.graphql</groupId>
+                <artifactId>graphql-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
@@ -68,17 +68,7 @@
                             <graphqlSchemaPaths>${project.basedir}/src/main/resources/schemas/produsent.graphql</graphqlSchemaPaths>
                             <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
                             <packageName>no.nav.fager</packageName>
-                            <customTypesMapping>
-                                <DateTime>java.util.Date</DateTime>
-                            </customTypesMapping>
-                            <generateClient>true</generateClient>
-                            <generateApis>false</generateApis>
                             <generateBuilder>true</generateBuilder>
-                            <generateToString>true</generateToString>
-                            <generateParameterizedFieldsResolvers>false</generateParameterizedFieldsResolvers>
-                            <addGeneratedAnnotation>true</addGeneratedAnnotation>
-                            <generatedAnnotation>jakarta.annotation.Generated</generatedAnnotation>
-                            <modelValidationAnnotation>@jakarta.validation.constraints.NotNull</modelValidationAnnotation>
                             <generateJacksonTypeIdResolver>true</generateJacksonTypeIdResolver>
                         </configuration>
                     </execution>
