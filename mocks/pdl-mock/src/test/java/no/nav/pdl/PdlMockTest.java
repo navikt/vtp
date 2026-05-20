@@ -6,13 +6,11 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectReader;
-
 import no.nav.pdl.graphql.GraphQLRequest;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.ident.PersonIdent;
+import tools.jackson.databind.ObjectReader;
 
 class PdlMockTest extends PdlTestBase {
 
@@ -24,7 +22,7 @@ class PdlMockTest extends PdlTestBase {
     private final ObjectReader hentIdenterBolkReader = JSON_MAPPER.readerFor(HentIdenterBolkQueryResponse.class);
 
     @Test
-    void hent_person() throws JsonProcessingException {
+    void hent_person() {
         // Arrange
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
@@ -46,7 +44,7 @@ class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    void hent_person_med_historikk() throws JsonProcessingException {
+    void hent_person_med_historikk() {
         // Arrange
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
@@ -70,7 +68,7 @@ class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    void hentGeografiskTilknytningTest() throws JsonProcessingException {
+    void hentGeografiskTilknytningTest() {
 
         // Arrange
         var scenario = PersonBuilder.lagPersoner();
@@ -96,7 +94,7 @@ class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    void hent_identer() throws JsonProcessingException {
+    void hent_identer() {
         // Arrange
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
@@ -122,7 +120,7 @@ class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    void hent_identer_gruppe() throws JsonProcessingException {
+    void hent_identer_gruppe() {
         // Arrange
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
@@ -150,7 +148,7 @@ class PdlMockTest extends PdlTestBase {
     }
 
     @Test
-    void hent_aktørid_for_identliste() throws JsonProcessingException {
+    void hent_aktørid_for_identliste() {
         // Arrange
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
