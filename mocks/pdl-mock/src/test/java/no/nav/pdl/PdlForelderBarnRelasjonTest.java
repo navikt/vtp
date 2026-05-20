@@ -6,12 +6,10 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectReader;
-
 import no.nav.pdl.graphql.GraphQLRequest;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.PersonRepository;
+import tools.jackson.databind.ObjectReader;
 
 class PdlForelderBarnRelasjonTest extends PdlTestBase {
 
@@ -21,7 +19,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
         private final ObjectReader hentPersonReader = JSON_MAPPER.readerFor(HentPersonQueryResponse.class);
 
         @Test
-        void hent_forelderBarnRelasjon_søker_test() throws JsonProcessingException {
+        void hent_forelderBarnRelasjon_søker_test() {
             var scenario = PersonBuilder.lagPersoner();
             PersonRepository.leggTilPersoner(scenario.allePersoner());
             var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
@@ -41,7 +39,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
         }
 
     @Test
-    void hent_forelderBarnRelasjon_annenpart_test() throws JsonProcessingException {
+    void hent_forelderBarnRelasjon_annenpart_test() {
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
         var query = String.format("query($ident: ID!){ hentPerson(ident: $ident) %s }", projeksjon);
@@ -61,7 +59,7 @@ class PdlForelderBarnRelasjonTest extends PdlTestBase {
     }
 
     @Test
-    void hent_forelderBarnRelasjon_barn_test() throws JsonProcessingException {
+    void hent_forelderBarnRelasjon_barn_test() {
         var scenario = PersonBuilder.lagPersoner();
         PersonRepository.leggTilPersoner(scenario.allePersoner());
         var barnIdent = scenario.barn1Ident();

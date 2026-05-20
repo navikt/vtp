@@ -1,6 +1,8 @@
 package no.nav.foreldrepenger.vtp.server.auth.rest.maskinporten;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.AuthorizationDetails;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -9,17 +11,13 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.lang.JoseException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import no.nav.foreldrepenger.vtp.server.auth.rest.texas.AuthorizationDetails;
+import tools.jackson.databind.json.JsonMapper;
 
 public final class MaskinportenOidcTokenGenerator {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonMapper JSON_MAPPER = JsonMapper.builder().build();
 
     private MaskinportenOidcTokenGenerator() {
     }
@@ -43,7 +41,7 @@ public final class MaskinportenOidcTokenGenerator {
         claims.setClaim("consumer", Map.of("authority", "iso6523-actorid-upis", "ID", "0192:999999999"));
         Optional.ofNullable(resource).ifPresent(r -> claims.setClaim("resource", r));
         Optional.ofNullable(authorizationDetails).ifPresent(authDetails ->
-            claims.setClaim("authorization_details", OBJECT_MAPPER.convertValue(authDetails, List.class))
+            claims.setClaim("authorization_details", JSON_MAPPER.convertValue(authDetails, List.class))
         );
         return claims;
     }

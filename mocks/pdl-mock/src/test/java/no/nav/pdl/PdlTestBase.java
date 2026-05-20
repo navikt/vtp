@@ -2,12 +2,10 @@ package no.nav.pdl;
 
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-
 import no.nav.foreldrepenger.graphql.GraphQLResult;
 import no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario;
+import tools.jackson.databind.ObjectReader;
+import tools.jackson.databind.json.JsonMapper;
 
 public abstract class PdlTestBase {
 
@@ -15,7 +13,7 @@ public abstract class PdlTestBase {
 
     // Hjelpemetode som oversetter resultat (LinkedHashMap) til objektgraf (GraphQLResult). Forenkler testing.
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected  <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response, ObjectReader objectReader) throws JsonProcessingException {
+    protected  <T extends GraphQLResult> T konverterTilGraphResponse(Map<String, Object> response, ObjectReader objectReader)  {
         var json = JSON_MAPPER.writeValueAsString(response);
         var graphResponse = objectReader.readValue(json);
         return (T) graphResponse;
