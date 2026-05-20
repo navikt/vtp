@@ -49,7 +49,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
@@ -70,6 +70,7 @@
                             <packageName>no.nav.fager</packageName>
                             <generateBuilder>true</generateBuilder>
                             <generateJacksonTypeIdResolver>true</generateJacksonTypeIdResolver>
+                            <generateJackson3>true</generateJackson3>
                         </configuration>
                     </execution>
                 </executions>

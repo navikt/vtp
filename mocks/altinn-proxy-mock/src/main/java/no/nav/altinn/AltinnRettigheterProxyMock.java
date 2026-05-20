@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -15,6 +12,8 @@ import jakarta.ws.rs.core.Response;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.arbeidsforhold.Organisasjon;
 import no.nav.vtp.person.ident.Orgnummer;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.annotation.JsonNaming;
 
 /*
  * Tjeneste for å sjekke om person har tilgang til en .

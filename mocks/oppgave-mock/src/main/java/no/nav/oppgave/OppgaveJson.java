@@ -16,8 +16,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +23,8 @@ import jakarta.validation.constraints.Size;
 import no.nav.oppgave.infrastruktur.validering.AtMostOneOf;
 import no.nav.oppgave.infrastruktur.validering.AtleastOneOf;
 import no.nav.oppgave.infrastruktur.validering.Organisasjonsnummer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.ext.javatime.deser.LocalDateDeserializer;
 
 @SuppressWarnings("WeakerAccess")
 @AtleastOneOf(fields = {"temagruppe", "tema"})
