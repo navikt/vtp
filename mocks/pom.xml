@@ -41,7 +41,7 @@
     </modules>
 
     <properties>
-        <fp-graphql.version>1.0.0</fp-graphql.version>
+        <fp-graphql.version>1.0.1</fp-graphql.version>
     </properties>
 
     <dependencyManagement>
