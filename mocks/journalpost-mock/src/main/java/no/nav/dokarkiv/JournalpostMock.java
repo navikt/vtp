@@ -117,7 +117,7 @@ public class JournalpostMock {
     }
 
     @PATCH
-    @Path("/sak/avsluttsak")
+    @Path("/sak/avsluttSak")
     public Response avsluttSak(AvsluttSakRequest avsluttSakRequest) {
 
         String fagsakId = avsluttSakRequest.fagsakId();
@@ -129,7 +129,7 @@ public class JournalpostMock {
     }
 
     @PATCH
-    @Path("/sak/gjenaapnesak")
+    @Path("/sak/gjenaapneSak")
     public Response gjenaapneSak(GjenaapneSakRequest gjenaapneSakRequest) {
 
         String fagsakId = gjenaapneSakRequest.fagsakId();
