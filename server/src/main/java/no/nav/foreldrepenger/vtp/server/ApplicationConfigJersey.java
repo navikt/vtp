@@ -3,32 +3,15 @@ package no.nav.foreldrepenger.vtp.server;
 import static java.util.logging.Level.FINE;
 import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.fasterxml.jackson.jakarta.rs.base.JsonMappingExceptionMapper;
-import com.fasterxml.jackson.jakarta.rs.base.JsonParseExceptionMapper;
-import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
-
-import jakarta.ws.rs.core.Configuration;
-import jakarta.ws.rs.core.Feature;
-import jakarta.ws.rs.core.FeatureContext;
-import jakarta.ws.rs.ext.MessageBodyReader;
-import jakarta.ws.rs.ext.MessageBodyWriter;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.ApplicationPath;
@@ -37,13 +20,16 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.Configuration;
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Feature;
+import jakarta.ws.rs.core.FeatureContext;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.ParamConverter;
-import jakarta.ws.rs.ext.ParamConverterProvider;
+import jakarta.ws.rs.ext.MessageBodyReader;
+import jakarta.ws.rs.ext.MessageBodyWriter;
 import jakarta.ws.rs.ext.Provider;
 import no.nav.altinn.AltinnPlatformMock;
 import no.nav.altinn.AltinnRettigheterProxyMock;
@@ -69,8 +55,6 @@ import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.selftest.IsAliveImpl;
 import no.nav.foreldrepenger.vtp.server.selftest.IsReadyImpl;
-import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
-import no.nav.vtp.journalpost.JournalRepository;
 import no.nav.infotrygdpaaroerendesykdom.rest.PårørendeSykdomMock;
 import no.nav.medl2.rest.api.v1.MedlemskapsunntakMock;
 import no.nav.mock.pesys.UføreMock;
@@ -91,7 +75,13 @@ import no.nav.tjeneste.virksomhet.spokelse.rest.SpøkelseMock;
 import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
+import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
+import no.nav.vtp.journalpost.JournalRepository;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.jakarta.rs.base.DatabindExceptionMapper;
+import tools.jackson.jakarta.rs.base.StreamReadExceptionMapper;
+import tools.jackson.jakarta.rs.json.JacksonJsonProvider;
 
 @ApplicationPath(ApplicationConfigJersey.API_URI)
 public class ApplicationConfigJersey extends ResourceConfig {
@@ -160,7 +150,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(CorsFilter.class); // todo legg på en sjekk på om man kjører på localhost, fjern hvis man er deployed
         classes.add(KafkaRestTjeneste.class);
 
-        classes.add(LocalDateStringConverterProvider.class);
         classes.add(TilbakekrevingKonsistensTjeneste.class);
 
         return classes;
@@ -200,11 +189,10 @@ public class ApplicationConfigJersey extends ResourceConfig {
             // Register Jackson.
             if (!config.isRegistered(JacksonJsonProvider.class)) {
 
-                context.register(JsonMappingExceptionMapper.class);
-                context.register(JsonParseExceptionMapper.class);
-
                 context.register(JacksonJsonProvider.class, MessageBodyReader.class, MessageBodyWriter.class);
                 context.register(JacksonConfigResolver.class);
+                context.register(DatabindExceptionMapper.class);
+                context.register(StreamReadExceptionMapper.class);
             }
 
             return true;
@@ -213,13 +201,13 @@ public class ApplicationConfigJersey extends ResourceConfig {
 
     @Provider
     @Produces(MediaType.APPLICATION_JSON)
-    public static class JacksonConfigResolver implements ContextResolver<ObjectMapper> {
+    public static class JacksonConfigResolver implements ContextResolver<JsonMapper> {
         public JacksonConfigResolver() {
             //CDI
         }
 
         @Override
-        public ObjectMapper getContext(Class<?> type) {
+        public JsonMapper getContext(Class<?> type) {
             return no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario.getJsonMapper();
         }
     }
@@ -255,41 +243,10 @@ public class ApplicationConfigJersey extends ResourceConfig {
     }
 
     @Provider
-    public static class LocalDateStringConverterProvider implements ParamConverterProvider {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
-            if (rawType.isAssignableFrom(LocalDate.class)) {
-                return (ParamConverter<T>) new LocalDateStringConverter();
-            }
-            return null;
-        }
-    }
-
-    public static class LocalDateStringConverter implements ParamConverter<LocalDate> {
-        @Override
-        public LocalDate fromString(String s) {
-            if (s == null) {
-                return null;
-            }
-            return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
-        }
-
-        @Override
-        public String toString(LocalDate localDate) {
-            if (localDate == null) {
-                return null;
-            }
-            return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        }
-    }
-
-    @Provider
     public static class CorsFilter implements ContainerResponseFilter {
 
         @Override
-        public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+        public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
             responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
             responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
             responseContext.getHeaders()
