@@ -3,10 +3,6 @@ package no.nav.foreldrepenger.vtp.server;
 import static java.util.logging.Level.FINE;
 import static org.glassfish.jersey.logging.LoggingFeature.Verbosity.PAYLOAD_ANY;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,8 +30,6 @@ import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.MessageBodyReader;
 import jakarta.ws.rs.ext.MessageBodyWriter;
-import jakarta.ws.rs.ext.ParamConverter;
-import jakarta.ws.rs.ext.ParamConverterProvider;
 import jakarta.ws.rs.ext.Provider;
 import no.nav.altinn.AltinnPlatformMock;
 import no.nav.altinn.AltinnRettigheterProxyMock;
@@ -156,7 +150,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(CorsFilter.class); // todo legg på en sjekk på om man kjører på localhost, fjern hvis man er deployed
         classes.add(KafkaRestTjeneste.class);
 
-        classes.add(LocalDateStringConverterProvider.class);
         classes.add(TilbakekrevingKonsistensTjeneste.class);
 
         return classes;
@@ -246,37 +239,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
             log.warn(logMessage);
 
             return Response.status(Response.Status.NOT_FOUND).type(MediaType.TEXT_PLAIN).entity(logMessage).build();
-        }
-    }
-
-    @Provider
-    public static class LocalDateStringConverterProvider implements ParamConverterProvider {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> ParamConverter<T> getConverter(Class<T> rawType, Type genericType, Annotation[] annotations) {
-            if (rawType.isAssignableFrom(LocalDate.class)) {
-                return (ParamConverter<T>) new LocalDateStringConverter();
-            }
-            return null;
-        }
-    }
-
-    public static class LocalDateStringConverter implements ParamConverter<LocalDate> {
-        @Override
-        public LocalDate fromString(String s) {
-            if (s == null) {
-                return null;
-            }
-            return LocalDate.parse(s, DateTimeFormatter.ISO_LOCAL_DATE);
-        }
-
-        @Override
-        public String toString(LocalDate localDate) {
-            if (localDate == null) {
-                return null;
-            }
-            return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
     }
 
