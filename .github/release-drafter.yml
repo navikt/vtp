@@ -2,28 +2,9 @@ name-template: $NEXT_PATCH_VERSION
 tag-template: $NEXT_PATCH_VERSION
 change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 categories:
-  - title: '🚀 Features'
-    labels:
-      - 'feature'
-      - 'enhancement'
-  - title: '⚠️ Breaking Changes'
-    labels:
-      - 'breaking'
-  - title: '🐛 Bug Fixes'
-    labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
-  - title: '🧰 Maintenance'
-    labels:
-      - 'chore'
   - title: '⬆️ Dependency upgrades'
     labels:
-      - 'bump'
       - 'dependencies'
-include-labels:
-  - 'kontrakt'
-  - 'mocks'
 template: |
   ## What's Changed
   $CHANGES
