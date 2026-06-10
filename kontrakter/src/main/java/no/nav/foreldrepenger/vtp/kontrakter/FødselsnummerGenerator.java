@@ -6,15 +6,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn;
 
 public class FødselsnummerGenerator {
     private static final Set<String> BRUKTE_FØDSELSNUMMER = new ConcurrentSkipListSet<>();
 
-    private static final Logger LOG = LoggerFactory.getLogger(FødselsnummerGenerator.class);
     private static final Integer NAV_SYNTETISK_IDENT_OFFSET_MND = 40;
     private static final int MAX_GENERATE_ATTEMPTS = 1000;
 
@@ -67,7 +63,6 @@ public class FødselsnummerGenerator {
             } else if (betweenInclusive(fullYear, 2000, 2039)) {
                 validRange = betweenInclusive(birthNumber, 500, 999);
             } else {
-                LOG.info("Kunne ikke identifisere fødselsnummerserie");
                 validRange = true;
             }
             if (!validRange) {
@@ -122,7 +117,6 @@ public class FødselsnummerGenerator {
             for (int attempt = 0; attempt < MAX_GENERATE_ATTEMPTS; attempt++) {
                 var nyttFnr = new FødselsnummerGenerator(this).generate();
                 if (!BRUKTE_FØDSELSNUMMER.add(nyttFnr)) {
-                    LOG.warn("FØDSELSNUMMER FINNES, GENERER NYTT (forsøk {})", attempt + 1);
                     continue;
                 }
                 return nyttFnr;

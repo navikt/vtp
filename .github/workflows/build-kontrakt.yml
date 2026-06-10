@@ -1,0 +1,33 @@
+name: Bygg kontrakt
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'kontrakter/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Kontrakt
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      pull-requests: read
+    uses: navikt/fp-gha-workflows/.github/workflows/build-feature.yml@main  # ratchet:exclude
+    with:
+      java-version: '25'
+      working-directory: ./kontrakter # Sett working directory til kontrakt-mappen
+    secrets: inherit
+
+  release-drafter:
+    name: Update
+    if: github.ref_name == 'master'
+    needs: build
+    permissions:
+      contents: write
+      pull-requests: read
+    uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main  # ratchet:exclude
+    secrets: inherit
