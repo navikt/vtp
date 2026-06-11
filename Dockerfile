@@ -1,5 +1,5 @@
 # Denne containeren kjører med en non-root bruker
-FROM ghcr.io/navikt/fp-baseimages/chainguard:jre-25
+FROM ghcr.io/navikt/fp-baseimages/chainguard:jre-26
 
 LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
