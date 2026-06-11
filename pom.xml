@@ -16,7 +16,6 @@
     <name>VTP :: Root</name>
 
     <modules>
-        <module>kontrakter</module>
         <module>mocks</module>
         <module>server</module>
         <module>util</module>
@@ -29,6 +28,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
+        <vtp-kontrakter.version>2.2.0</vtp-kontrakter.version>
         <fp-kontrakter.version>9.4.36</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
@@ -61,7 +61,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>kontrakter</artifactId>
-                <version>${project.version}</version>
+                <version>${vtp-kontrakter.version}</version>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
