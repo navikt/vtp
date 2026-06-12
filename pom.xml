@@ -29,7 +29,7 @@
 
         <!--    Interne avhengigheter    -->
         <vtp-kontrakter.version>2.2.0</vtp-kontrakter.version>
-        <fp-kontrakter.version>9.4.36</fp-kontrakter.version>
+        <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
         <graphql-java.version>26.0</graphql-java.version>
