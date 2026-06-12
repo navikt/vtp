@@ -37,7 +37,7 @@ public class YtelseTilMeldekortMapper {
                         .meldekortTom(ytelse.tom())
                         .dagsats(ytelse.dagsats() != null ? BigDecimal.valueOf(ytelse.dagsats()) : null)
                         .beløp(ytelse.utbetalt() != null ? BigDecimal.valueOf(ytelse.utbetalt()) : null)
-                        .utbetalingsgrad(BigDecimal.valueOf(100))
+                        .utbetalingsgrad(BigDecimal.valueOf(200))
                         .build()))
                 .build();
     }
