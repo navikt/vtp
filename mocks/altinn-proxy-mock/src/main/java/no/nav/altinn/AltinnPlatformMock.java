@@ -1,8 +1,11 @@
 package no.nav.altinn;
 
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
  * Mock for Altinn 3 platform tjenester:
  * - Token exchange (Maskinporten → Altinn token)
  * - PDP authorization (sjekk om system har tilgang til organisasjon)
+ * - Dialogporten (opprette og oppdatere dialoger)
  */
 @Path("/dummy/altinn-tre")
 public class AltinnPlatformMock {
@@ -34,5 +38,24 @@ public class AltinnPlatformMock {
         LOG.info("Altinn mock: PDP authorize kall mottatt");
         var permitResponse = "{\"response\":[{\"decision\":\"Permit\"}]}";
         return Response.ok(permitResponse).build();
+    }
+
+    @POST
+    @Path("/dialogporten/api/v1/serviceowner/dialogs")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response opprettDialog(String body) {
+        LOG.info("Altinn mock: Dialogporten opprett dialog kall mottatt");
+        var dialogId = java.util.UUID.randomUUID().toString();
+        return Response.ok("\"" + dialogId + "\"").build();
+    }
+
+    @PATCH
+    @Path("/dialogporten/api/v1/serviceowner/dialogs/{dialogId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response oppdaterDialog(@PathParam("dialogId") String dialogId, String body) {
+        LOG.info("Altinn mock: Dialogporten patch dialog kall mottatt for dialog {}", dialogId);
+        return Response.ok().build();
     }
 }
