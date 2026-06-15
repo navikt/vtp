@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import no.nav.foreldrepenger.vtp.server.auth.rest.maskinporten.MaskinportenRestTjeneste;
+
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -142,6 +144,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(MicrosoftGraphApiMock.class);
         classes.add(TokenxRestTjeneste.class);
         classes.add(TexasRestTjeneste.class);
+        classes.add(MaskinportenRestTjeneste.class);
 
         classes.add(IsAliveImpl.class);
         classes.add(IsReadyImpl.class);
