@@ -34,7 +34,6 @@ import jakarta.ws.rs.ext.MessageBodyReader;
 import jakarta.ws.rs.ext.MessageBodyWriter;
 import jakarta.ws.rs.ext.Provider;
 import no.nav.altinn.AltinnPlatformMock;
-import no.nav.altinn.AltinnRettigheterProxyMock;
 import no.nav.altinn.ArbeidsgiverAltinnTilgangerMock;
 import no.nav.digdir.DigdirKrrProxyMock;
 import no.nav.dokarkiv.JournalpostMock;
@@ -130,7 +129,6 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
-        classes.add(AltinnRettigheterProxyMock.class);
         classes.add(ArbeidsgiverAltinnTilgangerMock.class);
         classes.add(AltinnPlatformMock.class);
         classes.add(FagerMock.class);
