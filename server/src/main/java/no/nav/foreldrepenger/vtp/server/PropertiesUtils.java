@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -15,33 +16,48 @@ public class PropertiesUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
 
     private static final String DEV_FILNAVN = "application.properties";
-    private static final String DEV_FILNAVN_LOCAL = "application-local.properties";
 
-    //Brukes av applikasjoner som kjører på root dir
-    public static void initProperties() {
-        initProperties("");
+    private static Properties PROPS;
+
+    private PropertiesUtils() {
     }
 
-    //Brukes av tester som bruker root application.properties
-    public static void initProperties(String propertyDir) {
-        File devFil = Paths.get(propertyDir, DEV_FILNAVN).toFile();
-        loadPropertyFile(devFil);
-        loadPropertyFile(Paths.get(propertyDir, DEV_FILNAVN_LOCAL).toFile());
-        LOGGER.info("PROPERTIES LASTET: ");
-
-    }
-
-    private static void loadPropertyFile(File devFil) {
-        if (devFil.exists()) {
+    public static synchronized void initProperties() {
+        if (PROPS == null) {
             Properties prop = new Properties();
-            try (InputStream inputStream = new FileInputStream(devFil)) {
-                prop.load(inputStream);
-            } catch (IOException e) {
-                LOGGER.error("Kunne ikke finne properties-fil", e);
+            var devFil = Paths.get("", DEV_FILNAVN).toFile();
+            if (devFil.exists()) {
+                loadPropertyFile(prop, devFil);
+            } else {
+                LOGGER.warn("Kunne ikke finne properties-fil: {}", devFil.getAbsolutePath());
             }
-            System.getProperties().putAll(prop);
-        }else {
-            LOGGER.warn("Kunne ikke finne properties-fil: " + devFil.getAbsolutePath());
+            prop.putAll(System.getenv());
+            LOGGER.info("PROPERTIES LASTET: ");
+            PROPS = prop;
         }
     }
+
+    private static void loadPropertyFile(Properties properties, File devFil) {
+        try (InputStream inputStream = new FileInputStream(devFil)) {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            LOGGER.error("Kunne ikke finne properties-fil", e);
+        }
+    }
+
+    public static String get(String key) {
+        // Prioritet: System.getProperty, System.getenv, properties-fil
+        if (PROPS == null) {
+            throw new IllegalStateException("Properties not initialized");
+        }
+        return Optional.ofNullable(System.getProperty(key))
+                .or(() -> Optional.ofNullable(PROPS.getProperty(key.toUpperCase().replace(".", "_"))))
+                .orElseGet(() -> PROPS.getProperty(key));
+    }
+
+    public static String get(String key, String defaultValue) {
+        return Optional.ofNullable(get(key)).orElse(defaultValue);
+    }
+
+
 }

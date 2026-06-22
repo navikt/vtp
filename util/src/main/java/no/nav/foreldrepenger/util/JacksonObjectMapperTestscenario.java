@@ -1,5 +1,6 @@
 package no.nav.foreldrepenger.util;
 
+import java.util.List;
 import java.util.TimeZone;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -42,5 +43,9 @@ public class JacksonObjectMapperTestscenario {
 
     public static String writeValueAsString(Object object) {
         return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+    }
+
+    public static <T> List<T> listFromJson(String json, Class<T> clazz) {
+        return MAPPER.readerForListOf(clazz).readValue(json);
     }
 }

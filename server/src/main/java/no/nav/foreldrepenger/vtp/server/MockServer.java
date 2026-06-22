@@ -18,9 +18,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario;
 import no.nav.foreldrepenger.util.KeystoreUtils;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import no.nav.foreldrepenger.vtp.kontrakter.organisasjon.NavAnsattDto;
+import no.nav.foreldrepenger.vtp.kontrakter.organisasjon.NavGruppeDto;
 import no.nav.foreldrepenger.vtp.ldap.LdapServer;
+import no.nav.vtp.ansatt.AnsatteIndeks;
 import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
 import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepositoryImpl;
 import no.nav.vtp.journalpost.JournalRepositoryImpl;
@@ -34,10 +38,8 @@ public class MockServer {
     private static final String TRUSTSTORE_PATH_PROP = "javax.net.ssl.trustStore";
     private static final String KEYSTORE_PASSW_PROP = "no.nav.modig.security.appcert.password";
     private static final String KEYSTORE_PATH_PROP = "no.nav.modig.security.appcert.keystore";
-    public static final String CONTEXT_PATH = System.getProperty("server.context.path", "/rest");
 
     private final int port;
-    private final LdapServer ldapServer;
     private final Server server;
 
     static {
@@ -45,10 +47,10 @@ public class MockServer {
         SLF4JBridgeHandler.install();
     }
 
-    public MockServer() throws Exception {
+    public MockServer() {
         // Sletter kafkalogger så det ikke feiler i forsøk på å lage nye topics
 
-        this.port = Integer.parseInt(System.getProperty("autotest.vtp.port", "8060"));
+        this.port = Integer.parseInt(PropertiesUtils.get("autotest.vtp.port", "8060"));
 
         // Bør denne settes fra ENV_VAR?
         System.setProperty("server.url", "https://localhost:" + getSslPort());
@@ -56,14 +58,28 @@ public class MockServer {
         server = new Server();
         setConnectors(server);
 
-        ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
-
     }
 
     public static void main(String[] args) throws Exception {
         PropertiesUtils.initProperties();
+        initAnsatte();
         var mockServer = new MockServer();
         mockServer.start();
+    }
+
+    public static String getContextPath() {
+        return PropertiesUtils.get("server.context.path", "/rest");
+    }
+
+    public static void initAnsatte() {
+        if (PropertiesUtils.get("vtp.grupper") != null) {
+            var grupper = JacksonObjectMapperTestscenario.listFromJson(PropertiesUtils.get("vtp.grupper"), NavGruppeDto.class);
+            AnsatteIndeks.leggTilGrupper(grupper, true);
+        }
+        if (PropertiesUtils.get("vtp.ansatte") != null) {
+            var ansatte = JacksonObjectMapperTestscenario.listFromJson(PropertiesUtils.get("vtp.ansatte"), NavAnsattDto.class);
+            AnsatteIndeks.leggTilAnsatte(ansatte, true);
+        }
     }
 
     public void start() throws Exception {
@@ -87,14 +103,15 @@ public class MockServer {
                         fagerPortalRepository);
 
         var context = new ServletContextHandler();
-        context.setContextPath(CONTEXT_PATH);
+        context.setContextPath(getContextPath());
         var jerseyServlet = new ServletHolder(new ServletContainer(config));
         jerseyServlet.setInitOrder(1);
         context.addServlet(jerseyServlet, "/*");
         server.setHandler(context);
     }
 
-    private void startLdapServer() {
+    private void startLdapServer() throws Exception {
+        var ldapServer = new LdapServer(new File(KeystoreUtils.getKeystoreFilePath()), KeystoreUtils.getKeyStorePassword().toCharArray());
         var ldapThread = new Thread(ldapServer::start, "LdapServer");
         ldapThread.setDaemon(true);
         ldapThread.start();
@@ -134,9 +151,9 @@ public class MockServer {
         System.setProperty(TRUSTSTORE_PASSW_PROP, KeystoreUtils.getTruststorePassword());
 
         // keystore genererer sertifikat og TLS for innkommende kall. Bruker standard prop hvis definert, ellers faller tilbake på modig props
-        var keystoreProp = System.getProperty("javax.net.ssl.keyStore") != null ? "javax.net.ssl.keyStore" : KEYSTORE_PATH_PROP;
+        var keystoreProp = PropertiesUtils.get("javax.net.ssl.keyStore") != null ? "javax.net.ssl.keyStore" : KEYSTORE_PATH_PROP;
         var keystorePasswProp =
-                System.getProperty("javax.net.ssl.keyStorePassword") != null ? "javax.net.ssl.keyStorePassword" : KEYSTORE_PASSW_PROP;
+                PropertiesUtils.get("javax.net.ssl.keyStorePassword") != null ? "javax.net.ssl.keyStorePassword" : KEYSTORE_PASSW_PROP;
         System.setProperty(keystoreProp, KeystoreUtils.getKeystoreFilePath());
         System.setProperty(keystorePasswProp, KeystoreUtils.getKeyStorePassword());
 
@@ -148,7 +165,7 @@ public class MockServer {
     }
 
     private Integer getSslPort() {
-        return Integer.valueOf(System.getProperty("server.https.port", "" + (port + 3)));
+        return Integer.valueOf(PropertiesUtils.get("server.https.port", "" + (port + 3)));
     }
 
 }

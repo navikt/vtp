@@ -11,8 +11,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.kontrakter.FødselsnummerGenerator;
+import no.nav.foreldrepenger.vtp.kontrakter.organisasjon.NavAnsattDto;
+import no.nav.foreldrepenger.vtp.kontrakter.organisasjon.NavGruppeDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.TilordnetIdentDto;
+import no.nav.vtp.ansatt.AnsatteIndeks;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.ident.PersonIdent;
 
@@ -45,6 +48,24 @@ public class TestscenarioRestTjeneste {
                 .map(e -> new TilordnetIdentDto(e.getKey(), e.getValue().fnr(), e.getValue().aktørId()))
                 .toList();
         return Response.status(Response.Status.OK).entity(tilordnedeIdenter).build();
+    }
+
+    @POST
+    @Path("/grupper")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response initialiserGrupper(List<NavGruppeDto> grupper) {
+        AnsatteIndeks.leggTilGrupper(grupper, false);
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @POST
+    @Path("/ansatte")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response initialiserAnsatte(List<NavAnsattDto> ansatte) {
+        AnsatteIndeks.leggTilAnsatte(ansatte, false);
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @GET

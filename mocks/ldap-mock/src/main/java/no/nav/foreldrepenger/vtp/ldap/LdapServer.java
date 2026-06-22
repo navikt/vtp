@@ -28,6 +28,7 @@ import com.unboundid.ldif.LDIFReader;
 
 import no.nav.vtp.ansatt.AnsatteIndeks;
 import no.nav.vtp.ansatt.NavAnsatt;
+import no.nav.vtp.ansatt.NavGruppe;
 
 public class LdapServer {
     private static final Logger LOG = LoggerFactory.getLogger(LdapServer.class);
@@ -83,7 +84,7 @@ public class LdapServer {
 
     }
 
-    private static List<String> tilMemberOf(List<NavAnsatt.NavGroup> grupper) {
+    private static List<String> tilMemberOf(List<NavGruppe> grupper) {
         return grupper.stream()
                 .map(gruppe -> String.format("CN=%s,OU=AccountGroups,OU=Groups,OU=NAV,OU=BusinessUnits,DC=test,DC=local", gruppe.name()))
                 .toList();

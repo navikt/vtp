@@ -1,9 +1,7 @@
-package no.nav.foreldrepenger.fpmock.server.auth.rest.tokenx;
+package no.nav.foreldrepenger.vtp.server.auth.rest.tokenx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
@@ -16,9 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenExchangeResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenXWellKnownResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
+import jakarta.servlet.http.HttpServletRequest;
+import no.nav.foreldrepenger.vtp.server.PropertiesUtils;
 
 @ExtendWith(MockitoExtension.class)
 class TokenXTjenesteTest {
@@ -36,6 +33,7 @@ class TokenXTjenesteTest {
     @Test
     void verifiserRiktigWellKnownEndepunkt() {
         var issuer = "http://vtp:8060/rest/tokenx";
+        PropertiesUtils.initProperties();
         when(req.getScheme()).thenReturn("http");
         when(req.getServerPort()).thenReturn(8060);
         var response = tokenxRestTjeneste.wellKnown(req);

@@ -133,6 +133,6 @@ public class IdportenLoginTjeneste {
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
-        return req.getScheme() + "://vtp:" + req.getServerPort() + MockServer.CONTEXT_PATH + TJENESTE_PATH;
+        return req.getScheme() + "://vtp:" + req.getServerPort() + MockServer.getContextPath() + TJENESTE_PATH;
     }
 }
