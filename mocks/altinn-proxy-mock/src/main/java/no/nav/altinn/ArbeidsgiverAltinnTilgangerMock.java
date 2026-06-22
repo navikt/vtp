@@ -32,7 +32,8 @@ public class ArbeidsgiverAltinnTilgangerMock {
     @Produces(MediaType.APPLICATION_JSON)
     public Response hentTilganger(ArbeidsgiverAltinnTilgangerRequest request) {
         var resurser = hentRessurser(request.filter());
-        var alleOrgnr = PersonRepository.alleRegistrerteOrganisasjoner().stream()
+        var alleOrgnr = PersonRepository.alleRegistrerteOrganisasjoner()
+                .stream()
                 .map(Organisasjon::orgnummer)
                 .map(Orgnummer::value)
                 .collect(Collectors.toSet());
@@ -61,7 +62,8 @@ public class ArbeidsgiverAltinnTilgangerMock {
     }
 
     private Set<String> hentRessurser(ArbeidsgiverAltinnTilgangerRequest.FilterCriteria filter) {
-        return Stream.concat(filter.altinn2Tilganger().stream(), filter.altinn3Tilganger().stream()).collect(Collectors.toSet());
+        return Stream.concat(filter.altinn2Tilganger == null ? Stream.of() : filter.altinn2Tilganger().stream(),
+                filter.altinn3Tilganger == null ? Stream.of() : filter.altinn3Tilganger().stream()).collect(Collectors.toSet());
     }
 
     public record ArbeidsgiverAltinnTilgangerRequest(FilterCriteria filter) {
@@ -70,18 +72,13 @@ public class ArbeidsgiverAltinnTilgangerMock {
         }
     }
 
-    public record ArbeidsgiverAltinnTilgangerResponse(boolean isError,
-                                                      List<Organisasjon> hierarki,
+    public record ArbeidsgiverAltinnTilgangerResponse(boolean isError, List<Organisasjon> hierarki,
                                                       Map<String, List<String>> orgNrTilTilganger,
                                                       Map<String, List<String>> tilgangTilOrgNr) {
 
-        public record Organisasjon(String orgnr,
-                                   @JsonProperty("altinn3Tilganger") List<String> altinn3Tilganger,
-                                   @JsonProperty("altinn2Tilganger") List<String> altinn2Tilganger,
-                                   List<Organisasjon> underenheter,
-                                   String navn,
-                                   String organisasjonsform,
-                                   boolean erSlettet) {
+        public record Organisasjon(String orgnr, @JsonProperty("altinn3Tilganger") List<String> altinn3Tilganger,
+                                   @JsonProperty("altinn2Tilganger") List<String> altinn2Tilganger, List<Organisasjon> underenheter,
+                                   String navn, String organisasjonsform, boolean erSlettet) {
         }
     }
 }
