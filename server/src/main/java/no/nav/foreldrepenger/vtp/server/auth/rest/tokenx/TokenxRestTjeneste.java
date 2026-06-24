@@ -26,6 +26,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.MockServer;
+import no.nav.foreldrepenger.vtp.server.PropertiesUtils;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 
 @Path(TokenxRestTjeneste.TJENESTE_PATH)
@@ -105,7 +106,7 @@ public class TokenxRestTjeneste {
         jwtClaims.setExpirationTimeMinutesInTheFuture(EXPIRE_IN_SECONDS / 60f);
         jwtClaims.setGeneratedJwtId();
         jwtClaims.setIssuedAtToNow();
-        jwtClaims.setClaim("acr", System.getProperty("idporten.acr.scope", "idporten-loa-high"));
+        jwtClaims.setClaim("acr", PropertiesUtils.get("idporten.acr.scope", "idporten-loa-high"));
         jwtClaims.setNotBeforeMinutesInThePast(0F);
 
         var rsaJWK = JsonWebKeyHelper.getJsonWebKey();
@@ -141,7 +142,7 @@ public class TokenxRestTjeneste {
     }
 
     private static String getIssuer(HttpServletRequest req) {
-        return getBaseUrl(req) + MockServer.CONTEXT_PATH + TJENESTE_PATH;
+        return getBaseUrl(req) + MockServer.getContextPath() + TJENESTE_PATH;
     }
 
 }

@@ -19,8 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +39,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import no.nav.foreldrepenger.vtp.server.MockServer;
+import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
 import no.nav.foreldrepenger.vtp.server.auth.rest.JsonWebKeyHelper;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
 import no.nav.foreldrepenger.vtp.server.auth.rest.WellKnownResponse;
@@ -153,7 +152,7 @@ public class AzureAdRestTjeneste {
     }
 
     private static String getBaseUrl(HttpServletRequest req) {
-        return req.getScheme() + "://vtp:" + req.getServerPort() + MockServer.CONTEXT_PATH + TJENESTE_PATH;
+        return req.getScheme() + "://vtp:" + req.getServerPort() + MockServer.getContextPath() + TJENESTE_PATH;
     }
 
     @GET

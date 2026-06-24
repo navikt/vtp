@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server;
+package no.nav.foreldrepenger.vtp.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,9 +19,9 @@ import no.nav.foreldrepenger.vtp.kontrakter.hendelser.DødfødselhendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.hendelser.DødshendelseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.hendelser.FødselshendelseDto;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
+import no.nav.person.pdl.leesah.Endringstype;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.PersonRepository;
-import no.nav.person.pdl.leesah.Endringstype;
 
 @Disabled
 @ExtendWith(MockitoExtension.class)

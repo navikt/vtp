@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.fpmock.server.auth.rest.texas;
+package no.nav.foreldrepenger.vtp.server.auth.rest.texas;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,10 +17,6 @@ import org.junit.jupiter.api.Test;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Issuers;
 import no.nav.foreldrepenger.vtp.server.auth.rest.Oauth2AccessTokenResponse;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.AuthorizationDetails;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasIntrospectRequest;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
-import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasTokenRequest;
 
 @Disabled("Requires keystore to be configured for signature verification - not suitable for CI environment")
 class TexasRestTjenesteTest {

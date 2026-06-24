@@ -20,6 +20,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import no.nav.vtp.ansatt.AnsatteIndeks;
 import no.nav.vtp.ansatt.NavAnsatt;
+import no.nav.vtp.ansatt.NavGruppe;
 
 @Path("/MicrosoftGraphApi")
 public class MicrosoftGraphApiMock {
@@ -142,7 +143,7 @@ public class MicrosoftGraphApiMock {
         return ansatt.groups().stream().map(MicrosoftGraphApiMock::mapTilGroup).toList();
     }
 
-    private static Group mapTilGroup(NavAnsatt.NavGroup group) {
+    private static Group mapTilGroup(NavGruppe group) {
         return new Group(group.oid(), group.name(), group.name());
     }
 
