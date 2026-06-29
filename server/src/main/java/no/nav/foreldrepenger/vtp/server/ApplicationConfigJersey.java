@@ -44,6 +44,7 @@ import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
 import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.FpWsProxyTilbakekrevingMock;
 import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.TilbakekrevingKonsistensTjeneste;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import no.nav.foreldrepenger.vtp.server.api.hendelser.YtelsevedtakRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.pdl.PdlLeesahRestTjeneste;
@@ -150,6 +151,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(MyExceptionMapper.class);
         classes.add(CorsFilter.class); // todo legg på en sjekk på om man kjører på localhost, fjern hvis man er deployed
         classes.add(KafkaRestTjeneste.class);
+        classes.add(YtelsevedtakRestTjeneste.class);
 
         classes.add(TilbakekrevingKonsistensTjeneste.class);
 
