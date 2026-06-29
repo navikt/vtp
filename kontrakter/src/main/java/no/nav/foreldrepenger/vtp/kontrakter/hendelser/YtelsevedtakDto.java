@@ -13,10 +13,10 @@ import java.time.LocalDate;
  * @param tom             siste dag i vedtaksperioden
  * @param utbetalingsgrad utbetalingsgrad i prosent (0–100)
  */
-public record YtelsevedtakDto(
-        String fnr,
-        YtelseType ytelseType,
-        LocalDate fom,
-        LocalDate tom,
-        BigDecimal utbetalingsgrad
-) {}
+public record YtelsevedtakDto(String fnr, YtelseType ytelseType, LocalDate fom, LocalDate tom, BigDecimal utbetalingsgrad) {
+    public enum YtelseType {
+
+        PLEIEPENGER_SYKT_BARN,
+
+    }
+}
