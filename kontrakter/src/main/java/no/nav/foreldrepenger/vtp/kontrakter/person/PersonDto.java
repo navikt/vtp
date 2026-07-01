@@ -19,14 +19,18 @@ public record PersonDto(UUID uuid,
                         List<PersonstatusDto> personstatus,
                         List<MedlemskapDto> medlemskap,
                         List<AdresseDto> adresser,
+                        List<YtelserDto> ytelser,
                         Adressebeskyttelse adressebeskyttelse,
                         boolean erSkjermet,
                         InntektYtelseModellDto inntektytelse) {
 
+    public PersonDto {
+        ytelser = ytelser != null ? ytelser : List.of();
+    }
 
     private PersonDto(Builder b) {
         this(b.uuid, b.rolle, b.fødselsdato, b.dødsdato, b.språk, b.kjønn, b.geografiskTilknytning, b.familierelasjoner,
-                b.statsborgerskap, b.sivilstand, b.personstatus, b.medlemskap, b.adresser, b.adressebeskyttelse,
+                b.statsborgerskap, b.sivilstand, b.personstatus, b.medlemskap, b.adresser, b.ytelser, b.adressebeskyttelse,
                 b.erSkjermet, b.inntektytelse);
     }
 
@@ -48,6 +52,7 @@ public record PersonDto(UUID uuid,
         private List<PersonstatusDto> personstatus = new ArrayList<>();
         private List<MedlemskapDto> medlemskap = new ArrayList<>();
         private List<AdresseDto> adresser = new ArrayList<>();
+        private List<YtelserDto> ytelser = new ArrayList<>();
         private Adressebeskyttelse adressebeskyttelse;
         private boolean erSkjermet;
         private InntektYtelseModellDto inntektytelse;
@@ -118,6 +123,28 @@ public record PersonDto(UUID uuid,
 
         public Builder adresser(List<AdresseDto> adresser) {
             this.adresser = adresser;
+            return this;
+        }
+
+        public Builder ytelser(List<YtelserDto> ytelser) {
+            this.ytelser = ytelser;
+            return this;
+        }
+
+        public Builder ytelse(YtelserDto.YtelseType type, LocalDate fom, LocalDate tom) {
+            return ytelse(new YtelserDto(type, fom, tom, null, null, null));
+        }
+
+        public Builder ytelse(YtelserDto.YtelseType type, LocalDate fom, LocalDate tom, Integer dagsats) {
+            return ytelse(new YtelserDto(type, fom, tom, dagsats, null, null));
+        }
+
+        public Builder ytelse(YtelserDto.YtelseType type, LocalDate fom, LocalDate tom, Integer dagsats, Integer utbetalingsgrad) {
+            return ytelse(new YtelserDto(type, fom, tom, dagsats, utbetalingsgrad, null));
+        }
+
+        private Builder ytelse(YtelserDto ytelse) {
+            this.ytelser.add(ytelse);
             return this;
         }
 
