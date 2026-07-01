@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 import no.nav.vtp.person.arbeidsforhold.Organisasjon;
 import no.nav.vtp.person.ident.Orgnummer;
+import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.personopplysninger.Familierelasjon;
 
 public class PersonRepository {
 
@@ -37,6 +39,17 @@ public class PersonRepository {
             return PERSONER.get(fnr);
         }
         return PERSONER.get(ident);
+    }
+
+    public static PersonIdent hentBarnForPerson(String ident) {
+        var barn = hentPerson(ident).personopplysninger().familierelasjoner().stream()
+                .filter(r -> r.relasjon() == Familierelasjon.Relasjon.BARN)
+                .map(Familierelasjon::relatertTilId)
+                .toList();
+        if (barn.size() > 1) {
+            throw new IllegalStateException("Person %s har %d barn — ytelsevedtak støtter kun én pleietrengende. Bruk et testscenario med kun ett barn.".formatted(ident, barn.size()));
+        }
+        return barn.stream().findFirst().orElseThrow();
     }
 
     public static Optional<Person> hentPerson(UUID uuid) {

@@ -133,6 +133,14 @@
         </dependency>
 
         <!-- Nav biblioteker -->
+        <dependency>
+            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <artifactId>abakus-kontrakt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.felles</groupId>
+            <artifactId>felles-mapper</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>no.nav.teamdokumenthandtering</groupId>

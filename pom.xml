@@ -28,7 +28,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <vtp-kontrakter.version>2.2.1</vtp-kontrakter.version>
+        <vtp-kontrakter.version>2.2.2</vtp-kontrakter.version>
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
@@ -263,6 +263,16 @@
             </dependency>
 
             <!-- Nav Avhengigheter – kontrakt -->
+            <dependency>
+                <groupId>no.nav.foreldrepenger.abakus</groupId>
+                <artifactId>abakus-kontrakt</artifactId>
+                <version>2.4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.felles</groupId>
+                <artifactId>felles-mapper</artifactId>
+                <version>7.8.6</version>
+            </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>fp-ws-proxy-v1</artifactId>
