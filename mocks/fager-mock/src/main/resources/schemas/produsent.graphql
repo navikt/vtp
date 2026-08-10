@@ -174,6 +174,10 @@ union Mottaker =
     | NaermesteLederMottaker
     | AltinnRessursMottaker
 
+"""
+DEPRECATED: Representerer en Altinn 2-mottaker. Kun relevant for historiske notifikasjoner.
+Nye notifikasjoner bør bruke AltinnRessursMottaker.
+"""
 type AltinnMottaker {
     serviceCode: String!
     serviceEdition: String!
@@ -431,6 +435,7 @@ type Mutation {
 
         """
         Her bestemmer dere hvem som skal få se kalenderavtalen.
+        Mottaker må være gyldig iht det dere står registrert med i produsent-registeret. Mottakere må også samsvare med saken denne notifikasjonen er knyttet til.
         """
         mottakere: [MottakerInput!]!
 
@@ -492,10 +497,7 @@ type Mutation {
         virksomhetsnummer: String!
 
         """
-        Hvem som skal få se saken.
-
-        NB. At en bruker har tilgang til en sak påvirker ikke om de har tilgang
-        til en notifikasjon. De tilgangsstyres hver for seg.
+        Hvem som skal få se saken. Mottaker må være gyldig iht det dere står registrert med i produsent-registeret.
         """
         mottakere: [MottakerInput!]!
 
@@ -1335,6 +1337,7 @@ input NyBeskjedInput {
     i denne listen over mottakere.
 
     Dere må gi oss minst 1 mottaker.
+    Mottaker må være gyldig iht det dere står registrert med i produsent-registeret. Mottakere må også samsvare med saken denne notifikasjonen er knyttet til.
     """
     mottakere: [MottakerInput!]! = []
 
@@ -1356,6 +1359,7 @@ input NyOppgaveInput {
     i denne listen over mottakere.
 
     Dere må gi oss minst 1 mottaker.
+    Mottaker må være gyldig iht det dere står registrert med i produsent-registeret. Mottakere må også samsvare med saken denne notifikasjonen er knyttet til.
     """
     mottakere: [MottakerInput!]! = []
     notifikasjon: NotifikasjonInput!
@@ -1422,7 +1426,7 @@ input PaaminnelseTidspunktInput {
 input PaaminnelseEksterntVarselInput {
     sms: PaaminnelseEksterntVarselSmsInput
     epost: PaaminnelseEksterntVarselEpostInput
-    altinntjeneste: PaaminnelseEksterntVarselAltinntjenesteInput
+    altinntjeneste: PaaminnelseEksterntVarselAltinntjenesteInput @deprecated(reason: "Altinn 2 er avviklet. Bruk altinnressurs i stedet.")
     altinnressurs: PaaminnelseEksterntVarselAltinnressursInput
 }
 
@@ -1463,6 +1467,9 @@ input PaaminnelseEksterntVarselEpostInput {
     sendevindu: Sendevindu!
 }
 
+"""
+DEPRECATED: Altinn 2 er avviklet. Denne input-typen er ikke lenger gyldig og vil returnere feil ved bruk.
+"""
 input PaaminnelseEksterntVarselAltinntjenesteInput {
     mottaker: AltinntjenesteMottakerInput!
     """
@@ -1516,7 +1523,7 @@ Kun ett av feltene i inputen kan være satt.
 input EksterntVarselInput {
     sms: EksterntVarselSmsInput
     epost: EksterntVarselEpostInput
-    altinntjeneste: EksterntVarselAltinntjenesteInput
+    altinntjeneste: EksterntVarselAltinntjenesteInput @deprecated(reason: "Altinn 2 er avviklet. Bruk altinnressurs i stedet.")
     altinnressurs: EksterntVarselAltinnressursInput
 }
 
@@ -1597,21 +1604,8 @@ input EksterntVarselEpostInput {
 }
 
 """
-Med denne typen vil varsel sendes til virksomheten vha tjenesten i Altinn 2.
-APIet i Altinn 2 som brukes er <a href="https://altinn.github.io/docs/api/tjenesteeiere/soap/endepunkt-liste/#notificationagencyexternal">NotificationAgencyExternal.SendStandaloneNotiuficationBasic</a>
-
-Dette vil bli sendt med EMAIL_PREFERRED, som betyr at det mest sannsynlig blir sendt som epost, men i enkelte tilfeller
-vil bli sendt sms.
-
-De som har registrert sin kontaktadresse på underenheten (enten uten filter eller hvor filteret stemmer med tjenestekoden som oppgis) vil bli varslet.
-Den offisielle kontaktinformasjonen til overenheten vil bli varslet.
-
-Malen som benyttes er TokenTextOnly og den ser slik ut:
-<pre>
-type   | subject  | notificationText
-SMS    |          | {tittel}{innhold}
-EMAIL  | {tittel} | {innhold}
-</pre>
+DEPRECATED: Altinn 2 er avviklet. Denne input-typen er ikke lenger gyldig og vil returnere feil ved bruk.
+Bruk EksterntVarselAltinnressursInput i stedet.
 """
 input EksterntVarselAltinntjenesteInput {
     mottaker: AltinntjenesteMottakerInput!
@@ -1684,9 +1678,7 @@ input EpostKontaktInfoInput {
 }
 
 """
-Ekstern varsling på Altinn 2 tjeneste.
-Ekstern varsling på Altinn 3 ressurs er ikke implementert, men er i backloggen.
-Ta kontakt derssom dere ønsker at vi prioriterer dette.
+DEPRECATED: Altinn 2 er avviklet. Bruk AltinnRessursMottakerInput i stedet.
 """
 input AltinntjenesteMottakerInput {
     serviceCode: String!
@@ -1701,22 +1693,15 @@ Du kan spesifisere mottaker av notifikasjoner på forskjellige måter. Du skal b
 Vi har implementert det på denne måten fordi GraphQL ikke støtter union-typer som input.
 """
 input MottakerInput {
-    altinn: AltinnMottakerInput
+    altinn: AltinnMottakerInput @deprecated(reason: "Altinn 2 er avviklet. Bruk altinnRessurs i stedet.")
     altinnRessurs: AltinnRessursMottakerInput
     naermesteLeder: NaermesteLederMottakerInput
 }
 
 """
-Spesifiser mottaker ved hjelp av tilganger i Altinn 2. Enhver som har den gitte tilgangen vil
-kunne se notifikasjone.
+DEPRECATED: Altinn 2 er avviklet. Bruk AltinnRessursMottakerInput i stedet.
 
-Tilgangssjekken utføres hver gang en bruker ser på notifikasjoner. Det betyr at hvis en
-bruker mister en Altinn 2-tilgang, så vil de hverken se historiske eller nye notifikasjone knyttet til den Altinn 2-tilgangen.
-Og motsatt, hvis en bruker får en Altinn 2-tilgang, vil de se tidligere notifikasjoner for den Altinn2-tilgangen.
-
-Altinn 2 skal avvikles innen juni 2026, og denne mottakeren vil da også forsvinne. Vi anbefaler å migrere til Altinn 3, og ta i bruk
-AltinnRessursMottakerInput. Når dere migrerer til Altinn3 kan vi sørge for at brukere fortsatt får tilgang til gamle saker og notifikasjoner, så lenge vi blir informert
-om hvilke Altinn 3 ressurser som tilsvarer hvilke Altinn 2 tjenester. Ta gjerne kontakt med oss og gi beskjed.
+Denne mottakeren er ikke lenger gyldig og vil returnere UgyldigMottaker ved bruk.
 """
 input AltinnMottakerInput {
     serviceCode: String!
@@ -1958,6 +1943,8 @@ type UgyldigMerkelapp implements Error {
 
 """
 Denne feilen returneres dersom en produsent forsøker å benytte en mottaker som den ikke har tilgang til.
+Den kan også returneres dersom man angir mottaker på notifikasjon som ikke stemmer overens med mottaker på saken.
+Mottaker på sak og notifikasjon må samsvare.
 """
 type UgyldigMottaker implements Error {
     feilmelding: String!

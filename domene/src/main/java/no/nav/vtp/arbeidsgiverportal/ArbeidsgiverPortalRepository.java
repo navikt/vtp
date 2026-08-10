@@ -11,7 +11,8 @@ public interface ArbeidsgiverPortalRepository {
                String virksomhetsnummer,
                String tittel,
                String lenke,
-               String overstyrtStatus);
+               String overstyrtStatus,
+               String tilleggsinformasjon);
 
     UUID nyOppgave(String grupperingsid,
                    String merkelapp,

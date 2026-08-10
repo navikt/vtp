@@ -27,9 +27,10 @@ public class SakFagerWiring {
                         final String lenke =  environment.getArgument("lenke");
                         final String initiellStatus =  environment.getArgument("initiellStatus");
                         final String overstyrStatustekstMed =  environment.getArgument("overstyrStatustekstMed");
+                        final String tilleggsinformasjon =  environment.getArgument("tilleggsinformasjon");
 
                         LOG.info("mutation nySak for grupperingsid={}, org={}", grupperingsid, virksomhetsnummer);
-                        return oversiktCoordinator.opprettSak(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, SakFagerCoordinator.SakStatus.valueOf(initiellStatus), overstyrStatustekstMed);
+                        return oversiktCoordinator.opprettSak(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, SakFagerCoordinator.SakStatus.valueOf(initiellStatus), overstyrStatustekstMed, tilleggsinformasjon);
                     } catch (FagerFunctionalException e) {
                         return DataFetcherResult.newResult()
                                 .data(null)
