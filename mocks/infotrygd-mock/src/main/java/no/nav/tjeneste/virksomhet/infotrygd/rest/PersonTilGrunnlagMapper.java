@@ -4,6 +4,7 @@ import java.util.List;
 
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.ytelse.Beregningsgrunnlag;
+import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -18,6 +19,10 @@ public class PersonTilGrunnlagMapper {
         }
         return person.ytelser().stream()
                 .filter(ytelse -> ytelse.ytelse() == YtelseType.SYKEPENGER)
+                // Default (kilde=null) rutes til Spøkelse-mocken, ikke hit. Kun eksplisitt
+                // LegacyKilde.INFOTRYGD skal gi et Infotrygd-vedtak, for å unngå at samme sykepengeperiode
+                // dukker opp dobbelt hos fp-abakus (som spør begge kilder for hver forespørsel).
+                .filter(ytelse -> ytelse.kilde() == LegacyKilde.INFOTRYGD)
                 .map(ytelse -> tilGrunnlag(TemaKode.SP, ytelse))
                 .toList();
     }

@@ -57,6 +57,7 @@ import no.nav.vtp.person.personopplysninger.Rolle;
 import no.nav.vtp.person.personopplysninger.Sivilstand;
 import no.nav.vtp.person.personopplysninger.Statsborgerskap;
 import no.nav.vtp.person.skatt.Skatteopplysning;
+import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -221,11 +222,11 @@ public class PersonMapper {
         if (vedtak.meldekort() != null && !vedtak.meldekort().isEmpty()) {
             // Bruk meldekort fom/tom direkte som Ytelse fom/tom
             return vedtak.meldekort().stream()
-                    .map(mk -> new Ytelse(ytelseType, mk.fom(), mk.tom(), mk.dagsats(), mk.beløp(), Collections.emptyList()))
+                    .map(mk -> new Ytelse(ytelseType, mk.fom(), mk.tom(), mk.dagsats(), mk.beløp(), null, LegacyKilde.ARENA, Collections.emptyList()))
                     .toList();
         }
 
-        return List.of(new Ytelse(ytelseType, vedtak.fom(), vedtak.tom(), vedtak.dagsats(), 0, Collections.emptyList()));
+        return List.of(new Ytelse(ytelseType, vedtak.fom(), vedtak.tom(), vedtak.dagsats(), 0, null, LegacyKilde.ARENA, Collections.emptyList()));
     }
 
     private static YtelseType tilYtelseTypeFraArenaTema(ArenaSakerDto.YtelseTema tema) {
@@ -262,6 +263,11 @@ public class PersonMapper {
                 grunnlag.tom(),
                 null, // Todo: Har vi en dagsats?
                 totalUtbetalingsgrad,
+                totalUtbetalingsgrad,
+                // Eksplisitt INFOTRYGD - v1 sin GrunnlagDto har kun Infotrygd som kilde. Viktig for
+                // riktig ruting til Infotrygd-mock fremfor Spøkelse-mock (default/null rutes til
+                // Spøkelse), se PersonTilGrunnlagMapper/PersonTilSykepengeVedtakMapper.
+                LegacyKilde.INFOTRYGD,
                 Collections.emptyList() // TODO: TREX til denne?
         );
     }
@@ -274,7 +280,7 @@ public class PersonMapper {
     }
 
     private static Ytelse tilYtelserFraPesys() {
-        return new Ytelse(YtelseType.UFØREPENSJON, LocalDate.now().minusYears(5), null, null, null, null);
+        return new Ytelse(YtelseType.UFØREPENSJON, LocalDate.now().minusYears(5), null, null, null, null, LegacyKilde.PESYS, null);
     }
 
     private static no.nav.vtp.person.personopplysninger.Språk tilSpråk(Språk språk) {
