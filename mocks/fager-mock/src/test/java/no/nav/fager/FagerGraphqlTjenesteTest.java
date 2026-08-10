@@ -38,6 +38,7 @@ class FagerGraphqlTjenesteTest {
         var lenke = "https://arbeidsgiver.intern.dev.nav.no/fp-im-dialog/" + forespørselUuid;
         var status = "UNDER_BEHANDLING";
         var overstyrtStatusTekst = "";
+        var tilleggsinfo = "Utført i Altinn eller i bedriftens lønns- og personalsystem";
 
         var request = GraphQLRequest.builder()
                 .withQuery("mutation nySak { nySak: nySak(grupperingsid: \"" + forespørselUuid
@@ -46,13 +47,14 @@ class FagerGraphqlTjenesteTest {
                         + "\", mottakere: [ { altinn: { serviceCode: \"4936\", serviceEdition: \"1\" } } ], tittel: \"" + tittel
                         + "\", lenke: \"" + lenke
                         + "\", initiellStatus: " + status
-                        + ", overstyrStatustekstMed: \"" + overstyrtStatusTekst + "\"){ __typename ...on NySakVellykket { id } ...on UgyldigMerkelapp { feilmelding } ...on UgyldigMottaker { feilmelding } ...on DuplikatGrupperingsid { feilmelding } ...on DuplikatGrupperingsidEtterDelete { feilmelding } ...on UkjentProdusent { feilmelding } ...on UkjentRolle { feilmelding } } }")
+                        + ", overstyrStatustekstMed: \"" + overstyrtStatusTekst
+                        + "\", tilleggsinformasjon: \"" + tilleggsinfo + "\"){ __typename ...on NySakVellykket { id } ...on UgyldigMerkelapp { feilmelding } ...on UgyldigMottaker { feilmelding } ...on DuplikatGrupperingsid { feilmelding } ...on DuplikatGrupperingsidEtterDelete { feilmelding } ...on UkjentProdusent { feilmelding } ...on UkjentRolle { feilmelding } } }")
                 .withOperationName("nySak")
                 .build();
 
         // Mock repo
         var sakId = UUID.randomUUID();
-        when(arbeidsgiverPortalRepository.nySak(forespørselUuid, merkelap, orgnr, tittel, lenke, overstyrtStatusTekst)).thenReturn(sakId);
+        when(arbeidsgiverPortalRepository.nySak(forespørselUuid, merkelap, orgnr, tittel, lenke, overstyrtStatusTekst, tilleggsinfo)).thenReturn(sakId);
 
         // Act
         var result = graphQLTjeneste.sak(request).toSpecification();
