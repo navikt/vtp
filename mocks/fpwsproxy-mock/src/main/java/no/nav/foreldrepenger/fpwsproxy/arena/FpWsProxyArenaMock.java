@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
 import no.nav.vtp.person.PersonRepository;
+import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -37,6 +38,9 @@ public class FpWsProxyArenaMock {
         var person = PersonRepository.hentPerson(arenaRequestDto.ident());
         return person.ytelser().stream()
                 .filter(ytelse -> Set.of(YtelseType.DAGPENGER, YtelseType.ARBEIDSAVKLARINGSPENGER).contains(ytelse.ytelse()))
+                // Arena-mocken skal kun svare for ytelser som er registrert med gammel Arena-kilde
+                // (v1-kontrakten). V2 ruter AAP/DAGPENGER til Kelvin/DPSAK og skal ikke dukke opp her.
+                .filter(ytelse -> ytelse.kilde() == LegacyKilde.ARENA)
                 .filter(ytelse -> overlapperMedPeriode(arenaRequestDto, ytelse))
                 .map(YtelseTilMeldekortMapper::tilMeldekort)
                 .toList();

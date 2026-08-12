@@ -238,7 +238,7 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static List<Ytelse> lagSøkerYtelser() {
         return List.of(new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER,
-                LocalDate.now().minusMonths(12), LocalDate.now().plusMonths(2), 1000, 10_000,
+                LocalDate.now().minusMonths(12), LocalDate.now().plusMonths(2), 1000, 10_000, null, null,
                 List.of(new Beregningsgrunnlag(Beregningsgrunnlag.Kategori.ARBEIDSTAKER, null))));
     }
 
