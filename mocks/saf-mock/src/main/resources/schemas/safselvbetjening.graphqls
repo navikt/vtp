@@ -328,6 +328,10 @@ enum Kanal {
     # * Brukes for utgående journalposter.
     DPV
 
+    # Brevet er sendt til eFormidling Digital post offentlig
+    # * Brukes for utgående journalposter.
+    DPO
+
     # Forsendelsen er mottatt på e-post.
     # * Brukes for inngående journalposter.
     E_POST
