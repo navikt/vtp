@@ -20,7 +20,7 @@ type Query {
     hentGeografiskTilknytning(ident: ID!): GeografiskTilknytning
     hentGeografiskTilknytningBolk(identer: [ID!]!): [hentGeografiskTilknytningBolkResult!]!
     sokPerson(criteria:[Criterion], paging:Paging): PersonSearchResult
-    sokAdresse(criteria:[Criterion], paging:Paging): AdresseSearchResult
+    sokAdresse(criteria:[Criterion], paging:Paging, aggregations:[Aggregation]): AdresseSearchResult
     forslagAdresse(parameters:CompletionParameters): AdresseCompletionResult
     hentAdresse(matrikkelId: ID!): KartverketAdresse
 }
@@ -723,6 +723,10 @@ input Criterion {
     searchHistorical:Boolean
 }
 
+input Aggregation {
+    fieldName:String
+    maxResults:Int = 10
+}
 
 input SearchRule {
     # Sjekker om feltet finnes / at det ikke har en null verdi.
@@ -834,6 +838,7 @@ type SearchMatch {
 }
 type AdresseSearchResult {
     hits : [AdresseSearchHit!]!
+    aggregations: [AggregationResult!]
     pageNumber:Int,
     totalPages:Int
     totalHits:Int
@@ -844,6 +849,16 @@ type AdresseSearchHit {
     matrikkeladresse : MatrikkeladresseResult
     score :Float
 }
+
+type AggregationResult {
+    fieldName:String
+    values: [AggregationValue!]
+}
+type AggregationValue {
+    value:String
+    count:Long
+}
+
 type VegadresseResult {
     matrikkelId:String
     husnummer:Int
