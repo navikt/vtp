@@ -22,9 +22,9 @@ import no.nav.abakus.vedtak.ytelse.Status;
 import no.nav.abakus.vedtak.ytelse.Ytelser;
 import no.nav.abakus.vedtak.ytelse.v1.YtelseV1;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.Anvisning;
+import no.nav.foreldrepenger.util.JacksonObjectMapperTestscenario;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.kontrakter.hendelser.YtelsevedtakDto;
-import no.nav.vedtak.mapper.json.DefaultJsonMapper;
 import no.nav.vtp.person.PersonRepository;
 import no.nav.vtp.person.ident.PersonIdent;
 
@@ -87,7 +87,7 @@ public class YtelsevedtakRestTjeneste {
         ytelse.setAnvist(List.of(anvisning));
         ytelse.setTilleggsopplysninger(mapTilleggsopplysninger(dto));
 
-        return DefaultJsonMapper.toJson(ytelse);
+        return JacksonObjectMapperTestscenario.writeValueAsString(ytelse);
     }
 
     private static String mapTilleggsopplysninger(YtelsevedtakDto dto) {
@@ -99,7 +99,7 @@ public class YtelsevedtakRestTjeneste {
                         barnAktørId,
                         List.of(new PsbTilleggsopplysninger.Innleggelsesperiode(dto.fom(), dto.tom()))
                 );
-                yield DefaultJsonMapper.toJson(opplysninger);
+                yield JacksonObjectMapperTestscenario.writeValueAsString(opplysninger);
             }
         };
     }
