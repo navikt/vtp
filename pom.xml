@@ -34,7 +34,7 @@
         <!--    Eksterne avhengigheter    -->
         <graphql-java.version>26.0</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
-        <avro.version>1.12.1</avro.version>
+        <avro.version>1.12.2</avro.version>
     </properties>
 
     <repositories>
@@ -230,7 +230,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>8.3.0</version>
+                <version>8.3.1</version>
             </dependency>
 
             <dependency>
