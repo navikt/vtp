@@ -27,7 +27,6 @@ jobs:
     with:
       build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
-      use-reader: true
     secrets: inherit
 
   build-push-docker-image-ghcr:
