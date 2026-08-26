@@ -13,4 +13,3 @@ jobs:
     with:
       release-version: ${{ github.event.release.tag_name }}
       working-directory: ./kontrakter # Sett working directory til kontrakter-mappen
-    secrets: inherit
