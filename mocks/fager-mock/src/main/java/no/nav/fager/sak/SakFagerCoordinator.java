@@ -14,7 +14,8 @@ public interface SakFagerCoordinator {
                              String tittel,
                              String lenke,
                              SakStatus initiellStatus,
-                             String overstyrStatustekstMed);
+                             String overstyrStatustekstMed,
+                             String tilleggsinformasjon);
 
     NyStatusSakVellykket nyStatusSak(String id,
                                      SakModell.SakStatus status,

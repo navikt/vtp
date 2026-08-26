@@ -30,8 +30,9 @@ public class SakFagerCoordinatorImpl implements SakFagerCoordinator {
                                     String tittel,
                                     String lenke,
                                     SakStatus initiellStatus,
-                                    String overstyrStatustekstMed) {
-        var sakUuid = arbeidsgiverPortalRepository.nySak(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, overstyrStatustekstMed);
+                                    String overstyrStatustekstMed,
+                                    String tilleggsinformasjon) {
+        var sakUuid = arbeidsgiverPortalRepository.nySak(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, overstyrStatustekstMed, tilleggsinformasjon);
         LOG.info("FAGER: nySak med id: {}", sakUuid);
         return new NySakVellykket(sakUuid.toString());
     }

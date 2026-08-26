@@ -512,6 +512,9 @@ type DokumentInfo {
     # Uttrykker at tilgangen til metadata for dette dokumentet er begrenset, og at dataene ikke skal brukes i ordinær saksbehandling.
     skjerming: String
 
+    # Benyttes av Pesys for å angi at dokumentet kun kan vises til bruker ved innlogging på nivå 4. Feltet skal kun brukes av pensjonsområdet.
+    sensitivtPselv: Boolean!
+
     # Liste over andre dokumenter som også befinner seg inne i den fysiske filen som dokumentinfo-objektet peker på.
     logiskeVedlegg: [LogiskVedlegg]!
 
@@ -576,7 +579,10 @@ enum SkjermingType {
     POL
 
     # Indikerer at det har blitt gjort en feil under mottak, journalføring eller brevproduksjon, slik at journalposten eller dokumentene er markert for sletting.
-    FEIL
+    FEIL @deprecated(reason: "Denne verdien er erstattet av ARK")
+
+    # Indikerer at det er fattet et vedtak etter arkivloven. Det skjer fordi det har blitt gjort en feil under mottak, journalføring eller brevproduksjon, slik at journalposten eller dokumentene er markert for sletting.
+    ARK
 }
 # Beskriver en type dato som kan være relevant for en journalpost, for eksempel **DATO_OPPRETTET**. Ulike datotyper returneres for ulike journalstatuser.
 enum Datotype {

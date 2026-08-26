@@ -47,14 +47,15 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
                       String virksomhetsnummer,
                       String tittel,
                       String lenke,
-                      String overstyrtStatus) {
+                      String overstyrtStatus,
+                      String tilleggsinformasjon) {
         Objects.requireNonNull(grupperingsid, "grupperingsid");
         if (sakerGrupperingsId.containsKey(grupperingsid)) {
             LOG.warn("FAGER repo: saken finnes allerede: {}", grupperingsid);
             throw new IllegalStateException("DuplikatGrupperingsid");
         }
         var uuid = UUID.randomUUID();
-        var nySak = opprettSak(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, overstyrtStatus, uuid);
+        var nySak = opprettSak(grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, overstyrtStatus, tilleggsinformasjon, uuid);
         saker.put(uuid, nySak);
         sakerGrupperingsId.put(grupperingsid, nySak);
         return uuid;
@@ -66,8 +67,9 @@ public class ArbeidsgiverPortalRepositoryImpl implements ArbeidsgiverPortalRepos
                                         String tittel,
                                         String lenke,
                                         String overstyrtStatus,
+                                        String tilleggsinformasjon,
                                         UUID uuid) {
-        return new SakModell(uuid, grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, SakModell.SakStatus.UNDER_BEHANDLING, overstyrtStatus, null,
+        return new SakModell(uuid, grupperingsid, merkelapp, virksomhetsnummer, tittel, lenke, SakModell.SakStatus.UNDER_BEHANDLING, overstyrtStatus, tilleggsinformasjon,
                 LocalDateTime.now(), null);
     }
 

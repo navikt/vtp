@@ -13,14 +13,10 @@ jobs:
     name: Kontrakt
     permissions:
       contents: read
-      packages: write
-      id-token: write
-      pull-requests: read
     uses: navikt/fp-gha-workflows/.github/workflows/build-feature.yml@main  # ratchet:exclude
     with:
       java-version: '25'
       working-directory: ./kontrakter # Sett working directory til kontrakt-mappen
-    secrets: inherit
 
   release-drafter:
     name: Update
@@ -30,4 +26,3 @@ jobs:
       contents: write
       pull-requests: read
     uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main  # ratchet:exclude
-    secrets: inherit
