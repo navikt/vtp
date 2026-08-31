@@ -37,7 +37,7 @@ public class PersonTilSykepengeVedtakMapper {
         var utbetaling = new SykepengeUtbetaling(ytelse.fom(), ytelse.tom(), tilGrad(ytelse));
         // Vedtaksreferanse har ingen semantisk betydning for testdata - trenger bare å være unik nok
         // til at konsumenter kan skille vedtak fra hverandre. Bruker fom som grunnlag for determinisme.
-        var vedtaksreferanse = "SPOKELSE-" + ytelse.fom();
+        var vedtaksreferanse = ("SPOKELSE" + ytelse.fom()).replace("-", "");
         var vedtattTidspunkt = ytelse.fom() != null ? ytelse.fom().atStartOfDay() : null;
         return new SykepengeVedtak(vedtaksreferanse, List.of(utbetaling), vedtattTidspunkt);
     }
