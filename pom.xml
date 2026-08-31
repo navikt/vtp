@@ -276,7 +276,7 @@
             <dependency>
                 <groupId>no.nav.teamdokumenthandtering</groupId>
                 <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
-                <version>1.1.6</version>
+                <version>1.1.11</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
