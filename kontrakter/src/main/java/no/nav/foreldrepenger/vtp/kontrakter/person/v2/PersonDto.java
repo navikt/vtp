@@ -5,7 +5,6 @@ import java.util.List;
 
 /**
  * v2 av scenario-kontrakten for person-oppsett. Eksponeres via POST /rest/api/testscenarios/v2/personer.
- * v1 (no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto, /opprett) berøres ikke.
  */
 public record PersonDto(PersonopplysningerDto personopplysninger,
                         List<ArbeidsforholdDto> arbeidsforhold,

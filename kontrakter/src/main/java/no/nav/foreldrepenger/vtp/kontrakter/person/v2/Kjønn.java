@@ -1,4 +1,6 @@
 package no.nav.foreldrepenger.vtp.kontrakter.person.v2;
 
-public record StatsborgerskapDto(String land) {
+public enum Kjønn {
+    M,
+    K
 }
