@@ -32,7 +32,7 @@
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <graphql-java.version>26.0</graphql-java.version>
+        <graphql-java.version>26.1</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
         <avro.version>1.12.2</avro.version>
     </properties>
@@ -276,7 +276,7 @@
             <dependency>
                 <groupId>no.nav.teamdokumenthandtering</groupId>
                 <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
-                <version>1.1.6</version>
+                <version>1.1.11</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

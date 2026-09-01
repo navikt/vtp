@@ -64,6 +64,7 @@ public class JournalpostBuilder {
             Date mottatt = Date.from( modell.getMottattDato().atZone(ZoneId.systemDefault()).toInstant());
             journalpost.setRelevanteDatoer(List.of(
                     new RelevantDato(mottatt, Datotype.DATO_JOURNALFOERT),
+                    new RelevantDato(mottatt, Datotype.DATO_DOKUMENT),
                     new RelevantDato(mottatt, Datotype.DATO_REGISTRERT)));
         }
         journalpost.setBehandlingstema(modell.getBehandlingTema());
