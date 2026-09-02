@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.vtp.kontrakter.person.v2;
 
 import java.time.LocalDate;
 
-import no.nav.foreldrepenger.vtp.kontrakter.person.Permisjonstype;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Permisjonstype;
 
 public record PermisjonDto(Integer stillingsprosent,
                            LocalDate fomGyldighetsperiode,
