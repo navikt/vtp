@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 
 import no.nav.tjeneste.virksomhet.dpsak.DagpengerRettighetsperioderDto.Rettighetsperiode;
 import no.nav.vtp.person.Person;
-import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -35,9 +34,6 @@ public class PersonTilDagpengerVedtakMapper {
         }
         return person.ytelser().stream()
                 .filter(ytelse -> ytelse.ytelse() == YtelseType.DAGPENGER)
-                // DPSAK-mocken er v2-kilden for dagpenger. Eksplisitte gamle kilder (v1) skal
-                // routes til Arena-mocken i stedet, for å unngå dobbelttelling hos fp-abakus.
-                .filter(ytelse -> ytelse.kilde() != LegacyKilde.ARENA)
                 .filter(ytelse -> overlapper(ytelse, fraOgMedDato, tilOgMedDato))
                 .toList();
     }
