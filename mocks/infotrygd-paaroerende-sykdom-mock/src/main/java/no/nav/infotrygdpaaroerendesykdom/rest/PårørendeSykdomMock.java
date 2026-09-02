@@ -2,7 +2,7 @@ package no.nav.infotrygdpaaroerendesykdom.rest;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/paaroerendeSykdom")
 @RequestScoped
+// Endepunktene beholdes fordi abakus fortsatt kaller dem for både FP- og K9-flyter.
 public class PårørendeSykdomMock {
 
     @SuppressWarnings("unused")
@@ -21,10 +22,8 @@ public class PårørendeSykdomMock {
     @Path("/saker")
     @Produces({"application/json"})
     public Response hentSakUsingPost(PersonRequest personRequest) {
-        var result = personRequest.fnr().stream()
-                .flatMap(fnr -> Stream.of(new SakResult(List.of(), List.of())))
-                .toList();
-        return Response.ok(result).build();
+        Objects.requireNonNull(personRequest.fnr());
+        return Response.ok(List.of()).build();
     }
 
     @SuppressWarnings("unused")

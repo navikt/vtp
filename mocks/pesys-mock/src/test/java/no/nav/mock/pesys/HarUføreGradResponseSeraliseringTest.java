@@ -25,7 +25,7 @@ class HarUføreGradResponseSeraliseringTest {
                         YtelseType.UFØREPENSJON,
                         LocalDate.now().minusYears(1),
                         LocalDate.now().plusYears(1),
-                        0, 0, null, null, List.of()
+                        0, null
                 )))
                 .build();
         PersonRepository.leggTilPerson(søkerMedUføre);

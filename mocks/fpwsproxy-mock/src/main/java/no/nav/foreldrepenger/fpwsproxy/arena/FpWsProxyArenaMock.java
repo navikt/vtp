@@ -1,10 +1,6 @@
 package no.nav.foreldrepenger.fpwsproxy.arena;
 
 import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -14,47 +10,14 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
-import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
-import no.nav.vtp.person.PersonRepository;
-import no.nav.vtp.person.ytelse.LegacyKilde;
-import no.nav.vtp.person.ytelse.Ytelse;
-import no.nav.vtp.person.ytelse.YtelseType;
 
 @Path("/api/fpwsproxy/arena")
+// Endepunktet beholdes fordi abakus fortsatt kaller det for både FP- og K9-flyter.
 public class FpWsProxyArenaMock {
-    private static final Logger LOG = LoggerFactory.getLogger(FpWsProxyArenaMock.class);
-
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response henterDagpengerOgAAP(@Valid ArenaRequestDto arenaRequestDto) {
-        LOG.info("Henter meldekort for {} for perioden {} til {}", arenaRequestDto.ident(), arenaRequestDto.fom(), arenaRequestDto.tom());
-        var meldekort = hentMeldekort(arenaRequestDto);
-        LOG.info("Hentet {} meldekort for {} i oppgitt periode", meldekort.size(), arenaRequestDto.ident());
-        return Response.ok(meldekort).build();
-    }
-
-    public List<MeldekortUtbetalingsgrunnlagSakDto> hentMeldekort(ArenaRequestDto arenaRequestDto) {
-        var person = PersonRepository.hentPerson(arenaRequestDto.ident());
-        return person.ytelser().stream()
-                .filter(ytelse -> Set.of(YtelseType.DAGPENGER, YtelseType.ARBEIDSAVKLARINGSPENGER).contains(ytelse.ytelse()))
-                // Arena-mocken skal kun svare for ytelser som er registrert med gammel Arena-kilde
-                // (v1-kontrakten). V2 ruter AAP/DAGPENGER til Kelvin/DPSAK og skal ikke dukke opp her.
-                .filter(ytelse -> ytelse.kilde() == LegacyKilde.ARENA)
-                .filter(ytelse -> overlapperMedPeriode(arenaRequestDto, ytelse))
-                .map(YtelseTilMeldekortMapper::tilMeldekort)
-                .toList();
-    }
-
-    public boolean overlapperMedPeriode(ArenaRequestDto arenaRequestDto, Ytelse ytelse) {
-        var requestFom = arenaRequestDto.fom();
-        var requestTom = arenaRequestDto.tom();
-        if (requestFom == null && requestTom == null) {
-            return true;
-        }
-
-        var starterEtterRequest = requestTom != null && ytelse.fom().isAfter(requestTom);
-        var slutterFørRequest = requestFom != null && ytelse.tom() != null && ytelse.tom().isBefore(requestFom);
-        return !(starterEtterRequest || slutterFørRequest);
+        return Response.ok(List.of()).build();
     }
 }

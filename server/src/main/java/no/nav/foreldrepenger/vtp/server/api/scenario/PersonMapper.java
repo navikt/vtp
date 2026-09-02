@@ -346,15 +346,7 @@ public class PersonMapper {
                         dto.fom(),
                         dto.tom(),
                         dto.dagsats(),
-                        // utbetalt (kroner) har ikke noe ekvivalent i v2-kontrakten - v2 ruter
-                        // alltid til nye mocker (Spøkelse, Kelvin, DPSAK).
-                        null,
-                        dto.utbetalingsgrad(),
-                        // V2-kontrakten har ikke kilde-felt. Alle v2-ytelser går til nye mocker;
-                        // vi lar kilde være null her og stoler på at nye mocker filtrerer bort
-                        // gamle kilder (LegacyKilde.ARENA/INFOTRYGD/PESYS) når de kalles.
-                        null,
-                        List.of()
+                        dto.utbetalingsgrad()
                 ))
                 .toList();
     }

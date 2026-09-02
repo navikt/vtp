@@ -29,7 +29,6 @@ import no.nav.vtp.person.personopplysninger.Rolle;
 import no.nav.vtp.person.personopplysninger.Sivilstand;
 import no.nav.vtp.person.personopplysninger.Språk;
 import no.nav.vtp.person.personopplysninger.Statsborgerskap;
-import no.nav.vtp.person.ytelse.Beregningsgrunnlag;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -238,8 +237,7 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static List<Ytelse> lagSøkerYtelser() {
         return List.of(new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER,
-                LocalDate.now().minusMonths(12), LocalDate.now().plusMonths(2), 1000, 10_000, null, null,
-                List.of(new Beregningsgrunnlag(Beregningsgrunnlag.Kategori.ARBEIDSTAKER, null))));
+                LocalDate.now().minusMonths(12), LocalDate.now().plusMonths(2), 1000, null));
     }
 
     // ---------------------------------------------------------------------------
