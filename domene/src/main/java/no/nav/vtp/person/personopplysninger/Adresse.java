@@ -2,11 +2,9 @@ package no.nav.vtp.person.personopplysninger;
 
 import java.time.LocalDate;
 
-import com.neovisionaries.i18n.CountryCode;
-
 public record Adresse(AdresseType adresseType,
                       String matrikkelId, // Brukes eksempelvis til å registere forskjellig adresse på barn/forelder eller på foreldre.
-                      CountryCode land,
+                      String land,
                       LocalDate fom,
                       LocalDate tom) {
 

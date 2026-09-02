@@ -44,25 +44,26 @@ Imaget blir da tilgjengelig som vtp:latest
 ##### Hente docker-image bygget i pipe: 
 docker pull ghcr.io/navikt/vtp (dette krever at en allerede logget inn med docker hos ghcr.io)
 
-## Opprette testdata 
-Testscenarios opprettes ved hjelp av `TestscenarioRestTjeneste.java`. Her sende man inn en JSON-string av testpersonen(e),
-testpersonen blir instansiert i VTP og tilgjengliggjort i alle mockene, og den instansierte testpersonen returneres.
+## Opprette testdata
+Personer opprettes med `POST /rest/api/testscenarios/v2/personer`. Endepunktet tar imot en liste med syntetiske
+testpersoner, gjør dem tilgjengelige i mockene og returnerer tildelte identer for hver person.
 
-JSON objektet har følgende struktur og godtar at en eller flere felter mangler:
+Minimal request body:
 
 ```json5
-{
-     "scenario-navn": "",
-     "personopplysninger": {  },
-     "inntektytelse-annenpart": {  },
-     "inntektytelse-søker": {  },
-     "organisasjon": {  },
-     "vars": {  }
- }
+[
+  {
+    "personopplysninger": {
+      "uuid": "de305d54-75b4-431b-adb2-eb6b9e546014",
+      "rolle": "MOR",
+      "fødselsdato": "1990-01-01",
+      "språk": "NB",
+      "kjønn": "K",
+      "erSkjermet": false
+    }
+  }
+]
 ```
-Eksempel på hvordan en kan gjøre dette befinner seg i `model/src/test/ScenarioTest.java` med hjelpeklassen 
-`model/src/test/TestscenarioHenter.java`. Hjelpeklassen leser av .json filer og oversetter det til en JSON streng som
-kan bli brukt i requesten.
 
 ## Kjør tester
 * Automatiske tester for FPSAK (og andre FP*-familieapplikasjoner) ligger i eget repo på GitHub (private): [fpsak-autotest](https://github.com/navikt/fpsak-autotest)
@@ -83,4 +84,3 @@ NO_NAV_MODIG_SECURITY_APPCERT_PASSWORD
 
 ## Konfigurere nye tjenester
 Se ApplicationConfig for liste over registrerte REST-tjenester. Nye REST-tjenester registreres her.     
-

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.neovisionaries.i18n.CountryCode;
-
 import no.nav.pdl.Adressebeskyttelse;
 import no.nav.pdl.AdressebeskyttelseGradering;
 import no.nav.pdl.Bostedsadresse;
@@ -38,6 +36,7 @@ import no.nav.vtp.person.Person;
 import no.nav.vtp.person.ident.PersonIdent;
 import no.nav.vtp.person.personopplysninger.Adresse;
 import no.nav.vtp.person.personopplysninger.Familierelasjon;
+import no.nav.vtp.person.personopplysninger.Landkode;
 import no.nav.vtp.person.personopplysninger.Personstatus;
 import no.nav.vtp.person.personopplysninger.Rolle;
 
@@ -147,18 +146,18 @@ public class PersonMapper {
                     .setMaster("PDL")
                     .setHistorisk(false)
                     .build());
-        if (!CountryCode.NO.equals(adresse.land())) {
+        if (!Landkode.NORGE.equals(adresse.land())) {
             bostedsadresseBuilder.setUtenlandskAdresse(UtenlandskAdresse.builder()
                     .setAdressenavnNummer("Utenlandsveien 1")
                     .setPostkode("1234")
-                    .setLandkode(adresse.land().getAlpha3())
+                    .setLandkode(adresse.land())
                     .build());
         }
         return bostedsadresseBuilder.build();
     }
 
     private static Kontaktadresse tilKontaktadresse(Adresse adresse) {
-        if (CountryCode.NO.equals(adresse.land())) {
+        if (Landkode.NORGE.equals(adresse.land())) {
             return Kontaktadresse.builder()
                 .setType(KontaktadresseType.Innland)
                 .setPostadresseIFrittFormat(PostadresseIFrittFormat.builder()
@@ -173,7 +172,7 @@ public class PersonMapper {
                 .setUtenlandskAdresse(UtenlandskAdresse.builder()
                     .setAdressenavnNummer("Utenlandsveien 1")
                     .setPostkode("1234")
-                    .setLandkode(adresse.land().getAlpha3())
+                    .setLandkode(adresse.land())
                     .build())
                 .build();
         }
@@ -278,7 +277,7 @@ public class PersonMapper {
         return person.personopplysninger().statsborgerskap().stream()
                 .map(s -> {
                     var statsborgerskap = new Statsborgerskap();
-                    statsborgerskap.setLand(s.land().getAlpha3());
+                    statsborgerskap.setLand(s.land());
                     return statsborgerskap;
                 })
                 .toList();
@@ -337,5 +336,3 @@ public class PersonMapper {
         return Date.from(dateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 }
-
-

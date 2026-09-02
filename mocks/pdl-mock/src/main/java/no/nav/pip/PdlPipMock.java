@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.neovisionaries.i18n.CountryCode;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
@@ -19,6 +17,7 @@ import no.nav.vtp.person.ident.PersonIdent;
 import no.nav.vtp.person.personopplysninger.Adresser;
 import no.nav.vtp.person.personopplysninger.Familierelasjon;
 import no.nav.vtp.person.personopplysninger.GeografiskTilknytning;
+import no.nav.vtp.person.personopplysninger.Landkode;
 
 
 @Path("/api/pdl-pip-api")
@@ -69,7 +68,7 @@ public class PdlPipMock {
                 tilGtType(geografiskTilknytning),
                 null,
                 null,
-                geografiskTilknytning.land().getAlpha3(),
+                geografiskTilknytning.land(),
                 null
         );
     }
@@ -77,7 +76,7 @@ public class PdlPipMock {
     private static TilgangPersondataDto.GtType tilGtType(GeografiskTilknytning geografiskTilknytning) {
 
 
-        if (!CountryCode.NO.equals(geografiskTilknytning.land())) {
+        if (!Landkode.NORGE.equals(geografiskTilknytning.land())) {
             return TilgangPersondataDto.GtType.UTLAND;
         }
         return switch (geografiskTilknytning.type()) {
