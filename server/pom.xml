@@ -193,10 +193,6 @@
             <artifactId>jul-to-slf4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.neovisionaries</groupId>
-            <artifactId>nv-i18n</artifactId>
-        </dependency>
-        <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>domene</artifactId>
             <classifier>tests</classifier>
