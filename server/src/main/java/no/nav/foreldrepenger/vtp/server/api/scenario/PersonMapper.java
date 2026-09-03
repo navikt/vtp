@@ -13,7 +13,6 @@ import no.nav.foreldrepenger.vtp.kontrakter.person.v2.AdresseDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.ArbeidsavtaleDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.ArbeidsforholdDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.ArbeidsgiverDto;
-import no.nav.foreldrepenger.vtp.kontrakter.person.v2.BrregDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.FamilierelasjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.InntektsperiodeDto;
@@ -25,6 +24,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonopplysningerDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonstatusDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PrivatArbeidsgiverDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.RegistrertNæringsvirksomhetDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.SkatteopplysningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.SivilstandDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.StatsborgerskapDto;
@@ -80,12 +80,13 @@ public class PersonMapper {
     }
 
     private static List<RegistrertNæringsvirksomhet> tilRegistrerteNæringsvirksomheter(PersonDto person) {
-        return person.brreg().virksomheter().stream()
+        return person.registrerteNæringsvirksomheter().stream()
                 .map(PersonMapper::tilRegistrertNæringsvirksomhet)
                 .toList();
     }
 
-    private static RegistrertNæringsvirksomhet tilRegistrertNæringsvirksomhet(BrregDto.VirksomhetDto virksomhet) {
+    private static RegistrertNæringsvirksomhet tilRegistrertNæringsvirksomhet(
+            RegistrertNæringsvirksomhetDto virksomhet) {
         return new RegistrertNæringsvirksomhet(
                 virksomhet.organisasjonsnummer(),
                 virksomhet.navn(),

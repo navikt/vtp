@@ -11,7 +11,6 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.AdresseDto;
-import no.nav.foreldrepenger.vtp.kontrakter.person.v2.BrregDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.InntektsperiodeDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn;
@@ -19,6 +18,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.person.v2.MedlemskapDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.OrganisasjonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonopplysningerDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.RegistrertNæringsvirksomhetDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Rolle;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Språk;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.StatsborgerskapDto;
@@ -122,10 +122,10 @@ class PersonMapperTest {
     @Test
     void mapperRegistrerteNæringsvirksomheterFraBrreg() {
         var uuid = UUID.randomUUID();
-        var virksomhet = new BrregDto.VirksomhetDto(
+        var virksomhet = new RegistrertNæringsvirksomhetDto(
                 "999999999", "VTP FISKE", "ENK", "Enkeltpersonforetak", "03.110", "Hav- og kystfiske");
         var dto = person(uuid)
-                .brreg(new BrregDto(List.of(virksomhet)))
+                .registrerteNæringsvirksomheter(List.of(virksomhet))
                 .build();
 
         var person = PersonMapper.tilPerson(dto, Map.of(uuid, new PersonIdent("12345678901")), Optional.empty());
@@ -154,7 +154,7 @@ class PersonMapperTest {
     void nullVirksomhetslisteGirIngenRegistrerteNæringsvirksomheter() {
         var uuid = UUID.randomUUID();
         var dto = person(uuid)
-                .brreg(new BrregDto(null))
+                .registrerteNæringsvirksomheter(null)
                 .build();
 
         var person = PersonMapper.tilPerson(dto, Map.of(uuid, new PersonIdent("12345678901")), Optional.empty());

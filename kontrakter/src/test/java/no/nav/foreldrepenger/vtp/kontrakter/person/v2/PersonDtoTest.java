@@ -13,8 +13,8 @@ class PersonDtoTest {
     private static final JsonMapper MAPPER = JsonMapper.builder().build();
 
     @Test
-    void skalRundtrippeBrregData() {
-        var virksomhet = new BrregDto.VirksomhetDto(
+    void skalRundtrippeRegistrerteNæringsvirksomheter() {
+        var virksomhet = new RegistrertNæringsvirksomhetDto(
                 "999999999",
                 "VTP FISKE",
                 "ENK",
@@ -22,28 +22,33 @@ class PersonDtoTest {
                 "03.110",
                 "Hav- og kystfiske");
         var person = PersonDto.builder()
-                .brreg(new BrregDto(List.of(virksomhet)))
+                .registrerteNæringsvirksomheter(List.of(virksomhet))
                 .build();
 
         var json = MAPPER.writeValueAsString(person);
         var rundtrippet = MAPPER.readValue(json, PersonDto.class);
 
-        assertThat(rundtrippet.brreg().virksomheter()).containsExactly(virksomhet);
+        assertThat(rundtrippet.registrerteNæringsvirksomheter()).containsExactly(virksomhet);
     }
 
     @Test
-    void skalGiTomBrregDataNårFeltetMangler() {
+    void skalGiTomListeNårFeltetMangler() {
         var person = MAPPER.readValue("{}", PersonDto.class);
 
-        assertThat(person.brreg().virksomheter()).isEmpty();
+        assertThat(person.registrerteNæringsvirksomheter()).isEmpty();
     }
 
     @Test
-    void skalGiTomBrregDataNårFeltEllerListeErNull() {
-        var personMedNullFelt = MAPPER.readValue("{\"brreg\":null}", PersonDto.class);
-        var personMedNullListe = MAPPER.readValue("{\"brreg\":{\"virksomheter\":null}}", PersonDto.class);
+    void skalGiTomListeNårFeltetErNull() {
+        var person = MAPPER.readValue("{\"registrerteNæringsvirksomheter\":null}", PersonDto.class);
 
-        assertThat(personMedNullFelt.brreg().virksomheter()).isEmpty();
-        assertThat(personMedNullListe.brreg().virksomheter()).isEmpty();
+        assertThat(person.registrerteNæringsvirksomheter()).isEmpty();
+    }
+
+    @Test
+    void beholderFemargumentskonstruktør() {
+        var person = new PersonDto(null, null, null, null, null);
+
+        assertThat(person.registrerteNæringsvirksomheter()).isEmpty();
     }
 }
