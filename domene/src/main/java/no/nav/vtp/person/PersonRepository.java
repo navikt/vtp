@@ -18,7 +18,6 @@ import no.nav.vtp.person.personopplysninger.Familierelasjon;
 public class PersonRepository {
 
     private static final Map<String, Person> PERSONER = new ConcurrentHashMap<>();
-    private static final Map<String, RegistrertNæringsvirksomhet> NÆRINGSVIRKSOMHETER = new ConcurrentHashMap<>();
 
     public static Set<String> alleIdenter() {
         return PERSONER.keySet();
@@ -26,8 +25,6 @@ public class PersonRepository {
 
     public static void leggTilPerson(Person person) {
         PERSONER.put(person.personopplysninger().identifikator().value(), person);
-        person.registrerteNæringsvirksomheter()
-                .forEach(virksomhet -> NÆRINGSVIRKSOMHETER.put(virksomhet.organisasjonsnummer(), virksomhet));
     }
 
     public static void leggTilPersoner(List<Person> personer) {
@@ -67,7 +64,7 @@ public class PersonRepository {
         if (organisasjon.isPresent()) {
             return organisasjon;
         }
-        return Optional.ofNullable(NÆRINGSVIRKSOMHETER.get(orgnummer.value()))
+        return hentRegistrertNæringsvirksomhet(orgnummer.value())
                 .map(virksomhet -> new Organisasjon(
                         orgnummer,
                         null,
@@ -78,7 +75,10 @@ public class PersonRepository {
         if (organisasjonsnummer == null) {
             return Optional.empty();
         }
-        return Optional.ofNullable(NÆRINGSVIRKSOMHETER.get(organisasjonsnummer));
+        return PERSONER.values().stream()
+                .flatMap(person -> person.registrerteNæringsvirksomheter().stream())
+                .filter(virksomhet -> organisasjonsnummer.equals(virksomhet.organisasjonsnummer()))
+                .findFirst();
     }
 
     // TODO: Flytt ut?

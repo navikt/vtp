@@ -95,17 +95,21 @@ class BrregMockTest {
 
     @Test
     void skalOppdatereEnhetNårOrganisasjonsnummerGjenbrukes() {
-        var oppdatertVirksomhet = new RegistrertNæringsvirksomhet(
-                VIRKSOMHET.organisasjonsnummer(), "OPPDATERT NAVN", "ENK", "Enkeltpersonforetak",
+        var opprinneligVirksomhet = new RegistrertNæringsvirksomhet(
+                "888888888", "OPPRINNELIG NAVN", "ENK", "Enkeltpersonforetak",
                 "03.110", "Hav- og kystfiske");
-        PersonRepository.leggTilPerson(PersonBuilder.lagSøker().tilBuilder()
-                .medRegistrerteNæringsvirksomheter(List.of(VIRKSOMHET))
-                .build());
-        PersonRepository.leggTilPerson(PersonBuilder.lagSøker().tilBuilder()
+        var oppdatertVirksomhet = new RegistrertNæringsvirksomhet(
+                opprinneligVirksomhet.organisasjonsnummer(), "OPPDATERT NAVN", "ENK", "Enkeltpersonforetak",
+                "03.110", "Hav- og kystfiske");
+        var person = PersonBuilder.lagSøker().tilBuilder()
+                .medRegistrerteNæringsvirksomheter(List.of(opprinneligVirksomhet))
+                .build();
+        PersonRepository.leggTilPerson(person);
+        PersonRepository.leggTilPerson(person.tilBuilder()
                 .medRegistrerteNæringsvirksomheter(List.of(oppdatertVirksomhet))
                 .build());
 
-        var enhet = new BrregMock().hentEnhet(VIRKSOMHET.organisasjonsnummer());
+        var enhet = new BrregMock().hentEnhet(opprinneligVirksomhet.organisasjonsnummer());
 
         assertThat(enhet.navn()).isEqualTo("OPPDATERT NAVN");
     }
