@@ -10,17 +10,30 @@ public record PersonDto(PersonopplysningerDto personopplysninger,
                         List<ArbeidsforholdDto> arbeidsforhold,
                         List<InntektsperiodeDto> inntekt,
                         List<YtelseDto> ytelser,
-                        List<SkatteopplysningDto> skatteopplysninger) {
+                        List<SkatteopplysningDto> skatteopplysninger,
+                        List<RegistrertNæringsvirksomhetDto> registrerteNæringsvirksomheter) {
 
     public PersonDto {
         arbeidsforhold = arbeidsforhold != null ? arbeidsforhold : List.of();
         inntekt = inntekt != null ? inntekt : List.of();
         ytelser = ytelser != null ? ytelser : List.of();
         skatteopplysninger = skatteopplysninger != null ? skatteopplysninger : List.of();
+        registrerteNæringsvirksomheter = registrerteNæringsvirksomheter != null
+                ? List.copyOf(registrerteNæringsvirksomheter)
+                : List.of();
+    }
+
+    public PersonDto(PersonopplysningerDto personopplysninger,
+                     List<ArbeidsforholdDto> arbeidsforhold,
+                     List<InntektsperiodeDto> inntekt,
+                     List<YtelseDto> ytelser,
+                     List<SkatteopplysningDto> skatteopplysninger) {
+        this(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger, List.of());
     }
 
     private PersonDto(Builder b) {
-        this(b.personopplysninger, b.arbeidsforhold, b.inntekt, b.ytelser, b.skatteopplysninger);
+        this(b.personopplysninger, b.arbeidsforhold, b.inntekt, b.ytelser, b.skatteopplysninger,
+                b.registrerteNæringsvirksomheter);
     }
 
     public static Builder builder() {
@@ -33,6 +46,7 @@ public record PersonDto(PersonopplysningerDto personopplysninger,
         private List<InntektsperiodeDto> inntekt = new ArrayList<>();
         private List<YtelseDto> ytelser = new ArrayList<>();
         private List<SkatteopplysningDto> skatteopplysninger = new ArrayList<>();
+        private List<RegistrertNæringsvirksomhetDto> registrerteNæringsvirksomheter = new ArrayList<>();
 
         Builder() {
         }
@@ -79,6 +93,12 @@ public record PersonDto(PersonopplysningerDto personopplysninger,
 
         public Builder skatteopplysninger(List<SkatteopplysningDto> skatteopplysninger) {
             this.skatteopplysninger = skatteopplysninger;
+            return this;
+        }
+
+        public Builder registrerteNæringsvirksomheter(
+                List<RegistrertNæringsvirksomhetDto> registrerteNæringsvirksomheter) {
+            this.registrerteNæringsvirksomheter = registrerteNæringsvirksomheter;
             return this;
         }
 
