@@ -18,6 +18,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.person.Arbeidsgiver;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaSakerDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.ArenaVedtakDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.BrregDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.FamilierelasjonModellDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.GeografiskTilknytningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.GrunnlagDto;
@@ -44,6 +45,7 @@ import no.nav.vtp.person.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.vtp.person.ident.Orgnummer;
 import no.nav.vtp.person.ident.PersonIdent;
 import no.nav.vtp.person.inntekt.Inntektsperiode;
+import no.nav.vtp.person.næring.RegistrertNæringsvirksomhet;
 import no.nav.vtp.person.personopplysninger.Adresse;
 import no.nav.vtp.person.personopplysninger.Adresser;
 import no.nav.vtp.person.personopplysninger.Familierelasjon;
@@ -73,7 +75,27 @@ public class PersonMapper {
         var inntekt = tilInntekt(p, identer);
         var ytelser = tilYtelser(p);
         var skatteopplysninger = tilSkatteopplysnigner(p);
-        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger);
+        var registrerteNæringsvirksomheter = tilRegistrerteNæringsvirksomheter(p);
+        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger, registrerteNæringsvirksomheter);
+    }
+
+    private static List<RegistrertNæringsvirksomhet> tilRegistrerteNæringsvirksomheter(PersonDto person) {
+        if (person.inntektytelse() == null) {
+            return List.of();
+        }
+        return person.inntektytelse().brreg().virksomheter().stream()
+                .map(PersonMapper::tilRegistrertNæringsvirksomhet)
+                .toList();
+    }
+
+    private static RegistrertNæringsvirksomhet tilRegistrertNæringsvirksomhet(BrregDto.VirksomhetDto virksomhet) {
+        return new RegistrertNæringsvirksomhet(
+                virksomhet.organisasjonsnummer(),
+                virksomhet.navn(),
+                virksomhet.organisasjonsformKode(),
+                virksomhet.organisasjonsformBeskrivelse(),
+                virksomhet.næringskode(),
+                virksomhet.næringskodeBeskrivelse());
     }
 
     private static List<Skatteopplysning> tilSkatteopplysnigner(PersonDto person) {

@@ -12,11 +12,13 @@ import java.util.stream.Stream;
 import no.nav.vtp.person.arbeidsforhold.Organisasjon;
 import no.nav.vtp.person.ident.Orgnummer;
 import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.næring.RegistrertNæringsvirksomhet;
 import no.nav.vtp.person.personopplysninger.Familierelasjon;
 
 public class PersonRepository {
 
     private static final Map<String, Person> PERSONER = new ConcurrentHashMap<>();
+    private static final Map<String, RegistrertNæringsvirksomhet> NÆRINGSVIRKSOMHETER = new ConcurrentHashMap<>();
 
     public static Set<String> alleIdenter() {
         return PERSONER.keySet();
@@ -24,6 +26,8 @@ public class PersonRepository {
 
     public static void leggTilPerson(Person person) {
         PERSONER.put(person.personopplysninger().identifikator().value(), person);
+        person.registrerteNæringsvirksomheter()
+                .forEach(virksomhet -> NÆRINGSVIRKSOMHETER.put(virksomhet.organisasjonsnummer(), virksomhet));
     }
 
     public static void leggTilPersoner(List<Person> personer) {
@@ -57,9 +61,24 @@ public class PersonRepository {
     }
 
     public static Optional<Organisasjon> hentInformasjonOmArbeidsforhold(Orgnummer orgnummer) {
-        return alleRegistrerteOrganisasjoner().stream()
+        var organisasjon = alleRegistrerteOrganisasjoner().stream()
                 .filter(o -> o.orgnummer().equals(orgnummer))
                 .findFirst();
+        if (organisasjon.isPresent()) {
+            return organisasjon;
+        }
+        return Optional.ofNullable(NÆRINGSVIRKSOMHETER.get(orgnummer.value()))
+                .map(virksomhet -> new Organisasjon(
+                        orgnummer,
+                        null,
+                        new Organisasjon.Detaljer(virksomhet.navn(), null)));
+    }
+
+    public static Optional<RegistrertNæringsvirksomhet> hentRegistrertNæringsvirksomhet(String organisasjonsnummer) {
+        if (organisasjonsnummer == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(NÆRINGSVIRKSOMHETER.get(organisasjonsnummer));
     }
 
     // TODO: Flytt ut?

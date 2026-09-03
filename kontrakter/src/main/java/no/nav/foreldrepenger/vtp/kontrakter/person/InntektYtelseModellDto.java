@@ -6,10 +6,24 @@ public record InntektYtelseModellDto(
         InntektkomponentDto inntektskomponent,
         AaregDto aareg,
         SigrunDto sigrun,
-        PesysDto pesys) {
+        PesysDto pesys,
+        BrregDto brreg) {
+
+    public InntektYtelseModellDto {
+        brreg = brreg == null ? new BrregDto(null) : brreg;
+    }
+
+    public InntektYtelseModellDto(ArenaDto arena,
+                                  InfotrygdDto infotrygd,
+                                  InntektkomponentDto inntektskomponent,
+                                  AaregDto aareg,
+                                  SigrunDto sigrun,
+                                  PesysDto pesys) {
+        this(arena, infotrygd, inntektskomponent, aareg, sigrun, pesys, null);
+    }
 
     private InntektYtelseModellDto(Builder b) {
-        this(b.arena, b.infotrygd, b.inntektskomponent, b.aareg, b.sigrun, b.pesys);
+        this(b.arena, b.infotrygd, b.inntektskomponent, b.aareg, b.sigrun, b.pesys, b.brreg);
     }
 
     public static Builder builder() {
@@ -23,6 +37,7 @@ public record InntektYtelseModellDto(
         private AaregDto aareg;
         private SigrunDto sigrun;
         private PesysDto pesys;
+        private BrregDto brreg;
 
         Builder() {
         }
@@ -78,6 +93,15 @@ public record InntektYtelseModellDto(
 
         public Builder pesys(PesysDto pesys) {
             this.pesys = pesys;
+            return this;
+        }
+
+        public BrregDto brreg() {
+            return brreg;
+        }
+
+        public Builder brreg(BrregDto brreg) {
+            this.brreg = brreg;
             return this;
         }
 

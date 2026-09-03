@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>arbeidsforhold-mock</module>
+        <module>brreg-mock</module>
         <module>journalpost-mock</module>
         <module>dokdist-mock</module>
         <module>dummy-mock</module>

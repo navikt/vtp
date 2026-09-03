@@ -102,4 +102,14 @@ class PersonMapperV2Test {
                 .extracting(Inntektsperiode::ytelseType)
                 .isEqualTo(Inntektsperiode.YtelseType.FASTLØNN);
     }
+
+    @Test
+    void registrerteNæringsvirksomheterErTommeNårV2IkkeStøtterBrreg() {
+        var uuid = UUID.randomUUID();
+        var dto = personMedYtelse(uuid, YtelseDto.YtelseType.DAGPENGER, null).build();
+
+        var person = PersonMapperV2.tilPerson(dto, Map.of(uuid, new PersonIdent("12345678901")), Optional.empty());
+
+        assertThat(person.registrerteNæringsvirksomheter()).isEmpty();
+    }
 }

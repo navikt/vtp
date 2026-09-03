@@ -28,7 +28,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <vtp-kontrakter.version>2.2.3</vtp-kontrakter.version>
+        <vtp-kontrakter.version>2.3.0-SNAPSHOT</vtp-kontrakter.version>
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
@@ -193,6 +193,11 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>saf-mock</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>no.nav.foreldrepenger.vtp</groupId>
+                <artifactId>brreg-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

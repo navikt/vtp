@@ -78,7 +78,7 @@ import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
-import no.nav.vtp.BrregMock;
+import no.nav.vtp.brreg.BrregMock;
 import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
 import no.nav.vtp.journalpost.JournalRepository;
 import tools.jackson.databind.json.JsonMapper;

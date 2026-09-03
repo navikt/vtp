@@ -72,7 +72,7 @@ public class PersonMapperV2 {
         var inntekt = tilInntekt(p.inntekt(), p.ytelser(), identer);
         var ytelser = tilYtelser(p.ytelser());
         var skatteopplysninger = tilSkatteopplysninger(p.skatteopplysninger());
-        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger);
+        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger, List.of());
     }
 
     private static Personopplysninger tilPersonopplysninger(PersonopplysningerDto p, Map<UUID, PersonIdent> identer,
