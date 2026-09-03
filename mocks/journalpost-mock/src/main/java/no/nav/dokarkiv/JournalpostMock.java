@@ -62,12 +62,17 @@ public class JournalpostMock {
     }
 
     private boolean skalSendeJournalføringHendelse(JournalpostModell journalpostModell) {
-        if (!Mottakskanal.NAV_NO.equals(journalpostModell.getMottakskanal())) {
+        if (!harKanalInntektsmelding(journalpostModell.getMottakskanal())) {
             return false;
         }
 
         String tittel = journalpostModell.getTittel();
         return "Inntektsmelding".equals(tittel) || tittel.toLowerCase().contains("ungdomsprogramytelse");
+    }
+
+    private boolean harKanalInntektsmelding(Mottakskanal mottakskanal) {
+        return Mottakskanal.NAV_NO.equals(mottakskanal) || Mottakskanal.HR_SYSTEM_API.equals(mottakskanal)
+                || Mottakskanal.INNSENDT_NAV_ANSATT.equals(mottakskanal);
     }
 
     private void opprettJournalføringsHendelse(JournalpostModell journalpostModell, Journalstatus journalStatus) {

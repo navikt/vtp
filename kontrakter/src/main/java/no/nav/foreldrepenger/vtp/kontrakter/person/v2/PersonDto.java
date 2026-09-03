@@ -5,23 +5,24 @@ import java.util.List;
 
 /**
  * v2 av scenario-kontrakten for person-oppsett. Eksponeres via POST /rest/api/testscenarios/v2/personer.
- * v1 (no.nav.foreldrepenger.vtp.kontrakter.person.PersonDto, /opprett) berøres ikke.
  */
 public record PersonDto(PersonopplysningerDto personopplysninger,
                         List<ArbeidsforholdDto> arbeidsforhold,
                         List<InntektsperiodeDto> inntekt,
                         List<YtelseDto> ytelser,
-                        List<SkatteopplysningDto> skatteopplysninger) {
+                        List<SkatteopplysningDto> skatteopplysninger,
+                        BrregDto brreg) {
 
     public PersonDto {
         arbeidsforhold = arbeidsforhold != null ? arbeidsforhold : List.of();
         inntekt = inntekt != null ? inntekt : List.of();
         ytelser = ytelser != null ? ytelser : List.of();
         skatteopplysninger = skatteopplysninger != null ? skatteopplysninger : List.of();
+        brreg = brreg != null ? brreg : new BrregDto(List.of());
     }
 
     private PersonDto(Builder b) {
-        this(b.personopplysninger, b.arbeidsforhold, b.inntekt, b.ytelser, b.skatteopplysninger);
+        this(b.personopplysninger, b.arbeidsforhold, b.inntekt, b.ytelser, b.skatteopplysninger, b.brreg);
     }
 
     public static Builder builder() {
@@ -34,6 +35,7 @@ public record PersonDto(PersonopplysningerDto personopplysninger,
         private List<InntektsperiodeDto> inntekt = new ArrayList<>();
         private List<YtelseDto> ytelser = new ArrayList<>();
         private List<SkatteopplysningDto> skatteopplysninger = new ArrayList<>();
+        private BrregDto brreg;
 
         Builder() {
         }
@@ -80,6 +82,11 @@ public record PersonDto(PersonopplysningerDto personopplysninger,
 
         public Builder skatteopplysninger(List<SkatteopplysningDto> skatteopplysninger) {
             this.skatteopplysninger = skatteopplysninger;
+            return this;
+        }
+
+        public Builder brreg(BrregDto brreg) {
+            this.brreg = brreg;
             return this;
         }
 

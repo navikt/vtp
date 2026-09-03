@@ -10,7 +10,6 @@ import no.nav.tjeneste.virksomhet.kelvin.ArbeidsavklaringspengerResponse.AAPUtbe
 import no.nav.tjeneste.virksomhet.kelvin.ArbeidsavklaringspengerResponse.AAPVedtak;
 import no.nav.tjeneste.virksomhet.kelvin.ArbeidsavklaringspengerResponse.Kildesystem;
 import no.nav.vtp.person.Person;
-import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -27,9 +26,6 @@ public class PersonTilAapVedtakMapper {
         }
         return person.ytelser().stream()
                 .filter(ytelse -> ytelse.ytelse() == YtelseType.ARBEIDSAVKLARINGSPENGER)
-                // KelvinMock er v2-kilden for AAP. Eksplisitte gamle kilder (v1) skal routes til
-                // Arena-mocken i stedet, for å unngå dobbelttelling hos fp-abakus.
-                .filter(ytelse -> ytelse.kilde() != LegacyKilde.ARENA)
                 .filter(ytelse -> overlapper(ytelse, fraOgMedDato, tilOgMedDato))
                 .map(ytelse -> tilVedtak(ytelse, fraOgMedDato, tilOgMedDato))
                 .toList();
@@ -45,21 +41,21 @@ public class PersonTilAapVedtakMapper {
                 periode,
                 redusertDagsats * antallVirkedager(fom, tom),
                 redusertDagsats,
-                0, // fp-abakus KELVIN-konsumenten summerer dagsats+barnetillegg uten null-håndtering
+                0, // abakus KELVIN-konsumenten summerer dagsats+barnetillegg uten null-håndtering
                 new AAPReduksjon(null, null),
                 utbetalingsgrad
         );
         return new AAPVedtak(
-                null, // barnMedStonad - ikke i bruk av fp-abakus
-                null, // barnetillegg - ikke i bruk av fp-abakus
-                null, // beregningsgrunnlag - ikke i bruk av fp-abakus
+                null, // barnMedStonad - ikke i bruk av abakus
+                null, // barnetillegg - ikke i bruk av abakus
+                null, // beregningsgrunnlag - ikke i bruk av abakus
                 ytelse.dagsats(),
                 ytelse.dagsats(), // dagsatsEtterUføreReduksjon - alltid lik dagsats (ingen reduksjon simuleres)
                 Kildesystem.KELVIN,
                 periode,
                 DUMMY_SAKSNUMMER,
                 "LØPENDE",
-                null, // vedtakId - ikke i bruk av fp-abakus
+                null, // vedtakId - ikke i bruk av abakus
                 ytelse.fom(),
                 List.of(utbetaling)
         );

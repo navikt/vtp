@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.PersonRepository;
-import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -21,7 +20,7 @@ class DagpengerDatadelingMockTest {
     @Test
     void henterDagpengerPerioderMedDefaultKilde() {
         var personBase = PersonBuilder.lagSøker();
-        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5), 1000, null, null, null, List.of());
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5), 1000, null);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
         PersonRepository.leggTilPerson(person);
 
@@ -36,7 +35,7 @@ class DagpengerDatadelingMockTest {
     @Test
     void henterDagpengerBeregninger() {
         var personBase = PersonBuilder.lagSøker();
-        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5), 1000, 5000, null, null, List.of());
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5), 1000, null);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
         PersonRepository.leggTilPerson(person);
 
@@ -53,7 +52,7 @@ class DagpengerDatadelingMockTest {
     @Test
     void beregnerUtbetaltBeløpFraDagsatsOgUtbetalingsgradNårUtbetaltErNull() {
         var personBase = PersonBuilder.lagSøker();
-        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5), 1000, null, 50, null, List.of());
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 5), 1000, 50);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
         PersonRepository.leggTilPerson(person);
 
@@ -68,24 +67,9 @@ class DagpengerDatadelingMockTest {
     }
 
     @Test
-    void filtrererBortYtelserMedEksplisittArenaKilde() {
-        var personBase = PersonBuilder.lagSøker();
-        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.now().minusMonths(2), LocalDate.now().plusMonths(1), 1000, 5000, null, LegacyKilde.ARENA, List.of());
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
-        PersonRepository.leggTilPerson(person);
-
-        var request = new DagpengerDatadelingMock.PersonRequest(person.personopplysninger().identifikator().value(), null, null);
-        var perioder = dpsakMock.postDagpengerPerioder(request);
-        var beregninger = dpsakMock.postDagpengerBeregning(request);
-
-        assertThat(perioder.perioder()).isEmpty();
-        assertThat(beregninger).isEmpty();
-    }
-
-    @Test
     void ignorererAndreYtelsetyperEnnDagpenger() {
         var personBase = PersonBuilder.lagSøker();
-        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, LocalDate.now().minusMonths(2), LocalDate.now().plusMonths(1), 1500, null, null, null, List.of());
+        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, LocalDate.now().minusMonths(2), LocalDate.now().plusMonths(1), 1500, null);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap), List.of());
         PersonRepository.leggTilPerson(person);
 
@@ -100,7 +84,7 @@ class DagpengerDatadelingMockTest {
     @Test
     void begrenserPerioderOgBeregningerTilForespurtPeriode() {
         var personBase = PersonBuilder.lagSøker();
-        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 31), 1000, null, 50, null, List.of());
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 31), 1000, 50);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
         PersonRepository.leggTilPerson(person);
 

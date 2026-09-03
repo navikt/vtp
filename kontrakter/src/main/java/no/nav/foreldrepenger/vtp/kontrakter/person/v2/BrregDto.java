@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.vtp.kontrakter.person;
+package no.nav.foreldrepenger.vtp.kontrakter.person.v2;
 
 import java.util.List;
 

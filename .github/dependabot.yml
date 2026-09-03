@@ -37,8 +37,6 @@ updates:
       exclude:
         - "no.nav.*"
     open-pull-requests-limit: 20
-    ignore:
-      - dependency-name: "no.nav.teamdokumenthandtering:teamdokumenthandtering-avro-schemas"
     groups:
       prod-deps:
         dependency-type: "production"

@@ -5,7 +5,6 @@ import java.util.List;
 
 import no.nav.tjeneste.virksomhet.spokelse.rest.SykepengeVedtak.SykepengeUtbetaling;
 import no.nav.vtp.person.Person;
-import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -20,9 +19,6 @@ public class PersonTilSykepengeVedtakMapper {
         }
         return person.ytelser().stream()
                 .filter(ytelse -> ytelse.ytelse() == YtelseType.SYKEPENGER)
-                // SpøkelseMock er v2-kilden for sykepenger. Eksplisitte gamle kilder (v1) skal
-                // routes til Infotrygd-mocken i stedet, for å unngå dobbelttelling hos fp-abakus.
-                .filter(ytelse -> ytelse.kilde() != LegacyKilde.INFOTRYGD)
                 .filter(ytelse -> erRelevantForFom(ytelse, fom))
                 .map(PersonTilSykepengeVedtakMapper::tilVedtak)
                 .toList();
@@ -37,7 +33,7 @@ public class PersonTilSykepengeVedtakMapper {
         var utbetaling = new SykepengeUtbetaling(ytelse.fom(), ytelse.tom(), tilGrad(ytelse));
         // Vedtaksreferanse har ingen semantisk betydning for testdata - trenger bare å være unik nok
         // til at konsumenter kan skille vedtak fra hverandre. Bruker fom som grunnlag for determinisme.
-        var vedtaksreferanse = "SPOKELSE-" + ytelse.fom();
+        var vedtaksreferanse = ("SPOKELSE" + ytelse.fom()).replace("-", "");
         var vedtattTidspunkt = ytelse.fom() != null ? ytelse.fom().atStartOfDay() : null;
         return new SykepengeVedtak(vedtaksreferanse, List.of(utbetaling), vedtattTidspunkt);
     }

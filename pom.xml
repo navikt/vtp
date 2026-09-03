@@ -32,7 +32,7 @@
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <graphql-java.version>26.0</graphql-java.version>
+        <graphql-java.version>26.1</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
         <avro.version>1.12.2</avro.version>
     </properties>
@@ -207,11 +207,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>autotest</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>ldap-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -261,12 +256,6 @@
                 <version>3.0.8</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.neovisionaries</groupId>
-                <artifactId>nv-i18n</artifactId>
-                <version>1.29</version>
-            </dependency>
-
             <!-- Nav Avhengigheter – kontrakt -->
             <dependency>
                 <groupId>no.nav.foreldrepenger.abakus</groupId>
@@ -281,7 +270,7 @@
             <dependency>
                 <groupId>no.nav.teamdokumenthandtering</groupId>
                 <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
-                <version>1.1.6</version>
+                <version>1.1.11</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

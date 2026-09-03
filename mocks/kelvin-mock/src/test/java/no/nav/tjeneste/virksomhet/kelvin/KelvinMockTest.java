@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import no.nav.vtp.PersonBuilder;
 import no.nav.vtp.person.Person;
 import no.nav.vtp.person.PersonRepository;
-import no.nav.vtp.person.ytelse.LegacyKilde;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -21,7 +20,7 @@ class KelvinMockTest {
     @Test
     void henterAapVedtakForYtelse() {
         var personBase = PersonBuilder.lagSøker();
-        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, LocalDate.of(2026, 1, 5), LocalDate.of(2026, 1, 9), 1500, null, 75, null, List.of());
+        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, LocalDate.of(2026, 1, 5), LocalDate.of(2026, 1, 9), 1500, 75);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap), List.of());
         PersonRepository.leggTilPerson(person);
 
@@ -42,22 +41,9 @@ class KelvinMockTest {
     }
 
     @Test
-    void filtrererBortYtelserMedEksplisittArenaKilde() {
-        var personBase = PersonBuilder.lagSøker();
-        var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER, LocalDate.now().minusMonths(2), LocalDate.now().plusMonths(1), 1500, null, 100, LegacyKilde.ARENA, List.of());
-        var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap), List.of());
-        PersonRepository.leggTilPerson(person);
-
-        var request = new KelvinMock.PersonRequest(person.personopplysninger().identifikator().value(), null, null);
-        var respons = kelvinMock.postAAP(request);
-
-        assertThat(respons.vedtak()).isEmpty();
-    }
-
-    @Test
     void ignorererAndreYtelsetyperEnnAap() {
         var personBase = PersonBuilder.lagSøker();
-        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.now().minusMonths(2), LocalDate.now().plusMonths(1), 1000, null, null, null, List.of());
+        var dagpenger = new Ytelse(YtelseType.DAGPENGER, LocalDate.now().minusMonths(2), LocalDate.now().plusMonths(1), 1000, null);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(dagpenger), List.of());
         PersonRepository.leggTilPerson(person);
 
@@ -71,7 +57,7 @@ class KelvinMockTest {
     void begrenserVedtakTilForespurtPeriode() {
         var personBase = PersonBuilder.lagSøker();
         var aap = new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER,
-                LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 31), 1000, null, null, null, List.of());
+                LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 31), 1000, null);
         var person = new Person(personBase.personopplysninger(), personBase.arbeidsforhold(), personBase.inntekt(), List.of(aap), List.of());
         PersonRepository.leggTilPerson(person);
 
