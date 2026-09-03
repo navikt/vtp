@@ -75,25 +75,21 @@ public class PersonMapper {
         var inntekt = tilInntekt(p.inntekt(), p.ytelser(), identer);
         var ytelser = tilYtelser(p.ytelser());
         var skatteopplysninger = tilSkatteopplysninger(p.skatteopplysninger());
-        var registrerteNæringsvirksomheter = tilRegistrerteNæringsvirksomheter(p);
+        var registrerteNæringsvirksomheter = tilRegistrerteNæringsvirksomheter(p.registrerteNæringsvirksomheter());
         return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger, registrerteNæringsvirksomheter);
     }
 
-    private static List<RegistrertNæringsvirksomhet> tilRegistrerteNæringsvirksomheter(PersonDto person) {
-        return person.registrerteNæringsvirksomheter().stream()
-                .map(PersonMapper::tilRegistrertNæringsvirksomhet)
+    private static List<RegistrertNæringsvirksomhet> tilRegistrerteNæringsvirksomheter(
+            List<RegistrertNæringsvirksomhetDto> virksomheter) {
+        return virksomheter.stream()
+                .map(virksomhet -> new RegistrertNæringsvirksomhet(
+                        virksomhet.organisasjonsnummer(),
+                        virksomhet.navn(),
+                        virksomhet.organisasjonsformKode(),
+                        virksomhet.organisasjonsformBeskrivelse(),
+                        virksomhet.næringskode(),
+                        virksomhet.næringskodeBeskrivelse()))
                 .toList();
-    }
-
-    private static RegistrertNæringsvirksomhet tilRegistrertNæringsvirksomhet(
-            RegistrertNæringsvirksomhetDto virksomhet) {
-        return new RegistrertNæringsvirksomhet(
-                virksomhet.organisasjonsnummer(),
-                virksomhet.navn(),
-                virksomhet.organisasjonsformKode(),
-                virksomhet.organisasjonsformBeskrivelse(),
-                virksomhet.næringskode(),
-                virksomhet.næringskodeBeskrivelse());
     }
 
     private static Personopplysninger tilPersonopplysninger(PersonopplysningerDto p, Map<UUID, PersonIdent> identer,
