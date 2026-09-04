@@ -1,21 +1,17 @@
-package no.nav.foreldrepenger.vtp.server.api.scenario;
+package no.nav.vtp.person.personopplysninger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Landkode;
-
 class LandkodeTest {
 
     @Test
-    void normalisererAlpha2OgAlpha3TilUppercaseAlpha3() {
-        assertThat(Landkode.normaliser("NO")).isEqualTo("NOR");
-        assertThat(Landkode.normaliser("no")).isEqualTo("NOR");
+    void normalisererAlpha3TilStoreBokstaver() {
         assertThat(Landkode.normaliser("NOR")).isEqualTo("NOR");
         assertThat(Landkode.normaliser("nor")).isEqualTo("NOR");
-        assertThat(Landkode.normaliser("DE")).isEqualTo("DEU");
+        assertThat(Landkode.normaliser("DEU")).isEqualTo("DEU");
     }
 
     @Test
@@ -24,11 +20,11 @@ class LandkodeTest {
     }
 
     @Test
-    void avviserUgyldigLandkode() {
-        for (var ugyldig : new String[]{"", " ", "N", "N0", "ZZ", "ZZZ"}) {
+    void avviserAlpha2OgUgyldigLandkode() {
+        for (var ugyldig : new String[]{"NO", "no", "DE", "", " ", "N", "N0", "ZZ", "ZZZ"}) {
             assertThatIllegalArgumentException()
                     .isThrownBy(() -> Landkode.normaliser(ugyldig))
-                    .withMessage("Ugyldig landkode");
+                    .withMessage("Ugyldig landkode '%s'. Kun landkoder med 3 tegn støttes", ugyldig);
         }
     }
 }

@@ -1,6 +1,7 @@
 package no.nav.foreldrepenger.vtp.server.api.scenario;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,13 +30,13 @@ import no.nav.vtp.person.personopplysninger.Landkode;
 class PersonMapperTest {
 
     @Test
-    void normalisererLandkoderTilAlpha3NårDomenemodellenOpprettes() {
+    void normalisererAlpha3LandkoderTilStoreBokstaverNårDomenemodellenOpprettes() {
         var uuid = UUID.randomUUID();
         var personopplysninger = PersonopplysningerDto.builder()
                 .uuid(uuid)
-                .geografiskTilknytning(new GeografiskTilknytningDto("no", GeografiskTilknytningDto.GeografiskTilknytningType.LAND))
+                .geografiskTilknytning(new GeografiskTilknytningDto("nor", GeografiskTilknytningDto.GeografiskTilknytningType.LAND))
                 .statsborgerskap(List.of(new StatsborgerskapDto("swe")))
-                .medlemskap(List.of(new MedlemskapDto(null, null, "DE", MedlemskapDto.DekningsType.FULL)))
+                .medlemskap(List.of(new MedlemskapDto(null, null, "deu", MedlemskapDto.DekningsType.FULL)))
                 .adresser(List.of(new AdresseDto(AdresseDto.AdresseType.BOSTEDSADRESSE, "nld", null, null, null)))
                 .build();
         var dto = PersonDto.builder().personopplysninger(personopplysninger).build();
@@ -46,6 +47,20 @@ class PersonMapperTest {
         assertThat(person.personopplysninger().statsborgerskap().getFirst().land()).isEqualTo("SWE");
         assertThat(person.personopplysninger().medlemskap().getFirst().land()).isEqualTo("DEU");
         assertThat(person.personopplysninger().adresser().adresser().getFirst().land()).isEqualTo("NLD");
+    }
+
+    @Test
+    void avviserAlpha2LandkodeNårDomenemodellenOpprettes() {
+        var uuid = UUID.randomUUID();
+        var personopplysninger = PersonopplysningerDto.builder()
+                .uuid(uuid)
+                .geografiskTilknytning(new GeografiskTilknytningDto("NO", GeografiskTilknytningDto.GeografiskTilknytningType.LAND))
+                .build();
+        var dto = PersonDto.builder().personopplysninger(personopplysninger).build();
+
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> PersonMapper.tilPerson(dto, Map.of(uuid, new PersonIdent("12345678901")), Optional.empty()))
+                .withMessage("Ugyldig landkode 'NO'. Kun landkoder med 3 tegn støttes");
     }
 
     private static PersonDto.Builder personMedYtelse(UUID uuid, YtelseDto.YtelseType type, Integer dagsats) {
