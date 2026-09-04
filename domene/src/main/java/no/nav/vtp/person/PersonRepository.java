@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import no.nav.vtp.person.arbeidsforhold.Organisasjon;
 import no.nav.vtp.person.ident.Orgnummer;
 import no.nav.vtp.person.ident.PersonIdent;
+import no.nav.vtp.person.næring.RegistrertNæringsvirksomhet;
 import no.nav.vtp.person.personopplysninger.Familierelasjon;
 
 public class PersonRepository {
@@ -59,6 +60,16 @@ public class PersonRepository {
     public static Optional<Organisasjon> hentInformasjonOmArbeidsforhold(Orgnummer orgnummer) {
         return alleRegistrerteOrganisasjoner().stream()
                 .filter(o -> o.orgnummer().equals(orgnummer))
+                .findFirst();
+    }
+
+    public static Optional<RegistrertNæringsvirksomhet> hentRegistrertNæringsvirksomhet(String organisasjonsnummer) {
+        if (organisasjonsnummer == null) {
+            return Optional.empty();
+        }
+        return PERSONER.values().stream()
+                .flatMap(person -> person.registrerteNæringsvirksomheter().stream())
+                .filter(virksomhet -> organisasjonsnummer.equals(virksomhet.organisasjonsnummer()))
                 .findFirst();
     }
 
