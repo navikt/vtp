@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * Kun én type-enum (YtelseType) — dropper v1s InntektTypeDto/InntektYtelseType-dualitet.
  * Brukes for eksplisitt oppgitt inntekt (f.eks. selvstendig næringsdrivende). Inntekt avledet
- * fra ytelser (se YtelseDto) genereres av PersonMapperV2 og oppgis ikke direkte her.
+ * fra ytelser (se YtelseDto) genereres av PersonMapper og oppgis ikke direkte her.
  */
 public record InntektsperiodeDto(ArbeidsgiverDto arbeidsgiver,
                                  LocalDate fom,

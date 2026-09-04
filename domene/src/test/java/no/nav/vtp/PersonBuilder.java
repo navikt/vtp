@@ -1,10 +1,10 @@
 package no.nav.vtp;
 
+import static no.nav.vtp.person.personopplysninger.Landkode.NORGE;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-
-import com.neovisionaries.i18n.CountryCode;
 
 import no.nav.foreldrepenger.vtp.kontrakter.FødselsnummerGenerator;
 import no.nav.vtp.person.Person;
@@ -29,7 +29,6 @@ import no.nav.vtp.person.personopplysninger.Rolle;
 import no.nav.vtp.person.personopplysninger.Sivilstand;
 import no.nav.vtp.person.personopplysninger.Språk;
 import no.nav.vtp.person.personopplysninger.Statsborgerskap;
-import no.nav.vtp.person.ytelse.Beregningsgrunnlag;
 import no.nav.vtp.person.ytelse.Ytelse;
 import no.nav.vtp.person.ytelse.YtelseType;
 
@@ -44,19 +43,19 @@ public class PersonBuilder {
      */
     public static TestScenario lagPersoner() {
         var søkerIdent = new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.K)
                 .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
         var annenPartIdent = new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.M)
                 .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
         var barn1Ident = new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.K)
                 .fødselsdato(LocalDate.now().minusYears(3))
                 .buildAndGenerate();
         var barn2Ident = new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.K)
                 .fødselsdato(LocalDate.now().minusYears(1))
                 .buildAndGenerate();
 
@@ -96,19 +95,19 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     public static Person lagSøker() {
         var ident = new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.K)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.K)
                 .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", NORGE,
                 LocalDate.now().minusYears(1), null);
         var adresser = new Adresser(List.of(bostedsadresse), Adressebeskyttelse.UGRADERT);
         var personopplysninger = new Personopplysninger(
                 new PersonIdent(ident), UUID.randomUUID(), Rolle.MOR,
                 new Navn("Dolly", null, "Duck"),
                 LocalDate.now().minusYears(50), null, Språk.NB, Kjønn.K,
-                new GeografiskTilknytning(CountryCode.NO, GeografiskTilknytning.GeografiskTilknytningType.LAND),
+                new GeografiskTilknytning(NORGE, GeografiskTilknytning.GeografiskTilknytningType.LAND),
                 List.of(),
-                List.of(new Statsborgerskap(CountryCode.NO), new Statsborgerskap(CountryCode.SE)),
+                List.of(new Statsborgerskap(NORGE), new Statsborgerskap("SWE")),
                 List.of(new Sivilstand(Sivilstand.Type.ENKE_ELLER_ENKEMANN, null, null)),
                 List.of(new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusDays(6), null),
                         new Personstatus(Personstatus.Type.UREG, LocalDate.now().minusYears(50), LocalDate.now().minusDays(7))),
@@ -121,19 +120,19 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     public static Person lagAnnenPart() {
         var ident = new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.M)
                 .fødselsdato(LocalDate.now().minusYears(50))
                 .buildAndGenerate();
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", NORGE,
                 LocalDate.now().minusYears(1), null);
         var adresser = new Adresser(List.of(bostedsadresse), Adressebeskyttelse.UGRADERT);
         var personopplysninger = new Personopplysninger(
                 new PersonIdent(ident), UUID.randomUUID(), Rolle.FAR,
                 new Navn("Donald", null, "Duck"),
                 LocalDate.now().minusYears(50), null, Språk.NB, Kjønn.M,
-                new GeografiskTilknytning(CountryCode.NO, GeografiskTilknytning.GeografiskTilknytningType.LAND),
+                new GeografiskTilknytning(NORGE, GeografiskTilknytning.GeografiskTilknytningType.LAND),
                 List.of(),
-                List.of(new Statsborgerskap(CountryCode.NO)),
+                List.of(new Statsborgerskap(NORGE)),
                 List.of(new Sivilstand(Sivilstand.Type.GIFT, null, null)),
                 List.of(new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusYears(50), null)),
                 List.of(), adresser, false);
@@ -145,20 +144,20 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static Personopplysninger lagSøkerPersonopplysninger(String søkerIdent, String annenPartIdent,
                                                                    String barn1Ident, String barn2Ident) {
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", NORGE,
                 LocalDate.now().minusYears(1), null);
-        var postadresse = new Adresse(Adresse.AdresseType.POSTADRESSE, "0000001", CountryCode.NL,
+        var postadresse = new Adresse(Adresse.AdresseType.POSTADRESSE, "0000001", "NLD",
                 LocalDate.now().minusYears(4), LocalDate.now().minusYears(1));
         var adresser = new Adresser(List.of(bostedsadresse, postadresse), Adressebeskyttelse.UGRADERT);
 
         return new Personopplysninger(new PersonIdent(søkerIdent), UUID.randomUUID(), Rolle.MOR,
                 new Navn("Dolly", null, "Duck"),
                 LocalDate.now().minusYears(50), null, Språk.NB, Kjønn.K,
-                new GeografiskTilknytning(CountryCode.NO, GeografiskTilknytning.GeografiskTilknytningType.LAND),
+                new GeografiskTilknytning(NORGE, GeografiskTilknytning.GeografiskTilknytningType.LAND),
                 List.of(new Familierelasjon(Familierelasjon.Relasjon.BARN, new PersonIdent(barn1Ident)),
                         new Familierelasjon(Familierelasjon.Relasjon.BARN, new PersonIdent(barn2Ident)),
                         new Familierelasjon(Familierelasjon.Relasjon.EKTE, new PersonIdent(annenPartIdent))),
-                List.of(new Statsborgerskap(CountryCode.NO), new Statsborgerskap(CountryCode.SE)),
+                List.of(new Statsborgerskap(NORGE), new Statsborgerskap("SWE")),
                 List.of(new Sivilstand(Sivilstand.Type.ENKE_ELLER_ENKEMANN, null, null)),
                 List.of(new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusDays(6), null),
                         new Personstatus(Personstatus.Type.UREG, LocalDate.now().minusYears(50), LocalDate.now().minusDays(7))),
@@ -170,18 +169,18 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static Personopplysninger lagAnnenPartPersonopplysninger(String annenPartIdent, String søkerIdent,
                                                                        String barn1Ident, String barn2Ident) {
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", NORGE,
                 LocalDate.now().minusYears(1), null);
         var adresser = new Adresser(List.of(bostedsadresse), Adressebeskyttelse.UGRADERT);
 
         return new Personopplysninger(new PersonIdent(annenPartIdent), UUID.randomUUID(), Rolle.FAR,
                 new Navn("Donald", null, "Duck"),
                 LocalDate.now().minusYears(50), null, Språk.NB, Kjønn.M,
-                new GeografiskTilknytning(CountryCode.NO, GeografiskTilknytning.GeografiskTilknytningType.LAND),
+                new GeografiskTilknytning(NORGE, GeografiskTilknytning.GeografiskTilknytningType.LAND),
                 List.of(new Familierelasjon(Familierelasjon.Relasjon.BARN, new PersonIdent(barn1Ident)),
                         new Familierelasjon(Familierelasjon.Relasjon.BARN, new PersonIdent(barn2Ident)),
                         new Familierelasjon(Familierelasjon.Relasjon.EKTE, new PersonIdent(søkerIdent))),
-                List.of(new Statsborgerskap(CountryCode.NO)),
+                List.of(new Statsborgerskap(NORGE)),
                 List.of(new Sivilstand(Sivilstand.Type.GIFT, null, null)),
                 List.of(new Personstatus(Personstatus.Type.BOSA, LocalDate.now().minusYears(50), null)),
                 List.of(), adresser, false);
@@ -192,17 +191,17 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static Personopplysninger lagBarnPersonopplysninger(String ident, LocalDate fødselsdato,
                                                                   String morIdent, String farIdent) {
-        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", CountryCode.NO,
+        var bostedsadresse = new Adresse(Adresse.AdresseType.BOSTEDSADRESSE, "0000001", NORGE,
                 fødselsdato, null);
         var adresser = new Adresser(List.of(bostedsadresse), Adressebeskyttelse.UGRADERT);
 
         return new Personopplysninger(new PersonIdent(ident), UUID.randomUUID(), Rolle.BARN,
                 new Navn("Lille", null, "Duck"),
                 fødselsdato, null, Språk.NB, Kjønn.K,
-                new GeografiskTilknytning(CountryCode.NO, GeografiskTilknytning.GeografiskTilknytningType.LAND),
+                new GeografiskTilknytning(NORGE, GeografiskTilknytning.GeografiskTilknytningType.LAND),
                 List.of(new Familierelasjon(Familierelasjon.Relasjon.MOR, new PersonIdent(morIdent)),
                         new Familierelasjon(Familierelasjon.Relasjon.FAR, new PersonIdent(farIdent))),
-                List.of(new Statsborgerskap(CountryCode.NO)), List.of(),
+                List.of(new Statsborgerskap(NORGE)), List.of(),
                 List.of(new Personstatus(Personstatus.Type.BOSA, fødselsdato, null)),
                 List.of(), adresser, false);
     }
@@ -238,8 +237,7 @@ public class PersonBuilder {
     // ---------------------------------------------------------------------------
     private static List<Ytelse> lagSøkerYtelser() {
         return List.of(new Ytelse(YtelseType.ARBEIDSAVKLARINGSPENGER,
-                LocalDate.now().minusMonths(12), LocalDate.now().plusMonths(2), 1000, 10_000, null, null,
-                List.of(new Beregningsgrunnlag(Beregningsgrunnlag.Kategori.ARBEIDSTAKER, null))));
+                LocalDate.now().minusMonths(12), LocalDate.now().plusMonths(2), 1000, null));
     }
 
     // ---------------------------------------------------------------------------
@@ -252,4 +250,3 @@ public class PersonBuilder {
                 new Skatteopplysning(LocalDate.now().getYear() - 3, 480_000));
     }
 }
-

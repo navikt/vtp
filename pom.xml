@@ -28,7 +28,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <vtp-kontrakter.version>2.2.3</vtp-kontrakter.version>
+        <vtp-kontrakter.version>2.2.4</vtp-kontrakter.version>
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
@@ -202,11 +202,6 @@
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.vtp</groupId>
-                <artifactId>autotest</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>no.nav.foreldrepenger.vtp</groupId>
                 <artifactId>ldap-mock</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -254,12 +249,6 @@
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
                 <version>3.0.8</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.neovisionaries</groupId>
-                <artifactId>nv-i18n</artifactId>
-                <version>1.29</version>
             </dependency>
 
             <!-- Nav Avhengigheter – kontrakt -->

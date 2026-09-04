@@ -2,11 +2,9 @@ package no.nav.foreldrepenger.vtp.kontrakter.person.v2;
 
 import java.time.LocalDate;
 
-import com.neovisionaries.i18n.CountryCode;
-
 public record MedlemskapDto(LocalDate fom,
                             LocalDate tom,
-                            CountryCode land,
+                            String land,
                             DekningsType trygdedekning) {
 
     public enum DekningsType {

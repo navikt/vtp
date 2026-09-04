@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import no.nav.foreldrepenger.vtp.kontrakter.person.Adressebeskyttelse;
-import no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn;
-import no.nav.foreldrepenger.vtp.kontrakter.person.Rolle;
-import no.nav.foreldrepenger.vtp.kontrakter.person.Språk;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Adressebeskyttelse;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Rolle;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Språk;
 
-/** Identifikator og navn genereres server-side (se PersonMapperV2) og er derfor ikke del av kontrakten. */
+/** Identifikator og navn genereres server-side (se PersonMapper) og er derfor ikke del av kontrakten. */
 public record PersonopplysningerDto(UUID uuid,
                                     Rolle rolle,
                                     LocalDate fødselsdato,

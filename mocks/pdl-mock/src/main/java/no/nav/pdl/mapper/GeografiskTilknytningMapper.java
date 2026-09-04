@@ -18,15 +18,15 @@ public class GeografiskTilknytningMapper {
             switch (tilknytning.type()) {
                 case LAND -> {
                     geografiskTilknytning.setGtType(GtType.UTLAND);
-                    geografiskTilknytning.setGtLand(tilknytning.land().getAlpha3());
+                    geografiskTilknytning.setGtLand(tilknytning.land());
                 }
                 case KOMMUNE -> {
                     geografiskTilknytning.setGtType(GtType.KOMMUNE);
-                    geografiskTilknytning.setGtKommune(tilknytning.land().getAlpha3());
+                    geografiskTilknytning.setGtKommune(tilknytning.land());
                 }
                 case BYDEL -> {
                     geografiskTilknytning.setGtType(GtType.BYDEL);
-                    geografiskTilknytning.setGtBydel(tilknytning.land().getAlpha3());
+                    geografiskTilknytning.setGtBydel(tilknytning.land());
                 }
                 default -> geografiskTilknytning.setGtType(GtType.UDEFINERT);
             }

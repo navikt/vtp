@@ -1,40 +1,31 @@
 package no.nav.tjeneste.virksomhet.infotrygd.rest;
 
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Objects;
 
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import no.nav.vtp.person.PersonRepository;
+import jakarta.ws.rs.core.Response;
 
 @Path("/infotrygd")
+// Endepunktene beholdes fordi abakus fortsatt kaller dem for både FP- og K9-flyter.
 public class InfotrygdMock {
-    private static final Logger LOG = LoggerFactory.getLogger(InfotrygdMock.class);
-
     @SuppressWarnings("unused")
     @POST
     @Path("/grunnlag/sykepenger")
     @Produces({"application/json"})
-    public List<GrunnlagDto> getSykepenger(PersonRequest personRequest) {
-        LOG.info("Infotrygd Rest kall til sykepenger");
-        return personRequest.fnr().stream().flatMap(fnr -> {
-            var person = PersonRepository.hentPerson(fnr);
-            return PersonTilGrunnlagMapper.tilSykepengerGrunnlag(person).stream();
-        }).toList();
+    public Response getSykepenger(PersonRequest personRequest) {
+        Objects.requireNonNull(personRequest.fnr());
+        return Response.ok(List.of()).build();
     }
 
     @SuppressWarnings("unused")
     @POST
     @Path("/grunnlag/paaroerende-sykdom")
     @Produces({"application/json"})
-    public List<GrunnlagDto> paaroerendeSykdomUsingPost(PersonRequest personRequest) {
-        LOG.info("Infotrygd Rest kall til pårørendesykdom");
-        return personRequest.fnr().stream().flatMap(fnr -> {
-            var person = PersonRepository.hentPerson(fnr);
-            return PersonTilGrunnlagMapper.tilBarnsykdomGrunnlag(person).stream();
-        }).toList();
+    public Response paaroerendeSykdomUsingPost(PersonRequest personRequest) {
+        Objects.requireNonNull(personRequest.fnr());
+        return Response.ok(List.of()).build();
     }
 }

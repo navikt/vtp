@@ -29,7 +29,7 @@ public class MedlemskapsunntakMapper {
                 tilDekningstype(medlemskap),
                 null,
                 "ENDL",
-                medlemskap.land().getAlpha3(),
+                medlemskap.land(),
                 null,
                 true,
                 new Medlemskapsunntak.Sporingsinformasjon(medlemskap.fom(), "ANNEN"),

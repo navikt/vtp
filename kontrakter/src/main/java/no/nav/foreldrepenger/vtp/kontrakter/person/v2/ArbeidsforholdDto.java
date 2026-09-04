@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import no.nav.foreldrepenger.vtp.kontrakter.person.Arbeidsforholdstype;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Arbeidsforholdstype;
 
 public record ArbeidsforholdDto(ArbeidsgiverDto arbeidsgiver,
                                 String arbeidsforholdId,

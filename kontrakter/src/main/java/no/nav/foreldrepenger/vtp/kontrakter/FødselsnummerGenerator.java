@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
 
-import no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn;
 
 public class FødselsnummerGenerator {
     private static final Set<String> BRUKTE_FØDSELSNUMMER = new ConcurrentSkipListSet<>();

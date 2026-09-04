@@ -304,7 +304,7 @@ public class PdlLeesahRestTjeneste {
         var ident = dødsdato != null
                 ? dødsdato.format(DateTimeFormatter.ofPattern("ddMMyy")) + "00001"
                 : new FødselsnummerGenerator.Builder()
-                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.Kjønn.M)
+                .kjønn(no.nav.foreldrepenger.vtp.kontrakter.person.v2.Kjønn.M)
                 .fødselsdato(fødsesldato)
                 .buildAndGenerate();
         var relasjoner = new ArrayList<no.nav.vtp.person.personopplysninger.Familierelasjon>();

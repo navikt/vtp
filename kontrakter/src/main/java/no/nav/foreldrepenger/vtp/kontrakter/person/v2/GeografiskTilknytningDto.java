@@ -1,11 +1,9 @@
 package no.nav.foreldrepenger.vtp.kontrakter.person.v2;
 
-import com.neovisionaries.i18n.CountryCode;
-
-public record GeografiskTilknytningDto(CountryCode land, GeografiskTilknytningType type) {
+public record GeografiskTilknytningDto(String land, GeografiskTilknytningType type) {
 
     public static GeografiskTilknytningDto norsk() {
-        return new GeografiskTilknytningDto(CountryCode.NO, GeografiskTilknytningType.KOMMUNE);
+        return new GeografiskTilknytningDto("NOR", GeografiskTilknytningType.KOMMUNE);
     }
 
     public enum GeografiskTilknytningType {
