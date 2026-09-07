@@ -81,6 +81,10 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.vtp</groupId>
+            <artifactId>brreg-mock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.foreldrepenger.vtp</groupId>
             <artifactId>dummy-mock</artifactId>
         </dependency>
         <dependency>

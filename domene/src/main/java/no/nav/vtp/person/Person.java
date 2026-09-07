@@ -5,6 +5,7 @@ import java.util.List;
 
 import no.nav.vtp.person.arbeidsforhold.Arbeidsforhold;
 import no.nav.vtp.person.inntekt.Inntektsperiode;
+import no.nav.vtp.person.næring.RegistrertNæringsvirksomhet;
 import no.nav.vtp.person.personopplysninger.Personopplysninger;
 import no.nav.vtp.person.skatt.Skatteopplysning;
 import no.nav.vtp.person.ytelse.Ytelse;
@@ -13,7 +14,22 @@ public record Person(Personopplysninger personopplysninger,
                      List<Arbeidsforhold> arbeidsforhold,
                      List<Inntektsperiode> inntekt,
                      List<Ytelse> ytelser,
-                     List<Skatteopplysning> skatteopplysninger) {
+                     List<Skatteopplysning> skatteopplysninger,
+                     List<RegistrertNæringsvirksomhet> registrerteNæringsvirksomheter) {
+
+    public Person {
+        registrerteNæringsvirksomheter = registrerteNæringsvirksomheter == null
+                ? List.of()
+                : List.copyOf(registrerteNæringsvirksomheter);
+    }
+
+    public Person(Personopplysninger personopplysninger,
+                  List<Arbeidsforhold> arbeidsforhold,
+                  List<Inntektsperiode> inntekt,
+                  List<Ytelse> ytelser,
+                  List<Skatteopplysning> skatteopplysninger) {
+        this(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger, List.of());
+    }
 
     public Person.Builder tilBuilder() {
         return new Builder(this);
@@ -27,27 +43,38 @@ public record Person(Personopplysninger personopplysninger,
         }
 
         public Builder medPersonopplysninger(Personopplysninger personopplysninger) {
-            kopi = new Person(personopplysninger, kopi.arbeidsforhold, kopi.inntekt, kopi.ytelser, kopi.skatteopplysninger);
+            kopi = new Person(personopplysninger, kopi.arbeidsforhold, kopi.inntekt, kopi.ytelser, kopi.skatteopplysninger,
+                    kopi.registrerteNæringsvirksomheter);
             return this;
         }
 
         public Builder medArbeidsforhold(List<Arbeidsforhold> arbeidsforhold) {
-            kopi = new Person(kopi.personopplysninger, arbeidsforhold, kopi.inntekt, kopi.ytelser, kopi.skatteopplysninger);
+            kopi = new Person(kopi.personopplysninger, arbeidsforhold, kopi.inntekt, kopi.ytelser, kopi.skatteopplysninger,
+                    kopi.registrerteNæringsvirksomheter);
             return this;
         }
 
         public Builder medInntekt(List<Inntektsperiode> inntekt) {
-            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, inntekt, kopi.ytelser, kopi.skatteopplysninger);
+            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, inntekt, kopi.ytelser, kopi.skatteopplysninger,
+                    kopi.registrerteNæringsvirksomheter);
             return this;
         }
 
         public Builder medYtelser(List<Ytelse> ytelser) {
-            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, kopi.inntekt, ytelser, kopi.skatteopplysninger);
+            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, kopi.inntekt, ytelser, kopi.skatteopplysninger,
+                    kopi.registrerteNæringsvirksomheter);
             return this;
         }
 
         public Builder medSkatteopplysninger(List<Skatteopplysning> skatteopplysninger) {
-            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, kopi.inntekt, kopi.ytelser, skatteopplysninger);
+            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, kopi.inntekt, kopi.ytelser, skatteopplysninger,
+                    kopi.registrerteNæringsvirksomheter);
+            return this;
+        }
+
+        public Builder medRegistrerteNæringsvirksomheter(List<RegistrertNæringsvirksomhet> registrerteNæringsvirksomheter) {
+            kopi = new Person(kopi.personopplysninger, kopi.arbeidsforhold, kopi.inntekt, kopi.ytelser, kopi.skatteopplysninger,
+                    registrerteNæringsvirksomheter);
             return this;
         }
 

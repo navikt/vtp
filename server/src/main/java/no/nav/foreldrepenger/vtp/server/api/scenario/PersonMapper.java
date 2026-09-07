@@ -23,6 +23,7 @@ import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonopplysningerDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PersonstatusDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.PrivatArbeidsgiverDto;
+import no.nav.foreldrepenger.vtp.kontrakter.person.v2.RegistrertNæringsvirksomhetDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.SkatteopplysningDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.SivilstandDto;
 import no.nav.foreldrepenger.vtp.kontrakter.person.v2.StatsborgerskapDto;
@@ -37,6 +38,7 @@ import no.nav.vtp.person.arbeidsforhold.PrivatArbeidsgiver;
 import no.nav.vtp.person.ident.Orgnummer;
 import no.nav.vtp.person.ident.PersonIdent;
 import no.nav.vtp.person.inntekt.Inntektsperiode;
+import no.nav.vtp.person.næring.RegistrertNæringsvirksomhet;
 import no.nav.vtp.person.personopplysninger.Adresse;
 import no.nav.vtp.person.personopplysninger.Adresser;
 import no.nav.vtp.person.personopplysninger.Familierelasjon;
@@ -73,7 +75,21 @@ public class PersonMapper {
         var inntekt = tilInntekt(p.inntekt(), p.ytelser(), identer);
         var ytelser = tilYtelser(p.ytelser());
         var skatteopplysninger = tilSkatteopplysninger(p.skatteopplysninger());
-        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger);
+        var registrerteNæringsvirksomheter = tilRegistrerteNæringsvirksomheter(p.registrerteNæringsvirksomheter());
+        return new Person(personopplysninger, arbeidsforhold, inntekt, ytelser, skatteopplysninger, registrerteNæringsvirksomheter);
+    }
+
+    private static List<RegistrertNæringsvirksomhet> tilRegistrerteNæringsvirksomheter(
+            List<RegistrertNæringsvirksomhetDto> virksomheter) {
+        return virksomheter.stream()
+                .map(virksomhet -> new RegistrertNæringsvirksomhet(
+                        virksomhet.organisasjonsnummer(),
+                        virksomhet.navn(),
+                        virksomhet.organisasjonsformKode(),
+                        virksomhet.organisasjonsformBeskrivelse(),
+                        virksomhet.næringskode(),
+                        virksomhet.næringskodeBeskrivelse()))
+                .toList();
     }
 
     private static Personopplysninger tilPersonopplysninger(PersonopplysningerDto p, Map<UUID, PersonIdent> identer,

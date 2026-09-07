@@ -78,6 +78,7 @@ import no.nav.vtp.DummyRestTjeneste;
 import no.nav.vtp.DummyRestTjenesteBoolean;
 import no.nav.vtp.DummyRestTjenesteFile;
 import no.nav.vtp.arbeidsgiverportal.ArbeidsgiverPortalRepository;
+import no.nav.vtp.brreg.BrregMock;
 import no.nav.vtp.inntektskomponenten.InntektskomponentV2REST;
 import no.nav.vtp.journalpost.JournalRepository;
 import tools.jackson.databind.json.JsonMapper;
@@ -112,6 +113,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(DummyRestTjeneste.class);
         classes.add(DummyRestTjenesteFile.class);
         classes.add(DummyRestTjenesteBoolean.class);
+        classes.add(BrregMock.class);
         classes.add(MedlemskapsunntakMock.class);
         classes.add(OmsorgspengerMock.class);
         classes.add(OppgaveMockImpl.class);
