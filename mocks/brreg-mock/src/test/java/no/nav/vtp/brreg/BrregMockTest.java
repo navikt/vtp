@@ -116,7 +116,8 @@ class BrregMockTest {
 
     @Test
     void skalReturnere404ForUkjentOrganisasjon() {
-        assertThatThrownBy(() -> new BrregMock().hentEnhet("111111111"))
+        var brregMock = new BrregMock();
+        assertThatThrownBy(() -> brregMock.hentEnhet("111111111"))
                 .isInstanceOf(NotFoundException.class)
                 .satisfies(feil -> assertThat(((NotFoundException) feil).getResponse().getStatus()).isEqualTo(404));
     }
