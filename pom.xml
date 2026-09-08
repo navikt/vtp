@@ -29,7 +29,7 @@
 
         <!--    Interne avhengigheter    -->
         <vtp-kontrakter.version>2.2.5</vtp-kontrakter.version>
-        <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
+        <fp-kontrakter.version>9.4.39</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
         <graphql-java.version>26.1</graphql-java.version>
@@ -270,7 +270,7 @@
             <dependency>
                 <groupId>no.nav.teamdokumenthandtering</groupId>
                 <artifactId>teamdokumenthandtering-avro-schemas</artifactId>
-                <version>1.1.11</version>
+                <version>2.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
