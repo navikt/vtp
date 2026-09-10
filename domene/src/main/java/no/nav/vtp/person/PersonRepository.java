@@ -58,9 +58,17 @@ public class PersonRepository {
     }
 
     public static Optional<Organisasjon> hentInformasjonOmArbeidsforhold(Orgnummer orgnummer) {
-        return alleRegistrerteOrganisasjoner().stream()
+        var organisasjon = alleRegistrerteOrganisasjoner().stream()
                 .filter(o -> o.orgnummer().equals(orgnummer))
                 .findFirst();
+        if (organisasjon.isPresent()) {
+            return organisasjon;
+        }
+        return hentRegistrertNæringsvirksomhet(orgnummer.value())
+                .map(virksomhet -> new Organisasjon(
+                        orgnummer,
+                        null,
+                        new Organisasjon.Detaljer(virksomhet.navn(), null)));
     }
 
     public static Optional<RegistrertNæringsvirksomhet> hentRegistrertNæringsvirksomhet(String organisasjonsnummer) {
