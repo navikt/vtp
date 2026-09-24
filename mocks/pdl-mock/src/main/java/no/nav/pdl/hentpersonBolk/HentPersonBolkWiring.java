@@ -44,7 +44,7 @@ public class HentPersonBolkWiring {
                                                 .error(ErrorCode.NOT_FOUND.construct(environment, "Fant ikke person"))
                                                 .build();
                                     }
-                                    personer.add(new HentPersonBolkResult(ident, person, null));
+                                    personer.add(new HentPersonBolkResult(ident, person, "ok"));
                                 }
                                 LOG.info("Personinfo hentet fra pdl for identene={}", identer);
                                 return personer;
