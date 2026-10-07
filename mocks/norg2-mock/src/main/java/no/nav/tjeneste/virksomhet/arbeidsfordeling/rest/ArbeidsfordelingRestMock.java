@@ -29,7 +29,8 @@ public class ArbeidsfordelingRestMock {
             Map.entry("NORMAL-SYK", new Norg2Modell("NORMAL-SYK", "4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "SYK")),
             Map.entry("NORMAL-FRI",
                     new Norg2Modell("NORMAL-FRI", "4863", "NAV Familie- og pensjonsytelser midlertidig enhet", "KO", "AKTIV", "FRI")),
-            Map.entry("NORMAL-UNG", new Norg2Modell("NORMAL-UNG", "4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "UNG")));
+            Map.entry("NORMAL-UNG", new Norg2Modell("NORMAL-UNG", "4409", "NAV Arbeid og ytelser Arendal", "YTA", "AKTIV", "UNG")),
+            Map.entry("NORMAL-AKT", new Norg2Modell("NORMAL-AKT", "4416", "NAV Arbeid og ytelser Trondheim", "YTA", "AKTIV", "AKT")));
 
     @POST
     @Path("/enheter")
