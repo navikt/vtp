@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -13,7 +12,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/paaroerendeSykdom")
-@RequestScoped
 // Endepunktene beholdes fordi abakus fortsatt kaller dem for både FP- og K9-flyter.
 public class PårørendeSykdomMock {
 

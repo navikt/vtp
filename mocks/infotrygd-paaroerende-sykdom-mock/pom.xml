@@ -13,10 +13,4 @@
 	<name>VTP ::infotrygd-paaroerende-sykdom-mock</name>
 	<packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>jakarta.enterprise</groupId>
-            <artifactId>jakarta.enterprise.cdi-api</artifactId>
-        </dependency>
-    </dependencies>
 </project>
