@@ -25,7 +25,7 @@ public class SokosTilbakekrevingMock {
     private static final Logger LOG = LoggerFactory.getLogger(SokosTilbakekrevingMock.class);
 
     private static final String KRAVGRUNNLAG_PATH = "/kravgrunnlag/detaljer";
-    private static final String KRAVGRUNNLAG_ANNULLER_PATH = "/kravgrunnlag/annuler";
+    private static final String KRAVGRUNNLAG_ANNULLER_PATH = "/kravgrunnlag/annuler"; // Ja, det er faktisk slik
     private static final String TILBAKEKREVINGVEDTAK_PATH = "/vedtak";
 
     @POST
@@ -42,8 +42,8 @@ public class SokosTilbakekrevingMock {
     @Path(KRAVGRUNNLAG_ANNULLER_PATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response annulerKravgrunnlag(@Valid KravgrunnlagAnnullerRequest kravgrunnlagAnnullerRequest) {
-        LOG.info("Annuler grunnlag med vedtaksId {}", kravgrunnlagAnnullerRequest.vedtakId());
+    public Response annullerKravgrunnlag(@Valid KravgrunnlagAnnullerRequest kravgrunnlagAnnullerRequest) {
+        LOG.info("Annuller grunnlag med vedtaksId {}", kravgrunnlagAnnullerRequest.vedtakId());
         var respons = new KravgrunnlagAnnullerResponse(0, "", kravgrunnlagAnnullerRequest.vedtakId(),
                 kravgrunnlagAnnullerRequest.saksbehandlerId());
         return Response.ok(respons).build();

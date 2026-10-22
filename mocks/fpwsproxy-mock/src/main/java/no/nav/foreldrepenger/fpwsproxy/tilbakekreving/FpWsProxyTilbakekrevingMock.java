@@ -41,8 +41,8 @@ public class FpWsProxyTilbakekrevingMock {
     @Path(KRAVGRUNNLAG_ANNULLER_PATH)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response annulerKravgrunnlag(@Valid AnnullerKravGrunnlagDto annullerKravGrunnlagDto) {
-        LOG.info("Annuler grunnlag med vedtaksId {}", annullerKravGrunnlagDto.vedtakId());
+    public Response annullerKravgrunnlag(@Valid AnnullerKravGrunnlagDto annullerKravGrunnlagDto) {
+        LOG.info("Annuller grunnlag med vedtaksId {}", annullerKravGrunnlagDto.vedtakId());
         return Response.ok().build();
     }
 
