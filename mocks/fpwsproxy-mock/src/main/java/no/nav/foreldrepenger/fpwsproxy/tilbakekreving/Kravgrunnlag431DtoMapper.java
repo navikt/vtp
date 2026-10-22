@@ -15,6 +15,7 @@ import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.re
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravgrunnlagBelop433Dto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.KravgrunnlagPeriode432Dto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.tilbakekreving.kravgrunnlag.respons.Periode;
+import no.nav.vtp.tilbake.TilbakekrevingSaksnummer;
 
 class Kravgrunnlag431DtoMapper {
 
@@ -24,10 +25,10 @@ class Kravgrunnlag431DtoMapper {
                 .vedtakId(207406L)
                 .eksternKravgrunnlagId(String.valueOf(hentKravgrunnlagDetaljDto.kravgrunnlagId()))
                 .ansvarligEnhet(hentKravgrunnlagDetaljDto.enhetAnsvarlig())
-                .fagSystemId(TilbakekrevingKonsistensTjeneste.getSisteSaksnummer() + "100")
+                .fagSystemId(TilbakekrevingSaksnummer.getSisteSaksnummer() + "100")
                 .fagOmrådeKode(FagOmrådeKode.FP)
                 .kontrollFelt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH.mm.ss.SSSSSS")))
-                .referanse(TilbakekrevingKonsistensTjeneste.getSisteHenvisning())
+                .referanse(TilbakekrevingSaksnummer.getSisteHenvisning())
                 .saksBehId(hentKravgrunnlagDetaljDto.saksbehId())
                 .gjelderVedtakId("910909088")
                 .utbetalesTilId("910909088")

@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import no.nav.foreldrepenger.vtp.server.auth.rest.maskinporten.MaskinportenRestTjeneste;
-
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -42,8 +40,9 @@ import no.nav.fager.FagerMock;
 import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
 import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
 import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.FpWsProxyTilbakekrevingMock;
-import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.TilbakekrevingKonsistensTjeneste;
+import no.nav.foreldrepenger.sokos.tilbakekreving.SokosTilbakekrevingMock;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
+import no.nav.foreldrepenger.vtp.server.api.hendelser.TilbakekrevingKonsistensTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.hendelser.YtelsevedtakRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.journalforing.JournalforingRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.api.kafka.KafkaRestTjeneste;
@@ -52,6 +51,7 @@ import no.nav.foreldrepenger.vtp.server.api.scenario.TestscenarioRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.AzureAdRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.azuread.MicrosoftGraphApiMock;
 import no.nav.foreldrepenger.vtp.server.auth.rest.idporten.IdportenLoginTjeneste;
+import no.nav.foreldrepenger.vtp.server.auth.rest.maskinporten.MaskinportenRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.texas.TexasRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.auth.rest.tokenx.TokenxRestTjeneste;
 import no.nav.foreldrepenger.vtp.server.fagerportal.FagerPortalRestTjeneste;
@@ -132,6 +132,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxyArenaMock.class);
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
+        classes.add(SokosTilbakekrevingMock.class);
         classes.add(ArbeidsgiverAltinnTilgangerMock.class);
         classes.add(AltinnPlatformMock.class);
         classes.add(FagerMock.class);
