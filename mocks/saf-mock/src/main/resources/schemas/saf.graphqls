@@ -813,6 +813,9 @@ enum Tema {
     # Arbeidsrådgivning – skjermet
     ARS
 
+    # Aktivitetspenger
+    AVP
+
     # Barnetrygd
     BAR
 
