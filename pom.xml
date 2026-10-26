@@ -28,7 +28,7 @@
         <sonar.projectKey>navikt_vtp</sonar.projectKey>
 
         <!--    Interne avhengigheter    -->
-        <vtp-kontrakter.version>2.2.5</vtp-kontrakter.version>
+        <vtp-kontrakter.version>2.2.6</vtp-kontrakter.version>
         <fp-kontrakter.version>9.4.40</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
