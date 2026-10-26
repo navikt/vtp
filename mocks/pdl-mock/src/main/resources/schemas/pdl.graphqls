@@ -15,8 +15,8 @@ schema {
 type Query {
     hentPerson(ident: ID!): Person
     hentPersonBolk(identer: [ID!]!): [HentPersonBolkResult!]!
-    hentIdenter(ident: ID!, grupper: [IdentGruppe!], historikk: Boolean = false): Identliste
-    hentIdenterBolk(identer: [ID!]!, grupper: [IdentGruppe!], historikk: Boolean = false): [HentIdenterBolkResult!]!
+    hentIdenter(ident: ID!, grupper: [IdentGruppe!], historikk: Boolean! = false): Identliste
+    hentIdenterBolk(identer: [ID!]!, grupper: [IdentGruppe!], historikk: Boolean! = false): [HentIdenterBolkResult!]!
     hentGeografiskTilknytning(ident: ID!): GeografiskTilknytning
     hentGeografiskTilknytningBolk(identer: [ID!]!): [hentGeografiskTilknytningBolkResult!]!
     sokPerson(criteria:[Criterion], paging:Paging): PersonSearchResult
@@ -132,36 +132,36 @@ type HentPersonBolkResult {
 }
 
 type Person {
-    adressebeskyttelse(historikk: Boolean = false): [Adressebeskyttelse!]!
-    bostedsadresse(historikk: Boolean = false): [Bostedsadresse!]!
-    deltBosted(historikk: Boolean = false): [DeltBosted!]!
+    adressebeskyttelse(historikk: Boolean! = false): [Adressebeskyttelse!]!
+    bostedsadresse(historikk: Boolean! = false): [Bostedsadresse!]!
+    deltBosted(historikk: Boolean! = false): [DeltBosted!]!
     doedfoedtBarn: [DoedfoedtBarn!]!
     doedsfall: [Doedsfall!]!
     falskIdentitet: FalskIdentitet
     foedselsdato: [Foedselsdato!]!
     foedested: [Foedested!]!
-    navspersonidentifikator(historikk: Boolean = false): [Navspersonidentifikator!]!
-    folkeregisteridentifikator(historikk: Boolean = false): [Folkeregisteridentifikator!]!
-    folkeregisterpersonstatus(historikk: Boolean = false): [Folkeregisterpersonstatus!]!
+    navspersonidentifikator(historikk: Boolean! = false): [Navspersonidentifikator!]!
+    folkeregisteridentifikator(historikk: Boolean! = false): [Folkeregisteridentifikator!]!
+    folkeregisterpersonstatus(historikk: Boolean! = false): [Folkeregisterpersonstatus!]!
     forelderBarnRelasjon: [ForelderBarnRelasjon!]!
-    foreldreansvar(historikk: Boolean = false): [Foreldreansvar!]!
-    identitetsgrunnlag(historikk: Boolean = false): [Identitetsgrunnlag!]!
-    kjoenn(historikk: Boolean = false): [Kjoenn!]!
-    kontaktadresse(historikk: Boolean = false): [Kontaktadresse!]!
-    kontaktinformasjonForDoedsbo(historikk: Boolean = false): [KontaktinformasjonForDoedsbo!]!
-    navn(historikk: Boolean = false): [Navn!]!
-    opphold(historikk: Boolean = false):[Opphold!]!
-    oppholdsadresse(historikk: Boolean = false):[Oppholdsadresse!]!
+    foreldreansvar(historikk: Boolean! = false): [Foreldreansvar!]!
+    identitetsgrunnlag(historikk: Boolean! = false): [Identitetsgrunnlag!]!
+    kjoenn(historikk: Boolean! = false): [Kjoenn!]!
+    kontaktadresse(historikk: Boolean! = false): [Kontaktadresse!]!
+    kontaktinformasjonForDoedsbo(historikk: Boolean! = false): [KontaktinformasjonForDoedsbo!]!
+    navn(historikk: Boolean! = false): [Navn!]!
+    opphold(historikk: Boolean! = false):[Opphold!]!
+    oppholdsadresse(historikk: Boolean! = false):[Oppholdsadresse!]!
     sikkerhetstiltak:[Sikkerhetstiltak!]!
-    sivilstand(historikk: Boolean = false):[Sivilstand!]!
-    statsborgerskap(historikk: Boolean = false): [Statsborgerskap!]!
-    telefonnummer(historikk: Boolean = false): [Telefonnummer!]!
+    sivilstand(historikk: Boolean! = false):[Sivilstand!]!
+    statsborgerskap(historikk: Boolean! = false): [Statsborgerskap!]!
+    telefonnummer(historikk: Boolean! = false): [Telefonnummer!]!
     tilrettelagtKommunikasjon:[TilrettelagtKommunikasjon!]!
-    utenlandskIdentifikasjonsnummer(historikk: Boolean = false): [UtenlandskIdentifikasjonsnummer!]!
+    utenlandskIdentifikasjonsnummer(historikk: Boolean! = false): [UtenlandskIdentifikasjonsnummer!]!
     innflyttingTilNorge: [InnflyttingTilNorge!]!
     utflyttingFraNorge: [UtflyttingFraNorge!]!
-    vergemaalEllerFremtidsfullmakt(historikk: Boolean = false): [VergemaalEllerFremtidsfullmakt!]!
-    rettsligHandleevne(historikk: Boolean = false): [RettsligHandleevne!]!
+    vergemaalEllerFremtidsfullmakt(historikk: Boolean! = false): [VergemaalEllerFremtidsfullmakt!]!
+    rettsligHandleevne(historikk: Boolean! = false): [RettsligHandleevne!]!
 }
 
 type DeltBosted {
@@ -810,7 +810,7 @@ type PersonSearchHit {
     # forespurte data
     person :Person
     # forespurte data
-    identer(historikk: Boolean = false): [IdentInformasjon!]!
+    identer(historikk: Boolean! = false): [IdentInformasjon!]!
     # Poengsummen elasticsearch  har gitt dette resultatet (brukt til feilsøking, og tuning av søk)
     score :Float
     # Infromasjon om hva som ga treff i søke resultatet.
@@ -904,3 +904,5 @@ input CompletionFieldValue {
     fieldName: String!
     fieldValue: String
 }
+
+
