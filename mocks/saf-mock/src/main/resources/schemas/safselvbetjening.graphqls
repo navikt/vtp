@@ -425,6 +425,9 @@ enum Tema {
     # Ajourhold – grunnopplysninger
     AGR
 
+    # Aktivitetspenger
+    AVP
+
     # Barnetrygd
     BAR
 

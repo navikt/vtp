@@ -11,5 +11,6 @@ public enum Arkivtema {
     ENF,
     OMS,
     FRI,
-    UNG
+    UNG,
+    AVP
 }
