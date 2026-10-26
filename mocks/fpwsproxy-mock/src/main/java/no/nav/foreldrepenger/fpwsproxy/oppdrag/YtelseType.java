@@ -11,6 +11,6 @@ public enum YtelseType {
     OLP,
     FRISINN,
     UNG,
-    AKT,
+    AVP,
     ;
 }
