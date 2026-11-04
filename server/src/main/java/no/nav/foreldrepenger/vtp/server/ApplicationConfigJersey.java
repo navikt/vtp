@@ -40,6 +40,7 @@ import no.nav.fager.FagerMock;
 import no.nav.foreldrepenger.fpwsproxy.arena.FpWsProxyArenaMock;
 import no.nav.foreldrepenger.fpwsproxy.oppdrag.FpWsProxySimuleringOppdragMock;
 import no.nav.foreldrepenger.fpwsproxy.tilbakekreving.FpWsProxyTilbakekrevingMock;
+import no.nav.foreldrepenger.sokos.simulering.SokosSimuleringMock;
 import no.nav.foreldrepenger.sokos.tilbakekreving.SokosTilbakekrevingMock;
 import no.nav.foreldrepenger.vtp.kafkaembedded.LocalKafkaProducer;
 import no.nav.foreldrepenger.vtp.server.api.hendelser.TilbakekrevingKonsistensTjeneste;
@@ -133,6 +134,7 @@ public class ApplicationConfigJersey extends ResourceConfig {
         classes.add(FpWsProxySimuleringOppdragMock.class);
         classes.add(FpWsProxyTilbakekrevingMock.class);
         classes.add(SokosTilbakekrevingMock.class);
+        classes.add(SokosSimuleringMock.class);
         classes.add(ArbeidsgiverAltinnTilgangerMock.class);
         classes.add(AltinnPlatformMock.class);
         classes.add(FagerMock.class);
