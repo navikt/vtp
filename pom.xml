@@ -236,6 +236,21 @@
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
                 <version>8.4.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.swagger.core.v3</groupId>
+                        <artifactId>swagger-annotations-jakarta</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- Tas med pga apache/avro og confluent:kafka-schema-registry-client -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>2.22.4</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
 
             <dependency>
