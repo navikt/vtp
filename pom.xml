@@ -235,7 +235,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>8.4.0</version>
+                <version>8.4.1</version>
                 <exclusions>
                     <exclusion>
                         <groupId>io.swagger.core.v3</groupId>
@@ -248,7 +248,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.22.4</version>
+                <version>2.23.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
