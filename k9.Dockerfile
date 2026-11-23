@@ -1,4 +1,4 @@
-FROM ghcr.io/navikt/sif-baseimages/java-chainguard-25:2026.11.19.0715Z
+FROM ghcr.io/navikt/sif-baseimages/java-chainguard-25:latest
 
 LABEL org.opencontainers.image.source=https://github.com/navikt/vtp
 
