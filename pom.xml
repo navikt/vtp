@@ -32,7 +32,7 @@
         <fp-kontrakter.version>9.4.41</fp-kontrakter.version>
 
         <!--    Eksterne avhengigheter    -->
-        <graphql-java.version>26.1</graphql-java.version>
+        <graphql-java.version>26.2</graphql-java.version>
         <graphql-scalar-java.version>24.0</graphql-scalar-java.version>
         <avro.version>1.12.2</avro.version>
     </properties>
